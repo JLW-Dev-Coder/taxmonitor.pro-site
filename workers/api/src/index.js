@@ -13,7 +13,7 @@ export default {
       return json({ url: "https://example.com/replace-with-stripe-session-url" }, 200);
     }
 
-    return new Response("Not found", { status: 404 });
+    return json({ error: "Not found" }, 404);
   }
 };
 
