@@ -1,0 +1,80 @@
+<!-- assets/logo.svg (MARK ONLY — no lettering) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260" role="img" aria-label="Tax Monitor Pro logo mark">
+  <defs>
+    <linearGradient id="tm-grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F59E0B"/>
+      <stop offset="1" stop-color="#D97706"/>
+    </linearGradient>
+    <filter id="tm-soft" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Outer hex -->
+  <path
+    d="M130 10 L230 70 L230 190 L130 250 L30 190 L30 70 Z"
+    fill="#0B1220"
+    stroke="rgba(148,163,184,0.35)"
+    stroke-width="6"
+  />
+
+  <!-- Inner glow -->
+  <path
+    d="M130 28 L214 76 L214 184 L130 232 L46 184 L46 76 Z"
+    fill="url(#tm-grad)"
+    opacity="0.16"
+    filter="url(#tm-soft)"
+  />
+
+  <!-- Monitor frame -->
+  <rect
+    x="74"
+    y="92"
+    width="112"
+    height="84"
+    rx="16"
+    fill="#0B1220"
+    stroke="url(#tm-grad)"
+    stroke-width="6"
+  />
+
+  <!-- Screen -->
+  <rect
+    x="86"
+    y="104"
+    width="88"
+    height="60"
+    rx="12"
+    fill="rgba(148,163,184,0.12)"
+  />
+
+  <!-- Pulse / activity line -->
+  <path
+    d="M92 134 H108 L116 120 L130 148 L144 126 L152 136 H168"
+    fill="none"
+    stroke="url(#tm-grad)"
+    stroke-width="6"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+
+  <!-- Base -->
+  <path
+    d="M100 178 h60 c12 0 22 10 22 22 v8 H78 v-8 c0-12 10-22 22-22z"
+    fill="#0B1220"
+    stroke="rgba(148,163,184,0.28)"
+    stroke-width="4"
+  />
+  <rect
+    x="92"
+    y="206"
+    width="76"
+    height="10"
+    rx="5"
+    fill="rgba(148,163,184,0.18)"
+  />
+</svg>
