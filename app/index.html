@@ -72,6 +72,36 @@
     }
   </style>
 
+  <style>
+    /* Progress (inline-safe, matches theme) */
+    .tm-progress-fill {
+      transition: width 220ms ease;
+    }
+
+    .tm-step--active .tm-step-label,
+    .tm-step--active .tm-step-num {
+      color: #f59e0b;
+    }
+
+    .tm-step--active .tm-step-num {
+      border-color: rgba(245, 158, 11, 0.55);
+    }
+
+    .tm-step--done {
+      opacity: 0.92;
+    }
+
+    .tm-step--done .tm-step-num {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.22);
+      color: rgba(241, 245, 249, 0.92);
+    }
+
+    .tm-step--done .tm-step-label {
+      color: rgba(241, 245, 249, 0.92);
+    }
+  </style>
+
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
 </head>
@@ -111,23 +141,49 @@
     <main class="flex-1">
       <section class="px-6 py-12 md:py-16">
         <div class="mx-auto max-w-3xl">
-          <div class="text-center mb-10">
-            <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-3">
-              Intake for <span class="gradient-text">Tax Monitoring</span>
-            </h1>
-            <p class="text-slate-400 text-lg">
-              Submit the basics so we can confirm fit and start monitoring.
-            </p>
+
+          <!-- Steps / Progress -->
+          <div class="rounded-2xl border border-slate-800/60 bg-slate-900/30 p-6 md:p-8 mb-8">
+            <div class="mb-5">
+              <div class="text-xs text-slate-500 mb-2">Progress</div>
+              <div class="h-2 rounded-full bg-slate-800/70 border border-slate-700/50 overflow-hidden">
+                <div class="tm-progress-fill h-full bg-gradient-to-r from-amber-500 to-amber-600" style="width:25%;"></div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-4 gap-2 md:gap-4">
+              <div class="tm-step tm-step--active flex flex-col items-center text-center">
+                <div class="tm-step-num flex h-9 w-9 items-center justify-center rounded-full border border-slate-700/70 bg-slate-950/30 text-sm font-bold">1</div>
+                <div class="tm-step-label mt-2 text-xs md:text-sm text-slate-300">Intake</div>
+              </div>
+
+              <div class="tm-step flex flex-col items-center text-center">
+                <div class="tm-step-num flex h-9 w-9 items-center justify-center rounded-full border border-slate-700/70 bg-slate-950/30 text-sm font-bold text-slate-300">2</div>
+                <div class="tm-step-label mt-2 text-xs md:text-sm text-slate-400">Offer</div>
+              </div>
+
+              <div class="tm-step flex flex-col items-center text-center">
+                <div class="tm-step-num flex h-9 w-9 items-center justify-center rounded-full border border-slate-700/70 bg-slate-950/30 text-sm font-bold text-slate-300">3</div>
+                <div class="tm-step-label mt-2 text-xs md:text-sm text-slate-400">Agreement</div>
+              </div>
+
+              <div class="tm-step flex flex-col items-center text-center">
+                <div class="tm-step-num flex h-9 w-9 items-center justify-center rounded-full border border-slate-700/70 bg-slate-950/30 text-sm font-bold text-slate-300">4</div>
+                <div class="tm-step-label mt-2 text-xs md:text-sm text-slate-400">Payment</div>
+              </div>
+            </div>
+
+            <div class="mt-6 border-t border-slate-800/60 pt-6 text-center">
+              <h1 class="text-3xl md:text-5xl font-bold tracking-tight mb-3">
+                Intake for <span class="gradient-text">Tax Monitoring</span>
+              </h1>
+              <p class="text-slate-400 text-lg">
+                Submit the basics so we can confirm fit and start monitoring.
+              </p>
+            </div>
           </div>
 
           <div class="rounded-2xl border border-slate-800/60 bg-slate-900/30 p-6 md:p-8">
-            <!--
-              IMPORTANT:
-              - This form is the fix (not the Worker).
-              - Keys match Worker-accepted variants exactly.
-              - Posts as application/x-www-form-urlencoded by default.
-              - Set action to your Worker route (recommended: /intake behind your domain).
-            -->
             <form id="tm-intake" method="post" action="/intake" accept-charset="UTF-8" class="space-y-8">
               <!-- Identity -->
               <div class="grid gap-4 md:grid-cols-2">
@@ -265,7 +321,6 @@
                 <div class="md:col-span-2">
                   <label class="block text-sm font-semibold text-slate-200 mb-2">Primary concern</label>
 
-                  <!-- Checkboxes are used for UX; hidden field sends Worker-compatible comma string -->
                   <input id="primary_concern_value" name="Primary Concern" type="hidden" value="">
 
                   <div class="grid gap-3 sm:grid-cols-2">
@@ -332,7 +387,6 @@
                   </span>
                 </label>
 
-                <!-- Worker key -->
                 <input id="monitoring_ack_value" name="IRS Monitoring Only Acknowledged" type="hidden" value="No">
               </div>
 
