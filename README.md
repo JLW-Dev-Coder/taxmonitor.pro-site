@@ -21,15 +21,41 @@ This README documents **how to redeploy** when a build or Worker fails.
 
 Alphabetical (minimal, expandable):
 
-- app/
-- assets/
-- legal/
-- public/
-- site/
-- styles/
-- workers/
-- wrangler.toml
-- README.md
+app/
+│
+├─ index.html
+├─ intake.html
+├─ offer.html
+├─ agreement.html
+└─ payment.html
+
+assets/
+├─ favicon.ico
+└─ logo.svg
+
+legal/
+├─ privacy.html
+└─ terms.html
+
+public/
+└─ (optional static assets)
+
+site/
+├─ index.html
+└─ pricing.html
+
+styles/
+├─ app.css
+└─ site.css
+
+workers/
+└─ api/
+   ├─ src/
+   │  └─ index.js        ← Worker entry point (authoritative)
+   └─ wrangler.toml      ← Worker config (authoritative)
+
+README.md
+
 
 ---
 
@@ -75,4 +101,5 @@ Only use this if deploying intentionally from local.
 
 ```bash
 wrangler deploy
+
 
