@@ -7,7 +7,6 @@ export default {
       return handleCalWebhook(request, env);
     }
 
-    // keep your existing endpoints if needed later (stripe, status, etc.)
     return json({ error: "Not found" }, 404);
   },
 };
@@ -18,7 +17,6 @@ async function handleCalWebhook(request, env) {
 
   const rawBody = await request.text();
 
-  // Cal.com signature header
   const sigHeader =
     request.headers.get("x-cal-signature-256") ||
     request.headers.get("X-Cal-Signature-256");
@@ -71,4 +69,60 @@ function extractEventSlug(body) {
   return null;
 }
 
-function norma
+function normalizeCalEventType(body) {
+  const raw =
+    body?.triggerEvent ||
+    body?.type ||
+    body?.event ||
+    body?.name ||
+    "";
+
+  const s = String(raw).toLowerCase();
+
+  if (s.includes("cancel")) return "booking.cancelled";
+  if (s.includes("reschedule")) return "booking.rescheduled";
+  if (s.includes("created")) return "booking.created";
+
+  if (s === "booking.created") return "booking.created";
+  if (s === "booking.cancelled") return "booking.cancelled";
+  if (s === "booking.rescheduled") return "booking.rescheduled";
+
+  return "unknown";
+}
+
+async function hmacSha256Hex(secret, message) {
+  const enc = new TextEncoder();
+  const key = await crypto.subtle.importKey(
+    "raw",
+    enc.encode(secret),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"]
+  );
+  const sig = await crypto.subtle.sign("HMAC", key, enc.encode(message));
+  return bufToHex(sig);
+}
+
+function bufToHex(buf) {
+  const bytes = new Uint8Array(buf);
+  let out = "";
+  for (const b of bytes) out += b.toString(16).padStart(2, "0");
+  return out;
+}
+
+function timingSafeEqualHex(a, b) {
+  const aa = String(a || "").toLowerCase();
+  const bb = String(b || "").toLowerCase();
+  if (aa.length !== bb.length) return false;
+
+  let diff = 0;
+  for (let i = 0; i < aa.length; i++) diff |= aa.charCodeAt(i) ^ bb.charCodeAt(i);
+  return diff === 0;
+}
+
+function json(obj, status = 200) {
+  return new Response(JSON.stringify(obj, null, 2), {
+    headers: { "content-type": "application/json; charset=utf-8" },
+    status,
+  });
+}
