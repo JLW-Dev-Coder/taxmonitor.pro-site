@@ -1,0 +1,37 @@
+<!-- assets/favicon.svg -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-label="Tax Monitor Pro favicon">
+  <defs>
+    <linearGradient id="tm-grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F59E0B"/>
+      <stop offset="1" stop-color="#D97706"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Hex -->
+  <path
+    d="M32 3 L58 18 L58 46 L32 61 L6 46 L6 18 Z"
+    fill="#0B1220"
+    stroke="url(#tm-grad)"
+    stroke-width="3"
+  />
+
+  <!-- Screen -->
+  <rect
+    x="20"
+    y="24"
+    width="24"
+    height="18"
+    rx="4"
+    fill="rgba(148,163,184,0.18)"
+  />
+
+  <!-- Pulse -->
+  <path
+    d="M22 33 H26 L29 29 L32 36 L35 31 L38 33 H42"
+    fill="none"
+    stroke="url(#tm-grad)"
+    stroke-width="3"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+</svg>
