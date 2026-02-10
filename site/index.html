@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
-  
+
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" href="/assets/favicon.ico" sizes="any">
   <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
@@ -36,30 +36,8 @@
 <body class="h-full bg-slate-950 text-slate-100">
   <div id="app" class="h-full w-full overflow-auto">
 
-    <!-- Menu -->
-    <header class="sticky top-0 z-50 border-b border-slate-800/60 bg-slate-950/80 backdrop-blur">
-      <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between gap-6">
-        <a href="/" class="flex items-center gap-3">
-          <img src="/assets/logo.svg" alt="Tax Monitor Pro" class="h-8 w-8">
-          <span class="font-semibold tracking-tight">Tax Monitor Pro</span>
-        </a>
-
-        <nav class="hidden md:flex items-center gap-6 text-sm text-slate-300">
-          <a href="#how-it-works" class="hover:text-slate-100 transition">How it works</a>
-          <a href="#inside-portal" class="hover:text-slate-100 transition">Portal</a>
-          <a href="#report-sample" class="hover:text-slate-100 transition">Report sample</a>
-          <a href="#transcript-sample" class="hover:text-slate-100 transition">Transcript sample</a>
-        </nav>
-
-        <div class="flex items-center gap-3">
-          <a href="/site/pricing.html" class="hidden sm:inline-block text-sm text-slate-300 hover:text-slate-100 transition">Pricing</a>
-          <a
-            href="/app/intake.html"
-            class="inline-block px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-semibold rounded-lg transition-all duration-200"
-          >Start Intake →</a>
-        </div>
-      </div>
-    </header>
+    <!-- Header (partial mount) -->
+    <div id="site-header"></div>
 
     <!-- Hero Section -->
     <section class="px-6 py-20 md:py-32">
@@ -286,7 +264,6 @@
 
     <!-- Transcript Sample (Improved) -->
     <section class="px-6 py-20 bg-slate-900/50" id="transcript-sample">
-      <!-- (unchanged: keep your improved transcript block here) -->
       <div class="max-w-5xl mx-auto">
         <div class="text-center mb-12">
           <h2 class="text-3xl md:text-5xl font-bold mb-6">Transcript <span class="gradient-text">Sample</span></h2>
@@ -581,17 +558,8 @@
       </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="px-6 py-12 border-t border-slate-800">
-      <div class="max-w-4xl mx-auto text-center">
-        <div class="flex items-center justify-center gap-2 mb-4">
-          <img src="/assets/logo.svg" alt="Tax Monitor Pro" class="h-6 w-6">
-          <span class="font-semibold text-lg">Tax Monitor Pro</span>
-        </div>
-        <p id="footer-text" class="text-slate-500 text-sm mb-4">Professional tax account monitoring services provided by licensed tax professional.</p>
-        <p class="text-slate-600 text-xs">© 2024 Tax Monitor Pro. All rights reserved.</p>
-      </div>
-    </footer>
+    <!-- Footer (partial mount) -->
+    <div id="site-footer"></div>
 
   </div>
 
@@ -611,6 +579,13 @@
       font_family: 'DM Sans',
       font_size: 16
     };
+
+    async function loadPartial(id, url) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const res = await fetch(url, { cache: "force-cache" });
+      el.innerHTML = await res.text();
+    }
 
     async function onConfigChange(config) {
       const trustLine = document.getElementById('trust-line');
@@ -674,14 +649,17 @@
 
     function mapToEditPanelValues(config) {
       return new Map([
+        ['footer_text', config.footer_text || defaultConfig.footer_text],
         ['hero_headline', config.hero_headline || defaultConfig.hero_headline],
         ['hero_subheadline', config.hero_subheadline || defaultConfig.hero_subheadline],
-        ['trust_line', config.trust_line || defaultConfig.trust_line],
         ['problem_headline', config.problem_headline || defaultConfig.problem_headline],
-        ['cta_button_text', config.cta_button_text || defaultConfig.cta_button_text],
-        ['footer_text', config.footer_text || defaultConfig.footer_text]
+        ['trust_line', config.trust_line || defaultConfig.trust_line],
+        ['cta_button_text', config.cta_button_text || defaultConfig.cta_button_text]
       ]);
     }
+
+    loadPartial("site-header", "/site/partials/header.html");
+    loadPartial("site-footer", "/site/partials/footer.html");
 
     if (window.elementSdk) {
       window.elementSdk.init({
@@ -694,4 +672,3 @@
   </script>
 </body>
 </html>
-
