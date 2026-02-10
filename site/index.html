@@ -1,0 +1,670 @@
+<!--/taxmonitor.pro-site/blob/main/site/index.html-->
+<!doctype html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tax Monitor Pro</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+
+  <style>
+    body { box-sizing: border-box; }
+    * { font-family: 'DM Sans', sans-serif; }
+    .gradient-text {
+      background: linear-gradient(135deg, #F59E0B, #D97706);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  </style>
+
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+</head>
+
+<body class="h-full bg-slate-950 text-slate-100">
+  <div id="app" class="h-full w-full overflow-auto">
+
+    <!-- Hero Section -->
+    <section class="px-6 py-20 md:py-32">
+      <div class="max-w-4xl mx-auto text-center">
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-800/50 border border-slate-700 mb-8">
+          <svg class="w-4 h-4 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+          </svg>
+          <span id="trust-line" class="text-sm text-slate-300">EA-led, proactive monitoring — no IRS representation created by intake.</span>
+        </div>
+
+        <h1 id="hero-headline" class="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6">
+          Know What the IRS Knows <span class="gradient-text">Before They Call</span>
+        </h1>
+
+        <p id="hero-subheadline" class="text-xl md:text-2xl text-slate-400 mb-12 max-w-2xl mx-auto leading-relaxed">
+          Professional tax account monitoring that catches issues early, so you're never blindsided.
+        </p>
+
+        <!-- CTA: must route to /app/intake.html -->
+        <a
+          id="hero-cta"
+          href="/app/intake.html"
+          class="inline-block px-8 py-4 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-semibold text-lg rounded-lg transition-all duration-200 transform hover:scale-105 shadow-lg shadow-amber-500/25"
+        >Start Intake →</a>
+      </div>
+    </section>
+
+    <!-- Problem Section -->
+    <section class="px-6 py-20 bg-slate-900/50">
+      <div class="max-w-4xl mx-auto">
+        <h2 id="problem-headline" class="text-3xl md:text-5xl font-bold text-center mb-16">
+          The IRS Doesn't Send Warnings. <span class="text-slate-500">They Send Notices.</span>
+        </h2>
+
+        <div class="grid md:grid-cols-3 gap-8">
+          <div class="p-6 rounded-2xl bg-slate-800/30 border border-slate-700/50">
+            <div class="w-12 h-12 rounded-xl bg-red-500/10 flex items-center justify-center mb-4">
+              <svg class="w-6 h-6 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold mb-2">Surprise Balances</h3>
+            <p class="text-slate-400">Unknown tax debts that have been accruing penalties and interest for months.</p>
+          </div>
+
+          <div class="p-6 rounded-2xl bg-slate-800/30 border border-slate-700/50">
+            <div class="w-12 h-12 rounded-xl bg-red-500/10 flex items-center justify-center mb-4">
+              <svg class="w-6 h-6 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold mb-2">Missed Deadlines</h3>
+            <p class="text-slate-400">Response windows that expire before you even know there's an issue.</p>
+          </div>
+
+          <div class="p-6 rounded-2xl bg-slate-800/30 border border-slate-700/50">
+            <div class="w-12 h-12 rounded-xl bg-red-500/10 flex items-center justify-center mb-4">
+              <svg class="w-6 h-6 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold mb-2">Lost Notices</h3>
+            <p class="text-slate-400">Critical IRS mail that went to the wrong address or got buried in the stack.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- What Tax Monitor Does -->
+    <section class="px-6 py-20">
+      <div class="max-w-4xl mx-auto">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl md:text-5xl font-bold mb-6">What Tax Monitor <span class="gradient-text">Does</span></h2>
+          <p class="text-xl text-slate-400 max-w-2xl mx-auto">Professional-grade IRS account surveillance, delivered in plain English.</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="flex gap-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold mb-2">Continuous Monitoring</h3>
+              <p class="text-slate-400">Your IRS account transcripts checked regularly for any changes or new activity.</p>
+            </div>
+          </div>
+
+          <div class="flex gap-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold mb-2">Plain-Language Reports</h3>
+              <p class="text-slate-400">No IRS jargon. Clear explanations of what changed and what it means for you.</p>
+            </div>
+          </div>
+
+          <div class="flex gap-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold mb-2">Early Alert System</h3>
+              <p class="text-slate-400">Get notified when something needs attention — before penalties compound.</p>
+            </div>
+          </div>
+
+          <div class="flex gap-4">
+            <div class="flex-shrink-0 w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold mb-2">Secure Portal Access</h3>
+              <p class="text-slate-400">Your transcripts and reports available 24/7 in a private, encrypted dashboard.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Who This Is For -->
+    <section class="px-6 py-20 bg-slate-900/50">
+      <div class="max-w-4xl mx-auto">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl md:text-5xl font-bold mb-6">Who This Is <span class="gradient-text">For</span></h2>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6">
+          <div class="p-6 rounded-2xl bg-slate-800/30 border border-slate-700/50">
+            <div class="flex items-center gap-3 mb-3">
+              <span class="text-2xl">💼</span>
+              <h3 class="text-lg font-semibold">Business Owners</h3>
+            </div>
+            <p class="text-slate-400">Too busy running your company to chase down IRS mail and decode cryptic notices.</p>
+          </div>
+
+          <div class="p-6 rounded-2xl bg-slate-800/30 border border-slate-700/50">
+            <div class="flex items-center gap-3 mb-3">
+              <span class="text-2xl">📊</span>
+              <h3 class="text-lg font-semibold">High-Income Earners</h3>
+            </div>
+            <p class="text-slate-400">Complex returns with multiple income sources that attract IRS attention.</p>
+          </div>
+
+          <div class="p-6 rounded-2xl bg-slate-800/30 border border-slate-700/50">
+            <div class="flex items-center gap-3 mb-3">
+              <span class="text-2xl">🔄</span>
+              <h3 class="text-lg font-semibold">Past IRS Issues</h3>
+            </div>
+            <p class="text-slate-400">Previously dealt with an audit, balance, or notice — and want to stay ahead.</p>
+          </div>
+
+          <div class="p-6 rounded-2xl bg-slate-800/30 border border-slate-700/50">
+            <div class="flex items-center gap-3 mb-3">
+              <span class="text-2xl">✈️</span>
+              <h3 class="text-lg font-semibold">Frequent Travelers</h3>
+            </div>
+            <p class="text-slate-400">Often away from your primary address when IRS mail arrives.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="px-6 py-20">
+      <div class="max-w-4xl mx-auto">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl md:text-5xl font-bold mb-6">How It <span class="gradient-text">Works</span></h2>
+          <p class="text-xl text-slate-400">Four steps to peace of mind.</p>
+        </div>
+
+        <div class="space-y-8">
+          <div class="flex gap-6 items-start">
+            <div class="flex-shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center text-slate-950 font-bold text-xl">1</div>
+            <div class="pt-2">
+              <h3 class="text-xl font-semibold mb-2">Complete Intake</h3>
+              <p class="text-slate-400">Quick questionnaire to gather the information needed to access your IRS records securely.</p>
+            </div>
+          </div>
+
+          <div class="w-px h-8 bg-slate-700 ml-7"></div>
+
+          <div class="flex gap-6 items-start">
+            <div class="flex-shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center text-slate-950 font-bold text-xl">2</div>
+            <div class="pt-2">
+              <h3 class="text-xl font-semibold mb-2">Initial Transcript Pull</h3>
+              <p class="text-slate-400">We retrieve your complete IRS account history and establish your baseline status.</p>
+            </div>
+          </div>
+
+          <div class="w-px h-8 bg-slate-700 ml-7"></div>
+
+          <div class="flex gap-6 items-start">
+            <div class="flex-shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center text-slate-950 font-bold text-xl">3</div>
+            <div class="pt-2">
+              <h3 class="text-xl font-semibold mb-2">Ongoing Monitoring</h3>
+              <p class="text-slate-400">Regular transcript checks catch any changes, new filings, or IRS actions.</p>
+            </div>
+          </div>
+
+          <div class="w-px h-8 bg-slate-700 ml-7"></div>
+
+          <div class="flex gap-6 items-start">
+            <div class="flex-shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center text-slate-950 font-bold text-xl">4</div>
+            <div class="pt-2">
+              <h3 class="text-xl font-semibold mb-2">Clear Reporting</h3>
+              <p class="text-slate-400">Receive plain-language summaries and alerts when action is needed.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Transcript Sample (Improved) -->
+    <section class="px-6 py-20 bg-slate-900/50" id="transcript-sample">
+      <div class="max-w-5xl mx-auto">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-5xl font-bold mb-6">Transcript <span class="gradient-text">Sample</span></h2>
+          <p class="text-xl text-slate-400">A transcript is readable once you know what to look for. Tax Monitor translates it.</p>
+        </div>
+
+        <div class="grid lg:grid-cols-2 gap-8 items-start">
+          <div class="rounded-2xl bg-slate-800/30 border border-slate-700/50 overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-700/50 flex items-center justify-between">
+              <div class="text-sm text-slate-300 font-semibold">Raw IRS Transcript (sample)</div>
+              <div class="text-xs text-slate-500">Example codes and dates</div>
+            </div>
+
+            <div class="p-6 font-mono text-[13px] leading-relaxed text-slate-300 overflow-x-auto">
+              <div class="text-slate-500 mb-3">--- ACCOUNT TRANSCRIPT ---</div>
+
+              <div class="grid grid-cols-[90px_1fr_88px_110px] gap-3">
+                <div class="text-slate-500">CODE</div>
+                <div class="text-slate-500">DESCRIPTION</div>
+                <div class="text-slate-500">DATE</div>
+                <div class="text-slate-500 text-right">AMOUNT</div>
+
+                <div class="text-slate-200">150</div>
+                <div class="text-slate-200">RETURN FILED &amp; TAX ASSESSED</div>
+                <div class="text-slate-400">04-18-2024</div>
+                <div class="text-right text-slate-200">$15,703.00</div>
+
+                <div class="text-slate-200">806</div>
+                <div class="text-slate-200">W-2 OR 1099 WITHHOLDING</div>
+                <div class="text-slate-400">04-15-2024</div>
+                <div class="text-right text-emerald-300">-$12,456.00</div>
+
+                <div class="text-slate-200">766</div>
+                <div class="text-slate-200">CREDIT TO YOUR ACCOUNT</div>
+                <div class="text-slate-400">04-15-2024</div>
+                <div class="text-right text-emerald-300">-$3,247.00</div>
+
+                <div class="text-amber-300">570</div>
+                <div class="text-amber-200">ADDITIONAL ACCT ACTION PENDING</div>
+                <div class="text-slate-400">06-15-2024</div>
+                <div class="text-right text-slate-200">$0.00</div>
+
+                <div class="text-red-300">971</div>
+                <div class="text-red-200">NOTICE ISSUED</div>
+                <div class="text-slate-400">06-22-2024</div>
+                <div class="text-right text-slate-200">$0.00</div>
+              </div>
+
+              <div class="mt-5 text-slate-500">Note: Sample transcript for demonstration only.</div>
+            </div>
+          </div>
+
+          <div class="rounded-2xl bg-slate-800/30 border border-amber-500/30 overflow-hidden">
+            <div class="px-6 py-4 border-b border-amber-500/20 flex items-center justify-between">
+              <div class="text-sm text-amber-200 font-semibold">Tax Monitor Summary (plain English)</div>
+              <div class="text-xs text-slate-500">EA interpretation</div>
+            </div>
+
+            <div class="p-6 space-y-5">
+              <div class="flex items-start gap-3">
+                <div class="mt-1 w-9 h-9 rounded-xl bg-amber-500/10 flex items-center justify-center">
+                  <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20 10 10 0 000-20z"/>
+                  </svg>
+                </div>
+                <div>
+                  <div class="text-slate-200 font-semibold">What changed</div>
+                  <p class="text-slate-400">
+                    A transcript hold (code 570) appeared, followed by a notice (code 971). This pattern often means the IRS needs
+                    more time to process something or has a mismatch to resolve.
+                  </p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-3">
+                <div class="mt-1 w-9 h-9 rounded-xl bg-amber-500/10 flex items-center justify-center">
+                  <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                  </svg>
+                </div>
+                <div>
+                  <div class="text-slate-200 font-semibold">What it likely means</div>
+                  <ul class="mt-2 space-y-2 text-slate-400 list-disc list-inside">
+                    <li>There may be a wage/income mismatch or identity verification delay.</li>
+                    <li>A notice was generated; the details will be on the letter.</li>
+                    <li>Dates matter. We track new entries and changes so you don’t miss escalation.</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-3">
+                <div class="mt-1 w-9 h-9 rounded-xl bg-amber-500/10 flex items-center justify-center">
+                  <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                </div>
+                <div>
+                  <div class="text-slate-200 font-semibold">Next step (monitoring context)</div>
+                  <p class="text-slate-400">
+                    Watch for the notice details, confirm the notice date, and track whether the hold clears or escalates.
+                    If the letter requires a response, we flag it early so you have time to act.
+                  </p>
+                  <p class="mt-3 text-sm text-slate-500">
+                    Monitoring does not create IRS representation. Representation, filing, and resolution are separate engagements.
+                  </p>
+                </div>
+              </div>
+
+              <div class="pt-2">
+                <div class="rounded-xl bg-slate-900/40 border border-slate-700/50 p-4">
+                  <div class="text-slate-200 font-semibold mb-2">What you get from Tax Monitor</div>
+                  <div class="grid sm:grid-cols-2 gap-3 text-sm text-slate-400">
+                    <div class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>Change detection and timeline tracking</div>
+                    <div class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>Plain-English interpretation</div>
+                    <div class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>Early alerts when action is needed</div>
+                    <div class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>Portal archive for transcripts and reports</div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Report Sample -->
+    <section class="px-6 py-20">
+      <div class="max-w-5xl mx-auto">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-5xl font-bold mb-6">Report <span class="gradient-text">Sample</span></h2>
+          <p class="text-xl text-slate-400">Monthly status at a glance.</p>
+        </div>
+
+        <div class="max-w-2xl mx-auto">
+          <div class="bg-slate-800/50 rounded-2xl border border-slate-700 overflow-hidden">
+            <div class="px-6 py-4 bg-slate-800 border-b border-slate-700 flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center">
+                  <svg class="w-5 h-5 text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                  </svg>
+                </div>
+                <div>
+                  <div class="font-semibold">Monthly Status Report</div>
+                  <div class="text-sm text-slate-400">December 2024</div>
+                </div>
+              </div>
+              <span class="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-sm font-medium">All Clear</span>
+            </div>
+
+            <div class="p-6 space-y-6">
+              <div>
+                <div class="text-sm text-slate-500 uppercase tracking-wider mb-3">Tax Years Monitored</div>
+                <div class="flex gap-2">
+                  <span class="px-3 py-1 rounded-lg bg-slate-700 text-sm">2021</span>
+                  <span class="px-3 py-1 rounded-lg bg-slate-700 text-sm">2022</span>
+                  <span class="px-3 py-1 rounded-lg bg-slate-700 text-sm">2023</span>
+                  <span class="px-3 py-1 rounded-lg bg-slate-700 text-sm">2024</span>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-2 gap-4">
+                <div class="p-4 rounded-xl bg-slate-800/50">
+                  <div class="text-2xl font-bold text-emerald-400">$0</div>
+                  <div class="text-sm text-slate-400">Balance Due</div>
+                </div>
+                <div class="p-4 rounded-xl bg-slate-800/50">
+                  <div class="text-2xl font-bold">0</div>
+                  <div class="text-sm text-slate-400">Open Issues</div>
+                </div>
+              </div>
+
+              <div>
+                <div class="text-sm text-slate-500 uppercase tracking-wider mb-3">This Month's Activity</div>
+                <div class="p-4 rounded-xl bg-slate-800/50 text-slate-300">
+                  <p>✓ No new IRS actions detected</p>
+                  <p>✓ All returns processed normally</p>
+                  <p>✓ No outstanding balances</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Inside Your Portal -->
+    <section class="px-6 py-20 bg-slate-900/50">
+      <div class="max-w-4xl mx-auto">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-5xl font-bold mb-6">Inside Your <span class="gradient-text">Portal</span></h2>
+          <p class="text-xl text-slate-400">Everything you need, nothing you don't.</p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-6">
+          <div class="p-6 rounded-2xl bg-slate-800/30 border border-slate-700/50 text-center">
+            <div class="w-14 h-14 rounded-2xl bg-amber-500/10 flex items-center justify-center mx-auto mb-4">
+              <svg class="w-7 h-7 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <h3 class="font-semibold mb-2">Full Transcripts</h3>
+            <p class="text-sm text-slate-400">Access your complete IRS records anytime.</p>
+          </div>
+
+          <div class="p-6 rounded-2xl bg-slate-800/30 border border-slate-700/50 text-center">
+            <div class="w-14 h-14 rounded-2xl bg-amber-500/10 flex items-center justify-center mx-auto mb-4">
+              <svg class="w-7 h-7 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+            <h3 class="font-semibold mb-2">Change History</h3>
+            <p class="text-sm text-slate-400">See exactly when and what changed on your account.</p>
+          </div>
+
+          <div class="p-6 rounded-2xl bg-slate-800/30 border border-slate-700/50 text-center">
+            <div class="w-14 h-14 rounded-2xl bg-amber-500/10 flex items-center justify-center mx-auto mb-4">
+              <svg class="w-7 h-7 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"/>
+              </svg>
+            </div>
+            <h3 class="font-semibold mb-2">Report Archive</h3>
+            <p class="text-sm text-slate-400">Download any past report in one click.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- What This Is NOT -->
+    <section class="px-6 py-20">
+      <div class="max-w-4xl mx-auto">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-5xl font-bold mb-6">What This Is <span class="text-slate-500">NOT</span></h2>
+          <p class="text-xl text-slate-400">Clear expectations, no surprises.</p>
+        </div>
+
+        <div class="space-y-4 max-w-2xl mx-auto">
+          <div class="flex items-start gap-4 p-4 rounded-xl bg-slate-800/30">
+            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center">
+              <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-semibold mb-1">Not IRS Representation</h3>
+              <p class="text-slate-400 text-sm">Monitoring doesn't establish representation. If you need someone to handle IRS matters on your behalf, that's a separate engagement.</p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-4 p-4 rounded-xl bg-slate-800/30">
+            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center">
+              <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-semibold mb-1">Not Tax Preparation</h3>
+              <p class="text-slate-400 text-sm">We monitor your account — we don't file returns. Keep working with your current preparer.</p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-4 p-4 rounded-xl bg-slate-800/30">
+            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center">
+              <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-semibold mb-1">Not Tax Advice</h3>
+              <p class="text-slate-400 text-sm">Reports explain what the IRS says, not what you should do about it. Strategic decisions require consultation.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Conversion CTA -->
+    <section class="px-6 py-24">
+      <div class="max-w-3xl mx-auto text-center">
+        <h2 class="text-3xl md:text-5xl font-bold mb-6">Stop Guessing. <span class="gradient-text">Start Knowing.</span></h2>
+        <p class="text-xl text-slate-400 mb-10 max-w-xl mx-auto">Complete intake today and see your IRS account status within 5 business days.</p>
+
+        <!-- CTA: must route to /app/intake.html -->
+        <a
+          id="conversion-cta"
+          href="/app/intake.html"
+          class="inline-block px-10 py-5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-semibold text-xl rounded-lg transition-all duration-200 transform hover:scale-105 shadow-xl shadow-amber-500/30"
+        >Start Intake →</a>
+
+        <p class="mt-6 text-sm text-slate-500">No IRS representation created by intake. No obligation until you sign.</p>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="px-6 py-12 border-t border-slate-800">
+      <div class="max-w-4xl mx-auto text-center">
+        <div class="flex items-center justify-center gap-2 mb-4">
+          <svg class="w-6 h-6 text-amber-500" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+          </svg>
+          <span class="font-semibold text-lg">Tax Monitor Pro</span>
+        </div>
+        <p id="footer-text" class="text-slate-500 text-sm mb-4">Professional tax account monitoring services provided by licensed Enrolled Agent.</p>
+        <p class="text-slate-600 text-xs">© 2024 Tax Monitor Pro. All rights reserved.</p>
+      </div>
+    </footer>
+
+  </div>
+
+  <script>
+    const defaultConfig = {
+      hero_headline: 'Know What the IRS Knows Before They Call',
+      hero_subheadline: 'Professional tax account monitoring that catches issues early, so you\\'re never blindsided.',
+      trust_line: 'EA-led, proactive monitoring — no IRS representation created by intake.',
+      problem_headline: 'The IRS Doesn\\'t Send Warnings. They Send Notices.',
+      cta_button_text: 'Start Intake',
+      footer_text: 'Professional tax account monitoring services provided by licensed Enrolled Agent.',
+      background_color: '#020617',
+      surface_color: '#1e293b',
+      text_color: '#f1f5f9',
+      primary_action_color: '#f59e0b',
+      secondary_action_color: '#94a3b8',
+      font_family: 'DM Sans',
+      font_size: 16
+    };
+
+    async function onConfigChange(config) {
+      const trustLine = document.getElementById('trust-line');
+      const heroHeadline = document.getElementById('hero-headline');
+      const heroSubheadline = document.getElementById('hero-subheadline');
+      const problemHeadline = document.getElementById('problem-headline');
+      const heroCta = document.getElementById('hero-cta');
+      const conversionCta = document.getElementById('conversion-cta');
+      const footerText = document.getElementById('footer-text');
+
+      const customFont = config.font_family || defaultConfig.font_family;
+      const baseSize = config.font_size || defaultConfig.font_size;
+      const baseFontStack = 'system-ui, sans-serif';
+
+      if (trustLine) trustLine.textContent = config.trust_line || defaultConfig.trust_line;
+
+      if (heroHeadline) {
+        const headlineText = config.hero_headline || defaultConfig.hero_headline;
+        heroHeadline.innerHTML = headlineText.replace('Before They Call', '<span class="gradient-text">Before They Call</span>');
+        heroHeadline.style.fontFamily = `${customFont}, ${baseFontStack}`;
+        heroHeadline.style.fontSize = `${baseSize * 3.5}px`;
+      }
+
+      if (heroSubheadline) {
+        heroSubheadline.textContent = config.hero_subheadline || defaultConfig.hero_subheadline;
+        heroSubheadline.style.fontFamily = `${customFont}, ${baseFontStack}`;
+        heroSubheadline.style.fontSize = `${baseSize * 1.25}px`;
+      }
+
+      if (problemHeadline) {
+        const problemText = config.problem_headline || defaultConfig.problem_headline;
+        problemHeadline.innerHTML = problemText.replace('They Send Notices.', '<span class="text-slate-500">They Send Notices.</span>');
+        problemHeadline.style.fontFamily = `${customFont}, ${baseFontStack}`;
+      }
+
+      const ctaText = config.cta_button_text || defaultConfig.cta_button_text;
+      if (heroCta) heroCta.textContent = ctaText + ' →';
+      if (conversionCta) conversionCta.textContent = ctaText + ' →';
+
+      if (footerText) footerText.textContent = config.footer_text || defaultConfig.footer_text;
+
+      const bgColor = config.background_color || defaultConfig.background_color;
+      const textColor = config.text_color || defaultConfig.text_color;
+
+      document.body.style.backgroundColor = bgColor;
+      document.body.style.color = textColor;
+      document.body.style.fontFamily = `${customFont}, ${baseFontStack}`;
+    }
+
+    function mapToCapabilities(config) {
+      return {
+        recolorables: [
+          { get: () => config.background_color || defaultConfig.background_color, set: (value) => { config.background_color = value; window.elementSdk.setConfig({ background_color: value }); } },
+          { get: () => config.surface_color || defaultConfig.surface_color, set: (value) => { config.surface_color = value; window.elementSdk.setConfig({ surface_color: value }); } },
+          { get: () => config.text_color || defaultConfig.text_color, set: (value) => { config.text_color = value; window.elementSdk.setConfig({ text_color: value }); } },
+          { get: () => config.primary_action_color || defaultConfig.primary_action_color, set: (value) => { config.primary_action_color = value; window.elementSdk.setConfig({ primary_action_color: value }); } },
+          { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: (value) => { config.secondary_action_color = value; window.elementSdk.setConfig({ secondary_action_color: value }); } }
+        ],
+        borderables: [],
+        fontEditable: { get: () => config.font_family || defaultConfig.font_family, set: (value) => { config.font_family = value; window.elementSdk.setConfig({ font_family: value }); } },
+        fontSizeable: { get: () => config.font_size || defaultConfig.font_size, set: (value) => { config.font_size = value; window.elementSdk.setConfig({ font_size: value }); } }
+      };
+    }
+
+    function mapToEditPanelValues(config) {
+      return new Map([
+        ['hero_headline', config.hero_headline || defaultConfig.hero_headline],
+        ['hero_subheadline', config.hero_subheadline || defaultConfig.hero_subheadline],
+        ['trust_line', config.trust_line || defaultConfig.trust_line],
+        ['problem_headline', config.problem_headline || defaultConfig.problem_headline],
+        ['cta_button_text', config.cta_button_text || defaultConfig.cta_button_text],
+        ['footer_text', config.footer_text || defaultConfig.footer_text]
+      ]);
+    }
+
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange,
+        mapToCapabilities,
+        mapToEditPanelValues
+      });
+    }
+  </script>
+</body>
+</html>
