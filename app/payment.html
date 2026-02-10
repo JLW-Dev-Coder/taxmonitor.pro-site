@@ -263,7 +263,7 @@
 
   <script>
     (function () {
-      var y = document.getElementById('footer-year');
+      var y = document.getElementById("footer-year");
       if (y) y.textContent = String(new Date().getFullYear());
     })();
   </script>
@@ -283,20 +283,20 @@
         return "$" + num.toFixed(0);
       }
 
+      function setLoading(isLoading) {
+        var btn = document.getElementById("btn-pay");
+        var lab = document.getElementById("btn-pay-label");
+        var spn = document.getElementById("btn-pay-spinner");
+        if (btn) btn.disabled = !!isLoading;
+        if (lab) lab.textContent = isLoading ? "Redirecting…" : "Pay now →";
+        if (spn) spn.classList.toggle("hidden", !isLoading);
+      }
+
       function showErr(msg) {
         var el = document.getElementById("err");
         if (!el) return;
         el.textContent = String(msg || "Something went wrong.");
         el.classList.remove("hidden");
-      }
-
-      function setLoading(isLoading) {
-        var btn = document.getElementById("btn-pay");
-        var lab = document.getElementById("btn-pay-label");
-        var spn = document.getElementById("btn-pay-spinner");
-        if (btn) btn.disabled = !!isLoading || btn.disabled;
-        if (lab) lab.textContent = isLoading ? "Redirecting…" : "Pay now →";
-        if (spn) spn.classList.toggle("hidden", !isLoading);
       }
 
       var params = new URLSearchParams(window.location.search || "");
@@ -344,7 +344,6 @@
       }
 
       var btn = document.getElementById("btn-pay");
-
       var isValidItem = !!NAME_BY_ITEM[item] && Object.prototype.hasOwnProperty.call(PRICE_BY_ITEM, item);
       var isReady = !!code && !!item && isValidItem;
 
@@ -365,99 +364,28 @@
           return;
         }
 
-        btn.disabled = true;
         setLoading(true);
 
-        var cancelUrl = new URL(window.location.href);
-        cancelUrl.searchParams.set("code", code);
-        cancelUrl.searchParams.set("item", item);
-
-        var successUrl = new URL("/app/index.html", window.location.origin);
-        successUrl.searchParams.set("code", code);
-        successUrl.searchParams.set("item", item);
-        successUrl.searchParams.set("paid", "1");
-
         fetch("/api/stripe/checkout", {
-          body: JSON.stringify({
-            cancel_url: cancelUrl.toString(),
-            code: code,
-            item: item,
-            success_url: successUrl.toString()
-          }),
+          body: JSON.stringify({ code: code, item: item }),
           headers: { "Content-Type": "application/json" },
           method: "POST"
         })
-          .then(function (r) { return r.json().catch(function () { return null; }).then(function (j) { return { ok: r.ok, json: j }; }); })
+          .then(function (r) {
+            return r.json().catch(function () { return null; })
+              .then(function (j) { return { ok: r.ok, json: j }; });
+          })
           .then(function (res) {
             if (!res || !res.ok || !res.json) throw new Error("Checkout request failed.");
-            if (res.json.url) {
-              window.location.href = String(res.json.url);
-              return;
-            }
-            if (res.json.checkout_url) {
-              window.location.href = String(res.json.checkout_url);
-              return;
-            }
+            if (res.json.url) { window.location.href = String(res.json.url); return; }
+            if (res.json.checkout_url) { window.location.href = String(res.json.checkout_url); return; }
             throw new Error(res.json.error || "Missing checkout URL.");
           })
           .catch(function (e) {
-            btn.disabled = false;
             setLoading(false);
             showErr(e && e.message ? e.message : "Unable to start checkout.");
+            if (btn) btn.disabled = false;
           });
-      });
-    })();
-  </script>
-  <script>
-    (function () {
-      function safeText(s) {
-        return String(s || "").replace(/[<>]/g, "").trim();
-      }
-  
-      var params = new URLSearchParams(window.location.search || "");
-      var code = safeText(params.get("code"));
-      var item = safeText(params.get("item"));
-  
-      var payBtn = document.getElementById("btn-pay");
-      var payErr = document.getElementById("pay-error");
-      var paySpin = document.getElementById("pay-spinner");
-      var payLab = document.getElementById("pay-label");
-  
-      function setBusy(isBusy, label) {
-        if (payBtn) payBtn.disabled = !!isBusy;
-        if (paySpin) paySpin.classList.toggle("hidden", !isBusy);
-        if (payLab && label) payLab.textContent = label;
-      }
-  
-      async function startCheckout() {
-        if (payErr) payErr.textContent = "";
-        if (!code || !item) {
-          if (payErr) payErr.textContent = "Missing code or plan selection.";
-          return;
-        }
-  
-        setBusy(true, "Redirecting…");
-  
-        try {
-          var res = await fetch("/api/stripe/checkout", {
-            method: "POST",
-            headers: { "content-type": "application/json" },
-            body: JSON.stringify({ code: code, item: item })
-          });
-  
-          var data = await res.json().catch(function () { return {}; });
-          if (!res.ok || !data.url) throw new Error((data && data.error) ? JSON.stringify(data.error) : "Checkout failed");
-  
-          window.location.href = data.url;
-        } catch (e) {
-          if (payErr) payErr.textContent = "Payment could not be started. Try again.";
-          setBusy(false, "Pay now →");
-        }
-      }
-  
-      if (payBtn) payBtn.addEventListener("click", function (ev) {
-        ev.preventDefault();
-        startCheckout();
       });
     })();
   </script>
