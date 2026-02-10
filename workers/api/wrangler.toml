@@ -4,3 +4,7 @@ name = "taxmonitor-pro-api"
 
 [observability]
 enabled = true
+
+[[r2_buckets]]
+binding = "R2_BUCKET"
+bucket_name = "taxmonitor-pro"
