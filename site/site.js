@@ -3,10 +3,6 @@
     return String(s || "").replace(/[<>]/g, "").trim();
   }
 
-  var params = new URLSearchParams(window.location.search || "");
-  var code = safeText(params.get("code"));
-  var item = safeText(params.get("item"));
-
   var payBtn = document.getElementById("btn-pay");
   var payErr = document.getElementById("pay-error");
   var paySpin = document.getElementById("pay-spinner");
@@ -20,6 +16,11 @@
 
   async function startCheckout() {
     if (payErr) payErr.textContent = "";
+
+    var params = new URLSearchParams(window.location.search || "");
+    var code = safeText(params.get("code"));
+    var item = safeText(params.get("item"));
+
     if (!code || !item) {
       if (payErr) payErr.textContent = "Missing code or plan selection.";
       return;
