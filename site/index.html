@@ -37,8 +37,36 @@
 <body class="min-h-screen bg-slate-950 text-slate-100">
   <div id="app" class="min-h-screen flex flex-col">
 
-    <!-- Header (partial mount) -->
-    <div data-tm-partial="header"></div>
+    <!-- Header (inlined; partials disabled for now) -->
+    <header class="sticky top-0 z-50 border-b border-slate-800/60 bg-slate-950/70 backdrop-blur">
+      <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+        <a href="/site/index.html" class="flex items-center gap-3">
+          <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 text-slate-950 font-bold">
+            TM
+          </span>
+          <span class="font-semibold tracking-tight">Tax Monitor Pro</span>
+        </a>
+
+        <nav class="hidden items-center gap-8 md:flex">
+          <a href="/site/pricing.html" class="text-sm text-slate-300 hover:text-white transition">Pricing</a>
+          <a href="/site/index.html#how-it-works" class="text-sm text-slate-300 hover:text-white transition">How it works</a>
+          <a href="/site/index.html#report-sample" class="text-sm text-slate-300 hover:text-white transition">Report sample</a>
+          <a href="/site/index.html#transcript-sample" class="text-sm text-slate-300 hover:text-white transition">Transcript sample</a>
+        </nav>
+
+        <div class="flex items-center gap-3">
+          <a
+            href="/app/intake.html"
+            class="hidden md:inline-flex items-center gap-2 rounded-lg border border-slate-700/60 bg-slate-900/40 px-4 py-2 text-sm font-semibold text-slate-100 hover:bg-slate-900/70 transition"
+          >Start intake</a>
+
+          <a
+            href="/app/intake.html"
+            class="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 px-4 py-2 text-sm font-semibold text-slate-950 hover:from-amber-400 hover:to-amber-500 transition"
+          >Start intake →</a>
+        </div>
+      </div>
+    </header>
 
     <main class="flex-1">
 
@@ -662,7 +690,6 @@
       }
 
       Promise.all([
-        inject(document.querySelector('[data-tm-partial="header"]'), "/site/partials/header.html"),
         inject(document.querySelector('[data-tm-partial="footer"]'), "/site/partials/footer.html")
       ]);
     })();
