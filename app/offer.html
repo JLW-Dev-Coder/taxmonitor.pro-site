@@ -425,5 +425,37 @@
       }
     })();
   </script>
+  <script>
+  (function () {
+    function firstNonEmpty(arr) {
+      for (var i = 0; i < arr.length; i++) {
+        var v = String(arr[i] || "").trim();
+        if (v) return v;
+      }
+      return "";
+    }
+
+    function safeName(s) {
+      return String(s || "")
+        .replace(/[<>]/g, "")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    var el = document.getElementById("clientFirstName");
+    if (!el) return;
+
+    var params = new URLSearchParams(window.location.search || "");
+    var fromQuery = firstNonEmpty([
+      params.get("clientFirstName"),
+      params.get("first_name"),
+      params.get("firstName")
+    ]);
+
+    var name = safeName(fromQuery);
+    el.textContent = name || "there";
+  })();
+</script>
+
 </body>
 </html>
