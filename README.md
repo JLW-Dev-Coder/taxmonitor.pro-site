@@ -23,10 +23,11 @@ Alphabetical (minimal, expandable):
 
 app/
 │
+├─ agreement.html
 ├─ index.html
 ├─ intake.html
 ├─ offer.html
-├─ agreement.html
+├─ payment-success.html
 └─ payment.html
 
 assets/
@@ -38,11 +39,15 @@ legal/
 └─ terms.html
 
 public/
-└─ (optional static assets)
+└─ .gitkeep
 
 site/
+└─ partials /
+   ├─ footers.html
+   ├─ headers.html
 ├─ index.html
-└─ pricing.html
+├─ pricing.html
+└─ site.js
 
 styles/
 ├─ app.css
@@ -51,10 +56,13 @@ styles/
 workers/
 └─ api/
    ├─ src/
-   │  └─ index.js        ← Worker entry point (authoritative)
-   └─ wrangler.toml      ← Worker config (authoritative)
+   │  ├─ .keep
+   │  └─ index.js
+   └─ wrangler.toml
 
 README.md
+
+_redirects
 
 
 ---
@@ -101,5 +109,6 @@ Only use this if deploying intentionally from local.
 
 ```bash
 wrangler deploy
+
 
 
