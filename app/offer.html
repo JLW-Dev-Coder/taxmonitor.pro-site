@@ -475,6 +475,170 @@
     el.textContent = name || "there";
   })();
 </script>
+<script>
+  (function () {
+    function firstNonEmpty(arr) {
+      for (var i = 0; i < arr.length; i++) {
+        var v = String(arr[i] || "").trim();
+        if (v) return v;
+      }
+      return "";
+    }
+
+    function safeText(s) {
+      return String(s || "")
+        .replace(/[<>]/g, "")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    function money(n) {
+      var num = Number(n);
+      if (!isFinite(num)) return "";
+      return "$" + num.toFixed(0);
+    }
+
+    function setText(id, value) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      el.textContent = value;
+    }
+
+    function setHtml(id, value) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      el.innerHTML = value;
+    }
+
+    var params = new URLSearchParams(window.location.search || "");
+
+    // Greeting fallback
+    (function () {
+      var el = document.getElementById("clientFirstName");
+      if (!el) return;
+
+      var fromQuery = firstNonEmpty([
+        params.get("clientFirstName"),
+        params.get("first_name"),
+        params.get("firstName")
+      ]);
+
+      var name = safeText(fromQuery);
+      el.textContent = name || "there";
+    })();
+
+    // Item data (edit here once; page updates everywhere)
+    // NOTE: Keep labels exactly as you want them shown to users.
+    var ITEMS = [
+      {
+        blurb: "Stabilization monitoring with change detection during the term.",
+        id: "bronze",
+        meta: "(6-Week Term)",
+        name: "Tax Monitoring — Bronze",
+        price: 275,
+        sku: "TM-BRONZE"
+      },
+      {
+        blurb: "Full-quarter oversight monitoring with change detection during the term.",
+        id: "gold",
+        meta: "(12-Week Term)",
+        name: "Tax Monitoring — Gold",
+        price: 425,
+        sku: "TM-GOLD"
+      },
+      {
+        blurb: "Linked monitoring for jointly filed years (both spouses enrolled).",
+        id: "mfj",
+        meta: "(8-Week Term)",
+        name: "Tax Monitoring — Married Filing Jointly",
+        price: 325,
+        sku: "TM-MFJ"
+      },
+      {
+        blurb: "Snapshot only: one transcript pull + plain-English summary.",
+        id: "one_time",
+        meta: "(Snapshot)",
+        name: "Tax Monitoring — One-Time Service",
+        price: 299,
+        sku: "TM-ONE"
+      },
+      {
+        blurb: "Ongoing monitoring with a longer runway than Bronze.",
+        id: "silver",
+        meta: "(8-Week Term)",
+        name: "Tax Monitoring — Silver",
+        price: 325,
+        sku: "TM-SILVER"
+      }
+    ];
+
+    // Optional default selection from URL (?item=silver)
+    var defaultItemId = safeText(params.get("item"));
+    var selectedId = defaultItemId || "";
+
+    function renderItems() {
+      var shell = document.getElementById("tm-items");
+      if (!shell) return;
+
+      var html = "";
+      for (var i = 0; i < ITEMS.length; i++) {
+        var it = ITEMS[i];
+        var checked = selectedId && it.id === selectedId ? "checked" : "";
+        html += ''
+          + '<label class="block rounded-xl border border-slate-800/60 bg-slate-950/20 p-4 hover:bg-slate-950/30 transition">'
+          + '  <div class="flex items-start justify-between gap-4">'
+          + '    <div class="min-w-0">'
+          + '      <div class="text-sm font-semibold text-slate-100">' + it.name + '</div>'
+          + '      <div class="mt-1 text-xs text-slate-500">' + it.meta + '</div>'
+          + '      <div class="mt-2 text-sm text-slate-300">' + money(it.price) + '</div>'
+          + '    </div>'
+          + '    <input class="mt-1 h-4 w-4 accent-amber-500 tm-item" type="radio" name="tm_item" value="' + it.id + '" ' + checked + '>'
+          + '  </div>'
+          + '</label>';
+      }
+
+      shell.innerHTML = html;
+
+      var radios = shell.querySelectorAll(".tm-item");
+      for (var r = 0; r < radios.length; r++) {
+        radios[r].addEventListener("change", function (e) {
+          selectedId = String(e.target.value || "");
+          applySelection();
+        });
+      }
+    }
+
+    function applySelection() {
+      var picked = null;
+      for (var i = 0; i < ITEMS.length; i++) {
+        if (ITEMS[i].id === selectedId) picked = ITEMS[i];
+      }
+
+      if (!picked) {
+        setText("selectedBlurb", "");
+        setText("selectedMeta", "");
+        setText("selectedName", "Select an item to continue");
+        setText("selectedPrice", "");
+        return;
+      }
+
+      setText("selectedBlurb", picked.blurb);
+      setText("selectedMeta", picked.meta + " • " + picked.sku);
+      setText("selectedName", picked.name);
+      setText("selectedPrice", money(picked.price));
+
+      // Keep URL in sync (optional, but matches “proposal-like” behavior)
+      try {
+        var u = new URL(window.location.href);
+        u.searchParams.set("item", picked.id);
+        window.history.replaceState({}, "", u.toString());
+      } catch (e) {}
+    }
+
+    renderItems();
+    applySelection();
+  })();
+</script>
 
 </body>
 </html>
