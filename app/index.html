@@ -18,6 +18,9 @@
   <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
   <link rel="apple-touch-icon" href="/assets/favicon.ico">
 
+  <!-- Flatpickr (themed calendar popup) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
   <style>
     body { box-sizing: border-box; }
     * { font-family: 'DM Sans', sans-serif; }
@@ -26,6 +29,46 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
+    }
+  </style>
+
+  <style>
+    /* Flatpickr theme (dark + amber) */
+    .flatpickr-calendar {
+      background: rgba(2, 6, 23, 0.98);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      border-radius: 16px;
+      box-shadow: 0 18px 60px rgba(0, 0, 0, 0.55);
+      color: rgba(241, 245, 249, 0.92);
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .flatpickr-current-month,
+    .flatpickr-weekday {
+      color: rgba(226, 232, 240, 0.9);
+    }
+
+    .flatpickr-day {
+      border-radius: 12px;
+      color: rgba(241, 245, 249, 0.88);
+    }
+
+    .flatpickr-day:hover {
+      background: rgba(245, 158, 11, 0.12);
+      border-color: rgba(245, 158, 11, 0.25);
+    }
+
+    .flatpickr-day.selected,
+    .flatpickr-day.startRange,
+    .flatpickr-day.endRange {
+      background: linear-gradient(135deg, #F59E0B, #D97706);
+      border-color: rgba(245, 158, 11, 0.35);
+      color: rgba(2, 6, 23, 0.98);
+    }
+
+    .flatpickr-months .flatpickr-prev-month,
+    .flatpickr-months .flatpickr-next-month {
+      color: rgba(226, 232, 240, 0.8);
     }
   </style>
 
@@ -213,7 +256,8 @@
                     id="irs_notice_date"
                     name="IRS Notice Date"
                     class="w-full rounded-xl border border-slate-700/70 bg-slate-950/40 px-4 py-3 text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
-                    type="date"
+                    type="text"
+                    placeholder="YYYY-MM-DD"
                   >
                   <p class="mt-2 text-xs text-slate-500">If you don’t know the exact date, leave blank.</p>
                 </div>
@@ -374,6 +418,20 @@
 
       syncAck();
       syncConcerns();
+    })();
+  </script>
+
+  <!-- Flatpickr -->
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script>
+    (function () {
+      var el = document.getElementById('irs_notice_date');
+      if (!el || !window.flatpickr) return;
+
+      window.flatpickr(el, {
+        allowInput: true,
+        dateFormat: "Y-m-d"
+      });
     })();
   </script>
 </body>
