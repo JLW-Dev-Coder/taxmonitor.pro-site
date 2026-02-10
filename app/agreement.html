@@ -88,7 +88,7 @@
       <section class="px-6 py-12 md:py-16">
         <div class="mx-auto max-w-4xl">
 
-          <!-- Steps / Progress (matches offer.html) -->
+          <!-- Steps / Progress -->
           <div class="rounded-2xl border border-slate-800/60 bg-slate-900/30 p-6 md:p-8 mb-8">
             <div class="mb-5">
               <div class="flex items-center justify-between gap-4 mb-2">
@@ -134,125 +134,283 @@
               </h1>
 
               <p class="text-slate-400 text-lg">
-                Review the contract terms and acknowledge scope before payment and activation.
+                Review the contract terms before payment and activation.
               </p>
 
               <div class="mt-5 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
                 <div class="rounded-xl border border-slate-800/60 bg-slate-950/25 px-4 py-3 text-sm text-slate-300">
-                  <span class="text-slate-500">Next step after signing</span>
-                  <span class="font-semibold text-slate-100">Payment</span>
+                  <span class="text-slate-500">Selected option</span>
+                  <span class="font-semibold text-slate-100" id="selectedNameTop">Not selected</span>
                 </div>
 
                 <div class="rounded-xl border border-slate-800/60 bg-slate-950/25 px-4 py-3 text-sm text-slate-300">
-                  <span class="text-slate-500">Services begin</span>
-                  <span class="font-semibold text-slate-100">After payment</span>
+                  <span class="text-slate-500">Price</span>
+                  <span class="font-semibold text-slate-100" id="selectedPriceTop">—</span>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Agreement content -->
+          <!-- Full Agreement (your provided HTML, dropped into themed container) -->
           <div class="rounded-2xl border border-slate-800/60 bg-slate-900/30 p-6 md:p-8 mb-8">
             <div class="prose prose-invert max-w-none">
-              <p class="text-slate-300 mb-5">
-                This Service Agreement (“Agreement”) governs the Tax Monitor Service provided by
-                <strong class="text-slate-100">{{myOrganizationName}}</strong> (“Company”).
-                By signing this agreement, the Client agrees to the terms outlined below.
+
+              <!-- Header -->
+              <p style="text-align:center; margin-bottom:16px;">
+                {{myOrganizationBusinessLogo}}
               </p>
 
-              <p class="text-slate-300 mb-6">
-                This service is limited to monitoring and reporting activities only and does not include tax resolution, negotiation,
-                filing, representation, or enforcement intervention unless expressly agreed to in a separate written contract.
+              <h1 style="text-align:center; margin:0 0 10px; font-size:2em; font-weight:700; letter-spacing:0.08em; text-transform:uppercase;">
+                Service Agreement and Contract
+              </h1>
+
+              <p style="text-align:center; margin-bottom:28px;">
+                Tax Monitor Service<br>
+                Provided by <strong>{{myOrganizationName}}</strong>
               </p>
 
               <hr class="border-slate-800/60 my-6">
 
-              <h2 class="text-xl md:text-2xl font-bold text-slate-100 mb-3">Client Responsibilities</h2>
+              <!-- Introduction -->
+              <p>
+                This Service Agreement (“Agreement”) governs the Tax Monitor Service provided by
+                {{myOrganizationName}} (“Company”). By submitting payment or otherwise enrolling
+                in this service, the Client agrees to the terms outlined below.
+              </p>
 
-              <ol class="list-decimal pl-6 space-y-3 text-slate-300">
-                <li>The Client agrees to provide complete, accurate, and timely information requested for monitoring purposes within forty-eight (48) hours unless otherwise agreed.</li>
-                <li>The Client acknowledges responsibility for the accuracy of all information provided, including income, assets, liabilities, filing history, and IRS correspondence.</li>
-                <li>Failure to respond after three (3) documented contact attempts may result in suspension or termination of monitoring services without refund.</li>
-                <li>The Client agrees not to alter or submit any documents prepared by the Company without written authorization.</li>
+              <p>
+                This service is limited to monitoring and reporting activities only and does not
+                include tax resolution, negotiation, filing, representation, or enforcement
+                intervention unless expressly agreed to in a separate written contract.
+              </p>
+
+              <hr class="border-slate-800/60 my-6">
+
+              <!-- Client Responsibilities -->
+              <h3>
+                Client Responsibilities
+              </h3>
+
+              <ol>
+                <li>
+                  The Client agrees to provide complete, accurate, and timely information
+                  requested for monitoring purposes within forty-eight (48) hours unless
+                  otherwise agreed.
+                </li>
+                <li>
+                  The Client acknowledges responsibility for the accuracy of all information
+                  provided, including income, assets, liabilities, filing history, and IRS
+                  correspondence.
+                </li>
+                <li>
+                  Failure to respond after three (3) documented contact attempts may result in
+                  suspension or termination of monitoring services without refund.
+                </li>
+                <li>
+                  The Client agrees not to alter or submit any documents prepared by the Company
+                  without written authorization.
+                </li>
                 <li>
                   Cancellation is available within forty-eight (48) hours of payment by contacting
                   <a class="text-amber-300 hover:text-amber-200 underline" href="mailto:{{myOrganizationEmail}}">{{myOrganizationEmail}}</a>.
                   Cancellation stops future billing.
-                  <strong class="text-slate-100">All service fees are non-refundable once services begin, including any work performed, records accessed, or insights delivered.</strong>
+                  <strong>
+                    All service fees are non-refundable once services begin, including any work
+                    performed, records accessed, or insights delivered.
+                  </strong>
                 </li>
               </ol>
 
               <hr class="border-slate-800/60 my-6">
 
-              <h2 class="text-xl md:text-2xl font-bold text-slate-100 mb-3">Married Filing Jointly (MFJ) Years</h2>
+              <!-- Married Filing Jointly (MFJ) Enrollment, Authorization & Project Access -->
+              <h3>
+                Married Filing Jointly (MFJ) Years
+              </h3>
 
-              <p class="text-slate-300 mb-5">
-                For tax years filed as <strong class="text-slate-100">Married Filing Jointly (MFJ)</strong>, the Client acknowledges that the IRS requires
-                <strong class="text-slate-100">separate enrollment and authorization from each spouse</strong> to access jointly filed tax records.
+              <p>
+                For tax years filed as <strong>Married Filing Jointly (MFJ)</strong>, the Client
+                acknowledges that the Internal Revenue Service requires
+                <strong>separate enrollment and authorization from each spouse</strong>
+                in order to access jointly filed tax records.
               </p>
 
-              <p class="text-slate-300 mb-6">
-                Jointly filed tax years will not be reviewed, linked, monitored, displayed, or reported unless both spouses complete enrollment and authorization.
-                Such limitation does not entitle the Client to refunds, credits, service extensions, or modified service terms.
+              <p>
+                To enable monitoring of MFJ years, <strong>each spouse must independently enroll
+                in the Tax Monitor Service</strong>, select the MFJ option if applicable, and
+                execute their own required authorization forms. Enrollment or authorization by
+                one spouse does not grant access to jointly filed tax records for the other spouse.
+              </p>
+
+              <p>
+                Until both spouses complete enrollment and authorization, access to MFJ-related
+                tax records, monitoring results, compliance reports, and project materials
+                will be limited to the enrolled and authorized spouse only.
+              </p>
+
+              <p>
+                Jointly filed tax years will not be reviewed, linked, monitored, displayed,
+                or reported within the client portal unless both spouses complete enrollment
+                and authorization.
+              </p>
+
+              <p>
+                The Client acknowledges that a spouse’s failure to enroll or authorize services
+                may limit portal visibility, shared project access, and availability of MFJ
+                monitoring data, and does not constitute a breach by the Company.
+              </p>
+
+              <p>
+                Such limitation does not entitle the Client to refunds, credits, service
+                extensions, or modified service terms.
               </p>
 
               <hr class="border-slate-800/60 my-6">
 
-              <h2 class="text-xl md:text-2xl font-bold text-slate-100 mb-3">Company Responsibilities</h2>
+              <!-- Company Responsibilities -->
+              <h3>
+                Company Responsibilities
+              </h3>
 
-              <ol class="list-decimal pl-6 space-y-3 text-slate-300" start="6">
-                <li>{{myOrganizationName}} will monitor authorized tax account data and provide informational updates based on available records during the applicable monitoring period.</li>
-                <li>Any original documents provided by the Client will be returned upon conclusion of the engagement. Copies retained are for documentation purposes only.</li>
-                <li>The Company maintains reasonable administrative, technical, and physical safeguards to protect nonpublic personal information.</li>
-                <li>Electronic data transmission and storage may involve secure third-party systems necessary to deliver services efficiently.</li>
+              <ol start="6">
+                <li>
+                  {{myOrganizationName}} will monitor authorized tax account data and provide
+                  informational updates based on available records during the applicable
+                  monitoring period.
+                </li>
+                <li>
+                  Any original documents provided by the Client will be returned upon conclusion
+                  of the engagement. Copies retained are for documentation purposes only.
+                </li>
+                <li>
+                  The Company maintains reasonable administrative, technical, and physical
+                  safeguards to protect nonpublic personal information.
+                </li>
+                <li>
+                  Electronic data transmission and storage may involve secure third-party systems
+                  necessary to deliver services efficiently.
+                </li>
               </ol>
 
               <hr class="border-slate-800/60 my-6">
 
-              <h2 class="text-xl md:text-2xl font-bold text-slate-100 mb-3">Scope Limitation</h2>
+              <!-- Scope Limitation -->
+              <h3>
+                Scope Limitation
+              </h3>
 
-              <p class="text-slate-300 mb-6">
-                This Agreement does not include IRS representation, negotiations, payment arrangements, offers in compromise, appeals, or enforcement resolution
-                unless expressly authorized in writing through a separate executed Representation Agreement and Power of Attorney.
+              <p>
+                This Agreement does not include IRS representation, negotiations, payment
+                arrangements, offers in compromise, appeals, or enforcement resolution
+                unless expressly authorized in writing through a separate executed
+                Representation Agreement and Power of Attorney.
               </p>
 
               <hr class="border-slate-800/60 my-6">
 
-              <h2 class="text-xl md:text-2xl font-bold text-slate-100 mb-3">Right to Representation &amp; Power of Attorney</h2>
+              <!-- Right to Representation & Power of Attorney -->
+              <h3>
+                Right to Representation & Power of Attorney Authorization
+              </h3>
 
-              <p class="text-slate-300 mb-5">
-                The Client is advised that the right to be represented before the IRS is a statutory right under Section 7521 of Title 26 of the United States Code.
-                The Client may appoint only individuals authorized to practice before the IRS, including Enrolled Agents, Certified Public Accountants, and Attorneys.
+              <p>
+                The Client is advised that the right to be represented before the Internal Revenue
+                Service is a statutory right under Section 7521 of Title 26 of the United States Code
+                (Internal Revenue Code). The Client may appoint only individuals authorized to
+                practice before the Internal Revenue Service, including Enrolled Agents, Certified
+                Public Accountants, and Attorneys, as legal representatives.
               </p>
 
-              <p class="text-slate-300 mb-6">
-                Practice before the IRS is governed by Circular 230 (31 CFR Part 10). The Client has the right to submit a complaint to the IRS Office of Professional Responsibility
-                if the Client believes those regulations have been violated.
+              <p>
+                Practice before the Internal Revenue Service is governed by federal regulations
+                contained in Circular 230 (31 CFR Part 10). The Client has the right to submit a
+                complaint to the Internal Revenue Service Office of Professional Responsibility if
+                the Client believes those regulations have been violated.
+              </p>
+
+              <p>
+                If the Client engages the Company for services that require IRS representation,
+                the Client will be provided access to a limited Power of Attorney (IRS Form 2848)
+                and a separate Representation Agreement within the Client portal.
+              </p>
+
+              <p>
+                The Client acknowledges and agrees that execution of Form 2848 may occur prior to
+                final completion of representative details. By signing the Form 2848, the Client
+                grants conditional authorization for the Company’s designated Enrolled Agent to
+                complete the representative section of the form after review.
+              </p>
+
+              <p>
+                The Client understands that a Form 2848 signed in this manner is not valid, active,
+                or submitted to the Internal Revenue Service until all required sections are fully
+                completed and reviewed by the Company. The Company will not submit any Power of
+                Attorney to the Internal Revenue Service until the form is complete and compliant.
+              </p>
+
+              <p>
+                Once the Internal Revenue Service processes the completed Power of Attorney, the
+                designated representative will be recognized as the Client’s authorized
+                representative for the matters specified. Thereafter, IRS personnel are required
+                to communicate through the authorized representative, and any direct contact
+                attempts should be reported immediately.
               </p>
 
               <hr class="border-slate-800/60 my-6">
 
-              <h2 class="text-xl md:text-2xl font-bold text-slate-100 mb-3">Governing Law</h2>
+              <!-- Governing Law -->
+              <h3>
+                Governing Law
+              </h3>
 
-              <p class="text-slate-300 mb-6">
-                This Agreement shall be governed by and construed in accordance with the laws of {{myOrganizationStateProvince}}.
+              <p>
+                This Agreement shall be governed by and construed in accordance with the laws of
+                {{myOrganizationStateProvince}}.
               </p>
 
-              <div class="rounded-2xl border border-slate-800/60 bg-slate-950/25 p-6">
-                <h3 class="text-lg font-bold text-slate-100 mb-2">Acceptance</h3>
-                <p class="text-slate-300 mb-4">
-                  This agreement is provided for review purposes only and is not binding until executed by both parties.
-                </p>
+              <hr class="border-slate-800/60 my-6">
 
+              <!-- Acceptance -->
+              <h3>
+                Acceptance
+              </h3>
+
+              <p>
+                This Agreement is provided for review purposes only and is not binding until
+                executed by both parties.
+              </p>
+
+              <p>
+                <strong>Accepted by Client:</strong><br>
+                Signature: ___________________________<br>
+                Printed Name: ___________________________<br>
+                Date Signed: ___________________________
+              </p>
+
+              <p>
+                <strong>Accepted on behalf of the Company:</strong><br>
+                {{myOrganizationName}}<br>
+                {{myOrganizationAddress}}<br>
+                {{myOrganizationCity}}, {{myOrganizationStateProvince}} {{myOrganizationZip}}
+              </p>
+
+              <hr class="border-slate-800/60 my-6">
+
+              <!-- Footer -->
+              <p style="font-size:0.8em; text-align:center; margin:0;">
+                © {{myOrganizationName}}. All rights reserved.
+              </p>
+
+              <!-- Sign acknowledgement (gates CTA) -->
+              <div class="mt-8 rounded-2xl border border-slate-800/60 bg-slate-950/25 p-6">
                 <label class="flex items-start gap-3 text-sm text-slate-300">
                   <input id="agree_ack" type="checkbox" class="mt-1 h-4 w-4 accent-amber-500">
                   <span>
-                    I have reviewed the Service Agreement and understand services begin only after payment is received.
+                    I have reviewed this Service Agreement and Contract and I agree to proceed to payment.
                   </span>
                 </label>
-
-                <input id="agree_ack_value" name="Agreement Acknowledged" type="hidden" value="No">
               </div>
+
             </div>
           </div>
 
@@ -260,6 +418,7 @@
           <div class="rounded-2xl border border-slate-800/60 bg-slate-900/30 p-6 md:p-8">
             <div class="grid gap-3 md:grid-cols-2">
               <a
+                id="btn-back-offer"
                 href="/app/offer.html"
                 class="inline-flex w-full items-center justify-center rounded-xl border border-slate-700/70 bg-slate-950/20 px-4 py-3 text-sm font-semibold text-slate-100 hover:bg-slate-950/35 transition"
               >← Back to offer</a>
@@ -325,37 +484,70 @@
 
   <script>
     (function () {
-      var params = new URLSearchParams(window.location.search || '');
-      var code = params.get('code') || '';
-      var item = params.get('item') || '';
+      function safeText(s) {
+        return String(s || "")
+          .replace(/[<>]/g, "")
+          .replace(/\s+/g, " ")
+          .trim();
+      }
 
-      var signCode = document.getElementById('sign_code');
-      var signItem = document.getElementById('sign_item');
+      function money(n) {
+        var num = Number(n);
+        if (!isFinite(num)) return "—";
+        return "$" + num.toFixed(0);
+      }
+
+      var params = new URLSearchParams(window.location.search || "");
+      var code = safeText(params.get("code"));
+      var item = safeText(params.get("item"));
+
+      var signCode = document.getElementById("sign_code");
+      var signItem = document.getElementById("sign_item");
+      var back = document.getElementById("btn-back-offer");
 
       if (signCode) signCode.value = code;
       if (signItem) signItem.value = item;
 
-      // Keep links consistent
-      var back = document.querySelector('a[href="/app/offer.html"]');
       if (back && (code || item)) {
-        var u = new URL('/app/offer.html', window.location.origin);
-        if (code) u.searchParams.set('code', code);
-        if (item) u.searchParams.set('item', item);
-        back.setAttribute('href', u.pathname + '?' + u.searchParams.toString());
+        var u = new URL("/app/offer.html", window.location.origin);
+        if (code) u.searchParams.set("code", code);
+        if (item) u.searchParams.set("item", item);
+        back.setAttribute("href", u.pathname + "?" + u.searchParams.toString());
       }
+
+      // Mirror selection into the top chips (works even if Worker doesn’t render placeholders)
+      var selectedNameTop = document.getElementById("selectedNameTop");
+      var selectedPriceTop = document.getElementById("selectedPriceTop");
+
+      var PRICE_BY_ITEM = {
+        bronze: 275,
+        gold: 425,
+        mfj: 325,
+        one_time: 299,
+        silver: 325
+      };
+
+      var NAME_BY_ITEM = {
+        bronze: "Tax Monitoring — Bronze",
+        gold: "Tax Monitoring — Gold",
+        mfj: "Tax Monitoring — Married Filing Jointly",
+        one_time: "Tax Monitoring — One-Time Service",
+        silver: "Tax Monitoring — Silver"
+      };
+
+      if (selectedNameTop) selectedNameTop.textContent = NAME_BY_ITEM[item] || "Not selected";
+      if (selectedPriceTop) selectedPriceTop.textContent = item ? money(PRICE_BY_ITEM[item]) : "—";
     })();
   </script>
 
   <script>
     (function () {
       var ack = document.getElementById('agree_ack');
-      var ackValue = document.getElementById('agree_ack_value');
       var signAck = document.getElementById('sign_ack');
       var btn = document.getElementById('btn-continue');
 
       function sync() {
         var yes = !!(ack && ack.checked);
-        if (ackValue) ackValue.value = yes ? 'Yes' : 'No';
         if (signAck) signAck.value = yes ? 'Yes' : 'No';
         if (btn) btn.disabled = !yes;
       }
