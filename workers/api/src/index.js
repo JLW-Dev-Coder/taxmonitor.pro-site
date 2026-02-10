@@ -23,3 +23,11 @@ function json(obj, status = 200) {
     headers: { "content-type": "application/json; charset=utf-8" }
   });
 }
+
+if (env.R2_BUCKET) {
+  const key = `cal/${normalized.type}/${new Date().toISOString()}.json`;
+  await env.R2_BUCKET.put(key, rawBody, {
+    httpMetadata: { contentType: "application/json" },
+  });
+}
+
