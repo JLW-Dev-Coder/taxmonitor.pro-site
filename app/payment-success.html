@@ -1,0 +1,186 @@
+<!-- /app/payment-success.html -->
+<!doctype html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Tax Monitor Pro — Payment Success</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="/assets/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link rel="apple-touch-icon" href="/assets/favicon.ico">
+
+  <style>
+    * { font-family: "DM Sans", sans-serif; }
+    .gradient-text {
+      background: linear-gradient(135deg, #F59E0B, #D97706);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  </style>
+</head>
+
+<body class="h-full bg-slate-950 text-slate-100">
+  <div class="min-h-screen flex flex-col">
+
+    <header class="sticky top-0 z-50 border-b border-slate-800/60 bg-slate-950/70 backdrop-blur">
+      <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+        <a href="/site/index.html" class="flex items-center gap-3">
+          <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 text-slate-950 font-bold">TM</span>
+          <span class="font-semibold tracking-tight">Tax Monitor Pro</span>
+        </a>
+
+        <nav class="hidden items-center gap-8 md:flex">
+          <a href="/site/index.html" class="text-sm text-slate-300 hover:text-white transition">Home</a>
+          <a href="/site/pricing.html" class="text-sm text-slate-300 hover:text-white transition">Pricing</a>
+        </nav>
+
+        <div class="flex items-center gap-3">
+          <a
+            id="btn-status"
+            href="/app/index.html"
+            class="hidden md:inline-flex items-center gap-2 rounded-lg border border-slate-700/60 bg-slate-900/40 px-4 py-2 text-sm font-semibold text-slate-100 hover:bg-slate-900/70 transition"
+          >Status</a>
+
+          <a
+            href="/app/intake.html"
+            class="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 px-4 py-2 text-sm font-semibold text-slate-950 hover:from-amber-400 hover:to-amber-500 transition"
+          >Start intake →</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="flex-1">
+      <section class="px-6 py-12 md:py-16">
+        <div class="mx-auto max-w-3xl">
+
+          <div class="rounded-2xl border border-slate-800/60 bg-slate-900/30 p-6 md:p-8">
+            <div class="text-center">
+              <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl border border-amber-500/30 bg-amber-500/10">
+                <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true" class="text-amber-400">
+                  <path fill="currentColor" d="M9.0 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"></path>
+                </svg>
+              </div>
+
+              <h1 class="text-3xl md:text-5xl font-bold tracking-tight">
+                Payment <span class="gradient-text">successful</span>
+              </h1>
+
+              <p class="mt-3 text-slate-400 text-lg">
+                Your checkout is complete. Next, confirm activation on your status page.
+              </p>
+
+              <div class="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
+                <a
+                  id="btn-go-status"
+                  href="/app/index.html"
+                  class="inline-flex w-full sm:w-auto items-center justify-center rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 px-5 py-3 text-sm font-semibold text-slate-950 hover:from-amber-400 hover:to-amber-500 transition"
+                >Go to status →</a>
+
+                <a
+                  id="btn-back-payment"
+                  href="/app/payment.html"
+                  class="inline-flex w-full sm:w-auto items-center justify-center rounded-xl border border-slate-700/70 bg-slate-950/20 px-5 py-3 text-sm font-semibold text-slate-100 hover:bg-slate-950/35 transition"
+                >Back to payment</a>
+              </div>
+
+              <div class="mt-6 inline-flex items-center justify-center gap-2 rounded-full border border-slate-700/60 bg-slate-950/25 px-4 py-2">
+                <span class="text-xs text-slate-400">Proposal code</span>
+                <span class="text-xs text-slate-200 font-semibold" id="chipCode">—</span>
+              </div>
+
+              <div class="mt-3 text-xs text-slate-500" id="chipItem">—</div>
+
+              <div class="mt-6 rounded-xl border border-slate-800/60 bg-slate-950/25 p-4 text-xs text-slate-400 text-left">
+                <div class="font-semibold text-slate-300">Reminder</div>
+                <div class="mt-1">Monitoring is a reporting service and does not create IRS representation.</div>
+              </div>
+
+              <div class="mt-6 text-center text-xs text-slate-500">
+                Need help? Email
+                <a class="text-amber-300 hover:text-amber-200 underline" href="mailto:{{myOrganizationEmail}}">{{myOrganizationEmail}}</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-8 text-center text-sm text-slate-500">
+            Monitoring does not create IRS representation. Representation, filing, and resolution are separate engagements.
+          </div>
+
+        </div>
+      </section>
+    </main>
+
+    <footer class="border-t border-slate-800/60 bg-slate-950/70">
+      <div class="mx-auto max-w-6xl px-6 py-10">
+        <div class="flex flex-col gap-3 text-xs text-slate-500 md:flex-row md:items-center md:justify-between">
+          <div>© <span id="footer-year"></span> Tax Monitor Pro. All rights reserved.</div>
+          <div class="flex gap-4">
+            <a class="hover:text-slate-300 transition" href="/legal/privacy.html">Privacy</a>
+            <a class="hover:text-slate-300 transition" href="/legal/terms.html">Terms</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <script>
+    (function () {
+      var y = document.getElementById("footer-year");
+      if (y) y.textContent = String(new Date().getFullYear());
+    })();
+  </script>
+
+  <script>
+    (function () {
+      function safeText(s) {
+        return String(s || "")
+          .replace(/[<>]/g, "")
+          .replace(/\s+/g, " ")
+          .trim();
+      }
+
+      var params = new URLSearchParams(window.location.search || "");
+      var code = safeText(params.get("code"));
+      var item = safeText(params.get("item"));
+
+      var chipCode = document.getElementById("chipCode");
+      var chipItem = document.getElementById("chipItem");
+
+      if (chipCode) chipCode.textContent = code || "—";
+      if (chipItem) chipItem.textContent = item ? ("Plan: " + item) : "—";
+
+      var btnGo = document.getElementById("btn-go-status");
+      var btnStatus = document.getElementById("btn-status");
+      if ((btnGo || btnStatus) && (code || item)) {
+        var u = new URL("/app/index.html", window.location.origin);
+        if (code) u.searchParams.set("code", code);
+        if (item) u.searchParams.set("item", item);
+        u.searchParams.set("paid", "1");
+        var href = u.pathname + "?" + u.searchParams.toString();
+        if (btnGo) btnGo.setAttribute("href", href);
+        if (btnStatus) btnStatus.setAttribute("href", href);
+      }
+
+      var btnBack = document.getElementById("btn-back-payment");
+      if (btnBack && (code || item)) {
+        var b = new URL("/app/payment.html", window.location.origin);
+        if (code) b.searchParams.set("code", code);
+        if (item) b.searchParams.set("item", item);
+        btnBack.setAttribute("href", b.pathname + "?" + b.searchParams.toString());
+      }
+    })();
+  </script>
+</body>
+</html>
