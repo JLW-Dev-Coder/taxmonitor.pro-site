@@ -34,176 +34,253 @@
 </head>
 
 <body class="h-full bg-slate-950 text-slate-100">
-  <div id="app" class="h-full w-full overflow-auto">
+  <div id="app" class="min-h-screen flex flex-col">
 
-    <div data-tm-partial="header"></div>
+    <!-- Header (inlined; partials disabled for now) -->
+    <header class="sticky top-0 z-50 border-b border-slate-800/60 bg-slate-950/70 backdrop-blur">
+      <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+        <a href="/site/index.html" class="flex items-center gap-3">
+          <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 text-slate-950 font-bold">
+            TM
+          </span>
+          <span class="font-semibold tracking-tight">Tax Monitor Pro</span>
+        </a>
 
-    <section class="px-6 py-16 md:py-24">
-      <div class="max-w-5xl mx-auto">
-        <div class="text-center mb-12">
-          <h1 class="text-4xl md:text-6xl font-bold tracking-tight mb-4">
-            Pricing for <span class="gradient-text">Tax Monitoring</span>
-          </h1>
-          <p class="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto">
-            Choose a term based on how much stability and oversight you need right now.
-          </p>
+        <nav class="hidden items-center gap-8 md:flex">
+          <a href="/site/pricing.html" class="text-sm text-slate-300 hover:text-white transition">Pricing</a>
+          <a href="/site/index.html#how-it-works" class="text-sm text-slate-300 hover:text-white transition">How it works</a>
+          <a href="/site/index.html#report-sample" class="text-sm text-slate-300 hover:text-white transition">Report sample</a>
+          <a href="/site/index.html#transcript-sample" class="text-sm text-slate-300 hover:text-white transition">Transcript sample</a>
+        </nav>
+
+        <div class="flex items-center gap-3">
+          <a
+            href="/app/intake.html"
+            class="hidden md:inline-flex items-center gap-2 rounded-lg border border-slate-700/60 bg-slate-900/40 px-4 py-2 text-sm font-semibold text-slate-100 hover:bg-slate-900/70 transition"
+          >Start intake</a>
+
+          <a
+            href="/app/intake.html"
+            class="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 px-4 py-2 text-sm font-semibold text-slate-950 hover:from-amber-400 hover:to-amber-500 transition"
+          >Start intake →</a>
         </div>
+      </div>
+    </header>
 
-        <div class="grid lg:grid-cols-3 gap-6">
-          <!-- Bronze -->
-          <div class="rounded-2xl bg-slate-800/30 border border-slate-700/50 p-6">
-            <div class="flex items-center justify-between gap-4 mb-4">
-              <div class="text-lg font-semibold">Tax Monitoring — Bronze</div>
-              <div class="text-sm text-slate-300">(6-Week Term)</div>
-            </div>
-            <div class="text-4xl font-bold mb-2">$275</div>
-            <div class="text-sm text-slate-400 mb-6">Stabilization</div>
+    <main class="flex-1">
 
-            <ul class="space-y-2 text-slate-300 text-sm list-disc list-inside">
-              <li>Baseline transcript pull</li>
-              <li>Change detection during term</li>
-              <li>Plain-English updates</li>
-            </ul>
-
-            <div class="mt-6">
-              <a
-                href="/app/intake.html"
-                class="inline-block w-full text-center px-4 py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-semibold rounded-lg transition-all duration-200"
-              >Start Intake →</a>
-            </div>
+      <section class="px-6 py-16 md:py-24">
+        <div class="max-w-5xl mx-auto">
+          <div class="text-center mb-12">
+            <h1 class="text-4xl md:text-6xl font-bold tracking-tight mb-4">
+              Pricing for <span class="gradient-text">Tax Monitoring</span>
+            </h1>
+            <p class="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto">
+              Choose a term based on how much stability and oversight you need right now.
+            </p>
           </div>
 
-          <!-- Gold -->
-          <div class="rounded-2xl bg-slate-800/30 border border-amber-500/35 p-6 ring-1 ring-amber-500/20">
-            <div class="flex items-center justify-between gap-4 mb-4">
-              <div class="text-lg font-semibold">Tax Monitoring — Gold</div>
-              <div class="text-sm text-slate-300">(12-Week Term)</div>
-            </div>
-            <div class="text-4xl font-bold mb-2">$425</div>
-            <div class="text-sm text-slate-400 mb-6">Full-quarter oversight</div>
+          <div class="grid lg:grid-cols-3 gap-6">
+            <!-- Bronze -->
+            <div class="rounded-2xl bg-slate-800/30 border border-slate-700/50 p-6">
+              <div class="flex items-center justify-between gap-4 mb-4">
+                <div class="text-lg font-semibold">Tax Monitoring — Bronze</div>
+                <div class="text-sm text-slate-300">(6-Week Term)</div>
+              </div>
+              <div class="text-4xl font-bold mb-2">$275</div>
+              <div class="text-sm text-slate-400 mb-6">Stabilization</div>
 
-            <ul class="space-y-2 text-slate-300 text-sm list-disc list-inside">
-              <li>Baseline transcript pull</li>
-              <li>Change detection during term</li>
-              <li>Plain-English updates</li>
-            </ul>
-
-            <div class="mt-6">
-              <a
-                href="/app/intake.html"
-                class="inline-block w-full text-center px-4 py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-semibold rounded-lg transition-all duration-200"
-              >Start Intake →</a>
-            </div>
-          </div>
-
-          <!-- MFJ -->
-          <div class="rounded-2xl bg-slate-800/30 border border-slate-700/50 p-6">
-            <div class="flex items-center justify-between gap-4 mb-4">
-              <div class="text-lg font-semibold">Tax Monitoring — Married Filing Jointly</div>
-              <div class="text-sm text-slate-300">(8-Week Term)</div>
-            </div>
-            <div class="text-4xl font-bold mb-2">$325</div>
-            <div class="text-sm text-slate-400 mb-6">Linked MFJ monitoring</div>
-
-            <ul class="space-y-2 text-slate-300 text-sm list-disc list-inside">
-              <li>Baseline transcript pull</li>
-              <li>Change detection during term</li>
-              <li>Plain-English updates</li>
-            </ul>
-
-            <div class="mt-6">
-              <a
-                href="/app/intake.html"
-                class="inline-block w-full text-center px-4 py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-semibold rounded-lg transition-all duration-200"
-              >Start Intake →</a>
-            </div>
-          </div>
-
-          <!-- One-Time -->
-          <div class="rounded-2xl bg-slate-800/30 border border-slate-700/50 p-6 lg:col-span-1">
-            <div class="flex items-center justify-between gap-4 mb-4">
-              <div class="text-lg font-semibold">Tax Monitoring — One-Time Service</div>
-              <div class="text-sm text-slate-300">(Snapshot)</div>
-            </div>
-            <div class="text-4xl font-bold mb-2">$299</div>
-            <div class="text-sm text-slate-400 mb-6">Snapshot only</div>
-
-            <ul class="space-y-2 text-slate-300 text-sm list-disc list-inside">
-              <li>Baseline transcript pull</li>
-              <li>Plain-English summary</li>
-              <li>No ongoing monitoring</li>
-            </ul>
-
-            <div class="mt-6">
-              <a
-                href="/app/intake.html"
-                class="inline-block w-full text-center px-4 py-3 bg-slate-100/10 hover:bg-slate-100/15 border border-slate-700/60 text-slate-100 font-semibold rounded-lg transition-all duration-200"
-              >Start Intake →</a>
-            </div>
-          </div>
-
-          <!-- Silver -->
-          <div class="rounded-2xl bg-slate-800/30 border border-slate-700/50 p-6 lg:col-span-2">
-            <div class="flex items-center justify-between gap-4 mb-4">
-              <div class="text-lg font-semibold">Tax Monitoring — Silver</div>
-              <div class="text-sm text-slate-300">(8-Week Term)</div>
-            </div>
-            <div class="text-4xl font-bold mb-2">$325</div>
-            <div class="text-sm text-slate-400 mb-6">Ongoing monitoring</div>
-
-            <div class="grid md:grid-cols-2 gap-6">
               <ul class="space-y-2 text-slate-300 text-sm list-disc list-inside">
                 <li>Baseline transcript pull</li>
                 <li>Change detection during term</li>
                 <li>Plain-English updates</li>
               </ul>
-              <div class="rounded-xl bg-slate-900/40 border border-slate-700/50 p-4 text-sm text-slate-300">
-                <div class="font-semibold mb-2">Good fit if you:</div>
-                <ul class="space-y-2 list-disc list-inside text-slate-400">
-                  <li>Had a recent notice</li>
-                  <li>Need stability after filing</li>
-                  <li>Want a longer runway than Bronze</li>
-                </ul>
+
+              <div class="mt-6">
+                <a
+                  href="/app/intake.html"
+                  class="inline-block w-full text-center px-4 py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-semibold rounded-lg transition-all duration-200"
+                >Start Intake →</a>
               </div>
             </div>
 
-            <div class="mt-6">
+            <!-- Gold -->
+            <div class="rounded-2xl bg-slate-800/30 border border-amber-500/35 p-6 ring-1 ring-amber-500/20">
+              <div class="flex items-center justify-between gap-4 mb-4">
+                <div class="text-lg font-semibold">Tax Monitoring — Gold</div>
+                <div class="text-sm text-slate-300">(12-Week Term)</div>
+              </div>
+              <div class="text-4xl font-bold mb-2">$425</div>
+              <div class="text-sm text-slate-400 mb-6">Full-quarter oversight</div>
+
+              <ul class="space-y-2 text-slate-300 text-sm list-disc list-inside">
+                <li>Baseline transcript pull</li>
+                <li>Change detection during term</li>
+                <li>Plain-English updates</li>
+              </ul>
+
+              <div class="mt-6">
+                <a
+                  href="/app/intake.html"
+                  class="inline-block w-full text-center px-4 py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-semibold rounded-lg transition-all duration-200"
+                >Start Intake →</a>
+              </div>
+            </div>
+
+            <!-- MFJ -->
+            <div class="rounded-2xl bg-slate-800/30 border border-slate-700/50 p-6">
+              <div class="flex items-center justify-between gap-4 mb-4">
+                <div class="text-lg font-semibold">Tax Monitoring — Married Filing Jointly</div>
+                <div class="text-sm text-slate-300">(8-Week Term)</div>
+              </div>
+              <div class="text-4xl font-bold mb-2">$325</div>
+              <div class="text-sm text-slate-400 mb-6">Linked MFJ monitoring</div>
+
+              <ul class="space-y-2 text-slate-300 text-sm list-disc list-inside">
+                <li>Baseline transcript pull</li>
+                <li>Change detection during term</li>
+                <li>Plain-English updates</li>
+              </ul>
+
+              <div class="mt-6">
+                <a
+                  href="/app/intake.html"
+                  class="inline-block w-full text-center px-4 py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-semibold rounded-lg transition-all duration-200"
+                >Start Intake →</a>
+              </div>
+            </div>
+
+            <!-- One-Time -->
+            <div class="rounded-2xl bg-slate-800/30 border border-slate-700/50 p-6 lg:col-span-1">
+              <div class="flex items-center justify-between gap-4 mb-4">
+                <div class="text-lg font-semibold">Tax Monitoring — One-Time Service</div>
+                <div class="text-sm text-slate-300">(Snapshot)</div>
+              </div>
+              <div class="text-4xl font-bold mb-2">$299</div>
+              <div class="text-sm text-slate-400 mb-6">Snapshot only</div>
+
+              <ul class="space-y-2 text-slate-300 text-sm list-disc list-inside">
+                <li>Baseline transcript pull</li>
+                <li>Plain-English summary</li>
+                <li>No ongoing monitoring</li>
+              </ul>
+
+              <div class="mt-6">
+                <a
+                  href="/app/intake.html"
+                  class="inline-block w-full text-center px-4 py-3 bg-slate-100/10 hover:bg-slate-100/15 border border-slate-700/60 text-slate-100 font-semibold rounded-lg transition-all duration-200"
+                >Start Intake →</a>
+              </div>
+            </div>
+
+            <!-- Silver -->
+            <div class="rounded-2xl bg-slate-800/30 border border-slate-700/50 p-6 lg:col-span-2">
+              <div class="flex items-center justify-between gap-4 mb-4">
+                <div class="text-lg font-semibold">Tax Monitoring — Silver</div>
+                <div class="text-sm text-slate-300">(8-Week Term)</div>
+              </div>
+              <div class="text-4xl font-bold mb-2">$325</div>
+              <div class="text-sm text-slate-400 mb-6">Ongoing monitoring</div>
+
+              <div class="grid md:grid-cols-2 gap-6">
+                <ul class="space-y-2 text-slate-300 text-sm list-disc list-inside">
+                  <li>Baseline transcript pull</li>
+                  <li>Change detection during term</li>
+                  <li>Plain-English updates</li>
+                </ul>
+                <div class="rounded-xl bg-slate-900/40 border border-slate-700/50 p-4 text-sm text-slate-300">
+                  <div class="font-semibold mb-2">Good fit if you:</div>
+                  <ul class="space-y-2 list-disc list-inside text-slate-400">
+                    <li>Had a recent notice</li>
+                    <li>Need stability after filing</li>
+                    <li>Want a longer runway than Bronze</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="mt-6">
+                <a
+                  href="/app/intake.html"
+                  class="inline-block w-full text-center px-4 py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-semibold rounded-lg transition-all duration-200"
+                >Start Intake →</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-10 text-center">
+            <p class="text-sm text-slate-500">
+              Monitoring does not create IRS representation. Representation, filing, and resolution are separate engagements.
+            </p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer (inlined; partials disabled for now) -->
+    <footer class="border-t border-slate-800/60 bg-slate-950/70">
+      <div class="mx-auto max-w-6xl px-6 py-12">
+        <div class="grid gap-10 md:grid-cols-3">
+          <div>
+            <div class="flex items-center gap-3">
+              <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 text-slate-950 font-bold">
+                TM
+              </span>
+              <div>
+                <div class="font-semibold">Tax Monitor Pro</div>
+                <div class="text-sm text-slate-400">Professional IRS monitoring</div>
+              </div>
+            </div>
+
+            <p class="mt-4 text-sm text-slate-400 leading-relaxed" id="footer-text">
+              Professional tax account monitoring services provided by licensed tax professional.
+            </p>
+
+            <p class="mt-3 text-xs text-slate-500">
+              Monitoring does not create IRS representation. Representation, filing, and resolution are separate engagements.
+            </p>
+          </div>
+
+          <div class="md:pl-6">
+            <div class="text-sm font-semibold text-slate-200 mb-3">Links</div>
+            <ul class="space-y-2 text-sm">
+              <li><a class="text-slate-400 hover:text-white transition" href="/site/index.html#how-it-works">How it works</a></li>
+              <li><a class="text-slate-400 hover:text-white transition" href="/site/pricing.html">Pricing</a></li>
+              <li><a class="text-slate-400 hover:text-white transition" href="/site/index.html#report-sample">Report sample</a></li>
+              <li><a class="text-slate-400 hover:text-white transition" href="/site/index.html#transcript-sample">Transcript sample</a></li>
+            </ul>
+          </div>
+
+          <div class="md:pl-6">
+            <div class="text-sm font-semibold text-slate-200 mb-3">Get started</div>
+            <div class="rounded-2xl border border-slate-800/60 bg-slate-900/30 p-5">
+              <div class="text-sm text-slate-300">Ready to see your status?</div>
+              <div class="mt-1 text-xs text-slate-500">Intake takes a few minutes.</div>
               <a
+                class="mt-4 inline-flex w-full items-center justify-center rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 px-4 py-2 text-sm font-semibold text-slate-950 hover:from-amber-400 hover:to-amber-500 transition"
                 href="/app/intake.html"
-                class="inline-block w-full text-center px-4 py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-semibold rounded-lg transition-all duration-200"
-              >Start Intake →</a>
+              >Start intake →</a>
             </div>
           </div>
         </div>
 
-        <div class="mt-10 text-center">
-          <p class="text-sm text-slate-500">
-            Monitoring does not create IRS representation. Representation, filing, and resolution are separate engagements.
-          </p>
+        <div class="mt-10 flex flex-col gap-3 border-t border-slate-800/60 pt-6 text-xs text-slate-500 md:flex-row md:items-center md:justify-between">
+          <div>© <span id="footer-year"></span> Tax Monitor Pro. All rights reserved.</div>
+          <div class="flex gap-4">
+            <a class="hover:text-slate-300 transition" href="/legal/privacy.html">Privacy</a>
+            <a class="hover:text-slate-300 transition" href="/legal/terms.html">Terms</a>
+          </div>
         </div>
       </div>
-    </section>
-
-    <div data-tm-partial="footer"></div>
+    </footer>
 
   </div>
 
   <script>
-  (function () {
-    function inject(selector, url) {
-      var el = document.querySelector(selector);
-      if (!el) return Promise.resolve();
-      return fetch(url, { cache: "no-cache" })
-        .then(function (r) { return r.ok ? r.text() : ""; })
-        .then(function (html) { if (html) el.outerHTML = html; });
-    }
-
-    Promise.all([
-      inject('[data-tm-partial="footer"]', "/site/partials/footer.html"),
-      inject('[data-tm-partial="header"]', "/site/partials/header.html")
-    ]);
-  })();
+    (function () {
+      var y = document.getElementById('footer-year');
+      if (y) y.textContent = String(new Date().getFullYear());
+    })();
   </script>
 </body>
 </html>
-
