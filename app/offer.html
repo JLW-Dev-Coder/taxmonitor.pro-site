@@ -1,0 +1,424 @@
+<!--/app/offer.html-->
+<!doctype html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tax Monitor Pro — Offer</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="/assets/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link rel="apple-touch-icon" href="/assets/favicon.ico">
+
+  <style>
+    body { box-sizing: border-box; }
+    * { font-family: 'DM Sans', sans-serif; }
+    .gradient-text {
+      background: linear-gradient(135deg, #F59E0B, #D97706);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  </style>
+
+  <style>
+    .tm-progress-fill { transition: width 220ms ease; }
+
+    .tm-step--active .tm-step-label,
+    .tm-step--active .tm-step-num { color: #f59e0b; }
+
+    .tm-step--active .tm-step-num { border-color: rgba(245, 158, 11, 0.55); }
+
+    .tm-step--done { opacity: 0.92; }
+
+    .tm-step--done .tm-step-num {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.22);
+      color: rgba(241, 245, 249, 0.92);
+    }
+
+    .tm-step--done .tm-step-label { color: rgba(241, 245, 249, 0.92); }
+  </style>
+
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+</head>
+
+<body class="h-full bg-slate-950 text-slate-100">
+  <div id="app" class="min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="sticky top-0 z-50 border-b border-slate-800/60 bg-slate-950/70 backdrop-blur">
+      <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+        <a href="/site/index.html" class="flex items-center gap-3">
+          <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 text-slate-950 font-bold">
+            TM
+          </span>
+          <span class="font-semibold tracking-tight">Tax Monitor Pro</span>
+        </a>
+
+        <nav class="hidden items-center gap-8 md:flex">
+          <a href="/site/index.html" class="text-sm text-slate-300 hover:text-white transition">Home</a>
+          <a href="/site/pricing.html" class="text-sm text-slate-300 hover:text-white transition">Pricing</a>
+        </nav>
+
+        <div class="flex items-center gap-3">
+          <a
+            href="/app/index.html"
+            class="hidden md:inline-flex items-center gap-2 rounded-lg border border-slate-700/60 bg-slate-900/40 px-4 py-2 text-sm font-semibold text-slate-100 hover:bg-slate-900/70 transition"
+          >Status</a>
+
+          <a
+            href="/app/intake.html"
+            class="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 px-4 py-2 text-sm font-semibold text-slate-950 hover:from-amber-400 hover:to-amber-500 transition"
+          >Start intake →</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="flex-1">
+      <section class="px-6 py-12 md:py-16">
+        <div class="mx-auto max-w-4xl">
+
+          <!-- Steps / Progress -->
+          <div class="rounded-2xl border border-slate-800/60 bg-slate-900/30 p-6 md:p-8 mb-8">
+            <div class="mb-5">
+              <div class="flex items-center justify-between gap-4 mb-2">
+                <div class="text-xs text-slate-500">Progress</div>
+                <div class="text-xs text-slate-500">25%</div>
+              </div>
+
+              <div class="h-2 rounded-full bg-slate-800/70 border border-slate-700/50 overflow-hidden">
+                <div class="tm-progress-fill h-full bg-gradient-to-r from-amber-500 to-amber-600" style="width:25%;"></div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-4 gap-2 md:gap-4">
+              <div class="tm-step tm-step--done flex flex-col items-center text-center">
+                <div class="tm-step-num flex h-9 w-9 items-center justify-center rounded-full border border-slate-700/70 bg-slate-950/30 text-sm font-bold">1</div>
+                <div class="tm-step-label mt-2 text-xs md:text-sm text-slate-300">Intake</div>
+              </div>
+
+              <div class="tm-step tm-step--active flex flex-col items-center text-center">
+                <div class="tm-step-num flex h-9 w-9 items-center justify-center rounded-full border border-slate-700/70 bg-slate-950/30 text-sm font-bold">2</div>
+                <div class="tm-step-label mt-2 text-xs md:text-sm text-slate-300">Offer</div>
+              </div>
+
+              <div class="tm-step flex flex-col items-center text-center">
+                <div class="tm-step-num flex h-9 w-9 items-center justify-center rounded-full border border-slate-700/70 bg-slate-950/30 text-sm font-bold text-slate-300">3</div>
+                <div class="tm-step-label mt-2 text-xs md:text-sm text-slate-400">Agreement</div>
+              </div>
+
+              <div class="tm-step flex flex-col items-center text-center">
+                <div class="tm-step-num flex h-9 w-9 items-center justify-center rounded-full border border-slate-700/70 bg-slate-950/30 text-sm font-bold text-slate-300">4</div>
+                <div class="tm-step-label mt-2 text-xs md:text-sm text-slate-400">Payment</div>
+              </div>
+            </div>
+
+            <div class="mt-6 border-t border-slate-800/60 pt-6 text-center">
+              <div class="inline-flex items-center justify-center gap-2 rounded-full border border-slate-700/60 bg-slate-950/25 px-4 py-2">
+                <span class="text-xs text-slate-400">Proposal title</span>
+                <span class="text-xs text-slate-200 font-semibold">Tax Monitor — Offer &amp; Service Review</span>
+              </div>
+
+              <h1 class="mt-5 text-3xl md:text-5xl font-bold tracking-tight mb-3">
+                Our <span class="gradient-text">Offer</span>
+              </h1>
+
+              <p class="text-slate-400 text-lg">
+                Tax Monitoring — a structured pathway to tax record visibility and informed decisions.
+              </p>
+
+              <div class="mt-5 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
+                <div class="rounded-xl border border-slate-800/60 bg-slate-950/25 px-4 py-3 text-sm text-slate-300">
+                  <span class="text-slate-500">Relative valid until</span>
+                  <span class="font-semibold text-slate-100">7 Day(s)</span>
+                </div>
+
+                <label class="flex items-center gap-3 rounded-xl border border-slate-800/60 bg-slate-950/25 px-4 py-3 text-sm text-slate-300">
+                  <input id="urgent_bar_toggle" type="checkbox" class="h-4 w-4 accent-amber-500">
+                  <span>Prevent this proposal from showing in urgent notifications</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Row 2: Offer content + About Pricing -->
+          <div class="grid gap-6 lg:grid-cols-3 mb-8">
+            <div class="lg:col-span-2 rounded-2xl border border-slate-800/60 bg-slate-900/30 p-6 md:p-8">
+              <div class="prose prose-invert max-w-none">
+                <p class="text-slate-300">
+                  Dear <span class="font-semibold text-slate-100">{{clientFirstName}}</span>,
+                </p>
+
+                <p class="text-slate-300">
+                  This proposal outlines our Tax Monitoring service, which provides structured access to your tax records for review,
+                  visibility, and ongoing monitoring. The purpose of this service is to help you understand what is present on your tax account
+                  before any future action or resolution is considered.
+                </p>
+
+                <p class="text-slate-300">
+                  <strong class="text-slate-100">This service is limited to monitoring, reporting, and record visibility.</strong>
+                  It does not include tax resolution, negotiations, or corrective filings.
+                </p>
+
+                <hr class="border-slate-800/60 my-6">
+
+                <h2 class="text-xl md:text-2xl font-bold text-slate-100">How to Proceed</h2>
+
+                <p class="text-slate-300">
+                  Review the proposal details and select the Tax Monitoring option that best fits your needs.
+                  Submitting this proposal confirms your approval of the selected option only.
+                </p>
+
+                <p class="text-slate-300">
+                  After proposal approval, a formal <strong class="text-slate-100">Service Agreement and Contract</strong> will be generated and presented
+                  for electronic signature in the next step.
+                </p>
+
+                <p class="text-slate-300">
+                  If any monitored tax year was filed as <strong class="text-slate-100">Married Filing Jointly (MFJ)</strong>,
+                  <strong class="text-slate-100">each spouse must independently enroll and authorize monitoring</strong>.
+                  Jointly filed years cannot be accessed or monitored unless both spouses complete enrollment.
+                </p>
+
+                <p class="text-slate-300">
+                  Services begin only after the Service Agreement is signed <u>and</u> payment is received.
+                </p>
+              </div>
+            </div>
+
+            <div class="rounded-2xl border border-slate-800/60 bg-slate-900/30 p-6 md:p-8">
+              <h3 class="text-xl font-bold text-center mb-3">About Pricing</h3>
+              <p class="text-sm text-slate-400 text-center">
+                All Tax Monitoring options are offered as one-time service fees. Each option includes a defined service scope and, where applicable, a set monitoring period.
+              </p>
+              <p class="mt-3 text-sm text-slate-400 text-center">
+                There are no subscriptions or recurring charges unless separately agreed to in writing.
+              </p>
+
+              <div class="mt-6 rounded-xl border border-slate-800/60 bg-slate-950/25 p-5">
+                <div class="text-sm text-slate-500 mb-1">Proposal pages</div>
+                <div class="text-sm font-semibold text-slate-100">Our Offer</div>
+              </div>
+
+              <div class="mt-6">
+                <a
+                  href="/site/pricing.html"
+                  class="inline-flex w-full items-center justify-center rounded-xl border border-slate-700/70 bg-slate-950/20 px-4 py-3 text-sm font-semibold text-slate-100 hover:bg-slate-950/35 transition"
+                >View pricing</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Row 3: Included / Not Included -->
+          <div class="grid gap-6 lg:grid-cols-2 mb-8">
+            <div class="rounded-2xl border border-slate-800/60 bg-slate-900/30 p-6 md:p-8">
+              <h2 class="text-2xl font-bold mb-4">What’s Included</h2>
+              <ul class="list-disc list-inside space-y-2 text-slate-300">
+                <li>Initial tax record review</li>
+                <li>IRS authorization processing (Form 2848)</li>
+                <li>Monitoring for updates or IRS notices during the service period (if applicable)</li>
+                <li>Secure document handling</li>
+                <li>Summary reporting and record access</li>
+                <li>Tax transcript retrieval and verification</li>
+              </ul>
+            </div>
+
+            <div class="rounded-2xl border border-slate-800/60 bg-slate-900/30 p-6 md:p-8">
+              <h2 class="text-2xl font-bold mb-4">What’s Not Included</h2>
+              <p class="text-slate-400 mb-4">
+                The following services are not included unless separately contracted:
+              </p>
+              <ul class="list-disc list-inside space-y-2 text-slate-300">
+                <li>Filing of tax returns</li>
+                <li>IRS representation beyond authorization</li>
+                <li>Legal or accounting advice</li>
+                <li>Offer in Compromise preparation</li>
+                <li>Payment plan setup</li>
+                <li>Tax resolution or negotiations</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Row 4-5: How it works + Stages -->
+          <div class="rounded-2xl border border-slate-800/60 bg-slate-900/30 p-6 md:p-8 mb-8">
+            <h2 class="text-2xl font-bold text-center mb-4">How It Works</h2>
+            <p class="text-slate-400 text-center max-w-3xl mx-auto">
+              We guide you through a clear, three-stage process to obtain and review your tax records.
+              Each stage is designed to ensure accuracy, compliance, and visibility while keeping the service moving forward in a structured and predictable way.
+            </p>
+            <p class="mt-3 text-slate-400 text-center max-w-3xl mx-auto">
+              You will receive check-ins at each stage so you know exactly where things stand and what, if anything, is needed from you.
+            </p>
+
+            <div class="mt-10 grid gap-6 lg:grid-cols-3">
+              <div class="rounded-2xl border border-slate-800/60 bg-slate-950/25 p-6">
+                <h3 class="text-center text-lg font-bold mb-3">
+                  <span class="gradient-text">Stage 1</span><br>
+                  eSign 2848 &amp; Initial Review
+                </h3>
+                <p class="text-slate-300">
+                  In the first stage, you complete a brief tax organizer and electronically sign Form 2848.
+                  This allows us to request access to your tax records from the Internal Revenue Service (IRS).
+                </p>
+                <p class="mt-3 text-slate-300">
+                  Once records are received, we perform an initial review to confirm completeness and accuracy before proceeding.
+                  This step helps ensure the authorization is properly processed and accepted for Centralized Authorization File (CAF) purposes.
+                </p>
+              </div>
+
+              <div class="rounded-2xl border border-slate-800/60 bg-slate-950/25 p-6">
+                <h3 class="text-center text-lg font-bold mb-3">
+                  <span class="gradient-text">Stage 2</span><br>
+                  Processing &amp; Due Diligence
+                </h3>
+                <p class="text-slate-300">
+                  During this stage, your signed Form 2848 is processed and added to your CAF record.
+                  Processing times typically take up to two weeks, though delays may occur depending on IRS volume.
+                </p>
+                <p class="mt-3 text-slate-300">
+                  Once authorization is confirmed, we can access your tax transcripts and monitor for updates or notices during your applicable service period.
+                  Status updates are provided at consistent intervals. If electronic authorization cannot be completed, we may request an ink-signed form.
+                </p>
+              </div>
+
+              <div class="rounded-2xl border border-slate-800/60 bg-slate-950/25 p-6">
+                <h3 class="text-center text-lg font-bold mb-3">
+                  <span class="gradient-text">Stage 3</span><br>
+                  Tax Record Delivery &amp; Review
+                </h3>
+                <p class="text-slate-300">
+                  After your tax records are received, they are compiled and organized within your file for secure access.
+                  Any applicable monitoring reports are prepared and made available for download.
+                </p>
+                <p class="mt-3 text-slate-300">
+                  You may schedule a review meeting to discuss your records, clarify findings, and understand next steps.
+                  Completion of this stage confirms successful delivery of your tax monitoring service.
+                </p>
+              </div>
+            </div>
+
+            <div class="mt-10 rounded-2xl border border-slate-800/60 bg-black/20 p-6">
+              <h3 class="text-lg font-bold text-slate-100 mb-2">Important Notice Regarding Acceptance</h3>
+              <p class="text-slate-300">
+                Acceptance of this proposal and completion of the <strong>Accept &amp; Sign</strong> step constitutes execution of the <strong>Service Agreement and Contract</strong>.
+                Services do not begin until the agreement is signed and payment is received.
+              </p>
+            </div>
+          </div>
+
+          <!-- Review & Approve -->
+          <div class="rounded-2xl border border-slate-800/60 bg-slate-900/30 p-6 md:p-8">
+            <div class="mb-6 text-center">
+              <h2 class="text-3xl md:text-4xl font-bold mb-3">Review &amp; <span class="gradient-text">Approve</span></h2>
+              <p class="text-slate-400">
+                Please review and approve your Tax Monitoring proposal.
+              </p>
+            </div>
+
+            <div class="rounded-xl border border-slate-800/60 bg-slate-950/25 p-5 text-sm text-slate-300">
+              <p class="text-center text-slate-300">
+                <strong class="text-slate-100">Important Notice:</strong>
+                This step confirms <strong class="text-slate-100">proposal approval only</strong>.
+                Approval does <u>not</u> execute a Service Agreement or initiate services.
+              </p>
+              <p class="mt-3 text-center text-slate-400">
+                Upon approval of this proposal, a formal <strong class="text-slate-100">Service Agreement and Contract</strong> will be generated and presented for electronic signature in the next step.
+              </p>
+              <p class="mt-3 text-center text-slate-400">
+                Services do not begin until the Service Agreement is signed <u>and</u> payment is received.
+              </p>
+              <p class="mt-4 text-center text-slate-400">
+                If you have questions, please contact <a class="text-amber-300 hover:text-amber-200 underline" href="mailto:{{myOrganizationEmail}}">{{myOrganizationEmail}}</a>.
+              </p>
+            </div>
+
+            <div class="mt-6 grid gap-3 md:grid-cols-2">
+              <!-- Replace action with your Worker route for proposal approval -->
+              <form id="tm-approve" method="post" action="/proposal/approve" accept-charset="UTF-8">
+                <input id="approve_code" name="code" type="hidden" value="">
+                <button
+                  type="submit"
+                  class="inline-flex w-full items-center justify-center rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 px-4 py-3 text-sm font-semibold text-slate-950 hover:from-amber-400 hover:to-amber-500 transition"
+                >Approve proposal →</button>
+              </form>
+
+              <a
+                id="btn-next-agreement"
+                href="/app/agreement.html"
+                class="inline-flex w-full items-center justify-center rounded-xl border border-slate-700/70 bg-slate-950/20 px-4 py-3 text-sm font-semibold text-slate-100 hover:bg-slate-950/35 transition"
+              >Next: agreement</a>
+            </div>
+
+            <div class="mt-6 border-t border-slate-800/60 pt-6 text-center text-xs text-slate-500">
+              Tax Monitoring installs and related configuration begin only after the service agreement is executed and payment is received. Once work has commenced, fees are non-refundable due to the nature of authorization, record access, and monitoring activity.
+            </div>
+
+            <div class="mt-6 text-center text-xs text-slate-500">
+              <div class="font-semibold text-slate-300">{{myOrganizationName}}</div>
+              <div class="mt-1">{{myOrganizationAddress}}</div>
+              <div>{{myOrganizationCity}}, {{myOrganizationStateProvince}} {{myOrganizationZip}}</div>
+              <div class="mt-3">
+                <a class="text-amber-300 hover:text-amber-200 underline" href="{{myOrganizationPrivacyPolicyURL}}" target="_blank" rel="noopener">
+                  Privacy Policy, Terms, and Disclaimers
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-8 text-center text-sm text-slate-500">
+            Monitoring does not create IRS representation. Representation, filing, and resolution are separate engagements.
+          </div>
+
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800/60 bg-slate-950/70">
+      <div class="mx-auto max-w-6xl px-6 py-10">
+        <div class="flex flex-col gap-3 text-xs text-slate-500 md:flex-row md:items-center md:justify-between">
+          <div>© <span id="footer-year"></span> Tax Monitor Pro. All rights reserved.</div>
+          <div class="flex gap-4">
+            <a class="hover:text-slate-300 transition" href="/legal/privacy.html">Privacy</a>
+            <a class="hover:text-slate-300 transition" href="/legal/terms.html">Terms</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <script>
+    (function () {
+      var y = document.getElementById('footer-year');
+      if (y) y.textContent = String(new Date().getFullYear());
+    })();
+  </script>
+
+  <script>
+    (function () {
+      var params = new URLSearchParams(window.location.search || '');
+      var code = params.get('code') || '';
+
+      var approveCode = document.getElementById('approve_code');
+      var nextAgreement = document.getElementById('btn-next-agreement');
+
+      if (approveCode) approveCode.value = code;
+
+      if (nextAgreement && code) {
+        nextAgreement.setAttribute('href', '/app/agreement.html?code=' + encodeURIComponent(code));
+      }
+    })();
+  </script>
+</body>
+</html>
