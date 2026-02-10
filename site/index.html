@@ -37,7 +37,7 @@
   <div id="app" class="h-full w-full overflow-auto">
 
     <!-- Header (partial mount) -->
-    <div id="site-header"></div>
+    <div data-tm-partial="header"></div>
 
     <!-- Hero Section -->
     <section class="px-6 py-20 md:py-32">
@@ -559,7 +559,7 @@
     </section>
 
     <!-- Footer (partial mount) -->
-    <div id="site-footer"></div>
+    <div data-tm-partial="footer"></div>
 
   </div>
 
@@ -670,5 +670,23 @@
       });
     }
   </script>
+  <script>
+(function () {
+  function inject(selector, url) {
+    var el = document.querySelector(selector);
+    if (!el) return Promise.resolve();
+    return fetch(url, { cache: "no-cache" })
+      .then(function (r) { return r.ok ? r.text() : ""; })
+      .then(function (html) { if (html) el.outerHTML = html; });
+  }
+
+  Promise.all([
+    inject('[data-tm-partial="footer"]', "/site/partials/footer.html"),
+    inject('[data-tm-partial="header"]', "/site/partials/header.html")
+  ]);
+})();
+</script>
+
 </body>
 </html>
+
