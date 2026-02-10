@@ -1,9 +1,6 @@
-# workers/api/wrangler.toml
-
 compatibility_date = "2025-02-09"
-main = "src/index.js"
+main = "workers/api/src/index.js"
 name = "taxmonitor-pro-api"
 
-# Optional (recommended): enable logs while testing
 [observability]
 enabled = true
