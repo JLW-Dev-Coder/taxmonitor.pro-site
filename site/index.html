@@ -13,6 +13,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
 
+  <link rel="icon" href="/assets/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link rel="apple-touch-icon" href="/assets/favicon.ico">
+
   <style>
     body { box-sizing: border-box; }
     * { font-family: 'DM Sans', sans-serif; }
@@ -30,6 +34,31 @@
 
 <body class="h-full bg-slate-950 text-slate-100">
   <div id="app" class="h-full w-full overflow-auto">
+
+    <!-- Menu -->
+    <header class="sticky top-0 z-50 border-b border-slate-800/60 bg-slate-950/80 backdrop-blur">
+      <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between gap-6">
+        <a href="/" class="flex items-center gap-3">
+          <img src="/assets/logo.svg" alt="Tax Monitor Pro" class="h-8 w-8">
+          <span class="font-semibold tracking-tight">Tax Monitor Pro</span>
+        </a>
+
+        <nav class="hidden md:flex items-center gap-6 text-sm text-slate-300">
+          <a href="#how-it-works" class="hover:text-slate-100 transition">How it works</a>
+          <a href="#inside-portal" class="hover:text-slate-100 transition">Portal</a>
+          <a href="#report-sample" class="hover:text-slate-100 transition">Report sample</a>
+          <a href="#transcript-sample" class="hover:text-slate-100 transition">Transcript sample</a>
+        </nav>
+
+        <div class="flex items-center gap-3">
+          <a href="/site/pricing.html" class="hidden sm:inline-block text-sm text-slate-300 hover:text-slate-100 transition">Pricing</a>
+          <a
+            href="/app/intake.html"
+            class="inline-block px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-semibold rounded-lg transition-all duration-200"
+          >Start Intake →</a>
+        </div>
+      </div>
+    </header>
 
     <!-- Hero Section -->
     <section class="px-6 py-20 md:py-32">
@@ -62,7 +91,8 @@
     <section class="px-6 py-20 bg-slate-900/50">
       <div class="max-w-4xl mx-auto">
         <h2 id="problem-headline" class="text-3xl md:text-5xl font-bold text-center mb-16">
-          The IRS Doesn't Send Warnings. <span class="text-slate-500">They Send Notices.</span>
+          <span class="block">The IRS Doesn't Send Warnings.</span>
+          <span class="block text-slate-500">They Send Notices.</span>
         </h2>
 
         <div class="grid md:grid-cols-3 gap-8">
@@ -204,7 +234,7 @@
     </section>
 
     <!-- How It Works -->
-    <section class="px-6 py-20">
+    <section class="px-6 py-20" id="how-it-works">
       <div class="max-w-4xl mx-auto">
         <div class="text-center mb-16">
           <h2 class="text-3xl md:text-5xl font-bold mb-6">How It <span class="gradient-text">Works</span></h2>
@@ -255,6 +285,7 @@
 
     <!-- Transcript Sample (Improved) -->
     <section class="px-6 py-20 bg-slate-900/50" id="transcript-sample">
+      <!-- (unchanged: keep your improved transcript block here) -->
       <div class="max-w-5xl mx-auto">
         <div class="text-center mb-12">
           <h2 class="text-3xl md:text-5xl font-bold mb-6">Transcript <span class="gradient-text">Sample</span></h2>
@@ -382,7 +413,7 @@
     </section>
 
     <!-- Report Sample -->
-    <section class="px-6 py-20">
+    <section class="px-6 py-20" id="report-sample">
       <div class="max-w-5xl mx-auto">
         <div class="text-center mb-12">
           <h2 class="text-3xl md:text-5xl font-bold mb-6">Report <span class="gradient-text">Sample</span></h2>
@@ -444,7 +475,7 @@
     </section>
 
     <!-- Inside Your Portal -->
-    <section class="px-6 py-20 bg-slate-900/50">
+    <section class="px-6 py-20 bg-slate-900/50" id="inside-portal">
       <div class="max-w-4xl mx-auto">
         <div class="text-center mb-12">
           <h2 class="text-3xl md:text-5xl font-bold mb-6">Inside Your <span class="gradient-text">Portal</span></h2>
@@ -539,7 +570,6 @@
         <h2 class="text-3xl md:text-5xl font-bold mb-6">Stop Guessing. <span class="gradient-text">Start Knowing.</span></h2>
         <p class="text-xl text-slate-400 mb-10 max-w-xl mx-auto">Complete intake today and see your IRS account status within 5 business days.</p>
 
-        <!-- CTA: must route to /app/intake.html -->
         <a
           id="conversion-cta"
           href="/app/intake.html"
@@ -554,12 +584,10 @@
     <footer class="px-6 py-12 border-t border-slate-800">
       <div class="max-w-4xl mx-auto text-center">
         <div class="flex items-center justify-center gap-2 mb-4">
-          <svg class="w-6 h-6 text-amber-500" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-          </svg>
+          <img src="/assets/logo.svg" alt="Tax Monitor Pro" class="h-6 w-6">
           <span class="font-semibold text-lg">Tax Monitor Pro</span>
         </div>
-        <p id="footer-text" class="text-slate-500 text-sm mb-4">Professional tax account monitoring services provided by licensed Enrolled Agent.</p>
+        <p id="footer-text" class="text-slate-500 text-sm mb-4">Professional tax account monitoring services provided by licensed tax professional.</p>
         <p class="text-slate-600 text-xs">© 2024 Tax Monitor Pro. All rights reserved.</p>
       </div>
     </footer>
@@ -573,7 +601,7 @@
       trust_line: 'EA-led, proactive monitoring — no IRS representation created by intake.',
       problem_headline: 'The IRS Doesn\\'t Send Warnings. They Send Notices.',
       cta_button_text: 'Start Intake',
-      footer_text: 'Professional tax account monitoring services provided by licensed Enrolled Agent.',
+      footer_text: 'Professional tax account monitoring services provided by licensed tax professional.',
       background_color: '#020617',
       surface_color: '#1e293b',
       text_color: '#f1f5f9',
@@ -588,8 +616,6 @@
       const heroHeadline = document.getElementById('hero-headline');
       const heroSubheadline = document.getElementById('hero-subheadline');
       const problemHeadline = document.getElementById('problem-headline');
-      const heroCta = document.getElementById('hero-cta');
-      const conversionCta = document.getElementById('conversion-cta');
       const footerText = document.getElementById('footer-text');
 
       const customFont = config.font_family || defaultConfig.font_family;
@@ -613,13 +639,12 @@
 
       if (problemHeadline) {
         const problemText = config.problem_headline || defaultConfig.problem_headline;
-        problemHeadline.innerHTML = problemText.replace('They Send Notices.', '<span class="text-slate-500">They Send Notices.</span>');
+        const parts = String(problemText || '').split('. ');
+        const line1 = parts[0] ? parts[0].trim() + '.' : "The IRS Doesn't Send Warnings.";
+        const line2 = parts.slice(1).join('. ').trim() || 'They Send Notices.';
+        problemHeadline.innerHTML = `<span class="block">${line1}</span><span class="block text-slate-500">${line2}</span>`;
         problemHeadline.style.fontFamily = `${customFont}, ${baseFontStack}`;
       }
-
-      const ctaText = config.cta_button_text || defaultConfig.cta_button_text;
-      if (heroCta) heroCta.textContent = ctaText + ' →';
-      if (conversionCta) conversionCta.textContent = ctaText + ' →';
 
       if (footerText) footerText.textContent = config.footer_text || defaultConfig.footer_text;
 
