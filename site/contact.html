@@ -78,7 +78,7 @@
         </a>
 
         <nav class="hidden items-center gap-8 md:flex">
-          <a href="/site/contact.html" class="text-sm text-slate-300 hover:text-white transition">Contact</a>
+          <a href="/site/contact.html" class="text-sm text-amber-300 hover:text-amber-200 transition">Contact</a>
           <a href="/site/index.html#how-it-works" class="text-sm text-slate-300 hover:text-white transition">How it works</a>
           <a href="/site/pricing.html" class="text-sm text-slate-300 hover:text-white transition">Pricing</a>
           <a href="/site/index.html#report-sample" class="text-sm text-slate-300 hover:text-white transition">Report sample</a>
@@ -111,52 +111,39 @@
             Whether you have questions, want to see a demo, or are ready to take the next step—we're here to help.
           </p>
 
+          <!-- Top buttons now anchor to "How We Can Help" -->
           <div class="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-            <button
-              class="tm-btn-primary px-8 py-4 rounded-full text-lg font-semibold text-slate-950"
-              data-cal-link="tax-monitor-pro/tax-monitor-service-intro"
-              data-cal-namespace="tax-monitor-service-intro"
-              data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'
-              type="button"
-            >Contact Us</button>
+            <a
+              class="tm-btn-primary px-8 py-4 rounded-full text-lg font-semibold text-slate-950 inline-flex items-center justify-center"
+              href="#tax-monitor-pro-demo"
+            >Contact Us</a>
 
-            <button
-              class="tm-btn-secondary px-8 py-4 rounded-full text-lg font-semibold text-white bg-transparent"
-              data-cal-link="tax-monitor-pro/demo"
-              data-cal-namespace="demo"
-              data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'
-              type="button"
-            >Book a Demo</button>
+            <a
+              class="tm-btn-secondary px-8 py-4 rounded-full text-lg font-semibold text-white bg-transparent inline-flex items-center justify-center"
+              href="#tax-monitor-pro-demo"
+            >Book a Demo</a>
           </div>
 
           <p id="trust-line" class="text-sm text-slate-500 max-w-lg mx-auto">
             EA-led service. Secure intake. No IRS representation created by contacting us.
           </p>
 
+          <!-- Pills now anchor to "How We Can Help" -->
           <div class="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
-            <button
-              class="tm-btn-secondary px-5 py-3 rounded-full text-sm font-semibold text-white bg-transparent"
-              data-cal-link="tax-monitor-pro/tax-monitor-service-onboarding"
-              data-cal-namespace="tax-monitor-service-onboarding"
-              data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'
-              type="button"
-            >Client onboarding</button>
+            <a
+              class="tm-btn-secondary px-5 py-3 rounded-full text-sm font-semibold text-white bg-transparent inline-flex items-center justify-center"
+              href="#tax-monitor-pro-demo"
+            >Client onboarding</a>
 
-            <button
-              class="tm-btn-secondary px-5 py-3 rounded-full text-sm font-semibold text-white bg-transparent"
-              data-cal-link="tax-monitor-pro/tax-monitor-service-exit-offboarding"
-              data-cal-namespace="tax-monitor-service-exit-offboarding"
-              data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'
-              type="button"
-            >Client offboarding</button>
+            <a
+              class="tm-btn-secondary px-5 py-3 rounded-full text-sm font-semibold text-white bg-transparent inline-flex items-center justify-center"
+              href="#tax-monitor-pro-demo"
+            >Client offboarding</a>
 
-            <button
-              class="tm-btn-secondary px-5 py-3 rounded-full text-sm font-semibold text-white bg-transparent"
-              data-cal-link="tax-monitor-pro/tax-monitor-service-support"
-              data-cal-namespace="tax-monitor-service-support"
-              data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'
-              type="button"
-            >Client support</button>
+            <a
+              class="tm-btn-secondary px-5 py-3 rounded-full text-sm font-semibold text-white bg-transparent inline-flex items-center justify-center"
+              href="#tax-monitor-pro-demo"
+            >Client support</a>
           </div>
         </div>
       </section>
@@ -164,12 +151,12 @@
       <div class="divider-line"></div>
 
       <!-- How We Can Help -->
-      <section class="w-full px-6 py-20 md:py-28">
+      <section class="w-full px-6 py-20 md:py-28" id="tax-monitor-pro-demo">
         <div class="max-w-4xl mx-auto">
           <div class="text-center mb-16">
             <h2 id="help-headline" class="text-3xl md:text-4xl font-bold mb-4">How We Can Help</h2>
             <p id="help-description" class="text-slate-400 text-lg max-w-xl mx-auto">
-              Reach out for any of the following—we respond thoughtfully to every inquiry.
+              Choose a path below. We’ll route you to the right event type.
             </p>
           </div>
 
@@ -188,7 +175,7 @@
               </div>
               <div>
                 <div class="text-lg font-semibold mb-1">General Questions</div>
-                <div class="text-slate-400 text-sm">Learn more about our tax monitoring service and how it works.</div>
+                <div class="text-slate-400 text-sm">Ask about monitoring, eligibility, timelines, and what’s included.</div>
               </div>
             </button>
 
@@ -206,7 +193,7 @@
               </div>
               <div>
                 <div class="text-lg font-semibold mb-1">Schedule a Demo</div>
-                <div class="text-slate-400 text-sm">See the platform in action with a personalized walkthrough.</div>
+                <div class="text-slate-400 text-sm">See the portal flow, outputs, and what clients receive.</div>
               </div>
             </button>
 
@@ -223,15 +210,16 @@
                 </svg>
               </div>
               <div>
-                <div class="text-lg font-semibold mb-1">Partnership Inquiries</div>
-                <div class="text-slate-400 text-sm">Explore collaboration opportunities for accountants and firms.</div>
+                <div class="text-lg font-semibold mb-1">Client onboarding</div>
+                <div class="text-slate-400 text-sm">Start service, confirm scope, and get the portal moving.</div>
               </div>
             </button>
 
+            <!-- Support button now uses exit-offboarding event type -->
             <button
               class="text-left flex items-start gap-4 p-6 rounded-2xl bg-slate-900/40 border border-white/5 tm-card-hover"
-              data-cal-link="tax-monitor-pro/tax-monitor-service-support"
-              data-cal-namespace="tax-monitor-service-support"
+              data-cal-link="tax-monitor-pro/tax-monitor-service-exit-offboarding"
+              data-cal-namespace="tax-monitor-service-exit-offboarding"
               data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'
               type="button"
             >
@@ -241,8 +229,8 @@
                 </svg>
               </div>
               <div>
-                <div class="text-lg font-semibold mb-1">Support</div>
-                <div class="text-slate-400 text-sm">Already a client? Get help with your account or technical questions.</div>
+                <div class="text-lg font-semibold mb-1">Client support</div>
+                <div class="text-slate-400 text-sm">For changes, transitions, and account updates. Use this if your request affects service state.</div>
               </div>
             </button>
           </div>
@@ -283,12 +271,12 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/>
                 </svg>
               </div>
-              <h3 id="support-card-title" class="text-2xl font-bold mb-3">Support</h3>
-              <p class="text-slate-400 mb-8">Already a client? Get help with your account or technical questions.</p>
+              <h3 id="support-card-title" class="text-2xl font-bold mb-3">Client support</h3>
+              <p class="text-slate-400 mb-8">For changes, transitions, and account updates. Routed via offboarding event type.</p>
               <button
                 class="tm-btn-secondary w-full px-6 py-4 rounded-full text-base font-semibold text-white bg-transparent"
-                data-cal-link="tax-monitor-pro/tax-monitor-service-support"
-                data-cal-namespace="tax-monitor-service-support"
+                data-cal-link="tax-monitor-pro/tax-monitor-service-exit-offboarding"
+                data-cal-namespace="tax-monitor-service-exit-offboarding"
                 data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'
                 type="button"
               >Contact Support</button>
@@ -311,13 +299,13 @@
             <div class="text-center">
               <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-lg font-bold text-slate-950">1</div>
               <h3 class="text-lg font-semibold mb-2">You Reach Out</h3>
-              <p class="text-slate-400 text-sm">Send us a message or book a time that works for you.</p>
+              <p class="text-slate-400 text-sm">Select a path and book a time.</p>
             </div>
 
             <div class="text-center">
               <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-lg font-bold text-slate-950">2</div>
               <h3 class="text-lg font-semibold mb-2">We Review</h3>
-              <p class="text-slate-400 text-sm">Our team reviews your inquiry to understand your needs.</p>
+              <p class="text-slate-400 text-sm">We review your inquiry to understand your needs.</p>
             </div>
 
             <div class="text-center">
@@ -403,24 +391,18 @@
       <section class="w-full px-6 py-20 md:py-28">
         <div class="max-w-2xl mx-auto text-center">
           <h2 id="final-headline" class="text-3xl md:text-4xl font-bold mb-4">Ready to Connect?</h2>
-          <p class="text-slate-400 text-lg mb-10">We're here when you're ready. No pressure—just helpful guidance.</p>
+          <p class="text-slate-400 text-lg mb-10">Pick a path above and we’ll take it from there.</p>
 
           <div class="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-            <button
-              class="tm-btn-primary px-8 py-4 rounded-full text-lg font-semibold text-slate-950"
-              data-cal-link="tax-monitor-pro/tax-monitor-service-intro"
-              data-cal-namespace="tax-monitor-service-intro"
-              data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'
-              type="button"
-            >Contact Us</button>
+            <a
+              class="tm-btn-primary px-8 py-4 rounded-full text-lg font-semibold text-slate-950 inline-flex items-center justify-center"
+              href="#tax-monitor-pro-demo"
+            >Contact Us</a>
 
-            <button
-              class="tm-btn-secondary px-8 py-4 rounded-full text-lg font-semibold text-white bg-transparent"
-              data-cal-link="tax-monitor-pro/demo"
-              data-cal-namespace="demo"
-              data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'
-              type="button"
-            >Book a Demo</button>
+            <a
+              class="tm-btn-secondary px-8 py-4 rounded-full text-lg font-semibold text-white bg-transparent inline-flex items-center justify-center"
+              href="#tax-monitor-pro-demo"
+            >Book a Demo</a>
           </div>
 
           <p id="final-subtext" class="text-sm text-slate-500">
@@ -491,7 +473,7 @@
 
   </div>
 
-  <!-- Cal.com element-click embed (single loader; five namespaces) -->
+  <!-- Cal.com element-click embed (single loader; namespaces used on this page) -->
   <script type="text/javascript">
     (function (C, A, L) {
       let p = function (a, ar) { a.q.push(ar); };
@@ -526,7 +508,6 @@
     Cal("init", "tax-monitor-service-exit-offboarding", { origin: "https://app.cal.com" });
     Cal("init", "tax-monitor-service-intro", { origin: "https://app.cal.com" });
     Cal("init", "tax-monitor-service-onboarding", { origin: "https://app.cal.com" });
-    Cal("init", "tax-monitor-service-support", { origin: "https://app.cal.com" });
 
     Cal.ns.demo("ui", {
       "cssVarsPerTheme": { "light": { "cal-brand": "#292929" }, "dark": { "cal-brand": "#f97316" } },
@@ -551,12 +532,6 @@
       "hideEventTypeDetails": false,
       "layout": "month_view"
     });
-
-    Cal.ns["tax-monitor-service-support"]("ui", {
-      "cssVarsPerTheme": { "light": { "cal-brand": "#292929" }, "dark": { "cal-brand": "#f97316" } },
-      "hideEventTypeDetails": false,
-      "layout": "month_view"
-    });
   </script>
 
   <script>
@@ -571,13 +546,13 @@
     const defaultConfig = {
       final_headline: "Ready to Connect?",
       final_subtext: "Your inquiry is confidential. We'll respond thoughtfully and without obligation.",
-      help_description: "Reach out for any of the following—we respond thoughtfully to every inquiry.",
+      help_description: "Choose a path below. We’ll route you to the right event type.",
       help_headline: "How We Can Help",
       hero_headline: "Let's Start a Conversation",
       hero_subhead: "Whether you have questions, want to see a demo, or are ready to take the next step—we're here to help.",
       next_headline: "What Happens Next",
       path_headline: "Choose Your Path",
-      support_card_title: "Support",
+      support_card_title: "Client support",
       trust_headline: "Trust & Clarity",
       trust_line: "EA-led service. Secure intake. No IRS representation created by contacting us.",
       font_family: "DM Sans",
