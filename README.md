@@ -1,25 +1,39 @@
 # Tax Monitor Pro
 
-Production repo for the Tax Monitor Pro site and supporting Cloudflare Workers.
+Production repo for the Tax Monitor Pro site, app UI, and Cloudflare Worker API.
 
-This README documents **how to redeploy** when a build or Worker fails.
+This README documents:
+- Architecture (authoritative model)
+- Repo structure (production)
+- Redeploy procedures (Pages + Worker)
 
 ---
 
 ## Architecture
 
-- **Cloudflare Pages**
-  - Hosts the marketing site and app shell
-  - Auto-deploys from GitHub on push
-- **Cloudflare Workers**
-  - Handles API, checkout, and service logic
-  - Deployed either via Dashboard or Wrangler
+Tax Monitor Pro runs on:
+
+Alphabetical:
+- Cal.com
+- ClickUp
+- Cloudflare Pages
+- Cloudflare Workers
+- R2
+- Stripe
+
+Authority model:
+- Pages = UI
+- Worker = logic
+- R2 = authority
+- ClickUp = execution
+
+Event triggers:
+- Cal.com → Worker → R2 → ClickUp
+- Stripe → Worker → R2 → ClickUp
 
 ---
 
 ## Repo Structure
-
-Alphabetical (minimal, expandable):
 
 app/
 ├─ agreement.html
@@ -29,27 +43,19 @@ app/
 ├─ offer.html
 ├─ payment-success.html
 ├─ payment.html
+├─ report.html
+├─ status.html
 └─ pages/
-    ├─ calendar.html
-    ├─ files.html
-    ├─ messaging.html
-    ├─ office.html
-    ├─ projects.html
-    ├─ start-here.html
-    ├─ support.html
-    └─ flows/
-       ├─ intake/
-       │  ├─ agreement.html
-       │  ├─ intake.html
-       │  ├─ offer.html
-       │  └─ payment.html
-       └─ post-payment/
-          ├─ address-update.html
-          ├─ client-exit-survey.html
-          ├─ compliance-report.html
-          ├─ esign-2848.html
-          ├─ filing-status.html
-          └─ welcome.html
+   ├─ calendar.html
+   ├─ files.html
+   ├─ messaging.html
+   ├─ office.html
+   ├─ projects.html
+   ├─ start-here.html
+   ├─ support.html
+   └─ flows/
+      ├─ intake/
+      └─ post-payment/
 
 assets/
 ├─ favicon.ico
@@ -64,13 +70,10 @@ public/
 
 site/
 ├─ contact.html
+├─ explore.html
 ├─ index.html
 ├─ pricing.html
-├─ site.js
-├─ support.html
 └─ partials/
-   ├─ footer.html
-   └─ header.html
 
 styles/
 ├─ app.css
@@ -82,68 +85,44 @@ workers/
    │  └─ index.js
    └─ wrangler.toml
 
-README.md
-
 _redirects
-
 build.mjs
-
+README.md
 
 ---
 
 ## Redeploy: Cloudflare Pages
 
-Use this when you see **“Last build failed”** or Pages content is stale.
+Use this when you see "Last build failed" or Pages content is stale.
 
-### Option A — Retry Failed Deployment (Preferred)
+Option A — Retry failed deployment
+1. Cloudflare Dashboard
+2. Workers & Pages → Pages
+3. Select the Pages project
+4. Deployments
+5. Open the failed build
+6. Retry deployment
 
-1. Cloudflare Dashboard  
-2. **Workers & Pages → Pages**
-3. Select the project (example: `taxmonitor-pro-site`)
-4. Open **Deployments**
-5. Locate the failed build
-6. Click **Retry deployment**
-
-### Option B — Trigger New Deployment via GitHub
-
-Use this if no retry button is available.
-
-1. Make a small change in the repo (example: update `README.md`)
-2. Commit the change
-3. Push to the connected branch (`main`)
-4. Cloudflare Pages will auto-build and redeploy
+Option B — Trigger a new deployment via GitHub
+1. Commit a small change (example: README.md)
+2. Push to main
+3. Pages auto-builds and deploys
 
 ---
 
-## Redeploy: Cloudflare Workers
+## Redeploy: Cloudflare Worker (API)
 
-Use this if APIs, checkout, or background logic fails.
+The API is a single Worker entrypoint:
+- workers/api/src/index.js
 
-### Dashboard Deploy (Fastest)
+Option A — Dashboard deploy
+1. Cloudflare Dashboard
+2. Workers & Pages → Workers
+3. Select the Worker (match wrangler.toml name)
+4. Deployments / Versions
+5. Deploy or Promote latest version
 
-1. Cloudflare Dashboard  
-2. **Workers & Pages → Workers**
-3. Select the Worker (example: `taxmonitor-api`)
-4. Open **Deployments / Versions**
-5. Click **Deploy** or **Promote latest version**
-
-### Wrangler Deploy (Local)
-
-Only use this if deploying intentionally from local.
+Option B — Wrangler deploy (local)
 
 ```bash
 wrangler deploy
-
-
-
-
-
-
-
-
-
-
-
-
-
-
