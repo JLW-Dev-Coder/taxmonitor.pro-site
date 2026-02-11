@@ -1,4 +1,4 @@
-<!--/site/pricing.html-->
+<!-- /site/pricing.html -->
 <!doctype html>
 <html lang="en" class="h-full">
 <head>
@@ -36,36 +36,7 @@
 <body class="h-full bg-slate-950 text-slate-100">
   <div id="app" class="min-h-screen flex flex-col">
 
-    <!-- Header (inlined; partials disabled for now) -->
-    <header class="sticky top-0 z-50 border-b border-slate-800/60 bg-slate-950/70 backdrop-blur">
-      <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <a href="/site/index.html" class="flex items-center gap-3">
-          <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 text-slate-950 font-bold">
-            TM
-          </span>
-          <span class="font-semibold tracking-tight">Tax Monitor Pro</span>
-        </a>
-
-        <nav class="hidden items-center gap-8 md:flex">
-          <a href="/site/pricing.html" class="text-sm text-slate-300 hover:text-white transition">Pricing</a>
-          <a href="/site/index.html#how-it-works" class="text-sm text-slate-300 hover:text-white transition">How it works</a>
-          <a href="/site/index.html#report-sample" class="text-sm text-slate-300 hover:text-white transition">Report sample</a>
-          <a href="/site/index.html#transcript-sample" class="text-sm text-slate-300 hover:text-white transition">Transcript sample</a>
-        </nav>
-
-        <div class="flex items-center gap-3">
-          <a
-            href="/app/intake.html"
-            class="hidden md:inline-flex items-center gap-2 rounded-lg border border-slate-700/60 bg-slate-900/40 px-4 py-2 text-sm font-semibold text-slate-100 hover:bg-slate-900/70 transition"
-          >Start intake</a>
-
-          <a
-            href="/app/intake.html"
-            class="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 px-4 py-2 text-sm font-semibold text-slate-950 hover:from-amber-400 hover:to-amber-500 transition"
-          >Start intake →</a>
-        </div>
-      </div>
-    </header>
+    <!-- PARTIAL:header -->
 
     <main class="flex-1">
 
@@ -93,8 +64,6 @@
       <section class="px-6 pb-20">
         <div class="max-w-6xl mx-auto">
 
-        <!-- Replace ONLY the 3 plan cards block inside /site/pricing.html with this updated block -->
-
           <div class="grid lg:grid-cols-3 gap-6 items-stretch">
             <!-- Bronze -->
             <div class="rounded-2xl bg-slate-900/40 border border-slate-800/80 p-6 flex flex-col">
@@ -102,19 +71,19 @@
                 <h2 class="text-xl font-semibold">Bronze</h2>
                 <span class="px-3 py-1 rounded-full bg-slate-800/70 border border-slate-700 text-xs text-slate-300">Baseline</span>
               </div>
-          
+
               <div class="mb-4">
                 <div class="text-3xl font-bold">$275<span class="text-base text-slate-400 font-medium"> one-time</span></div>
                 <div class="text-sm text-slate-500">6-week term (monitoring period).</div>
               </div>
-          
+
               <ul class="space-y-3 text-slate-300 text-sm mb-6 min-h-[156px]">
                 <li class="flex gap-2"><span class="text-amber-500">•</span><span>Transcript monitoring during the term</span></li>
                 <li class="flex gap-2"><span class="text-amber-500">•</span><span>Plain-English status summary</span></li>
                 <li class="flex gap-2"><span class="text-amber-500">•</span><span>Portal delivery + report access for easy review</span></li>
                 <li class="flex gap-2"><span class="text-amber-500">•</span><span>Escalation flags when activity appears</span></li>
               </ul>
-          
+
               <div class="mt-auto">
                 <a
                   href="/app/intake.html?item=bronze"
@@ -123,7 +92,7 @@
                 <p class="mt-3 text-xs text-slate-500">Best for stable accounts and ongoing peace of mind.</p>
               </div>
             </div>
-          
+
             <!-- Silver (Most Popular) -->
             <div class="rounded-2xl bg-slate-900/40 border border-amber-500/35 p-6 flex flex-col relative overflow-hidden">
               <div class="absolute -top-16 -right-16 w-48 h-48 rounded-full bg-amber-500/10 blur-2xl"></div>
@@ -131,19 +100,19 @@
                 <h2 class="text-xl font-semibold">Silver</h2>
                 <span class="px-3 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-xs text-amber-200">Most popular</span>
               </div>
-          
+
               <div class="mb-4 relative">
                 <div class="text-3xl font-bold">$325<span class="text-base text-slate-400 font-medium"> one-time</span></div>
                 <div class="text-sm text-slate-500">8-week term (monitoring period).</div>
               </div>
-          
+
               <ul class="space-y-3 text-slate-300 text-sm mb-6 relative min-h-[156px]">
                 <li class="flex gap-2"><span class="text-amber-500">•</span><span>Transcript monitoring during the term</span></li>
                 <li class="flex gap-2"><span class="text-amber-500">•</span><span>Change timeline tracking</span></li>
-                <li class="flex gap-2"><span class="text-amber-500">•</span><span>Priority alerts when activity appears fast</span></li>
                 <li class="flex gap-2"><span class="text-amber-500">•</span><span>Plain-English notes on updates</span></li>
+                <li class="flex gap-2"><span class="text-amber-500">•</span><span>Priority alerts when activity appears fast</span></li>
               </ul>
-          
+
               <div class="mt-auto relative">
                 <a
                   href="/app/intake.html?item=silver"
@@ -152,36 +121,35 @@
                 <p class="mt-3 text-xs text-slate-500">Best for accounts with prior issues or higher complexity.</p>
               </div>
             </div>
-          
+
             <!-- Gold -->
             <div class="rounded-2xl bg-slate-900/40 border border-slate-800/80 p-6 flex flex-col">
               <div class="flex items-center justify-between mb-4">
                 <h2 class="text-xl font-semibold">Gold</h2>
                 <span class="px-3 py-1 rounded-full bg-slate-800/70 border border-slate-700 text-xs text-slate-300">High-touch</span>
               </div>
-          
+
               <div class="mb-4">
                 <div class="text-3xl font-bold">$425<span class="text-base text-slate-400 font-medium"> one-time</span></div>
                 <div class="text-sm text-slate-500">12-week term (monitoring period).</div>
               </div>
-          
+
               <ul class="space-y-3 text-slate-300 text-sm mb-6 min-h-[156px]">
                 <li class="flex gap-2"><span class="text-amber-500">•</span><span>Transcript monitoring during the term</span></li>
                 <li class="flex gap-2"><span class="text-amber-500">•</span><span>Proactive watchlist (balances, notices, holds)</span></li>
                 <li class="flex gap-2"><span class="text-amber-500">•</span><span>Priority escalation guidance (non-representation)</span></li>
                 <li class="flex gap-2"><span class="text-amber-500">•</span><span>Expanded reporting detail</span></li>
               </ul>
-          
+
               <div class="mt-auto">
                 <a
                   href="/app/intake.html?item=gold"
                   class="w-full inline-flex items-center justify-center px-4 py-3 rounded-xl bg-slate-800/70 hover:bg-slate-800 text-slate-100 font-semibold transition border border-slate-700"
-                >Start →</a>
+                >Start intake →</a>
                 <p class="mt-3 text-xs text-slate-500">Best for active issues, notices, or fast-moving situations.</p>
               </div>
             </div>
           </div>
-
 
           <!-- One-time + MFJ -->
           <div class="grid lg:grid-cols-2 gap-6 mt-8">
@@ -208,9 +176,9 @@
                 <div class="rounded-xl bg-slate-950/40 border border-slate-800 p-4">
                   <div class="font-semibold mb-1">Not included</div>
                   <ul class="space-y-2 text-slate-400">
-                    <li>• Ongoing monitoring</li>
                     <li>• IRS correspondence handling</li>
-                    <li>• Representation</li>
+                    <li>• IRS representation</li>
+                    <li>• Ongoing monitoring</li>
                   </ul>
                 </div>
               </div>
@@ -324,62 +292,7 @@
 
     </main>
 
-    <!-- Footer (inlined; partials disabled for now) -->
-    <footer class="border-t border-slate-800/60 bg-slate-950/70">
-      <div class="mx-auto max-w-6xl px-6 py-12">
-        <div class="grid gap-10 md:grid-cols-3">
-          <div>
-            <div class="flex items-center gap-3">
-              <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 text-slate-950 font-bold">
-                TM
-              </span>
-              <div>
-                <div class="font-semibold">Tax Monitor Pro</div>
-                <div class="text-sm text-slate-400">Professional IRS monitoring</div>
-              </div>
-            </div>
-
-            <p class="mt-4 text-sm text-slate-400 leading-relaxed" id="footer-text">
-              Professional tax account monitoring services provided by licensed tax professional.
-            </p>
-
-            <p class="mt-3 text-xs text-slate-500">
-              Monitoring does not create IRS representation. Representation, filing, and resolution are separate engagements.
-            </p>
-          </div>
-
-          <div class="md:pl-6">
-            <div class="text-sm font-semibold text-slate-200 mb-3">Links</div>
-            <ul class="space-y-2 text-sm">
-              <li><a class="text-slate-400 hover:text-white transition" href="/site/index.html#how-it-works">How it works</a></li>
-              <li><a class="text-slate-400 hover:text-white transition" href="/site/pricing.html">Pricing</a></li>
-              <li><a class="text-slate-400 hover:text-white transition" href="/site/index.html#report-sample">Report sample</a></li>
-              <li><a class="text-slate-400 hover:text-white transition" href="/site/index.html#transcript-sample">Transcript sample</a></li>
-            </ul>
-          </div>
-
-          <div class="md:pl-6">
-            <div class="text-sm font-semibold text-slate-200 mb-3">Get started</div>
-            <div class="rounded-2xl border border-slate-800/60 bg-slate-900/30 p-5">
-              <div class="text-sm text-slate-300">Ready to see your status?</div>
-              <div class="mt-1 text-xs text-slate-500">Intake takes a few minutes.</div>
-              <a
-                class="mt-4 inline-flex w-full items-center justify-center rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 px-4 py-2 text-sm font-semibold text-slate-950 hover:from-amber-400 hover:to-amber-500 transition"
-                href="/app/intake.html"
-              >Start intake →</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="mt-10 flex flex-col gap-3 border-t border-slate-800/60 pt-6 text-xs text-slate-500 md:flex-row md:items-center md:justify-between">
-          <div>© <span id="footer-year"></span> Tax Monitor Pro. All rights reserved.</div>
-          <div class="flex gap-4">
-            <a class="hover:text-slate-300 transition" href="/legal/privacy.html">Privacy</a>
-            <a class="hover:text-slate-300 transition" href="/legal/terms.html">Terms</a>
-          </div>
-        </div>
-      </div>
-    </footer>
+    <!-- PARTIAL:footer -->
 
   </div>
 
@@ -465,5 +378,3 @@
   </script>
 </body>
 </html>
-
-
