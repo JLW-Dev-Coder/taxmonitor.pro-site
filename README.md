@@ -43,8 +43,8 @@ public/
 
 site/
 └─ partials /
-   ├─ footers.html
-   ├─ headers.html
+   ├─ footer.html
+   ├─ header.html
 ├─ contact.html
 ├─ index.html
 ├─ pricing.html
@@ -111,6 +111,7 @@ Only use this if deploying intentionally from local.
 
 ```bash
 wrangler deploy
+
 
 
 
