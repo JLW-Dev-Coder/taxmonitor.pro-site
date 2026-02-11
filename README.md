@@ -45,6 +45,8 @@ app/
        │  └─ payment.html
        └─ post-payment/
           ├─ address-update.html
+          ├─ client-exit-survey.html
+          ├─ compliance-report.html
           ├─ esign-2848.html
           ├─ filing-status.html
           └─ welcome.html
@@ -131,6 +133,7 @@ Only use this if deploying intentionally from local.
 
 ```bash
 wrangler deploy
+
 
 
 
