@@ -23,12 +23,8 @@
     tailwind.config = {
       theme: {
         extend: {
-          colors: {
-            slate: { 950: "#0a0d14" }
-          },
-          fontFamily: {
-            dm: ['"DM Sans"', "system-ui", "sans-serif"]
-          }
+          colors: { slate: { 950: "#0a0d14" } },
+          fontFamily: { dm: ['"DM Sans"', "system-ui", "sans-serif"] }
         }
       }
     };
@@ -71,44 +67,17 @@
 </head>
 
 <body class="h-full font-dm antialiased overflow-auto bg-slate-950 text-slate-100">
-  <!-- Background (Canva-style large frame) -->
+  <!-- Background -->
   <div class="fixed inset-0 pointer-events-none" style="background: radial-gradient(ellipse at 50% 0%, rgba(245, 158, 11, 0.03) 0%, transparent 55%);"></div>
   <div class="fixed top-0 left-0 right-0 h-32 blur-header pointer-events-none"></div>
   <div class="fixed inset-0 pointer-events-none opacity-[0.02]" style="background-image: linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px); background-size: 60px 60px;"></div>
 
   <div id="app" class="min-h-screen flex flex-col">
-    <!-- Header (same frame width as Status page) -->
-    <header class="sticky top-0 z-50 border-b border-slate-800/60 bg-slate-950/70 backdrop-blur">
-      <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <a href="/site/index.html" class="flex items-center gap-3">
-          <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 text-slate-950 font-bold">TM</span>
-          <span class="font-semibold tracking-tight">Tax Monitor Pro</span>
-        </a>
-
-        <nav class="hidden items-center gap-8 md:flex">
-          <a href="/site/index.html" class="text-sm text-slate-300 hover:text-white transition">Home</a>
-          <a href="/site/pricing.html" class="text-sm text-slate-300 hover:text-white transition">Pricing</a>
-        </nav>
-
-        <div class="flex items-center gap-3">
-          <a
-            href="/app/status.html"
-            class="hidden md:inline-flex items-center gap-2 rounded-lg border border-slate-700/60 bg-slate-900/40 px-4 py-2 text-sm font-semibold text-slate-100 hover:bg-slate-900/70 transition"
-          >Status</a>
-
-          <a
-            href="/app/intake.html"
-            class="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 px-4 py-2 text-sm font-semibold text-slate-950 hover:from-amber-400 hover:to-amber-500 transition"
-          >Start intake →</a>
-        </div>
-      </div>
-    </header>
-
-    <!-- Main (red-rectangle-sized frame) -->
+    <!-- Main -->
     <main class="relative flex-1">
       <section class="px-6 py-12 md:py-16">
         <div class="mx-auto max-w-3xl">
-          <div class="min-h-[calc(100vh-240px)] flex items-center justify-center">
+          <div class="min-h-[calc(100vh-200px)] flex items-center justify-center">
             <div class="w-full max-w-[460px]">
               <!-- Error -->
               <div id="error-alert" class="hidden mb-6">
@@ -135,7 +104,6 @@
                   <span id="app-title" class="text-white font-semibold text-lg tracking-tight">Tax Monitor Pro</span>
                 </div>
 
-                <!-- Headline -->
                 <h1 id="headline" class="text-3xl sm:text-4xl font-bold text-white mb-3 tracking-tight text-center">Welcome back</h1>
 
                 <!-- Google -->
@@ -251,7 +219,6 @@
                   </button>
                 </form>
 
-                <!-- Sign up -->
                 <div class="mt-6 text-center">
                   <a id="signup-link" href="/site/pricing.html" class="text-sm text-slate-400 hover:text-white transition">
                     Don't have an account?
@@ -268,13 +235,14 @@
                   <a href="/legal/terms.html" class="text-slate-500 hover:text-slate-300 transition">Terms</a>
                 </div>
               </div>
+
             </div>
           </div>
         </div>
       </section>
     </main>
 
-    <!-- Footer (same as Status page) -->
+    <!-- Footer -->
     <footer class="border-t border-slate-800/60 bg-slate-950/70">
       <div class="mx-auto max-w-6xl px-6 py-10">
         <div class="flex flex-col gap-3 text-xs text-slate-500 md:flex-row md:items-center md:justify-between">
