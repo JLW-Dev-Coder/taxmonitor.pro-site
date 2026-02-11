@@ -45,9 +45,11 @@ site/
 └─ partials /
    ├─ footers.html
    ├─ headers.html
+├─ contact.html
 ├─ index.html
 ├─ pricing.html
-└─ site.js
+├─ site.js
+└─ support.html
 
 styles/
 ├─ app.css
@@ -109,6 +111,7 @@ Only use this if deploying intentionally from local.
 
 ```bash
 wrangler deploy
+
 
 
 
