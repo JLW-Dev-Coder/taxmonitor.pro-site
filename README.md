@@ -66,10 +66,8 @@ site/
 ├─ contact.html
 ├─ index.html
 ├─ pricing.html
-├─ privacy.html
 ├─ site.js
 ├─ support.html
-├─ terms.html
 └─ partials/
    ├─ footer.html
    └─ header.html
@@ -135,6 +133,7 @@ Only use this if deploying intentionally from local.
 
 ```bash
 wrangler deploy
+
 
 
 
