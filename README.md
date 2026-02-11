@@ -22,7 +22,6 @@ This README documents **how to redeploy** when a build or Worker fails.
 Alphabetical (minimal, expandable):
 
 app/
-│
 ├─ agreement.html
 ├─ index.html
 ├─ intake.html
@@ -31,13 +30,24 @@ app/
 ├─ payment-success.html
 ├─ payment.html
 └─ pages/
-   ├─ start-here.html → account (office) or intake flow (intake, offer, agreement, and payment) or post-payment flow (welcome, filing status, address update, and esign 2848)
-   ├─ calendar.html → appointments and my calendar
-   ├─ files.html → documents
-   ├─ messaging.html → inbox and sent
-   ├─ office.html → estimates, invoices, my billing, payments, and proposals
-   ├─ projects.html → my tasks, projects, and work requests
-   └─ support.html → submit a ticket or view ticket status
+    ├─ calendar.html
+    ├─ files.html
+    ├─ messaging.html
+    ├─ office.html
+    ├─ projects.html
+    ├─ start-here.html
+    ├─ support.html
+    └─ flows/
+       ├─ intake/
+       │  ├─ agreement.html
+       │  ├─ intake.html
+       │  ├─ offer.html
+       │  └─ payment.html
+       └─ post-payment/
+          ├─ address-update.html
+          ├─ esign-2848.html
+          ├─ filing-status.html
+          └─ welcome.html
 
 assets/
 ├─ favicon.ico
@@ -122,6 +132,7 @@ Only use this if deploying intentionally from local.
 
 ```bash
 wrangler deploy
+
 
 
 
