@@ -1,6 +1,10 @@
 /agreement        /app/agreement.html         200
+/contact          /contact.html               200
 /intake           /app/intake.html            200
+/legal/privacy    /legal/privacy.html         200
+/legal/terms      /legal/terms.html           200
 /offer            /app/offer.html             200
 /payment          /app/payment.html           200
 /payment/success  /app/payment-success.html   200
 /status           /app/index.html             200
+/support          /support.html               200
