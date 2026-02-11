@@ -130,10 +130,15 @@
               <p class="text-slate-400 text-sm mb-6 leading-relaxed">
                 Best for complex issues. Book a support call when email isn’t enough.
               </p>
-              <a
-                href="/app/booking.html"
+
+              <!-- Cal.com trigger (element-click) -->
+              <button
                 class="inline-flex w-full items-center justify-center py-3.5 px-6 rounded-xl border border-slate-700/60 bg-slate-950/40 text-slate-100 font-semibold hover:bg-slate-900/60 transition-colors"
-              >Book a Call</a>
+                data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'
+                data-cal-link="tax-monitor-pro/tax-monitor-service-support"
+                data-cal-namespace="tax-monitor-service-support"
+                type="button"
+              >Book a Call</button>
             </div>
 
           </div>
@@ -160,7 +165,7 @@
                 </div>
               </div>
 
-              <form id="ticket-form" class="space-y-6">
+              <form id="ticket-form" class="space-y-6" novalidate>
                 <div class="grid md:grid-cols-2 gap-4">
                   <div>
                     <label class="text-sm font-semibold text-slate-200" for="full_name">Full name</label>
@@ -217,6 +222,70 @@
                   </div>
                 </div>
 
+                <!-- ClickUp CF fields (required tie to order token) -->
+                <div class="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <label class="text-sm font-semibold text-slate-200" for="cf_issue_type">Issue type</label>
+                    <select
+                      class="mt-2 w-full rounded-xl border border-slate-700/60 bg-slate-950/40 px-4 py-3 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
+                      id="cf_issue_type"
+                      name="cf_issue_type"
+                      required
+                    >
+                      <option value="2848 Processing">2848 Processing</option>
+                      <option value="Address Update">Address Update</option>
+                      <option value="Checkout/Payment">Checkout/Payment</option>
+                      <option value="Compliance Records">Compliance Records</option>
+                      <option value="Filing Status">Filing Status</option>
+                      <option value="Intake Triage">Intake Triage</option>
+                      <option value="IRS Authorization (2848)">IRS Authorization (2848)</option>
+                      <option value="Welcome Intro">Welcome Intro</option>
+                      <option value="Wet Sig 2848 Download / Upload">Wet Sig 2848 Download / Upload</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label class="text-sm font-semibold text-slate-200" for="cf_priority">Priority</label>
+                    <select
+                      class="mt-2 w-full rounded-xl border border-slate-700/60 bg-slate-950/40 px-4 py-3 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
+                      id="cf_priority"
+                      name="cf_priority"
+                      required
+                    >
+                      <option value="🟥 Critical — Today">🟥 Critical — Today</option>
+                      <option value="🟧 High — 48 Hours">🟧 High — 48 Hours</option>
+                      <option value="🟦 Low — As Scheduled">🟦 Low — As Scheduled</option>
+                      <option value="🟨 Normal — 3–5 Days">🟨 Normal — 3–5 Days</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label class="text-sm font-semibold text-slate-200" for="cf_related_order_id">Related order ID</label>
+                    <input
+                      class="mt-2 w-full rounded-xl border border-slate-700/60 bg-slate-950/40 px-4 py-3 text-sm text-slate-100 placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
+                      id="cf_related_order_id"
+                      name="cf_related_order_id"
+                      placeholder="Optional (ClickUp task ID or Stripe session ID)"
+                      type="text"
+                    >
+                  </div>
+
+                  <div>
+                    <label class="text-sm font-semibold text-slate-200" for="cf_order_token">Order token</label>
+                    <input
+                      class="mt-2 w-full rounded-xl border border-slate-700/60 bg-slate-950/40 px-4 py-3 text-sm text-slate-100 placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
+                      id="cf_order_token"
+                      name="cf_order_token"
+                      placeholder="Required to tie ticket to your order"
+                      required
+                      type="text"
+                    >
+                    <div class="mt-2 text-xs text-slate-500">
+                      Check status at <span class="text-slate-300">app.taxmonitor.pro/status</span> using your order token.
+                    </div>
+                  </div>
+                </div>
+
                 <div>
                   <label class="text-sm font-semibold text-slate-200" for="subject">Subject</label>
                   <input
@@ -240,16 +309,22 @@
                   ></textarea>
                 </div>
 
+                <!-- Hidden defaults (map to ClickUp CFs in Worker) -->
+                <input id="cf_action_required" name="cf_action_required" type="hidden" value="Triage">
+                <input id="cf_sla_status" name="cf_sla_status" type="hidden" value="Open / New">
+
                 <div class="flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
                   <button
                     class="inline-flex items-center justify-center rounded-xl bg-amber-500 px-6 py-3.5 text-sm font-semibold text-slate-950 hover:bg-amber-400 transition"
                     type="submit"
-                  >Open email draft →</button>
+                  >Submit ticket →</button>
 
                   <div class="text-xs text-slate-500">
                     Do not include full SSNs or full bank account numbers.
                   </div>
                 </div>
+
+                <div class="hidden" id="form-status" aria-live="polite"></div>
               </form>
             </div>
 
@@ -416,6 +491,43 @@
 
   </div>
 
+  <!-- Cal.com embed (element-click) -->
+  <script type="text/javascript">
+    (function (C, A, L) {
+      let p = function (a, ar) { a.q.push(ar); };
+      let d = C.document;
+      C.Cal = C.Cal || function () {
+        let cal = C.Cal;
+        let ar = arguments;
+        if (!cal.loaded) {
+          cal.ns = {};
+          cal.q = cal.q || [];
+          d.head.appendChild(d.createElement("script")).src = A;
+          cal.loaded = true;
+        }
+        if (ar[0] === L) {
+          const api = function () { p(api, arguments); };
+          const namespace = ar[1];
+          api.q = api.q || [];
+          if (typeof namespace === "string") {
+            cal.ns[namespace] = cal.ns[namespace] || api;
+            p(cal.ns[namespace], ar);
+            p(cal, ["initNamespace", namespace]);
+          } else p(cal, ar);
+          return;
+        }
+        p(cal, ar);
+      };
+    })(window, "https://app.cal.com/embed/embed.js", "init");
+
+    Cal("init", "tax-monitor-service-support", { origin: "https://app.cal.com" });
+    Cal.ns["tax-monitor-service-support"]("ui", {
+      "cssVarsPerTheme": { "light": { "cal-brand": "#292929" }, "dark": { "cal-brand": "#f97316" } },
+      "hideEventTypeDetails": false,
+      "layout": "month_view"
+    });
+  </script>
+
   <script>
     function scrollToForm() {
       const el = document.getElementById('support-form');
@@ -429,39 +541,71 @@
     })();
 
     (function () {
-      const form = document.getElementById('ticket-form');
+      const byId = (id) => document.getElementById(id);
+
+      function setStatus(message, isError) {
+        const el = byId('form-status');
+        if (!el) return;
+        el.className = isError
+          ? 'mt-3 text-sm text-red-300'
+          : 'mt-3 text-sm text-emerald-300';
+        el.textContent = message;
+        el.classList.remove('hidden');
+      }
+
+      function prefillOrderTokenFromUrl() {
+        const params = new URLSearchParams(window.location.search);
+        const token = params.get('order_token') || params.get('token') || '';
+        const el = byId('cf_order_token');
+        if (el && token && !el.value) el.value = token;
+      }
+
+      prefillOrderTokenFromUrl();
+
+      const form = byId('ticket-form');
       if (!form) return;
 
-      form.addEventListener('submit', function (e) {
+      form.addEventListener('submit', async function (e) {
         e.preventDefault();
 
-        const category = document.getElementById('category')?.value || 'General';
-        const email = document.getElementById('email')?.value || '';
-        const fullName = document.getElementById('full_name')?.value || '';
-        const message = document.getElementById('message')?.value || '';
-        const subject = document.getElementById('subject')?.value || '';
-        const urgency = document.getElementById('urgency')?.value || 'Normal';
+        const payload = {
+          message: byId('message')?.value || '',
+          name: byId('full_name')?.value || '',
+          order_token: byId('cf_order_token')?.value || '',
+          subject: byId('subject')?.value || '',
+          support_action_required: byId('cf_action_required')?.value || 'Triage',
+          support_email: byId('email')?.value || '',
+          support_issue_type: byId('cf_issue_type')?.value || 'Intake Triage',
+          support_priority: byId('cf_priority')?.value || '🟨 Normal — 3–5 Days',
+          support_related_order_id: byId('cf_related_order_id')?.value || '',
+          support_sla_status: byId('cf_sla_status')?.value || 'Open / New'
+        };
 
-        const mailSubject = `Support: ${category} (${urgency}) — ${subject}`.trim();
-        const bodyLines = [
-          `Name: ${fullName}`,
-          `Email: ${email}`,
-          `Category: ${category}`,
-          `Urgency: ${urgency}`,
-          '',
-          'Message:',
-          message,
-          '',
-          'Helpful context (optional):',
-          '- Tax year(s):',
-          '- Browser/device:',
-          '- Screenshots attached (if applicable):',
-          '',
-          'Note: Please do not include full SSNs or full bank account numbers in email.'
-        ];
+        if (!payload.order_token) {
+          setStatus('Order token is required to submit a ticket.', true);
+          return;
+        }
 
-        const mailto = `mailto:support@taxmonitor.pro?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(bodyLines.join('\n'))}`;
-        window.location.href = mailto;
+        setStatus('Submitting ticket…', false);
+
+        try {
+          const res = await fetch('/api/support/ticket', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+
+          const out = await res.json().catch(() => ({}));
+          if (!res.ok) {
+            setStatus(out.error || 'Support request failed.', true);
+            return;
+          }
+
+          const nextUrl = `https://app.taxmonitor.pro/status?order_token=${encodeURIComponent(payload.order_token)}`;
+          window.location.href = nextUrl;
+        } catch (err) {
+          setStatus('Network error. Please try again.', true);
+        }
       });
     })();
   </script>
