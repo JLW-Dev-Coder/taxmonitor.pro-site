@@ -1,5 +1,7 @@
 // workers/api/src/index.js
 
+const CU_STATUS_LEAD_CAPTURE = "0 booking / lead capture";
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -84,7 +86,6 @@ async function handleCalWebhook(request, env) {
   let emailResult = null;
   try {
     emailResult = await sendBookingEmailForEvent(body, env);
-    // Optional: log to ClickUp as a comment
     await addClickUpComment(cuTask?.id, env, formatEmailLogComment(emailResult, body));
   } catch (err) {
     console.error(err);
@@ -141,7 +142,13 @@ async function createClickUpReceiptTask(body, env, meta) {
 
   const listId = isSupportSlug(typeSlug) ? env.CU_LIST_SUPPORT_ID : env.CU_LIST_ORDERS_ID;
 
-  const taskName = `CAL ${triggerEvent || "EVENT"} — ${typeSlug}${uid ? ` — ${uid}` : ""}`;
+  // Task name format:
+  // [{Location}] {Event type title} between {Organiser} and {Scheduler}
+  const eventTypeTitle = extractTypeTitle(body) || typeSlug || "Event";
+  const organizerName = personNameOnly(organizer) || "Organizer";
+  const schedulerName = personNameOnly(booker) || "Scheduler";
+  const locationForTitle = locationLabel || locationRaw || "Location";
+  const taskName = `[${locationForTitle}] ${eventTypeTitle} between ${organizerName} and ${schedulerName}`;
 
   const description = buildStaffFriendlyDescription({
     bookerLine,
@@ -179,6 +186,7 @@ async function createClickUpReceiptTask(body, env, meta) {
     name: taskName,
     start_date: startDateMs,
     start_date_time: Boolean(startDateMs),
+    status: CU_STATUS_LEAD_CAPTURE,
     tags,
   };
 
@@ -326,8 +334,6 @@ function emailSubjectForEvent(eventType) {
 }
 
 function buildRfc2822(input) {
-  // Minimal RFC 2822 (plain text)
-  // Gmail API expects RFC 2822 email as base64url in "raw". :contentReference[oaicite:2]{index=2}
   const headers = [];
   headers.push(`From: ${input.from}`);
   headers.push(`To: ${input.to}`);
@@ -339,7 +345,6 @@ function buildRfc2822(input) {
 }
 
 async function getGoogleAccessToken(args) {
-  // Service account JWT bearer flow. :contentReference[oaicite:3]{index=3}
   const now = Math.floor(Date.now() / 1000);
   const header = { alg: "RS256", typ: "JWT" };
   const claim = {
@@ -492,6 +497,21 @@ function extractTypeSlug(body) {
   return "unknown";
 }
 
+function extractTypeTitle(body) {
+  const candidates = [
+    body?.payload?.eventType?.title,
+    body?.payload?.eventTypeTitle,
+    body?.payload?.booking?.eventType?.title,
+    body?.payload?.booking?.eventTypeTitle,
+    body?.payload?.title,
+  ];
+
+  for (const c of candidates) {
+    if (typeof c === "string" && c.trim()) return c.trim();
+  }
+  return "";
+}
+
 function humanLocation(locationRaw) {
   const s = String(locationRaw || "");
   if (!s) return "";
@@ -546,6 +566,14 @@ function personLine(p) {
   if (email) parts.push(`<${email}>`);
   if (timeZone) parts.push(`(${timeZone})`);
   return parts.join(" ");
+}
+
+function personNameOnly(p) {
+  if (!p || typeof p !== "object") return "";
+  const name = String(p.name || "").trim();
+  if (name) return name;
+  const email = String(p.email || "").trim();
+  return email || "";
 }
 
 function toEpochMs(iso) {
