@@ -66,6 +66,8 @@ README.md
 
 _redirects
 
+build.mjs
+
 
 ---
 
@@ -111,6 +113,7 @@ Only use this if deploying intentionally from local.
 
 ```bash
 wrangler deploy
+
 
 
 
