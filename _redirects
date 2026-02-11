@@ -1,6 +1,6 @@
-/agreement /app/agreement.html 200
-/intake /app/intake.html 200
-/offer /app/offer.html 200
-/payment /app/payment.html 200
-/payment/success /app/payment-success.html 200
-/status /app/index.html 200
+/agreement        /app/agreement.html         200
+/intake           /app/intake.html            200
+/offer            /app/offer.html             200
+/payment          /app/payment.html           200
+/payment/success  /app/payment-success.html   200
+/status           /app/index.html             200
