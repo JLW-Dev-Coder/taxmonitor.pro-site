@@ -1,6 +1,6 @@
 <!-- /taxmonitor.pro-site/blob/main/site/support.html -->
 <!doctype html>
-<html lang="en">
+<html lang="en" class="h-full">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -37,13 +37,11 @@
 <body class="min-h-screen bg-slate-950 text-slate-100">
   <div id="app" class="min-h-screen flex flex-col">
 
-    <!-- Header (inlined; partials disabled for now) -->
+    <!-- Header (match index.html) -->
     <header class="sticky top-0 z-50 border-b border-slate-800/60 bg-slate-950/70 backdrop-blur">
       <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         <a href="/site/index.html" class="flex items-center gap-3">
-          <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 text-slate-950 font-bold">
-            TM
-          </span>
+          <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 text-slate-950 font-bold">TM</span>
           <span class="font-semibold tracking-tight">Tax Monitor Pro</span>
         </a>
 
@@ -71,162 +69,232 @@
 
     <main class="flex-1">
 
-      <!-- Hero -->
-      <section class="px-6 py-20 md:py-28">
-        <div class="max-w-4xl mx-auto text-center">
-          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-800/50 border border-slate-700 mb-8">
-            <svg class="w-4 h-4 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
-              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-            </svg>
-            <span class="text-sm text-slate-300" id="support-trust-line">Fast answers, clean audit trail. Monitoring does not create IRS representation.</span>
-          </div>
-
-          <h1 class="text-4xl md:text-6xl font-bold tracking-tight mb-6" id="support-headline">
-            Support that stays <span class="gradient-text">on track</span>
-          </h1>
-
-          <p class="text-xl md:text-2xl text-slate-400 mb-10 max-w-2xl mx-auto leading-relaxed" id="support-subheadline">
-            Use the lanes below so we can route your request correctly and respond faster.
+      <!-- Hero (Canvas layout) -->
+      <section class="w-full pt-16 pb-12 md:pt-24 md:pb-16 px-6">
+        <div class="max-w-3xl mx-auto text-center">
+          <h1 id="hero-headline" class="text-5xl md:text-6xl font-bold tracking-tight mb-6">Support</h1>
+          <p id="hero-subhead" class="text-xl md:text-2xl text-slate-400 leading-relaxed max-w-2xl mx-auto">
+            Confidential intake with proper routing. Your inquiry reaches the right team securely.
           </p>
+        </div>
+      </section>
 
-          <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
-            <a
-              class="inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 px-6 py-3 text-sm font-semibold text-slate-950 hover:from-amber-400 hover:to-amber-500 transition"
-              href="mailto:support@taxmonitor.pro?subject=Tax%20Monitor%20Pro%20Support%20Request"
-              id="support-email-cta"
-            >Email support →</a>
-
-            <a
-              class="inline-flex items-center justify-center rounded-lg border border-slate-700/60 bg-slate-900/40 px-6 py-3 text-sm font-semibold text-slate-100 hover:bg-slate-900/70 transition"
-              href="/site/index.html"
-              id="support-home-cta"
-            >Back to home</a>
-          </div>
-
-          <div class="mt-8 text-sm text-slate-500">
-            Support mailbox: <a class="text-slate-300 hover:text-white transition" href="mailto:support@taxmonitor.pro">support@taxmonitor.pro</a>
+      <!-- Trust Line (Canvas layout) -->
+      <section class="w-full pb-12 md:pb-16 px-6">
+        <div class="max-w-3xl mx-auto">
+          <div class="flex items-center justify-center gap-3 py-4 px-6 bg-slate-900/40 rounded-xl border border-slate-700/60">
+            <svg class="w-5 h-5 text-amber-500 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              <path d="M9 12l2 2 4-4"/>
+            </svg>
+            <p id="trust-line" class="text-sm text-slate-300">
+              EA-led service. Secure portal. No IRS representation created by submitting support.
+            </p>
           </div>
         </div>
       </section>
 
-      <!-- Support lanes -->
-      <section class="px-6 pb-20">
-        <div class="max-w-5xl mx-auto">
+      <!-- Quick Actions (Canvas layout) -->
+      <section class="w-full pb-16 md:pb-24 px-6">
+        <div class="max-w-4xl mx-auto">
           <div class="grid md:grid-cols-2 gap-6">
-            <div class="rounded-2xl bg-slate-800/30 border border-slate-700/50 p-6">
-              <div class="flex items-start gap-4">
-                <div class="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center flex-shrink-0">
-                  <svg class="w-6 h-6 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                  </svg>
-                </div>
-                <div>
-                  <div class="text-lg font-semibold mb-1">Account, reports, and monitoring questions</div>
-                  <p class="text-slate-400 text-sm mb-4">Best for transcript questions, report delivery, and “what changed?” items.</p>
-                  <a class="inline-flex items-center gap-2 text-sm font-semibold text-amber-300 hover:text-amber-200 transition" href="mailto:support@taxmonitor.pro?subject=Support%3A%20Monitoring%20%2F%20Report%20Question">
-                    Email this lane
-                    <span aria-hidden="true">→</span>
-                  </a>
-                </div>
-              </div>
-            </div>
 
-            <div class="rounded-2xl bg-slate-800/30 border border-slate-700/50 p-6">
-              <div class="flex items-start gap-4">
-                <div class="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center flex-shrink-0">
-                  <svg class="w-6 h-6 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 1.343-3 3v1H8a2 2 0 00-2 2v4a2 2 0 002 2h8a2 2 0 002-2v-4a2 2 0 00-2-2h-1v-1c0-1.657-1.343-3-3-3z"/>
-                  </svg>
-                </div>
-                <div>
-                  <div class="text-lg font-semibold mb-1">Access, login, and portal issues</div>
-                  <p class="text-slate-400 text-sm mb-4">Best for sign-in problems, portal access, and download issues.</p>
-                  <a class="inline-flex items-center gap-2 text-sm font-semibold text-amber-300 hover:text-amber-200 transition" href="mailto:support@taxmonitor.pro?subject=Support%3A%20Portal%20Access%20Issue">
-                    Email this lane
-                    <span aria-hidden="true">→</span>
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            <div class="rounded-2xl bg-slate-800/30 border border-slate-700/50 p-6">
-              <div class="flex items-start gap-4">
-                <div class="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center flex-shrink-0">
-                  <svg class="w-6 h-6 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 1.343-3 3v1H8a2 2 0 00-2 2v4a2 2 0 002 2h8a2 2 0 002-2v-4a2 2 0 00-2-2h-1v-1c0-1.657-1.343-3-3-3z"/>
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10V7a4 4 0 118 0v3"/>
-                  </svg>
-                </div>
-                <div>
-                  <div class="text-lg font-semibold mb-1">Billing and receipts</div>
-                  <p class="text-slate-400 text-sm mb-4">Best for payment confirmations, invoices, and receipt requests.</p>
-                  <a class="inline-flex items-center gap-2 text-sm font-semibold text-amber-300 hover:text-amber-200 transition" href="mailto:support@taxmonitor.pro?subject=Support%3A%20Billing%20%2F%20Receipt">
-                    Email this lane
-                    <span aria-hidden="true">→</span>
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            <div class="rounded-2xl bg-slate-800/30 border border-slate-700/50 p-6">
-              <div class="flex items-start gap-4">
-                <div class="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center flex-shrink-0">
-                  <svg class="w-6 h-6 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.77 9.77 0 01-4-.8L3 20l1.2-3.2A7.83 7.83 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-                  </svg>
-                </div>
-                <div>
-                  <div class="text-lg font-semibold mb-1">General questions</div>
-                  <p class="text-slate-400 text-sm mb-4">Best for timelines, what’s included, and “is this for me?” questions.</p>
-                  <a class="inline-flex items-center gap-2 text-sm font-semibold text-amber-300 hover:text-amber-200 transition" href="mailto:support@taxmonitor.pro?subject=Support%3A%20General%20Question">
-                    Email this lane
-                    <span aria-hidden="true">→</span>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- What to include -->
-          <div class="mt-10 rounded-2xl bg-slate-900/40 border border-slate-700/50 p-6">
-            <div class="flex items-start gap-4">
-              <div class="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center flex-shrink-0">
-                <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            <!-- Card A: Submit Ticket -->
+            <div class="bg-slate-900/40 rounded-2xl p-8 border border-slate-700/60 hover:border-slate-600/60 transition-colors">
+              <div class="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center mb-6">
+                <svg class="w-6 h-6 text-amber-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <rect x="3" y="4" width="18" height="16" rx="2"/>
+                  <path d="M7 8h10"/>
+                  <path d="M7 12h6"/>
+                  <path d="M7 16h8"/>
                 </svg>
               </div>
-              <div class="flex-1">
-                <div class="text-lg font-semibold mb-1">Include this so we can help faster</div>
-                <div class="grid md:grid-cols-2 gap-3 text-sm text-slate-400 mt-3">
-                  <div class="flex items-start gap-2">
-                    <span class="mt-2 w-1.5 h-1.5 rounded-full bg-amber-500"></span>
-                    <span>Your name and best callback number (if applicable)</span>
-                  </div>
-                  <div class="flex items-start gap-2">
-                    <span class="mt-2 w-1.5 h-1.5 rounded-full bg-amber-500"></span>
-                    <span>Any relevant tax year(s)</span>
-                  </div>
-                  <div class="flex items-start gap-2">
-                    <span class="mt-2 w-1.5 h-1.5 rounded-full bg-amber-500"></span>
-                    <span>What you expected vs what you saw</span>
-                  </div>
-                  <div class="flex items-start gap-2">
-                    <span class="mt-2 w-1.5 h-1.5 rounded-full bg-amber-500"></span>
-                    <span>Screenshots (if portal-related)</span>
-                  </div>
-                </div>
-                <p class="mt-4 text-xs text-slate-500">
-                  Do not email full SSNs or full bank account numbers. If we need sensitive data, we will route you to a secure method.
-                </p>
-              </div>
+              <h3 class="text-xl font-semibold mb-3">Submit a Ticket</h3>
+              <p class="text-slate-400 text-sm mb-6 leading-relaxed">
+                Best for account issues, report delivery, portal access, and general questions.
+              </p>
+              <button onclick="scrollToForm()" class="w-full py-3.5 px-6 bg-amber-500 hover:bg-amber-400 text-slate-950 font-semibold rounded-xl transition-colors">
+                Create Support Ticket
+              </button>
             </div>
-          </div>
 
+            <!-- Card B: Schedule Support -->
+            <div class="bg-slate-900/40 rounded-2xl p-8 border border-slate-700/60 hover:border-slate-600/60 transition-colors">
+              <div class="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center mb-6">
+                <svg class="w-6 h-6 text-amber-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                  <path d="M12 12v5l3 2"/>
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold mb-3">Schedule Support</h3>
+              <p class="text-slate-400 text-sm mb-6 leading-relaxed">
+                Best for complex issues. Book a support call when email isn’t enough.
+              </p>
+              <a
+                href="/app/booking.html"
+                class="inline-flex w-full items-center justify-center py-3.5 px-6 rounded-xl border border-slate-700/60 bg-slate-950/40 text-slate-100 font-semibold hover:bg-slate-900/60 transition-colors"
+              >Book a Call</a>
+            </div>
+
+          </div>
         </div>
       </section>
 
-      <!-- FAQ -->
-      <section class="px-6 py-20 bg-slate-900/50">
+      <!-- Support Form (Canvas layout; two-column + right-side helper) -->
+      <section class="w-full pb-20 md:pb-28 px-6" id="support-form">
+        <div class="max-w-5xl mx-auto">
+          <div class="grid lg:grid-cols-3 gap-6 items-start">
+
+            <!-- Form -->
+            <div class="lg:col-span-2 bg-slate-900/40 rounded-2xl border border-slate-700/60 p-8">
+              <div class="flex items-start justify-between gap-6 mb-8">
+                <div>
+                  <h2 class="text-2xl md:text-3xl font-bold tracking-tight">Create a Support Ticket</h2>
+                  <p class="mt-2 text-slate-400">
+                    Provide enough detail for clean routing. If we need sensitive details, we’ll direct you to a secure method.
+                  </p>
+                </div>
+                <div class="hidden md:flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-700/60 bg-slate-950/30 text-xs text-slate-300">
+                  <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                  <span>Support inbox monitored</span>
+                </div>
+              </div>
+
+              <form id="ticket-form" class="space-y-6">
+                <div class="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <label class="text-sm font-semibold text-slate-200" for="full_name">Full name</label>
+                    <input
+                      class="mt-2 w-full rounded-xl border border-slate-700/60 bg-slate-950/40 px-4 py-3 text-sm text-slate-100 placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
+                      id="full_name"
+                      name="full_name"
+                      placeholder="Jane Doe"
+                      required
+                      type="text"
+                    >
+                  </div>
+
+                  <div>
+                    <label class="text-sm font-semibold text-slate-200" for="email">Email</label>
+                    <input
+                      class="mt-2 w-full rounded-xl border border-slate-700/60 bg-slate-950/40 px-4 py-3 text-sm text-slate-100 placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
+                      id="email"
+                      name="email"
+                      placeholder="you@domain.com"
+                      required
+                      type="email"
+                    >
+                  </div>
+
+                  <div>
+                    <label class="text-sm font-semibold text-slate-200" for="category">Category</label>
+                    <select
+                      class="mt-2 w-full rounded-xl border border-slate-700/60 bg-slate-950/40 px-4 py-3 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
+                      id="category"
+                      name="category"
+                      required
+                    >
+                      <option value="Access / Portal">Access / Portal</option>
+                      <option value="Account / Reports / Monitoring">Account / Reports / Monitoring</option>
+                      <option value="Billing / Receipts">Billing / Receipts</option>
+                      <option value="General">General</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label class="text-sm font-semibold text-slate-200" for="urgency">Urgency</label>
+                    <select
+                      class="mt-2 w-full rounded-xl border border-slate-700/60 bg-slate-950/40 px-4 py-3 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
+                      id="urgency"
+                      name="urgency"
+                      required
+                    >
+                      <option value="Normal">Normal</option>
+                      <option value="Time-sensitive (deadline)">Time-sensitive (deadline)</option>
+                      <option value="Urgent (service blocked)">Urgent (service blocked)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label class="text-sm font-semibold text-slate-200" for="subject">Subject</label>
+                  <input
+                    class="mt-2 w-full rounded-xl border border-slate-700/60 bg-slate-950/40 px-4 py-3 text-sm text-slate-100 placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
+                    id="subject"
+                    name="subject"
+                    placeholder="Example: I cannot download my report for 2023"
+                    required
+                    type="text"
+                  >
+                </div>
+
+                <div>
+                  <label class="text-sm font-semibold text-slate-200" for="message">Message</label>
+                  <textarea
+                    class="mt-2 min-h-[160px] w-full rounded-xl border border-slate-700/60 bg-slate-950/40 px-4 py-3 text-sm text-slate-100 placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
+                    id="message"
+                    name="message"
+                    placeholder="Include tax years, what you expected vs what you saw, and any screenshots (if applicable)."
+                    required
+                  ></textarea>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
+                  <button
+                    class="inline-flex items-center justify-center rounded-xl bg-amber-500 px-6 py-3.5 text-sm font-semibold text-slate-950 hover:bg-amber-400 transition"
+                    type="submit"
+                  >Open email draft →</button>
+
+                  <div class="text-xs text-slate-500">
+                    Do not include full SSNs or full bank account numbers.
+                  </div>
+                </div>
+              </form>
+            </div>
+
+            <!-- Right rail -->
+            <aside class="space-y-6">
+              <div class="bg-slate-900/40 rounded-2xl border border-slate-700/60 p-6">
+                <div class="text-sm font-semibold text-slate-200 mb-3">What to include</div>
+                <ul class="space-y-2 text-sm text-slate-400">
+                  <li class="flex items-start gap-2"><span class="mt-2 w-1.5 h-1.5 rounded-full bg-amber-500"></span><span>Any relevant tax year(s)</span></li>
+                  <li class="flex items-start gap-2"><span class="mt-2 w-1.5 h-1.5 rounded-full bg-amber-500"></span><span>Exact error message (if any)</span></li>
+                  <li class="flex items-start gap-2"><span class="mt-2 w-1.5 h-1.5 rounded-full bg-amber-500"></span><span>Expected vs actual result</span></li>
+                  <li class="flex items-start gap-2"><span class="mt-2 w-1.5 h-1.5 rounded-full bg-amber-500"></span><span>Screenshots (portal issues)</span></li>
+                </ul>
+              </div>
+
+              <div class="bg-slate-900/40 rounded-2xl border border-slate-700/60 p-6">
+                <div class="text-sm font-semibold text-slate-200 mb-3">Fast lane</div>
+                <p class="text-sm text-slate-400">
+                  If you’re blocked from logging in or accessing reports, include a screenshot and your browser/device.
+                </p>
+                <div class="mt-4">
+                  <a
+                    class="inline-flex w-full items-center justify-center rounded-xl border border-slate-700/60 bg-slate-950/40 px-4 py-3 text-sm font-semibold text-slate-100 hover:bg-slate-900/60 transition"
+                    href="mailto:support@taxmonitor.pro?subject=Support%3A%20Portal%20Access%20Issue"
+                  >Email portal support</a>
+                </div>
+              </div>
+
+              <div class="bg-slate-900/40 rounded-2xl border border-slate-700/60 p-6">
+                <div class="text-sm font-semibold text-slate-200 mb-2">Support mailbox</div>
+                <div class="text-sm text-slate-400">
+                  <a class="text-slate-300 hover:text-white transition" href="mailto:support@taxmonitor.pro">support@taxmonitor.pro</a>
+                </div>
+                <p class="mt-3 text-xs text-slate-500">
+                  Monitoring does not create IRS representation. Representation, filing, and resolution are separate engagements.
+                </p>
+              </div>
+            </aside>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ (Canvas layout) -->
+      <section class="w-full py-20 bg-slate-900/50 px-6">
         <div class="max-w-4xl mx-auto">
           <div class="text-center mb-12">
             <h2 class="text-3xl md:text-5xl font-bold mb-6">Support <span class="gradient-text">FAQ</span></h2>
@@ -236,25 +304,25 @@
           <div class="space-y-4">
             <details class="group rounded-2xl bg-slate-800/30 border border-slate-700/50 p-6">
               <summary class="cursor-pointer list-none flex items-center justify-between gap-4">
-                <span class="font-semibold">Does intake create IRS representation?</span>
+                <span class="font-semibold">Does submitting support create IRS representation?</span>
                 <svg class="w-5 h-5 text-slate-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                 </svg>
               </summary>
               <p class="mt-4 text-slate-400">
-                No. Monitoring does not create IRS representation. Representation, filing, and resolution are separate engagements.
+                No. Monitoring and support do not create IRS representation. Representation, filing, and resolution are separate engagements.
               </p>
             </details>
 
             <details class="group rounded-2xl bg-slate-800/30 border border-slate-700/50 p-6">
               <summary class="cursor-pointer list-none flex items-center justify-between gap-4">
-                <span class="font-semibold">How long does the first status take?</span>
+                <span class="font-semibold">What if I have a deadline on a notice?</span>
                 <svg class="w-5 h-5 text-slate-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                 </svg>
               </summary>
               <p class="mt-4 text-slate-400">
-                Your first status is typically delivered within 5 business days after intake is complete and required access steps are satisfied.
+                Select “Time-sensitive (deadline)” and include the notice date and response due date in your message.
               </p>
             </details>
 
@@ -266,110 +334,14 @@
                 </svg>
               </summary>
               <p class="mt-4 text-slate-400">
-                Reports and transcripts are delivered through your secure portal. If a download fails or a link looks expired, email support and include a screenshot.
-              </p>
-            </details>
-
-            <details class="group rounded-2xl bg-slate-800/30 border border-slate-700/50 p-6">
-              <summary class="cursor-pointer list-none flex items-center justify-between gap-4">
-                <span class="font-semibold">Can you interpret a notice for me?</span>
-                <svg class="w-5 h-5 text-slate-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                </svg>
-              </summary>
-              <p class="mt-4 text-slate-400">
-                Monitoring reports translate what changed on your IRS account. If you need advice, representation, or resolution, that is handled under a separate engagement.
+                Reports and transcripts are available in your secure portal. If a download fails, include a screenshot and your device/browser.
               </p>
             </details>
           </div>
         </div>
       </section>
 
-      <!-- Quick message builder -->
-      <section class="px-6 py-20">
-        <div class="max-w-4xl mx-auto">
-          <div class="rounded-3xl border border-slate-800/60 bg-slate-900/30 p-8 md:p-10">
-            <div class="grid md:grid-cols-2 gap-10 items-start">
-              <div>
-                <h2 class="text-2xl md:text-4xl font-bold mb-4">Send a clean support request</h2>
-                <p class="text-slate-400 mb-6">
-                  This builds an email with the right structure so your ticket routes fast.
-                </p>
-
-                <div class="text-sm text-slate-400 space-y-2">
-                  <div class="flex items-center gap-2">
-                    <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
-                    <span>Subject includes the support lane</span>
-                  </div>
-                  <div class="flex items-center gap-2">
-                    <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
-                    <span>Body prompts for key details</span>
-                  </div>
-                  <div class="flex items-center gap-2">
-                    <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
-                    <span>Opens in your mail app (no portal form needed)</span>
-                  </div>
-                </div>
-
-                <p class="mt-6 text-xs text-slate-500">
-                  If your mail client does not open, email <a class="text-slate-300 hover:text-white transition" href="mailto:support@taxmonitor.pro">support@taxmonitor.pro</a> directly.
-                </p>
-              </div>
-
-              <form class="space-y-4" id="support-form">
-                <div>
-                  <label class="text-sm text-slate-300 font-semibold" for="lane">Lane</label>
-                  <select
-                    class="mt-2 w-full rounded-xl border border-slate-700/60 bg-slate-950/40 px-4 py-3 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
-                    id="lane"
-                    name="lane"
-                    required
-                  >
-                    <option value="Account / Reports / Monitoring">Account / Reports / Monitoring</option>
-                    <option value="Access / Portal">Access / Portal</option>
-                    <option value="Billing / Receipts">Billing / Receipts</option>
-                    <option value="General">General</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label class="text-sm text-slate-300 font-semibold" for="summary">One-sentence summary</label>
-                  <input
-                    class="mt-2 w-full rounded-xl border border-slate-700/60 bg-slate-950/40 px-4 py-3 text-sm text-slate-100 placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
-                    id="summary"
-                    name="summary"
-                    placeholder="Example: I cannot download my report for 2023"
-                    required
-                    type="text"
-                  >
-                </div>
-
-                <div>
-                  <label class="text-sm text-slate-300 font-semibold" for="details">Details</label>
-                  <textarea
-                    class="mt-2 min-h-[140px] w-full rounded-xl border border-slate-700/60 bg-slate-950/40 px-4 py-3 text-sm text-slate-100 placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
-                    id="details"
-                    name="details"
-                    placeholder="Include tax years, what you expected vs what you saw, and any screenshots."
-                    required
-                  ></textarea>
-                </div>
-
-                <button
-                  class="inline-flex w-full items-center justify-center rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 px-5 py-3 text-sm font-semibold text-slate-950 hover:from-amber-400 hover:to-amber-500 transition"
-                  type="submit"
-                >Open email draft →</button>
-
-                <p class="text-xs text-slate-500">
-                  Do not include full SSNs or full bank account numbers in email.
-                </p>
-              </form>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Conversion CTA -->
+      <!-- Conversion CTA (match index tone) -->
       <section class="px-6 py-24">
         <div class="max-w-3xl mx-auto text-center">
           <h2 class="text-3xl md:text-5xl font-bold mb-6">Need monitoring started <span class="gradient-text">now</span>?</h2>
@@ -386,15 +358,13 @@
 
     </main>
 
-    <!-- Footer (inlined; partials disabled for now) -->
+    <!-- Footer (match index.html) -->
     <footer class="border-t border-slate-800/60 bg-slate-950/70">
       <div class="mx-auto max-w-6xl px-6 py-12">
         <div class="grid gap-10 md:grid-cols-3">
           <div>
             <div class="flex items-center gap-3">
-              <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 text-slate-950 font-bold">
-                TM
-              </span>
+              <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 text-slate-950 font-bold">TM</span>
               <div>
                 <div class="font-semibold">Tax Monitor Pro</div>
                 <div class="text-sm text-slate-400">Professional IRS monitoring</div>
@@ -447,41 +417,50 @@
   </div>
 
   <script>
+    function scrollToForm() {
+      const el = document.getElementById('support-form');
+      if (!el) return;
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
     (function () {
       const y = document.getElementById('footer-year');
       if (y) y.textContent = String(new Date().getFullYear());
     })();
 
     (function () {
-      const form = document.getElementById('support-form');
+      const form = document.getElementById('ticket-form');
       if (!form) return;
 
       form.addEventListener('submit', function (e) {
         e.preventDefault();
 
-        const lane = document.getElementById('lane')?.value || 'General';
-        const summary = document.getElementById('summary')?.value || '';
-        const details = document.getElementById('details')?.value || '';
+        const category = document.getElementById('category')?.value || 'General';
+        const email = document.getElementById('email')?.value || '';
+        const fullName = document.getElementById('full_name')?.value || '';
+        const message = document.getElementById('message')?.value || '';
+        const subject = document.getElementById('subject')?.value || '';
+        const urgency = document.getElementById('urgency')?.value || 'Normal';
 
-        const subject = `Support: ${lane} — ${summary}`.trim();
+        const mailSubject = `Support: ${category} (${urgency}) — ${subject}`.trim();
         const bodyLines = [
-          `Lane: ${lane}`,
+          `Name: ${fullName}`,
+          `Email: ${email}`,
+          `Category: ${category}`,
+          `Urgency: ${urgency}`,
           '',
-          `Summary: ${summary}`,
-          '',
-          'Details:',
-          details,
+          'Message:',
+          message,
           '',
           'Helpful context (optional):',
           '- Tax year(s):',
-          '- What you expected:',
-          '- What you saw:',
+          '- Browser/device:',
           '- Screenshots attached (if applicable):',
           '',
           'Note: Please do not include full SSNs or full bank account numbers in email.'
         ];
 
-        const mailto = `mailto:support@taxmonitor.pro?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyLines.join('\n'))}`;
+        const mailto = `mailto:support@taxmonitor.pro?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(bodyLines.join('\n'))}`;
         window.location.href = mailto;
       });
     })();
