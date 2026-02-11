@@ -26,9 +26,18 @@ app/
 ├─ agreement.html
 ├─ index.html
 ├─ intake.html
+├─ login.html
 ├─ offer.html
 ├─ payment-success.html
-└─ payment.html
+├─ payment.html
+└─ pages/
+   ├─ start-here.html → account (office) or intake
+   ├─ calendar.html → appointments and my calendar
+   ├─ files.html → documents
+   ├─ messaging.html → inbox and sent
+   ├─ office.html → estimates, invoices, my billing, payments, and proposals
+   ├─ projects.html → my tasks, projects, and work requests
+   └─ support.html → submit a ticket or view ticket status
 
 assets/
 ├─ favicon.ico
@@ -113,6 +122,7 @@ Only use this if deploying intentionally from local.
 
 ```bash
 wrangler deploy
+
 
 
 
