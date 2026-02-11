@@ -77,7 +77,6 @@ styles/
 workers/
 └─ api/
    ├─ src/
-   │  ├─ .keep
    │  └─ index.js
    └─ wrangler.toml
 
@@ -132,6 +131,7 @@ Only use this if deploying intentionally from local.
 
 ```bash
 wrangler deploy
+
 
 
 
