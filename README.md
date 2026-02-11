@@ -31,7 +31,7 @@ app/
 ├─ payment-success.html
 ├─ payment.html
 └─ pages/
-   ├─ start-here.html → account (office) or intake
+   ├─ start-here.html → account (office) or intake flow (intake, offer, agreement, and payment) or post-payment flow (welcome, filing status, address update, and esign 2848)
    ├─ calendar.html → appointments and my calendar
    ├─ files.html → documents
    ├─ messaging.html → inbox and sent
@@ -122,6 +122,7 @@ Only use this if deploying intentionally from local.
 
 ```bash
 wrangler deploy
+
 
 
 
