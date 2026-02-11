@@ -1,13 +1,58 @@
-<!--/taxmonitor.pro-site/blob/main/site/partials/footer.html-->
-<footer class="px-6 py-12 border-t border-slate-800">
-  <div class="max-w-4xl mx-auto text-center">
-    <div class="flex items-center justify-center gap-2 mb-4">
-      <img src="/assets/logo.svg" alt="Tax Monitor Pro" class="h-6 w-6">
-      <span class="font-semibold text-lg">Tax Monitor Pro</span>
+<!-- /site/partials/footer.html -->
+<footer class="border-t border-slate-800/60 bg-slate-950/70">
+  <div class="mx-auto max-w-6xl px-6 py-12">
+    <div class="grid gap-10 md:grid-cols-3">
+      <div>
+        <div class="flex items-center gap-3">
+          <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 text-slate-950 font-bold">
+            TM
+          </span>
+          <div>
+            <div class="font-semibold">Tax Monitor Pro</div>
+            <div class="text-sm text-slate-400">Professional IRS monitoring</div>
+          </div>
+        </div>
+
+        <p class="mt-4 text-sm text-slate-400 leading-relaxed" id="footer-text">
+          Professional tax account monitoring services provided by licensed tax professional.
+        </p>
+
+        <p class="mt-3 text-xs text-slate-500">
+          Monitoring does not create IRS representation. Representation, filing, and resolution are separate engagements.
+        </p>
+      </div>
+
+      <div class="md:pl-6">
+        <div class="mb-3 text-sm font-semibold text-slate-200">Links</div>
+        <ul class="space-y-2 text-sm">
+          <li><a class="text-slate-400 hover:text-white transition" href="/site/contact.html">Contact</a></li>
+          <li><a class="text-slate-400 hover:text-white transition" href="/site/index.html#how-it-works">How it works</a></li>
+          <li><a class="text-slate-400 hover:text-white transition" href="/site/pricing.html">Pricing</a></li>
+          <li><a class="text-slate-400 hover:text-white transition" href="/site/index.html#report-sample">Report sample</a></li>
+          <li><a class="text-slate-400 hover:text-white transition" href="/site/support.html">Support</a></li>
+          <li><a class="text-slate-400 hover:text-white transition" href="/site/index.html#transcript-sample">Transcript sample</a></li>
+        </ul>
+      </div>
+
+      <div class="md:pl-6">
+        <div class="mb-3 text-sm font-semibold text-slate-200">Get started</div>
+        <div class="rounded-2xl border border-slate-800/60 bg-slate-900/30 p-5">
+          <div class="text-sm text-slate-300">Ready to see your status?</div>
+          <div class="mt-1 text-xs text-slate-500">Intake takes a few minutes.</div>
+          <a
+            class="mt-4 inline-flex w-full items-center justify-center rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 px-4 py-2 text-sm font-semibold text-slate-950 hover:from-amber-400 hover:to-amber-500 transition"
+            href="/app/intake.html"
+          >Start intake →</a>
+        </div>
+      </div>
     </div>
-    <p id="footer-text" class="text-slate-500 text-sm mb-4">
-      Professional tax account monitoring services provided by licensed tax professional.
-    </p>
-    <p class="text-slate-600 text-xs">© 2024 Tax Monitor Pro. All rights reserved.</p>
+
+    <div class="mt-10 flex flex-col gap-3 border-t border-slate-800/60 pt-6 text-xs text-slate-500 md:flex-row md:items-center md:justify-between">
+      <div>© <span id="footer-year"></span> Tax Monitor Pro. All rights reserved.</div>
+      <div class="flex gap-4">
+        <a class="hover:text-slate-300 transition" href="/legal/privacy.html">Privacy</a>
+        <a class="hover:text-slate-300 transition" href="/legal/terms.html">Terms</a>
+      </div>
+    </div>
   </div>
 </footer>
