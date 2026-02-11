@@ -1,0 +1,353 @@
+<!--/taxmonitor.pro-site/blob/main/site/support.html-->
+<!doctype html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Support | Tax Monitor Pro</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="/assets/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link rel="apple-touch-icon" href="/assets/favicon.ico">
+
+  <style>
+    html, body { height: 100%; }
+    body { box-sizing: border-box; overflow-x: hidden; }
+    * { font-family: 'DM Sans', sans-serif; }
+
+    .divider-line {
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.10), transparent);
+      height: 1px;
+      width: 100%;
+    }
+
+    .tm-btn-primary {
+      background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%);
+      transition: all 0.2s ease;
+    }
+    .tm-btn-primary:hover {
+      box-shadow: 0 10px 30px rgba(245, 158, 11, 0.18);
+      transform: translateY(-2px);
+    }
+
+    .tm-btn-secondary {
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      transition: all 0.2s ease;
+    }
+    .tm-btn-secondary:hover {
+      background: rgba(245, 158, 11, 0.10);
+      border-color: rgba(245, 158, 11, 0.55);
+    }
+
+    .tm-card-hover {
+      transition: all 0.25s ease;
+    }
+    .tm-card-hover:hover {
+      border-color: rgba(245, 158, 11, 0.35);
+      transform: translateY(-4px);
+    }
+
+    .tm-icon-accent {
+      color: #f59e0b;
+    }
+  </style>
+
+  <style>@view-transition { navigation: auto; }</style>
+</head>
+
+<body class="min-h-screen bg-slate-950 text-slate-100">
+  <div id="app" class="min-h-screen flex flex-col">
+
+    <!-- Header (match /site/index.html) -->
+    <header class="sticky top-0 z-50 border-b border-slate-800/60 bg-slate-950/70 backdrop-blur">
+      <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+        <a href="/site/index.html" class="flex items-center gap-3">
+          <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 text-slate-950 font-bold">
+            TM
+          </span>
+          <span class="font-semibold tracking-tight">Tax Monitor Pro</span>
+        </a>
+
+        <nav class="hidden items-center gap-8 md:flex">
+          <a href="/site/contact-us.html" class="text-sm text-slate-300 hover:text-white transition">Contact</a>
+          <a href="/site/index.html#how-it-works" class="text-sm text-slate-300 hover:text-white transition">How it works</a>
+          <a href="/site/pricing.html" class="text-sm text-slate-300 hover:text-white transition">Pricing</a>
+          <a href="/site/index.html#report-sample" class="text-sm text-slate-300 hover:text-white transition">Report sample</a>
+          <a href="/site/index.html#transcript-sample" class="text-sm text-slate-300 hover:text-white transition">Transcript sample</a>
+        </nav>
+
+        <div class="flex items-center gap-3">
+          <a
+            href="/app/intake.html"
+            class="hidden md:inline-flex items-center gap-2 rounded-lg border border-slate-700/60 bg-slate-900/40 px-4 py-2 text-sm font-semibold text-slate-100 hover:bg-slate-900/70 transition"
+          >Start intake</a>
+
+          <a
+            href="/app/intake.html"
+            class="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 px-4 py-2 text-sm font-semibold text-slate-950 hover:from-amber-400 hover:to-amber-500 transition"
+          >Start intake →</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="flex-1">
+
+      <!-- Hero -->
+      <section class="w-full px-6 pt-20 pb-16 md:pt-28 md:pb-20">
+        <div class="max-w-3xl mx-auto text-center">
+          <h1 class="text-4xl md:text-6xl font-bold tracking-tight mb-6 leading-tight">
+            Support
+          </h1>
+          <p class="text-lg md:text-xl text-slate-400 mb-10 max-w-2xl mx-auto leading-relaxed">
+            For current clients: onboarding, offboarding, and account support.
+          </p>
+
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <button
+              class="tm-btn-primary px-8 py-4 rounded-full text-lg font-semibold text-slate-950"
+              data-cal-link="tax-monitor-pro/tax-monitor-service-support"
+              data-cal-namespace="tax-monitor-service-support"
+              data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'
+              type="button"
+            >Contact support</button>
+
+            <button
+              class="tm-btn-secondary px-8 py-4 rounded-full text-lg font-semibold text-white bg-transparent"
+              data-cal-link="tax-monitor-pro/tax-monitor-service-onboarding"
+              data-cal-namespace="tax-monitor-service-onboarding"
+              data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'
+              type="button"
+            >Client onboarding</button>
+
+            <button
+              class="tm-btn-secondary px-8 py-4 rounded-full text-lg font-semibold text-white bg-transparent"
+              data-cal-link="tax-monitor-pro/tax-monitor-service-exit-offboarding"
+              data-cal-namespace="tax-monitor-service-exit-offboarding"
+              data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'
+              type="button"
+            >Client offboarding</button>
+          </div>
+
+          <p class="mt-8 text-sm text-slate-500">
+            No IRS representation is created by scheduling support. Representation is a separate engagement.
+          </p>
+        </div>
+      </section>
+
+      <div class="divider-line"></div>
+
+      <!-- Support Options -->
+      <section class="w-full px-6 py-20 md:py-24">
+        <div class="max-w-4xl mx-auto">
+          <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">Pick what you need</h2>
+            <p class="text-slate-400 text-lg max-w-xl mx-auto">
+              Use the right calendar so your request lands with the right workflow.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <button
+              class="text-left flex items-start gap-4 p-6 rounded-2xl bg-slate-900/40 border border-white/5 tm-card-hover"
+              data-cal-link="tax-monitor-pro/tax-monitor-service-support"
+              data-cal-namespace="tax-monitor-service-support"
+              data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'
+              type="button"
+            >
+              <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-slate-950/40 flex items-center justify-center border border-white/5">
+                <svg class="w-6 h-6 tm-icon-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/>
+                </svg>
+              </div>
+              <div>
+                <div class="text-lg font-semibold mb-1">Support</div>
+                <div class="text-slate-400 text-sm">Account questions, portal access, report delivery issues, general client help.</div>
+              </div>
+            </button>
+
+            <button
+              class="text-left flex items-start gap-4 p-6 rounded-2xl bg-slate-900/40 border border-white/5 tm-card-hover"
+              data-cal-link="tax-monitor-pro/tax-monitor-service-onboarding"
+              data-cal-namespace="tax-monitor-service-onboarding"
+              data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'
+              type="button"
+            >
+              <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-slate-950/40 flex items-center justify-center border border-white/5">
+                <svg class="w-6 h-6 tm-icon-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
+              </div>
+              <div>
+                <div class="text-lg font-semibold mb-1">Onboarding</div>
+                <div class="text-slate-400 text-sm">New client kickoff, intake completion support, first transcript pull coordination.</div>
+              </div>
+            </button>
+
+            <button
+              class="text-left flex items-start gap-4 p-6 rounded-2xl bg-slate-900/40 border border-white/5 tm-card-hover"
+              data-cal-link="tax-monitor-pro/tax-monitor-service-exit-offboarding"
+              data-cal-namespace="tax-monitor-service-exit-offboarding"
+              data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'
+              type="button"
+            >
+              <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-slate-950/40 flex items-center justify-center border border-white/5">
+                <svg class="w-6 h-6 tm-icon-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                </svg>
+              </div>
+              <div>
+                <div class="text-lg font-semibold mb-1">Offboarding</div>
+                <div class="text-slate-400 text-sm">Service cancellation, data export questions, final report timing and wrap-up.</div>
+              </div>
+            </button>
+
+            <a
+              class="text-left flex items-start gap-4 p-6 rounded-2xl bg-slate-900/40 border border-white/5 tm-card-hover"
+              href="/site/contact-us.html"
+            >
+              <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-slate-950/40 flex items-center justify-center border border-white/5">
+                <svg class="w-6 h-6 tm-icon-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+              </div>
+              <div>
+                <div class="text-lg font-semibold mb-1">Looking for a demo?</div>
+                <div class="text-slate-400 text-sm">Visit Contact to book a demo or ask pre-sales questions.</div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer (match /site/index.html) -->
+    <footer class="border-t border-slate-800/60 bg-slate-950/70">
+      <div class="mx-auto max-w-6xl px-6 py-12">
+        <div class="grid gap-10 md:grid-cols-3">
+          <div>
+            <div class="flex items-center gap-3">
+              <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 text-slate-950 font-bold">
+                TM
+              </span>
+              <div>
+                <div class="font-semibold">Tax Monitor Pro</div>
+                <div class="text-sm text-slate-400">Professional IRS monitoring</div>
+              </div>
+            </div>
+
+            <p class="mt-4 text-sm text-slate-400 leading-relaxed" id="footer-text">
+              Professional tax account monitoring services provided by licensed tax professional.
+            </p>
+
+            <p class="mt-3 text-xs text-slate-500">
+              Monitoring does not create IRS representation. Representation, filing, and resolution are separate engagements.
+            </p>
+          </div>
+
+          <div class="md:pl-6">
+            <div class="text-sm font-semibold text-slate-200 mb-3">Links</div>
+            <ul class="space-y-2 text-sm">
+              <li><a class="text-slate-400 hover:text-white transition" href="/site/contact-us.html">Contact</a></li>
+              <li><a class="text-slate-400 hover:text-white transition" href="/site/index.html#how-it-works">How it works</a></li>
+              <li><a class="text-slate-400 hover:text-white transition" href="/site/pricing.html">Pricing</a></li>
+              <li><a class="text-slate-400 hover:text-white transition" href="/site/index.html#report-sample">Report sample</a></li>
+              <li><a class="text-slate-400 hover:text-white transition" href="/site/index.html#transcript-sample">Transcript sample</a></li>
+            </ul>
+          </div>
+
+          <div class="md:pl-6">
+            <div class="text-sm font-semibold text-slate-200 mb-3">Get started</div>
+            <div class="rounded-2xl border border-slate-800/60 bg-slate-900/30 p-5">
+              <div class="text-sm text-slate-300">Ready to see your status?</div>
+              <div class="mt-1 text-xs text-slate-500">Intake takes a few minutes.</div>
+              <a
+                class="mt-4 inline-flex w-full items-center justify-center rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 px-4 py-2 text-sm font-semibold text-slate-950 hover:from-amber-400 hover:to-amber-500 transition"
+                href="/app/intake.html"
+              >Start intake →</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-10 flex flex-col gap-3 border-t border-slate-800/60 pt-6 text-xs text-slate-500 md:flex-row md:items-center md:justify-between">
+          <div>© <span id="footer-year"></span> Tax Monitor Pro. All rights reserved.</div>
+          <div class="flex gap-4">
+            <a class="hover:text-slate-300 transition" href="/legal/privacy.html">Privacy</a>
+            <a class="hover:text-slate-300 transition" href="/legal/terms.html">Terms</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Cal.com element-click embed (support page only: onboarding + offboarding + support) -->
+  <script type="text/javascript">
+    (function (C, A, L) {
+      let p = function (a, ar) { a.q.push(ar); };
+      let d = C.document;
+      C.Cal = C.Cal || function () {
+        let cal = C.Cal;
+        let ar = arguments;
+        if (!cal.loaded) {
+          cal.ns = {};
+          cal.q = cal.q || [];
+          d.head.appendChild(d.createElement("script")).src = A;
+          cal.loaded = true;
+        }
+        if (ar[0] === L) {
+          const api = function () { p(api, arguments); };
+          const namespace = ar[1];
+          api.q = api.q || [];
+          if (typeof namespace === "string") {
+            cal.ns[namespace] = cal.ns[namespace] || api;
+            p(cal.ns[namespace], ar);
+            p(cal, ["initNamespace", namespace]);
+          } else {
+            p(cal, ar);
+          }
+          return;
+        }
+        p(cal, ar);
+      };
+    })(window, "https://app.cal.com/embed/embed.js", "init");
+
+    Cal("init", "tax-monitor-service-exit-offboarding", { origin: "https://app.cal.com" });
+    Cal("init", "tax-monitor-service-onboarding", { origin: "https://app.cal.com" });
+    Cal("init", "tax-monitor-service-support", { origin: "https://app.cal.com" });
+
+    Cal.ns["tax-monitor-service-exit-offboarding"]("ui", {
+      "cssVarsPerTheme": { "light": { "cal-brand": "#292929" }, "dark": { "cal-brand": "#f97316" } },
+      "hideEventTypeDetails": false,
+      "layout": "month_view"
+    });
+
+    Cal.ns["tax-monitor-service-onboarding"]("ui", {
+      "cssVarsPerTheme": { "light": { "cal-brand": "#292929" }, "dark": { "cal-brand": "#f97316" } },
+      "hideEventTypeDetails": false,
+      "layout": "month_view"
+    });
+
+    Cal.ns["tax-monitor-service-support"]("ui", {
+      "cssVarsPerTheme": { "light": { "cal-brand": "#292929" }, "dark": { "cal-brand": "#f97316" } },
+      "hideEventTypeDetails": false,
+      "layout": "month_view"
+    });
+  </script>
+
+  <script>
+    (function () {
+      const y = document.getElementById('footer-year');
+      if (y) y.textContent = String(new Date().getFullYear());
+    })();
+  </script>
+</body>
+</html>
