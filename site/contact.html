@@ -67,37 +67,8 @@
 <body class="min-h-screen bg-slate-950 text-slate-100">
   <div id="app" class="min-h-screen flex flex-col">
 
-    <!-- Header (match /site/index.html) -->
-    <header class="sticky top-0 z-50 border-b border-slate-800/60 bg-slate-950/70 backdrop-blur">
-      <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <a href="/site/index.html" class="flex items-center gap-3">
-          <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 text-slate-950 font-bold">
-            TM
-          </span>
-          <span class="font-semibold tracking-tight">Tax Monitor Pro</span>
-        </a>
-
-        <nav class="hidden items-center gap-8 md:flex">
-          <a href="/site/contact.html" class="text-sm text-amber-300 hover:text-amber-200 transition">Contact</a>
-          <a href="/site/index.html#how-it-works" class="text-sm text-slate-300 hover:text-white transition">How it works</a>
-          <a href="/site/pricing.html" class="text-sm text-slate-300 hover:text-white transition">Pricing</a>
-          <a href="/site/index.html#report-sample" class="text-sm text-slate-300 hover:text-white transition">Report sample</a>
-          <a href="/site/index.html#transcript-sample" class="text-sm text-slate-300 hover:text-white transition">Transcript sample</a>
-        </nav>
-
-        <div class="flex items-center gap-3">
-          <a
-            href="/app/intake.html"
-            class="hidden md:inline-flex items-center gap-2 rounded-lg border border-slate-700/60 bg-slate-900/40 px-4 py-2 text-sm font-semibold text-slate-100 hover:bg-slate-900/70 transition"
-          >Start intake</a>
-
-          <a
-            href="/app/intake.html"
-            class="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 px-4 py-2 text-sm font-semibold text-slate-950 hover:from-amber-400 hover:to-amber-500 transition"
-          >Start intake →</a>
-        </div>
-      </div>
-    </header>
+    <!-- Header partial mount -->
+    <div id="tm-header"></div>
 
     <main class="flex-1">
 
@@ -111,7 +82,6 @@
             Whether you have questions, want to see a demo, or are ready to take the next step—we're here to help.
           </p>
 
-          <!-- Top buttons now anchor to "How We Can Help" -->
           <div class="flex flex-col sm:flex-row gap-4 justify-center mb-8">
             <a
               class="tm-btn-primary px-8 py-4 rounded-full text-lg font-semibold text-slate-950 inline-flex items-center justify-center"
@@ -128,7 +98,6 @@
             EA-led service. Secure intake. No IRS representation created by contacting us.
           </p>
 
-          <!-- Pills now anchor to "How We Can Help" -->
           <div class="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
             <a
               class="tm-btn-secondary px-5 py-3 rounded-full text-sm font-semibold text-white bg-transparent inline-flex items-center justify-center"
@@ -215,7 +184,6 @@
               </div>
             </button>
 
-            <!-- Support button now uses exit-offboarding event type -->
             <button
               class="text-left flex items-start gap-4 p-6 rounded-2xl bg-slate-900/40 border border-white/5 tm-card-hover"
               data-cal-link="tax-monitor-pro/tax-monitor-service-exit-offboarding"
@@ -413,63 +381,8 @@
 
     </main>
 
-    <!-- Footer (match /site/index.html) -->
-    <footer class="border-t border-slate-800/60 bg-slate-950/70">
-      <div class="mx-auto max-w-6xl px-6 py-12">
-        <div class="grid gap-10 md:grid-cols-3">
-          <div>
-            <div class="flex items-center gap-3">
-              <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 text-slate-950 font-bold">
-                TM
-              </span>
-              <div>
-                <div class="font-semibold">Tax Monitor Pro</div>
-                <div class="text-sm text-slate-400">Professional IRS monitoring</div>
-              </div>
-            </div>
-
-            <p class="mt-4 text-sm text-slate-400 leading-relaxed" id="footer-text">
-              Professional tax account monitoring services provided by licensed tax professional.
-            </p>
-
-            <p class="mt-3 text-xs text-slate-500">
-              Monitoring does not create IRS representation. Representation, filing, and resolution are separate engagements.
-            </p>
-          </div>
-
-          <div class="md:pl-6">
-            <div class="text-sm font-semibold text-slate-200 mb-3">Links</div>
-            <ul class="space-y-2 text-sm">
-              <li><a class="text-slate-400 hover:text-white transition" href="/site/contact.html">Contact</a></li>
-              <li><a class="text-slate-400 hover:text-white transition" href="/site/index.html#how-it-works">How it works</a></li>
-              <li><a class="text-slate-400 hover:text-white transition" href="/site/pricing.html">Pricing</a></li>
-              <li><a class="text-slate-400 hover:text-white transition" href="/site/index.html#report-sample">Report sample</a></li>
-              <li><a class="text-slate-400 hover:text-white transition" href="/site/index.html#transcript-sample">Transcript sample</a></li>
-            </ul>
-          </div>
-
-          <div class="md:pl-6">
-            <div class="text-sm font-semibold text-slate-200 mb-3">Get started</div>
-            <div class="rounded-2xl border border-slate-800/60 bg-slate-900/30 p-5">
-              <div class="text-sm text-slate-300">Ready to see your status?</div>
-              <div class="mt-1 text-xs text-slate-500">Intake takes a few minutes.</div>
-              <a
-                class="mt-4 inline-flex w-full items-center justify-center rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 px-4 py-2 text-sm font-semibold text-slate-950 hover:from-amber-400 hover:to-amber-500 transition"
-                href="/app/intake.html"
-              >Start intake →</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="mt-10 flex flex-col gap-3 border-t border-slate-800/60 pt-6 text-xs text-slate-500 md:flex-row md:items-center md:justify-between">
-          <div>© <span id="footer-year"></span> Tax Monitor Pro. All rights reserved.</div>
-          <div class="flex gap-4">
-            <a class="hover:text-slate-300 transition" href="/legal/privacy.html">Privacy</a>
-            <a class="hover:text-slate-300 transition" href="/legal/terms.html">Terms</a>
-          </div>
-        </div>
-      </div>
-    </footer>
+    <!-- Footer partial mount -->
+    <div id="tm-footer"></div>
 
   </div>
 
@@ -538,6 +451,30 @@
     (function () {
       const y = document.getElementById('footer-year');
       if (y) y.textContent = String(new Date().getFullYear());
+    })();
+  </script>
+
+  <!-- Header/Footer partial loader -->
+  <script>
+    (function () {
+      function fetchText(url) {
+        return fetch(url, { cache: "no-store" })
+          .then(function (r) { return r.ok ? r.text() : ""; })
+          .catch(function () { return ""; });
+      }
+
+      function mount(id, html) {
+        var el = document.getElementById(id);
+        if (el && html) el.innerHTML = html;
+      }
+
+      Promise.all([
+        fetchText("/site/partials/header.html"),
+        fetchText("/site/partials/footer.html")
+      ]).then(function (res) {
+        mount("tm-header", res[0]);
+        mount("tm-footer", res[1]);
+      });
     })();
   </script>
 
