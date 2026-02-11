@@ -1,243 +1,380 @@
-<!--/app/index.html-->
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en" class="h-full">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tax Monitor Pro — Status</title>
-
+  <title>Tax Monitor Pro - Dashboard</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="/_sdk/element_sdk.js"></script>
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
-
-  <link rel="icon" href="/favicon.ico" sizes="any">
-  <link rel="icon" href="/assets/favicon.ico" sizes="any">
-  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
-  <link rel="apple-touch-icon" href="/assets/favicon.ico">
-
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['DM Sans', 'system-ui', 'sans-serif'],
+          },
+          colors: {
+            slate: {
+              850: '#1a1f2e',
+              900: '#0f1219',
+              950: '#080a0f',
+            },
+            amber: {
+              400: '#fbbf24',
+              500: '#f59e0b',
+              600: '#d97706',
+            }
+          }
+        }
+      }
+    }
+  </script>
   <style>
-    body { box-sizing: border-box; }
-    * { font-family: 'DM Sans', sans-serif; }
+    html,
+    body {
+      height: 100%;
+    }
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+    body {
+      box-sizing: border-box;
+    }
     .gradient-text {
-      background: linear-gradient(135deg, #F59E0B, #D97706);
+      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
-  </style>
-
-  <style>
-    .tm-progress-fill { transition: width 220ms ease; }
-
-    .tm-step--active .tm-step-label,
-    .tm-step--active .tm-step-num { color: #f59e0b; }
-
-    .tm-step--active .tm-step-num { border-color: rgba(245, 158, 11, 0.55); }
-
-    .tm-step--done { opacity: 0.92; }
-
-    .tm-step--done .tm-step-num {
-      background: rgba(255, 255, 255, 0.08);
-      border-color: rgba(255, 255, 255, 0.22);
-      color: rgba(241, 245, 249, 0.92);
+    .gradient-bg {
+      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
     }
-
-    .tm-step--done .tm-step-label { color: rgba(241, 245, 249, 0.92); }
+    .card-glow {
+      box-shadow: 0 0 40px rgba(251, 191, 36, 0.05), 0 0 80px rgba(251, 191, 36, 0.02);
+    }
+    .nav-item {
+      transition: all 0.2s ease;
+    }
+    .nav-item:hover {
+      background: rgba(251, 191, 36, 0.08);
+    }
+    .nav-item.active {
+      background: rgba(251, 191, 36, 0.12);
+      border-left: 2px solid #f59e0b;
+    }
   </style>
-
-  <style>@view-transition { navigation: auto; }</style>
-  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
 </head>
-
-<body class="h-full bg-slate-950 text-slate-100">
-  <div id="app" class="min-h-screen flex flex-col">
-
-    <!-- Header -->
-    <header class="sticky top-0 z-50 border-b border-slate-800/60 bg-slate-950/70 backdrop-blur">
-      <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <a href="/site/index.html" class="flex items-center gap-3">
-          <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 text-slate-950 font-bold">
-            TM
-          </span>
-          <span class="font-semibold tracking-tight">Tax Monitor Pro</span>
-        </a>
-
-        <nav class="hidden items-center gap-8 md:flex">
-          <a href="/site/index.html" class="text-sm text-slate-300 hover:text-white transition">Home</a>
-          <a href="/site/pricing.html" class="text-sm text-slate-300 hover:text-white transition">Pricing</a>
-        </nav>
-
+<body class="h-full bg-slate-950 font-sans text-white overflow-hidden">
+  <div class="flex h-full">
+    <!-- Left Sidebar -->
+    <aside class="w-64 bg-slate-900 border-r border-slate-800/50 flex flex-col shrink-0">
+      <!-- Brand Block -->
+      <div class="p-5 border-b border-slate-800/50">
         <div class="flex items-center gap-3">
-          <a
-            href="/app/index.html"
-            class="hidden md:inline-flex items-center gap-2 rounded-lg border border-slate-700/60 bg-slate-900/40 px-4 py-2 text-sm font-semibold text-slate-100 hover:bg-slate-900/70 transition"
-          >Status</a>
-
-          <a
-            href="/app/intake.html"
-            class="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 px-4 py-2 text-sm font-semibold text-slate-950 hover:from-amber-400 hover:to-amber-500 transition"
-          >Start intake →</a>
-        </div>
-      </div>
-    </header>
-
-    <main class="flex-1">
-      <section class="px-6 py-12 md:py-16">
-        <div class="mx-auto max-w-3xl">
-
-          <!-- Steps / Progress -->
-          <div class="rounded-2xl border border-slate-800/60 bg-slate-900/30 p-6 md:p-8 mb-8">
-            <div class="mb-5">
-              <div class="text-xs text-slate-500 mb-2">Progress</div>
-              <div class="h-2 rounded-full bg-slate-800/70 border border-slate-700/50 overflow-hidden">
-                <div id="tm-progress-fill" class="tm-progress-fill h-full bg-gradient-to-r from-amber-500 to-amber-600" style="width:25%;"></div>
-              </div>
-            </div>
-
-            <div class="grid grid-cols-4 gap-2 md:gap-4">
-              <div id="step-1" class="tm-step flex flex-col items-center text-center">
-                <div class="tm-step-num flex h-9 w-9 items-center justify-center rounded-full border border-slate-700/70 bg-slate-950/30 text-sm font-bold text-slate-300">1</div>
-                <div class="tm-step-label mt-2 text-xs md:text-sm text-slate-400">Intake</div>
-              </div>
-
-              <div id="step-2" class="tm-step flex flex-col items-center text-center">
-                <div class="tm-step-num flex h-9 w-9 items-center justify-center rounded-full border border-slate-700/70 bg-slate-950/30 text-sm font-bold text-slate-300">2</div>
-                <div class="tm-step-label mt-2 text-xs md:text-sm text-slate-400">Offer</div>
-              </div>
-
-              <div id="step-3" class="tm-step flex flex-col items-center text-center">
-                <div class="tm-step-num flex h-9 w-9 items-center justify-center rounded-full border border-slate-700/70 bg-slate-950/30 text-sm font-bold text-slate-300">3</div>
-                <div class="tm-step-label mt-2 text-xs md:text-sm text-slate-400">Agreement</div>
-              </div>
-
-              <div id="step-4" class="tm-step flex flex-col items-center text-center">
-                <div class="tm-step-num flex h-9 w-9 items-center justify-center rounded-full border border-slate-700/70 bg-slate-950/30 text-sm font-bold text-slate-300">4</div>
-                <div class="tm-step-label mt-2 text-xs md:text-sm text-slate-400">Payment</div>
-              </div>
-            </div>
-
-            <div class="mt-6 border-t border-slate-800/60 pt-6 text-center">
-              <h1 class="text-3xl md:text-5xl font-bold tracking-tight mb-3">
-                Check your <span class="gradient-text">Status</span>
-              </h1>
-              <p class="text-slate-400 text-lg">
-                Enter your access code to view your current step and next action.
-              </p>
-            </div>
+          <div class="w-10 h-10 rounded-lg gradient-bg flex items-center justify-center font-bold text-slate-900 text-lg">
+            TM
           </div>
-
-          <!-- Status Lookup -->
-          <div class="rounded-2xl border border-slate-800/60 bg-slate-900/30 p-6 md:p-8">
-            <!--
-              Replace action with your Worker endpoint that resolves an access code.
-              Suggested pattern:
-              - GET  /status?code=XXXX
-              - POST /status  (application/x-www-form-urlencoded)
-            -->
-            <form id="tm-status" method="get" action="/status" accept-charset="UTF-8" class="space-y-6">
-              <div>
-                <label for="access_code" class="block text-sm font-semibold text-slate-200 mb-2">Access code</label>
-                <input
-                  id="access_code"
-                  name="code"
-                  autocomplete="one-time-code"
-                  inputmode="text"
-                  class="w-full rounded-xl border border-slate-700/70 bg-slate-950/40 px-4 py-3 text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
-                  placeholder="Example: TM-8F2KQ"
-                  required
-                  type="text"
-                >
-                <p class="mt-2 text-xs text-slate-500">Your code is provided after intake submission or by email.</p>
-              </div>
-
-              <div class="grid gap-3 md:grid-cols-2">
-                <button
-                  type="submit"
-                  class="inline-flex w-full items-center justify-center rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 px-4 py-3 text-sm font-semibold text-slate-950 hover:from-amber-400 hover:to-amber-500 transition"
-                >View status →</button>
-
-                <a
-                  href="/app/intake.html"
-                  class="inline-flex w-full items-center justify-center rounded-xl border border-slate-700/70 bg-slate-950/20 px-4 py-3 text-sm font-semibold text-slate-100 hover:bg-slate-950/35 transition"
-                >Start intake</a>
-              </div>
-
-              <div class="rounded-xl border border-slate-800/60 bg-slate-950/25 p-4 text-sm text-slate-400">
-                <div class="font-semibold text-slate-200 mb-2">No access code yet?</div>
-                <ul class="list-disc list-inside space-y-1">
-                  <li>Complete the intake form to generate your status flow.</li>
-                  <li>If you already submitted intake, check your inbox for your access code.</li>
-                </ul>
-              </div>
-            </form>
-          </div>
-
-          <div class="mt-8 text-center text-sm text-slate-500">
-            Monitoring does not create IRS representation. Representation, filing, and resolution are separate engagements.
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="border-t border-slate-800/60 bg-slate-950/70">
-      <div class="mx-auto max-w-6xl px-6 py-10">
-        <div class="flex flex-col gap-3 text-xs text-slate-500 md:flex-row md:items-center md:justify-between">
-          <div>© <span id="footer-year"></span> Tax Monitor Pro. All rights reserved.</div>
-          <div class="flex gap-4">
-            <a class="hover:text-slate-300 transition" href="/legal/privacy.html">Privacy</a>
-            <a class="hover:text-slate-300 transition" href="/legal/terms.html">Terms</a>
+          <div>
+            <div class="font-semibold text-white text-sm">Tax Monitor Pro</div>
+            <div class="text-xs text-slate-500">IRS Monitoring</div>
           </div>
         </div>
       </div>
-    </footer>
 
+      <!-- Client/Account Block -->
+      <div class="p-5 border-b border-slate-800/50">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-full bg-gradient-to-br from-slate-700 to-slate-800 flex items-center justify-center text-sm font-medium text-slate-300">
+            JD
+          </div>
+          <div class="flex-1 min-w-0">
+            <div id="sidebar-user-name" class="font-medium text-sm text-white truncate">Jane Doe</div>
+            <div class="text-xs text-slate-500">Account: Monitoring</div>
+          </div>
+        </div>
+        <a href="javascript:void(0)" class="text-xs text-amber-500 hover:text-amber-400 mt-2 inline-block transition-colors">Edit profile</a>
+      </div>
+
+      <!-- Navigation -->
+      <nav class="flex-1 py-4 px-3">
+        <ul class="space-y-1">
+          <li>
+            <a href="/app/index.html" class="nav-item active flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-white">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+              </svg>
+              Start Here
+            </a>
+          </li>
+          <li>
+            <a href="/app/calendar.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-400 hover:text-white">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+              </svg>
+              Calendar
+            </a>
+          </li>
+          <li>
+            <a href="/app/files.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-400 hover:text-white">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/>
+              </svg>
+              Files
+            </a>
+          </li>
+          <li>
+            <a href="/app/messaging.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-400 hover:text-white">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 10h8m-8 4h5m-7 7l-3 3V5a2 2 0 012-2h14a2 2 0 012 2v12a2 2 0 01-2 2H7z"/>
+              </svg>
+              Messaging
+            </a>
+          </li>
+          <li>
+            <a href="/app/office.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-400 hover:text-white">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 21h18M5 21V7a2 2 0 012-2h3v16M14 21V3h3a2 2 0 012 2v16"/>
+              </svg>
+              Office
+            </a>
+          </li>
+          <li>
+            <a href="/app/projects.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-400 hover:text-white">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5h6m-8 4h10M7 13h10M7 17h6"/>
+              </svg>
+              Projects
+            </a>
+          </li>
+          <li>
+            <a href="/app/support.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-400 hover:text-white">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/>
+              </svg>
+              Support
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="flex-1 flex flex-col min-w-0">
+      <!-- Top Bar -->
+      <header class="h-16 bg-slate-900/50 border-b border-slate-800/50 flex items-center justify-between px-6 shrink-0">
+        <div></div>
+
+        <!-- Center Account Switcher -->
+        <button class="flex items-center gap-2 px-4 py-2 rounded-full bg-slate-800/50 border border-slate-700/50 hover:bg-slate-800 transition-colors">
+          <div class="w-6 h-6 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-xs font-medium text-slate-900">J</div>
+          <span id="topbar-user-name" class="text-sm text-white font-medium">Jane Doe</span>
+          <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </button>
+
+        <!-- Right Side Icons -->
+        <div class="flex items-center gap-4">
+          <button class="p-2 text-slate-400 hover:text-white transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+            </svg>
+          </button>
+          <button class="p-2 text-slate-400 hover:text-white transition-colors relative">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+            </svg>
+            <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-amber-500 rounded-full"></span>
+          </button>
+          <button class="p-2 text-slate-400 hover:text-white transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </button>
+          <div class="w-8 h-8 rounded-full bg-gradient-to-br from-slate-600 to-slate-700 flex items-center justify-center text-sm font-medium text-slate-300 cursor-pointer hover:ring-2 hover:ring-amber-500/50 transition-all">
+            JD
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Content -->
+      <main class="flex-1 overflow-auto p-8">
+        <div class="max-w-4xl mx-auto">
+          <!-- Greeting Section -->
+          <div class="text-center mb-12">
+            <h1 class="text-3xl font-semibold text-white mb-3">
+              <span id="greeting-prefix">Good evening, </span><span id="greeting-name" class="gradient-text">Jane</span>
+            </h1>
+            <p id="subheadline" class="text-slate-400 text-lg mb-2">This is your command center — where monitoring stays visible.</p>
+            <p id="helper-text" class="text-slate-500 text-sm">Check your status, view notices, and download reports anytime.</p>
+          </div>
+
+          <!-- Feature Cards -->
+          <div class="grid md:grid-cols-2 gap-6 mb-8">
+            <!-- Card 1: Account Status -->
+            <div class="bg-slate-900 rounded-2xl border border-slate-800/50 p-8 card-glow hover:border-slate-700/50 transition-all group">
+              <div class="flex flex-col items-center text-center">
+                <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 flex items-center justify-center mb-6 group-hover:scale-105 transition-transform">
+                  <svg class="w-8 h-8 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                  </svg>
+                </div>
+                <h2 id="card1-title" class="text-xl font-semibold text-white mb-2">Account Status</h2>
+                <p id="card1-description" class="text-slate-400 text-sm mb-6">See latest transcript checks, balances, and flags.</p>
+                <a href="/app/status.html" class="inline-flex items-center gap-2 px-6 py-2.5 rounded-lg gradient-bg text-slate-900 font-medium text-sm hover:opacity-90 transition-opacity">
+                  Go to section
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
+
+            <!-- Card 2: Document Vault -->
+            <div class="bg-slate-900 rounded-2xl border border-slate-800/50 p-8 card-glow hover:border-slate-700/50 transition-all group">
+              <div class="flex flex-col items-center text-center">
+                <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 flex items-center justify-center mb-6 group-hover:scale-105 transition-transform">
+                  <svg class="w-8 h-8 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/>
+                  </svg>
+                </div>
+                <h2 id="card2-title" class="text-xl font-semibold text-white mb-2">Document Vault</h2>
+                <p id="card2-description" class="text-slate-400 text-sm mb-6">View reports, transcripts, and uploaded notices.</p>
+                <a href="/app/documents.html" class="inline-flex items-center gap-2 px-6 py-2.5 rounded-lg gradient-bg text-slate-900 font-medium text-sm hover:opacity-90 transition-opacity">
+                  Go to section
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Disclaimer -->
+          <p id="disclaimer" class="text-center text-slate-600 text-xs">Monitoring does not create IRS representation.</p>
+        </div>
+      </main>
+    </div>
   </div>
 
   <script>
+    const defaultConfig = {
+      user_name: 'Jane Doe',
+      greeting_subheadline: 'This is your command center — where monitoring stays visible.',
+      helper_text: 'Check your status, view notices, and download reports anytime.',
+      card1_title: 'Account Status',
+      card1_description: 'See latest transcript checks, balances, and flags.',
+      card2_title: 'Document Vault',
+      card2_description: 'View reports, transcripts, and uploaded notices.',
+      disclaimer_text: 'Monitoring does not create IRS representation.',
+      background_color: '#080a0f',
+      surface_color: '#0f1219',
+      text_color: '#ffffff'
+    };
+
+    function safeFirstName(fullName) {
+      const s = String(fullName || '').trim();
+      if (!s) return 'there';
+      return s.split(/\s+/)[0] || 'there';
+    }
+
+    function initialsFromName(fullName) {
+      const s = String(fullName || '').trim();
+      if (!s) return 'TM';
+      const parts = s.split(/\s+/).filter(Boolean);
+      const first = parts[0] ? parts[0][0] : '';
+      const last = parts.length > 1 ? parts[parts.length - 1][0] : '';
+      const out = (first + last).toUpperCase();
+      return out || 'TM';
+    }
+
+    function setText(id, value) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = String(value ?? '');
+    }
+
+    async function onConfigChange(config) {
+      const merged = Object.assign({}, defaultConfig, config || {});
+      const fullName = merged.user_name || defaultConfig.user_name;
+      const firstName = safeFirstName(fullName);
+      const initials = initialsFromName(fullName);
+
+      setText('disclaimer', merged.disclaimer_text);
+      setText('sidebar-user-name', fullName);
+      setText('topbar-user-name', fullName);
+
+      setText('greeting-name', firstName);
+      setText('helper-text', merged.helper_text);
+      setText('subheadline', merged.greeting_subheadline);
+
+      setText('card1-title', merged.card1_title);
+      setText('card1-description', merged.card1_description);
+      setText('card2-title', merged.card2_title);
+      setText('card2-description', merged.card2_description);
+
+      const initialsEls = document.querySelectorAll('.tm-user-initials');
+      initialsEls.forEach((el) => { el.textContent = initials; });
+
+      if (merged.background_color) document.body.style.backgroundColor = merged.background_color;
+      if (merged.text_color) document.body.style.color = merged.text_color;
+    }
+
+    function mapToCapabilities(config) {
+      return {
+        borderables: [],
+        fontEditable: {
+          get: () => config.font_family || 'DM Sans',
+          set: (value) => window.elementSdk.setConfig({ font_family: value })
+        },
+        fontSizeable: {
+          get: () => config.font_size || 16,
+          set: (value) => window.elementSdk.setConfig({ font_size: value })
+        },
+        recolorables: [
+          { get: () => config.background_color || defaultConfig.background_color, set: (value) => window.elementSdk.setConfig({ background_color: value }) },
+          { get: () => config.surface_color || defaultConfig.surface_color, set: (value) => window.elementSdk.setConfig({ surface_color: value }) },
+          { get: () => config.text_color || defaultConfig.text_color, set: (value) => window.elementSdk.setConfig({ text_color: value }) }
+        ]
+      };
+    }
+
+    function mapToEditPanelValues(config) {
+      const merged = Object.assign({}, defaultConfig, config || {});
+      return new Map([
+        ['card1_description', merged.card1_description],
+        ['card1_title', merged.card1_title],
+        ['card2_description', merged.card2_description],
+        ['card2_title', merged.card2_title],
+        ['disclaimer_text', merged.disclaimer_text],
+        ['greeting_subheadline', merged.greeting_subheadline],
+        ['helper_text', merged.helper_text],
+        ['user_name', merged.user_name]
+      ]);
+    }
+
     (function () {
-      var y = document.getElementById('footer-year');
-      if (y) y.textContent = String(new Date().getFullYear());
+      const sidebarAvatar = document.querySelector('aside .w-9.h-9.rounded-full');
+      const topbarAvatar = document.querySelector('header .w-8.h-8.rounded-full');
+
+      if (sidebarAvatar) sidebarAvatar.classList.add('tm-user-initials');
+      if (topbarAvatar) topbarAvatar.classList.add('tm-user-initials');
     })();
-  </script>
 
-  <script>
-    (function () {
-      function clamp(n, min, max) {
-        return Math.max(min, Math.min(max, n));
-      }
-
-      function setProgress(step) {
-        var s = clamp(Number(step || 1), 1, 4);
-        var fill = document.getElementById('tm-progress-fill');
-        if (fill) fill.style.width = String((s / 4) * 100) + '%';
-
-        for (var i = 1; i <= 4; i++) {
-          var el = document.getElementById('step-' + i);
-          if (!el) continue;
-
-          el.classList.remove('tm-step--active');
-          el.classList.remove('tm-step--done');
-
-          if (i < s) el.classList.add('tm-step--done');
-          if (i === s) el.classList.add('tm-step--active');
-
-          var num = el.querySelector('.tm-step-num');
-          var label = el.querySelector('.tm-step-label');
-          if (num) num.classList.toggle('text-slate-300', i !== s);
-          if (label) label.classList.toggle('text-slate-400', i !== s);
-        }
-      }
-
-      var params = new URLSearchParams(window.location.search || '');
-      var step = params.get('step');
-
-      if (step) setProgress(step);
-      else setProgress(1);
-    })();
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange,
+        mapToCapabilities,
+        mapToEditPanelValues
+      });
+    } else {
+      onConfigChange(defaultConfig);
+    }
   </script>
 </body>
 </html>
