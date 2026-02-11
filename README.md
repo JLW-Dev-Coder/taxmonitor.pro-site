@@ -35,7 +35,59 @@ Event triggers:
 
 ## Repo Structure
 
-app/ ├─ agreement.html ├─ index.html ├─ intake.html ├─ login.html ├─ offer.html ├─ payment-success.html ├─ payment.html └─ pages/ ├─ calendar.html ├─ files.html ├─ messaging.html ├─ office.html ├─ projects.html ├─ start-here.html ├─ support.html └─ flows/ ├─ intake/ │ ├─ agreement.html │ ├─ intake.html │ ├─ offer.html │ └─ payment.html └─ post-payment/ ├─ address-update.html ├─ client-exit-survey.html ├─ compliance-report.html ├─ esign-2848.html ├─ filing-status.html └─ welcome.html assets/ ├─ favicon.ico └─ logo.svg legal/ ├─ privacy.html └─ terms.html public/ └─ .gitkeep site/ ├─ contact.html ├─ index.html ├─ pricing.html ├─ site.js ├─ support.html └─ partials/ ├─ footer.html └─ header.html styles/ ├─ app.css └─ site.css workers/ └─ api/ ├─ src/ │ └─ index.js └─ wrangler.toml README.md _redirects
+app/
+├─ agreement.html
+├─ index.html
+├─ intake.html
+├─ login.html
+├─ offer.html
+├─ payment-success.html
+├─ payment.html
+├─ report.html
+├─ status.html
+└─ pages/
+   ├─ calendar.html
+   ├─ files.html
+   ├─ messaging.html
+   ├─ office.html
+   ├─ projects.html
+   ├─ start-here.html
+   ├─ support.html
+   └─ flows/
+      ├─ intake/
+      └─ post-payment/
+
+assets/
+├─ favicon.ico
+└─ logo.svg
+
+legal/
+├─ privacy.html
+└─ terms.html
+
+public/
+└─ .gitkeep
+
+site/
+├─ contact.html
+├─ explore.html
+├─ index.html
+├─ pricing.html
+└─ partials/
+
+styles/
+├─ app.css
+└─ site.css
+
+workers/
+└─ api/
+   ├─ src/
+   │  └─ index.js
+   └─ wrangler.toml
+
+_redirects
+build.mjs
+README.md
 
 ---
 
@@ -74,4 +126,3 @@ Option B — Wrangler deploy (local)
 
 ```bash
 wrangler deploy
-
