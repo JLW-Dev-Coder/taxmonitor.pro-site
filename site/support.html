@@ -37,35 +37,8 @@
 <body class="min-h-screen bg-slate-950 text-slate-100">
   <div id="app" class="min-h-screen flex flex-col">
 
-    <!-- Header (match index.html) -->
-    <header class="sticky top-0 z-50 border-b border-slate-800/60 bg-slate-950/70 backdrop-blur">
-      <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <a href="/site/index.html" class="flex items-center gap-3">
-          <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 text-slate-950 font-bold">TM</span>
-          <span class="font-semibold tracking-tight">Tax Monitor Pro</span>
-        </a>
-
-        <nav class="hidden items-center gap-8 md:flex">
-          <a href="/site/index.html#how-it-works" class="text-sm text-slate-300 hover:text-white transition">How it works</a>
-          <a href="/site/pricing.html" class="text-sm text-slate-300 hover:text-white transition">Pricing</a>
-          <a href="/site/index.html#report-sample" class="text-sm text-slate-300 hover:text-white transition">Report sample</a>
-          <a href="/site/index.html#transcript-sample" class="text-sm text-slate-300 hover:text-white transition">Transcript sample</a>
-          <a href="/site/support.html" class="text-sm text-amber-300 hover:text-amber-200 transition">Support</a>
-        </nav>
-
-        <div class="flex items-center gap-3">
-          <a
-            href="/app/intake.html"
-            class="hidden md:inline-flex items-center gap-2 rounded-lg border border-slate-700/60 bg-slate-900/40 px-4 py-2 text-sm font-semibold text-slate-100 hover:bg-slate-900/70 transition"
-          >Start intake</a>
-
-          <a
-            href="/app/intake.html"
-            class="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 px-4 py-2 text-sm font-semibold text-slate-950 hover:from-amber-400 hover:to-amber-500 transition"
-          >Start intake →</a>
-        </div>
-      </div>
-    </header>
+    <!-- Header partial mount -->
+    <div id="tm-header"></div>
 
     <main class="flex-1">
 
@@ -131,7 +104,6 @@
                 Best for complex issues. Book a support call when email isn’t enough.
               </p>
 
-              <!-- Cal.com trigger (element-click) -->
               <button
                 class="inline-flex w-full items-center justify-center py-3.5 px-6 rounded-xl border border-slate-700/60 bg-slate-950/40 text-slate-100 font-semibold hover:bg-slate-900/60 transition-colors"
                 data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'
@@ -145,7 +117,7 @@
         </div>
       </section>
 
-      <!-- Support Form (Canvas layout; two-column + right-side helper) -->
+      <!-- Support Form -->
       <section class="w-full pb-20 md:pb-28 px-6" id="support-form">
         <div class="max-w-5xl mx-auto">
           <div class="grid lg:grid-cols-3 gap-6 items-start">
@@ -222,7 +194,6 @@
                   </div>
                 </div>
 
-                <!-- ClickUp CF fields (required tie to order token) -->
                 <div class="grid md:grid-cols-2 gap-4">
                   <div>
                     <label class="text-sm font-semibold text-slate-200" for="cf_issue_type">Issue type</label>
@@ -309,7 +280,6 @@
                   ></textarea>
                 </div>
 
-                <!-- Hidden defaults (map to ClickUp CFs in Worker) -->
                 <input id="cf_action_required" name="cf_action_required" type="hidden" value="Triage">
                 <input id="cf_sla_status" name="cf_sla_status" type="hidden" value="Open / New">
 
@@ -368,7 +338,7 @@
         </div>
       </section>
 
-      <!-- FAQ (Canvas layout) -->
+      <!-- FAQ -->
       <section class="w-full py-20 bg-slate-900/50 px-6">
         <div class="max-w-4xl mx-auto">
           <div class="text-center mb-12">
@@ -416,7 +386,7 @@
         </div>
       </section>
 
-      <!-- Conversion CTA (match index tone) -->
+      <!-- Conversion CTA -->
       <section class="px-6 py-24">
         <div class="max-w-3xl mx-auto text-center">
           <h2 class="text-3xl md:text-5xl font-bold mb-6">Need monitoring started <span class="gradient-text">now</span>?</h2>
@@ -433,61 +403,8 @@
 
     </main>
 
-    <!-- Footer (match index.html) -->
-    <footer class="border-t border-slate-800/60 bg-slate-950/70">
-      <div class="mx-auto max-w-6xl px-6 py-12">
-        <div class="grid gap-10 md:grid-cols-3">
-          <div>
-            <div class="flex items-center gap-3">
-              <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 text-slate-950 font-bold">TM</span>
-              <div>
-                <div class="font-semibold">Tax Monitor Pro</div>
-                <div class="text-sm text-slate-400">Professional IRS monitoring</div>
-              </div>
-            </div>
-
-            <p class="mt-4 text-sm text-slate-400 leading-relaxed" id="footer-text">
-              Professional tax account monitoring services provided by licensed tax professional.
-            </p>
-
-            <p class="mt-3 text-xs text-slate-500">
-              Monitoring does not create IRS representation. Representation, filing, and resolution are separate engagements.
-            </p>
-          </div>
-
-          <div class="md:pl-6">
-            <div class="text-sm font-semibold text-slate-200 mb-3">Links</div>
-            <ul class="space-y-2 text-sm">
-              <li><a class="text-slate-400 hover:text-white transition" href="/site/index.html#how-it-works">How it works</a></li>
-              <li><a class="text-slate-400 hover:text-white transition" href="/site/pricing.html">Pricing</a></li>
-              <li><a class="text-slate-400 hover:text-white transition" href="/site/index.html#report-sample">Report sample</a></li>
-              <li><a class="text-slate-400 hover:text-white transition" href="/site/index.html#transcript-sample">Transcript sample</a></li>
-              <li><a class="text-slate-400 hover:text-white transition" href="/site/support.html">Support</a></li>
-            </ul>
-          </div>
-
-          <div class="md:pl-6">
-            <div class="text-sm font-semibold text-slate-200 mb-3">Get started</div>
-            <div class="rounded-2xl border border-slate-800/60 bg-slate-900/30 p-5">
-              <div class="text-sm text-slate-300">Ready to see your status?</div>
-              <div class="mt-1 text-xs text-slate-500">Intake takes a few minutes.</div>
-              <a
-                class="mt-4 inline-flex w-full items-center justify-center rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 px-4 py-2 text-sm font-semibold text-slate-950 hover:from-amber-400 hover:to-amber-500 transition"
-                href="/app/intake.html"
-              >Start intake →</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="mt-10 flex flex-col gap-3 border-t border-slate-800/60 pt-6 text-xs text-slate-500 md:flex-row md:items-center md:justify-between">
-          <div>© <span id="footer-year"></span> Tax Monitor Pro. All rights reserved.</div>
-          <div class="flex gap-4">
-            <a class="hover:text-slate-300 transition" href="/legal/privacy.html">Privacy</a>
-            <a class="hover:text-slate-300 transition" href="/legal/terms.html">Terms</a>
-          </div>
-        </div>
-      </div>
-    </footer>
+    <!-- Footer partial mount -->
+    <div id="tm-footer"></div>
 
   </div>
 
@@ -534,21 +451,39 @@
       if (!el) return;
       el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
+  </script>
 
+  <script>
     (function () {
-      const y = document.getElementById('footer-year');
-      if (y) y.textContent = String(new Date().getFullYear());
-    })();
+      function fetchText(url) {
+        return fetch(url, { cache: "no-store" })
+          .then(function (r) { return r.ok ? r.text() : ""; })
+          .catch(function () { return ""; });
+      }
 
+      function mount(id, html) {
+        var el = document.getElementById(id);
+        if (el && html) el.innerHTML = html;
+      }
+
+      Promise.all([
+        fetchText("/site/partials/header.html"),
+        fetchText("/site/partials/footer.html")
+      ]).then(function (res) {
+        mount("tm-header", res[0]);
+        mount("tm-footer", res[1]);
+      });
+    })();
+  </script>
+
+  <script>
     (function () {
       const byId = (id) => document.getElementById(id);
 
       function setStatus(message, isError) {
         const el = byId('form-status');
         if (!el) return;
-        el.className = isError
-          ? 'mt-3 text-sm text-red-300'
-          : 'mt-3 text-sm text-emerald-300';
+        el.className = isError ? 'mt-3 text-sm text-red-300' : 'mt-3 text-sm text-emerald-300';
         el.textContent = message;
         el.classList.remove('hidden');
       }
