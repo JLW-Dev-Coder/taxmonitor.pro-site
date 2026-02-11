@@ -42,14 +42,14 @@ public/
 └─ .gitkeep
 
 site/
-└─ partials /
-   ├─ footer.html
-   ├─ header.html
 ├─ contact.html
 ├─ index.html
 ├─ pricing.html
 ├─ site.js
-└─ support.html
+├─ support.html
+└─ partials/
+   ├─ footer.html
+   └─ header.html
 
 styles/
 ├─ app.css
@@ -111,6 +111,7 @@ Only use this if deploying intentionally from local.
 
 ```bash
 wrangler deploy
+
 
 
 
