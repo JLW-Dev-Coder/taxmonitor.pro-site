@@ -74,22 +74,14 @@
 
   <style>
     /* Progress (inline-safe, matches theme) */
-    .tm-progress-fill {
-      transition: width 220ms ease;
-    }
+    .tm-progress-fill { transition: width 220ms ease; }
 
     .tm-step--active .tm-step-label,
-    .tm-step--active .tm-step-num {
-      color: #f59e0b;
-    }
+    .tm-step--active .tm-step-num { color: #f59e0b; }
 
-    .tm-step--active .tm-step-num {
-      border-color: rgba(245, 158, 11, 0.55);
-    }
+    .tm-step--active .tm-step-num { border-color: rgba(245, 158, 11, 0.55); }
 
-    .tm-step--done {
-      opacity: 0.92;
-    }
+    .tm-step--done { opacity: 0.92; }
 
     .tm-step--done .tm-step-num {
       background: rgba(255, 255, 255, 0.08);
@@ -97,9 +89,7 @@
       color: rgba(241, 245, 249, 0.92);
     }
 
-    .tm-step--done .tm-step-label {
-      color: rgba(241, 245, 249, 0.92);
-    }
+    .tm-step--done .tm-step-label { color: rgba(241, 245, 249, 0.92); }
   </style>
 
   <style>@view-transition { navigation: auto; }</style>
@@ -113,9 +103,7 @@
     <header class="sticky top-0 z-50 border-b border-slate-800/60 bg-slate-950/70 backdrop-blur">
       <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         <a href="/site/index.html" class="flex items-center gap-3">
-          <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 text-slate-950 font-bold">
-            TM
-          </span>
+          <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 text-slate-950 font-bold">TM</span>
           <span class="font-semibold tracking-tight">Tax Monitor Pro</span>
         </a>
 
@@ -184,7 +172,11 @@
           </div>
 
           <div class="rounded-2xl border border-slate-800/60 bg-slate-900/30 p-6 md:p-8">
-            <form id="tm-intake" method="post" action="/intake" accept-charset="UTF-8" class="space-y-8">
+            <form id="tm-intake" method="post" action="/forms/intake" accept-charset="UTF-8" class="space-y-8">
+              <!-- Idempotency + validation helpers -->
+              <input id="tm_event_id" name="eventId" type="hidden" value="">
+              <input id="tm_session_token" name="sessionToken" type="hidden" value="">
+
               <!-- Identity -->
               <div class="grid gap-4 md:grid-cols-2">
                 <div>
@@ -460,16 +452,43 @@
         concernsValue.value = picked.filter(Boolean).join(',');
       }
 
+      function ensureEventId() {
+        var el = document.getElementById('tm_event_id');
+        if (!el) return;
+
+        var key = 'tm:intake:eventId';
+        var existing = sessionStorage.getItem(key);
+        if (!existing) {
+          existing = (crypto && crypto.randomUUID) ? crypto.randomUUID() : String(Date.now());
+          sessionStorage.setItem(key, existing);
+        }
+        el.value = existing;
+      }
+
+      function syncSessionToken() {
+        var el = document.getElementById('tm_session_token');
+        if (!el) return;
+
+        // Placeholder: pull from URL (?token=...) or existing localStorage key, whichever you decide later.
+        var params = new URLSearchParams(window.location.search || '');
+        var t = params.get('token') || params.get('sessionToken') || '';
+        el.value = t;
+      }
+
       if (ack) ack.addEventListener('change', syncAck);
       for (var i = 0; i < concerns.length; i++) concerns[i].addEventListener('change', syncConcerns);
 
       if (form) {
         form.addEventListener('submit', function () {
+          ensureEventId();
+          syncSessionToken();
           syncAck();
           syncConcerns();
         });
       }
 
+      ensureEventId();
+      syncSessionToken();
       syncAck();
       syncConcerns();
     })();
