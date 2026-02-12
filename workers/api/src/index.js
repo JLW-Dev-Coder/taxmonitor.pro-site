@@ -1,4 +1,12 @@
 // workers/api/src/index.js
+//
+// ROUTES HANDLED BY THIS WORKER
+// - POST /cal/webhook     → RECEIVES CAL.COM WEBHOOKS, STORES RAW PAYLOAD IN R2, CREATES A TASK IN CLICKUP, SENDS EMAIL VIA GMAIL API
+// - POST /stripe/webhook  → RECEIVES STRIPE WEBHOOKS, STORES RAW PAYLOAD IN R2, CREATES A TASK IN CLICKUP
+//
+// IMPORTANT
+// - This Worker is intended to run on api.taxmonitor.pro/*
+// - Stripe webhook URL should be: https://api.taxmonitor.pro/stripe/webhook
 
 const CU_STATUS_LEAD_CAPTURE = "0 booking / lead capture";
 
@@ -8,6 +16,10 @@ export default {
 
     if (request.method === "POST" && url.pathname === "/cal/webhook") {
       return handleCalWebhook(request, env);
+    }
+
+    if (request.method === "POST" && url.pathname === "/stripe/webhook") {
+      return handleStripeWebhook(request, env);
     }
 
     return json({ error: "Not found" }, 404);
@@ -28,11 +40,11 @@ async function handleCalWebhook(request, env) {
   ]);
 
   if (!env.R2_BUCKET) missing.push("R2_BUCKET(binding)");
-
   if (missing.length) return json({ error: `Missing ${missing.join(", ")}` }, 500);
 
   const rawBody = await request.text();
 
+  // VALIDATES CAL.COM SIGNATURE HEADER (REJECTS TAMPERED WEBHOOKS)
   const sigHeader =
     request.headers.get("x-cal-signature-256") ||
     request.headers.get("X-Cal-Signature-256");
@@ -53,13 +65,13 @@ async function handleCalWebhook(request, env) {
   const typeSlug = extractTypeSlug(body);
   const triggerEvent = String(body?.triggerEvent || "");
 
-  // 1) Canonical receipt in R2
+  // STORES THE RAW CAL.COM PAYLOAD IN R2 (CANONICAL FORENSIC RECORD)
   const r2Key = `cal/${eventType}/${new Date().toISOString()}.json`;
   await env.R2_BUCKET.put(r2Key, rawBody, {
     httpMetadata: { contentType: "application/json" },
   });
 
-  // 2) Receipt task in ClickUp
+  // CREATES A TASK IN CLICKUP WITH THE RAW EVENT SUMMARY + R2 KEY FOR FORENSICS
   let cuTask;
   try {
     cuTask = await createClickUpReceiptTask(body, env, {
@@ -82,14 +94,18 @@ async function handleCalWebhook(request, env) {
     );
   }
 
-  // 3) Outbound email via Gmail API (Workspace)
+  // SENDS BOOKING EMAIL VIA GMAIL API AND LOGS RESULT BACK INTO THE CLICKUP TASK
   let emailResult = null;
   try {
     emailResult = await sendBookingEmailForEvent(body, env);
     await addClickUpComment(cuTask?.id, env, formatEmailLogComment(emailResult, body));
   } catch (err) {
     console.error(err);
-    await addClickUpComment(cuTask?.id, env, `EMAIL SEND FAILED\n- Error: ${String(err?.message || err)}`);
+    await addClickUpComment(
+      cuTask?.id,
+      env,
+      `EMAIL SEND FAILED\n- Error: ${String(err?.message || err)}`
+    );
   }
 
   return json(
@@ -102,6 +118,77 @@ async function handleCalWebhook(request, env) {
       r2_key: r2Key,
       type_slug: typeSlug,
       trigger_event: triggerEvent,
+    },
+    200
+  );
+}
+
+async function handleStripeWebhook(request, env) {
+  const missing = missingEnv(env, [
+    "CLICKUP_TOKEN",
+    "CU_LIST_ORDERS_ID",
+    "STRIPE_SECRET_KEY",
+    "STRIPE_WEBHOOK_SECRET",
+  ]);
+
+  if (!env.R2_BUCKET) missing.push("R2_BUCKET(binding)");
+  if (missing.length) return json({ error: `Missing ${missing.join(", ")}` }, 500);
+
+  const rawBody = await request.text();
+
+  // VALIDATES STRIPE SIGNATURE HEADER (REJECTS TAMPERED WEBHOOKS)
+  const sigHeader = request.headers.get("stripe-signature");
+  if (!sigHeader) return json({ error: "Missing stripe-signature" }, 401);
+
+  const verified = await verifyStripeSignature(env.STRIPE_WEBHOOK_SECRET, sigHeader, rawBody);
+  if (!verified.ok) return json({ error: verified.error || "Invalid signature" }, 401);
+
+  let event;
+  try {
+    event = JSON.parse(rawBody);
+  } catch {
+    return json({ error: "Invalid JSON" }, 400);
+  }
+
+  const eventType = String(event?.type || "unknown");
+  const eventId = String(event?.id || "");
+  const livemode = Boolean(event?.livemode);
+
+  // STORES THE RAW STRIPE PAYLOAD IN R2 (CANONICAL FORENSIC RECORD)
+  const r2Key = `stripe/${eventType}/${new Date().toISOString()}.json`;
+  await env.R2_BUCKET.put(r2Key, rawBody, {
+    httpMetadata: { contentType: "application/json" },
+  });
+
+  // CREATES A TASK IN CLICKUP WITH A LOG OF THE STRIPE EVENT + R2 KEY FOR FORENSICS
+  let cuTask = null;
+  try {
+    cuTask = await createClickUpStripeReceiptTask(event, env, { eventType, r2Key });
+  } catch (err) {
+    console.error(err);
+    // IMPORTANT: RETURN 200 SO STRIPE DOES NOT KEEP RETRYING FOREVER WHILE YOU DIAGNOSE CLICKUP
+    return json(
+      {
+        ok: false,
+        error: "ClickUp receipt task failed",
+        event_id: eventId || null,
+        event_type: eventType,
+        livemode,
+        r2_key: r2Key,
+      },
+      200
+    );
+  }
+
+  return json(
+    {
+      ok: true,
+      clickup_task_id: cuTask?.id || null,
+      clickup_task_url: cuTask?.url || null,
+      event_id: eventId || null,
+      event_type: eventType,
+      livemode,
+      r2_key: r2Key,
     },
     200
   );
@@ -142,8 +229,7 @@ async function createClickUpReceiptTask(body, env, meta) {
 
   const listId = isSupportSlug(typeSlug) ? env.CU_LIST_SUPPORT_ID : env.CU_LIST_ORDERS_ID;
 
-  // Task name format:
-  // [{Location}] {Event type title} between {Organiser} and {Scheduler}
+  // TASK NAME: EASY TO SCAN IN CLICKUP LISTS
   const eventTypeTitle = extractTypeTitle(body) || typeSlug || "Event";
   const organizerName = personNameOnly(organizer) || "Organizer";
   const schedulerName = personNameOnly(booker) || "Scheduler";
@@ -171,9 +257,9 @@ async function createClickUpReceiptTask(body, env, meta) {
   });
 
   const tags = uniqueStrings([
-    slugTag(typeSlug),
-    slugTag(triggerEvent || "event"),
     slugTag(locationLabel || locationRaw || "location"),
+    slugTag(triggerEvent || "event"),
+    slugTag(typeSlug),
   ]).slice(0, 3);
 
   const startDateMs = toEpochMs(startTime);
@@ -208,17 +294,100 @@ async function createClickUpReceiptTask(body, env, meta) {
   return resp.json();
 }
 
+async function createClickUpStripeReceiptTask(event, env, meta) {
+  const eventType = String(meta?.eventType || event?.type || "unknown");
+  const eventId = String(event?.id || "");
+  const livemode = Boolean(event?.livemode);
+
+  const obj = event?.data?.object || {};
+  const objectType = String(obj?.object || "");
+  const currency = String(obj?.currency || "").toUpperCase();
+
+  const amount =
+    Number(obj?.amount_total) ||
+    Number(obj?.amount_received) ||
+    Number(obj?.amount) ||
+    0;
+
+  const customerEmail =
+    String(obj?.customer_details?.email || "") ||
+    String(obj?.receipt_email || "") ||
+    String(obj?.customer_email || "");
+
+  const sessionId =
+    objectType === "checkout.session" ? String(obj?.id || "") : "";
+
+  const paymentIntentId =
+    String(obj?.payment_intent || "") ||
+    String(obj?.id || "");
+
+  const lines = [];
+  lines.push("STRIPE WEBHOOK RECEIVED");
+  lines.push("");
+  lines.push("WHAT THIS DOES");
+  lines.push("- STORES RAW STRIPE PAYLOAD IN R2");
+  lines.push("- CREATES A TASK IN CLICKUP WITH A LOG OF THE EVENT AND THE R2 KEY");
+  lines.push("");
+  lines.push("EVENT");
+  lines.push(`- Event ID: ${eventId || "-"}`);
+  lines.push(`- Type: ${eventType || "-"}`);
+  lines.push(`- Live Mode: ${String(livemode)}`);
+  lines.push("");
+  lines.push("PAYMENT");
+  lines.push(`- Amount: ${amount ? `${amount} ${currency || "-"}` : "-"}`);
+  lines.push(`- Customer Email: ${customerEmail || "-"}`);
+  lines.push(`- Payment Intent: ${paymentIntentId || "-"}`);
+  lines.push(`- Session ID: ${sessionId || "-"}`);
+  lines.push("");
+  lines.push("FORENSICS");
+  lines.push(`- R2 Key: ${String(meta?.r2Key || "-")}`);
+
+  const description = lines.join("\n");
+  const name = `[Stripe] ${eventType}${eventId ? ` — ${eventId}` : ""}`;
+
+  const tags = uniqueStrings([
+    slugTag(eventType),
+    slugTag(livemode ? "live" : "test"),
+    slugTag("stripe"),
+  ]).slice(0, 3);
+
+  const payload = {
+    description,
+    name,
+    status: CU_STATUS_LEAD_CAPTURE,
+    tags,
+  };
+
+  const url = `https://api.clickup.com/api/v2/list/${encodeURIComponent(env.CU_LIST_ORDERS_ID)}/task`;
+  const resp = await fetch(url, {
+    method: "POST",
+    headers: {
+      Authorization: env.CLICKUP_TOKEN,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (!resp.ok) {
+    const text = await resp.text();
+    throw new Error(`ClickUp create task failed: ${resp.status} ${text}`);
+  }
+
+  return resp.json();
+}
+
 async function sendBookingEmailForEvent(body, env) {
   const p = body?.payload || {};
   const attendees = Array.isArray(p.attendees) ? p.attendees : [];
   const organizer = p.organizer || {};
   const booker = attendees[0] || {};
 
-  const triggerEvent = String(body?.triggerEvent || "");
   const eventType = normalizeCalEventType(body);
   const typeSlug = extractTypeSlug(body);
 
-  const from = isSupportSlug(typeSlug) ? env.GOOGLE_WORKSPACE_USER_SUPPORT : env.GOOGLE_WORKSPACE_USER_INFO;
+  const from = isSupportSlug(typeSlug)
+    ? env.GOOGLE_WORKSPACE_USER_SUPPORT
+    : env.GOOGLE_WORKSPACE_USER_INFO;
 
   const to = String(booker?.email || "").trim();
   if (!to) {
@@ -250,8 +419,6 @@ async function sendBookingEmailForEvent(body, env) {
     locationLabel,
     organizerName,
     startTime,
-    triggerEvent,
-    typeSlug,
     videoUrl,
   });
 
@@ -293,6 +460,42 @@ async function sendBookingEmailForEvent(body, env) {
   };
 }
 
+async function verifyStripeSignature(secret, signatureHeader, rawBody) {
+  const sig = String(signatureHeader || "");
+  const t = parseStripeSigValue(sig, "t");
+  const v1List = parseStripeSigValues(sig, "v1");
+
+  if (!t || !v1List.length) return { ok: false, error: "Invalid stripe-signature format" };
+
+  const signedPayload = `${t}.${rawBody}`;
+  const computed = await hmacSha256Hex(secret, signedPayload);
+
+  for (const v1 of v1List) {
+    if (timingSafeEqualHex(computed, v1)) return { ok: true };
+  }
+
+  return { ok: false, error: "Invalid signature" };
+}
+
+function parseStripeSigValue(header, key) {
+  const parts = String(header || "").split(",");
+  for (const p of parts) {
+    const [k, v] = p.split("=").map((x) => String(x || "").trim());
+    if (k === key && v) return v;
+  }
+  return "";
+}
+
+function parseStripeSigValues(header, key) {
+  const out = [];
+  const parts = String(header || "").split(",");
+  for (const p of parts) {
+    const [k, v] = p.split("=").map((x) => String(x || "").trim());
+    if (k === key && v) out.push(v);
+  }
+  return out;
+}
+
 function emailBodyForEvent(input) {
   const lines = [];
 
@@ -302,9 +505,9 @@ function emailBodyForEvent(input) {
   lines.push("");
 
   lines.push(`Organizer: ${input.organizerName}`);
-  lines.push(`Start: ${input.startTime || "-"}`);
   lines.push(`End: ${input.endTime || "-"}`);
   lines.push(`Location: ${input.locationLabel || "-"}`);
+  lines.push(`Start: ${input.startTime || "-"}`);
 
   if (input.videoUrl) lines.push(`Zoom link: ${input.videoUrl}`);
 
@@ -359,8 +562,8 @@ async function getGoogleAccessToken(args) {
   const jwt = await signJwtRs256(header, claim, args.privateKeyPem);
 
   const form = new URLSearchParams();
-  form.set("grant_type", "urn:ietf:params:oauth:grant-type:jwt-bearer");
   form.set("assertion", jwt);
+  form.set("grant_type", "urn:ietf:params:oauth:grant-type:jwt-bearer");
 
   const resp = await fetch(args.tokenUri, {
     method: "POST",
@@ -430,14 +633,14 @@ function formatEmailLogComment(emailResult, body) {
   const triggerEvent = String(body?.triggerEvent || "");
   const lines = [];
   lines.push("EMAIL SEND ATTEMPT");
-  lines.push(`- Trigger: ${triggerEvent || "-"}`);
   lines.push(`- From: ${emailResult?.from || "-"}`);
-  lines.push(`- To: ${emailResult?.to || "-"}`);
-  lines.push(`- Subject: ${emailResult?.subject || "-"}`);
-  lines.push(`- Status: ${String(emailResult?.status || "-")}`);
-  lines.push(`- OK: ${String(Boolean(emailResult?.ok))}`);
   lines.push(`- Gmail ID: ${emailResult?.gmail_id || "-"}`);
+  lines.push(`- OK: ${String(Boolean(emailResult?.ok))}`);
+  lines.push(`- Status: ${String(emailResult?.status || "-")}`);
+  lines.push(`- Subject: ${emailResult?.subject || "-"}`);
   lines.push(`- Thread ID: ${emailResult?.gmail_thread_id || "-"}`);
+  lines.push(`- To: ${emailResult?.to || "-"}`);
+  lines.push(`- Trigger: ${triggerEvent || "-"}`);
   return lines.join("\n");
 }
 
@@ -445,38 +648,39 @@ function buildStaffFriendlyDescription(d) {
   const lines = [
     "CAL.COM WEBHOOK RECEIVED",
     "",
-    "TRIGGER",
-    `- Trigger type: ${d.triggerEvent || "-"}`,
-    `- Type (slug): ${d.typeSlug || "-"}`,
-    `- UID: ${d.uid || "-"}`,
-    `- Received At (Cal): ${d.createdAt || "-"}`,
-    "",
-    "PEOPLE",
-    `- Organizer: ${d.organizerLine || "-"}`,
-    `- Booker: ${d.bookerLine || "-"}`,
-    "",
-    "SCHEDULE",
-    `- Start: ${d.startTime || "-"}`,
-    `- End: ${d.endTime || "-"}`,
-    "",
-    "LOCATION",
-    `- Location: ${d.locationLabel || "-"}`,
-    `- Video URL: ${d.videoUrl || "-"}`,
+    "WHAT THIS DOES",
+    "- STORES RAW CAL.COM PAYLOAD IN R2",
+    "- CREATES A TASK IN CLICKUP WITH EVENT DATA + R2 KEY",
+    "- SENDS AN EMAIL VIA GMAIL API AND LOGS THE RESULT BACK INTO CLICKUP",
     "",
     "CHANGE INFO",
     `- Cancelled By: ${d.cancelledBy || "-"}`,
     `- Cancellation Reason: ${d.cancelReason || "-"}`,
     `- Rescheduled By: ${d.rescheduledBy || "-"}`,
-    `- Reschedule UID: ${d.rescheduleUid || "-"}`,
-    `- Reschedule Start: ${d.rescheduleStartTime || "-"}`,
     `- Reschedule End: ${d.rescheduleEndTime || "-"}`,
+    `- Reschedule Start: ${d.rescheduleStartTime || "-"}`,
+    `- Reschedule UID: ${d.rescheduleUid || "-"}`,
     "",
     "FORENSICS",
     `- R2 Key: ${d.r2Key || "-"}`,
     "",
-    "NOTES",
-    "- This task is the staff-visible receipt of the Cal.com webhook.",
-    "- Canonical payload is stored in R2; retrieve it using the R2 Key above.",
+    "LOCATION",
+    `- Location: ${d.locationLabel || "-"}`,
+    `- Video URL: ${d.videoUrl || "-"}`,
+    "",
+    "PEOPLE",
+    `- Booker: ${d.bookerLine || "-"}`,
+    `- Organizer: ${d.organizerLine || "-"}`,
+    "",
+    "SCHEDULE",
+    `- End: ${d.endTime || "-"}`,
+    `- Start: ${d.startTime || "-"}`,
+    "",
+    "TRIGGER",
+    `- Received At (Cal): ${d.createdAt || "-"}`,
+    `- Trigger type: ${d.triggerEvent || "-"}`,
+    `- Type (slug): ${d.typeSlug || "-"}`,
+    `- UID: ${d.uid || "-"}`,
   ];
 
   return lines.join("\n");
@@ -484,11 +688,12 @@ function buildStaffFriendlyDescription(d) {
 
 function extractTypeSlug(body) {
   const candidates = [
-    body?.payload?.type,
-    body?.payload?.eventType?.slug,
-    body?.payload?.eventTypeSlug,
     body?.payload?.booking?.eventType?.slug,
     body?.payload?.booking?.eventTypeSlug,
+    body?.payload?.eventType?.slug,
+    body?.payload?.eventTypeSlug,
+    body?.payload?.eventTypeSlug,
+    body?.payload?.type,
   ];
 
   for (const c of candidates) {
@@ -499,10 +704,10 @@ function extractTypeSlug(body) {
 
 function extractTypeTitle(body) {
   const candidates = [
-    body?.payload?.eventType?.title,
-    body?.payload?.eventTypeTitle,
     body?.payload?.booking?.eventType?.title,
     body?.payload?.booking?.eventTypeTitle,
+    body?.payload?.eventType?.title,
+    body?.payload?.eventTypeTitle,
     body?.payload?.title,
   ];
 
@@ -515,9 +720,9 @@ function extractTypeTitle(body) {
 function humanLocation(locationRaw) {
   const s = String(locationRaw || "");
   if (!s) return "";
-  if (s.includes("integrations:zoom")) return "Zoom";
   if (s.includes("integrations:daily")) return "Cal Video";
   if (s.includes("integrations:google_meet")) return "Google Meet";
+  if (s.includes("integrations:zoom")) return "Zoom";
   if (s.startsWith("http")) return "Video Link";
   return s;
 }
@@ -535,30 +740,23 @@ function missingEnv(env, keys) {
 }
 
 function normalizeCalEventType(body) {
-  const raw =
-    body?.triggerEvent ||
-    body?.type ||
-    body?.event ||
-    body?.name ||
-    "";
-
+  const raw = body?.event || body?.name || body?.triggerEvent || body?.type || "";
   const s = String(raw).toLowerCase();
 
-  if (s.includes("cancel")) return "booking.cancelled";
-  if (s.includes("reschedule")) return "booking.rescheduled";
-  if (s.includes("created")) return "booking.created";
-
-  if (s === "booking.created") return "booking.created";
   if (s === "booking.cancelled") return "booking.cancelled";
+  if (s === "booking.created") return "booking.created";
   if (s === "booking.rescheduled") return "booking.rescheduled";
+  if (s.includes("cancel")) return "booking.cancelled";
+  if (s.includes("created")) return "booking.created";
+  if (s.includes("reschedule")) return "booking.rescheduled";
 
   return "unknown";
 }
 
 function personLine(p) {
   if (!p || typeof p !== "object") return "";
-  const name = String(p.name || "").trim();
   const email = String(p.email || "").trim();
+  const name = String(p.name || "").trim();
   const timeZone = String(p.timeZone || p.timezone || "").trim();
 
   const parts = [];
@@ -597,12 +795,14 @@ function uniqueStrings(arr) {
 }
 
 function slugTag(s) {
-  return String(s || "")
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "")
-    .slice(0, 45) || "tag";
+  return (
+    String(s || "")
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "")
+      .slice(0, 45) || "tag"
+  );
 }
 
 async function hmacSha256Hex(secret, message) {
