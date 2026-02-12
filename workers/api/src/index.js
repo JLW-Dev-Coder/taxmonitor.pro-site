@@ -294,6 +294,7 @@ async function createClickUpReceiptTask(body, env, meta) {
   return resp.json();
 }
 
+// ✅ REPLACED ONLY THIS FUNCTION
 async function createClickUpStripeReceiptTask(event, env, meta) {
   const eventType = String(meta?.eventType || event?.type || "unknown");
   const eventId = String(event?.id || "");
@@ -301,54 +302,86 @@ async function createClickUpStripeReceiptTask(event, env, meta) {
 
   const obj = event?.data?.object || {};
   const objectType = String(obj?.object || "");
-  const currency = String(obj?.currency || "").toUpperCase();
 
-  const amount =
+  const currency = String(obj?.currency || "").toUpperCase() || "USD";
+
+  // AMOUNT (MINOR UNITS → MAJOR UNITS)
+  const amountMinor =
     Number(obj?.amount_total) ||
     Number(obj?.amount_received) ||
     Number(obj?.amount) ||
     0;
 
+  const amountMajor =
+    currency === "JPY"
+      ? String(amountMinor)
+      : (amountMinor / 100).toFixed(2);
+
+  // CUSTOMER
+  const customerName =
+    String(obj?.customer_details?.name || "").trim() ||
+    "Unknown Customer";
+
   const customerEmail =
-    String(obj?.customer_details?.email || "") ||
-    String(obj?.receipt_email || "") ||
-    String(obj?.customer_email || "");
+    String(obj?.customer_details?.email || "").trim() ||
+    "-";
+
+  // PLAN NAME (FROM METADATA)
+  const planName =
+    String(obj?.metadata?.plan_name || "").trim() ||
+    "Unknown Plan";
 
   const sessionId =
-    objectType === "checkout.session" ? String(obj?.id || "") : "";
+    objectType === "checkout.session"
+      ? String(obj?.id || "")
+      : "-";
 
   const paymentIntentId =
     String(obj?.payment_intent || "") ||
-    String(obj?.id || "");
+    String(obj?.id || "") ||
+    "-";
 
+  const paymentStatus =
+    String(obj?.payment_status || obj?.status || "-");
+
+  // STAFF-FRIENDLY TITLE
+  const name =
+    `[Stripe] Payment Complete — ${planName} — $${amountMajor} ${currency} — ${customerName}`;
+
+  // STAFF-FRIENDLY DESCRIPTION
   const lines = [];
-  lines.push("STRIPE WEBHOOK RECEIVED");
+
+  lines.push("STRIPE PAYMENT RECEIVED");
   lines.push("");
   lines.push("WHAT THIS DOES");
   lines.push("- STORES RAW STRIPE PAYLOAD IN R2");
-  lines.push("- CREATES A TASK IN CLICKUP WITH A LOG OF THE EVENT AND THE R2 KEY");
+  lines.push("- CREATES A CLICKUP TASK FOR STAFF VISIBILITY");
   lines.push("");
-  lines.push("EVENT");
-  lines.push(`- Event ID: ${eventId || "-"}`);
-  lines.push(`- Type: ${eventType || "-"}`);
+  lines.push("PAYMENT SUMMARY");
+  lines.push(`- Plan: ${planName}`);
+  lines.push(`- Amount (Major): $${amountMajor} ${currency}`);
+  lines.push(`- Amount (Minor): ${amountMinor}`);
+  lines.push(`- Status: ${paymentStatus}`);
+  lines.push("");
+  lines.push("CUSTOMER");
+  lines.push(`- Name: ${customerName}`);
+  lines.push(`- Email: ${customerEmail}`);
+  lines.push("");
+  lines.push("STRIPE IDS");
+  lines.push(`- Event ID: ${eventId}`);
+  lines.push(`- Payment Intent: ${paymentIntentId}`);
+  lines.push(`- Session ID: ${sessionId}`);
   lines.push(`- Live Mode: ${String(livemode)}`);
-  lines.push("");
-  lines.push("PAYMENT");
-  lines.push(`- Amount: ${amount ? `${amount} ${currency || "-"}` : "-"}`);
-  lines.push(`- Customer Email: ${customerEmail || "-"}`);
-  lines.push(`- Payment Intent: ${paymentIntentId || "-"}`);
-  lines.push(`- Session ID: ${sessionId || "-"}`);
   lines.push("");
   lines.push("FORENSICS");
   lines.push(`- R2 Key: ${String(meta?.r2Key || "-")}`);
 
   const description = lines.join("\n");
-  const name = `[Stripe] ${eventType}${eventId ? ` — ${eventId}` : ""}`;
 
   const tags = uniqueStrings([
+    slugTag("stripe"),
     slugTag(eventType),
     slugTag(livemode ? "live" : "test"),
-    slugTag("stripe"),
   ]).slice(0, 3);
 
   const payload = {
@@ -358,7 +391,9 @@ async function createClickUpStripeReceiptTask(event, env, meta) {
     tags,
   };
 
-  const url = `https://api.clickup.com/api/v2/list/${encodeURIComponent(env.CU_LIST_ORDERS_ID)}/task`;
+  const url =
+    `https://api.clickup.com/api/v2/list/${encodeURIComponent(env.CU_LIST_ORDERS_ID)}/task`;
+
   const resp = await fetch(url, {
     method: "POST",
     headers: {
@@ -515,6 +550,7 @@ function emailBodyForEvent(input) {
   lines.push("If you need to reschedule or cancel, please use the link in your Cal.com confirmation.");
   lines.push("");
   lines.push("— Tax Monitor Pro");
+
   return lines.join("\n");
 }
 
@@ -575,6 +611,7 @@ async function getGoogleAccessToken(args) {
   if (!resp.ok || !data?.access_token) {
     throw new Error(`Google token error: ${resp.status} ${JSON.stringify(data)}`);
   }
+
   return data.access_token;
 }
 
