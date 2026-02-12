@@ -52,12 +52,12 @@
 </head>
 
 <body class="h-full bg-slate-950 text-slate-300 overflow-auto">
-  <div class="min-h-full grid-overlay">
-    <div class="amber-glow min-h-full">
-      <!-- Header partial mount -->
-      <div id="tm-header"></div>
+  <div id="app" class="min-h-screen flex flex-col grid-overlay">
+    <div class="amber-glow min-h-screen flex flex-col">
 
-      <main class="max-w-[900px] mx-auto px-6 py-12">
+      <!-- PARTIAL:header -->
+
+      <main class="flex-1 max-w-[900px] mx-auto px-6 py-12">
         <!-- Brand Header (inside legal content) -->
         <div class="text-center mb-10">
           <div class="flex items-center justify-center gap-3 mb-2">
@@ -352,29 +352,15 @@
         </div>
       </main>
 
-      <!-- Footer partial mount -->
-      <div id="tm-footer"></div>
+      <!-- PARTIAL:footer -->
+
     </div>
   </div>
 
   <script>
     (function () {
-      function fetchText(url) {
-        return fetch(url, { cache: "no-store" }).then(function (r) { return r.ok ? r.text() : ""; }).catch(function () { return ""; });
-      }
-
-      function mount(id, html) {
-        var el = document.getElementById(id);
-        if (el && html) el.innerHTML = html;
-      }
-
-      Promise.all([
-        fetchText("/site/partials/header.html"),
-        fetchText("/site/partials/footer.html")
-      ]).then(function (res) {
-        mount("tm-header", res[0]);
-        mount("tm-footer", res[1]);
-      });
+      var y = document.getElementById('footer-year');
+      if (y) y.textContent = String(new Date().getFullYear());
     })();
   </script>
 </body>
