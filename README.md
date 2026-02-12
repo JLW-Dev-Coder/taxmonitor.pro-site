@@ -29,6 +29,61 @@ External systems:
 
 ---
 
+# Repository Structure
+
+```
+
+/
+├─ README.md
+├─ WORKER_CONTRACT.md
+├─ CLICKUP_SETUP.md
+├─ DEPLOYMENT.md
+├─ INCIDENT_RUNBOOK.md
+│
+├─ src/
+│  ├─ worker/
+│  │  ├─ handlers/
+│  │  │  ├─ cal.ts
+│  │  │  ├─ stripe.ts
+│  │  │  └─ forms.ts
+│  │  ├─ domain/
+│  │  │  ├─ accounts.ts
+│  │  │  ├─ orders.ts
+│  │  │  └─ support.ts
+│  │  ├─ clickup/
+│  │  │  ├─ accounts.ts
+│  │  │  ├─ orders.ts
+│  │  │  └─ support.ts
+│  │  ├─ receipts/
+│  │  │  └─ ledger.ts
+│  │  ├─ utils/
+│  │  └─ index.ts
+│
+├─ r2-schema/
+│  ├─ accounts.schema.json
+│  ├─ orders.schema.json
+│  └─ support.schema.json
+│
+├─ tests/
+│  ├─ intake.test.ts
+│  ├─ stripe.test.ts
+│  ├─ cal.test.ts
+│  └─ lifecycle.test.ts
+│
+└─ wrangler.toml
+
+```
+
+Structure Principles:
+
+- Domain logic is separated from ClickUp integration.
+- Receipts handling is isolated.
+- R2 schema definitions are explicit.
+- Worker remains stateless.
+- ClickUp is a projection layer only.
+
+---
+
 # Event Triggers
 
 Alphabetical:
@@ -327,3 +382,6 @@ Worker responsibilities:
 - Status-driven workflow
 - Zero manual lifecycle transitions
 - ClickUp as projection layer only
+```
+
+---
