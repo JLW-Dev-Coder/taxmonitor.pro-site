@@ -1,4 +1,4 @@
-<!--/taxmonitor.pro-site/blob/main/site/contact.html-->
+<!-- /site/contact.html -->
 <!doctype html>
 <html lang="en" class="h-full">
 <head>
@@ -19,8 +19,7 @@
   <link rel="apple-touch-icon" href="/assets/favicon.ico">
 
   <style>
-    html, body { height: 100%; }
-    body { box-sizing: border-box; overflow-x: hidden; }
+    body { box-sizing: border-box; }
     * { font-family: 'DM Sans', sans-serif; }
 
     .divider-line {
@@ -64,11 +63,10 @@
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
 </head>
 
-<body class="min-h-screen bg-slate-950 text-slate-100">
+<body class="h-full bg-slate-950 text-slate-100">
   <div id="app" class="min-h-screen flex flex-col">
 
-    <!-- Header partial mount -->
-    <div id="tm-header"></div>
+    <!-- PARTIAL:header -->
 
     <main class="flex-1">
 
@@ -78,6 +76,7 @@
           <h1 id="hero-headline" class="text-4xl md:text-6xl font-bold tracking-tight mb-6 leading-tight">
             Let's Start a Conversation
           </h1>
+
           <p id="hero-subhead" class="text-lg md:text-xl text-slate-400 mb-10 max-w-2xl mx-auto leading-relaxed">
             Whether you have questions, want to see a demo, or are ready to take the next step—we're here to help.
           </p>
@@ -85,12 +84,12 @@
           <div class="flex flex-col sm:flex-row gap-4 justify-center mb-8">
             <a
               class="tm-btn-primary px-8 py-4 rounded-full text-lg font-semibold text-slate-950 inline-flex items-center justify-center"
-              href="#tax-monitor-pro-demo"
+              href="#contact-options"
             >Contact Us</a>
 
             <a
               class="tm-btn-secondary px-8 py-4 rounded-full text-lg font-semibold text-white bg-transparent inline-flex items-center justify-center"
-              href="#tax-monitor-pro-demo"
+              href="#contact-options"
             >Book a Demo</a>
           </div>
 
@@ -101,17 +100,17 @@
           <div class="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
             <a
               class="tm-btn-secondary px-5 py-3 rounded-full text-sm font-semibold text-white bg-transparent inline-flex items-center justify-center"
-              href="#tax-monitor-pro-demo"
+              href="#contact-options"
             >Client onboarding</a>
 
             <a
               class="tm-btn-secondary px-5 py-3 rounded-full text-sm font-semibold text-white bg-transparent inline-flex items-center justify-center"
-              href="#tax-monitor-pro-demo"
+              href="#contact-options"
             >Client offboarding</a>
 
             <a
               class="tm-btn-secondary px-5 py-3 rounded-full text-sm font-semibold text-white bg-transparent inline-flex items-center justify-center"
-              href="#tax-monitor-pro-demo"
+              href="#contact-options"
             >Client support</a>
           </div>
         </div>
@@ -120,7 +119,7 @@
       <div class="divider-line"></div>
 
       <!-- How We Can Help -->
-      <section class="w-full px-6 py-20 md:py-28" id="tax-monitor-pro-demo">
+      <section class="w-full px-6 py-20 md:py-28" id="contact-options">
         <div class="max-w-4xl mx-auto">
           <div class="text-center mb-16">
             <h2 id="help-headline" class="text-3xl md:text-4xl font-bold mb-4">How We Can Help</h2>
@@ -139,7 +138,8 @@
             >
               <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-slate-950/40 flex items-center justify-center border border-white/5">
                 <svg class="w-6 h-6 tm-icon-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                    d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
               <div>
@@ -157,7 +157,8 @@
             >
               <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-slate-950/40 flex items-center justify-center border border-white/5">
                 <svg class="w-6 h-6 tm-icon-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                    d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                 </svg>
               </div>
               <div>
@@ -175,7 +176,8 @@
             >
               <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-slate-950/40 flex items-center justify-center border border-white/5">
                 <svg class="w-6 h-6 tm-icon-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
               </div>
               <div>
@@ -193,7 +195,8 @@
             >
               <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-slate-950/40 flex items-center justify-center border border-white/5">
                 <svg class="w-6 h-6 tm-icon-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
               </div>
               <div>
@@ -219,7 +222,8 @@
             <div class="tm-card-hover p-8 rounded-3xl bg-slate-900/40 border border-white/5 text-center">
               <div class="w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-amber-500/20 to-orange-500/10 flex items-center justify-center border border-white/5">
                 <svg class="w-8 h-8 tm-icon-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                    d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                 </svg>
               </div>
               <h3 id="info-card-title" class="text-2xl font-bold mb-3">Info & Demos</h3>
@@ -236,7 +240,8 @@
             <div class="tm-card-hover p-8 rounded-3xl bg-slate-900/40 border border-white/5 text-center">
               <div class="w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-amber-500/20 to-orange-500/10 flex items-center justify-center border border-white/5">
                 <svg class="w-8 h-8 tm-icon-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                    d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
                 </svg>
               </div>
               <h3 id="support-card-title" class="text-2xl font-bold mb-3">Client support</h3>
@@ -305,7 +310,9 @@
             <div class="flex items-start gap-4 p-6 rounded-2xl bg-slate-900/30 border border-white/5">
               <div class="flex-shrink-0 mt-1">
                 <svg class="w-5 h-5 tm-icon-accent" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                  <path fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd" />
                 </svg>
               </div>
               <div>
@@ -317,7 +324,9 @@
             <div class="flex items-start gap-4 p-6 rounded-2xl bg-slate-900/30 border border-white/5">
               <div class="flex-shrink-0 mt-1">
                 <svg class="w-5 h-5 tm-icon-accent" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                  <path fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd" />
                 </svg>
               </div>
               <div>
@@ -329,7 +338,9 @@
             <div class="flex items-start gap-4 p-6 rounded-2xl bg-slate-900/30 border border-white/5">
               <div class="flex-shrink-0 mt-1">
                 <svg class="w-5 h-5 tm-icon-accent" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                  <path fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd" />
                 </svg>
               </div>
               <div>
@@ -341,7 +352,9 @@
             <div class="flex items-start gap-4 p-6 rounded-2xl bg-slate-900/30 border border-white/5">
               <div class="flex-shrink-0 mt-1">
                 <svg class="w-5 h-5 tm-icon-accent" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                  <path fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd" />
                 </svg>
               </div>
               <div>
@@ -364,12 +377,12 @@
           <div class="flex flex-col sm:flex-row gap-4 justify-center mb-8">
             <a
               class="tm-btn-primary px-8 py-4 rounded-full text-lg font-semibold text-slate-950 inline-flex items-center justify-center"
-              href="#tax-monitor-pro-demo"
+              href="#contact-options"
             >Contact Us</a>
 
             <a
               class="tm-btn-secondary px-8 py-4 rounded-full text-lg font-semibold text-white bg-transparent inline-flex items-center justify-center"
-              href="#tax-monitor-pro-demo"
+              href="#contact-options"
             >Book a Demo</a>
           </div>
 
@@ -381,8 +394,7 @@
 
     </main>
 
-    <!-- Footer partial mount -->
-    <div id="tm-footer"></div>
+    <!-- PARTIAL:footer -->
 
   </div>
 
@@ -449,36 +461,12 @@
 
   <script>
     (function () {
-      const y = document.getElementById('footer-year');
+      var y = document.getElementById('footer-year');
       if (y) y.textContent = String(new Date().getFullYear());
     })();
   </script>
 
-  <!-- Header/Footer partial loader -->
-  <script>
-    (function () {
-      function fetchText(url) {
-        return fetch(url, { cache: "no-store" })
-          .then(function (r) { return r.ok ? r.text() : ""; })
-          .catch(function () { return ""; });
-      }
-
-      function mount(id, html) {
-        var el = document.getElementById(id);
-        if (el && html) el.innerHTML = html;
-      }
-
-      Promise.all([
-        fetchText("/site/partials/header.html"),
-        fetchText("/site/partials/footer.html")
-      ]).then(function (res) {
-        mount("tm-header", res[0]);
-        mount("tm-footer", res[1]);
-      });
-    })();
-  </script>
-
-  <!-- Element SDK config (optional; keeps your editable text model) -->
+  <!-- Element SDK config -->
   <script>
     const defaultConfig = {
       final_headline: "Ready to Connect?",
