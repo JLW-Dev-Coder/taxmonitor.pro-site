@@ -2,7 +2,8 @@
 
 Tax Monitor Pro is a serverless CRM + delivery system for tax monitoring services.
 
-Architecture principle:
+## Architecture Principle
+
 - R2 is the authority (system of record)
 - Worker is the logic plane
 - ClickUp is execution
@@ -10,24 +11,25 @@ Architecture principle:
 
 ---
 
-## Architecture Overview
+# Architecture Overview
 
-Cloudflare Pages (Portal UI)
-        ↓ (form POST / webhook)
-Cloudflare Worker (API + Orchestration)
-        ↓
-Cloudflare R2 (Authoritative State + Event Log)
-        ↓
+Cloudflare Pages (Portal UI)  
+        ↓ (form POST / webhook)  
+Cloudflare Worker (API + Orchestration)  
+        ↓  
+Cloudflare R2 (Authoritative State + Receipts Ledger)  
+        ↓  
 ClickUp (Human Task Execution)
 
 External systems:
+
 - Cal.com (Bookings)
 - Stripe (Payments)
 - Online Forms (Lifecycle + Post-Payment)
 
 ---
 
-## Event Triggers
+# Event Triggers
 
 Alphabetical:
 
@@ -35,118 +37,241 @@ Alphabetical:
 - Online Forms → Worker → R2 → ClickUp
 - Stripe → Worker → R2 → ClickUp
 
-All events:
+All inbound events:
+
 1. Are verified (signature or session validation)
-2. Are written to R2 as append-only event logs
-3. Upsert canonical account/order objects in R2
+2. Are written to R2 as append-only receipts
+3. Upsert canonical domain objects in R2
 4. Upsert or update ClickUp tasks
+
+No direct ClickUp writes occur without R2 update first.
 
 ---
 
-## Data Model
+# Data Model
 
-### R2 Buckets
+## R2 Buckets
 
 accounts/{accountId}.json  
 orders/{orderId}.json  
-events/{source}/{eventId}.json  
+support/{supportId}.json  
+receipts/{source}/{eventId}.json  
 
 R2 is the source of truth. ClickUp reflects operational state only.
 
-### Account Object (R2)
+---
+
+## Account Object (R2)
 
 - accountId (stable UUID)
-- primaryContact
-- email
+- firstName
+- lastName
+- primaryEmail
 - lifecycleState
+- stripeCustomerId
 - activeOrders[]
 - metadata
 
-### Order Object (R2)
+Represents client lifecycle and Stripe customer state.
+
+---
+
+## Order Object (R2)
 
 - orderId
 - accountId
 - productTier
-- stripeCustomerId
 - stripeSubscriptionId
 - status
 - deliveryState
+- orderToken
+- deliverableUrls
 - metadata
 
-### Event Log (Append-Only)
+Represents delivery execution.
+
+All structured tax metadata (2848 reps, IRS metadata, transcript data, IA details, compliance internals) lives here — not in ClickUp.
+
+---
+
+## Support Object (R2)
+
+- supportId
+- accountId
+- relatedOrderId (optional)
+- type (appointment | ticket)
+- status
+- priority
+- metadata
+
+Represents booking and support ticket lifecycle.
+
+---
+
+## Receipts Ledger (Append-Only)
 
 - eventId
-- source (cal, stripe, form)
-- type
+- source (cal | stripe | form)
 - timestamp
 - rawPayload
-- processed: true/false
-
----
-
-## ClickUp Structure
-
-ClickUp
-└─ Admin
-   └─ Tax Monitor Pro
-      ├─ Accounts
-      ├─ Orders
-      └─ Support
-
-### Accounts (Index List)
-
-One task per client.
+- processed (boolean)
+- processingError (nullable)
 
 Purpose:
-- Human-facing master record
-- Cross-links to Orders and Support
-- High-level status fields only
 
-Custom fields:
-- Account ID
-- Primary Email
-- Lifecycle State
-- Active Order Count
+- Idempotency
+- Auditability
+- Replay safety
+- Debug traceability
 
-### Orders
-
-Handles delivery execution:
-
-- 2848 review
-- CAF verification
-- Compliance analysis
-- Monitoring lifecycle tasks
-
-Custom fields:
-- Account ID
-- Order ID
-- Product Tier
-- Stripe Subscription ID
-- Delivery State
-
-### Support
-
-Handles:
-
-- Appointment tasks
-- Ticket tasks
-
-Custom fields:
-- Account ID
-- Related Order ID (optional)
+Receipts are not business models.
 
 ---
 
-## Lifecycle Flows
+# ClickUp Structure
 
-### Pre-Payment Flow
+ClickUp  
+└─ Admin  
+   └─ Tax Monitor Pro  
+      ├─ Accounts (901710909567)  
+      ├─ Orders (901710818340)  
+      └─ Support (901710818377)  
+
+ClickUp is a workflow projection of R2.
+
+---
+
+# Status Contracts
+
+## Accounts — Lifecycle
+
+Open  
+- Lead  
+
+Active / Custom  
+- Active Prospect  
+- Active Client  
+
+Done  
+- Inactive Prospect  
+- Inactive Client  
+
+Closed  
+- Case Closed (default)
+
+Purpose: relationship state only.
+
+---
+
+## Orders — Delivery Pipeline
+
+Open  
+- 0 Booking / Lead Capture  
+
+Active / Custom  
+- 1 Intake Triage  
+- 2 Checkout/Payment  
+- 3 Welcome Intro  
+- 4 Filing Status  
+- 5 Address Update  
+- 6 IRS Authorization (2848)  
+- 7 Wet Sig 2848 Down/Upload  
+- 9 2848 Processing  
+
+Done  
+- 8 Client Exit Survey  
+- 10 Compliance Records  
+
+Closed  
+- Complete (default)
+
+Orders status is the execution engine.
+
+---
+
+## Support — Ticket Lifecycle
+
+Open  
+- Open / New  
+
+Active / Custom  
+- In Progress  
+- Waiting on Client  
+- Blocked  
+- In Review  
+- Resolved  
+- Client Feedback  
+
+Done  
+- Complete  
+
+Closed  
+- Closed (default)
+
+Support status represents lifecycle and SLA state.
+
+There is no separate SLA Custom Field.
+
+---
+
+# ClickUp Custom Fields (Operational Projection Only)
+
+Structured intake fields are not stored in ClickUp.
+
+## Accounts CFs
+
+- Account ID
+- Account First Name
+- Account Last Name
+- Account Primary Email
+- Account Order Status
+- Account Order Task Link
+- Account Support Status
+- Account Support Task Link
+
+Account Order Status mirrors the latest Order task status.  
+Account Support Status mirrors the latest Support task status.
+
+---
+
+## Orders CFs
+
+- Order ID
+- Order 2848 Unsigned PDF URL
+- Order 2848 Signed PDF URL
+- Order Agreement Signed PDF URL
+- Order Compliance Report PDF URL
+- Stripe Session ID (idempotency key)
+- Stripe Customer ID
+- Stripe Payment Status
+- Stripe Payment URL
+
+No structured tax metadata lives in ClickUp.
+
+---
+
+## Support CFs
+
+- Support Action Required
+- Support Email
+- Support Priority
+- Support Related Order ID
+- Support Type
+
+Support SLA is driven by Status.
+
+---
+
+# Lifecycle Flows
+
+## Pre-Payment
 
 - intake_submitted
 - offer_accepted
 - agreement_accepted
-- payment_completed (Stripe)
+- payment_completed
 
-### Post-Payment Flow
+## Post-Payment
 
 - address_update_submitted
 - compliance_submitted
@@ -158,27 +283,31 @@ Custom fields:
 All forms POST to Worker.
 
 Worker responsibilities:
-- Validate session
+
+- Validate session/token
 - Enforce lifecycle gating
-- Write event to R2
-- Update canonical object
-- Update relevant ClickUp task
+- Write receipt
+- Update domain object
+- Update ClickUp task
 
 ---
 
-## Idempotency + Safety
+# Idempotency + Safety
 
-- Stripe + Cal.com: signature validation
-- Forms: session or token validation
+- Stripe + Cal: signature validation
+- Forms: token/session validation
 - All events deduplicated by eventId
-- No direct writes to ClickUp without R2 update first
+- Stripe Session ID used as payment dedupe key
+- No direct ClickUp writes before R2 update
 
 ---
 
-## Environment Variables (Worker)
+# Environment Variables (Worker)
 
 - CLICKUP_API_KEY
-- CLICKUP_SPACE_ID
+- CLICKUP_ACCOUNTS_LIST_ID
+- CLICKUP_ORDERS_LIST_ID
+- CLICKUP_SUPPORT_LIST_ID
 - R2_BUCKET
 - SMTP_HOST
 - SMTP_PASSWORD
@@ -189,27 +318,12 @@ Worker responsibilities:
 
 ---
 
-## Deployment Checklist (1A — Operator Intake Form Submitted)
+# Design Principles
 
-See separate checklist section.
-
----
-
-## Testing Requirements
-
-- Test intake flow forms submitted
-- Test post-payment flow forms submitted
-- Test booking completed (Cal.com)
-- Test transaction completed (Stripe)
-- Test 2848 flow executed
-- Test compliance report generated
-
----
-
-## Design Principles
-
-- Append-only event log
+- Append-only receipts ledger
 - Idempotent processing
 - R2 authority
 - Stateless Worker
+- Status-driven workflow
 - Zero manual lifecycle transitions
+- ClickUp as projection layer only
