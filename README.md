@@ -125,7 +125,6 @@ Alphabetical:
 Outbound system actions:
 
 * Worker → Google Workspace (Transactional Email)
-* Worker → SMTP (Fallback / alternative mail transport)
 
 All inbound events:
 
@@ -426,27 +425,30 @@ Rules:
 * Define Production and Preview explicitly using `env.production` and `env.preview` if values differ.
 * Define `R2_BUCKET` as an R2 binding in `wrangler.toml`, not as a plain text variable.
 
-### Required names
+### Required names (Alphabetical)
 
-Alphabetical:
+**Bindings**
+
+* R2_BUCKET
+
+**Secrets**
 
 * CAL_WEBHOOK_SECRET
-* CLICKUP_ACCOUNTS_LIST_ID
 * CLICKUP_API_KEY
+* GOOGLE_PRIVATE_KEY
+* STRIPE_SECRET_KEY
+* STRIPE_WEBHOOK_SECRET
+
+**Plaintext Vars**
+
+* CLICKUP_ACCOUNTS_LIST_ID
 * CLICKUP_ORDERS_LIST_ID
 * CLICKUP_SUPPORT_LIST_ID
 * GOOGLE_CLIENT_EMAIL
-* GOOGLE_PRIVATE_KEY
 * GOOGLE_TOKEN_URI
 * GOOGLE_WORKSPACE_USER_INFO
 * GOOGLE_WORKSPACE_USER_NO_REPLY
 * GOOGLE_WORKSPACE_USER_SUPPORT
-* R2_BUCKET
-* SMTP_HOST
-* SMTP_PASSWORD
-* SMTP_USER
-* STRIPE_SECRET_KEY
-* STRIPE_WEBHOOK_SECRET
 
 ---
 
