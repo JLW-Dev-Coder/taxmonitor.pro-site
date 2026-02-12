@@ -2,6 +2,8 @@
 <footer class="border-t border-slate-800/60 bg-slate-950/70">
   <div class="mx-auto max-w-6xl px-6 py-12">
     <div class="grid gap-10 md:grid-cols-3">
+
+      <!-- Brand -->
       <div>
         <div class="flex items-center gap-3">
           <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 text-slate-950 font-bold">
@@ -22,31 +24,37 @@
         </p>
       </div>
 
+      <!-- Links -->
       <div class="md:pl-6">
         <div class="mb-3 text-sm font-semibold text-slate-200">Links</div>
         <ul class="space-y-2 text-sm">
-          <li><a class="text-slate-400 hover:text-white transition" href="/site/contact.html">Contact</a></li>
-          <li><a class="text-slate-400 hover:text-white transition" href="/site/index.html#how-it-works">How it works</a></li>
-          <li><a class="text-slate-400 hover:text-white transition" href="/site/pricing.html">Pricing</a></li>
-          <li><a class="text-slate-400 hover:text-white transition" href="/site/index.html#report-sample">Report sample</a></li>
-          <li><a class="text-slate-400 hover:text-white transition" href="/site/support.html">Support</a></li>
-          <li><a class="text-slate-400 hover:text-white transition" href="/site/index.html#transcript-sample">Transcript sample</a></li>
+          <li><a class="text-slate-400 hover:text-white transition" href="/#how-it-works">How It Works</a></li>
+          <li><a class="text-slate-400 hover:text-white transition" href="/pricing.html">Pricing</a></li>
+          <li><a class="text-slate-400 hover:text-white transition" href="/#report-sample">Report Sample</a></li>
+          <li><a class="text-slate-400 hover:text-white transition" href="/#transcript-sample">Transcript Sample</a></li>
+          <li><a class="text-slate-400 hover:text-white transition" href="/contact.html">Contact</a></li>
+          <li><a class="text-slate-400 hover:text-white transition" href="/login.html">Log In</a></li>
         </ul>
       </div>
 
+      <!-- Get Started -->
       <div class="md:pl-6">
-        <div class="mb-3 text-sm font-semibold text-slate-200">Get started</div>
+        <div class="mb-3 text-sm font-semibold text-slate-200">Get Started</div>
         <div class="rounded-2xl border border-slate-800/60 bg-slate-900/30 p-5">
           <div class="text-sm text-slate-300">Ready to see your status?</div>
           <div class="mt-1 text-xs text-slate-500">Intake takes a few minutes.</div>
           <a
             class="mt-4 inline-flex w-full items-center justify-center rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 px-4 py-2 text-sm font-semibold text-slate-950 hover:from-amber-400 hover:to-amber-500 transition"
-            href="/app/intake.html"
-          >Start intake →</a>
+            href="/intake"
+          >
+            Start Intake →
+          </a>
         </div>
       </div>
+
     </div>
 
+    <!-- Bottom Bar -->
     <div class="mt-10 flex flex-col gap-3 border-t border-slate-800/60 pt-6 text-xs text-slate-500 md:flex-row md:items-center md:justify-between">
       <div>© <span id="footer-year"></span> Tax Monitor Pro. All rights reserved.</div>
       <div class="flex gap-4">
@@ -56,3 +64,7 @@
     </div>
   </div>
 </footer>
+
+<script>
+  document.getElementById("footer-year").textContent = new Date().getFullYear();
+</script>
