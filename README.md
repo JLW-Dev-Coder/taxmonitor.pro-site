@@ -1,128 +1,215 @@
-# Tax Monitor Pro
+# Tax Monitor Pro App
 
-Production repo for the Tax Monitor Pro site, app UI, and Cloudflare Worker API.
+Tax Monitor Pro is a serverless CRM + delivery system for tax monitoring services.
 
-This README documents:
-- Architecture (authoritative model)
-- Repo structure (production)
-- Redeploy procedures (Pages + Worker)
+Architecture principle:
+- R2 is the authority (system of record)
+- Worker is the logic plane
+- ClickUp is execution
+- Pages is presentation
 
 ---
 
-## Architecture
+## Architecture Overview
 
-Tax Monitor Pro runs on:
+Cloudflare Pages (Portal UI)
+        ↓ (form POST / webhook)
+Cloudflare Worker (API + Orchestration)
+        ↓
+Cloudflare R2 (Authoritative State + Event Log)
+        ↓
+ClickUp (Human Task Execution)
+
+External systems:
+- Cal.com (Bookings)
+- Stripe (Payments)
+- Online Forms (Lifecycle + Post-Payment)
+
+---
+
+## Event Triggers
 
 Alphabetical:
-- Cal.com
-- ClickUp
-- Cloudflare Pages
-- Cloudflare Workers
-- R2
-- Stripe
 
-Authority model:
-- Pages = UI
-- Worker = logic
-- R2 = authority
-- ClickUp = execution
-
-Event triggers:
 - Cal.com → Worker → R2 → ClickUp
+- Online Forms → Worker → R2 → ClickUp
 - Stripe → Worker → R2 → ClickUp
 
----
-
-## Repo Structure
-
-app/
-├─ agreement.html
-├─ index.html
-├─ intake.html
-├─ login.html
-├─ offer.html
-├─ payment-success.html
-├─ payment.html
-├─ report.html
-├─ status.html
-└─ pages/
-   ├─ calendar.html
-   ├─ files.html
-   ├─ messaging.html
-   ├─ office.html
-   ├─ projects.html
-   ├─ start-here.html
-   ├─ support.html
-   └─ flows/
-      ├─ intake/
-      └─ post-payment/
-
-assets/
-├─ favicon.ico
-└─ logo.svg
-
-legal/
-├─ privacy.html
-└─ terms.html
-
-public/
-└─ .gitkeep
-
-site/
-├─ contact.html
-├─ explore.html
-├─ index.html
-├─ pricing.html
-└─ partials/
-
-styles/
-├─ app.css
-└─ site.css
-
-workers/
-└─ api/
-   ├─ src/
-   │  └─ index.js
-   └─ wrangler.toml
-
-_redirects
-build.mjs
-README.md
+All events:
+1. Are verified (signature or session validation)
+2. Are written to R2 as append-only event logs
+3. Upsert canonical account/order objects in R2
+4. Upsert or update ClickUp tasks
 
 ---
 
-## Redeploy: Cloudflare Pages
+## Data Model
 
-Use this when you see "Last build failed" or Pages content is stale.
+### R2 Buckets
 
-Option A — Retry failed deployment
-1. Cloudflare Dashboard
-2. Workers & Pages → Pages
-3. Select the Pages project
-4. Deployments
-5. Open the failed build
-6. Retry deployment
+accounts/{accountId}.json  
+orders/{orderId}.json  
+events/{source}/{eventId}.json  
 
-Option B — Trigger a new deployment via GitHub
-1. Commit a small change (example: README.md)
-2. Push to main
-3. Pages auto-builds and deploys
+R2 is the source of truth. ClickUp reflects operational state only.
+
+### Account Object (R2)
+
+- accountId (stable UUID)
+- primaryContact
+- email
+- lifecycleState
+- activeOrders[]
+- metadata
+
+### Order Object (R2)
+
+- orderId
+- accountId
+- productTier
+- stripeCustomerId
+- stripeSubscriptionId
+- status
+- deliveryState
+- metadata
+
+### Event Log (Append-Only)
+
+- eventId
+- source (cal, stripe, form)
+- type
+- timestamp
+- rawPayload
+- processed: true/false
 
 ---
 
-## Redeploy: Cloudflare Worker (API)
+## ClickUp Structure
 
-The API is a single Worker entrypoint:
-- workers/api/src/index.js
+ClickUp
+└─ Admin
+   └─ Tax Monitor Pro
+      ├─ Accounts
+      ├─ Orders
+      └─ Support
 
-Option A — Dashboard deploy
-1. Cloudflare Dashboard
-2. Workers & Pages → Workers
-3. Select the Worker (match wrangler.toml name)
-4. Deployments / Versions
-5. Deploy or Promote latest version
+### Accounts (Index List)
 
-Option B — Wrangler deploy (local)
+One task per client.
 
-```bash
-wrangler deploy
+Purpose:
+- Human-facing master record
+- Cross-links to Orders and Support
+- High-level status fields only
+
+Custom fields:
+- Account ID
+- Primary Email
+- Lifecycle State
+- Active Order Count
+
+### Orders
+
+Handles delivery execution:
+
+- 2848 review
+- CAF verification
+- Compliance analysis
+- Monitoring lifecycle tasks
+
+Custom fields:
+- Account ID
+- Order ID
+- Product Tier
+- Stripe Subscription ID
+- Delivery State
+
+### Support
+
+Handles:
+
+- Appointment tasks
+- Ticket tasks
+
+Custom fields:
+- Account ID
+- Related Order ID (optional)
+
+---
+
+## Lifecycle Flows
+
+### Pre-Payment Flow
+
+- intake_submitted
+- offer_accepted
+- agreement_accepted
+- payment_completed (Stripe)
+
+### Post-Payment Flow
+
+- address_update_submitted
+- compliance_submitted
+- esign_2848_submitted
+- exit_survey_submitted
+- filing_status_submitted
+- welcome_confirmed
+
+All forms POST to Worker.
+
+Worker responsibilities:
+- Validate session
+- Enforce lifecycle gating
+- Write event to R2
+- Update canonical object
+- Update relevant ClickUp task
+
+---
+
+## Idempotency + Safety
+
+- Stripe + Cal.com: signature validation
+- Forms: session or token validation
+- All events deduplicated by eventId
+- No direct writes to ClickUp without R2 update first
+
+---
+
+## Environment Variables (Worker)
+
+- CLICKUP_API_KEY
+- CLICKUP_SPACE_ID
+- R2_BUCKET
+- SMTP_HOST
+- SMTP_PASSWORD
+- SMTP_USER
+- STRIPE_SECRET_KEY
+- STRIPE_WEBHOOK_SECRET
+- CAL_WEBHOOK_SECRET
+
+---
+
+## Deployment Checklist (1A — Operator Intake Form Submitted)
+
+See separate checklist section.
+
+---
+
+## Testing Requirements
+
+- Test intake flow forms submitted
+- Test post-payment flow forms submitted
+- Test booking completed (Cal.com)
+- Test transaction completed (Stripe)
+- Test 2848 flow executed
+- Test compliance report generated
+
+---
+
+## Design Principles
+
+- Append-only event log
+- Idempotent processing
+- R2 authority
+- Stateless Worker
+- Zero manual lifecycle transitions
