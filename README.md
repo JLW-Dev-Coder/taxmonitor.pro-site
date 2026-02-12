@@ -1,5 +1,3 @@
----
-
 # Tax Monitor Pro App
 
 Tax Monitor Pro is a serverless CRM + delivery system for tax monitoring services.
@@ -462,5 +460,3 @@ Alphabetical:
 * Stateless Worker
 * Status-driven workflow
 * Zero manual lifecycle transitions
-
----
