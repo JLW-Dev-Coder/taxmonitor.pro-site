@@ -1,10 +1,52 @@
-compatibility_date = "2025-02-09"
-main = "src/index.js"
 name = "taxmonitor-pro-api"
+main = "src/index.js"
+compatibility_date = "2025-02-09"
+
+# ---------------------------------------
+# Routes (API lives on api.taxmonitor.pro)
+# ---------------------------------------
+
+routes = [
+  { pattern = "api.taxmonitor.pro/*", zone_name = "taxmonitor.pro" }
+]
+
+# ---------------------------------------
+# Observability
+# ---------------------------------------
 
 [observability]
 enabled = true
 
+# ---------------------------------------
+# R2 Binding (authoritative store)
+# ---------------------------------------
+
 [[r2_buckets]]
 binding = "R2_BUCKET"
 bucket_name = "taxmonitor-pro"
+
+# ---------------------------------------
+# Vars (non-secret)
+# ---------------------------------------
+
+[vars]
+CLICKUP_ACCOUNTS_LIST_ID = "901710909567"
+CLICKUP_ORDERS_LIST_ID = "901710818340"
+CLICKUP_SUPPORT_LIST_ID = "901710818377"
+GOOGLE_TOKEN_URI = "https://oauth2.googleapis.com/token"
+GOOGLE_WORKSPACE_USER_INFO = "info@taxmonitor.pro"
+GOOGLE_WORKSPACE_USER_NO_REPLY = "no-reply@taxmonitor.pro"
+GOOGLE_WORKSPACE_USER_SUPPORT = "support@taxmonitor.pro"
+
+# ---------------------------------------
+# Secrets (set via wrangler secret put)
+# ---------------------------------------
+# CAL_WEBHOOK_SECRET
+# CLICKUP_API_KEY
+# GOOGLE_CLIENT_EMAIL
+# GOOGLE_PRIVATE_KEY
+# SMTP_HOST
+# SMTP_PASSWORD
+# SMTP_USER
+# STRIPE_SECRET_KEY
+# STRIPE_WEBHOOK_SECRET
