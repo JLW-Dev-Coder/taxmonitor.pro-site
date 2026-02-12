@@ -1,5 +1,3 @@
-
-
 ---
 
 # Tax Monitor Pro App
@@ -250,13 +248,13 @@ Open
 
 Active / Custom
 
-* Active Prospect
 * Active Client
+* Active Prospect
 
 Done
 
-* Inactive Prospect
 * Inactive Client
+* Inactive Prospect
 
 Closed
 
@@ -285,8 +283,8 @@ Active / Custom
 
 Done
 
-* 8 Client Exit Survey
 * 10 Compliance Records
+* 8 Client Exit Survey
 
 Closed
 
@@ -396,11 +394,11 @@ All forms POST to Worker.
 Worker responsibilities:
 
 * Enforce lifecycle gating
+* Trigger outbound notifications
 * Update ClickUp task
 * Update domain object
 * Validate session/token
 * Write receipt
-* Trigger outbound notifications
 
 ---
 
@@ -417,6 +415,21 @@ Worker responsibilities:
 
 ## Environment Variables (Worker)
 
+### Wrangler-only configuration
+
+Environment variables, secrets, and bindings are defined and managed in `workers/api/wrangler.toml`.
+
+The Cloudflare dashboard is not a source of truth for runtime configuration.
+
+Rules:
+
+* Do not define variables in the dashboard.
+* Do not mix dashboard config with Wrangler config.
+* Define Production and Preview explicitly using `env.production` and `env.preview` if values differ.
+* Define `R2_BUCKET` as an R2 binding in `wrangler.toml`, not as a plain text variable.
+
+### Required names
+
 Alphabetical:
 
 * CAL_WEBHOOK_SECRET
@@ -425,20 +438,17 @@ Alphabetical:
 * CLICKUP_ORDERS_LIST_ID
 * CLICKUP_SUPPORT_LIST_ID
 * GOOGLE_CLIENT_EMAIL
-* GOOGLE_PRIVATE_KEY (secret)
+* GOOGLE_PRIVATE_KEY
 * GOOGLE_TOKEN_URI
 * GOOGLE_WORKSPACE_USER_INFO
 * GOOGLE_WORKSPACE_USER_NO_REPLY
 * GOOGLE_WORKSPACE_USER_SUPPORT
-* R2_BUCKET (binding)
+* R2_BUCKET
 * SMTP_HOST
-* SMTP_PASSWORD (secret)
+* SMTP_PASSWORD
 * SMTP_USER
-* STRIPE_SECRET_KEY (secret)
-* STRIPE_WEBHOOK_SECRET (secret)
-
-All environment variables must match these names exactly.
-Dashboard and Wrangler configuration must not diverge from this contract.
+* STRIPE_SECRET_KEY
+* STRIPE_WEBHOOK_SECRET
 
 ---
 
