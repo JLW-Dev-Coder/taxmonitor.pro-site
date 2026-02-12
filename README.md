@@ -49,44 +49,57 @@ External systems:
 ## Repository Structure
 
 /
-├─ _redirects
-├─ app/ # Portal pages (intake, offer, agreement, payment, login)
-│ ├─ agreement.html
-│ ├─ index.html
-│ ├─ intake.html
-│ ├─ login.html
-│ ├─ offer.html
-│ ├─ payment-success.html
-│ └─ payment.html
-├─ assets/ # Static assets
-│ ├─ favicon.ico
-│ └─ logo.svg
-├─ build.mjs # Build script
-├─ legal/ # Legal pages
-│ ├─ privacy.html
-│ └─ terms.html
-├─ public/ # Static placeholders for deployment
-│ └─ .gitkeep
-├─ README.md
-├─ site/ # Marketing site
-│ ├─ case-studies.html
-│ ├─ contact.html
-│ ├─ index.html
-│ ├─ partials/ # Header + footer includes
-│ │ ├─ footer.html
-│ │ └─ header.html
-│ ├─ pricing.html
-│ ├─ site.js
-│ └─ support.html
-├─ styles/ # CSS
-│ ├─ app.css
-│ └─ site.css
-└─ workers/
-└─ api/ # Cloudflare Worker API
-├─ src/
-│ └─ index.js
-└─ wrangler.toml
-
+app/
+├─ agreement.html
+├─ index.html
+├─ intake.html
+├─ login.html
+├─ offer.html
+├─ payment-success.html
+├─ payment.html
+├─ pages/
+│  └─ flows/
+│     ├─ intake/
+│     │  ├─ intake.html
+│     │  ├─ offer.html
+│     │  ├─ agreement.html
+│     │  └─ payment.html
+│     └─ post-payment/
+│        ├─ welcome.html
+│        ├─ filing-status.html
+│        ├─ address-update.html
+│        ├─ esign-2848.html
+│        ├─ compliance-report.html
+│        └─ client-exit-survey.html
+assets/
+├─ favicon.ico
+└─ logo.svg
+legal/
+├─ privacy.html
+└─ terms.html
+public/
+└─ .gitkeep
+site/
+├─ partials/
+│  ├─ footer.html
+│  └─ header.html
+├─ case-studies.html
+├─ contact.html
+├─ index.html
+├─ pricing.html
+├─ site.js
+└─ support.html
+styles/
+├─ app.css
+└─ site.css
+workers/
+└─ api/
+   ├─ src/
+   │  └─ index.js
+   └─ wrangler.toml
+README.md
+_redirects
+build.mjs
 
 Structure Notes:
 
@@ -380,3 +393,4 @@ Worker responsibilities:
 - Stateless Worker
 - Status-driven workflow
 - Zero manual lifecycle transitions
+
