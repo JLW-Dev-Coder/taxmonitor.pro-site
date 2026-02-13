@@ -1,0 +1,189 @@
+{
+  "accountId": "acct_123",
+  "compliance": {
+    "latestEventId": "cmp_2026_02_13T193000Z_abc123",
+    "records": [
+      {
+        "schema": {
+          "name": "tm_compliance_record",
+          "version": 2
+        },
+        "createdAt": "2026-02-13T19:30:00Z",
+        "eventId": "cmp_2026_02_13T193000Z_abc123",
+
+        "balancesByYear": {
+          "2016": { "balanceCents": null, "collectionStatus": null, "csedDate": null, "filed": null, "filingStatus": null, "hasLien": null, "isMissingOrUnfiled": null, "notes": "" },
+          "2017": { "balanceCents": null, "collectionStatus": null, "csedDate": null, "filed": null, "filingStatus": null, "hasLien": null, "isMissingOrUnfiled": null, "notes": "" },
+          "2018": { "balanceCents": null, "collectionStatus": null, "csedDate": null, "filed": null, "filingStatus": null, "hasLien": null, "isMissingOrUnfiled": null, "notes": "" },
+          "2019": { "balanceCents": null, "collectionStatus": null, "csedDate": null, "filed": null, "filingStatus": null, "hasLien": null, "isMissingOrUnfiled": null, "notes": "" },
+          "2020": { "balanceCents": null, "collectionStatus": null, "csedDate": null, "filed": null, "filingStatus": null, "hasLien": null, "isMissingOrUnfiled": null, "notes": "" },
+          "2021": { "balanceCents": null, "collectionStatus": null, "csedDate": null, "filed": null, "filingStatus": null, "hasLien": null, "isMissingOrUnfiled": null, "notes": "" },
+          "2022": { "balanceCents": null, "collectionStatus": null, "csedDate": null, "filed": null, "filingStatus": null, "hasLien": null, "isMissingOrUnfiled": null, "notes": "" },
+          "2023": { "balanceCents": null, "collectionStatus": null, "csedDate": null, "filed": null, "filingStatus": null, "hasLien": null, "isMissingOrUnfiled": null, "notes": "" },
+          "2024": { "balanceCents": 0, "collectionStatus": "None identified", "csedDate": null, "filed": true, "filingStatus": "MFJ", "hasLien": false, "isMissingOrUnfiled": false, "notes": "" },
+          "2025": { "balanceCents": 0, "collectionStatus": "None identified", "csedDate": null, "filed": true, "filingStatus": "MFJ", "hasLien": false, "isMissingOrUnfiled": false, "notes": "" },
+          "2026": { "balanceCents": 1250000, "collectionStatus": "None identified", "csedDate": null, "filed": false, "filingStatus": "MFJ", "hasLien": false, "isMissingOrUnfiled": false, "notes": "" }
+        },
+
+        "call": {
+          "activityType": "Initial review",
+          "periodCovered": "2016–2026",
+          "sectionFocus": "Compliance core",
+          "callConfirmedDate": "2026-02-13",
+          "agent": {
+            "name": "Agent Name",
+            "id": "A12345",
+            "department": "PPS",
+            "departmentPhone": "800-xxx-xxxx",
+            "verified": true
+          }
+        },
+
+        "taxpayer": {
+          "companyName": "John & Jane Doe LLC",
+          "lastReturnFiledYear": "2025",
+          "address": {
+            "line1": "123 Main St",
+            "line2": "",
+            "city": "San Diego",
+            "stateProvince": "CA",
+            "zipPostalCode": "92101"
+          }
+        },
+
+        "irs": {
+          "accountStatus": "Active",
+          "estimatedBalanceDueRange": "$0",
+          "totalBalanceCents": 0,
+          "statusCategories": ["None identified"],
+          "missingYearsSummary": "None",
+          "unfiledReturnsIndicator": "No",
+          "lienExposureLevel": "Low",
+          "notices": {
+            "mostRecent": {
+              "received": "No",
+              "type": null,
+              "date": null
+            }
+          },
+          "balanceByYearLegacyText": ""
+        },
+
+        "transcripts": {
+          "requestMade": true,
+          "scopeConfirmed": "Full 10-year",
+          "deliveryMethod": "SOR mailbox",
+          "files": [],
+          "retrieval": {
+            "retrievedFromSOR": "",
+            "retrievalDate": null,
+            "notes": ""
+          }
+        },
+
+        "workflows": {
+          "identityVerificationHold": "",
+          "installmentAgreement": {
+            "established": "",
+            "details": "",
+            "paymentDate": null,
+            "paymentAmountCents": null,
+            "lastPaymentDate": null,
+            "lastPaymentAmountCents": null
+          },
+          "revenueOfficer": {
+            "name": "",
+            "phone": "",
+            "fax": "",
+            "notes": ""
+          }
+        },
+
+        "wetSig2848": {
+          "spouseSeparateRequired": "",
+          "spouseSeparateRequiredYears": "",
+          "taxpayerWetSigRequired": "",
+          "spouseWetSigRequired": "",
+          "acceptedStatus": "",
+          "rejectedType": "",
+          "rejectedNotes": "",
+          "notes": ""
+        },
+
+        "recommendation": {
+          "primaryService": "Tax Monitoring Ongoing",
+          "resolutionReadinessStatus": "Not applicable",
+          "why": "Stable account indicators, no notice activity, no balances due."
+        },
+
+        "internal": {
+          "notes": "",
+          "progressPercent": 100,
+          "progressStatus": "Monitoring records have been updated. Your report will be prepared."
+        },
+
+        "fields": {
+          "Address_Line_1": "123 Main St",
+          "Address_Line_2": "",
+          "City": "San Diego",
+          "Company_Name": "John & Jane Doe LLC",
+          "Compliance_Activity_Type": "Initial review",
+          "Compliance_Internal_Notes": "",
+          "Compliance_Period_Covered": "2016–2026",
+          "Estimated_Balance_Due_Range": "$0",
+          "IA_Details": "",
+          "IA_Established": "",
+          "IA_Last_Payment_Amount": null,
+          "IA_Last_Payment_Date": null,
+          "IA_Payment_Amount": null,
+          "IA_Payment_Date": null,
+          "IRS_Agent_Department": "PPS",
+          "IRS_Agent_Department_Phone": "800-xxx-xxxx",
+          "IRS_Agent_ID": "A12345",
+          "IRS_Agent_Name": "Agent Name",
+          "IRS_Agent_Verification": true,
+          "IRS_Account_Status": "Active",
+          "IRS_Balance_By_Year_Status": "",
+          "IRS_Call_Confirmation_Date": "2026-02-13",
+          "IRS_Compliance_Section_Focus": "Compliance core",
+          "IRS_Lien_Exposure_Level": "Low",
+          "IRS_Missing_Years": "None",
+          "IRS_Notice_Date": null,
+          "IRS_Notice_Received": "No",
+          "IRS_Notice_Type": null,
+          "IRS_Revenue_Officer_Fax": "",
+          "IRS_Revenue_Officer_Name": "",
+          "IRS_Revenue_Officer_Notes": "",
+          "IRS_Revenue_Officer_Phone": "",
+          "IRS_Status_Categories": ["None identified"],
+          "Identity_Verification_Hold": "",
+          "Last_Return_Filed_Year": "2025",
+          "Primary_Recommended_Service": "Tax Monitoring Ongoing",
+          "Resolution_Readiness_Status": "Not applicable",
+          "Spouse_Separate_2848_Required": "",
+          "Spouse_Separate_2848_Required_Years": "",
+          "Spouse_Separate_Wet_Sig_2848_Required": "",
+          "State_Province": "CA",
+          "Tax_Monitoring_Service_Progress_Percent": 100,
+          "Tax_Monitoring_Service_Progress_Status": "Monitoring records have been updated. Your report will be prepared.",
+          "Taxpayer_Separate_Wet_Sig_2848_Required": "",
+          "Total_IRS_Balance": 0,
+          "Transcript_Delivery_Method": "SOR mailbox",
+          "Transcript_Files_Upload": [],
+          "Transcript_Request_Made": true,
+          "Transcript_Retrieval_Date": null,
+          "Transcript_Retrieval_Notes": "",
+          "Transcript_Scope_Confirmed": "Full 10-year",
+          "Transcripts_Retrieved_From_SOR": "",
+          "Unfiled_Returns_Indicator": "No",
+          "Wet_Sig_2848_Accepted_Status": "",
+          "Wet_Sig_2848_Notes": "",
+          "Wet_Sig_2848_Rejected_Notes": "",
+          "Wet_Sig_2848_Rejected_Type": "",
+          "ZIP_Postal_Code": "92101"
+        }
+      }
+    ]
+  }
+}
+
