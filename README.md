@@ -113,22 +113,25 @@ app/
 ├─ intake.html
 ├─ login.html
 ├─ offer.html
-├─ payment-success.html
-├─ payment.html
 ├─ pages/
 │  └─ flows/
 │     ├─ intake/
+│     │  ├─ agreement.html
 │     │  ├─ intake.html
 │     │  ├─ offer.html
-│     │  ├─ agreement.html
 │     │  └─ payment.html
 │     └─ post-payment/
-│        ├─ welcome.html
-│        ├─ filing-status.html
 │        ├─ address-update.html
-│        ├─ esign-2848.html
+│        ├─ client-exit-survey.html
 │        ├─ compliance-report.html
-│        └─ client-exit-survey.html
+│        ├─ esign-2848.html
+│        ├─ filing-status.html
+│        └─ welcome.html
+├─ partials/
+│  ├─ sidebar.html
+│  └─ topbar.html
+├─ payment-success.html
+└─ payment.html
 assets/
 ├─ favicon.ico
 └─ logo.svg
@@ -138,15 +141,15 @@ legal/
 public/
 └─ .gitkeep
 site/
+├─ contact.html
+├─ index.html
 ├─ partials/
 │  ├─ footer.html
 │  └─ header.html
-├─ resources/
-│  ├─ case-studies.html
-│  └─ 433F.html
-├─ contact.html
-├─ index.html
 ├─ pricing.html
+├─ resources/
+│  ├─ 433F.html
+│  └─ case-studies.html
 ├─ site.js
 └─ support.html
 styles/
@@ -467,4 +470,5 @@ Rules:
 * Stateless Worker
 * Status-driven workflow
 * Zero manual lifecycle transitions
+
 
