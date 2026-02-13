@@ -70,34 +70,27 @@
       box-shadow: 0 0 12px rgba(245, 158, 11, 0.5);
     }
 
-    /* Flow header: match offer/agreement semantics */
-    @keyframes pulse-glow{ 0%,100%{box-shadow:0 0 20px rgba(245,158,11,.30)} 50%{box-shadow:0 0 40px rgba(245,158,11,.50)} }
-    .animate-pulse-glow{ animation:pulse-glow 2s ease-in-out infinite; }
+    .step-done {
+      background: linear-gradient(135deg, rgba(20, 184, 166, 0.2) 0%, rgba(13, 148, 136, 0.3) 100%);
+      border-color: rgba(20, 184, 166, 0.4);
+    }
 
-    .progress-glow-bar{
-      background: linear-gradient(90deg, #F59E0B, #D97706);
-      box-shadow: 0 0 20px rgba(245,158,11,.5);
+    .step-active {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.2) 0%, rgba(217, 119, 6, 0.3) 100%);
+      border-color: rgba(245, 158, 11, 0.5);
     }
 
     .error-banner {
       background: linear-gradient(135deg, rgba(244, 63, 94, 0.15) 0%, rgba(225, 29, 72, 0.2) 100%);
       border: 1px solid rgba(244, 63, 94, 0.3);
     }
-
-    /* Scrollbar (match offer vibe) */
-    ::-webkit-scrollbar{ width:8px; }
-    ::-webkit-scrollbar-track{ background:#0B1220; }
-    ::-webkit-scrollbar-thumb{ background:#1E293B; border-radius:4px; }
-    ::-webkit-scrollbar-thumb:hover{ background:#334155; }
   </style>
 
   <script>
     tailwind.config = {
       theme: {
         extend: {
-          colors: {
-            slate: { 950: '#020617' }
-          }
+          colors: { slate: { 950: '#020617' } }
         }
       }
     };
@@ -111,256 +104,246 @@
   <div class="fixed inset-0 aurora-bg pointer-events-none"></div>
   <div class="fixed inset-0 noise-overlay pointer-events-none"></div>
 
-  <div class="relative z-10 min-h-full w-full">
-    <!-- Sticky Header (match offer/agreement structure) -->
+  <div class="relative min-h-full flex flex-col">
+    <!-- Sticky Flow Header -->
     <header class="sticky top-0 z-50 glass-card border-b border-slate-800/50">
-      <div class="max-w-6xl mx-auto px-4 py-4">
-        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <!-- Logo -->
-          <a href="/site/index.html" class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl amber-gradient-bg flex items-center justify-center">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4">
+        <div class="flex items-center justify-between gap-4">
+          <!-- Left: Logo -->
+          <a href="/site/index.html" class="flex items-center gap-3 flex-shrink-0">
+            <div class="w-10 h-10 amber-gradient-bg rounded-xl flex items-center justify-center">
               <span class="font-black text-slate-950">TM</span>
             </div>
-            <span class="font-bold text-lg text-slate-100">Tax Monitor Pro</span>
+            <span class="text-lg font-semibold text-slate-100 hidden sm:block">Tax Monitor Pro</span>
           </a>
 
-          <!-- Stepper -->
-          <div class="flex items-center gap-2 sm:gap-4">
-            <div class="flex items-center gap-2">
-              <div class="w-7 h-7 rounded-full bg-emerald-500/20 border border-emerald-500 flex items-center justify-center">
-                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+          <!-- Center: Stepper -->
+          <div class="flex items-center gap-2 sm:gap-3">
+            <div class="flex items-center gap-1.5">
+              <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-full step-done border flex items-center justify-center">
+                <svg class="w-4 h-4 text-teal-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
                 </svg>
               </div>
-              <span class="text-sm text-slate-400 hidden sm:inline">Intake</span>
+              <span class="text-xs text-slate-400 hidden md:block">Intake</span>
             </div>
 
-            <div class="w-8 h-0.5 bg-emerald-500/50"></div>
+            <div class="w-4 sm:w-8 h-px bg-slate-700"></div>
 
-            <div class="flex items-center gap-2">
-              <div class="w-7 h-7 rounded-full bg-emerald-500/20 border border-emerald-500 flex items-center justify-center">
-                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            <div class="flex items-center gap-1.5">
+              <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-full step-done border flex items-center justify-center">
+                <svg class="w-4 h-4 text-teal-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
                 </svg>
               </div>
-              <span class="text-sm text-slate-400 hidden sm:inline">Offer</span>
+              <span class="text-xs text-slate-400 hidden md:block">Offer</span>
             </div>
 
-            <div class="w-8 h-0.5 bg-emerald-500/50"></div>
+            <div class="w-4 sm:w-8 h-px bg-slate-700"></div>
 
-            <div class="flex items-center gap-2">
-              <div class="w-7 h-7 rounded-full bg-emerald-500/20 border border-emerald-500 flex items-center justify-center">
-                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            <div class="flex items-center gap-1.5">
+              <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-full step-done border flex items-center justify-center">
+                <svg class="w-4 h-4 text-teal-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
                 </svg>
               </div>
-              <span class="text-sm text-slate-400 hidden sm:inline">Agreement</span>
+              <span class="text-xs text-slate-400 hidden md:block">Agreement</span>
             </div>
 
-            <div class="w-8 h-0.5 bg-emerald-500/50"></div>
+            <div class="w-4 sm:w-8 h-px bg-slate-700"></div>
 
-            <div class="flex items-center gap-2">
-              <div class="w-7 h-7 rounded-full bg-amber-500 flex items-center justify-center animate-pulse-glow">
-                <span class="text-xs font-bold text-slate-900">4</span>
+            <div class="flex items-center gap-1.5">
+              <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-full step-active border flex items-center justify-center">
+                <span class="text-sm font-semibold text-amber-400">4</span>
               </div>
-              <span class="text-sm font-semibold text-amber-400">Payment</span>
+              <span class="text-xs text-amber-400 font-medium hidden md:block">Payment</span>
             </div>
           </div>
 
-          <!-- Validity chip -->
-          <div class="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800/80 border border-slate-700">
-            <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-            </svg>
-            <span class="text-xs text-slate-300">Valid for 7 days</span>
+          <!-- Right: Validity Pill -->
+          <div class="flex-shrink-0">
+            <div class="px-3 py-1.5 rounded-full bg-slate-800/60 border border-slate-700/50 text-xs text-slate-400">
+              <span class="hidden sm:inline">Valid for </span>7 days
+            </div>
           </div>
         </div>
+      </div>
 
-        <!-- Progress bar (Payment = 100%) -->
-        <div class="mt-4 h-1 bg-slate-800 rounded-full overflow-hidden">
-          <div class="h-full w-full progress-glow-bar rounded-full"></div>
-        </div>
+      <!-- Progress Bar -->
+      <div class="h-1 bg-slate-800/50">
+        <div class="h-full amber-gradient-bg progress-glow" style="width: 100%"></div>
       </div>
     </header>
 
     <!-- Main Content -->
-    <main class="max-w-6xl mx-auto px-4 py-8 space-y-8">
-      <!-- Page Title (match offer/agreement block) -->
-      <div class="text-center space-y-3">
-        <h1 id="page-headline" class="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
-          Secure Payment
-        </h1>
-        <p id="page-subhead" class="text-lg sm:text-xl text-slate-400">
-          Complete checkout to activate your Tax Monitor service.
-        </p>
-
-        <div class="mt-5 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
-          <div class="rounded-xl border border-slate-800/60 bg-black/20 px-4 py-3 text-sm text-slate-300">
-            <span class="text-slate-500">Proposal code</span>
-            <span id="proposal-code" class="font-semibold text-amber-400">—</span>
-          </div>
-
-          <div class="rounded-xl border border-slate-800/60 bg-black/20 px-4 py-3 text-sm text-slate-300">
-            <span class="text-slate-500">Selected option</span>
-            <span id="selected-plan" class="font-semibold text-slate-100">Not selected</span>
-          </div>
-
-          <div class="rounded-xl border border-slate-800/60 bg-black/20 px-4 py-3 text-sm text-slate-300">
-            <span class="text-slate-500">Total</span>
-            <span id="plan-price-chip" class="font-semibold text-slate-100">—</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Main Content Split -->
-      <div class="grid lg:grid-cols-5 gap-6">
-        <!-- Left Column -->
-        <div class="lg:col-span-3 space-y-6">
-          <div class="glass-card rounded-2xl p-6 sm:p-8">
-            <h2 class="text-xl font-semibold text-slate-100 mb-6 flex items-center gap-3">
-              <svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/>
-              </svg>
-              What happens next
-            </h2>
-
-            <div class="space-y-5">
-              <div class="flex gap-4">
-                <div class="flex-shrink-0 w-3 h-3 mt-2 rounded-full amber-gradient-bg"></div>
-                <p class="text-slate-300 leading-relaxed">Checkout completes through <span class="text-slate-100 font-medium">Stripe</span> on our billing domain.</p>
-              </div>
-
-              <div class="flex gap-4">
-                <div class="flex-shrink-0 w-3 h-3 mt-2 rounded-full amber-gradient-bg"></div>
-                <p class="text-slate-300 leading-relaxed">After payment, you'll be routed to your <span class="text-slate-100 font-medium">status page</span> to confirm activation.</p>
-              </div>
-
-              <div class="flex gap-4">
-                <div class="flex-shrink-0 w-3 h-3 mt-2 rounded-full amber-gradient-bg"></div>
-                <p class="text-slate-300 leading-relaxed">Monitoring is a reporting service and <span class="text-slate-100 font-medium">does not create IRS representation</span>.</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="glass-card-light rounded-2xl p-6">
-            <h3 class="text-lg font-semibold text-slate-100 mb-4 flex items-center gap-2">
-              <svg class="w-5 h-5 text-teal-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/>
-              </svg>
-              Security
-            </h3>
-
-            <p class="text-slate-400 text-sm mb-5">We do not store your card details. Stripe processes payment securely.</p>
-
-            <div class="flex flex-wrap gap-4">
-              <div class="flex items-center gap-2 text-sm text-slate-400">
-                <svg class="w-4 h-4 text-teal-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                </svg>
-                Stripe secured
-              </div>
-
-              <div class="flex items-center gap-2 text-sm text-slate-400">
-                <svg class="w-4 h-4 text-teal-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                </svg>
-                No card storage
-              </div>
-
-              <div class="flex items-center gap-2 text-sm text-slate-400">
-                <svg class="w-4 h-4 text-teal-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                </svg>
-                Encrypted transport
-              </div>
-            </div>
-          </div>
+    <main class="flex-1 py-8 sm:py-12 px-4 sm:px-6">
+      <div class="max-w-5xl mx-auto space-y-8">
+        <!-- Page Title (match intake/offer: 2 lines only) -->
+        <div class="text-center space-y-3">
+          <h1 id="page-headline" class="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
+            Secure Payment
+          </h1>
+          <p id="page-subhead" class="text-lg sm:text-xl text-slate-400">
+            Complete checkout to activate your Tax Monitor service.
+          </p>
         </div>
 
-        <!-- Right Column -->
-        <div class="lg:col-span-2">
-          <div class="glass-card rounded-2xl p-6 sm:p-8 sticky top-32">
-            <div class="flex items-center justify-between mb-6 pb-4 border-b border-slate-700/50">
-              <h3 class="text-lg font-semibold text-slate-100">Order</h3>
-              <span class="text-lg font-semibold text-slate-100">Total</span>
-            </div>
-
-            <div class="flex items-center justify-between mb-8">
-              <div>
-                <p id="order-name" class="text-slate-200 font-medium">Not selected</p>
-                <p class="text-sm text-slate-500">Tax Monitor Pro</p>
-              </div>
-              <div class="text-right">
-                <p id="order-total" class="text-2xl font-bold amber-gradient">—</p>
-                <p class="text-sm text-slate-500">One-time</p>
-              </div>
-            </div>
-
-            <div id="error-banner" class="hidden error-banner rounded-xl p-4 mb-6">
-              <div class="flex items-start gap-3">
-                <svg class="w-5 h-5 text-rose-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"/>
+        <!-- Main Content Split -->
+        <div class="grid lg:grid-cols-5 gap-6">
+          <!-- Left Column -->
+          <div class="lg:col-span-3 space-y-6">
+            <div class="glass-card rounded-2xl p-6 sm:p-8">
+              <h2 class="text-xl font-semibold text-slate-100 mb-6 flex items-center gap-3">
+                <svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/>
                 </svg>
-                <div>
-                  <p class="text-rose-300 font-medium text-sm" id="error-title">Payment failed</p>
-                  <p class="text-rose-400/80 text-xs mt-1" id="error-text">Please try again.</p>
+                What happens next
+              </h2>
+
+              <div class="space-y-5">
+                <div class="flex gap-4">
+                  <div class="flex-shrink-0 w-3 h-3 mt-2 rounded-full amber-gradient-bg"></div>
+                  <p class="text-slate-300 leading-relaxed">Checkout completes through <span class="text-slate-100 font-medium">Stripe</span> on our branded billing domain.</p>
+                </div>
+
+                <div class="flex gap-4">
+                  <div class="flex-shrink-0 w-3 h-3 mt-2 rounded-full amber-gradient-bg"></div>
+                  <p class="text-slate-300 leading-relaxed">After payment, you'll be routed to your <span class="text-slate-100 font-medium">status page</span> to confirm activation.</p>
+                </div>
+
+                <div class="flex gap-4">
+                  <div class="flex-shrink-0 w-3 h-3 mt-2 rounded-full amber-gradient-bg"></div>
+                  <p class="text-slate-300 leading-relaxed">Monitoring is a reporting service and <span class="text-slate-100 font-medium">does not create IRS representation</span>.</p>
                 </div>
               </div>
             </div>
 
-            <div class="space-y-3">
-              <button
-                id="pay-btn"
-                class="w-full amber-gradient-bg text-slate-950 font-semibold py-4 px-6 rounded-xl btn-glow transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                disabled
-                type="button"
-              >
-                <span id="pay-btn-label">Pay now</span>
-                <svg id="pay-btn-arrow" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+            <div class="glass-card-light rounded-2xl p-6">
+              <h3 class="text-lg font-semibold text-slate-100 mb-4 flex items-center gap-2">
+                <svg class="w-5 h-5 text-teal-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/>
                 </svg>
-                <svg id="pay-btn-spinner" class="hidden w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
-                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-              </button>
+                Security
+              </h3>
 
-              <a
-                id="back-btn"
-                class="w-full py-3 px-6 rounded-xl border border-slate-600/50 text-slate-300 font-medium transition-all duration-300 hover:bg-slate-800/50 hover:border-slate-500/50 flex items-center justify-center gap-2"
-                href="/app/agreement.html"
-              >
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/>
-                </svg>
-                <span>Back to agreement</span>
-              </a>
+              <p class="text-slate-400 text-sm mb-5">We do not store your card details. Stripe processes payment securely.</p>
+
+              <div class="flex flex-wrap gap-4">
+                <div class="flex items-center gap-2 text-sm text-slate-400">
+                  <svg class="w-4 h-4 text-teal-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                  Stripe secured
+                </div>
+
+                <div class="flex items-center gap-2 text-sm text-slate-400">
+                  <svg class="w-4 h-4 text-teal-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                  No card storage
+                </div>
+
+                <div class="flex items-center gap-2 text-sm text-slate-400">
+                  <svg class="w-4 h-4 text-teal-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                  Encrypted transport
+                </div>
+              </div>
             </div>
+          </div>
 
-            <p class="text-xs text-slate-500 text-center mt-5 leading-relaxed">
-              By paying, you confirm the signed agreement and proceed to service activation.
-            </p>
+          <!-- Right Column -->
+          <div class="lg:col-span-2">
+            <div class="glass-card rounded-2xl p-6 sm:p-8 sticky top-32">
+              <div class="flex items-center justify-between mb-6 pb-4 border-b border-slate-700/50">
+                <h3 class="text-lg font-semibold text-slate-100">Order</h3>
+                <span class="text-lg font-semibold text-slate-100">Total</span>
+              </div>
 
-            <p class="text-xs text-slate-500 text-center mt-3">
-              Need help? Email <a class="text-amber-300 hover:text-amber-200 underline" href="mailto:support@taxmonitor.pro">support@taxmonitor.pro</a>
-            </p>
+              <div class="flex items-center justify-between mb-8">
+                <div>
+                  <p id="order-name" class="text-slate-200 font-medium">Not selected</p>
+                  <p class="text-sm text-slate-500">Tax Monitor Pro</p>
+                </div>
+                <div class="text-right">
+                  <p id="order-total" class="text-2xl font-bold amber-gradient">—</p>
+                  <p class="text-sm text-slate-500">One-time</p>
+                </div>
+              </div>
+
+              <div id="error-banner" class="hidden error-banner rounded-xl p-4 mb-6">
+                <div class="flex items-start gap-3">
+                  <svg class="w-5 h-5 text-rose-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"/>
+                  </svg>
+                  <div>
+                    <p class="text-rose-300 font-medium text-sm" id="error-title">Payment failed</p>
+                    <p class="text-rose-400/80 text-xs mt-1" id="error-text">Please try again.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="space-y-3">
+                <button
+                  id="pay-btn"
+                  class="w-full amber-gradient-bg text-slate-950 font-semibold py-4 px-6 rounded-xl btn-glow transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled
+                  type="button"
+                >
+                  <span id="pay-btn-label">Pay now</span>
+                  <svg id="pay-btn-arrow" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+                  </svg>
+                  <svg id="pay-btn-spinner" class="hidden w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                </button>
+
+                <a
+                  id="back-btn"
+                  class="w-full py-3 px-6 rounded-xl border border-slate-600/50 text-slate-300 font-medium transition-all duration-300 hover:bg-slate-800/50 hover:border-slate-500/50 flex items-center justify-center gap-2"
+                  href="/app/agreement.html"
+                >
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/>
+                  </svg>
+                  <span>Back to agreement</span>
+                </a>
+              </div>
+
+              <p class="text-xs text-slate-500 text-center mt-5 leading-relaxed">
+                By paying, you confirm the signed agreement and proceed to service activation.
+              </p>
+
+              <p class="text-xs text-slate-500 text-center mt-3">
+                Need help? Email <a class="text-amber-300 hover:text-amber-200 underline" href="mailto:support@taxmonitor.pro">support@taxmonitor.pro</a>
+              </p>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="text-center text-sm text-slate-500">
-        Monitoring does not create IRS representation. Representation, filing, and resolution are separate engagements.
+        <div class="text-center text-sm text-slate-600 pt-6">
+          Monitoring does not create IRS representation. Representation, filing, and resolution are separate engagements.
+        </div>
       </div>
     </main>
 
-    <!-- Footer (match offer/agreement pattern) -->
-    <footer class="border-t border-slate-800/60 mt-12 bg-slate-950/40">
-      <div class="max-w-6xl mx-auto px-4 py-8 text-center text-xs text-slate-500">
-        <div>© <span id="footer-year"></span> Tax Monitor Pro. All rights reserved.</div>
-        <div class="mt-3 flex items-center justify-center gap-4">
-          <a class="hover:text-slate-300 transition" href="/legal/privacy.html">Privacy</a>
-          <a class="hover:text-slate-300 transition" href="/legal/terms.html">Terms</a>
+    <!-- Footer -->
+    <footer class="border-t border-slate-800/50 py-8 px-4 sm:px-6">
+      <div class="max-w-5xl mx-auto">
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-4">
+          <div class="flex items-center gap-6">
+            <a href="/legal/privacy.html" class="text-sm text-slate-500 hover:text-slate-300 transition-colors">Privacy</a>
+            <a href="/legal/terms.html" class="text-sm text-slate-500 hover:text-slate-300 transition-colors">Terms</a>
+          </div>
+          <p class="text-sm text-slate-600">© <span id="footer-year"></span> Tax Monitor Pro. All rights reserved.</p>
         </div>
+
+        <p class="text-xs text-slate-600 text-center leading-relaxed">
+          Monitoring does not create IRS representation. Representation, filing, and resolution are separate engagements.
+        </p>
       </div>
     </footer>
   </div>
@@ -429,19 +412,12 @@
         silver: "Tax Monitoring — Silver"
       };
 
-      var proposalCode = document.getElementById("proposal-code");
-      if (proposalCode) proposalCode.textContent = code || "—";
-
       var name = NAME_BY_ITEM[item] || "Not selected";
       var price = item ? money(PRICE_BY_ITEM[item]) : "—";
 
-      var selectedPlan = document.getElementById("selected-plan");
-      var planPriceChip = document.getElementById("plan-price-chip");
       var orderName = document.getElementById("order-name");
       var orderTotal = document.getElementById("order-total");
 
-      if (selectedPlan) selectedPlan.textContent = name;
-      if (planPriceChip) planPriceChip.textContent = price;
       if (orderName) orderName.textContent = name;
       if (orderTotal) orderTotal.textContent = price;
 
@@ -475,7 +451,7 @@
 
         setPayLoading(true);
 
-        fetch("https://api.taxmonitor.pro/api/stripe/checkout", {
+        fetch("/api/stripe/checkout", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ code: code, item: item })
@@ -503,12 +479,12 @@
   <script>
     (function () {
       var defaultConfig = {
-        hero_subhead: 'Complete checkout to activate your Tax Monitor service.'
+        page_subhead: 'Complete checkout to activate your Tax Monitor service.'
       };
 
       async function onConfigChange(config) {
-        var heroSubhead = document.getElementById('hero-subhead');
-        if (heroSubhead && config && config.hero_subhead) heroSubhead.textContent = config.hero_subhead;
+        var pageSubhead = document.getElementById('page-subhead');
+        if (pageSubhead && config && config.page_subhead) pageSubhead.textContent = config.page_subhead;
       }
 
       function mapToCapabilities(config) {
@@ -522,7 +498,7 @@
 
       function mapToEditPanelValues(config) {
         return new Map([
-          ['hero_subhead', (config && config.hero_subhead) ? config.hero_subhead : defaultConfig.hero_subhead]
+          ['page_subhead', (config && config.page_subhead) ? config.page_subhead : defaultConfig.page_subhead]
         ]);
       }
 
