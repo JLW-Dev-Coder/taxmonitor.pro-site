@@ -141,7 +141,9 @@ site/
 ├─ partials/
 │  ├─ footer.html
 │  └─ header.html
-├─ case-studies.html
+├─ resources/
+│  ├─ case-studies.html
+│  └─ 433F.html
 ├─ contact.html
 ├─ index.html
 ├─ pricing.html
@@ -465,3 +467,4 @@ Rules:
 * Stateless Worker
 * Status-driven workflow
 * Zero manual lifecycle transitions
+
