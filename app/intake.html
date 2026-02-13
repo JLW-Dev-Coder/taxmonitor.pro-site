@@ -172,7 +172,14 @@
           </div>
 
           <div class="rounded-2xl border border-slate-800/60 bg-slate-900/30 p-6 md:p-8">
-            <form id="tm-intake" method="post" action="https://api.taxmonitor.pro/forms/intake" accept-charset="UTF-8" class="space-y-8">
+            <form
+              id="tm-intake"
+              data-tm-form
+              method="post"
+              action="https://api.taxmonitor.pro/forms/intake"
+              accept-charset="UTF-8"
+              class="space-y-8"
+            >
               <!-- Idempotency + validation helpers -->
               <input id="tm_event_id" name="eventId" type="hidden" value="">
               <input id="tm_session_token" name="sessionToken" type="hidden" value="">
@@ -432,6 +439,63 @@
 
   <script>
     (function () {
+      function getEndpointSlug(formEl) {
+        try {
+          var action = String(formEl.getAttribute('action') || '');
+          var u = new URL(action, window.location.origin);
+          var parts = (u.pathname || '').split('/').filter(Boolean);
+          return String(parts[parts.length - 1] || 'form').trim() || 'form';
+        } catch (e) {
+          return 'form';
+        }
+      }
+
+      function ensureEventId(formEl) {
+        var el = document.getElementById('tm_event_id');
+        if (!el) return;
+
+        var endpoint = getEndpointSlug(formEl || document.getElementById('tm-intake') || document.querySelector('form'));
+        var key = 'tm:' + endpoint + ':eventId';
+
+        var existing = sessionStorage.getItem(key);
+        if (!existing) {
+          existing = (crypto && crypto.randomUUID) ? crypto.randomUUID() : String(Date.now());
+          sessionStorage.setItem(key, existing);
+        }
+        el.value = existing;
+      }
+
+      function syncSessionToken() {
+        var el = document.getElementById('tm_session_token');
+        if (!el) return;
+
+        var params = new URLSearchParams(window.location.search || '');
+        var t = params.get('token') || params.get('sessionToken') || '';
+        el.value = t;
+      }
+
+      function disableSubmit(formEl) {
+        if (!formEl) return;
+
+        var btn = formEl.querySelector('button[type="submit"]');
+        if (!btn) return;
+
+        btn.disabled = true;
+        btn.setAttribute('aria-disabled', 'true');
+        btn.dataset.originalText = btn.textContent || '';
+        btn.textContent = 'Submitting...';
+      }
+
+      window.tmCommon = {
+        disableSubmit: disableSubmit,
+        ensureEventId: ensureEventId,
+        syncSessionToken: syncSessionToken
+      };
+    })();
+  </script>
+
+  <script>
+    (function () {
       var ack = document.getElementById('monitoring_ack');
       var ackValue = document.getElementById('monitoring_ack_value');
       var concerns = Array.prototype.slice.call(document.querySelectorAll('.tm-concern'));
@@ -452,43 +516,22 @@
         concernsValue.value = picked.filter(Boolean).join(',');
       }
 
-      function ensureEventId() {
-        var el = document.getElementById('tm_event_id');
-        if (!el) return;
-
-        var key = 'tm:intake:eventId';
-        var existing = sessionStorage.getItem(key);
-        if (!existing) {
-          existing = (crypto && crypto.randomUUID) ? crypto.randomUUID() : String(Date.now());
-          sessionStorage.setItem(key, existing);
-        }
-        el.value = existing;
-      }
-
-      function syncSessionToken() {
-        var el = document.getElementById('tm_session_token');
-        if (!el) return;
-
-        // Placeholder: pull from URL (?token=...) or existing localStorage key, whichever you decide later.
-        var params = new URLSearchParams(window.location.search || '');
-        var t = params.get('token') || params.get('sessionToken') || '';
-        el.value = t;
-      }
-
       if (ack) ack.addEventListener('change', syncAck);
       for (var i = 0; i < concerns.length; i++) concerns[i].addEventListener('change', syncConcerns);
 
       if (form) {
         form.addEventListener('submit', function () {
-          ensureEventId();
-          syncSessionToken();
+          if (window.tmCommon && window.tmCommon.ensureEventId) window.tmCommon.ensureEventId(form);
+          if (window.tmCommon && window.tmCommon.syncSessionToken) window.tmCommon.syncSessionToken();
+          if (window.tmCommon && window.tmCommon.disableSubmit) window.tmCommon.disableSubmit(form);
+
           syncAck();
           syncConcerns();
         });
       }
 
-      ensureEventId();
-      syncSessionToken();
+      if (window.tmCommon && window.tmCommon.ensureEventId) window.tmCommon.ensureEventId(form);
+      if (window.tmCommon && window.tmCommon.syncSessionToken) window.tmCommon.syncSessionToken();
       syncAck();
       syncConcerns();
     })();
