@@ -66,7 +66,7 @@
     .agreement-prose h3 { scroll-margin-top: 110px; }
     .agreement-prose a { text-decoration: underline; }
 
-    /* Readability: spacing + hierarchy */
+    /* Readability: spacing + hierarchy (single source of truth) */
     .agreement-prose{
       font-size: 15.5px;
       line-height: 1.8;
@@ -76,60 +76,34 @@
       font-size: 1.12em;
       font-weight: 700;
       letter-spacing: 0.01em;
-      margin-top: 1.6em;
-      margin-bottom: 0.65em;
+      margin-top: 2.25rem;
+      margin-bottom: 1rem;
     }
 
     .agreement-prose :where(p):not(:where([class~="not-prose"] *)){
-      margin-top: 1.05em;
-      margin-bottom: 1.05em;
+      margin-top: 1.25rem;
+      margin-bottom: 1.25rem;
     }
 
     .agreement-prose :where(ol, ul):not(:where([class~="not-prose"] *)){
-      margin-top: 0.9em;
-      margin-bottom: 1.1em;
+      margin-top: 1rem;
+      margin-bottom: 1.25rem;
       padding-left: 1.25em;
     }
 
     .agreement-prose :where(li):not(:where([class~="not-prose"] *)){
-      margin-top: 0.55em;
-      margin-bottom: 0.55em;
+      margin-top: 0.75rem;
+      margin-bottom: 0.75rem;
     }
 
     .agreement-prose :where(hr):not(:where([class~="not-prose"] *)){
-      margin-top: 1.9em;
-      margin-bottom: 1.9em;
+      margin-top: 2rem;
+      margin-bottom: 2rem;
     }
 
     .agreement-prose :where(strong):not(:where([class~="not-prose"] *)){
       font-weight: 700;
     }
-    
-    /* Improve paragraph spacing */
-    .agreement-prose p {
-      margin-top: 1.25rem;
-      margin-bottom: 1.25rem;
-      line-height: 1.8;
-    }
-    
-    /* Give headings more separation */
-    .agreement-prose h3 {
-      margin-top: 2.25rem;
-      margin-bottom: 1rem;
-    }
-    
-    /* Add spacing between list items */
-    .agreement-prose ol li {
-      margin-top: 0.75rem;
-      margin-bottom: 0.75rem;
-    }
-    
-    /* Slightly more breathing room around HR dividers */
-    .agreement-prose hr {
-      margin-top: 2rem;
-      margin-bottom: 2rem;
-    }
-    
   </style>
 
   <style>@view-transition { navigation: auto; }</style>
@@ -212,12 +186,12 @@
     </header>
 
     <main class="max-w-6xl mx-auto px-4 py-8 space-y-8">
-      <!-- Page Title (match offer.html layout) -->
+      <!-- Page Title -->
       <div class="text-center space-y-3">
-        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
+        <h1 id="page-headline" class="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
           Service Agreement
         </h1>
-        <p class="text-lg sm:text-xl text-slate-400">Review the contract terms before payment and activation.</p>
+        <p id="page-subhead" class="text-lg sm:text-xl text-slate-400">Review the terms, then continue to payment.</p>
 
         <div class="mt-5 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
           <div class="rounded-xl border border-slate-800/60 bg-black/20 px-4 py-3 text-sm text-slate-300">
