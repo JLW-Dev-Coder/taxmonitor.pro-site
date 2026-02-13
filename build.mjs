@@ -1,5 +1,5 @@
 // build.mjs
-import { cp, mkdir, readFile, readdir, stat, writeFile } from "node:fs/promises";
+import { cp, mkdir, readFile, readdir, stat, writeFile, rm } from "node:fs/promises";
 import path from "node:path";
 
 const ROOT = process.cwd();
@@ -15,6 +15,8 @@ const STYLES_DIR = path.join(ROOT, "styles");
 const PARTIALS_DIR = path.join(SITE_DIR, "partials");
 const REDIRECTS_SRC = path.join(ROOT, "_redirects");
 const REDIRECTS_DEST = path.join(DIST_DIR, "_redirects");
+
+const BUILD_TARGET = (process.env.BUILD_TARGET || "site").toLowerCase(); // "app" | "site"
 
 async function exists(p) {
   try {
@@ -38,7 +40,6 @@ async function walk(dir) {
 
 async function copyDirContentsToDistRoot(srcDir) {
   if (!(await exists(srcDir))) return;
-  // Copy *contents* of srcDir into dist root
   const entries = await readdir(srcDir, { withFileTypes: true });
   for (const e of entries) {
     const src = path.join(srcDir, e.name);
@@ -81,7 +82,7 @@ async function injectPartialsIntoTree({ sourceDir, distBaseDir, skipPartialsDirN
 }
 
 async function copySiteNonHtmlToDistRoot() {
-  // Copy everything in /site into dist root EXCEPT /site/partials and EXCEPT .html files
+  if (!(await exists(SITE_DIR))) return;
   const entries = await readdir(SITE_DIR, { withFileTypes: true });
   for (const e of entries) {
     if (e.name === "partials") continue;
@@ -94,28 +95,45 @@ async function copySiteNonHtmlToDistRoot() {
   }
 }
 
-async function main() {
+async function cleanDist() {
+  if (await exists(DIST_DIR)) await rm(DIST_DIR, { recursive: true, force: true });
   await mkdir(DIST_DIR, { recursive: true });
+}
 
-  // Put root-served stuff in the dist root (/_sdk, /favicon.ico, etc.)
+async function main() {
+  await cleanDist();
+
+  // Always copy public root stuff (/_sdk, favicon, etc.)
   await copyDirContentsToDistRoot(PUBLIC_DIR);
 
-  // Copy top-level folders as-is
+  // Always copy shared top-level folders
   await copyDirIfExists(ASSETS_DIR, "assets");
   await copyDirIfExists(LEGAL_DIR, "legal");
   await copyDirIfExists(STYLES_DIR, "styles");
 
-  // Copy site non-html assets to dist root (site.js, images, etc.)
-  await copySiteNonHtmlToDistRoot();
+  // Redirects -> dist root (same file for both projects; keep as-is)
+  if (await exists(REDIRECTS_SRC)) await cp(REDIRECTS_SRC, REDIRECTS_DEST);
 
-  // Inject partials into SITE html -> dist root
+  if (BUILD_TARGET === "app") {
+    // Build APP into dist root so app.taxmonitor.pro/ loads the app
+    await copyDirIfExists(APP_DIR, null);
+    await injectPartialsIntoTree({
+      sourceDir: APP_DIR,
+      distBaseDir: DIST_DIR,
+      skipPartialsDirName: null,
+    });
+    return;
+  }
+
+  // Default: build SITE into dist root so taxmonitor.pro/ loads marketing
+  await copySiteNonHtmlToDistRoot();
   await injectPartialsIntoTree({
     sourceDir: SITE_DIR,
     distBaseDir: DIST_DIR,
     skipPartialsDirName: "partials",
   });
 
-  // Inject partials into APP html -> dist/app
+  // Also include app under /app for the marketing domain (optional but keeps old paths working)
   const distAppDir = path.join(DIST_DIR, "app");
   await copyDirIfExists(APP_DIR, "app");
   await injectPartialsIntoTree({
@@ -123,9 +141,6 @@ async function main() {
     distBaseDir: distAppDir,
     skipPartialsDirName: null,
   });
-
-  // Redirects -> dist root
-  if (await exists(REDIRECTS_SRC)) await cp(REDIRECTS_SRC, REDIRECTS_DEST);
 }
 
 await main();
