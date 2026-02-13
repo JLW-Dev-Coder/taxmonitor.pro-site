@@ -1,9 +1,3 @@
-Yes. We’re not savages. If there’s a TOC, it should actually work.
-
-Below is your **fully updated README.md** with clickable internal anchors that match GitHub’s automatic heading IDs.
-
----
-
 # Tax Monitor Pro App
 
 Tax Monitor Pro is a serverless CRM + delivery system for tax monitoring services.
@@ -392,3 +386,4 @@ Wrangler-only configuration.
 * Status-driven workflow
 * Worker-injected rendering state
 * Zero manual lifecycle transitions
+
