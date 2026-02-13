@@ -36,60 +36,93 @@ async function walk(dir) {
   return out;
 }
 
-async function copyDirIfExists(srcDir, destSubdir) {
+async function copyDirContentsToDistRoot(srcDir) {
   if (!(await exists(srcDir))) return;
-  const destDir = path.join(DIST_DIR, destSubdir);
-  await mkdir(destDir, { recursive: true });
-  await cp(srcDir, destDir, { recursive: true });
-}
-
-async function copySiteAssetsToDistRoot() {
-  // Copy everything in /site into dist root EXCEPT /site/partials
-  const entries = await readdir(SITE_DIR, { withFileTypes: true });
+  // Copy *contents* of srcDir into dist root
+  const entries = await readdir(srcDir, { withFileTypes: true });
   for (const e of entries) {
-    if (e.name === "partials") continue;
-    const src = path.join(SITE_DIR, e.name);
+    const src = path.join(srcDir, e.name);
     const dest = path.join(DIST_DIR, e.name);
     await cp(src, dest, { recursive: e.isDirectory() });
   }
 }
 
-async function injectSitePartials() {
+async function copyDirIfExists(srcDir, destSubdir) {
+  if (!(await exists(srcDir))) return;
+  const destDir = destSubdir ? path.join(DIST_DIR, destSubdir) : DIST_DIR;
+  await mkdir(destDir, { recursive: true });
+  await cp(srcDir, destDir, { recursive: true });
+}
+
+function inject(html, header, footer) {
+  return html
+    .replace(/<!--\s*PARTIAL:header\s*-->/g, header)
+    .replace(/<!--\s*PARTIAL:footer\s*-->/g, footer);
+}
+
+async function injectPartialsIntoTree({ sourceDir, distBaseDir, skipPartialsDirName }) {
   const footer = await readFile(path.join(PARTIALS_DIR, "footer.html"), "utf8");
   const header = await readFile(path.join(PARTIALS_DIR, "header.html"), "utf8");
 
-  const files = (await walk(SITE_DIR)).filter((f) => f.endsWith(".html"));
+  const files = (await walk(sourceDir)).filter((f) => f.endsWith(".html"));
 
   for (const filePath of files) {
-    if (filePath.includes(`${path.sep}partials${path.sep}`)) continue;
+    if (skipPartialsDirName && filePath.includes(`${path.sep}${skipPartialsDirName}${path.sep}`)) continue;
 
     const html = await readFile(filePath, "utf8");
-    const out = html
-      .replace("<!-- PARTIAL:footer -->", footer)
-      .replace("<!-- PARTIAL:header -->", header);
+    const out = inject(html, header, footer);
 
-    // IMPORTANT: write to dist root (not dist/site)
-    const relative = path.relative(SITE_DIR, filePath);
-    const destPath = path.join(DIST_DIR, relative);
+    const relative = path.relative(sourceDir, filePath);
+    const destPath = path.join(distBaseDir, relative);
+
     await mkdir(path.dirname(destPath), { recursive: true });
     await writeFile(destPath, out, "utf8");
+  }
+}
+
+async function copySiteNonHtmlToDistRoot() {
+  // Copy everything in /site into dist root EXCEPT /site/partials and EXCEPT .html files
+  const entries = await readdir(SITE_DIR, { withFileTypes: true });
+  for (const e of entries) {
+    if (e.name === "partials") continue;
+    const src = path.join(SITE_DIR, e.name);
+    const dest = path.join(DIST_DIR, e.name);
+
+    if (e.isFile() && e.name.endsWith(".html")) continue;
+
+    await cp(src, dest, { recursive: e.isDirectory() });
   }
 }
 
 async function main() {
   await mkdir(DIST_DIR, { recursive: true });
 
-  await copyDirIfExists(APP_DIR, "app");
+  // Put root-served stuff in the dist root (/_sdk, /favicon.ico, etc.)
+  await copyDirContentsToDistRoot(PUBLIC_DIR);
+
+  // Copy top-level folders as-is
   await copyDirIfExists(ASSETS_DIR, "assets");
   await copyDirIfExists(LEGAL_DIR, "legal");
-  await copyDirIfExists(PUBLIC_DIR, "public");
   await copyDirIfExists(STYLES_DIR, "styles");
 
-  // Site assets (site.js, etc.) -> dist root
-  await copySiteAssetsToDistRoot();
+  // Copy site non-html assets to dist root (site.js, images, etc.)
+  await copySiteNonHtmlToDistRoot();
 
-  // Then overwrite site HTML with injected header/footer
-  await injectSitePartials();
+  // Inject partials into SITE html -> dist root
+  await injectPartialsIntoTree({
+    sourceDir: SITE_DIR,
+    distBaseDir: DIST_DIR,
+    skipPartialsDirName: "partials",
+  });
+
+  // Inject partials into APP html -> dist/app
+  const distAppDir = path.join(DIST_DIR, "app");
+  await copyDirIfExists(APP_DIR, "app");
+  await injectPartialsIntoTree({
+    sourceDir: APP_DIR,
+    distBaseDir: distAppDir,
+    skipPartialsDirName: null,
+  });
 
   // Redirects -> dist root
   if (await exists(REDIRECTS_SRC)) await cp(REDIRECTS_SRC, REDIRECTS_DEST);
