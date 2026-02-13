@@ -68,7 +68,7 @@
 
     /* Readability: spacing + hierarchy (single source of truth) */
     .agreement-prose{
-      font-size: 15.5px;
+      font-size: 17.8px; /* +15% from 15.5px */
       line-height: 1.8;
     }
 
@@ -189,21 +189,11 @@
       <!-- Page Title -->
       <div class="text-center space-y-3">
         <h1 id="page-headline" class="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
-          Service Agreement
+          Accept the Service Agreement
         </h1>
-        <p id="page-subhead" class="text-lg sm:text-xl text-slate-400">Review the terms, then continue to payment.</p>
-
-        <div class="mt-5 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
-          <div class="rounded-xl border border-slate-800/60 bg-black/20 px-4 py-3 text-sm text-slate-300">
-            <span class="text-slate-500">Selected option</span>
-            <span class="font-semibold text-slate-100" id="selectedNameTop">Not selected</span>
-          </div>
-
-          <div class="rounded-xl border border-slate-800/60 bg-black/20 px-4 py-3 text-sm text-slate-300">
-            <span class="text-slate-500">Price</span>
-            <span class="font-semibold text-slate-100" id="selectedPriceTop">—</span>
-          </div>
-        </div>
+        <p id="page-subhead" class="text-lg sm:text-xl text-slate-400">
+          Confirm the terms to unlock payment and start monitoring.
+        </p>
       </div>
 
       <!-- Agreement container -->
@@ -600,12 +590,6 @@
         return String(s || "").replace(/[<>]/g, "").replace(/\s+/g, " ").trim();
       }
 
-      function money(n) {
-        var num = Number(n);
-        if (!isFinite(num)) return "—";
-        return "$" + num.toFixed(0);
-      }
-
       var params = new URLSearchParams(window.location.search || "");
       var code = safeText(params.get("code"));
       var item = safeText(params.get("item"));
@@ -622,27 +606,6 @@
       var signItem = document.getElementById("sign_item");
       if (signCode) signCode.value = code;
       if (signItem) signItem.value = item;
-
-      var PRICE_BY_ITEM = {
-        bronze: 275,
-        gold: 425,
-        mfj: 325,
-        one_time: 299,
-        silver: 325
-      };
-
-      var NAME_BY_ITEM = {
-        bronze: "Tax Monitoring — Bronze",
-        gold: "Tax Monitoring — Gold",
-        mfj: "Tax Monitoring — Married Filing Jointly",
-        one_time: "Tax Monitoring — One-Time Service",
-        silver: "Tax Monitoring — Silver"
-      };
-
-      var selectedNameTop = document.getElementById("selectedNameTop");
-      var selectedPriceTop = document.getElementById("selectedPriceTop");
-      if (selectedNameTop) selectedNameTop.textContent = NAME_BY_ITEM[item] || "Not selected";
-      if (selectedPriceTop) selectedPriceTop.textContent = item ? money(PRICE_BY_ITEM[item]) : "—";
 
       var ack = document.getElementById("agree_ack");
       var signAck = document.getElementById("sign_ack");
