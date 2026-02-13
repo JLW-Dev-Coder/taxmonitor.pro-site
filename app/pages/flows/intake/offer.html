@@ -12,18 +12,63 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
   <link rel="icon" href="/favicon.ico" sizes="any" />
   <link rel="icon" href="/assets/favicon.ico" sizes="any" />
   <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
   <link rel="apple-touch-icon" href="/assets/favicon.ico" />
 
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['DM Sans', 'system-ui', 'sans-serif'] },
+          colors: {
+            slate: {
+              850: '#1a1f2e',
+              900: '#0f1219',
+              950: '#080a0f',
+            },
+            amber: {
+              400: '#fbbf24',
+              500: '#f59e0b',
+              600: '#d97706',
+            }
+          }
+        }
+      }
+    };
+  </script>
+
   <style>
     html, body { height: 100%; }
     body { box-sizing: border-box; }
     *, *::before, *::after { box-sizing: border-box; }
     * { font-family: 'DM Sans', system-ui, sans-serif; }
+
+    /* Shared app styles (kept consistent across pages) */
+    .gradient-text {
+      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .gradient-bg {
+      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+    }
+    .card-glow {
+      box-shadow: 0 0 40px rgba(251, 191, 36, 0.06), 0 0 90px rgba(251, 191, 36, 0.02);
+    }
+
+    /* Sidebar nav states */
+    .nav-item { transition: all 0.2s ease; }
+    .nav-item:hover { background: rgba(251, 191, 36, 0.08); }
+    .nav-item.active {
+      background: rgba(251, 191, 36, 0.12);
+      border-left: 2px solid #f59e0b;
+      color: #fff;
+    }
 
     /* Noise texture overlay */
     .noise-bg::before{
@@ -107,7 +152,7 @@
           <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
             <div class="max-w-5xl mx-auto space-y-8">
 
-              <!-- Stepper (matches the app flow pages) -->
+              <!-- Stepper -->
               <section class="glass-card rounded-2xl p-4 sm:p-5 border border-slate-700/50">
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                   <div class="flex items-center gap-3">
@@ -308,97 +353,6 @@
                 </div>
               </section>
 
-              <!-- Included / Not Included -->
-              <section class="grid md:grid-cols-2 gap-6">
-                <div class="glass-card rounded-2xl p-6">
-                  <div class="flex items-center gap-3 mb-5">
-                    <div class="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center">
-                      <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                      </svg>
-                    </div>
-                    <h3 class="text-xl font-bold">What’s Included</h3>
-                  </div>
-
-                  <ul class="space-y-3 text-slate-300">
-                    <li>IRS authorization processing (Form 2848)</li>
-                    <li>Initial tax record review</li>
-                    <li>Monitoring for updates or IRS notices during the service period (if applicable)</li>
-                    <li>Secure document handling</li>
-                    <li>Summary reporting and record access</li>
-                    <li>Tax transcript retrieval and verification</li>
-                  </ul>
-                </div>
-
-                <div class="glass-card rounded-2xl p-6">
-                  <div class="flex items-center gap-3 mb-5">
-                    <div class="w-10 h-10 rounded-xl bg-slate-700/50 flex items-center justify-center">
-                      <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/>
-                      </svg>
-                    </div>
-                    <h3 class="text-xl font-bold">What’s Not Included</h3>
-                  </div>
-
-                  <p class="text-slate-400 mb-4">The following services are not included unless separately contracted:</p>
-                  <ul class="space-y-3 text-slate-300">
-                    <li>Filing of tax returns</li>
-                    <li>IRS representation beyond authorization</li>
-                    <li>Legal or accounting advice</li>
-                    <li>Offer in Compromise preparation</li>
-                    <li>Payment plan setup</li>
-                    <li>Tax resolution or negotiations</li>
-                  </ul>
-                </div>
-              </section>
-
-              <!-- How It Works -->
-              <section class="space-y-6">
-                <div class="text-center">
-                  <h2 class="text-2xl sm:text-3xl font-bold">How It Works</h2>
-                  <p class="mt-2 text-slate-400 max-w-3xl mx-auto">
-                    We guide you through a clear, three-stage process to obtain and review your tax records. You’ll receive check-ins at each stage.
-                  </p>
-                </div>
-
-                <div class="grid lg:grid-cols-3 gap-4">
-                  <div class="glass-card-light rounded-xl p-5">
-                    <h3 class="text-center font-bold text-lg mb-2 text-amber-300">Stage 1</h3>
-                    <p class="text-center font-semibold mb-3">eSign 2848 &amp; Initial Review</p>
-                    <p class="text-sm text-slate-300">
-                      You complete a brief tax organizer and electronically sign Form 2848 so we can request access to your IRS records.
-                      Once received, we perform an initial review for completeness before proceeding.
-                    </p>
-                  </div>
-
-                  <div class="glass-card-light rounded-xl p-5">
-                    <h3 class="text-center font-bold text-lg mb-2 text-amber-300">Stage 2</h3>
-                    <p class="text-center font-semibold mb-3">Processing &amp; Due Diligence</p>
-                    <p class="text-sm text-slate-300">
-                      The signed 2848 is processed and added to your CAF record. Processing time is typically up to two weeks, but may vary.
-                      Once confirmed, we can access transcripts and monitor during your service period.
-                    </p>
-                  </div>
-
-                  <div class="glass-card-light rounded-xl p-5">
-                    <h3 class="text-center font-bold text-lg mb-2 text-amber-300">Stage 3</h3>
-                    <p class="text-center font-semibold mb-3">Delivery &amp; Review</p>
-                    <p class="text-sm text-slate-300">
-                      Your records are compiled for secure access, and any monitoring reports are prepared. You may schedule a review meeting
-                      to understand findings and next steps.
-                    </p>
-                  </div>
-                </div>
-
-                <div class="glass-card rounded-xl p-5 bg-black/20">
-                  <h3 class="text-lg font-bold text-slate-100 mb-2">Important Notice Regarding Acceptance</h3>
-                  <p class="text-slate-300">
-                    Acceptance of this proposal confirms selection of your monitoring option only. The Service Agreement is presented in the next step for electronic signature.
-                    Services do not begin until the agreement is signed and payment is received.
-                  </p>
-                </div>
-              </section>
-
               <section class="glow-divider"></section>
 
               <!-- Approval Panel -->
@@ -454,7 +408,7 @@
                   </p>
 
                   <p class="text-xs text-slate-500">
-                    Tax Monitoring installs and related configuration begin only after the service agreement is executed and payment is received.
+                    Monitoring installs and related configuration begin only after the service agreement is executed and payment is received.
                     Once work has commenced, fees are non-refundable due to the nature of authorization, record access, and monitoring activity.
                   </p>
                 </div>
@@ -492,22 +446,105 @@
         return String(s || "").replace(/[<>]/g, "").replace(/\s+/g, " ").trim();
       }
 
+      function safeFirstName(fullName) {
+        var s = String(fullName || "").trim();
+        if (!s) return "there";
+        return s.split(/\s+/)[0] || "there";
+      }
+
+      function initialsFromName(fullName) {
+        var s = String(fullName || "").trim();
+        if (!s) return "TM";
+        var parts = s.split(/\s+/).filter(Boolean);
+        var first = parts[0] ? parts[0][0] : "";
+        var last = parts.length > 1 ? parts[parts.length - 1][0] : "";
+        var out = (first + last).toUpperCase();
+        return out || "TM";
+      }
+
       function money(n) {
         var num = Number(n);
         if (!isFinite(num)) return "";
         return "$" + num.toFixed(0);
       }
 
+      function applyNavActive() {
+        var path = (window.location && window.location.pathname) ? window.location.pathname : "";
+        var links = document.querySelectorAll("a.nav-item");
+        links.forEach(function (a) {
+          var href = a.getAttribute("href") || "";
+          if (!href || href.indexOf("javascript:") === 0) return;
+
+          var normalizedHref = href.split("?")[0].split("#")[0];
+          var isActive =
+            normalizedHref === path ||
+            (normalizedHref !== "/" && normalizedHref.length > 1 && path.indexOf(normalizedHref) === 0);
+
+          a.classList.toggle("active", isActive);
+        });
+      }
+
+      function applyFlowPlaceholders(state) {
+        // Sidebar partial can optionally include:
+        // - #sidebar-flow-label (e.g., "Intake" or "My Case Status")
+        // - #sidebar-flow-subtitle (e.g., "Offer" or "Post-payment")
+        // - #sidebar-start-label (e.g., "Start Here")
+        // This function updates them if present, otherwise does nothing.
+        var flowLabel = document.getElementById("sidebar-flow-label");
+        var flowSubtitle = document.getElementById("sidebar-flow-subtitle");
+
+        if (flowLabel) flowLabel.textContent = state.sidebar_flow_label || "Start Here";
+        if (flowSubtitle) flowSubtitle.textContent = state.sidebar_flow_subtitle || "";
+      }
+
       var params = new URLSearchParams(window.location.search || "");
       var code = safeText(params.get("code") || "");
       var itemFromUrl = safeText(params.get("item") || "");
 
+      // Unified "app state" placeholder (server/worker can inject real values later)
+      window.TM_APP_STATE = window.TM_APP_STATE || {
+        account_label: "Account: Monitoring",
+        phase: "intake",
+        step: "offer",
+        topbar_mode: "Monitoring Portal",
+        user_name: safeText(params.get("userName") || params.get("user_name") || "Jane Doe"),
+      };
+
+      // Unified flow placeholder (used for future nav grouping logic)
+      window.TM_FLOW = window.TM_FLOW || {
+        phase: window.TM_APP_STATE.phase,
+        step: window.TM_APP_STATE.step,
+      };
+
+      // Fix: user initials on Offer page (this was missing before)
+      (function applyUserIdentity() {
+        var fullName = window.TM_APP_STATE.user_name || "Jane Doe";
+        var initials = initialsFromName(fullName);
+
+        var initialsEls = document.querySelectorAll(".tm-user-initials");
+        initialsEls.forEach(function (el) { el.textContent = initials; });
+
+        var sidebarName = document.getElementById("sidebar-user-name");
+        if (sidebarName) sidebarName.textContent = fullName;
+
+        var topbarName = document.getElementById("topbar-user-name");
+        if (topbarName) topbarName.textContent = fullName;
+
+        // Client greeting (Offer content)
+        var nameEl = document.getElementById("client-name");
+        var fromQuery = safeText(params.get("clientFirstName") || params.get("first_name") || params.get("firstName") || "");
+        if (nameEl) nameEl.textContent = fromQuery || safeFirstName(fullName);
+      })();
+
+      // Sidebar flow labels placeholder
+      applyFlowPlaceholders({
+        sidebar_flow_label: "Start Here",
+        sidebar_flow_subtitle: "Intake",
+      });
+
+      // Set hidden approve code
       var approveCode = document.getElementById("approve_code");
       if (approveCode) approveCode.value = code;
-
-      var nameEl = document.getElementById("client-name");
-      var fromQuery = safeText(params.get("clientFirstName") || params.get("first_name") || params.get("firstName") || "");
-      if (nameEl) nameEl.textContent = fromQuery || "there";
 
       var ITEMS = [
         { id: "bronze", name: "Bronze", meta: "6-Week Term", price: 275, sku: "TM-BRONZE", blurb: "Stabilization monitoring during your term." },
@@ -648,6 +685,10 @@
       render();
       applySelection(false);
       if (selectedId) applySelection(true);
+
+      // Apply nav active styling after partials exist in DOM
+      applyNavActive();
+      window.addEventListener("popstate", applyNavActive);
     })();
   </script>
 </body>
