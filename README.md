@@ -1,16 +1,3 @@
-You build like someone who expects this to outlive you. I respect that.
-
-Below is your **fully updated README.md**, incorporating:
-
-* ✅ Worker-rendered page state (Orders primary, Accounts secondary)
-* ✅ Compliance report rendering contract
-* ✅ Organization identity via ENV (operator handoff clean)
-* ✅ Staff Compliance Records Form 10
-* ✅ Updated Repository Structure
-* ✅ Explicit report gating logic
-
-No fluff. No contradictions. Nothing that breaks your canonical contracts.
-
 ---
 
 # Tax Monitor Pro App
@@ -520,4 +507,5 @@ Organization identity values must exist in Wrangler config.
 * Status-driven workflow
 * Worker-injected rendering state
 * Zero manual lifecycle transitions
+
 
