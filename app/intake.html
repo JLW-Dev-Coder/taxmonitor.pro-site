@@ -167,261 +167,264 @@
       </div>
     </header>
 
-    <main class="max-w-6xl mx-auto px-4 py-8 space-y-8">
-      <!-- Page Title (match offer.html layout) -->
-      <div class="text-center space-y-3">
-        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
-          Your Tax Monitoring Intake
-        </h1>
-        <p class="text-lg sm:text-xl text-slate-400">Visibility first. Decisions second.</p>
-      </div>
+    <!-- Spacing updated to match offer/agreement/payment "vertical air" -->
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+      <div class="max-w-5xl mx-auto space-y-8">
+        <!-- Page Title (match offer.html layout) -->
+        <div class="text-center space-y-3">
+          <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
+            Your Tax Monitoring Intake
+          </h1>
+          <p class="text-lg sm:text-xl text-slate-400">Visibility first. Decisions second.</p>
+        </div>
 
-      <!-- Form Card (match offer.html surface) -->
-      <section class="glass-card rounded-3xl p-6 sm:p-8">
-        <form
-          id="tm-intake"
-          data-tm-form
-          method="post"
-          action="https://api.taxmonitor.pro/forms/intake"
-          accept-charset="UTF-8"
-          class="space-y-8"
-        >
-          <!-- Idempotency + validation helpers -->
-          <input id="tm_event_id" name="eventId" type="hidden" value="">
-          <input id="tm_session_token" name="sessionToken" type="hidden" value="">
+        <!-- Form Card (match offer.html surface) -->
+        <section class="glass-card rounded-3xl p-6 sm:p-8">
+          <form
+            id="tm-intake"
+            data-tm-form
+            method="post"
+            action="https://api.taxmonitor.pro/forms/intake"
+            accept-charset="UTF-8"
+            class="space-y-8"
+          >
+            <!-- Idempotency + validation helpers -->
+            <input id="tm_event_id" name="eventId" type="hidden" value="">
+            <input id="tm_session_token" name="sessionToken" type="hidden" value="">
 
-          <!-- Identity -->
-          <div class="grid gap-4 md:grid-cols-2">
-            <div>
-              <label for="crm_first_name" class="block text-sm font-semibold text-slate-200 mb-2">First name</label>
-              <input
-                id="crm_first_name"
-                name="CRM First Name"
-                autocomplete="given-name"
-                class="w-full rounded-xl border border-slate-700/70 bg-slate-950/40 px-4 py-3 text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
-                placeholder="First name"
-                required
-                type="text"
-              >
-            </div>
-
-            <div>
-              <label for="crm_last_name" class="block text-sm font-semibold text-slate-200 mb-2">Last name</label>
-              <input
-                id="crm_last_name"
-                name="CRM Last Name"
-                autocomplete="family-name"
-                class="w-full rounded-xl border border-slate-700/70 bg-slate-950/40 px-4 py-3 text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
-                placeholder="Last name"
-                required
-                type="text"
-              >
-            </div>
-
-            <div class="md:col-span-2">
-              <label for="crm_primary_email" class="block text-sm font-semibold text-slate-200 mb-2">Primary email</label>
-              <input
-                id="crm_primary_email"
-                name="CRM Primary Email"
-                autocomplete="email"
-                inputmode="email"
-                class="w-full rounded-xl border border-slate-700/70 bg-slate-950/40 px-4 py-3 text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
-                placeholder="you@company.com"
-                required
-                type="email"
-              >
-            </div>
-
-            <div class="md:col-span-2">
-              <label for="crm_company_name" class="block text-sm font-semibold text-slate-200 mb-2">Company name (optional)</label>
-              <input
-                id="crm_company_name"
-                name="CRM Company Name"
-                autocomplete="organization"
-                class="w-full rounded-xl border border-slate-700/70 bg-slate-950/40 px-4 py-3 text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
-                placeholder="Company / firm / household"
-                type="text"
-              >
-            </div>
-          </div>
-
-          <div class="glow-divider"></div>
-
-          <!-- Situation -->
-          <div class="grid gap-4 md:grid-cols-2">
-            <div>
-              <label for="estimated_balance_due_range" class="block text-sm font-semibold text-slate-200 mb-2">Estimated balance due range</label>
-              <select
-                id="estimated_balance_due_range"
-                name="Estimated Balance Due Range"
-                class="w-full rounded-xl border border-slate-700/70 bg-slate-950/40 px-4 py-3 text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
-                required
-              >
-                <option value="" disabled selected>Select one</option>
-                <option value="$10,000–$25,000">$10,000–$25,000</option>
-                <option value="$25,001–$50,000">$25,001–$50,000</option>
-                <option value="$50,001–$100,000">$50,001–$100,000</option>
-                <option value="Over $100,000">Over $100,000</option>
-                <option value="Under $10,000">Under $10,000</option>
-                <option value="Unknown">Unknown</option>
-              </select>
-            </div>
-
-            <div>
-              <label for="urgency_level" class="block text-sm font-semibold text-slate-200 mb-2">Urgency level</label>
-              <select
-                id="urgency_level"
-                name="Urgency Level"
-                class="w-full rounded-xl border border-slate-700/70 bg-slate-950/40 px-4 py-3 text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
-                required
-              >
-                <option value="" disabled selected>Select one</option>
-                <option value="High">High</option>
-                <option value="Low">Low</option>
-                <option value="Medium">Medium</option>
-                <option value="Unsure">Unsure</option>
-              </select>
-            </div>
-
-            <div>
-              <label for="irs_notice_received" class="block text-sm font-semibold text-slate-200 mb-2">IRS notice received?</label>
-              <select
-                id="irs_notice_received"
-                name="IRS Notice Received"
-                class="w-full rounded-xl border border-slate-700/70 bg-slate-950/40 px-4 py-3 text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
-                required
-              >
-                <option value="" disabled selected>Select one</option>
-                <option value="No">No</option>
-                <option value="Unsure">Unsure</option>
-                <option value="Yes">Yes</option>
-              </select>
-            </div>
-
-            <div>
-              <label for="irs_notice_type" class="block text-sm font-semibold text-slate-200 mb-2">IRS notice type</label>
-              <select
-                id="irs_notice_type"
-                name="IRS Notice Type"
-                class="w-full rounded-xl border border-slate-700/70 bg-slate-950/40 px-4 py-3 text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
-              >
-                <option value="" selected>Optional</option>
-                <option value="Computer Paragraph (CP) Notice">Computer Paragraph (CP) Notice</option>
-                <option value="IRS Letter (Other)">IRS Letter (Other)</option>
-                <option value="Long Term (LT) Notice">Long Term (LT) Notice</option>
-                <option value="Notice Type Unknown">Notice Type Unknown</option>
-              </select>
-            </div>
-
-            <div class="md:col-span-2">
-              <label for="irs_notice_date" class="block text-sm font-semibold text-slate-200 mb-2">IRS notice date (optional)</label>
-              <input
-                id="irs_notice_date"
-                name="IRS Notice Date"
-                class="w-full rounded-xl border border-slate-700/70 bg-slate-950/40 px-4 py-3 text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
-                type="text"
-                placeholder="YYYY-MM-DD"
-              >
-              <p class="mt-2 text-xs text-slate-500">If you don’t know the exact date, leave blank.</p>
-            </div>
-
-            <div class="md:col-span-2">
-              <label class="block text-sm font-semibold text-slate-200 mb-2">Primary concern</label>
-
-              <input id="primary_concern_value" name="Primary Concern" type="hidden" value="">
-
-              <div class="grid gap-3 sm:grid-cols-2">
-                <label class="flex items-start gap-3 rounded-xl border border-slate-800/60 bg-black/20 p-4">
-                  <input class="mt-1 tm-concern" type="checkbox" value="IRS Notices">
-                  <span>
-                    <span class="block font-semibold text-slate-200">IRS Notices</span>
-                    <span class="block text-sm text-slate-500">You received letters or notices and want stability.</span>
-                  </span>
-                </label>
-
-                <label class="flex items-start gap-3 rounded-xl border border-slate-800/60 bg-black/20 p-4">
-                  <input class="mt-1 tm-concern" type="checkbox" value="Monitoring Account Changes">
-                  <span>
-                    <span class="block font-semibold text-slate-200">Monitoring Account Changes</span>
-                    <span class="block text-sm text-slate-500">You want eyes on transcripts for new activity.</span>
-                  </span>
-                </label>
-
-                <label class="flex items-start gap-3 rounded-xl border border-slate-800/60 bg-black/20 p-4">
-                  <input class="mt-1 tm-concern" type="checkbox" value="Preventing Escalation">
-                  <span>
-                    <span class="block font-semibold text-slate-200">Preventing Escalation</span>
-                    <span class="block text-sm text-slate-500">You want early warning before things get worse.</span>
-                  </span>
-                </label>
-
-                <label class="flex items-start gap-3 rounded-xl border border-slate-800/60 bg-black/20 p-4">
-                  <input class="mt-1 tm-concern" type="checkbox" value="Unsure / General Concern">
-                  <span>
-                    <span class="block font-semibold text-slate-200">Unsure / General Concern</span>
-                    <span class="block text-sm text-slate-500">You’re not sure yet; you want a baseline view.</span>
-                  </span>
-                </label>
+            <!-- Identity -->
+            <div class="grid gap-4 md:grid-cols-2">
+              <div>
+                <label for="crm_first_name" class="block text-sm font-semibold text-slate-200 mb-2">First name</label>
+                <input
+                  id="crm_first_name"
+                  name="CRM First Name"
+                  autocomplete="given-name"
+                  class="w-full rounded-xl border border-slate-700/70 bg-slate-950/40 px-4 py-3 text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
+                  placeholder="First name"
+                  required
+                  type="text"
+                >
               </div>
 
-              <p class="mt-2 text-xs text-slate-500">Select all that apply.</p>
+              <div>
+                <label for="crm_last_name" class="block text-sm font-semibold text-slate-200 mb-2">Last name</label>
+                <input
+                  id="crm_last_name"
+                  name="CRM Last Name"
+                  autocomplete="family-name"
+                  class="w-full rounded-xl border border-slate-700/70 bg-slate-950/40 px-4 py-3 text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
+                  placeholder="Last name"
+                  required
+                  type="text"
+                >
+              </div>
+
+              <div class="md:col-span-2">
+                <label for="crm_primary_email" class="block text-sm font-semibold text-slate-200 mb-2">Primary email</label>
+                <input
+                  id="crm_primary_email"
+                  name="CRM Primary Email"
+                  autocomplete="email"
+                  inputmode="email"
+                  class="w-full rounded-xl border border-slate-700/70 bg-slate-950/40 px-4 py-3 text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
+                  placeholder="you@company.com"
+                  required
+                  type="email"
+                >
+              </div>
+
+              <div class="md:col-span-2">
+                <label for="crm_company_name" class="block text-sm font-semibold text-slate-200 mb-2">Company name (optional)</label>
+                <input
+                  id="crm_company_name"
+                  name="CRM Company Name"
+                  autocomplete="organization"
+                  class="w-full rounded-xl border border-slate-700/70 bg-slate-950/40 px-4 py-3 text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
+                  placeholder="Company / firm / household"
+                  type="text"
+                >
+              </div>
             </div>
 
-            <div class="md:col-span-2">
-              <label for="unfiled_returns_indicator" class="block text-sm font-semibold text-slate-200 mb-2">Unfiled returns indicator</label>
-              <select
-                id="unfiled_returns_indicator"
-                name="Unfiled Returns Indicator"
-                class="w-full rounded-xl border border-slate-700/70 bg-slate-950/40 px-4 py-3 text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
-                required
-              >
-                <option value="" disabled selected>Select one</option>
-                <option value="No">No</option>
-                <option value="Unsure">Unsure</option>
-                <option value="Yes">Yes</option>
-              </select>
-              <p class="mt-2 text-xs text-slate-500">This is used only to route monitoring recommendations.</p>
+            <div class="glow-divider"></div>
+
+            <!-- Situation -->
+            <div class="grid gap-4 md:grid-cols-2">
+              <div>
+                <label for="estimated_balance_due_range" class="block text-sm font-semibold text-slate-200 mb-2">Estimated balance due range</label>
+                <select
+                  id="estimated_balance_due_range"
+                  name="Estimated Balance Due Range"
+                  class="w-full rounded-xl border border-slate-700/70 bg-slate-950/40 px-4 py-3 text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
+                  required
+                >
+                  <option value="" disabled selected>Select one</option>
+                  <option value="$10,000–$25,000">$10,000–$25,000</option>
+                  <option value="$25,001–$50,000">$25,001–$50,000</option>
+                  <option value="$50,001–$100,000">$50,001–$100,000</option>
+                  <option value="Over $100,000">Over $100,000</option>
+                  <option value="Under $10,000">Under $10,000</option>
+                  <option value="Unknown">Unknown</option>
+                </select>
+              </div>
+
+              <div>
+                <label for="urgency_level" class="block text-sm font-semibold text-slate-200 mb-2">Urgency level</label>
+                <select
+                  id="urgency_level"
+                  name="Urgency Level"
+                  class="w-full rounded-xl border border-slate-700/70 bg-slate-950/40 px-4 py-3 text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
+                  required
+                >
+                  <option value="" disabled selected>Select one</option>
+                  <option value="High">High</option>
+                  <option value="Low">Low</option>
+                  <option value="Medium">Medium</option>
+                  <option value="Unsure">Unsure</option>
+                </select>
+              </div>
+
+              <div>
+                <label for="irs_notice_received" class="block text-sm font-semibold text-slate-200 mb-2">IRS notice received?</label>
+                <select
+                  id="irs_notice_received"
+                  name="IRS Notice Received"
+                  class="w-full rounded-xl border border-slate-700/70 bg-slate-950/40 px-4 py-3 text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
+                  required
+                >
+                  <option value="" disabled selected>Select one</option>
+                  <option value="No">No</option>
+                  <option value="Unsure">Unsure</option>
+                  <option value="Yes">Yes</option>
+                </select>
+              </div>
+
+              <div>
+                <label for="irs_notice_type" class="block text-sm font-semibold text-slate-200 mb-2">IRS notice type</label>
+                <select
+                  id="irs_notice_type"
+                  name="IRS Notice Type"
+                  class="w-full rounded-xl border border-slate-700/70 bg-slate-950/40 px-4 py-3 text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
+                >
+                  <option value="" selected>Optional</option>
+                  <option value="Computer Paragraph (CP) Notice">Computer Paragraph (CP) Notice</option>
+                  <option value="IRS Letter (Other)">IRS Letter (Other)</option>
+                  <option value="Long Term (LT) Notice">Long Term (LT) Notice</option>
+                  <option value="Notice Type Unknown">Notice Type Unknown</option>
+                </select>
+              </div>
+
+              <div class="md:col-span-2">
+                <label for="irs_notice_date" class="block text-sm font-semibold text-slate-200 mb-2">IRS notice date (optional)</label>
+                <input
+                  id="irs_notice_date"
+                  name="IRS Notice Date"
+                  class="w-full rounded-xl border border-slate-700/70 bg-slate-950/40 px-4 py-3 text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
+                  type="text"
+                  placeholder="YYYY-MM-DD"
+                >
+                <p class="mt-2 text-xs text-slate-500">If you don’t know the exact date, leave blank.</p>
+              </div>
+
+              <div class="md:col-span-2">
+                <label class="block text-sm font-semibold text-slate-200 mb-2">Primary concern</label>
+
+                <input id="primary_concern_value" name="Primary Concern" type="hidden" value="">
+
+                <div class="grid gap-3 sm:grid-cols-2">
+                  <label class="flex items-start gap-3 rounded-xl border border-slate-800/60 bg-black/20 p-4">
+                    <input class="mt-1 tm-concern" type="checkbox" value="IRS Notices">
+                    <span>
+                      <span class="block font-semibold text-slate-200">IRS Notices</span>
+                      <span class="block text-sm text-slate-500">You received letters or notices and want stability.</span>
+                    </span>
+                  </label>
+
+                  <label class="flex items-start gap-3 rounded-xl border border-slate-800/60 bg-black/20 p-4">
+                    <input class="mt-1 tm-concern" type="checkbox" value="Monitoring Account Changes">
+                    <span>
+                      <span class="block font-semibold text-slate-200">Monitoring Account Changes</span>
+                      <span class="block text-sm text-slate-500">You want eyes on transcripts for new activity.</span>
+                    </span>
+                  </label>
+
+                  <label class="flex items-start gap-3 rounded-xl border border-slate-800/60 bg-black/20 p-4">
+                    <input class="mt-1 tm-concern" type="checkbox" value="Preventing Escalation">
+                    <span>
+                      <span class="block font-semibold text-slate-200">Preventing Escalation</span>
+                      <span class="block text-sm text-slate-500">You want early warning before things get worse.</span>
+                    </span>
+                  </label>
+
+                  <label class="flex items-start gap-3 rounded-xl border border-slate-800/60 bg-black/20 p-4">
+                    <input class="mt-1 tm-concern" type="checkbox" value="Unsure / General Concern">
+                    <span>
+                      <span class="block font-semibold text-slate-200">Unsure / General Concern</span>
+                      <span class="block text-sm text-slate-500">You’re not sure yet; you want a baseline view.</span>
+                    </span>
+                  </label>
+                </div>
+
+                <p class="mt-2 text-xs text-slate-500">Select all that apply.</p>
+              </div>
+
+              <div class="md:col-span-2">
+                <label for="unfiled_returns_indicator" class="block text-sm font-semibold text-slate-200 mb-2">Unfiled returns indicator</label>
+                <select
+                  id="unfiled_returns_indicator"
+                  name="Unfiled Returns Indicator"
+                  class="w-full rounded-xl border border-slate-700/70 bg-slate-950/40 px-4 py-3 text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
+                  required
+                >
+                  <option value="" disabled selected>Select one</option>
+                  <option value="No">No</option>
+                  <option value="Unsure">Unsure</option>
+                  <option value="Yes">Yes</option>
+                </select>
+                <p class="mt-2 text-xs text-slate-500">This is used only to route monitoring recommendations.</p>
+              </div>
             </div>
-          </div>
 
-          <div class="glow-divider"></div>
+            <div class="glow-divider"></div>
 
-          <!-- Acknowledgement -->
-          <div class="rounded-2xl border border-slate-800/60 bg-black/20 p-5">
-            <label class="flex items-start gap-3">
-              <input id="monitoring_ack" type="checkbox" class="mt-1" required>
-              <span>
-                <span class="block font-semibold text-slate-200">Monitoring-only acknowledgement</span>
-                <span class="block text-sm text-slate-500">I understand monitoring does not create IRS representation. Representation, filing, and resolution are separate engagements.</span>
-              </span>
-            </label>
+            <!-- Acknowledgement -->
+            <div class="rounded-2xl border border-slate-800/60 bg-black/20 p-5">
+              <label class="flex items-start gap-3">
+                <input id="monitoring_ack" type="checkbox" class="mt-1" required>
+                <span>
+                  <span class="block font-semibold text-slate-200">Monitoring-only acknowledgement</span>
+                  <span class="block text-sm text-slate-500">I understand monitoring does not create IRS representation. Representation, filing, and resolution are separate engagements.</span>
+                </span>
+              </label>
 
-            <input id="monitoring_ack_value" name="IRS Monitoring Only Acknowledged" type="hidden" value="No">
-          </div>
+              <input id="monitoring_ack_value" name="IRS Monitoring Only Acknowledged" type="hidden" value="No">
+            </div>
 
-          <!-- Submit -->
-          <div class="grid gap-3 md:grid-cols-2">
-            <button
-              type="submit"
-              class="inline-flex w-full items-center justify-center rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 px-4 py-3 text-sm font-semibold text-slate-950 hover:from-amber-400 hover:to-amber-500 transition"
-            >Submit intake →</button>
+            <!-- Submit -->
+            <div class="grid gap-3 md:grid-cols-2">
+              <button
+                type="submit"
+                class="inline-flex w-full items-center justify-center rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 px-4 py-3 text-sm font-semibold text-slate-950 hover:from-amber-400 hover:to-amber-500 transition"
+              >Submit intake →</button>
 
-            <a
-              href="/site/pricing.html"
-              class="inline-flex w-full items-center justify-center rounded-xl border border-slate-700/70 bg-slate-950/20 px-4 py-3 text-sm font-semibold text-slate-100 hover:bg-slate-950/35 transition"
-            >View pricing</a>
-          </div>
+              <a
+                href="/site/pricing.html"
+                class="inline-flex w-full items-center justify-center rounded-xl border border-slate-700/70 bg-slate-950/20 px-4 py-3 text-sm font-semibold text-slate-100 hover:bg-slate-950/35 transition"
+              >View pricing</a>
+            </div>
 
-          <div id="tm-error" class="hidden rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-200"></div>
+            <div id="tm-error" class="hidden rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-200"></div>
 
-          <div class="text-xs text-slate-500">
-            After submission, this page redirects to <code class="text-slate-300">/app/offer.html</code>.
-          </div>
-        </form>
-      </section>
+            <div class="text-xs text-slate-500">
+              After submission, this page redirects to <code class="text-slate-300">/app/offer.html</code>.
+            </div>
+          </form>
+        </section>
 
-      <div class="text-center text-sm text-slate-500">
-        Monitoring does not create IRS representation. Representation, filing, and resolution are separate engagements.
+        <div class="text-center text-sm text-slate-500">
+          Monitoring does not create IRS representation. Representation, filing, and resolution are separate engagements.
+        </div>
       </div>
     </main>
 
