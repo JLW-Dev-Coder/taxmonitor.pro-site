@@ -111,81 +111,90 @@ Root domain must not proxy lifecycle endpoints unless explicitly documented.
 ```
 /
 app/
-├─ agreement.html
-├─ index.html
-├─ intake.html
-├─ login.html
-├─ offer.html
-├─ payment-success.html
-├─ payment.html
-├─ partials/
-│  ├─ sidebar.html
-│  └─ topbar.html
-├─ pages/
-│  ├─ calendar/
-│  │  └─ index.html
-│  ├─ files/
-│  │  └─ index.html
-│  ├─ flows/
-│  │  ├─ intake/
-│  │  │  ├─ agreement.html
-│  │  │  ├─ intake.html
-│  │  │  ├─ offer.html
-│  │  │  └─ payment.html
-│  │  └─ post-payment/
-│  │     ├─ address-update.html
-│  │     ├─ client-exit-survey.html
-│  │     ├─ compliance-report.html
-│  │     ├─ esign-2848.html
-│  │     ├─ filing-status.html
-│  │     └─ welcome.html
-│  ├─ messaging/
-│  │  └─ index.html
-│  ├─ office/
-│  │  ├─ estimates.html
-│  │  ├─ files.html
-│  │  ├─ invoices.html
-│  │  ├─ my-billing.html
-│  │  ├─ payments.html
-│  │  └─ proposals.html
-│  ├─ projects/
-│  │  └─ index.html
-│  └─ support/
-│     └─ index.html
+   ├─ agreement.html
+   ├─ index.html
+   ├─ intake.html
+   ├─ login.html
+   ├─ offer.html
+   ├─ payment-success.html
+   ├─ payment.html
+   ├─ partials/
+      ├─ sidebar.html
+      └─ topbar.html
+   └─ pages/
+      ├─ calendar/
+         └─ index.html
+      ├─ files/
+         └─ index.html
+      ├─ flows/
+         ├─ intake/
+            ├─ agreement.html
+            ├─ intake.html
+            ├─ offer.html
+            └─ payment.html
+         └─ post-payment/
+            ├─ address-update.html
+            ├─ client-exit-survey.html
+            ├─ compliance-report.html
+            ├─ esign-2848.html
+            ├─ filing-status.html
+            └─ welcome.html
+      ├─ messaging/
+         └─ index.html
+      ├─ office/
+         ├─ estimates.html
+         ├─ files.html
+         ├─ invoices.html
+         ├─ my-billing.html
+         ├─ payments.html
+         └─ proposals.html
+      ├─ projects/
+         └─ index.html
+      └─ support/
+         └─ index.html
+
 assets/
-├─ favicon.ico
-├─ favicon.svg
-└─ logo.svg
+   ├─ favicon.ico
+   ├─ favicon.svg
+   └─ logo.svg
+
 legal/
-├─ privacy.html
-└─ terms.html
+   ├─ privacy.html
+   └─ terms.html
+
 public/
-└─ .gitkeep
+   └─ .gitkeep
+
 site/
-├─ contact.html
-├─ index.html
-├─ partials/
-│  ├─ footer.html
-│  └─ header.html
-├─ pricing.html
-├─ resources/
-│  ├─ 433F.html
-│  └─ case-studies.html
-├─ site.js
-└─ support.html
+   ├─ contact.html
+   ├─ index.html
+   ├─ pricing.html
+   ├─ site.js
+   ├─ support.html
+   ├─ partials/
+      ├─ footer.html
+      └─ header.html
+   └─ resources/
+      ├─ 433F.html
+      └─ case-studies.html
+
 staff/
-├─ compliance-records.html
+   └─ compliance-records.html
+
 styles/
-├─ app.css
-└─ site.css
+   ├─ app.css
+   └─ site.css
+
 workers/
-└─ api/
-   ├─ src/
-   │  └─ index.js
-   └─ wrangler.toml
+   └─ api/
+      ├─ wrangler.toml
+      └─ src/
+         └─ index.js
+
 README.md
 _redirects
 build.mjs
+
 ```
 
 ## Structure Notes
@@ -406,6 +415,7 @@ Wrangler-only configuration.
 * Status-driven workflow
 * Worker-injected rendering state
 * Zero manual lifecycle transitions
+
 
 
 
