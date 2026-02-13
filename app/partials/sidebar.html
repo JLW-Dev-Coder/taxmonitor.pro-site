@@ -1,0 +1,104 @@
+<!-- /app/partials/sidebar.html -->
+<aside class="w-64 bg-slate-900 border-r border-slate-800/50 flex flex-col shrink-0">
+  <div class="p-5 border-b border-slate-800/50">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-lg gradient-bg flex items-center justify-center font-bold text-slate-900 text-lg">TM</div>
+      <div>
+        <div class="font-semibold text-white text-sm">Tax Monitor Pro</div>
+        <div class="text-xs text-slate-500">IRS Monitoring</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-5 border-b border-slate-800/50">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-full bg-gradient-to-br from-slate-700 to-slate-800 flex items-center justify-center text-sm font-medium text-slate-300 tm-user-initials">TM</div>
+      <div class="flex-1 min-w-0">
+        <div id="sidebar-user-name" class="font-medium text-sm text-white truncate">Jane Doe</div>
+        <div id="sidebar-account-label" class="text-xs text-slate-500">Account: Onboarding</div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="flex-1 py-4 px-3">
+    <ul class="space-y-1">
+      <li>
+        <a href="/app/index.html"
+           data-nav="start"
+           class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-400 hover:text-white">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+              d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+          </svg>
+          Start Here
+        </a>
+      </li>
+
+      <li>
+        <a href="/app/pages/flows/intake/offer.html?mode=portal"
+           data-nav="offer"
+           class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-400 hover:text-white">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          Offer
+        </a>
+      </li>
+
+      <li>
+        <a href="/app/pages/flows/intake/agreement.html"
+           data-nav="agreement"
+           class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-400 hover:text-white">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+              d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+          </svg>
+          Agreement
+        </a>
+      </li>
+
+      <li>
+        <a href="/app/pages/flows/intake/payment.html"
+           data-nav="payment"
+           class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-400 hover:text-white">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+              d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-2m2-4h-6m6 0a2 2 0 110 4h-6a2 2 0 110-4h6z"/>
+          </svg>
+          Payment
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="p-4 border-t border-slate-800/50">
+    <p id="sidebar-footnote" class="text-[11px] text-slate-500 leading-relaxed">
+      Monitoring does not create IRS representation.
+    </p>
+  </div>
+</aside>
+
+<script>
+  (function setActiveNav() {
+    const key = (document.body.getAttribute('data-active') || '').trim().toLowerCase();
+    if (!key) return;
+
+    const links = Array.from(document.querySelectorAll('a[data-nav]'));
+    links.forEach((a) => {
+      const isActive = (a.getAttribute('data-nav') || '').trim().toLowerCase() === key;
+      const svg = a.querySelector('svg');
+      a.classList.toggle('active', isActive);
+
+      if (isActive) {
+        a.classList.remove('text-slate-400');
+        a.classList.add('text-white');
+        if (svg) svg.classList.add('text-amber-500');
+      } else {
+        a.classList.add('text-slate-400');
+        a.classList.remove('text-white');
+        if (svg) svg.classList.remove('text-amber-500');
+      }
+    });
+  })();
+</script>
