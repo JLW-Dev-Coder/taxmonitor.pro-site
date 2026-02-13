@@ -1,22 +1,23 @@
-<!-- /app/index.html-->
+<!-- /app/index.html -->
 <!DOCTYPE html>
 <html lang="en" class="h-full">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tax Monitor Pro - Dashboard</title>
+
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="/_sdk/element_sdk.js"></script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
   <script>
     tailwind.config = {
       theme: {
         extend: {
-          fontFamily: {
-            sans: ['DM Sans', 'system-ui', 'sans-serif'],
-          },
+          fontFamily: { sans: ['DM Sans', 'system-ui', 'sans-serif'] },
           colors: {
             slate: {
               850: '#1a1f2e',
@@ -33,19 +34,11 @@
       }
     }
   </script>
+
   <style>
-    html,
-    body {
-      height: 100%;
-    }
-    *,
-    *::before,
-    *::after {
-      box-sizing: border-box;
-    }
-    body {
-      box-sizing: border-box;
-    }
+    html, body { height: 100%; }
+    *, *::before, *::after { box-sizing: border-box; }
+    body { box-sizing: border-box; }
     .gradient-text {
       background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
       -webkit-background-clip: text;
@@ -56,22 +49,20 @@
       background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
     }
     .card-glow {
-      box-shadow: 0 0 40px rgba(251, 191, 36, 0.05), 0 0 80px rgba(251, 191, 36, 0.02);
+      box-shadow: 0 0 40px rgba(251, 191, 36, 0.06), 0 0 90px rgba(251, 191, 36, 0.02);
     }
-    .nav-item {
-      transition: all 0.2s ease;
-    }
-    .nav-item:hover {
-      background: rgba(251, 191, 36, 0.08);
-    }
+    .nav-item { transition: all 0.2s ease; }
+    .nav-item:hover { background: rgba(251, 191, 36, 0.08); }
     .nav-item.active {
       background: rgba(251, 191, 36, 0.12);
       border-left: 2px solid #f59e0b;
     }
   </style>
 </head>
-<body class="h-full bg-slate-950 font-sans text-white overflow-hidden">
+
+<body class="h-full bg-slate-950 font-sans text-white">
   <div class="flex h-full">
+
     <!-- Left Sidebar -->
     <aside class="w-64 bg-slate-900 border-r border-slate-800/50 flex flex-col shrink-0">
       <!-- Brand Block -->
@@ -90,12 +81,12 @@
       <!-- Client/Account Block -->
       <div class="p-5 border-b border-slate-800/50">
         <div class="flex items-center gap-3">
-          <div class="w-9 h-9 rounded-full bg-gradient-to-br from-slate-700 to-slate-800 flex items-center justify-center text-sm font-medium text-slate-300">
-            JD
+          <div class="w-9 h-9 rounded-full bg-gradient-to-br from-slate-700 to-slate-800 flex items-center justify-center text-sm font-medium text-slate-300 tm-user-initials">
+            TM
           </div>
           <div class="flex-1 min-w-0">
             <div id="sidebar-user-name" class="font-medium text-sm text-white truncate">Jane Doe</div>
-            <div class="text-xs text-slate-500">Account: Monitoring</div>
+            <div id="sidebar-account-label" class="text-xs text-slate-500">Account: Monitoring</div>
           </div>
         </div>
         <a href="javascript:void(0)" class="text-xs text-amber-500 hover:text-amber-400 mt-2 inline-block transition-colors">Edit profile</a>
@@ -112,6 +103,7 @@
               Start Here
             </a>
           </li>
+
           <li>
             <a href="/app/calendar.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-400 hover:text-white">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -120,6 +112,7 @@
               Calendar
             </a>
           </li>
+
           <li>
             <a href="/app/files.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-400 hover:text-white">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -128,6 +121,7 @@
               Files
             </a>
           </li>
+
           <li>
             <a href="/app/messaging.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-400 hover:text-white">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -136,6 +130,7 @@
               Messaging
             </a>
           </li>
+
           <li>
             <a href="/app/office.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-400 hover:text-white">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -144,6 +139,7 @@
               Office
             </a>
           </li>
+
           <li>
             <a href="/app/projects.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-400 hover:text-white">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -152,6 +148,7 @@
               Projects
             </a>
           </li>
+
           <li>
             <a href="/app/support.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-400 hover:text-white">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -162,17 +159,31 @@
           </li>
         </ul>
       </nav>
+
+      <!-- Footer note -->
+      <div class="p-4 border-t border-slate-800/50">
+        <p id="sidebar-footnote" class="text-[11px] text-slate-500 leading-relaxed">
+          Monitoring does not create IRS representation.
+        </p>
+      </div>
     </aside>
 
     <!-- Main Content Area -->
     <div class="flex-1 flex flex-col min-w-0">
       <!-- Top Bar -->
       <header class="h-16 bg-slate-900/50 border-b border-slate-800/50 flex items-center justify-between px-6 shrink-0">
-        <div></div>
+        <div class="flex items-center gap-3">
+          <div class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800/50 border border-slate-700/50">
+            <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+            <span id="topbar-mode" class="text-xs text-slate-300">Monitoring Portal</span>
+          </div>
+        </div>
 
         <!-- Center Account Switcher -->
         <button class="flex items-center gap-2 px-4 py-2 rounded-full bg-slate-800/50 border border-slate-700/50 hover:bg-slate-800 transition-colors">
-          <div class="w-6 h-6 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-xs font-medium text-slate-900">J</div>
+          <div class="w-6 h-6 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-xs font-medium text-slate-900 tm-user-initials">
+            TM
+          </div>
           <span id="topbar-user-name" class="text-sm text-white font-medium">Jane Doe</span>
           <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
@@ -180,84 +191,347 @@
         </button>
 
         <!-- Right Side Icons -->
-        <div class="flex items-center gap-4">
-          <button class="p-2 text-slate-400 hover:text-white transition-colors">
+        <div class="flex items-center gap-2">
+          <button class="p-2 text-slate-400 hover:text-white transition-colors" aria-label="Search">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
             </svg>
           </button>
-          <button class="p-2 text-slate-400 hover:text-white transition-colors relative">
+
+          <button class="p-2 text-slate-400 hover:text-white transition-colors relative" aria-label="Notifications">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
             </svg>
-            <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-amber-500 rounded-full"></span>
+            <span id="notif-dot" class="absolute top-1.5 right-1.5 w-2 h-2 bg-amber-500 rounded-full"></span>
           </button>
-          <button class="p-2 text-slate-400 hover:text-white transition-colors">
+
+          <a href="/app/support.html" class="p-2 text-slate-400 hover:text-white transition-colors" aria-label="Help">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
             </svg>
-          </button>
-          <div class="w-8 h-8 rounded-full bg-gradient-to-br from-slate-600 to-slate-700 flex items-center justify-center text-sm font-medium text-slate-300 cursor-pointer hover:ring-2 hover:ring-amber-500/50 transition-all">
-            JD
+          </a>
+
+          <div class="w-8 h-8 rounded-full bg-gradient-to-br from-slate-600 to-slate-700 flex items-center justify-center text-sm font-medium text-slate-300 cursor-pointer hover:ring-2 hover:ring-amber-500/50 transition-all tm-user-initials">
+            TM
           </div>
         </div>
       </header>
 
       <!-- Main Content -->
-      <main class="flex-1 overflow-auto p-8">
-        <div class="max-w-4xl mx-auto">
-          <!-- Greeting Section -->
-          <div class="text-center mb-12">
-            <h1 class="text-3xl font-semibold text-white mb-3">
-              <span id="greeting-prefix">Good evening, </span><span id="greeting-name" class="gradient-text">Jane</span>
-            </h1>
-            <p id="subheadline" class="text-slate-400 text-lg mb-2">This is your command center — where monitoring stays visible.</p>
-            <p id="helper-text" class="text-slate-500 text-sm">Check your status, view notices, and download reports anytime.</p>
+      <main class="flex-1 overflow-auto">
+        <div class="max-w-6xl mx-auto px-6 py-8">
+
+          <!-- Trust / Headline (mirrors site index vibe) -->
+          <div class="mb-8">
+            <div class="flex flex-col items-center text-center">
+              <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-800/50 border border-slate-700/50 mb-6">
+                <svg class="w-4 h-4 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                </svg>
+                <span id="trust-line" class="text-sm text-slate-300">
+                  Proactive monitoring by licensed tax professionals — intake does not establish IRS representation.
+                </span>
+              </div>
+
+              <h1 class="text-3xl md:text-4xl font-semibold tracking-tight mb-2">
+                <span id="greeting-prefix">Good evening, </span><span id="greeting-name" class="gradient-text">Jane</span>
+              </h1>
+
+              <p id="subheadline" class="text-slate-400 text-base md:text-lg max-w-2xl">
+                This is your command center — where monitoring stays visible.
+              </p>
+
+              <p id="helper-text" class="text-slate-500 text-sm mt-2 max-w-2xl">
+                Track onboarding, view activity, and access your portal files anytime.
+              </p>
+            </div>
           </div>
 
-          <!-- Feature Cards -->
-          <div class="grid md:grid-cols-2 gap-6 mb-8">
-            <!-- Card 1: Account Status -->
-            <div class="bg-slate-900 rounded-2xl border border-slate-800/50 p-8 card-glow hover:border-slate-700/50 transition-all group">
-              <div class="flex flex-col items-center text-center">
-                <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 flex items-center justify-center mb-6 group-hover:scale-105 transition-transform">
-                  <svg class="w-8 h-8 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+          <!-- Grid: Progress + Snapshot -->
+          <div class="grid lg:grid-cols-3 gap-6 mb-6">
+            <!-- Onboarding Progress (README lifecycle) -->
+            <section class="lg:col-span-2 bg-slate-900 rounded-2xl border border-slate-800/50 p-6 card-glow">
+              <div class="flex items-center justify-between gap-4 mb-5">
+                <div>
+                  <h2 id="progress-title" class="text-lg font-semibold">Onboarding Progress</h2>
+                  <p id="progress-subtitle" class="text-sm text-slate-400">Clear steps. Fewer surprises.</p>
+                </div>
+                <span id="progress-badge" class="px-3 py-1 rounded-full bg-amber-500/10 text-amber-300 text-sm border border-amber-500/20">
+                  In progress
+                </span>
+              </div>
+
+              <div class="mb-5">
+                <div class="flex items-center justify-between text-xs text-slate-500 mb-2">
+                  <span id="progress-left">Step 2 of 9</span>
+                  <span id="progress-right">Estimated: 5 business days</span>
+                </div>
+                <div class="h-2 rounded-full bg-slate-800 overflow-hidden">
+                  <div id="progress-bar" class="h-full w-[22%] gradient-bg rounded-full"></div>
+                </div>
+              </div>
+
+              <!-- Timeline (sequence matters, sorry alphabet police) -->
+              <ol class="space-y-3">
+                <li class="flex items-start gap-3">
+                  <div class="mt-1 w-6 h-6 rounded-full bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center">
+                    <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                  </div>
+                  <div class="flex-1">
+                    <div class="text-sm font-medium text-slate-200">Intake submitted</div>
+                    <div class="text-xs text-slate-500">We received your details and created your monitoring record.</div>
+                  </div>
+                  <span class="text-xs text-slate-500">Done</span>
+                </li>
+
+                <li class="flex items-start gap-3">
+                  <div class="mt-1 w-6 h-6 rounded-full bg-amber-500/15 border border-amber-500/30 flex items-center justify-center">
+                    <span class="text-xs font-semibold text-amber-300">2</span>
+                  </div>
+                  <div class="flex-1">
+                    <div class="text-sm font-medium text-slate-200">Offer accepted</div>
+                    <div class="text-xs text-slate-500">Confirm service scope and your monitoring plan.</div>
+                  </div>
+                  <a id="cta-offer" href="/app/offer.html" class="text-xs text-amber-400 hover:text-amber-300">Open</a>
+                </li>
+
+                <li class="flex items-start gap-3 opacity-90">
+                  <div class="mt-1 w-6 h-6 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center">
+                    <span class="text-xs font-semibold text-slate-400">3</span>
+                  </div>
+                  <div class="flex-1">
+                    <div class="text-sm font-medium text-slate-300">Agreement accepted</div>
+                    <div class="text-xs text-slate-500">Service terms and expectations.</div>
+                  </div>
+                  <a id="cta-agreement" href="/app/agreement.html" class="text-xs text-slate-400 hover:text-white">Open</a>
+                </li>
+
+                <li class="flex items-start gap-3 opacity-90">
+                  <div class="mt-1 w-6 h-6 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center">
+                    <span class="text-xs font-semibold text-slate-400">4</span>
+                  </div>
+                  <div class="flex-1">
+                    <div class="text-sm font-medium text-slate-300">Payment completed</div>
+                    <div class="text-xs text-slate-500">Activates the monitoring cycle.</div>
+                  </div>
+                  <a id="cta-payment" href="/app/payment.html" class="text-xs text-slate-400 hover:text-white">Open</a>
+                </li>
+
+                <li class="flex items-start gap-3 opacity-75">
+                  <div class="mt-1 w-6 h-6 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center">
+                    <span class="text-xs font-semibold text-slate-400">5</span>
+                  </div>
+                  <div class="flex-1">
+                    <div class="text-sm font-medium text-slate-300">Welcome confirmed</div>
+                    <div class="text-xs text-slate-500">Portal access and primary contact verified.</div>
+                  </div>
+                  <span class="text-xs text-slate-500">Pending</span>
+                </li>
+
+                <li class="flex items-start gap-3 opacity-75">
+                  <div class="mt-1 w-6 h-6 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center">
+                    <span class="text-xs font-semibold text-slate-400">6</span>
+                  </div>
+                  <div class="flex-1">
+                    <div class="text-sm font-medium text-slate-300">Filing status submitted</div>
+                    <div class="text-xs text-slate-500">Ensures correct transcript access and context.</div>
+                  </div>
+                  <span class="text-xs text-slate-500">Pending</span>
+                </li>
+
+                <li class="flex items-start gap-3 opacity-75">
+                  <div class="mt-1 w-6 h-6 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center">
+                    <span class="text-xs font-semibold text-slate-400">7</span>
+                  </div>
+                  <div class="flex-1">
+                    <div class="text-sm font-medium text-slate-300">Address updated</div>
+                    <div class="text-xs text-slate-500">Reduces missed notices and wrong-mail risk.</div>
+                  </div>
+                  <span class="text-xs text-slate-500">Pending</span>
+                </li>
+
+                <li class="flex items-start gap-3 opacity-75">
+                  <div class="mt-1 w-6 h-6 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center">
+                    <span class="text-xs font-semibold text-slate-400">8</span>
+                  </div>
+                  <div class="flex-1">
+                    <div class="text-sm font-medium text-slate-300">eSign 2848 submitted</div>
+                    <div class="text-xs text-slate-500">Enables transcript pull under authorization.</div>
+                  </div>
+                  <span class="text-xs text-slate-500">Pending</span>
+                </li>
+
+                <li class="flex items-start gap-3 opacity-75">
+                  <div class="mt-1 w-6 h-6 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center">
+                    <span class="text-xs font-semibold text-slate-400">9</span>
+                  </div>
+                  <div class="flex-1">
+                    <div class="text-sm font-medium text-slate-300">Compliance submitted</div>
+                    <div class="text-xs text-slate-500">Final intake confirmations before monitoring begins.</div>
+                  </div>
+                  <span class="text-xs text-slate-500">Pending</span>
+                </li>
+              </ol>
+            </section>
+
+            <!-- Monitoring Snapshot -->
+            <section class="bg-slate-900 rounded-2xl border border-slate-800/50 p-6 card-glow">
+              <div class="flex items-start justify-between gap-3 mb-5">
+                <div>
+                  <h2 id="snapshot-title" class="text-lg font-semibold">Monitoring Snapshot</h2>
+                  <p id="snapshot-subtitle" class="text-sm text-slate-400">Last check + quick signals.</p>
+                </div>
+                <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
+                  <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                   </svg>
                 </div>
-                <h2 id="card1-title" class="text-xl font-semibold text-white mb-2">Account Status</h2>
-                <p id="card1-description" class="text-slate-400 text-sm mb-6">See latest transcript checks, balances, and flags.</p>
-                <a href="/app/status.html" class="inline-flex items-center gap-2 px-6 py-2.5 rounded-lg gradient-bg text-slate-900 font-medium text-sm hover:opacity-90 transition-opacity">
-                  Go to section
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              </div>
+
+              <div class="space-y-4">
+                <div class="p-4 rounded-xl bg-slate-800/40 border border-slate-700/50">
+                  <div class="text-xs text-slate-500 uppercase tracking-wider mb-1">Last transcript check</div>
+                  <div id="metric-last-check" class="text-lg font-semibold text-slate-200">Not started</div>
+                  <div id="metric-last-check-sub" class="text-xs text-slate-500 mt-1">Starts after payment + authorization steps.</div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                  <div class="p-4 rounded-xl bg-slate-800/40 border border-slate-700/50">
+                    <div class="text-xs text-slate-500 uppercase tracking-wider mb-1">Open issues</div>
+                    <div id="metric-issues" class="text-2xl font-semibold">0</div>
+                    <div class="text-xs text-slate-500 mt-1">Flagged items</div>
+                  </div>
+
+                  <div class="p-4 rounded-xl bg-slate-800/40 border border-slate-700/50">
+                    <div class="text-xs text-slate-500 uppercase tracking-wider mb-1">Notices</div>
+                    <div id="metric-notices" class="text-2xl font-semibold">0</div>
+                    <div class="text-xs text-slate-500 mt-1">In archive</div>
+                  </div>
+                </div>
+
+                <div class="pt-1">
+                  <a id="snapshot-cta" href="/app/files.html" class="inline-flex w-full items-center justify-center gap-2 px-4 py-3 rounded-xl gradient-bg text-slate-900 font-semibold text-sm hover:opacity-90 transition-opacity">
+                    Open files & reports
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <!-- Quick Actions + Activity -->
+          <div class="grid lg:grid-cols-3 gap-6 mb-8">
+            <!-- Quick Actions -->
+            <section class="bg-slate-900 rounded-2xl border border-slate-800/50 p-6 card-glow">
+              <h2 id="actions-title" class="text-lg font-semibold mb-1">Quick Actions</h2>
+              <p id="actions-subtitle" class="text-sm text-slate-400 mb-5">Do the next thing. Avoid chaos.</p>
+
+              <div class="space-y-3">
+                <a href="/app/offer.html" class="flex items-center justify-between gap-3 p-4 rounded-xl bg-slate-800/40 border border-slate-700/50 hover:border-slate-600/60 transition-colors">
+                  <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
+                      <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                      </svg>
+                    </div>
+                    <div>
+                      <div class="text-sm font-semibold text-slate-200">Continue onboarding</div>
+                      <div class="text-xs text-slate-500">Offer → Agreement → Payment</div>
+                    </div>
+                  </div>
+                  <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                  </svg>
+                </a>
+
+                <a href="/app/files.html" class="flex items-center justify-between gap-3 p-4 rounded-xl bg-slate-800/40 border border-slate-700/50 hover:border-slate-600/60 transition-colors">
+                  <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-xl bg-slate-700/40 border border-slate-700 flex items-center justify-center">
+                      <svg class="w-5 h-5 text-slate-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4h16v16H4V4zm4 4h8M8 12h8M8 16h6"/>
+                      </svg>
+                    </div>
+                    <div>
+                      <div class="text-sm font-semibold text-slate-200">View portal archive</div>
+                      <div class="text-xs text-slate-500">Reports, transcripts, notices</div>
+                    </div>
+                  </div>
+                  <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                  </svg>
+                </a>
+
+                <a href="/app/support.html" class="flex items-center justify-between gap-3 p-4 rounded-xl bg-slate-800/40 border border-slate-700/50 hover:border-slate-600/60 transition-colors">
+                  <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-xl bg-slate-700/40 border border-slate-700 flex items-center justify-center">
+                      <svg class="w-5 h-5 text-slate-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4-.93L3 17l1.02-3.06A6.89 6.89 0 013 10c0-3.866 3.582-7 8-7s8 3.134 8 7z"/>
+                      </svg>
+                    </div>
+                    <div>
+                      <div class="text-sm font-semibold text-slate-200">Get help</div>
+                      <div class="text-xs text-slate-500">Open a support ticket</div>
+                    </div>
+                  </div>
+                  <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                   </svg>
                 </a>
               </div>
-            </div>
+            </section>
 
-            <!-- Card 2: Document Vault -->
-            <div class="bg-slate-900 rounded-2xl border border-slate-800/50 p-8 card-glow hover:border-slate-700/50 transition-all group">
-              <div class="flex flex-col items-center text-center">
-                <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 flex items-center justify-center mb-6 group-hover:scale-105 transition-transform">
-                  <svg class="w-8 h-8 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/>
-                  </svg>
+            <!-- Recent Activity -->
+            <section class="lg:col-span-2 bg-slate-900 rounded-2xl border border-slate-800/50 p-6 card-glow">
+              <div class="flex items-center justify-between gap-4 mb-5">
+                <div>
+                  <h2 id="activity-title" class="text-lg font-semibold">Recent Activity</h2>
+                  <p id="activity-subtitle" class="text-sm text-slate-400">A paper trail, minus the paper.</p>
                 </div>
-                <h2 id="card2-title" class="text-xl font-semibold text-white mb-2">Document Vault</h2>
-                <p id="card2-description" class="text-slate-400 text-sm mb-6">View reports, transcripts, and uploaded notices.</p>
-                <a href="/app/documents.html" class="inline-flex items-center gap-2 px-6 py-2.5 rounded-lg gradient-bg text-slate-900 font-medium text-sm hover:opacity-90 transition-opacity">
-                  Go to section
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                  </svg>
-                </a>
+                <a href="/app/projects.html" class="text-sm text-amber-400 hover:text-amber-300">View projects</a>
               </div>
-            </div>
+
+              <div class="space-y-3">
+                <div class="p-4 rounded-xl bg-slate-800/40 border border-slate-700/50">
+                  <div class="flex items-start justify-between gap-3">
+                    <div>
+                      <div class="text-sm font-semibold text-slate-200">Intake received</div>
+                      <div class="text-xs text-slate-500 mt-1">Your onboarding record was created.</div>
+                    </div>
+                    <span class="text-xs text-slate-500">Today</span>
+                  </div>
+                </div>
+
+                <div class="p-4 rounded-xl bg-slate-800/40 border border-slate-700/50">
+                  <div class="flex items-start justify-between gap-3">
+                    <div>
+                      <div class="text-sm font-semibold text-slate-200">Next: Offer review</div>
+                      <div class="text-xs text-slate-500 mt-1">Confirm scope so we can activate monitoring.</div>
+                    </div>
+                    <span class="text-xs text-slate-500">Pending</span>
+                  </div>
+                </div>
+
+                <div class="p-4 rounded-xl bg-slate-800/40 border border-slate-700/50">
+                  <div class="flex items-start justify-between gap-3">
+                    <div>
+                      <div class="text-sm font-semibold text-slate-200">File archive ready</div>
+                      <div class="text-xs text-slate-500 mt-1">This is where reports and notices will appear.</div>
+                    </div>
+                    <a href="/app/files.html" class="text-xs text-amber-400 hover:text-amber-300">Open</a>
+                  </div>
+                </div>
+              </div>
+            </section>
           </div>
 
-          <!-- Disclaimer -->
-          <p id="disclaimer" class="text-center text-slate-600 text-xs">Monitoring does not create IRS representation.</p>
+          <!-- Legal / Disclaimer -->
+          <p id="disclaimer" class="text-center text-slate-600 text-xs pb-6">
+            Monitoring does not create IRS representation. Representation, filing, and resolution are separate engagements.
+          </p>
         </div>
       </main>
     </div>
@@ -265,17 +539,27 @@
 
   <script>
     const defaultConfig = {
-      user_name: 'Jane Doe',
-      greeting_subheadline: 'This is your command center — where monitoring stays visible.',
-      helper_text: 'Check your status, view notices, and download reports anytime.',
-      card1_title: 'Account Status',
-      card1_description: 'See latest transcript checks, balances, and flags.',
-      card2_title: 'Document Vault',
-      card2_description: 'View reports, transcripts, and uploaded notices.',
-      disclaimer_text: 'Monitoring does not create IRS representation.',
+      account_label: 'Account: Monitoring',
+      actions_subtitle: 'Do the next thing. Avoid chaos.',
+      actions_title: 'Quick Actions',
+      activity_subtitle: 'A paper trail, minus the paper.',
+      activity_title: 'Recent Activity',
       background_color: '#080a0f',
-      surface_color: '#0f1219',
-      text_color: '#ffffff'
+      disclaimer_text: 'Monitoring does not create IRS representation. Representation, filing, and resolution are separate engagements.',
+      greeting_prefix: 'Good evening, ',
+      greeting_subheadline: 'This is your command center — where monitoring stays visible.',
+      helper_text: 'Track onboarding, view activity, and access your portal files anytime.',
+      progress_badge: 'In progress',
+      progress_left: 'Step 2 of 9',
+      progress_right: 'Estimated: 5 business days',
+      progress_subtitle: 'Clear steps. Fewer surprises.',
+      progress_title: 'Onboarding Progress',
+      snapshot_subtitle: 'Last check + quick signals.',
+      snapshot_title: 'Monitoring Snapshot',
+      text_color: '#ffffff',
+      topbar_mode: 'Monitoring Portal',
+      trust_line: 'Proactive monitoring by licensed tax professionals — intake does not establish IRS representation.',
+      user_name: 'Jane Doe'
     };
 
     function safeFirstName(fullName) {
@@ -305,41 +589,64 @@
       const firstName = safeFirstName(fullName);
       const initials = initialsFromName(fullName);
 
-      setText('disclaimer', merged.disclaimer_text);
+      // Header / identity
+      setText('greeting-prefix', merged.greeting_prefix);
+      setText('greeting-name', firstName);
       setText('sidebar-user-name', fullName);
       setText('topbar-user-name', fullName);
 
-      setText('greeting-name', firstName);
-      setText('helper-text', merged.helper_text);
+      // Labels
+      setText('sidebar-account-label', merged.account_label);
+      setText('topbar-mode', merged.topbar_mode);
+
+      // Trust / copy blocks
+      setText('trust-line', merged.trust_line);
       setText('subheadline', merged.greeting_subheadline);
+      setText('helper-text', merged.helper_text);
 
-      setText('card1-title', merged.card1_title);
-      setText('card1-description', merged.card1_description);
-      setText('card2-title', merged.card2_title);
-      setText('card2-description', merged.card2_description);
+      // Sections
+      setText('actions-title', merged.actions_title);
+      setText('actions-subtitle', merged.actions_subtitle);
+      setText('activity-title', merged.activity_title);
+      setText('activity-subtitle', merged.activity_subtitle);
+      setText('progress-title', merged.progress_title);
+      setText('progress-subtitle', merged.progress_subtitle);
+      setText('snapshot-title', merged.snapshot_title);
+      setText('snapshot-subtitle', merged.snapshot_subtitle);
 
+      // Progress bits
+      setText('progress-badge', merged.progress_badge);
+      setText('progress-left', merged.progress_left);
+      setText('progress-right', merged.progress_right);
+
+      // Disclaimer
+      setText('disclaimer', merged.disclaimer_text);
+      setText('sidebar-footnote', 'Monitoring does not create IRS representation.');
+
+      // Initials (all avatars)
       const initialsEls = document.querySelectorAll('.tm-user-initials');
       initialsEls.forEach((el) => { el.textContent = initials; });
 
+      // Colors
       if (merged.background_color) document.body.style.backgroundColor = merged.background_color;
       if (merged.text_color) document.body.style.color = merged.text_color;
     }
 
     function mapToCapabilities(config) {
+      const merged = Object.assign({}, defaultConfig, config || {});
       return {
         borderables: [],
         fontEditable: {
-          get: () => config.font_family || 'DM Sans',
+          get: () => merged.font_family || 'DM Sans',
           set: (value) => window.elementSdk.setConfig({ font_family: value })
         },
         fontSizeable: {
-          get: () => config.font_size || 16,
+          get: () => merged.font_size || 16,
           set: (value) => window.elementSdk.setConfig({ font_size: value })
         },
         recolorables: [
-          { get: () => config.background_color || defaultConfig.background_color, set: (value) => window.elementSdk.setConfig({ background_color: value }) },
-          { get: () => config.surface_color || defaultConfig.surface_color, set: (value) => window.elementSdk.setConfig({ surface_color: value }) },
-          { get: () => config.text_color || defaultConfig.text_color, set: (value) => window.elementSdk.setConfig({ text_color: value }) }
+          { get: () => merged.background_color || defaultConfig.background_color, set: (value) => window.elementSdk.setConfig({ background_color: value }) },
+          { get: () => merged.text_color || defaultConfig.text_color, set: (value) => window.elementSdk.setConfig({ text_color: value }) }
         ]
       };
     }
@@ -347,24 +654,27 @@
     function mapToEditPanelValues(config) {
       const merged = Object.assign({}, defaultConfig, config || {});
       return new Map([
-        ['card1_description', merged.card1_description],
-        ['card1_title', merged.card1_title],
-        ['card2_description', merged.card2_description],
-        ['card2_title', merged.card2_title],
+        ['account_label', merged.account_label],
+        ['actions_subtitle', merged.actions_subtitle],
+        ['actions_title', merged.actions_title],
+        ['activity_subtitle', merged.activity_subtitle],
+        ['activity_title', merged.activity_title],
         ['disclaimer_text', merged.disclaimer_text],
+        ['greeting_prefix', merged.greeting_prefix],
         ['greeting_subheadline', merged.greeting_subheadline],
         ['helper_text', merged.helper_text],
+        ['progress_badge', merged.progress_badge],
+        ['progress_left', merged.progress_left],
+        ['progress_right', merged.progress_right],
+        ['progress_subtitle', merged.progress_subtitle],
+        ['progress_title', merged.progress_title],
+        ['snapshot_subtitle', merged.snapshot_subtitle],
+        ['snapshot_title', merged.snapshot_title],
+        ['topbar_mode', merged.topbar_mode],
+        ['trust_line', merged.trust_line],
         ['user_name', merged.user_name]
       ]);
     }
-
-    (function () {
-      const sidebarAvatar = document.querySelector('aside .w-9.h-9.rounded-full');
-      const topbarAvatar = document.querySelector('header .w-8.h-8.rounded-full');
-
-      if (sidebarAvatar) sidebarAvatar.classList.add('tm-user-initials');
-      if (topbarAvatar) topbarAvatar.classList.add('tm-user-initials');
-    })();
 
     if (window.elementSdk) {
       window.elementSdk.init({
@@ -379,4 +689,3 @@
   </script>
 </body>
 </html>
-
