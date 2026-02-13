@@ -1,0 +1,409 @@
+<!-- /app/pages/flows/intake/offer.html -->
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tax Monitor Pro - Offer</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['DM Sans', 'system-ui', 'sans-serif'] },
+          colors: {
+            slate: { 850: '#1a1f2e', 900: '#0f1219', 950: '#080a0f' },
+            amber: { 400: '#fbbf24', 500: '#f59e0b', 600: '#d97706' }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    html, body { height: 100%; }
+    *, *::before, *::after { box-sizing: border-box; }
+    .gradient-text {
+      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .gradient-bg {
+      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+    }
+    .card-glow {
+      box-shadow: 0 0 40px rgba(251, 191, 36, 0.06), 0 0 90px rgba(251, 191, 36, 0.02);
+    }
+    .nav-item { transition: all 0.2s ease; }
+    .nav-item:hover { background: rgba(251, 191, 36, 0.08); }
+    .nav-item.active { background: rgba(251, 191, 36, 0.12); border-left: 2px solid #f59e0b; }
+  </style>
+</head>
+
+<body class="h-full bg-slate-950 font-sans text-white">
+  <div class="flex h-full">
+
+    <!-- Sidebar -->
+    <aside class="w-64 bg-slate-900 border-r border-slate-800/50 flex flex-col shrink-0">
+      <div class="p-5 border-b border-slate-800/50">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg gradient-bg flex items-center justify-center font-bold text-slate-900 text-lg">TM</div>
+          <div>
+            <div class="font-semibold text-white text-sm">Tax Monitor Pro</div>
+            <div class="text-xs text-slate-500">IRS Monitoring</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-5 border-b border-slate-800/50">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-full bg-gradient-to-br from-slate-700 to-slate-800 flex items-center justify-center text-sm font-medium text-slate-300 tm-user-initials">TM</div>
+          <div class="flex-1 min-w-0">
+            <div id="sidebar-user-name" class="font-medium text-sm text-white truncate">Jane Doe</div>
+            <div id="sidebar-account-label" class="text-xs text-slate-500">Account: Onboarding</div>
+          </div>
+        </div>
+      </div>
+
+      <nav class="flex-1 py-4 px-3">
+        <ul class="space-y-1">
+          <li>
+            <a href="/app/index.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-400 hover:text-white">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+              </svg>
+              Start Here
+            </a>
+          </li>
+
+          <li>
+            <a href="/app/offer.html?mode=portal" class="nav-item active flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-white">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              Offer
+            </a>
+          </li>
+
+          <li>
+            <a href="/app/agreement.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-400 hover:text-white">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+              Agreement
+            </a>
+          </li>
+
+          <li>
+            <a href="/app/payment.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-400 hover:text-white">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-2m2-4h-6m6 0a2 2 0 110 4h-6a2 2 0 110-4h6z"/>
+              </svg>
+              Payment
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="p-4 border-t border-slate-800/50">
+        <p id="sidebar-footnote" class="text-[11px] text-slate-500 leading-relaxed">
+          Monitoring does not create IRS representation.
+        </p>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <div class="flex-1 flex flex-col min-w-0">
+      <header class="h-16 bg-slate-900/50 border-b border-slate-800/50 flex items-center justify-between px-6 shrink-0">
+        <div class="flex items-center gap-2">
+          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800/50 border border-slate-700/50">
+            <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+            <span id="topbar-mode" class="text-xs text-slate-300">Onboarding</span>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <a href="/app/support.html" class="p-2 text-slate-400 hover:text-white transition-colors" aria-label="Help">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </a>
+          <div class="w-8 h-8 rounded-full bg-gradient-to-br from-slate-600 to-slate-700 flex items-center justify-center text-sm font-medium text-slate-300 tm-user-initials">TM</div>
+        </div>
+      </header>
+
+      <main class="flex-1 overflow-auto">
+        <div class="max-w-4xl mx-auto px-6 py-10">
+
+          <!-- New-user hero -->
+          <section id="mode-new" class="hidden mb-8">
+            <div class="text-center">
+              <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-800/50 border border-slate-700/50 mb-6">
+                <svg class="w-4 h-4 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                </svg>
+                <span id="trust-line" class="text-sm text-slate-300">
+                  Proactive monitoring by licensed tax professionals — intake does not establish IRS representation.
+                </span>
+              </div>
+
+              <h1 id="hero-title" class="text-4xl md:text-5xl font-bold tracking-tight mb-4">
+                Review your <span class="gradient-text">Monitoring Offer</span>
+              </h1>
+
+              <p id="hero-subtitle" class="text-lg text-slate-400 max-w-2xl mx-auto">
+                Confirm scope, timeline, and what you can expect from monitoring. No surprises.
+              </p>
+            </div>
+          </section>
+
+          <!-- Portal compact header -->
+          <section id="mode-portal" class="hidden mb-6">
+            <div class="flex items-start justify-between gap-4">
+              <div>
+                <h1 class="text-2xl md:text-3xl font-semibold">
+                  Offer <span class="text-slate-500">Review</span>
+                </h1>
+                <p id="portal-subtitle" class="text-slate-400 mt-1">
+                  Confirm scope so we can move to agreement and payment.
+                </p>
+              </div>
+              <div class="text-right">
+                <div class="text-xs text-slate-500">Status</div>
+                <div id="offer-status-pill" class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 text-amber-300 text-sm border border-amber-500/20">
+                  Pending
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Offer card -->
+          <section class="bg-slate-900 rounded-2xl border border-slate-800/50 p-6 card-glow">
+            <div class="flex items-start justify-between gap-4 mb-6">
+              <div>
+                <h2 id="offer-title" class="text-xl font-semibold">Tax Monitor Service</h2>
+                <p id="offer-desc" class="text-sm text-slate-400 mt-1">
+                  Monitoring includes change detection, plain-English reporting, and alerts when action is needed.
+                </p>
+              </div>
+              <span id="plan-pill" class="px-3 py-1 rounded-full bg-slate-800/60 border border-slate-700/60 text-sm text-slate-200">
+                Plan: Bronze
+              </span>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-4 mb-6">
+              <div class="p-4 rounded-xl bg-slate-800/40 border border-slate-700/50">
+                <div class="text-xs text-slate-500 uppercase tracking-wider mb-1">Cycle</div>
+                <div id="offer-cycle" class="text-lg font-semibold">6 weeks</div>
+              </div>
+
+              <div class="p-4 rounded-xl bg-slate-800/40 border border-slate-700/50">
+                <div class="text-xs text-slate-500 uppercase tracking-wider mb-1">Transcript checks</div>
+                <div id="offer-checks" class="text-lg font-semibold">Ongoing</div>
+              </div>
+
+              <div class="p-4 rounded-xl bg-slate-800/40 border border-slate-700/50">
+                <div class="text-xs text-slate-500 uppercase tracking-wider mb-1">Reports</div>
+                <div id="offer-reports" class="text-lg font-semibold">Plain English</div>
+              </div>
+            </div>
+
+            <div class="rounded-xl bg-slate-800/30 border border-slate-700/50 p-4 mb-6">
+              <div class="text-sm font-semibold text-slate-200 mb-2">What’s included</div>
+              <ul class="space-y-2 text-sm text-slate-400 list-disc list-inside">
+                <li>Change detection and timeline tracking</li>
+                <li>Early alerts when action is needed</li>
+                <li>Portal archive for transcripts, reports, and notices</li>
+                <li>Plain-language summaries (no IRS jargon)</li>
+              </ul>
+              <p class="mt-3 text-xs text-slate-500">
+                Monitoring does not create IRS representation. Representation, filing, and resolution are separate engagements.
+              </p>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
+              <div class="text-sm text-slate-400">
+                Next: <span class="text-slate-200 font-semibold">Agreement</span>
+              </div>
+
+              <div class="flex gap-3">
+                <a id="cta-back" href="/app/index.html" class="px-4 py-2.5 rounded-xl bg-slate-800/60 border border-slate-700/60 text-sm font-semibold text-slate-200 hover:bg-slate-800 transition-colors">
+                  Back
+                </a>
+
+                <button id="cta-accept" class="px-5 py-2.5 rounded-xl gradient-bg text-slate-900 text-sm font-semibold hover:opacity-90 transition-opacity">
+                  Accept offer
+                </button>
+              </div>
+            </div>
+
+            <div id="accept-hint" class="text-xs text-slate-500 mt-3">
+              Accepting the offer moves you to the agreement step.
+            </div>
+          </section>
+
+          <p id="disclaimer" class="text-center text-slate-600 text-xs mt-8">
+            Monitoring does not create IRS representation.
+          </p>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    const defaultConfig = {
+      account_label: 'Account: Onboarding',
+      background_color: '#080a0f',
+      disclaimer_text: 'Monitoring does not create IRS representation.',
+      hero_subtitle: 'Confirm scope, timeline, and what you can expect from monitoring. No surprises.',
+      hero_title: 'Review your Monitoring Offer',
+      offer_checks: 'Ongoing',
+      offer_cycle: '6 weeks',
+      offer_desc: 'Monitoring includes change detection, plain-English reporting, and alerts when action is needed.',
+      offer_reports: 'Plain English',
+      offer_title: 'Tax Monitor Service',
+      plan_pill: 'Plan: Bronze',
+      portal_subtitle: 'Confirm scope so we can move to agreement and payment.',
+      text_color: '#ffffff',
+      topbar_mode: 'Onboarding',
+      trust_line: 'Proactive monitoring by licensed tax professionals — intake does not establish IRS representation.',
+      user_name: 'Jane Doe'
+    };
+
+    function initialsFromName(fullName) {
+      const s = String(fullName || '').trim();
+      if (!s) return 'TM';
+      const parts = s.split(/\s+/).filter(Boolean);
+      const first = parts[0] ? parts[0][0] : '';
+      const last = parts.length > 1 ? parts[parts.length - 1][0] : '';
+      const out = (first + last).toUpperCase();
+      return out || 'TM';
+    }
+
+    function safeFirstName(fullName) {
+      const s = String(fullName || '').trim();
+      if (!s) return 'there';
+      return s.split(/\s+/)[0] || 'there';
+    }
+
+    function setText(id, value) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = String(value ?? '');
+    }
+
+    function getMode() {
+      const url = new URL(window.location.href);
+      const mode = (url.searchParams.get('mode') || '').trim().toLowerCase();
+      return mode === 'new' ? 'new' : 'portal';
+    }
+
+    function applyMode(mode) {
+      const newEl = document.getElementById('mode-new');
+      const portalEl = document.getElementById('mode-portal');
+      if (newEl) newEl.classList.toggle('hidden', mode !== 'new');
+      if (portalEl) portalEl.classList.toggle('hidden', mode !== 'portal');
+    }
+
+    async function onConfigChange(config) {
+      const merged = Object.assign({}, defaultConfig, config || {});
+      const fullName = merged.user_name || defaultConfig.user_name;
+      const initials = initialsFromName(fullName);
+
+      setText('sidebar-user-name', fullName);
+      setText('sidebar-account-label', merged.account_label);
+      setText('topbar-mode', merged.topbar_mode);
+
+      setText('trust-line', merged.trust_line);
+      setText('hero-title', merged.hero_title);
+      setText('hero-subtitle', merged.hero_subtitle);
+
+      setText('portal-subtitle', merged.portal_subtitle);
+
+      setText('offer-title', merged.offer_title);
+      setText('offer-desc', merged.offer_desc);
+      setText('offer-cycle', merged.offer_cycle);
+      setText('offer-checks', merged.offer_checks);
+      setText('offer-reports', merged.offer_reports);
+      setText('plan-pill', merged.plan_pill);
+
+      setText('disclaimer', merged.disclaimer_text);
+
+      document.querySelectorAll('.tm-user-initials').forEach((el) => { el.textContent = initials; });
+
+      if (merged.background_color) document.body.style.backgroundColor = merged.background_color;
+      if (merged.text_color) document.body.style.color = merged.text_color;
+    }
+
+    function mapToCapabilities(config) {
+      const merged = Object.assign({}, defaultConfig, config || {});
+      return {
+        borderables: [],
+        fontEditable: {
+          get: () => merged.font_family || 'DM Sans',
+          set: (value) => window.elementSdk.setConfig({ font_family: value })
+        },
+        fontSizeable: {
+          get: () => merged.font_size || 16,
+          set: (value) => window.elementSdk.setConfig({ font_size: value })
+        },
+        recolorables: [
+          { get: () => merged.background_color || defaultConfig.background_color, set: (value) => window.elementSdk.setConfig({ background_color: value }) },
+          { get: () => merged.text_color || defaultConfig.text_color, set: (value) => window.elementSdk.setConfig({ text_color: value }) }
+        ]
+      };
+    }
+
+    function mapToEditPanelValues(config) {
+      const merged = Object.assign({}, defaultConfig, config || {});
+      return new Map([
+        ['account_label', merged.account_label],
+        ['disclaimer_text', merged.disclaimer_text],
+        ['hero_subtitle', merged.hero_subtitle],
+        ['hero_title', merged.hero_title],
+        ['offer_checks', merged.offer_checks],
+        ['offer_cycle', merged.offer_cycle],
+        ['offer_desc', merged.offer_desc],
+        ['offer_reports', merged.offer_reports],
+        ['offer_title', merged.offer_title],
+        ['plan_pill', merged.plan_pill],
+        ['portal_subtitle', merged.portal_subtitle],
+        ['topbar_mode', merged.topbar_mode],
+        ['trust_line', merged.trust_line],
+        ['user_name', merged.user_name]
+      ]);
+    }
+
+    (function init() {
+      applyMode(getMode());
+
+      const acceptBtn = document.getElementById('cta-accept');
+      if (acceptBtn) {
+        acceptBtn.addEventListener('click', () => {
+          // Placeholder: wire to Worker endpoint later (receipt -> R2 -> canonical -> ClickUp).
+          // For now, move forward in the flow.
+          window.location.href = '/app/agreement.html';
+        });
+      }
+
+      if (window.elementSdk) {
+        window.elementSdk.init({
+          defaultConfig,
+          onConfigChange,
+          mapToCapabilities,
+          mapToEditPanelValues
+        });
+      } else {
+        onConfigChange(defaultConfig);
+      }
+    })();
+  </script>
+</body>
+</html>
