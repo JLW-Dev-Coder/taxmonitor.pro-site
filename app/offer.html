@@ -498,14 +498,15 @@
 
       // Canonical items (use your real prices + SKUs)
       var ITEMS = [
-        { id: "bronze", name: "Tax Monitoring — Bronze", meta: "6-Week Term", price: 275, sku: "TM-BRONZE", blurb: "Stabilization monitoring with change detection during the term." },
-        { id: "silver", name: "Tax Monitoring — Silver", meta: "8-Week Term", price: 325, sku: "TM-SILVER", blurb: "Ongoing monitoring with a longer runway than Bronze." },
-        { id: "gold", name: "Tax Monitoring — Gold", meta: "12-Week Term", price: 425, sku: "TM-GOLD", blurb: "Full-quarter oversight monitoring with change detection during the term." },
-        { id: "mfj", name: "Tax Monitoring — Married Filing Jointly", meta: "8-Week Term", price: 325, sku: "TM-MFJ", blurb: "Linked monitoring for jointly filed years (both spouses enrolled)." },
-        { id: "one_time", name: "Tax Monitoring — One-Time Service", meta: "Snapshot", price: 299, sku: "TM-ONE", blurb: "Snapshot only: one transcript pull + plain-English summary." }
+        { id: "bronze", name: "Bronze",   meta: "6-Week Term",  price: 275, sku: "TM-BRONZE", blurb: "Stabilization monitoring during your term." },
+        { id: "silver", name: "Silver",   meta: "8-Week Term",  price: 325, sku: "TM-SILVER", blurb: "Balanced monitoring with steady coverage." },
+        { id: "gold",   name: "Gold",     meta: "12-Week Term", price: 425, sku: "TM-GOLD",   blurb: "Extended monitoring with deeper oversight." },
+        { id: "mfj",    name: "MFJ",      meta: "8-Week Term",  price: 325, sku: "TM-MFJ",    blurb: "Linked monitoring for both spouses." },
+        { id: "one_time", name: "Snapshot", meta: "Snapshot",   price: 299, sku: "TM-ONE",    blurb: "Single transcript review with summary." }
       ];
-
+      
       // Render cards
+
       var grid = document.getElementById("package-grid");
       var selectedId = itemFromUrl || "";
 
