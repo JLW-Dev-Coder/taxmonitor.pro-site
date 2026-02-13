@@ -1,0 +1,791 @@
+<!-- /app/pages/staff/compliance-records.html -->
+<!doctype html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tax Monitor Pro — Staff — Compliance Records</title>
+
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="icon" href="https://taxmonitor.pro/favicon.ico" sizes="any">
+  <link rel="icon" href="https://taxmonitor.pro/assets/favicon.ico" sizes="any">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['DM Sans', 'system-ui', 'sans-serif'] },
+          colors: {
+            slate: { 850:'#1a1f2e', 900:'#0f1219', 950:'#080a0f' },
+            amber: { 400:'#fbbf24', 500:'#f59e0b', 600:'#d97706' }
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    html, body { height: 100%; }
+    *, *::before, *::after { box-sizing: border-box; }
+    * { font-family: 'DM Sans', system-ui, sans-serif; }
+
+    .gradient-text{
+      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+    }
+    .gradient-bg{
+      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+    }
+    .card-glow{
+      box-shadow: 0 0 40px rgba(251, 191, 36, 0.06), 0 0 90px rgba(251, 191, 36, 0.02);
+    }
+    .noise-bg::before{
+      content:'';
+      position:fixed; inset:0;
+      opacity:.03;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      pointer-events:none;
+      z-index:1;
+    }
+    .aurora-blob{ position:absolute; border-radius:50%; filter:blur(100px); opacity:.14; animation:float 20s ease-in-out infinite; }
+    .aurora-1{ width:650px; height:420px; background:linear-gradient(135deg,#F59E0B,#D97706); top:8%; right:-12%; }
+    .aurora-2{ width:520px; height:360px; background:linear-gradient(135deg,#2DD4BF,#14B8A6); top:42%; left:-16%; opacity:.08; animation-delay:-7s; }
+    .aurora-3{ width:480px; height:320px; background:linear-gradient(135deg,#F59E0B,#EA580C); bottom:4%; right:18%; animation-delay:-14s; }
+    @keyframes float{ 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(30px,-30px) scale(1.05)} 66%{transform:translate(-20px,20px) scale(.95)} }
+
+    /* Print rules: no gimmicks, full report */
+    @media print{
+      .no-print{ display:none !important; }
+      .print-expand{ display:block !important; }
+      body{ background:#fff !important; color:#000 !important; }
+      .card-glow{ box-shadow:none !important; }
+      .print-surface{ border:1px solid #ddd !important; background:#fff !important; }
+      a[href]:after{ content:""; }
+    }
+  </style>
+</head>
+
+<body class="h-full bg-[#020617] text-slate-200 noise-bg">
+  <div class="aurora-blob aurora-1"></div>
+  <div class="aurora-blob aurora-2"></div>
+  <div class="aurora-blob aurora-3"></div>
+
+  <div class="relative z-10 min-h-full">
+    <header class="border-b border-slate-800/60 bg-slate-950/60 backdrop-blur">
+      <div class="mx-auto max-w-7xl px-6 py-5 flex items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <div class="h-10 w-10 rounded-xl gradient-bg text-slate-950 font-bold flex items-center justify-center">TM</div>
+          <div class="leading-tight">
+            <div class="font-semibold">Staff Console</div>
+            <div class="text-sm text-slate-400">Compliance Records → report generator</div>
+          </div>
+        </div>
+        <div class="no-print flex items-center gap-2">
+          <button id="btnPrint" class="px-3 py-2 rounded-xl border border-slate-700/70 bg-slate-900/60 hover:bg-slate-900 transition text-sm">Print</button>
+          <button id="btnDemo" class="px-3 py-2 rounded-xl border border-slate-700/70 bg-slate-900/60 hover:bg-slate-900 transition text-sm">Load demo</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="mx-auto max-w-7xl px-6 py-8">
+      <div class="grid lg:grid-cols-12 gap-6">
+        <!-- Left: builder -->
+        <section class="lg:col-span-5 bg-slate-900/60 rounded-2xl border border-slate-800/50 p-6 card-glow">
+          <div class="flex items-start justify-between gap-3 mb-5">
+            <div>
+              <h1 class="text-xl font-semibold text-slate-100">Compliance payload</h1>
+              <p class="text-sm text-slate-400 mt-1">Non-HTML fields only. Generates balancesByYear + diffs.</p>
+            </div>
+            <span id="statusPill" class="px-3 py-1 rounded-full bg-slate-800/70 border border-slate-700/60 text-xs text-slate-300">Idle</span>
+          </div>
+
+          <!-- Account loader -->
+          <div class="space-y-3">
+            <label class="text-xs text-slate-500 uppercase tracking-wider">Account JSON (paste or injected)</label>
+            <textarea id="accountJson" rows="7"
+              class="w-full rounded-xl bg-slate-950/40 border border-slate-700/60 px-4 py-3 text-sm text-slate-200 outline-none focus:ring-2 focus:ring-amber-500/30"
+              placeholder='Paste accounts/{accountId}.json here (optional).'></textarea>
+
+            <div class="grid sm:grid-cols-2 gap-3">
+              <div>
+                <label class="text-xs text-slate-500 uppercase tracking-wider">Account ID</label>
+                <input id="accountId" class="mt-1 w-full rounded-xl bg-slate-950/40 border border-slate-700/60 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-amber-500/30" placeholder="acc_..." />
+              </div>
+              <div>
+                <label class="text-xs text-slate-500 uppercase tracking-wider">Event ID</label>
+                <input id="eventId" class="mt-1 w-full rounded-xl bg-slate-950/40 border border-slate-700/60 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-amber-500/30" placeholder="evt_..." />
+              </div>
+            </div>
+          </div>
+
+          <!-- Core fields: report drivers -->
+          <div class="mt-6 grid sm:grid-cols-2 gap-4">
+            <div class="sm:col-span-2">
+              <label class="text-xs text-slate-500 uppercase tracking-wider">Company Name</label>
+              <input id="Company_Name" class="mt-1 w-full rounded-xl bg-slate-950/40 border border-slate-700/60 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-amber-500/30" placeholder="John & Jane Doe LLC" />
+            </div>
+
+            <div>
+              <label class="text-xs text-slate-500 uppercase tracking-wider">Compliance_Period_Covered</label>
+              <input id="Compliance_Period_Covered" class="mt-1 w-full rounded-xl bg-slate-950/40 border border-slate-700/60 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-amber-500/30" placeholder="2024" />
+            </div>
+            <div>
+              <label class="text-xs text-slate-500 uppercase tracking-wider">Estimated_Balance_Due_Range</label>
+              <input id="Estimated_Balance_Due_Range" class="mt-1 w-full rounded-xl bg-slate-950/40 border border-slate-700/60 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-amber-500/30" placeholder="$0 - $2,500" />
+            </div>
+
+            <div>
+              <label class="text-xs text-slate-500 uppercase tracking-wider">IRS_Lien_Exposure_Level</label>
+              <input id="IRS_Lien_Exposure_Level" class="mt-1 w-full rounded-xl bg-slate-950/40 border border-slate-700/60 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-amber-500/30" placeholder="Low / Medium / High" />
+            </div>
+            <div>
+              <label class="text-xs text-slate-500 uppercase tracking-wider">Primary_Recommended_Service</label>
+              <input id="Primary_Recommended_Service" class="mt-1 w-full rounded-xl bg-slate-950/40 border border-slate-700/60 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-amber-500/30" placeholder="Monitoring" />
+            </div>
+
+            <div class="sm:col-span-2">
+              <label class="text-xs text-slate-500 uppercase tracking-wider">IRS_Balance_By_Year_Status</label>
+              <textarea id="IRS_Balance_By_Year_Status" rows="4"
+                class="mt-1 w-full rounded-xl bg-slate-950/40 border border-slate-700/60 px-4 py-3 text-sm text-slate-200 outline-none focus:ring-2 focus:ring-amber-500/30"
+                placeholder='Examples:
+2024: $2,384 | 2025: $0
+{"2024":{"balance":2384,"status":"Balance due"},"2025":{"balance":0,"status":"Clear"}}'></textarea>
+              <p class="text-xs text-slate-500 mt-2">This is used to generate <code class="text-slate-300">derived.balancesByYear</code> and year tabs.</p>
+            </div>
+
+            <div class="sm:col-span-2">
+              <label class="text-xs text-slate-500 uppercase tracking-wider">Compliance_Internal_Notes</label>
+              <textarea id="Compliance_Internal_Notes" rows="3"
+                class="mt-1 w-full rounded-xl bg-slate-950/40 border border-slate-700/60 px-4 py-3 text-sm text-slate-200 outline-none focus:ring-2 focus:ring-amber-500/30"
+                placeholder="High-signal notes only. This is not a diary."></textarea>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="no-print mt-6 grid sm:grid-cols-2 gap-3">
+            <button id="btnGenerate" class="px-4 py-3 rounded-xl gradient-bg text-slate-950 font-semibold text-sm hover:opacity-90 transition">
+              Generate + preview
+            </button>
+            <button id="btnCopy" class="px-4 py-3 rounded-xl border border-slate-700/70 bg-slate-950/20 text-sm hover:bg-slate-950/35 transition">
+              Copy updated account JSON
+            </button>
+          </div>
+
+          <div class="no-print mt-4">
+            <label class="text-xs text-slate-500 uppercase tracking-wider">Updated accounts/{accountId}.json preview</label>
+            <textarea id="outputJson" rows="9"
+              class="mt-1 w-full rounded-xl bg-slate-950/40 border border-slate-700/60 px-4 py-3 text-xs text-slate-200 outline-none"></textarea>
+          </div>
+
+          <p class="mt-4 text-xs text-slate-500">
+            This page generates the compliance object. Your Worker should still: receipt → upsert accounts → ClickUp projection.
+          </p>
+        </section>
+
+        <!-- Right: report -->
+        <section class="lg:col-span-7 bg-slate-900/60 rounded-2xl border border-slate-800/50 p-6 card-glow print-surface">
+          <div class="flex items-start justify-between gap-4 mb-5">
+            <div>
+              <h2 class="text-xl font-semibold text-slate-100">Report preview</h2>
+              <p class="text-sm text-slate-400 mt-1">Interactive for taxpayers, print-ready for reality.</p>
+            </div>
+            <div class="no-print flex items-center gap-2">
+              <button id="btnExpandAll" class="px-3 py-2 rounded-xl border border-slate-700/70 bg-slate-950/20 hover:bg-slate-950/35 transition text-sm">Expand</button>
+              <button id="btnCollapseAll" class="px-3 py-2 rounded-xl border border-slate-700/70 bg-slate-950/20 hover:bg-slate-950/35 transition text-sm">Collapse</button>
+            </div>
+          </div>
+
+          <!-- Header block -->
+          <div class="rounded-2xl border border-slate-800/60 bg-slate-950/25 overflow-hidden">
+            <div class="px-6 py-5 border-b border-slate-800/60 flex items-center justify-between gap-4">
+              <div class="flex items-center gap-3">
+                <div class="h-10 w-10 rounded-xl gradient-bg text-slate-950 font-bold flex items-center justify-center">TM</div>
+                <div>
+                  <div class="font-semibold">Federal Tax Record Report</div>
+                  <div id="reportSub" class="text-sm text-slate-400">Prepared for —</div>
+                </div>
+              </div>
+              <span id="badgeStatus" class="px-3 py-1 rounded-full bg-slate-800/60 border border-slate-700/60 text-xs text-slate-200">Preview</span>
+            </div>
+
+            <!-- Big selling numbers -->
+            <div class="p-6 grid sm:grid-cols-3 gap-4">
+              <div class="rounded-2xl border border-slate-800/60 bg-slate-950/30 p-4">
+                <div class="text-xs text-slate-500 uppercase tracking-wider">Estimated debt</div>
+                <div id="metricDebt" class="mt-1 text-2xl font-semibold">—</div>
+                <div class="text-xs text-slate-500 mt-2">Based on IRS records at review time.</div>
+              </div>
+              <div class="rounded-2xl border border-slate-800/60 bg-slate-950/30 p-4">
+                <div class="text-xs text-slate-500 uppercase tracking-wider">Recommendation</div>
+                <div id="metricRec" class="mt-1 text-2xl font-semibold">—</div>
+                <div class="text-xs text-slate-500 mt-2">Judgment + documentation trail.</div>
+              </div>
+              <div class="rounded-2xl border border-slate-800/60 bg-slate-950/30 p-4">
+                <div class="text-xs text-slate-500 uppercase tracking-wider">Lien exposure</div>
+                <div id="metricLien" class="mt-1 text-2xl font-semibold">—</div>
+                <div class="text-xs text-slate-500 mt-2">Signals urgency and escalation risk.</div>
+              </div>
+            </div>
+
+            <!-- Year tabs -->
+            <div class="px-6 pb-6">
+              <div class="flex items-center justify-between gap-3 mb-3">
+                <div class="text-sm font-semibold text-slate-200">Year view</div>
+                <div class="text-xs text-slate-500">2024+ tabs from balancesByYear</div>
+              </div>
+              <div id="yearTabs" class="flex flex-wrap gap-2"></div>
+
+              <div id="yearPanel" class="mt-4 rounded-2xl border border-slate-800/60 bg-slate-950/25 p-5">
+                <div class="text-sm text-slate-400">Select a year.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sections -->
+          <div class="mt-6 space-y-3">
+            <details class="section rounded-2xl border border-slate-800/60 bg-slate-950/20 p-5" open>
+              <summary class="cursor-pointer list-none flex items-center justify-between gap-3">
+                <span class="font-semibold">Account snapshot</span>
+                <span class="text-xs text-slate-500">Core indicators</span>
+              </summary>
+              <div class="print-expand mt-4 grid sm:grid-cols-2 gap-3 text-sm">
+                <div class="rounded-xl border border-slate-800/60 bg-slate-950/20 p-4">
+                  <div class="text-xs text-slate-500 uppercase tracking-wider">Account status</div>
+                  <div id="snapAccountStatus" class="mt-1 font-semibold">—</div>
+                </div>
+                <div class="rounded-xl border border-slate-800/60 bg-slate-950/20 p-4">
+                  <div class="text-xs text-slate-500 uppercase tracking-wider">Total IRS balance</div>
+                  <div id="snapTotalBalance" class="mt-1 font-semibold">—</div>
+                </div>
+                <div class="rounded-xl border border-slate-800/60 bg-slate-950/20 p-4">
+                  <div class="text-xs text-slate-500 uppercase tracking-wider">Unfiled returns</div>
+                  <div id="snapUnfiled" class="mt-1 font-semibold">—</div>
+                </div>
+                <div class="rounded-xl border border-slate-800/60 bg-slate-950/20 p-4">
+                  <div class="text-xs text-slate-500 uppercase tracking-wider">Last return filed</div>
+                  <div id="snapLastFiled" class="mt-1 font-semibold">—</div>
+                </div>
+              </div>
+            </details>
+
+            <details class="section rounded-2xl border border-slate-800/60 bg-slate-950/20 p-5">
+              <summary class="cursor-pointer list-none flex items-center justify-between gap-3">
+                <span class="font-semibold">What changed</span>
+                <span class="text-xs text-slate-500">Latest vs previous</span>
+              </summary>
+              <div class="print-expand mt-4">
+                <div id="diffPanel" class="rounded-xl border border-slate-800/60 bg-slate-950/20 p-4 text-sm text-slate-300">
+                  Generate a record to see diffs.
+                </div>
+              </div>
+            </details>
+
+            <details class="section rounded-2xl border border-slate-800/60 bg-slate-950/20 p-5">
+              <summary class="cursor-pointer list-none flex items-center justify-between gap-3">
+                <span class="font-semibold">Internal notes</span>
+                <span class="text-xs text-slate-500">Staff-only</span>
+              </summary>
+              <div class="print-expand mt-4">
+                <div id="internalNotes" class="rounded-xl border border-slate-800/60 bg-slate-950/20 p-4 text-sm text-slate-300">—</div>
+              </div>
+            </details>
+
+            <div class="text-xs text-slate-500 mt-2">
+              Monitoring does not create IRS representation. Representation, filing, and resolution are separate engagements.
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // ====== Field inventory (non-HTML fields only) ======
+    // Kept explicit so we never "accidentally" leak instructional blocks into R2.
+    const FIELD_KEYS = [
+      // Address
+      "Address_Line_2",
+      "City",
+      "State_Province",
+      "ZIP_Postal_Code",
+
+      // Compliance meta
+      "Compliance_Activity_Type",
+      "Compliance_Period_Covered",
+      "IRS_Compliance_Section_Focus",
+
+      // Company
+      "Company Name",
+
+      // Identity hold
+      "Identity_Verification_Hold",
+
+      // Installment agreement
+      "IA_Details",
+      "IA_Established",
+      "IA_Last_Payment_Amount",
+      "IA_Last_Payment_Date",
+      "IA_Payment_Amount",
+      "IA_Payment_Date",
+
+      // IRS agent
+      "IRS_Agent_Department",
+      "IRS_Agent_Department_Phone",
+      "IRS_Agent_ID",
+      "IRS_Agent_Name",
+      "IRS_Agent_Verification",
+
+      // IRS account core
+      "Estimated_Balance_Due_Range",
+      "IRS_Account_Status",
+      "IRS_Balance_By_Year_Status",
+      "IRS_Missing_Years",
+      "IRS_Status_Categories",
+      "Last_Return_Filed_Year",
+      "Total_IRS_Balance",
+      "Unfiled_Returns_Indicator",
+
+      // IRS notices
+      "IRS_Notice_Date",
+      "IRS_Notice_Received",
+      "IRS_Notice_Type",
+
+      // Lien / recommended path
+      "IRS_Lien_Exposure_Level",
+      "Primary_Recommended_Service",
+      "Primary_Recommended_Status",
+
+      // Revenue officer
+      "IRS_Revenue_Officer_Fax",
+      "IRS_Revenue_Officer_Name",
+      "IRS_Revenue_Officer_Notes",
+      "IRS_Revenue_Officer_Phone",
+
+      // Transcript handling
+      "Transcript_Delivery_Method",
+      "Transcript_Files_Upload",
+      "Transcript_Request_Made",
+      "Transcript_Retrieval_Date",
+      "Transcript_Retrieval_Notes",
+      "Transcript_Scope_Confirmed",
+      "Transcripts_Retrieved_From_SOR",
+
+      // Internal
+      "Compliance_Internal_Notes",
+      "IRS_Call_Confirmation_Date",
+
+      // Hidden status fields
+      "Tax_Monitoring_Service_Progress_Percent",
+      "Tax_Monitoring_Service_Progress_Status",
+    ].sort((a, b) => a.localeCompare(b));
+
+    // ====== DOM helpers ======
+    const $ = (id) => document.getElementById(id);
+
+    function setPill(text, tone) {
+      const el = $("statusPill");
+      el.textContent = text;
+      el.className = "px-3 py-1 rounded-full border text-xs";
+      const map = {
+        good: "bg-emerald-500/10 border-emerald-500/20 text-emerald-300",
+        idle: "bg-slate-800/70 border-slate-700/60 text-slate-300",
+        warn: "bg-amber-500/10 border-amber-500/20 text-amber-300",
+      };
+      el.classList.add(...(map[tone] || map.idle).split(" "));
+    }
+
+    function nowIso() {
+      return new Date().toISOString();
+    }
+
+    function newEventId() {
+      const r = Math.random().toString(16).slice(2, 10);
+      const stamp = new Date().toISOString().replace(/[-:]/g, "").slice(0, 15);
+      return `evt_${stamp}_${r}`;
+    }
+
+    function safeJsonParse(s) {
+      try { return JSON.parse(String(s || "").trim()); } catch { return null; }
+    }
+
+    function currencyToNumber(value) {
+      const s = String(value ?? "").replace(/[^0-9.-]/g, "");
+      const n = Number(s);
+      return Number.isFinite(n) ? n : null;
+    }
+
+    // ====== balancesByYear parser (for derived model) ======
+    // Supports:
+    // 1) JSON object in textarea
+    // 2) Pipe / comma delimited "2024: $2,384 | 2025: $0"
+    function parseBalancesByYear(raw) {
+      const s = String(raw || "").trim();
+      if (!s) return {};
+
+      const asJson = safeJsonParse(s);
+      if (asJson && typeof asJson === "object" && !Array.isArray(asJson)) {
+        return normalizeBalancesByYear(asJson);
+      }
+
+      const out = {};
+      const parts = s.split("|").map(x => x.trim()).filter(Boolean);
+      for (const part of parts) {
+        // "2024: $2,384 (Balance due)" or "2024: $0"
+        const m = part.match(/(\d{4})\s*:\s*([^()]+)(?:\(([^)]+)\))?/);
+        if (!m) continue;
+        const year = m[1];
+        const bal = currencyToNumber(m[2]);
+        const status = String(m[3] || "").trim() || (bal === 0 ? "Clear" : "Balance due");
+        out[year] = { balance: bal ?? 0, status };
+      }
+      return normalizeBalancesByYear(out);
+    }
+
+    function normalizeBalancesByYear(obj) {
+      const out = {};
+      for (const [year, v] of Object.entries(obj || {})) {
+        const y = String(year).trim();
+        if (!/^\d{4}$/.test(y)) continue;
+        const balance = typeof v === "object" && v ? (Number(v.balance) || 0) : Number(v) || 0;
+        const status = typeof v === "object" && v && v.status ? String(v.status) : (balance === 0 ? "Clear" : "Balance due");
+        out[y] = { balance, status };
+      }
+      return out;
+    }
+
+    function yearsFromBalances(balancesByYear) {
+      return Object.keys(balancesByYear || {})
+        .filter(y => /^\d{4}$/.test(String(y)))
+        .sort((a, b) => Number(b) - Number(a));
+    }
+
+    function bestYear(years) {
+      // Most recent year >= 2024 preferred
+      for (const y of years) if (Number(y) >= 2024) return y;
+      return years[0] || null;
+    }
+
+    // ====== Diff engine ======
+    function diffFields(prevFields, nextFields) {
+      const keys = Array.from(new Set([ ...Object.keys(prevFields || {}), ...Object.keys(nextFields || {}) ])).sort((a,b)=>a.localeCompare(b));
+      const changes = [];
+      for (const k of keys) {
+        const a = prevFields?.[k];
+        const b = nextFields?.[k];
+        const same = JSON.stringify(a ?? null) === JSON.stringify(b ?? null);
+        if (same) continue;
+        changes.push({ key: k, from: a ?? null, to: b ?? null });
+      }
+      return changes;
+    }
+
+    function renderDiff(changes) {
+      if (!changes.length) return `<div class="text-sm text-slate-300">No differences detected. Either it truly didn’t change, or the IRS is being unusually cooperative.</div>`;
+      const rows = changes.map(c => {
+        const from = escapeHtml(String(c.from ?? "—"));
+        const to = escapeHtml(String(c.to ?? "—"));
+        return `
+          <div class="rounded-xl border border-slate-800/60 bg-slate-950/20 p-3">
+            <div class="text-xs text-slate-500 uppercase tracking-wider">${escapeHtml(c.key)}</div>
+            <div class="mt-2 text-sm text-slate-300"><span class="text-slate-500">From:</span> ${from}</div>
+            <div class="mt-1 text-sm text-slate-300"><span class="text-slate-500">To:</span> ${to}</div>
+          </div>
+        `;
+      }).join("");
+      return `<div class="grid sm:grid-cols-2 gap-3">${rows}</div>`;
+    }
+
+    // ====== Render ======
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>"']/g, (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+    }
+
+    function fmtUsd(n) {
+      const x = Number(n);
+      if (!Number.isFinite(x)) return "—";
+      return x.toLocaleString(undefined, { style:"currency", currency:"USD", maximumFractionDigits:0 });
+    }
+
+    function renderYearTabs(years, activeYear) {
+      const host = $("yearTabs");
+      host.innerHTML = "";
+      for (const y of years) {
+        const btn = document.createElement("button");
+        const active = String(y) === String(activeYear);
+        btn.className = [
+          "px-3 py-2 rounded-xl border text-sm transition",
+          active
+            ? "border-amber-500/30 bg-amber-500/10 text-amber-200"
+            : "border-slate-700/70 bg-slate-950/20 text-slate-200 hover:bg-slate-950/35"
+        ].join(" ");
+        btn.textContent = y;
+        btn.addEventListener("click", () => {
+          window.__TM_ACTIVE_YEAR = y;
+          renderYearPanel(window.__TM_BALANCES_BY_YEAR || {}, y);
+          renderYearTabs(years, y);
+        });
+        host.appendChild(btn);
+      }
+    }
+
+    function renderYearPanel(balancesByYear, activeYear) {
+      const panel = $("yearPanel");
+      const y = String(activeYear || "");
+      const row = balancesByYear?.[y];
+      if (!row) {
+        panel.innerHTML = `<div class="text-sm text-slate-400">No data for ${escapeHtml(y)}.</div>`;
+        return;
+      }
+      panel.innerHTML = `
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <div class="text-xs text-slate-500 uppercase tracking-wider">Year</div>
+            <div class="mt-1 text-xl font-semibold">${escapeHtml(y)}</div>
+          </div>
+          <div class="text-right">
+            <div class="text-xs text-slate-500 uppercase tracking-wider">Balance</div>
+            <div class="mt-1 text-xl font-semibold">${fmtUsd(row.balance)}</div>
+          </div>
+        </div>
+        <div class="mt-4 rounded-xl border border-slate-800/60 bg-slate-950/20 p-4">
+          <div class="text-xs text-slate-500 uppercase tracking-wider">Status</div>
+          <div class="mt-1 text-sm text-slate-200">${escapeHtml(row.status || "—")}</div>
+        </div>
+      `;
+    }
+
+    function renderReport(complianceLatest, previous) {
+      const fields = complianceLatest?.fields || {};
+      const derived = complianceLatest?.derived || {};
+
+      $("reportSub").textContent = fields["Company Name"] ? `Prepared for ${fields["Company Name"]}` : "Prepared for —";
+      $("metricDebt").textContent = fields.Estimated_Balance_Due_Range || "—";
+      $("metricRec").textContent = fields.Primary_Recommended_Service || "—";
+      $("metricLien").textContent = fields.IRS_Lien_Exposure_Level || "—";
+
+      $("snapAccountStatus").textContent = fields.IRS_Account_Status || "—";
+      $("snapLastFiled").textContent = fields.Last_Return_Filed_Year || "—";
+      $("snapTotalBalance").textContent = fields.Total_IRS_Balance || "—";
+      $("snapUnfiled").textContent = fields.Unfiled_Returns_Indicator || "—";
+
+      $("internalNotes").textContent = fields.Compliance_Internal_Notes || "—";
+
+      const balancesByYear = derived.balancesByYear || {};
+      const years = derived.years || yearsFromBalances(balancesByYear);
+      window.__TM_BALANCES_BY_YEAR = balancesByYear;
+
+      const active = window.__TM_ACTIVE_YEAR && years.includes(String(window.__TM_ACTIVE_YEAR))
+        ? String(window.__TM_ACTIVE_YEAR)
+        : bestYear(years);
+
+      window.__TM_ACTIVE_YEAR = active;
+
+      renderYearTabs(years, active);
+      if (active) renderYearPanel(balancesByYear, active);
+
+      const badge = $("badgeStatus");
+      const lien = String(fields.IRS_Lien_Exposure_Level || "").toLowerCase();
+      badge.className = "px-3 py-1 rounded-full text-xs border";
+      if (lien.includes("high")) badge.classList.add("bg-red-500/10","border-red-500/20","text-red-300");
+      else if (lien.includes("med")) badge.classList.add("bg-amber-500/10","border-amber-500/20","text-amber-300");
+      else badge.classList.add("bg-emerald-500/10","border-emerald-500/20","text-emerald-300");
+      badge.textContent = fields.Primary_Recommended_Status || "Prepared";
+
+      const changes = previous ? diffFields(previous.fields || {}, fields) : [];
+      $("diffPanel").innerHTML = previous
+        ? renderDiff(changes)
+        : `<div class="text-sm text-slate-300">No previous compliance record found. Create a second record and you’ll get a proper diff.</div>`;
+    }
+
+    // ====== Account updater ======
+    function ensureAccountShape(account, accountId) {
+      const out = account && typeof account === "object" ? account : {};
+      if (!out.accountId) out.accountId = accountId || out.accountId || "";
+      if (!out.compliance) out.compliance = {};
+      if (!out.compliance.history) out.compliance.history = [];
+      return out;
+    }
+
+    function buildFieldsFromForm() {
+      // Map form inputs into FIELD_KEYS
+      const fields = {};
+      for (const key of FIELD_KEYS) {
+        // UI inputs use simplified IDs for a couple of fields
+        if (key === "Company Name") {
+          const v = $("Company_Name")?.value ?? "";
+          fields[key] = v.trim() || null;
+          continue;
+        }
+        const el = $(key);
+        if (el) {
+          const v = String(el.value ?? "").trim();
+          fields[key] = v ? v : null;
+        } else {
+          // Not all fields are on-screen in this first version. Still preserve keyspace.
+          fields[key] = null;
+        }
+      }
+      // Also include IRS_Balance_By_Year_Status from its textarea
+      fields.IRS_Balance_By_Year_Status = String($("IRS_Balance_By_Year_Status")?.value ?? "").trim() || null;
+      return fields;
+    }
+
+    function buildDerived(fields) {
+      const balancesByYear = parseBalancesByYear(fields.IRS_Balance_By_Year_Status);
+      const years = yearsFromBalances(balancesByYear);
+
+      // Keep it 2024+ focused, but don’t delete data if older exists.
+      const years2024Plus = years.filter(y => Number(y) >= 2024);
+      const yearsOut = years2024Plus.length ? years2024Plus : years;
+
+      return {
+        balancesByYear,
+        years: yearsOut,
+      };
+    }
+
+    function appendCompliance(account, eventId, fields) {
+      const derived = buildDerived(fields);
+      const record = {
+        createdAt: nowIso(),
+        derived,
+        eventId,
+        fields,
+        source: "staff:compliance_records",
+      };
+
+      const history = Array.isArray(account.compliance.history) ? account.compliance.history : [];
+      const prev = history.length ? history[history.length - 1] : null;
+
+      history.push(record);
+      account.compliance.history = history;
+      account.compliance.latest = record;
+      account.compliance.latestEventId = eventId;
+
+      return { previous: prev, record };
+    }
+
+    // ====== Init / actions ======
+    function loadFromInjectedOrTextarea() {
+      const injected = window.TM_ACCOUNT && typeof window.TM_ACCOUNT === "object" ? window.TM_ACCOUNT : null;
+      if (injected) return injected;
+
+      const parsed = safeJsonParse($("accountJson").value);
+      if (parsed && typeof parsed === "object") return parsed;
+
+      return null;
+    }
+
+    function setDemo() {
+      $("accountId").value = "acc_demo_john_jane_doe";
+      $("eventId").value = newEventId();
+      $("Company_Name").value = "JOHN & JANE DOE";
+      $("Compliance_Period_Covered").value = "2025";
+      $("Estimated_Balance_Due_Range").value = "$0 - $2,500";
+      $("IRS_Lien_Exposure_Level").value = "Low";
+      $("Primary_Recommended_Service").value = "Monitoring";
+      $("IRS_Balance_By_Year_Status").value = "2024: $2,384 | 2025: $0";
+      $("Compliance_Internal_Notes").value = "No enforcement indicators. Notice activity not confirmed on call.";
+
+      const base = {
+        accountId: "acc_demo_john_jane_doe",
+        compliance: {
+          history: [
+            {
+              createdAt: "2026-01-10T18:25:00.000Z",
+              derived: {
+                balancesByYear: { "2024": { balance: 4100, status: "Balance due" } },
+                years: ["2024"]
+              },
+              eventId: "evt_20260110_demo_prev",
+              fields: {
+                "Company Name": "JOHN & JANE DOE",
+                Estimated_Balance_Due_Range: "$2,500 - $5,000",
+                IRS_Lien_Exposure_Level: "Medium",
+                Primary_Recommended_Service: "Evaluation",
+                Primary_Recommended_Status: "Review",
+                IRS_Account_Status: "Balance due",
+                Total_IRS_Balance: "$4,100",
+                Unfiled_Returns_Indicator: "No",
+                Last_Return_Filed_Year: "2024",
+                IRS_Balance_By_Year_Status: "2024: $4,100",
+                Compliance_Internal_Notes: "Prior check showed higher balance."
+              },
+              source: "staff:compliance_records"
+            }
+          ]
+        }
+      };
+      $("accountJson").value = JSON.stringify(base, null, 2);
+      setPill("Demo loaded", "good");
+    }
+
+    function generate() {
+      const accountId = String($("accountId").value || "").trim();
+      const eventId = String($("eventId").value || "").trim() || newEventId();
+      $("eventId").value = eventId;
+
+      if (!accountId) {
+        setPill("Missing accountId", "warn");
+        return;
+      }
+
+      const existing = loadFromInjectedOrTextarea();
+      const account = ensureAccountShape(existing, accountId);
+
+      const fields = buildFieldsFromForm();
+
+      // Keep Company Name consistent
+      if (!fields["Company Name"] && $("Company_Name").value.trim()) {
+        fields["Company Name"] = $("Company_Name").value.trim();
+      }
+
+      const { previous, record } = appendCompliance(account, eventId, fields);
+
+      // Output
+      $("outputJson").value = JSON.stringify(account, null, 2);
+      renderReport(record, previous);
+
+      setPill("Generated", "good");
+    }
+
+    async function copyOutput() {
+      const text = $("outputJson").value || "";
+      if (!text.trim()) {
+        setPill("Nothing to copy", "warn");
+        return;
+      }
+      try {
+        await navigator.clipboard.writeText(text);
+        setPill("Copied", "good");
+      } catch {
+        setPill("Copy blocked", "warn");
+      }
+    }
+
+    function expandCollapse(open) {
+      document.querySelectorAll("details.section").forEach(d => d.open = !!open);
+    }
+
+    // Wire buttons
+    $("btnDemo").addEventListener("click", setDemo);
+    $("btnGenerate").addEventListener("click", generate);
+    $("btnCopy").addEventListener("click", copyOutput);
+    $("btnPrint").addEventListener("click", () => window.print());
+    $("btnExpandAll").addEventListener("click", () => expandCollapse(true));
+    $("btnCollapseAll").addEventListener("click", () => expandCollapse(false));
+
+    // Seed eventId
+    $("eventId").value = newEventId();
+    setPill("Idle", "idle");
+  </script>
+</body>
+</html>
