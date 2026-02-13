@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tax Monitor Pro - Dashboard</title>
 
-  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <script src="/_sdk/element_sdk.js"></script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -32,13 +32,15 @@
           }
         }
       }
-    }
+    };
   </script>
 
   <style>
     html, body { height: 100%; }
     *, *::before, *::after { box-sizing: border-box; }
     body { box-sizing: border-box; }
+    * { font-family: 'DM Sans', system-ui, sans-serif; }
+
     .gradient-text {
       background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
       -webkit-background-clip: text;
@@ -51,17 +53,42 @@
     .card-glow {
       box-shadow: 0 0 40px rgba(251, 191, 36, 0.06), 0 0 90px rgba(251, 191, 36, 0.02);
     }
+
+    /* Sidebar nav states */
     .nav-item { transition: all 0.2s ease; }
     .nav-item:hover { background: rgba(251, 191, 36, 0.08); }
     .nav-item.active {
       background: rgba(251, 191, 36, 0.12);
       border-left: 2px solid #f59e0b;
+      color: #fff;
     }
+
+    /* Noise texture overlay */
+    .noise-bg::before{
+      content:'';
+      position:fixed; inset:0;
+      opacity:.03;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      pointer-events:none;
+      z-index:1;
+    }
+
+    /* Aurora blobs */
+    .aurora-blob{ position:absolute; border-radius:50%; filter:blur(100px); opacity:.14; animation:float 20s ease-in-out infinite; }
+    .aurora-1{ width:650px; height:420px; background:linear-gradient(135deg,#F59E0B,#D97706); top:8%; right:-12%; }
+    .aurora-2{ width:520px; height:360px; background:linear-gradient(135deg,#2DD4BF,#14B8A6); top:42%; left:-16%; opacity:.08; animation-delay:-7s; }
+    .aurora-3{ width:480px; height:320px; background:linear-gradient(135deg,#F59E0B,#EA580C); bottom:4%; right:18%; animation-delay:-14s; }
+    @keyframes float{ 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(30px,-30px) scale(1.05)} 66%{transform:translate(-20px,20px) scale(.95)} }
   </style>
 </head>
 
-<body class="h-full bg-slate-950 font-sans text-white">
-  <div class="flex h-full">
+<body class="h-full bg-[#020617] text-slate-200 noise-bg overflow-hidden">
+  <!-- Aurora -->
+  <div class="aurora-blob aurora-1"></div>
+  <div class="aurora-blob aurora-2"></div>
+  <div class="aurora-blob aurora-3"></div>
+
+  <div class="relative z-10 flex h-full">
 
     <!-- APP SIDEBAR PARTIAL -->
     <!-- APP_SIDEBAR -->
@@ -76,7 +103,7 @@
       <main class="flex-1 overflow-auto">
         <div class="max-w-6xl mx-auto px-6 py-8">
 
-          <!-- Trust / Headline (mirrors site index vibe) -->
+          <!-- Trust / Headline -->
           <div class="mb-8">
             <div class="flex flex-col items-center text-center">
               <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-800/50 border border-slate-700/50 mb-6">
@@ -104,11 +131,10 @@
 
           <!-- Grid: Progress + Snapshot -->
           <div class="grid lg:grid-cols-3 gap-6 mb-6">
-            <!-- Onboarding Progress (README lifecycle) -->
-            <section class="lg:col-span-2 bg-slate-900 rounded-2xl border border-slate-800/50 p-6 card-glow">
+            <section class="lg:col-span-2 bg-slate-900/60 rounded-2xl border border-slate-800/50 p-6 card-glow">
               <div class="flex items-center justify-between gap-4 mb-5">
                 <div>
-                  <h2 id="progress-title" class="text-lg font-semibold">Onboarding Progress</h2>
+                  <h2 id="progress-title" class="text-lg font-semibold text-slate-100">Onboarding Progress</h2>
                   <p id="progress-subtitle" class="text-sm text-slate-400">Clear steps. Fewer surprises.</p>
                 </div>
                 <span id="progress-badge" class="px-3 py-1 rounded-full bg-amber-500/10 text-amber-300 text-sm border border-amber-500/20">
@@ -148,7 +174,7 @@
                     <div class="text-sm font-medium text-slate-200">Offer accepted</div>
                     <div class="text-xs text-slate-500">Confirm service scope and your monitoring plan.</div>
                   </div>
-                  <a id="cta-offer" href="/app/offer.html" class="text-xs text-amber-400 hover:text-amber-300">Open</a>
+                  <a id="cta-offer" href="/app/pages/flows/intake/offer.html" class="text-xs text-amber-400 hover:text-amber-300">Open</a>
                 </li>
 
                 <li class="flex items-start gap-3 opacity-90">
@@ -159,7 +185,7 @@
                     <div class="text-sm font-medium text-slate-300">Agreement accepted</div>
                     <div class="text-xs text-slate-500">Service terms and expectations.</div>
                   </div>
-                  <a id="cta-agreement" href="/app/agreement.html" class="text-xs text-slate-400 hover:text-white">Open</a>
+                  <a id="cta-agreement" href="/app/pages/flows/intake/agreement.html" class="text-xs text-slate-400 hover:text-white">Open</a>
                 </li>
 
                 <li class="flex items-start gap-3 opacity-90">
@@ -170,71 +196,15 @@
                     <div class="text-sm font-medium text-slate-300">Payment completed</div>
                     <div class="text-xs text-slate-500">Activates the monitoring cycle.</div>
                   </div>
-                  <a id="cta-payment" href="/app/payment.html" class="text-xs text-slate-400 hover:text-white">Open</a>
-                </li>
-
-                <li class="flex items-start gap-3 opacity-75">
-                  <div class="mt-1 w-6 h-6 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center">
-                    <span class="text-xs font-semibold text-slate-400">5</span>
-                  </div>
-                  <div class="flex-1">
-                    <div class="text-sm font-medium text-slate-300">Welcome confirmed</div>
-                    <div class="text-xs text-slate-500">Portal access and primary contact verified.</div>
-                  </div>
-                  <span class="text-xs text-slate-500">Pending</span>
-                </li>
-
-                <li class="flex items-start gap-3 opacity-75">
-                  <div class="mt-1 w-6 h-6 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center">
-                    <span class="text-xs font-semibold text-slate-400">6</span>
-                  </div>
-                  <div class="flex-1">
-                    <div class="text-sm font-medium text-slate-300">Filing status submitted</div>
-                    <div class="text-xs text-slate-500">Ensures correct transcript access and context.</div>
-                  </div>
-                  <span class="text-xs text-slate-500">Pending</span>
-                </li>
-
-                <li class="flex items-start gap-3 opacity-75">
-                  <div class="mt-1 w-6 h-6 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center">
-                    <span class="text-xs font-semibold text-slate-400">7</span>
-                  </div>
-                  <div class="flex-1">
-                    <div class="text-sm font-medium text-slate-300">Address updated</div>
-                    <div class="text-xs text-slate-500">Reduces missed notices and wrong-mail risk.</div>
-                  </div>
-                  <span class="text-xs text-slate-500">Pending</span>
-                </li>
-
-                <li class="flex items-start gap-3 opacity-75">
-                  <div class="mt-1 w-6 h-6 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center">
-                    <span class="text-xs font-semibold text-slate-400">8</span>
-                  </div>
-                  <div class="flex-1">
-                    <div class="text-sm font-medium text-slate-300">eSign 2848 submitted</div>
-                    <div class="text-xs text-slate-500">Enables transcript pull under authorization.</div>
-                  </div>
-                  <span class="text-xs text-slate-500">Pending</span>
-                </li>
-
-                <li class="flex items-start gap-3 opacity-75">
-                  <div class="mt-1 w-6 h-6 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center">
-                    <span class="text-xs font-semibold text-slate-400">9</span>
-                  </div>
-                  <div class="flex-1">
-                    <div class="text-sm font-medium text-slate-300">Compliance submitted</div>
-                    <div class="text-xs text-slate-500">Final intake confirmations before monitoring begins.</div>
-                  </div>
-                  <span class="text-xs text-slate-500">Pending</span>
+                  <a id="cta-payment" href="/app/pages/flows/intake/payment.html" class="text-xs text-slate-400 hover:text-white">Open</a>
                 </li>
               </ol>
             </section>
 
-            <!-- Monitoring Snapshot -->
-            <section class="bg-slate-900 rounded-2xl border border-slate-800/50 p-6 card-glow">
+            <section class="bg-slate-900/60 rounded-2xl border border-slate-800/50 p-6 card-glow">
               <div class="flex items-start justify-between gap-3 mb-5">
                 <div>
-                  <h2 id="snapshot-title" class="text-lg font-semibold">Monitoring Snapshot</h2>
+                  <h2 id="snapshot-title" class="text-lg font-semibold text-slate-100">Monitoring Snapshot</h2>
                   <p id="snapshot-subtitle" class="text-sm text-slate-400">Last check + quick signals.</p>
                 </div>
                 <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
@@ -267,113 +237,11 @@
 
                 <div class="pt-1">
                   <a id="snapshot-cta" href="/app/files.html" class="inline-flex w-full items-center justify-center gap-2 px-4 py-3 rounded-xl gradient-bg text-slate-900 font-semibold text-sm hover:opacity-90 transition-opacity">
-                    Open files & reports
+                    Open files &amp; reports
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                     </svg>
                   </a>
-                </div>
-              </div>
-            </section>
-          </div>
-
-          <div class="grid lg:grid-cols-3 gap-6 mb-8">
-            <section class="bg-slate-900 rounded-2xl border border-slate-800/50 p-6 card-glow">
-              <h2 id="actions-title" class="text-lg font-semibold mb-1">Quick Actions</h2>
-              <p id="actions-subtitle" class="text-sm text-slate-400 mb-5">Do the next thing. Avoid chaos.</p>
-
-              <div class="space-y-3">
-                <a href="/app/offer.html" class="flex items-center justify-between gap-3 p-4 rounded-xl bg-slate-800/40 border border-slate-700/50 hover:border-slate-600/60 transition-colors">
-                  <div class="flex items-center gap-3">
-                    <div class="w-9 h-9 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
-                      <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                      </svg>
-                    </div>
-                    <div>
-                      <div class="text-sm font-semibold text-slate-200">Continue onboarding</div>
-                      <div class="text-xs text-slate-500">Offer → Agreement → Payment</div>
-                    </div>
-                  </div>
-                  <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                  </svg>
-                </a>
-
-                <a href="/app/files.html" class="flex items-center justify-between gap-3 p-4 rounded-xl bg-slate-800/40 border border-slate-700/50 hover:border-slate-600/60 transition-colors">
-                  <div class="flex items-center gap-3">
-                    <div class="w-9 h-9 rounded-xl bg-slate-700/40 border border-slate-700 flex items-center justify-center">
-                      <svg class="w-5 h-5 text-slate-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4h16v16H4V4zm4 4h8M8 12h8M8 16h6"/>
-                      </svg>
-                    </div>
-                    <div>
-                      <div class="text-sm font-semibold text-slate-200">View portal archive</div>
-                      <div class="text-xs text-slate-500">Reports, transcripts, notices</div>
-                    </div>
-                  </div>
-                  <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                  </svg>
-                </a>
-
-                <a href="/app/support.html" class="flex items-center justify-between gap-3 p-4 rounded-xl bg-slate-800/40 border border-slate-700/50 hover:border-slate-600/60 transition-colors">
-                  <div class="flex items-center gap-3">
-                    <div class="w-9 h-9 rounded-xl bg-slate-700/40 border border-slate-700 flex items-center justify-center">
-                      <svg class="w-5 h-5 text-slate-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4-.93L3 17l1.02-3.06A6.89 6.89 0 013 10c0-3.866 3.582-7 8-7s8 3.134 8 7z"/>
-                      </svg>
-                    </div>
-                    <div>
-                      <div class="text-sm font-semibold text-slate-200">Get help</div>
-                      <div class="text-xs text-slate-500">Open a support ticket</div>
-                    </div>
-                  </div>
-                  <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                  </svg>
-                </a>
-              </div>
-            </section>
-
-            <section class="lg:col-span-2 bg-slate-900 rounded-2xl border border-slate-800/50 p-6 card-glow">
-              <div class="flex items-center justify-between gap-4 mb-5">
-                <div>
-                  <h2 id="activity-title" class="text-lg font-semibold">Recent Activity</h2>
-                  <p id="activity-subtitle" class="text-sm text-slate-400">A paper trail, minus the paper.</p>
-                </div>
-                <a href="/app/projects.html" class="text-sm text-amber-400 hover:text-amber-300">View projects</a>
-              </div>
-
-              <div class="space-y-3">
-                <div class="p-4 rounded-xl bg-slate-800/40 border border-slate-700/50">
-                  <div class="flex items-start justify-between gap-3">
-                    <div>
-                      <div class="text-sm font-semibold text-slate-200">Intake received</div>
-                      <div class="text-xs text-slate-500 mt-1">Your onboarding record was created.</div>
-                    </div>
-                    <span class="text-xs text-slate-500">Today</span>
-                  </div>
-                </div>
-
-                <div class="p-4 rounded-xl bg-slate-800/40 border border-slate-700/50">
-                  <div class="flex items-start justify-between gap-3">
-                    <div>
-                      <div class="text-sm font-semibold text-slate-200">Next: Offer review</div>
-                      <div class="text-xs text-slate-500 mt-1">Confirm scope so we can activate monitoring.</div>
-                    </div>
-                    <span class="text-xs text-slate-500">Pending</span>
-                  </div>
-                </div>
-
-                <div class="p-4 rounded-xl bg-slate-800/40 border border-slate-700/50">
-                  <div class="flex items-start justify-between gap-3">
-                    <div>
-                      <div class="text-sm font-semibold text-slate-200">File archive ready</div>
-                      <div class="text-xs text-slate-500 mt-1">This is where reports and notices will appear.</div>
-                    </div>
-                    <a href="/app/files.html" class="text-xs text-amber-400 hover:text-amber-300">Open</a>
-                  </div>
                 </div>
               </div>
             </section>
@@ -390,26 +258,15 @@
   <script>
     const defaultConfig = {
       account_label: 'Account: Monitoring',
-      actions_subtitle: 'Do the next thing. Avoid chaos.',
-      actions_title: 'Quick Actions',
-      activity_subtitle: 'A paper trail, minus the paper.',
-      activity_title: 'Recent Activity',
-      background_color: '#080a0f',
+      background_color: '#020617',
       disclaimer_text: 'Monitoring does not create IRS representation. Representation, filing, and resolution are separate engagements.',
       greeting_prefix: 'Good evening, ',
       greeting_subheadline: 'This is your command center — where monitoring stays visible.',
       helper_text: 'Track onboarding, view activity, and access your portal files anytime.',
-      progress_badge: 'In progress',
-      progress_left: 'Step 2 of 9',
-      progress_right: 'Estimated: 5 business days',
-      progress_subtitle: 'Clear steps. Fewer surprises.',
-      progress_title: 'Onboarding Progress',
-      snapshot_subtitle: 'Last check + quick signals.',
-      snapshot_title: 'Monitoring Snapshot',
-      text_color: '#ffffff',
+      text_color: '#e2e8f0',
       topbar_mode: 'Monitoring Portal',
       trust_line: 'Proactive monitoring by licensed tax professionals — intake does not establish IRS representation.',
-      user_name: 'Jane Doe'
+      user_name: 'Jane Doe',
     };
 
     function safeFirstName(fullName) {
@@ -433,45 +290,73 @@
       if (el) el.textContent = String(value ?? '');
     }
 
+    function applyNavActive() {
+      const path = window.location.pathname || '';
+      const links = document.querySelectorAll('a.nav-item');
+      links.forEach((a) => {
+        const href = (a.getAttribute('href') || '');
+        if (!href || href.startsWith('javascript:')) return;
+        const normalizedHref = href.split('?')[0].split('#')[0];
+        const isActive =
+          normalizedHref === path ||
+          (normalizedHref !== '/' && normalizedHref.length > 1 && path.startsWith(normalizedHref));
+        a.classList.toggle('active', isActive);
+      });
+    }
+
+    function applyFlowPlaceholders(state) {
+      // Sidebar partial can optionally include:
+      // - #sidebar-flow-label (e.g., "Intake" or "My Case Status")
+      // - #sidebar-flow-subtitle (e.g., "Offer" or "Post-payment")
+      // This function updates them if present, otherwise does nothing.
+      const flowLabel = document.getElementById('sidebar-flow-label');
+      const flowSubtitle = document.getElementById('sidebar-flow-subtitle');
+
+      if (flowLabel) flowLabel.textContent = state.sidebar_flow_label || 'Start Here';
+      if (flowSubtitle) flowSubtitle.textContent = state.sidebar_flow_subtitle || '';
+    }
+
     async function onConfigChange(config) {
       const merged = Object.assign({}, defaultConfig, config || {});
       const fullName = merged.user_name || defaultConfig.user_name;
       const firstName = safeFirstName(fullName);
       const initials = initialsFromName(fullName);
 
+      // Unified "app state" placeholder (server/worker can inject real values later)
+      window.TM_APP_STATE = window.TM_APP_STATE || {
+        account_label: merged.account_label,
+        phase: 'portal',
+        step: 'dashboard',
+        topbar_mode: merged.topbar_mode,
+        user_name: fullName,
+      };
+
+      window.TM_FLOW = window.TM_FLOW || {
+        phase: window.TM_APP_STATE.phase,
+        step: window.TM_APP_STATE.step,
+      };
+
       setText('greeting-prefix', merged.greeting_prefix);
       setText('greeting-name', firstName);
-      setText('sidebar-user-name', fullName);
-      setText('topbar-user-name', fullName);
-
-      setText('sidebar-account-label', merged.account_label);
-      setText('topbar-mode', merged.topbar_mode);
-
       setText('trust-line', merged.trust_line);
       setText('subheadline', merged.greeting_subheadline);
       setText('helper-text', merged.helper_text);
-
-      setText('actions-title', merged.actions_title);
-      setText('actions-subtitle', merged.actions_subtitle);
-      setText('activity-title', merged.activity_title);
-      setText('activity-subtitle', merged.activity_subtitle);
-      setText('progress-title', merged.progress_title);
-      setText('progress-subtitle', merged.progress_subtitle);
-      setText('snapshot-title', merged.snapshot_title);
-      setText('snapshot-subtitle', merged.snapshot_subtitle);
-
-      setText('progress-badge', merged.progress_badge);
-      setText('progress-left', merged.progress_left);
-      setText('progress-right', merged.progress_right);
-
       setText('disclaimer', merged.disclaimer_text);
-      setText('sidebar-footnote', 'Monitoring does not create IRS representation.');
 
-      const initialsEls = document.querySelectorAll('.tm-user-initials');
-      initialsEls.forEach((el) => { el.textContent = initials; });
+      setText('sidebar-user-name', fullName);
+      setText('topbar-user-name', fullName);
+      setText('sidebar-account-label', merged.account_label);
+      setText('topbar-mode', merged.topbar_mode);
 
-      if (merged.background_color) document.body.style.backgroundColor = merged.background_color;
-      if (merged.text_color) document.body.style.color = merged.text_color;
+      document.querySelectorAll('.tm-user-initials').forEach((el) => { el.textContent = initials; });
+
+      // Placeholder sidebar flow grouping
+      applyFlowPlaceholders({
+        sidebar_flow_label: 'Start Here',
+        sidebar_flow_subtitle: 'Intake',
+      });
+
+      applyNavActive();
     }
 
     function mapToCapabilities(config) {
@@ -497,21 +382,10 @@
       const merged = Object.assign({}, defaultConfig, config || {});
       return new Map([
         ['account_label', merged.account_label],
-        ['actions_subtitle', merged.actions_subtitle],
-        ['actions_title', merged.actions_title],
-        ['activity_subtitle', merged.activity_subtitle],
-        ['activity_title', merged.activity_title],
         ['disclaimer_text', merged.disclaimer_text],
         ['greeting_prefix', merged.greeting_prefix],
         ['greeting_subheadline', merged.greeting_subheadline],
         ['helper_text', merged.helper_text],
-        ['progress_badge', merged.progress_badge],
-        ['progress_left', merged.progress_left],
-        ['progress_right', merged.progress_right],
-        ['progress_subtitle', merged.progress_subtitle],
-        ['progress_title', merged.progress_title],
-        ['snapshot_subtitle', merged.snapshot_subtitle],
-        ['snapshot_title', merged.snapshot_title],
         ['topbar_mode', merged.topbar_mode],
         ['trust_line', merged.trust_line],
         ['user_name', merged.user_name]
@@ -528,6 +402,8 @@
     } else {
       onConfigChange(defaultConfig);
     }
+
+    window.addEventListener('popstate', applyNavActive);
   </script>
 </body>
 </html>
