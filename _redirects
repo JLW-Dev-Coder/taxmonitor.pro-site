@@ -19,6 +19,15 @@
 /app/welcome.html             /app/pages/flows/post-payment/welcome.html             200
 
 ########################################
+# App Clean URLs
+########################################
+
+/app/agreement   /app/agreement.html   200
+/app/intake      /app/intake.html      200
+/app/offer       /app/offer.html       200
+/app/payment     /app/payment.html     200
+
+########################################
 # Public Clean URLs
 ########################################
 
