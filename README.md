@@ -111,27 +111,39 @@ Root domain must not proxy lifecycle endpoints unless explicitly documented.
 ```
 /
 app/
+├─ calendar.html
+├─ files.html
 ├─ index.html
 ├─ login.html
-├─ payment.html
+├─ messaging.html
 ├─ payment-success.html
+├─ payment.html
+├─ projects.html
+├─ support.html
 ├─ partials/
 │  ├─ sidebar.html
 │  └─ topbar.html
 ├─ pages/
-│  └─ flows/
-│     ├─ intake/
-│     │  ├─ agreement.html
-│     │  ├─ intake.html
-│     │  ├─ offer.html
-│     │  └─ payment.html
-│     └─ post-payment/
-│        ├─ address-update.html
-│        ├─ client-exit-survey.html
-│        ├─ compliance-report.html
-│        ├─ esign-2848.html
-│        ├─ filing-status.html
-│        └─ welcome.html
+│  ├─ flows/
+│  │  ├─ intake/
+│  │  │  ├─ agreement.html
+│  │  │  ├─ intake.html
+│  │  │  ├─ offer.html
+│  │  │  └─ payment.html
+│  │  └─ post-payment/
+│  │     ├─ address-update.html
+│  │     ├─ client-exit-survey.html
+│  │     ├─ compliance-report.html
+│  │     ├─ esign-2848.html
+│  │     ├─ filing-status.html
+│  │     └─ welcome.html
+│  └─ office/
+│     ├─ estimates.html
+│     ├─ files.html
+│     ├─ invoices.html
+│     ├─ my-billing.html
+│     ├─ payments.html
+│     ├─ proposals.html
 assets/
 ├─ favicon.ico
 ├─ favicon.svg
@@ -386,4 +398,5 @@ Wrangler-only configuration.
 * Status-driven workflow
 * Worker-injected rendering state
 * Zero manual lifecycle transitions
+
 
