@@ -38,6 +38,12 @@ GOOGLE_TOKEN_URI = "https://oauth2.googleapis.com/token"
 GOOGLE_WORKSPACE_USER_INFO = "info@taxmonitor.pro"
 GOOGLE_WORKSPACE_USER_NO_REPLY = "no-reply@taxmonitor.pro"
 GOOGLE_WORKSPACE_USER_SUPPORT = "support@taxmonitor.pro"
+MY_ORGANIZATION_ADDRESS = "123 Main Street"
+MY_ORGANIZATION_BUSINESS_LOGO = "https://taxmonitor.pro/assets/logo.svg"
+MY_ORGANIZATION_CITY = "Austin"
+MY_ORGANIZATION_NAME = "Tax Monitor Pro"
+MY_ORGANIZATION_STATE_PROVINCE = "TX"
+MY_ORGANIZATION_ZIP = "78701"
 
 # ---------------------------------------
 # Secrets (set via wrangler secret put)
@@ -47,4 +53,3 @@ GOOGLE_WORKSPACE_USER_SUPPORT = "support@taxmonitor.pro"
 # GOOGLE_PRIVATE_KEY
 # STRIPE_SECRET_KEY
 # STRIPE_WEBHOOK_SECRET
-
