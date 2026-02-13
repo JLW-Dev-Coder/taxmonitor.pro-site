@@ -1,5 +1,3 @@
----
-
 # Tax Monitor Pro App
 
 Tax Monitor Pro is a serverless CRM + delivery system for tax monitoring services.
@@ -507,5 +505,6 @@ Organization identity values must exist in Wrangler config.
 * Status-driven workflow
 * Worker-injected rendering state
 * Zero manual lifecycle transitions
+
 
 
