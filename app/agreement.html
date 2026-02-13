@@ -104,6 +104,32 @@
     .agreement-prose :where(strong):not(:where([class~="not-prose"] *)){
       font-weight: 700;
     }
+    
+    /* Improve paragraph spacing */
+    .agreement-prose p {
+      margin-top: 1.25rem;
+      margin-bottom: 1.25rem;
+      line-height: 1.8;
+    }
+    
+    /* Give headings more separation */
+    .agreement-prose h3 {
+      margin-top: 2.25rem;
+      margin-bottom: 1rem;
+    }
+    
+    /* Add spacing between list items */
+    .agreement-prose ol li {
+      margin-top: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+    
+    /* Slightly more breathing room around HR dividers */
+    .agreement-prose hr {
+      margin-top: 2rem;
+      margin-bottom: 2rem;
+    }
+    
   </style>
 
   <style>@view-transition { navigation: auto; }</style>
