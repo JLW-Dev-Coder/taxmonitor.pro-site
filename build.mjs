@@ -36,10 +36,6 @@ async function walk(dir) {
   return out;
 }
 
-function rel(fromDir, filePath) {
-  return path.relative(fromDir, filePath).replaceAll(path.sep, "/");
-}
-
 async function copyDirIfExists(srcDir, destSubdir) {
   if (!(await exists(srcDir))) return;
   const destDir = path.join(DIST_DIR, destSubdir);
@@ -47,8 +43,8 @@ async function copyDirIfExists(srcDir, destSubdir) {
   await cp(srcDir, destDir, { recursive: true });
 }
 
-async function copySiteAssets() {
-  // Copy everything in /site EXCEPT partials (and we will overwrite HTML next)
+async function copySiteAssetsToDistRoot() {
+  // Copy everything in /site into dist root EXCEPT /site/partials
   const entries = await readdir(SITE_DIR, { withFileTypes: true });
   for (const e of entries) {
     if (e.name === "partials") continue;
@@ -58,7 +54,7 @@ async function copySiteAssets() {
   }
 }
 
-async function buildSiteHtml() {
+async function injectSitePartials() {
   const footer = await readFile(path.join(PARTIALS_DIR, "footer.html"), "utf8");
   const header = await readFile(path.join(PARTIALS_DIR, "header.html"), "utf8");
 
@@ -72,8 +68,9 @@ async function buildSiteHtml() {
       .replace("<!-- PARTIAL:footer -->", footer)
       .replace("<!-- PARTIAL:header -->", header);
 
-    // IMPORTANT: write to dist root, mirroring site/ structure
-    const destPath = path.join(DIST_DIR, rel(SITE_DIR, filePath));
+    // IMPORTANT: write to dist root (not dist/site)
+    const relative = path.relative(SITE_DIR, filePath);
+    const destPath = path.join(DIST_DIR, relative);
     await mkdir(path.dirname(destPath), { recursive: true });
     await writeFile(destPath, out, "utf8");
   }
@@ -88,15 +85,14 @@ async function main() {
   await copyDirIfExists(PUBLIC_DIR, "public");
   await copyDirIfExists(STYLES_DIR, "styles");
 
-  // Copy site assets first (site.js, images, etc.)
-  await copySiteAssets();
+  // Site assets (site.js, etc.) -> dist root
+  await copySiteAssetsToDistRoot();
 
-  // Then overwrite HTML with injected partials
-  await buildSiteHtml();
+  // Then overwrite site HTML with injected header/footer
+  await injectSitePartials();
 
-  if (await exists(REDIRECTS_SRC)) {
-    await cp(REDIRECTS_SRC, REDIRECTS_DEST);
-  }
+  // Redirects -> dist root
+  if (await exists(REDIRECTS_SRC)) await cp(REDIRECTS_SRC, REDIRECTS_DEST);
 }
 
 await main();
