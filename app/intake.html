@@ -402,8 +402,10 @@
                 >View pricing</a>
               </div>
 
+              <div id="tm-error" class="hidden rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-200"></div>
+
               <div class="text-xs text-slate-500">
-                After submission, route to <code class="text-slate-300">/app/intake-confirmation.html</code> from your Worker response or client-side redirect.
+                After submission, this page redirects to <code class="text-slate-300">/app/offer.html</code>.
               </div>
             </form>
           </div>
@@ -437,6 +439,7 @@
     })();
   </script>
 
+  <!-- Common helpers (same on every page) -->
   <script>
     (function () {
       function getEndpointSlug(formEl) {
@@ -454,7 +457,7 @@
         var el = document.getElementById('tm_event_id');
         if (!el) return;
 
-        var endpoint = getEndpointSlug(formEl || document.getElementById('tm-intake') || document.querySelector('form'));
+        var endpoint = getEndpointSlug(formEl || document.querySelector('form'));
         var key = 'tm:' + endpoint + ':eventId';
 
         var existing = sessionStorage.getItem(key);
@@ -486,14 +489,36 @@
         btn.textContent = 'Submitting...';
       }
 
+      function showError(text) {
+        var box = document.getElementById('tm-error');
+        if (!box) return;
+        box.textContent = String(text || 'Submission failed.');
+        box.classList.remove('hidden');
+      }
+
+      function restoreSubmit(formEl) {
+        if (!formEl) return;
+
+        var btn = formEl.querySelector('button[type="submit"]');
+        if (!btn) return;
+
+        btn.disabled = false;
+        btn.removeAttribute('aria-disabled');
+        btn.textContent = btn.dataset.originalText || 'Submit';
+      }
+
       window.tmCommon = {
         disableSubmit: disableSubmit,
         ensureEventId: ensureEventId,
+        getEndpointSlug: getEndpointSlug,
+        restoreSubmit: restoreSubmit,
+        showError: showError,
         syncSessionToken: syncSessionToken
       };
     })();
   </script>
 
+  <!-- Intake-specific mapping + submit via fetch + redirect -->
   <script>
     (function () {
       var ack = document.getElementById('monitoring_ack');
@@ -520,18 +545,43 @@
       for (var i = 0; i < concerns.length; i++) concerns[i].addEventListener('change', syncConcerns);
 
       if (form) {
-        form.addEventListener('submit', function () {
-          if (window.tmCommon && window.tmCommon.ensureEventId) window.tmCommon.ensureEventId(form);
-          if (window.tmCommon && window.tmCommon.syncSessionToken) window.tmCommon.syncSessionToken();
-          if (window.tmCommon && window.tmCommon.disableSubmit) window.tmCommon.disableSubmit(form);
+        form.addEventListener('submit', async function (e) {
+          e.preventDefault();
+
+          if (window.tmCommon) {
+            window.tmCommon.ensureEventId(form);
+            window.tmCommon.syncSessionToken();
+          }
 
           syncAck();
           syncConcerns();
+
+          if (window.tmCommon) window.tmCommon.disableSubmit(form);
+
+          try {
+            var res = await fetch(form.action, { method: 'POST', body: new FormData(form) });
+            var data = {};
+            try { data = await res.json(); } catch (err) {}
+
+            if (res.ok && data && data.ok) {
+              window.location.href = '/app/offer.html' + (window.location.search || '');
+              return;
+            }
+
+            var msg = (data && (data.error || data.details)) ? (data.error || data.details) : 'Submission failed.';
+            if (window.tmCommon) window.tmCommon.showError(msg);
+            if (window.tmCommon) window.tmCommon.restoreSubmit(form);
+          } catch (err) {
+            if (window.tmCommon) window.tmCommon.showError(String(err && err.message ? err.message : err));
+            if (window.tmCommon) window.tmCommon.restoreSubmit(form);
+          }
         });
       }
 
-      if (window.tmCommon && window.tmCommon.ensureEventId) window.tmCommon.ensureEventId(form);
-      if (window.tmCommon && window.tmCommon.syncSessionToken) window.tmCommon.syncSessionToken();
+      if (window.tmCommon) {
+        window.tmCommon.ensureEventId(form);
+        window.tmCommon.syncSessionToken();
+      }
       syncAck();
       syncConcerns();
     })();
