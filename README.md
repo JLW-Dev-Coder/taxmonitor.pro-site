@@ -31,12 +31,12 @@ Tax Monitor Pro is a serverless CRM + delivery system for tax monitoring service
 
 ## Architecture Overview
 
-Cloudflare Pages (Portal + Marketing UI)
-↓ (form POST / webhook)
-Cloudflare Worker (API + Orchestration)
-↓
-Cloudflare R2 (Authoritative State + Receipts Ledger)
-↓
+Cloudflare Pages (Portal + Marketing UI)  
+↓ (form POST / webhook)  
+Cloudflare Worker (API + Orchestration)  
+↓  
+Cloudflare R2 (Authoritative State + Receipts Ledger)  
+↓  
 ClickUp (Human Task Execution)
 
 External systems:
@@ -75,16 +75,20 @@ All forms must POST directly to the Worker domain.
 Example:
 
 ```
-https://api.taxmonitor.pro/forms/intake
-https://api.taxmonitor.pro/forms/offer
-https://api.taxmonitor.pro/forms/agreement
-https://api.taxmonitor.pro/forms/payment
+
+[https://api.taxmonitor.pro/forms/intake](https://api.taxmonitor.pro/forms/intake)
+[https://api.taxmonitor.pro/forms/offer](https://api.taxmonitor.pro/forms/offer)
+[https://api.taxmonitor.pro/forms/agreement](https://api.taxmonitor.pro/forms/agreement)
+[https://api.taxmonitor.pro/forms/payment](https://api.taxmonitor.pro/forms/payment)
+
 ```
 
 Relative paths such as:
 
 ```
+
 action="/forms/intake"
+
 ```
 
 are not allowed unless the Worker is explicitly routed for that host.
@@ -106,6 +110,7 @@ Root domain must not proxy lifecycle endpoints unless explicitly documented.
 ## Repository Structure
 
 ```
+
 /
 app/
 ├─ agreement.html
@@ -152,12 +157,13 @@ styles/
 └─ site.css
 workers/
 └─ api/
-   ├─ src/
-   │  └─ index.js
-   └─ wrangler.toml
+├─ src/
+│  └─ index.js
+└─ wrangler.toml
 README.md
 _redirects
 build.mjs
+
 ```
 
 Structure Notes:
@@ -201,10 +207,12 @@ All outbound email notifications are triggered after canonical state is updated 
 ### R2 Buckets
 
 ```
+
 accounts/{accountId}.json
 orders/{orderId}.json
 receipts/{source}/{eventId}.json
 support/{supportId}.json
+
 ```
 
 R2 is the source of truth. ClickUp reflects operational state only.
@@ -270,11 +278,11 @@ Purpose:
 
 ## ClickUp Structure
 
-ClickUp
-└─ Admin
-└─ Tax Monitor Pro
-├─ Accounts (901710909567)
-├─ Orders (901710818340)
+ClickUp  
+└─ Admin  
+└─ Tax Monitor Pro  
+├─ Accounts (901710909567)  
+├─ Orders (901710818340)  
 └─ Support (901710818377)
 
 ---
