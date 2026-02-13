@@ -389,66 +389,436 @@
       </div>
     </section>
 
-    <!-- Report Sample -->
+    <!-- Report Sample (Interactive) -->
     <section class="px-6 py-20" id="report-sample">
-      <div class="max-w-5xl mx-auto">
+      <div class="max-w-6xl mx-auto">
         <div class="text-center mb-12">
-          <h2 class="text-3xl md:text-5xl font-bold mb-6">Report <span class="gradient-text">Sample</span></h2>
-          <p class="text-xl text-slate-400">Monthly status at a glance.</p>
+          <h2 class="text-3xl md:text-5xl font-bold mb-4">
+            Report <span class="gradient-text">Sample</span>
+          </h2>
+          <p class="text-lg md:text-xl text-slate-400 max-w-3xl mx-auto">
+            This is what your monitoring buys: a clean story of what the IRS shows, what changed, and what happens next.
+          </p>
         </div>
 
-        <div class="max-w-2xl mx-auto">
-          <div class="bg-slate-800/50 rounded-2xl border border-slate-700 overflow-hidden">
-            <div class="px-6 py-4 bg-slate-800 border-b border-slate-700 flex items-center justify-between">
-              <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center">
-                  <svg class="w-5 h-5 text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+        <div class="grid lg:grid-cols-3 gap-6 items-start">
+          <!-- Left: Report Card -->
+          <div class="lg:col-span-2">
+            <div class="rounded-2xl border border-slate-700/70 bg-slate-900/50 overflow-hidden shadow-[0_0_0_1px_rgba(148,163,184,.05),0_40px_120px_rgba(0,0,0,.55)]">
+
+              <!-- Header -->
+              <div class="px-6 py-5 bg-slate-900 border-b border-slate-700/70 flex items-start justify-between gap-6">
+                <div class="flex items-start gap-4">
+                  <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center flex-shrink-0">
+                    <svg class="w-6 h-6 text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <div class="text-sm text-slate-400">Monthly Status Report</div>
+                    <div class="text-xl md:text-2xl font-semibold text-slate-100 leading-tight">
+                      December 2024 Monitoring Summary
+                    </div>
+                    <div class="text-sm text-slate-500 mt-1">
+                      Updated after IRS compliance call + transcript review
+                    </div>
+                  </div>
+                </div>
+
+                <div class="text-right">
+                  <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-300 border border-emerald-500/20 text-sm font-medium">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                    All Clear
+                  </div>
+                  <button
+                    type="button"
+                    class="mt-3 inline-flex items-center justify-center gap-2 text-sm px-3 py-2 rounded-xl bg-slate-800/60 border border-slate-700/70 hover:bg-slate-800 transition"
+                    data-tm-toggle="changes"
+                    aria-expanded="false"
+                  >
+                    <span>What changed</span>
+                    <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Quick Metrics -->
+              <div class="px-6 py-6 border-b border-slate-700/50">
+                <div class="grid sm:grid-cols-3 gap-4">
+                  <div class="rounded-2xl bg-slate-800/40 border border-slate-700/60 p-4">
+                    <div class="text-xs text-slate-500 uppercase tracking-wider">Balance</div>
+                    <div class="text-2xl font-semibold text-emerald-300 mt-1">$0</div>
+                    <div class="text-sm text-slate-500 mt-1">Total IRS Balance</div>
+                  </div>
+
+                  <div class="rounded-2xl bg-slate-800/40 border border-slate-700/60 p-4">
+                    <div class="text-xs text-slate-500 uppercase tracking-wider">Notices</div>
+                    <div class="text-2xl font-semibold text-slate-100 mt-1">0</div>
+                    <div class="text-sm text-slate-500 mt-1">IRS Notice Received</div>
+                  </div>
+
+                  <div class="rounded-2xl bg-slate-800/40 border border-slate-700/60 p-4">
+                    <div class="text-xs text-slate-500 uppercase tracking-wider">Readiness</div>
+                    <div class="text-2xl font-semibold text-slate-100 mt-1">Stable</div>
+                    <div class="text-sm text-slate-500 mt-1">Resolution Readiness Status</div>
+                  </div>
+                </div>
+
+                <div class="mt-5">
+                  <div class="text-xs text-slate-500 uppercase tracking-wider mb-2">Tax Years Monitored</div>
+                  <div class="flex flex-wrap gap-2">
+                    <span class="px-3 py-1 rounded-lg bg-slate-800/60 border border-slate-700/60 text-sm text-slate-200">2021</span>
+                    <span class="px-3 py-1 rounded-lg bg-slate-800/60 border border-slate-700/60 text-sm text-slate-200">2022</span>
+                    <span class="px-3 py-1 rounded-lg bg-slate-800/60 border border-slate-700/60 text-sm text-slate-200">2023</span>
+                    <span class="px-3 py-1 rounded-lg bg-slate-800/60 border border-slate-700/60 text-sm text-slate-200">2024</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Changes Drawer -->
+              <div id="tm-changes" class="hidden border-b border-slate-700/50 bg-slate-950/30">
+                <div class="px-6 py-6">
+                  <div class="flex items-center justify-between gap-4 mb-4">
+                    <div>
+                      <div class="text-sm font-semibold text-slate-100">What changed (click to focus)</div>
+                      <div class="text-sm text-slate-500">This is the “clarity” people actually pay for.</div>
+                    </div>
+                    <span class="text-xs text-slate-500">Updated: Dec 22, 2024</span>
+                  </div>
+
+                  <div class="space-y-3">
+                    <button type="button" class="w-full text-left rounded-xl border border-slate-700/60 bg-slate-900/40 p-4 hover:bg-slate-900/60 transition" data-tm-focus="notices">
+                      <div class="flex items-start justify-between gap-4">
+                        <div>
+                          <div class="text-sm font-semibold text-slate-100">Notices</div>
+                          <div class="text-sm text-slate-400 mt-1">No notices on record for this period.</div>
+                        </div>
+                        <span class="text-xs px-2 py-1 rounded-full bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">No change</span>
+                      </div>
+                    </button>
+
+                    <button type="button" class="w-full text-left rounded-xl border border-slate-700/60 bg-slate-900/40 p-4 hover:bg-slate-900/60 transition" data-tm-focus="balance">
+                      <div class="flex items-start justify-between gap-4">
+                        <div>
+                          <div class="text-sm font-semibold text-slate-100">Balance + Status</div>
+                          <div class="text-sm text-slate-400 mt-1">Total balance confirmed as $0. Account status stable.</div>
+                        </div>
+                        <span class="text-xs px-2 py-1 rounded-full bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">Confirmed</span>
+                      </div>
+                    </button>
+
+                    <button type="button" class="w-full text-left rounded-xl border border-slate-700/60 bg-slate-900/40 p-4 hover:bg-slate-900/60 transition" data-tm-focus="transcripts">
+                      <div class="flex items-start justify-between gap-4">
+                        <div>
+                          <div class="text-sm font-semibold text-slate-100">Transcripts</div>
+                          <div class="text-sm text-slate-400 mt-1">Transcript scope confirmed. Retrieval recorded.</div>
+                        </div>
+                        <span class="text-xs px-2 py-1 rounded-full bg-amber-500/10 text-amber-300 border border-amber-500/20">Recorded</span>
+                      </div>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tabs -->
+              <div class="px-6 pt-6">
+                <div class="flex flex-wrap gap-2">
+                  <button class="tm-tab px-3 py-2 rounded-xl text-sm border border-slate-700/60 bg-slate-900/50 text-slate-200 hover:bg-slate-900 transition" data-tm-tab="balance" aria-selected="true">Balance</button>
+                  <button class="tm-tab px-3 py-2 rounded-xl text-sm border border-slate-700/60 bg-slate-900/20 text-slate-300 hover:bg-slate-900 transition" data-tm-tab="call">Call</button>
+                  <button class="tm-tab px-3 py-2 rounded-xl text-sm border border-slate-700/60 bg-slate-900/20 text-slate-300 hover:bg-slate-900 transition" data-tm-tab="notices">Notices</button>
+                  <button class="tm-tab px-3 py-2 rounded-xl text-sm border border-slate-700/60 bg-slate-900/20 text-slate-300 hover:bg-slate-900 transition" data-tm-tab="transcripts">Transcripts</button>
+                  <button class="tm-tab px-3 py-2 rounded-xl text-sm border border-slate-700/60 bg-slate-900/20 text-slate-300 hover:bg-slate-900 transition" data-tm-tab="next">Next steps</button>
+                </div>
+              </div>
+
+              <!-- Panels -->
+              <div class="px-6 py-6">
+                <!-- Balance -->
+                <div class="tm-panel" data-tm-panel="balance">
+                  <div class="grid md:grid-cols-2 gap-4">
+                    <div class="rounded-2xl bg-slate-800/40 border border-slate-700/60 p-5">
+                      <div class="text-xs text-slate-500 uppercase tracking-wider">IRS Account Status</div>
+                      <div class="text-lg font-semibold text-slate-100 mt-1">Current</div>
+                      <div class="text-sm text-slate-400 mt-2">IRS_Account_Status</div>
+                    </div>
+
+                    <div class="rounded-2xl bg-slate-800/40 border border-slate-700/60 p-5">
+                      <div class="text-xs text-slate-500 uppercase tracking-wider">Unfiled Returns</div>
+                      <div class="text-lg font-semibold text-slate-100 mt-1">No</div>
+                      <div class="text-sm text-slate-400 mt-2">Unfiled_Returns_Indicator</div>
+                    </div>
+                  </div>
+
+                  <div class="mt-4 rounded-2xl bg-slate-800/40 border border-slate-700/60 p-5">
+                    <div class="flex items-center justify-between gap-4 mb-3">
+                      <div>
+                        <div class="text-xs text-slate-500 uppercase tracking-wider">Balance by year</div>
+                        <div class="text-sm text-slate-400 mt-1">IRS_Balance_By_Year_Status</div>
+                      </div>
+                      <span class="text-xs text-slate-500">10-year visibility summary</span>
+                    </div>
+
+                    <div class="grid sm:grid-cols-2 gap-3 text-sm">
+                      <div class="rounded-xl bg-slate-900/40 border border-slate-700/50 p-3 flex items-center justify-between">
+                        <span class="text-slate-300">2021</span>
+                        <span class="text-emerald-300">Paid / $0</span>
+                      </div>
+                      <div class="rounded-xl bg-slate-900/40 border border-slate-700/50 p-3 flex items-center justify-between">
+                        <span class="text-slate-300">2022</span>
+                        <span class="text-emerald-300">Paid / $0</span>
+                      </div>
+                      <div class="rounded-xl bg-slate-900/40 border border-slate-700/50 p-3 flex items-center justify-between">
+                        <span class="text-slate-300">2023</span>
+                        <span class="text-emerald-300">Paid / $0</span>
+                      </div>
+                      <div class="rounded-xl bg-slate-900/40 border border-slate-700/50 p-3 flex items-center justify-between">
+                        <span class="text-slate-300">2024</span>
+                        <span class="text-emerald-300">Processing / $0</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Call -->
+                <div class="tm-panel hidden" data-tm-panel="call">
+                  <div class="rounded-2xl bg-slate-800/40 border border-slate-700/60 p-5">
+                    <div class="flex items-start justify-between gap-4">
+                      <div>
+                        <div class="text-xs text-slate-500 uppercase tracking-wider">IRS Call Confirmation</div>
+                        <div class="text-lg font-semibold text-slate-100 mt-1">Dec 22, 2024</div>
+                        <div class="text-sm text-slate-400 mt-1">IRS_Call_Confirmation_Date</div>
+                      </div>
+                      <span class="text-xs px-2 py-1 rounded-full bg-slate-900/60 border border-slate-700/60 text-slate-300">Compliance_Activity_Type</span>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-4 mt-5">
+                      <div class="rounded-xl bg-slate-900/40 border border-slate-700/50 p-4">
+                        <div class="text-xs text-slate-500 uppercase tracking-wider">Agent</div>
+                        <div class="text-sm font-semibold text-slate-100 mt-1">A. Smith</div>
+                        <div class="text-sm text-slate-400 mt-1">IRS_Agent_Name</div>
+                        <div class="text-sm text-slate-400">IRS_Agent_ID</div>
+                      </div>
+
+                      <div class="rounded-xl bg-slate-900/40 border border-slate-700/50 p-4">
+                        <div class="text-xs text-slate-500 uppercase tracking-wider">Department</div>
+                        <div class="text-sm font-semibold text-slate-100 mt-1">Accounts Management</div>
+                        <div class="text-sm text-slate-400 mt-1">IRS_Agent_Department</div>
+                        <div class="text-sm text-slate-400">IRS_Agent_Department_Phone</div>
+                      </div>
+                    </div>
+
+                    <div class="mt-4 rounded-xl bg-slate-900/40 border border-slate-700/50 p-4">
+                      <div class="text-xs text-slate-500 uppercase tracking-wider">Verification</div>
+                      <div class="text-sm text-slate-300 mt-2">IRS_Agent_Verification: Confirmed</div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Notices -->
+                <div class="tm-panel hidden" data-tm-panel="notices">
+                  <div class="rounded-2xl bg-slate-800/40 border border-slate-700/60 p-5">
+                    <div class="flex items-start justify-between gap-4">
+                      <div>
+                        <div class="text-xs text-slate-500 uppercase tracking-wider">IRS Notice Received</div>
+                        <div class="text-lg font-semibold text-slate-100 mt-1">No</div>
+                        <div class="text-sm text-slate-400 mt-1">IRS_Notice_Received</div>
+                      </div>
+                      <span class="text-xs px-2 py-1 rounded-full bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">All clear</span>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-4 mt-5">
+                      <div class="rounded-xl bg-slate-900/40 border border-slate-700/50 p-4">
+                        <div class="text-xs text-slate-500 uppercase tracking-wider">Notice date</div>
+                        <div class="text-sm text-slate-300 mt-1">None</div>
+                        <div class="text-sm text-slate-500 mt-1">IRS_Notice_Date</div>
+                      </div>
+
+                      <div class="rounded-xl bg-slate-900/40 border border-slate-700/50 p-4">
+                        <div class="text-xs text-slate-500 uppercase tracking-wider">Notice type</div>
+                        <div class="text-sm text-slate-300 mt-1">None</div>
+                        <div class="text-sm text-slate-500 mt-1">IRS_Notice_Type</div>
+                      </div>
+                    </div>
+
+                    <div class="mt-4 rounded-xl bg-slate-900/40 border border-slate-700/50 p-4">
+                      <div class="text-xs text-slate-500 uppercase tracking-wider">Why this matters</div>
+                      <div class="text-sm text-slate-300 mt-2">
+                        Notices are the IRS’s clock. Monitoring exists so you don’t discover a deadline after it expires.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Transcripts -->
+                <div class="tm-panel hidden" data-tm-panel="transcripts">
+                  <div class="rounded-2xl bg-slate-800/40 border border-slate-700/60 p-5">
+                    <div class="grid md:grid-cols-3 gap-4">
+                      <div class="rounded-xl bg-slate-900/40 border border-slate-700/50 p-4">
+                        <div class="text-xs text-slate-500 uppercase tracking-wider">Request made</div>
+                        <div class="text-sm font-semibold text-slate-100 mt-1">Yes</div>
+                        <div class="text-sm text-slate-500 mt-1">Transcript_Request_Made</div>
+                      </div>
+
+                      <div class="rounded-xl bg-slate-900/40 border border-slate-700/50 p-4">
+                        <div class="text-xs text-slate-500 uppercase tracking-wider">Scope</div>
+                        <div class="text-sm font-semibold text-slate-100 mt-1">Confirmed</div>
+                        <div class="text-sm text-slate-500 mt-1">Transcript_Scope_Confirmed</div>
+                      </div>
+
+                      <div class="rounded-xl bg-slate-900/40 border border-slate-700/50 p-4">
+                        <div class="text-xs text-slate-500 uppercase tracking-wider">Delivery</div>
+                        <div class="text-sm font-semibold text-slate-100 mt-1">Secure upload</div>
+                        <div class="text-sm text-slate-500 mt-1">Transcript_Delivery_Method</div>
+                      </div>
+                    </div>
+
+                    <div class="mt-4 rounded-xl bg-slate-900/40 border border-slate-700/50 p-4">
+                      <div class="text-xs text-slate-500 uppercase tracking-wider">Files</div>
+                      <div class="text-sm text-slate-300 mt-2">Transcript_Files_Upload (stored in portal archive)</div>
+                      <div class="text-sm text-slate-500 mt-1">Transcript_Retrieval_Date + Transcript_Retrieval_Notes</div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Next steps -->
+                <div class="tm-panel hidden" data-tm-panel="next">
+                  <div class="rounded-2xl bg-slate-800/40 border border-slate-700/60 p-5">
+                    <div class="flex items-start justify-between gap-4">
+                      <div>
+                        <div class="text-xs text-slate-500 uppercase tracking-wider">Primary Recommended Service</div>
+                        <div class="text-lg font-semibold text-slate-100 mt-1">None needed</div>
+                        <div class="text-sm text-slate-400 mt-1">Primary_Recommended_Service</div>
+                      </div>
+                      <span class="text-xs px-2 py-1 rounded-full bg-slate-900/60 border border-slate-700/60 text-slate-300">
+                        Primary_Recommended_Status
+                      </span>
+                    </div>
+
+                    <div class="mt-5 grid md:grid-cols-2 gap-4">
+                      <div class="rounded-xl bg-slate-900/40 border border-slate-700/50 p-4">
+                        <div class="text-xs text-slate-500 uppercase tracking-wider">Monitoring progress</div>
+                        <div class="text-sm text-slate-100 mt-1">100%</div>
+                        <div class="text-sm text-slate-500 mt-1">Tax_Monitoring_Service_Progress_Percent</div>
+                      </div>
+
+                      <div class="rounded-xl bg-slate-900/40 border border-slate-700/50 p-4">
+                        <div class="text-xs text-slate-500 uppercase tracking-wider">Status message</div>
+                        <div class="text-sm text-slate-100 mt-1">Monitoring records updated. Report prepared.</div>
+                        <div class="text-sm text-slate-500 mt-1">Tax_Monitoring_Service_Progress_Status</div>
+                      </div>
+                    </div>
+
+                    <div class="mt-4 rounded-xl bg-slate-900/40 border border-slate-700/50 p-4">
+                      <div class="text-xs text-slate-500 uppercase tracking-wider mb-2">What they’re actually buying</div>
+                      <ul class="list-disc list-inside text-sm text-slate-300 space-y-1">
+                        <li>Account clarification (real-time verification)</li>
+                        <li>Change detection (you see the timeline, not a mystery)</li>
+                        <li>Compliance documentation (agent, department, call confirmation)</li>
+                        <li>Portal archive (transcripts + reports, always accessible)</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Sales Sidebar -->
+          <aside class="lg:col-span-1 space-y-6">
+            <div class="rounded-2xl border border-slate-700/70 bg-slate-900/50 p-6">
+              <div class="text-sm text-slate-400">Why this “pops” for buyers</div>
+              <div class="text-xl font-semibold text-slate-100 mt-1">Clarity, packaged</div>
+              <p class="text-sm text-slate-400 mt-3 leading-relaxed">
+                Your tax pro isn’t selling “monitoring.” They’re selling a clean, documented picture of what the IRS shows,
+                plus a durable archive you can actually find later.
+              </p>
+
+              <div class="mt-5 rounded-xl bg-slate-950/40 border border-slate-700/60 p-4">
+                <div class="text-xs text-slate-500 uppercase tracking-wider">Buyer friction remover</div>
+                <div class="text-sm text-slate-300 mt-2">
+                  “I don’t know what the IRS has on me” becomes “Here’s the report.”
+                </div>
+              </div>
+            </div>
+
+            <div class="rounded-2xl border border-amber-500/30 bg-slate-900/50 p-6">
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <div class="text-sm text-amber-200">Interactive demo</div>
+                  <div class="text-lg font-semibold text-slate-100 mt-1">Click tabs, see the story</div>
+                </div>
+                <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
+                  <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
                   </svg>
                 </div>
-                <div>
-                  <div class="font-semibold">Monthly Status Report</div>
-                  <div class="text-sm text-slate-400">December 2024</div>
-                </div>
               </div>
-              <span class="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-sm font-medium">All Clear</span>
+
+              <p class="text-sm text-slate-400 mt-3 leading-relaxed">
+                This section sells the product by showing what’s normally hidden: call verification, notices, balances, and transcript status.
+              </p>
             </div>
-
-            <div class="p-6 space-y-6">
-              <div>
-                <div class="text-sm text-slate-500 uppercase tracking-wider mb-3">Tax Years Monitored</div>
-                <div class="flex gap-2">
-                  <span class="px-3 py-1 rounded-lg bg-slate-700 text-sm">2021</span>
-                  <span class="px-3 py-1 rounded-lg bg-slate-700 text-sm">2022</span>
-                  <span class="px-3 py-1 rounded-lg bg-slate-700 text-sm">2023</span>
-                  <span class="px-3 py-1 rounded-lg bg-slate-700 text-sm">2024</span>
-                </div>
-              </div>
-
-              <div class="grid grid-cols-2 gap-4">
-                <div class="p-4 rounded-xl bg-slate-800/50">
-                  <div class="text-2xl font-bold text-emerald-400">$0</div>
-                  <div class="text-sm text-slate-400">Balance Due</div>
-                </div>
-                <div class="p-4 rounded-xl bg-slate-800/50">
-                  <div class="text-2xl font-bold">0</div>
-                  <div class="text-sm text-slate-400">Open Issues</div>
-                </div>
-              </div>
-
-              <div>
-                <div class="text-sm text-slate-500 uppercase tracking-wider mb-3">This Month's Activity</div>
-                <div class="p-4 rounded-xl bg-slate-800/50 text-slate-300">
-                  <p>✓ No new IRS actions detected</p>
-                  <p>✓ All returns processed normally</p>
-                  <p>✓ No outstanding balances</p>
-                </div>
-              </div>
-            </div>
-
-          </div>
+          </aside>
         </div>
       </div>
+
+      <script>
+        (function () {
+          const changesBtn = document.querySelector('[data-tm-toggle="changes"]');
+          const changes = document.getElementById('tm-changes');
+
+          function setExpanded(isExpanded) {
+            if (!changesBtn || !changes) return;
+            changesBtn.setAttribute('aria-expanded', String(isExpanded));
+            changes.classList.toggle('hidden', !isExpanded);
+          }
+
+          if (changesBtn && changes) {
+            changesBtn.addEventListener('click', () => {
+              const expanded = changesBtn.getAttribute('aria-expanded') === 'true';
+              setExpanded(!expanded);
+            });
+          }
+
+          const tabs = Array.from(document.querySelectorAll('.tm-tab'));
+          const panels = Array.from(document.querySelectorAll('.tm-panel'));
+
+          function activateTab(name) {
+            tabs.forEach((t) => {
+              const active = t.getAttribute('data-tm-tab') === name;
+              t.setAttribute('aria-selected', String(active));
+              t.classList.toggle('bg-slate-900/50', active);
+              t.classList.toggle('text-slate-200', active);
+              t.classList.toggle('bg-slate-900/20', !active);
+              t.classList.toggle('text-slate-300', !active);
+            });
+
+            panels.forEach((p) => {
+              const show = p.getAttribute('data-tm-panel') === name;
+              p.classList.toggle('hidden', !show);
+            });
+          }
+
+          tabs.forEach((t) => {
+            t.addEventListener('click', () => activateTab(t.getAttribute('data-tm-tab')));
+          });
+
+          document.querySelectorAll('[data-tm-focus]').forEach((btn) => {
+            btn.addEventListener('click', () => {
+              const target = btn.getAttribute('data-tm-focus');
+              setExpanded(false);
+              activateTab(target);
+            });
+          });
+
+          // default
+          activateTab('balance');
+          setExpanded(false);
+        })();
+      </script>
     </section>
 
     <!-- Inside Your Portal -->
