@@ -268,6 +268,25 @@ async function handleFormsIntake(request, env, ctx) {
     return jsonResponse({ ok: false, error: "Missing required fields", missing }, { status: 400 });
   }
 
+  // Anti-spam: email-based throttling (cooldown + daily cap)
+  // NOTE: requires enforceEmailThrottle(...) helper to exist elsewhere in this file.
+  const throttle = await enforceEmailThrottle(env, normalized.primaryEmail, {
+    cooldownSeconds: 600, // 10 minutes
+    maxPerDay: 3,         // 3 submissions/day per email
+  });
+
+  if (!throttle.ok) {
+    return jsonResponse(
+      { ok: false, error: throttle.error },
+      {
+        status: 429,
+        headers: {
+          "Retry-After": String(throttle.retryAfterSeconds || 60),
+        },
+      }
+    );
+  }
+
   // Use inbound eventId if present, otherwise generate
   const inboundEventId = parsed.data?.eventId;
   const eventId = isUuidLike(inboundEventId) ? inboundEventId.trim() : crypto.randomUUID();
@@ -388,4 +407,5 @@ async function handleStripeWebhook(request, env, ctx) {
   console.log("[stripe] webhook received", { type: parsed.value?.type, id: parsed.value?.id });
   return jsonResponse({ ok: true }, { status: 200 });
 }
+
 
