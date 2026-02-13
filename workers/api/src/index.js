@@ -115,11 +115,16 @@ function normalizeIntakePayload(input) {
 }
 
 /* ------------------------------------------
- * Ids
+ * Ids + Throttle
  * ------------------------------------------ */
 
 function isUuidLike(v) {
-  return typeof v === "string" && /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(v.trim());
+  return (
+    typeof v === "string" &&
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
+      v.trim()
+    )
+  );
 }
 
 async function sha256Hex(input) {
@@ -135,7 +140,66 @@ async function accountIdFromEmail(email) {
   const e = String(email || "").trim().toLowerCase();
   const hex = await sha256Hex(e);
   // Deterministic UUID-ish from hash (stable, not random)
-  return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-4${hex.slice(13, 16)}-a${hex.slice(17, 20)}-${hex.slice(20, 32)}`;
+  return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-4${hex.slice(13, 16)}-a${hex.slice(
+    17,
+    20
+  )}-${hex.slice(20, 32)}`;
+}
+
+function dayKeyUTC(date = new Date()) {
+  const y = date.getUTCFullYear();
+  const m = String(date.getUTCMonth() + 1).padStart(2, "0");
+  const d = String(date.getUTCDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
+}
+
+async function enforceEmailThrottle(env, email, opts = {}) {
+  const cooldownSeconds = Number(opts.cooldownSeconds ?? 600); // 10 minutes default
+  const maxPerDay = Number(opts.maxPerDay ?? 3); // 3/day default
+
+  const cleanEmail = String(email || "").trim().toLowerCase();
+  if (!cleanEmail) return { ok: true };
+
+  const now = new Date();
+  const nowIso = now.toISOString();
+  const today = dayKeyUTC(now);
+
+  const emailHash = await sha256Hex(cleanEmail);
+  const throttleKey = `rate/form:intake/email/${emailHash}.json`;
+
+  const existing = await readJsonR2(env, throttleKey);
+  const lastAt = existing?.lastAt ? Date.parse(existing.lastAt) : 0;
+  const sameDay = existing?.dayKey === today;
+
+  const countToday = sameDay ? Number(existing?.countToday || 0) : 0;
+  const secondsSinceLast = lastAt ? Math.floor((Date.now() - lastAt) / 1000) : Infinity;
+
+  if (countToday >= maxPerDay) {
+    return {
+      ok: false,
+      error: "Daily submission limit reached for this email.",
+      retryAfterSeconds: 86400,
+    };
+  }
+
+  if (secondsSinceLast < cooldownSeconds) {
+    return {
+      ok: false,
+      error: "Please wait before submitting again.",
+      retryAfterSeconds: cooldownSeconds - secondsSinceLast,
+    };
+  }
+
+  const nextState = {
+    countToday: countToday + 1,
+    dayKey: today,
+    lastAt: nowIso,
+    updatedAt: nowIso,
+  };
+
+  await writeJsonR2(env, throttleKey, nextState);
+
+  return { ok: true };
 }
 
 /* ------------------------------------------
@@ -157,6 +221,13 @@ async function writeJsonR2(env, key, value) {
 /* ------------------------------------------
  * ClickUp Utilities
  * ------------------------------------------ */
+
+const CU_ACCOUNTS_CF = {
+  accountFirstName: "f5c9f6da-c994-4733-a15f-59188b37f531",
+  accountId: "e5f176ba-82c8-47d8-b3b1-0716d075f43f",
+  accountLastName: "a348d629-fa05-45d8-a2dd-b909f78ddf49",
+  accountPrimaryEmail: "a105f99e-b33d-4d12-bb24-f7c827ec761a",
+};
 
 async function clickUpRequest(env, path, options = {}) {
   if (!env.CLICKUP_API_KEY) throw new Error("Missing CLICKUP_API_KEY");
@@ -181,28 +252,58 @@ async function createClickUpAccountTask(env, account, receipt) {
   if (!env.CLICKUP_ACCOUNTS_LIST_ID) throw new Error("Missing CLICKUP_ACCOUNTS_LIST_ID");
 
   const name = `Intake — ${account.firstName} ${account.lastName}`.trim();
-  const descriptionLines = [
-    `Source: form`,
-    `Type: intake`,
-    `Event ID: ${receipt.eventId}`,
-    `Primary Email: ${account.primaryEmail}`,
-    `Company: ${account.metadata?.companyName || ""}`.trim(),
-  ].filter(Boolean);
+
+  const description = [
+    `Account: ${account.firstName} ${account.lastName}`.trim(),
+    `Company: ${account.metadata?.companyName || "—"}`,
+    `Email: ${account.primaryEmail}`,
+    `Received: ${receipt.timestamp}`,
+    `Trigger: form:intake`,
+    ``,
+    `R2 Keys:`,
+    `- accounts/${account.accountId}.json`,
+    `- receipts/form/${receipt.eventId}.json`,
+    ``,
+    `Submitted:`,
+    `- Estimated Balance Due Range: ${account.metadata?.estimatedBalanceDueRange || "—"}`,
+    `- IRS Notice Received: ${account.metadata?.irsNoticeReceived || "—"}`,
+    `- IRS Notice Type: ${account.metadata?.irsNoticeType || "—"}`,
+    `- IRS Notice Date: ${account.metadata?.irsNoticeDate || "—"}`,
+    `- Primary Concern: ${account.metadata?.primaryConcern || "—"}`,
+    `- Unfiled Returns Indicator: ${account.metadata?.unfiledReturnsIndicator || "—"}`,
+    `- Urgency Level: ${account.metadata?.urgencyLevel || "—"}`,
+  ].join("\n");
 
   const payload = {
+    custom_fields: [
+      { id: CU_ACCOUNTS_CF.accountFirstName, value: account.firstName || "" },
+      { id: CU_ACCOUNTS_CF.accountId, value: account.accountId || "" },
+      { id: CU_ACCOUNTS_CF.accountLastName, value: account.lastName || "" },
+      { id: CU_ACCOUNTS_CF.accountPrimaryEmail, value: account.primaryEmail || "" },
+    ],
+    description,
     name,
-    description: descriptionLines.join("\n"),
-    // Accounts pipeline status per README (lifecycle)
     status: "Lead",
   };
 
-  const created = await clickUpRequest(
-    env,
-    `/list/${env.CLICKUP_ACCOUNTS_LIST_ID}/task`,
-    { method: "POST", body: JSON.stringify(payload) }
-  );
+  const created = await clickUpRequest(env, `/list/${env.CLICKUP_ACCOUNTS_LIST_ID}/task`, {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
 
   return created?.id || null;
+}
+
+async function addClickUpComment(env, taskId, commentText) {
+  if (!taskId) return;
+
+  await clickUpRequest(env, `/task/${taskId}/comment`, {
+    method: "POST",
+    body: JSON.stringify({
+      comment_text: commentText,
+      notify_all: false,
+    }),
+  });
 }
 
 /* ------------------------------------------
@@ -252,10 +353,7 @@ async function handleFormsIntake(request, env, ctx) {
   }
 
   if (!env.R2_BUCKET) {
-    return jsonResponse(
-      { ok: false, error: "R2_BUCKET binding missing." },
-      { status: 500 }
-    );
+    return jsonResponse({ ok: false, error: "R2_BUCKET binding missing." }, { status: 500 });
   }
 
   const parsed = await parseInboundBody(request);
@@ -269,10 +367,9 @@ async function handleFormsIntake(request, env, ctx) {
   }
 
   // Anti-spam: email-based throttling (cooldown + daily cap)
-  // NOTE: requires enforceEmailThrottle(...) helper to exist elsewhere in this file.
   const throttle = await enforceEmailThrottle(env, normalized.primaryEmail, {
     cooldownSeconds: 600, // 10 minutes
-    maxPerDay: 3,         // 3 submissions/day per email
+    maxPerDay: 3, // 3 submissions/day per email
   });
 
   if (!throttle.ok) {
@@ -407,5 +504,3 @@ async function handleStripeWebhook(request, env, ctx) {
   console.log("[stripe] webhook received", { type: parsed.value?.type, id: parsed.value?.id });
   return jsonResponse({ ok: true }, { status: 200 });
 }
-
-
