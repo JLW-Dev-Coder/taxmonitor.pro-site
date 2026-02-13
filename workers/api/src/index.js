@@ -331,6 +331,16 @@ async function handleFormsIntake(request, env, ctx) {
     let clickUpTaskId = null;
     if (env.CLICKUP_API_KEY && env.CLICKUP_ACCOUNTS_LIST_ID) {
       clickUpTaskId = await createClickUpAccountTask(env, account, receipt);
+
+      const comment = [
+        `tm_account=accounts/${account.accountId}.json`,
+        `tm_accountId=${account.accountId}`,
+        `tm_event=form:intake`,
+        `tm_eventId=${receipt.eventId}`,
+        `tm_receipt=receipts/form/${receipt.eventId}.json`,
+      ].join(" ");
+
+      await addClickUpComment(env, clickUpTaskId, comment);
     }
 
     // 4) Mark receipt processed
@@ -378,3 +388,4 @@ async function handleStripeWebhook(request, env, ctx) {
   console.log("[stripe] webhook received", { type: parsed.value?.type, id: parsed.value?.id });
   return jsonResponse({ ok: true }, { status: 200 });
 }
+
