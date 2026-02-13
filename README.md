@@ -110,6 +110,7 @@ Root domain must not proxy lifecycle endpoints unless explicitly documented.
 
 ```
 /
+
 app/
    ├─ pages/
       ├─ calendar/
@@ -140,6 +141,8 @@ app/
          └─ proposals.html
       ├─ projects/
          └─ index.html
+      ├─ staff/
+         └─ compliance-records.html
       └─ support/
          └─ index.html
    ├─ partials/
@@ -155,6 +158,7 @@ app/
 
 assets/
    ├─ favicon.ico
+   ├─ favicon.svg
    └─ logo.svg
 
 legal/
@@ -176,9 +180,6 @@ site/
    ├─ pricing.html
    ├─ site.js
    └─ support.html
-
-staff/
-   └─ compliance-records.html
 
 styles/
    ├─ app.css
@@ -414,6 +415,7 @@ Wrangler-only configuration.
 * Status-driven workflow
 * Worker-injected rendering state
 * Zero manual lifecycle transitions
+
 
 
 
