@@ -156,19 +156,21 @@ async function main() {
   // Redirects -> dist root
   if (await exists(REDIRECTS_SRC)) await cp(REDIRECTS_SRC, REDIRECTS_DEST);
 
-  if (BUILD_TARGET === "app") {
-    // Build APP into dist root so app.taxmonitor.pro/ loads the app
-    await copyDirIfExists(APP_DIR, null);
+if (BUILD_TARGET === "app") {
+  // Build APP into dist root so app.taxmonitor.pro/ loads the app
+  await copyDirIfExists(APP_DIR, null);
 
-    // Inject app partials into all app HTML (skip app/partials/)
-    await injectAppPartialsIntoTree({
-      sourceDir: APP_DIR,
-      distBaseDir: DIST_DIR,
-      skipPartialsDirName: "partials",
-    });
+  const distAppDir = path.join(DIST_DIR, "app");
 
-    return;
-  }
+  // Inject app partials into all app HTML (skip app/partials/)
+  await injectAppPartialsIntoTree({
+    sourceDir: APP_DIR,
+    distBaseDir: distAppDir,
+    skipPartialsDirName: "partials",
+  });
+
+  return;
+}
 
   // Default: build SITE into dist root so taxmonitor.pro/ loads marketing
   await copySiteNonHtmlToDistRoot();
