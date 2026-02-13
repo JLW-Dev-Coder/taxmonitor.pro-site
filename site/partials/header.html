@@ -15,11 +15,48 @@
 
       <!-- Informational Links -->
       <nav class="flex items-center gap-8">
+        <a href="/contact.html" class="text-sm text-slate-300 hover:text-white transition">Contact</a>
         <a href="/#how-it-works" class="text-sm text-slate-300 hover:text-white transition">How It Works</a>
         <a href="/pricing.html" class="text-sm text-slate-300 hover:text-white transition">Pricing</a>
         <a href="/#report-sample" class="text-sm text-slate-300 hover:text-white transition">Report Sample</a>
+
+        <!-- Resources Dropdown -->
+        <div class="relative">
+          <button
+            type="button"
+            class="inline-flex items-center gap-2 text-sm text-slate-300 hover:text-white transition"
+            aria-haspopup="true"
+            aria-expanded="false"
+            id="resources-toggle"
+          >
+            Resources
+            <svg class="h-4 w-4 opacity-80" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+
+          <div
+            id="resources-menu"
+            class="hidden absolute left-0 mt-3 w-64 rounded-xl border border-slate-800 bg-slate-950/95 shadow-xl backdrop-blur"
+            role="menu"
+            aria-labelledby="resources-toggle"
+          >
+            <div class="p-2">
+              <a href="/resources/433f.html" class="block rounded-lg px-3 py-2 text-sm text-slate-200 hover:bg-slate-900/70" role="menuitem">
+                433-F Style Form
+              </a>
+              <a href="/case-studies.html" class="block rounded-lg px-3 py-2 text-sm text-slate-200 hover:bg-slate-900/70" role="menuitem">
+                Case Studies
+              </a>
+              <div class="my-2 h-px bg-slate-800"></div>
+              <a href="/resources/" class="block rounded-lg px-3 py-2 text-sm text-slate-300 hover:bg-slate-900/70" role="menuitem">
+                View all resources →
+              </a>
+            </div>
+          </div>
+        </div>
+
         <a href="/#transcript-sample" class="text-sm text-slate-300 hover:text-white transition">Transcript Sample</a>
-        <a href="/contact.html" class="text-sm text-slate-300 hover:text-white transition">Contact</a>
       </nav>
 
       <!-- Divider -->
@@ -53,11 +90,38 @@
   <!-- Mobile Menu -->
   <div id="mobile-menu" class="hidden border-t border-slate-800 bg-slate-950 md:hidden">
     <div class="flex flex-col gap-4 px-6 py-6 text-sm">
+
+      <a href="/contact.html" class="text-slate-300 hover:text-white transition">Contact</a>
       <a href="/#how-it-works" class="text-slate-300 hover:text-white transition">How It Works</a>
       <a href="/pricing.html" class="text-slate-300 hover:text-white transition">Pricing</a>
       <a href="/#report-sample" class="text-slate-300 hover:text-white transition">Report Sample</a>
+
+      <!-- Mobile Resources -->
+      <button
+        id="mobile-resources-toggle"
+        class="flex items-center justify-between rounded-lg border border-slate-800 px-4 py-3 text-left text-slate-200 hover:bg-slate-900/60 transition"
+        aria-expanded="false"
+        type="button"
+      >
+        <span>Resources</span>
+        <svg class="h-4 w-4 opacity-80" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+
+      <div id="mobile-resources-menu" class="hidden pl-2">
+        <a href="/resources/433f.html" class="block rounded-lg px-4 py-2 text-slate-300 hover:text-white hover:bg-slate-900/40 transition">
+          433-F Style Form
+        </a>
+        <a href="/case-studies.html" class="block rounded-lg px-4 py-2 text-slate-300 hover:text-white hover:bg-slate-900/40 transition">
+          Case Studies
+        </a>
+        <a href="/resources/" class="mt-1 block rounded-lg px-4 py-2 text-slate-300 hover:text-white hover:bg-slate-900/40 transition">
+          View all resources →
+        </a>
+      </div>
+
       <a href="/#transcript-sample" class="text-slate-300 hover:text-white transition">Transcript Sample</a>
-      <a href="/contact.html" class="text-slate-300 hover:text-white transition">Contact</a>
 
       <div class="border-t border-slate-800 pt-4 mt-2">
         <a href="/app/login.html" class="block text-slate-300 hover:text-white transition mb-4">
@@ -76,11 +140,55 @@
 </header>
 
 <script>
-  const toggle = document.getElementById('menu-toggle');
   const menu = document.getElementById('mobile-menu');
+  const resourcesMenu = document.getElementById('resources-menu');
+  const resourcesToggle = document.getElementById('resources-toggle');
+  const toggle = document.getElementById('menu-toggle');
 
-  toggle.addEventListener('click', () => {
+  const mobileResourcesMenu = document.getElementById('mobile-resources-menu');
+  const mobileResourcesToggle = document.getElementById('mobile-resources-toggle');
+
+  function closeDesktopResources() {
+    if (!resourcesMenu || !resourcesToggle) return;
+    resourcesMenu.classList.add('hidden');
+    resourcesToggle.setAttribute('aria-expanded', 'false');
+  }
+
+  function toggleDesktopResources() {
+    if (!resourcesMenu || !resourcesToggle) return;
+    const hidden = resourcesMenu.classList.toggle('hidden');
+    resourcesToggle.setAttribute('aria-expanded', String(!hidden));
+  }
+
+  function toggleMobileResources() {
+    if (!mobileResourcesMenu || !mobileResourcesToggle) return;
+    const hidden = mobileResourcesMenu.classList.toggle('hidden');
+    mobileResourcesToggle.setAttribute('aria-expanded', String(!hidden));
+  }
+
+  toggle?.addEventListener('click', () => {
     const isHidden = menu.classList.toggle('hidden');
     toggle.setAttribute('aria-expanded', String(!isHidden));
+    closeDesktopResources();
+  });
+
+  resourcesToggle?.addEventListener('click', (e) => {
+    e.preventDefault();
+    toggleDesktopResources();
+  });
+
+  document.addEventListener('click', (e) => {
+    const target = e.target;
+    if (!resourcesMenu || !resourcesToggle) return;
+    const clickedInside = resourcesMenu.contains(target) || resourcesToggle.contains(target);
+    if (!clickedInside) closeDesktopResources();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeDesktopResources();
+  });
+
+  mobileResourcesToggle?.addEventListener('click', () => {
+    toggleMobileResources();
   });
 </script>
