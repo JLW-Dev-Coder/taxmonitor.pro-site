@@ -1,27 +1,91 @@
 // build.mjs
-import { readFile, readdir, writeFile } from "node:fs/promises";
+import { cp, mkdir, readFile, readdir, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 const ROOT = process.cwd();
-const PARTIALS_DIR = path.join(ROOT, "site", "partials");
+const DIST_DIR = path.join(ROOT, "dist");
+
+const APP_DIR = path.join(ROOT, "app");
+const ASSETS_DIR = path.join(ROOT, "assets");
+const LEGAL_DIR = path.join(ROOT, "legal");
+const PUBLIC_DIR = path.join(ROOT, "public");
 const SITE_DIR = path.join(ROOT, "site");
+const STYLES_DIR = path.join(ROOT, "styles");
 
-const footer = await readFile(path.join(PARTIALS_DIR, "footer.html"), "utf8");
-const header = await readFile(path.join(PARTIALS_DIR, "header.html"), "utf8");
+const PARTIALS_DIR = path.join(SITE_DIR, "partials");
+const REDIRECTS_SRC = path.join(ROOT, "_redirects");
+const REDIRECTS_DEST = path.join(DIST_DIR, "_redirects");
 
-const entries = await readdir(SITE_DIR, { withFileTypes: true });
+async function exists(p) {
+  try {
+    await stat(p);
+    return true;
+  } catch {
+    return false;
+  }
+}
 
-await Promise.all(
-  entries
-    .filter((e) => e.isFile() && e.name.endsWith(".html"))
-    .map(async (e) => {
-      const filePath = path.join(SITE_DIR, e.name);
-      const html = await readFile(filePath, "utf8");
+async function walk(dir) {
+  const out = [];
+  const entries = await readdir(dir, { withFileTypes: true });
+  for (const e of entries) {
+    const full = path.join(dir, e.name);
+    if (e.isDirectory()) out.push(...(await walk(full)));
+    if (e.isFile()) out.push(full);
+  }
+  return out;
+}
 
-      const out = html
-        .replace("<!-- PARTIAL:footer -->", footer)
-        .replace("<!-- PARTIAL:header -->", header);
+function rel(fromDir, filePath) {
+  return path.relative(fromDir, filePath).replaceAll(path.sep, "/");
+}
 
-      await writeFile(filePath, out, "utf8");
-    })
-);
+async function buildSiteHtml() {
+  const footer = await readFile(path.join(PARTIALS_DIR, "footer.html"), "utf8");
+  const header = await readFile(path.join(PARTIALS_DIR, "header.html"), "utf8");
+
+  const files = (await walk(SITE_DIR)).filter((f) => f.endsWith(".html"));
+
+  for (const filePath of files) {
+    // Skip partial files themselves
+    if (filePath.includes(`${path.sep}partials${path.sep}`)) continue;
+
+    const html = await readFile(filePath, "utf8");
+    const out = html
+      .replace("<!-- PARTIAL:footer -->", footer)
+      .replace("<!-- PARTIAL:header -->", header);
+
+    const destPath = path.join(DIST_DIR, "site", rel(SITE_DIR, filePath));
+    await mkdir(path.dirname(destPath), { recursive: true });
+    await writeFile(destPath, out, "utf8");
+  }
+}
+
+async function copyDirIfExists(srcDir, destSubdir) {
+  if (!(await exists(srcDir))) return;
+  const destDir = path.join(DIST_DIR, destSubdir);
+  await mkdir(destDir, { recursive: true });
+  await cp(srcDir, destDir, { recursive: true });
+}
+
+async function main() {
+  // Fresh dist
+  await mkdir(DIST_DIR, { recursive: true });
+
+  // Copy non-site folders
+  await copyDirIfExists(APP_DIR, "app");
+  await copyDirIfExists(ASSETS_DIR, "assets");
+  await copyDirIfExists(LEGAL_DIR, "legal");
+  await copyDirIfExists(PUBLIC_DIR, "public");
+  await copyDirIfExists(STYLES_DIR, "styles");
+
+  // Build site html into dist/site (with partials injected)
+  await buildSiteHtml();
+
+  // Copy _redirects to dist root if present
+  if (await exists(REDIRECTS_SRC)) {
+    await cp(REDIRECTS_SRC, REDIRECTS_DEST);
+  }
+}
+
+await main();
