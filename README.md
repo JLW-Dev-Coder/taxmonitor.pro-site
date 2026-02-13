@@ -113,6 +113,19 @@ Root domain must not proxy lifecycle endpoints unless explicitly documented.
 app/
    ├─ agreement.html
    ├─ index.html
+      ├─ flows/
+      ├─ intake/
+         ├─ agreement.html
+         ├─ intake.html
+         ├─ offer.html
+         └─ payment.html
+      └─ post-payment/
+         ├─ address-update.html
+         ├─ client-exit-survey.html
+         ├─ compliance-report.html
+         ├─ esign-2848.html
+         ├─ filing-status.html
+         └─ welcome.html
    ├─ intake.html
    ├─ login.html
    ├─ offer.html
@@ -126,19 +139,6 @@ app/
          └─ index.html
       ├─ files/
          └─ index.html
-      ├─ flows/
-         ├─ intake/
-            ├─ agreement.html
-            ├─ intake.html
-            ├─ offer.html
-            └─ payment.html
-         └─ post-payment/
-            ├─ address-update.html
-            ├─ client-exit-survey.html
-            ├─ compliance-report.html
-            ├─ esign-2848.html
-            ├─ filing-status.html
-            └─ welcome.html
       ├─ messaging/
          └─ index.html
       ├─ office/
@@ -415,6 +415,7 @@ Wrangler-only configuration.
 * Status-driven workflow
 * Worker-injected rendering state
 * Zero manual lifecycle transitions
+
 
 
 
