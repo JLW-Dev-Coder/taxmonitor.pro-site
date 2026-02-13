@@ -155,7 +155,6 @@ app/
 
 assets/
    ├─ favicon.ico
-   ├─ favicon.svg
    └─ logo.svg
 
 legal/
@@ -415,6 +414,7 @@ Wrangler-only configuration.
 * Status-driven workflow
 * Worker-injected rendering state
 * Zero manual lifecycle transitions
+
 
 
 
