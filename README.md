@@ -111,8 +111,11 @@ Root domain must not proxy lifecycle endpoints unless explicitly documented.
 ```
 /
 app/
-   ├─ agreement.html
-   ├─ index.html
+   ├─ pages/
+      ├─ calendar/
+         └─ index.html
+      ├─ files/
+         └─ index.html
       ├─ flows/
          ├─ intake/
             ├─ agreement.html
@@ -126,19 +129,6 @@ app/
             ├─ esign-2848.html
             ├─ filing-status.html
             └─ welcome.html
-   ├─ intake.html
-   ├─ login.html
-   ├─ offer.html
-   ├─ payment-success.html
-   ├─ payment.html
-   ├─ partials/
-      ├─ sidebar.html
-      └─ topbar.html
-   └─ pages/
-      ├─ calendar/
-         └─ index.html
-      ├─ files/
-         └─ index.html
       ├─ messaging/
          └─ index.html
       ├─ office/
@@ -152,6 +142,16 @@ app/
          └─ index.html
       └─ support/
          └─ index.html
+   ├─ partials/
+      ├─ sidebar.html
+      └─ topbar.html
+   ├─ agreement.html
+   ├─ index.html
+   ├─ intake.html
+   ├─ login.html
+   ├─ offer.html
+   ├─ payment-success.html
+   └─ payment.html
 
 assets/
    ├─ favicon.ico
@@ -166,17 +166,17 @@ public/
    └─ .gitkeep
 
 site/
+   ├─ partials/
+      ├─ footer.html
+      └─ header.html
+   ├─ resources/
+      ├─ 433F.html
+      └─ case-studies.html
    ├─ contact.html
    ├─ index.html
    ├─ pricing.html
    ├─ site.js
-   ├─ support.html
-   ├─ partials/
-      ├─ footer.html
-      └─ header.html
-   └─ resources/
-      ├─ 433F.html
-      └─ case-studies.html
+   └─ support.html
 
 staff/
    └─ compliance-records.html
@@ -187,9 +187,9 @@ styles/
 
 workers/
    └─ api/
-      ├─ wrangler.toml
-      └─ src/
+      ├─ src/
          └─ index.js
+      └─ wrangler.toml
 
 README.md
 _redirects
@@ -415,6 +415,7 @@ Wrangler-only configuration.
 * Status-driven workflow
 * Worker-injected rendering state
 * Zero manual lifecycle transitions
+
 
 
 
