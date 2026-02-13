@@ -63,148 +63,14 @@
 <body class="h-full bg-slate-950 font-sans text-white">
   <div class="flex h-full">
 
-    <!-- Left Sidebar -->
-    <aside class="w-64 bg-slate-900 border-r border-slate-800/50 flex flex-col shrink-0">
-      <!-- Brand Block -->
-      <div class="p-5 border-b border-slate-800/50">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-lg gradient-bg flex items-center justify-center font-bold text-slate-900 text-lg">
-            TM
-          </div>
-          <div>
-            <div class="font-semibold text-white text-sm">Tax Monitor Pro</div>
-            <div class="text-xs text-slate-500">IRS Monitoring</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Client/Account Block -->
-      <div class="p-5 border-b border-slate-800/50">
-        <div class="flex items-center gap-3">
-          <div class="w-9 h-9 rounded-full bg-gradient-to-br from-slate-700 to-slate-800 flex items-center justify-center text-sm font-medium text-slate-300 tm-user-initials">
-            TM
-          </div>
-          <div class="flex-1 min-w-0">
-            <div id="sidebar-user-name" class="font-medium text-sm text-white truncate">Jane Doe</div>
-            <div id="sidebar-account-label" class="text-xs text-slate-500">Account: Monitoring</div>
-          </div>
-        </div>
-        <a href="javascript:void(0)" class="text-xs text-amber-500 hover:text-amber-400 mt-2 inline-block transition-colors">Edit profile</a>
-      </div>
-
-      <!-- Navigation -->
-      <nav class="flex-1 py-4 px-3">
-        <ul class="space-y-1">
-          <li>
-            <a href="/app/index.html" class="nav-item active flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-white">
-              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
-              </svg>
-              Start Here
-            </a>
-          </li>
-
-          <li>
-            <a href="/app/calendar.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-400 hover:text-white">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-              </svg>
-              Calendar
-            </a>
-          </li>
-
-          <li>
-            <a href="/app/files.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-400 hover:text-white">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/>
-              </svg>
-              Files
-            </a>
-          </li>
-
-          <li>
-            <a href="/app/messaging.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-400 hover:text-white">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 10h8m-8 4h5m-7 7l-3 3V5a2 2 0 012-2h14a2 2 0 012 2v12a2 2 0 01-2 2H7z"/>
-              </svg>
-              Messaging
-            </a>
-          </li>
-
-          <li>
-            <a href="/app/office.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-400 hover:text-white">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 21h18M5 21V7a2 2 0 012-2h3v16M14 21V3h3a2 2 0 012 2v16"/>
-              </svg>
-              Office
-            </a>
-          </li>
-
-          <li>
-            <a href="/app/projects.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-400 hover:text-white">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5h6m-8 4h10M7 13h10M7 17h6"/>
-              </svg>
-              Projects
-            </a>
-          </li>
-
-          <li>
-            <a href="/app/support.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-400 hover:text-white">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/>
-              </svg>
-              Support
-            </a>
-          </li>
-        </ul>
-      </nav>
-
-      <!-- Footer note -->
-      <div class="p-4 border-t border-slate-800/50">
-        <p id="sidebar-footnote" class="text-[11px] text-slate-500 leading-relaxed">
-          Monitoring does not create IRS representation.
-        </p>
-      </div>
-    </aside>
+    <!-- APP SIDEBAR PARTIAL -->
+    <!-- APP_SIDEBAR -->
 
     <!-- Main Content Area -->
     <div class="flex-1 flex flex-col min-w-0">
-      <!-- Top Bar -->
-      <header class="h-16 bg-slate-900/50 border-b border-slate-800/50 flex items-center justify-between px-6 shrink-0">
-        <div class="flex items-center gap-3">
-          <div class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800/50 border border-slate-700/50">
-            <span class="w-2 h-2 rounded-full bg-amber-500"></span>
-            <span id="topbar-mode" class="text-xs text-slate-300">Monitoring Portal</span>
-          </div>
-        </div>
 
-        <!-- Right Side Icons -->
-        <div class="flex items-center gap-2">
-          <button class="p-2 text-slate-400 hover:text-white transition-colors" aria-label="Search">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-            </svg>
-          </button>
-
-          <button class="p-2 text-slate-400 hover:text-white transition-colors relative" aria-label="Notifications">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
-            </svg>
-            <span id="notif-dot" class="absolute top-1.5 right-1.5 w-2 h-2 bg-amber-500 rounded-full"></span>
-          </button>
-
-          <a href="/app/support.html" class="p-2 text-slate-400 hover:text-white transition-colors" aria-label="Help">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-            </svg>
-          </a>
-
-          <div class="w-8 h-8 rounded-full bg-gradient-to-br from-slate-600 to-slate-700 flex items-center justify-center text-sm font-medium text-slate-300 cursor-pointer hover:ring-2 hover:ring-amber-500/50 transition-all tm-user-initials">
-            TM
-          </div>
-        </div>
-      </header>
+      <!-- APP TOPBAR PARTIAL -->
+      <!-- APP_TOPBAR -->
 
       <!-- Main Content -->
       <main class="flex-1 overflow-auto">
@@ -260,7 +126,6 @@
                 </div>
               </div>
 
-              <!-- Timeline (sequence matters, sorry alphabet police) -->
               <ol class="space-y-3">
                 <li class="flex items-start gap-3">
                   <div class="mt-1 w-6 h-6 rounded-full bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center">
@@ -412,9 +277,7 @@
             </section>
           </div>
 
-          <!-- Quick Actions + Activity -->
           <div class="grid lg:grid-cols-3 gap-6 mb-8">
-            <!-- Quick Actions -->
             <section class="bg-slate-900 rounded-2xl border border-slate-800/50 p-6 card-glow">
               <h2 id="actions-title" class="text-lg font-semibold mb-1">Quick Actions</h2>
               <p id="actions-subtitle" class="text-sm text-slate-400 mb-5">Do the next thing. Avoid chaos.</p>
@@ -473,7 +336,6 @@
               </div>
             </section>
 
-            <!-- Recent Activity -->
             <section class="lg:col-span-2 bg-slate-900 rounded-2xl border border-slate-800/50 p-6 card-glow">
               <div class="flex items-center justify-between gap-4 mb-5">
                 <div>
@@ -517,7 +379,6 @@
             </section>
           </div>
 
-          <!-- Legal / Disclaimer -->
           <p id="disclaimer" class="text-center text-slate-600 text-xs pb-6">
             Monitoring does not create IRS representation. Representation, filing, and resolution are separate engagements.
           </p>
@@ -578,22 +439,18 @@
       const firstName = safeFirstName(fullName);
       const initials = initialsFromName(fullName);
 
-      // Header / identity
       setText('greeting-prefix', merged.greeting_prefix);
       setText('greeting-name', firstName);
       setText('sidebar-user-name', fullName);
       setText('topbar-user-name', fullName);
 
-      // Labels
       setText('sidebar-account-label', merged.account_label);
       setText('topbar-mode', merged.topbar_mode);
 
-      // Trust / copy blocks
       setText('trust-line', merged.trust_line);
       setText('subheadline', merged.greeting_subheadline);
       setText('helper-text', merged.helper_text);
 
-      // Sections
       setText('actions-title', merged.actions_title);
       setText('actions-subtitle', merged.actions_subtitle);
       setText('activity-title', merged.activity_title);
@@ -603,20 +460,16 @@
       setText('snapshot-title', merged.snapshot_title);
       setText('snapshot-subtitle', merged.snapshot_subtitle);
 
-      // Progress bits
       setText('progress-badge', merged.progress_badge);
       setText('progress-left', merged.progress_left);
       setText('progress-right', merged.progress_right);
 
-      // Disclaimer
       setText('disclaimer', merged.disclaimer_text);
       setText('sidebar-footnote', 'Monitoring does not create IRS representation.');
 
-      // Initials (all avatars)
       const initialsEls = document.querySelectorAll('.tm-user-initials');
       initialsEls.forEach((el) => { el.textContent = initials; });
 
-      // Colors
       if (merged.background_color) document.body.style.backgroundColor = merged.background_color;
       if (merged.text_color) document.body.style.color = merged.text_color;
     }
@@ -678,4 +531,3 @@
   </script>
 </body>
 </html>
-
