@@ -116,17 +116,17 @@ app/
 ├─ pages/
 │  └─ flows/
 │     ├─ intake/
-│     │  ├─ agreement.html
 │     │  ├─ intake.html
 │     │  ├─ offer.html
+│     │  ├─ agreement.html
 │     │  └─ payment.html
 │     └─ post-payment/
-│        ├─ address-update.html
-│        ├─ client-exit-survey.html
-│        ├─ compliance-report.html
-│        ├─ esign-2848.html
+│        ├─ welcome.html
 │        ├─ filing-status.html
-│        └─ welcome.html
+│        ├─ address-update.html
+│        ├─ esign-2848.html
+│        ├─ compliance-report.html
+│        └─ client-exit-survey.html
 ├─ partials/
 │  ├─ sidebar.html
 │  └─ topbar.html
@@ -470,5 +470,6 @@ Rules:
 * Stateless Worker
 * Status-driven workflow
 * Zero manual lifecycle transitions
+
 
 
