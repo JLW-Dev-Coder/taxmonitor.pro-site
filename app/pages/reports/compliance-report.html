@@ -230,6 +230,8 @@
         if (el) el.textContent = String(value ?? '');
       }
 
+      // NOTE: This intentionally sets textContent (not innerHTML) for safety.
+      // Keeping the function name to avoid churn in your pages.
       function setHTML(id, value) {
         var el = document.getElementById(id);
         if (el) el.textContent = String(value ?? '');
@@ -251,21 +253,13 @@
         });
       }
 
-      function applyFlowPlaceholders(state) {
+      function applyFlowPlaceholders() {
         var flowLabel = document.getElementById('sidebar-flow-label');
         var flowSubtitle = document.getElementById('sidebar-flow-subtitle');
 
         if (flowLabel) flowLabel.textContent = 'Start Here';
         if (flowSubtitle) flowSubtitle.textContent = 'Reports';
       }
-
-      // Worker injects this. Safe fallback provided.
-      window.TM_APP_STATE = window.TM_APP_STATE || {
-        completed: {},
-        report: { ready: false },
-        topbar_mode: 'Monitoring Portal',
-        user_name: 'Jane Doe'
-      };
 
       // Flow order matters.
       var STEPS = [
@@ -313,11 +307,11 @@
         setText('status-detail', 'Your report fields are populated based on your record.');
 
         var r = report || {};
-        setText('report-date', safeText(r.report_date || ''));
-        setText('account-status', safeText(r.account_status || ''));
-        setText('open-issues', safeText((r.open_issues != null) ? r.open_issues : ''));
-        setText('notices', safeText((r.notices != null) ? r.notices : ''));
-        setHTML('summary-notes', safeText(r.summary_notes || ''));
+        setText('report-date', safeText(r.report_date || r.reportDate || ''));
+        setText('account-status', safeText(r.account_status || r.accountStatus || r.IRS_Account_Status || ''));
+        setText('open-issues', safeText((r.open_issues != null) ? r.open_issues : (r.openIssues != null ? r.openIssues : '')));
+        setText('notices', safeText((r.notices != null) ? r.notices : (r.notice_count != null ? r.notice_count : '')));
+        setHTML('summary-notes', safeText(r.summary_notes || r.summaryNotes || r.Tax_Monitoring_Service_Progress_Status || ''));
 
         setText('next-steps', 'You can download files from the archive or review your onboarding status in Start Here.');
 
@@ -337,7 +331,7 @@
           : 'Complete your onboarding steps to generate this report.'
         );
 
-        // placeholders stay empty by design
+        // Placeholders stay empty by design
         setText('report-date', '');
         setText('account-status', '');
         setText('open-issues', '');
@@ -361,33 +355,83 @@
         if (ctaSample) ctaSample.classList.remove('hidden');
       }
 
-      var uiName = applyUserIdentity(window.TM_APP_STATE);
+      async function fetchWorkerState() {
+        // Contract:
+        // - Worker injects TM_APP_STATE for SSR (best)
+        // - Or page fetches state from the Worker (this)
+        // Expected query params:
+        // - orderId OR code (orderToken)
+        var params = new URLSearchParams(window.location.search || '');
+        var orderId = safeText(params.get('orderId') || params.get('order_id') || '');
+        var code = safeText(params.get('code') || params.get('orderToken') || params.get('order_token') || '');
 
-      // Sidebar labels
-      applyFlowPlaceholders(window.TM_APP_STATE);
+        // Prefer explicit, but fall back to whatever you injected.
+        var injected = window.TM_APP_STATE && typeof window.TM_APP_STATE === 'object' ? window.TM_APP_STATE : null;
+        if (injected && (injected.orderId || injected.order_id || injected.orderToken || injected.order_token)) return injected;
 
-      // Label/header bits
-      var topbarMode = (window.TM_APP_STATE && window.TM_APP_STATE.topbar_mode) ? window.TM_APP_STATE.topbar_mode : 'Monitoring Portal';
-      setText('topbar-mode', topbarMode);
+        // No identifier = can't fetch. Show placeholder state without blocking.
+        if (!orderId && !code) return (injected || {});
 
-      // Decide readiness
-      var completed = (window.TM_APP_STATE && window.TM_APP_STATE.completed) ? window.TM_APP_STATE.completed : {};
-      var report = (window.TM_APP_STATE && window.TM_APP_STATE.report) ? window.TM_APP_STATE.report : { ready: false };
+        // Endpoint name is yours to decide. This is the lightest, most reliable contract:
+        // GET https://api.taxmonitor.pro/state/order?orderId=...  OR  ?code=...
+        var url = 'https://api.taxmonitor.pro/state/order?';
+        if (orderId) url += 'orderId=' + encodeURIComponent(orderId);
+        else url += 'code=' + encodeURIComponent(code);
 
-      // “Ready” can be driven by either:
-      // - report.ready === true, OR
-      // - completed.compliance_submitted === true (depending on your contract)
-      var ready = !!report.ready || !!completed.compliance_submitted;
-
-      if (ready) {
-        showReady(uiName, report);
-      } else {
-        var required = firstIncompleteStep(completed);
-        showNotReady(uiName, required);
+        try {
+          var res = await fetch(url, { method: 'GET', headers: { 'accept': 'application/json' } });
+          if (!res.ok) throw new Error('bad_status_' + res.status);
+          var json = await res.json();
+          return (json && json.state) ? json.state : json;
+        } catch (e) {
+          return (injected || { error: 'state_fetch_failed' });
+        }
       }
 
-      applyNavActive();
-      window.addEventListener('popstate', applyNavActive);
+      async function main() {
+        applyFlowPlaceholders();
+
+        // Default minimal state (no blocking, just copy changes)
+        var state = {
+          completed: {},
+          report: { ready: false },
+          topbar_mode: 'Monitoring Portal',
+          user_name: 'Jane Doe'
+        };
+
+        // Merge Worker state
+        var workerState = await fetchWorkerState();
+        if (workerState && typeof workerState === 'object') {
+          state = Object.assign({}, state, workerState);
+          if (workerState.completed && typeof workerState.completed === 'object') state.completed = workerState.completed;
+          if (workerState.report && typeof workerState.report === 'object') state.report = workerState.report;
+        }
+
+        // Identity + topbar
+        var uiName = applyUserIdentity(state);
+        setText('topbar-mode', safeText(state.topbar_mode || 'Monitoring Portal'));
+
+        // Decide readiness
+        var completed = (state && state.completed) ? state.completed : {};
+        var report = (state && state.report) ? state.report : { ready: false };
+
+        // “Ready” can be driven by either:
+        // - report.ready === true, OR
+        // - completed.compliance_submitted === true
+        var ready = !!report.ready || !!completed.compliance_submitted;
+
+        if (ready) {
+          showReady(uiName, report);
+        } else {
+          var required = firstIncompleteStep(completed);
+          showNotReady(uiName, required);
+        }
+
+        applyNavActive();
+        window.addEventListener('popstate', applyNavActive);
+      }
+
+      main();
     })();
   </script>
 </body>
