@@ -476,20 +476,6 @@ Do not define runtime variables in dashboard.
 
 Alphabetical:
 
-Good catch. You’re right.
-
-Everything else is screaming in ALL_CAPS and then we’ve got six little camelCase rebels sitting there pretending they don’t live in Wrangler.
-
-We standardize them.
-
-Below is the corrected **Environment Variables section**, updated to match your existing convention.
-
----
-
-## Plaintext Vars
-
-Alphabetical:
-
 * CLICKUP_ACCOUNTS_LIST_ID
 * CLICKUP_ORDERS_LIST_ID
 * CLICKUP_SUPPORT_LIST_ID
@@ -534,3 +520,4 @@ Organization identity values must exist in Wrangler config.
 * Status-driven workflow
 * Worker-injected rendering state
 * Zero manual lifecycle transitions
+
