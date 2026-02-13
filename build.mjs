@@ -40,27 +40,6 @@ function rel(fromDir, filePath) {
   return path.relative(fromDir, filePath).replaceAll(path.sep, "/");
 }
 
-async function buildSiteHtml() {
-  const footer = await readFile(path.join(PARTIALS_DIR, "footer.html"), "utf8");
-  const header = await readFile(path.join(PARTIALS_DIR, "header.html"), "utf8");
-
-  const files = (await walk(SITE_DIR)).filter((f) => f.endsWith(".html"));
-
-  for (const filePath of files) {
-    // Skip partial files themselves
-    if (filePath.includes(`${path.sep}partials${path.sep}`)) continue;
-
-    const html = await readFile(filePath, "utf8");
-    const out = html
-      .replace("<!-- PARTIAL:footer -->", footer)
-      .replace("<!-- PARTIAL:header -->", header);
-
-    const destPath = path.join(DIST_DIR, "site", rel(SITE_DIR, filePath));
-    await mkdir(path.dirname(destPath), { recursive: true });
-    await writeFile(destPath, out, "utf8");
-  }
-}
-
 async function copyDirIfExists(srcDir, destSubdir) {
   if (!(await exists(srcDir))) return;
   const destDir = path.join(DIST_DIR, destSubdir);
@@ -68,21 +47,53 @@ async function copyDirIfExists(srcDir, destSubdir) {
   await cp(srcDir, destDir, { recursive: true });
 }
 
+async function copySiteAssets() {
+  // Copy everything in /site EXCEPT partials (and we will overwrite HTML next)
+  const entries = await readdir(SITE_DIR, { withFileTypes: true });
+  for (const e of entries) {
+    if (e.name === "partials") continue;
+    const src = path.join(SITE_DIR, e.name);
+    const dest = path.join(DIST_DIR, e.name);
+    await cp(src, dest, { recursive: e.isDirectory() });
+  }
+}
+
+async function buildSiteHtml() {
+  const footer = await readFile(path.join(PARTIALS_DIR, "footer.html"), "utf8");
+  const header = await readFile(path.join(PARTIALS_DIR, "header.html"), "utf8");
+
+  const files = (await walk(SITE_DIR)).filter((f) => f.endsWith(".html"));
+
+  for (const filePath of files) {
+    if (filePath.includes(`${path.sep}partials${path.sep}`)) continue;
+
+    const html = await readFile(filePath, "utf8");
+    const out = html
+      .replace("<!-- PARTIAL:footer -->", footer)
+      .replace("<!-- PARTIAL:header -->", header);
+
+    // IMPORTANT: write to dist root, mirroring site/ structure
+    const destPath = path.join(DIST_DIR, rel(SITE_DIR, filePath));
+    await mkdir(path.dirname(destPath), { recursive: true });
+    await writeFile(destPath, out, "utf8");
+  }
+}
+
 async function main() {
-  // Fresh dist
   await mkdir(DIST_DIR, { recursive: true });
 
-  // Copy non-site folders
   await copyDirIfExists(APP_DIR, "app");
   await copyDirIfExists(ASSETS_DIR, "assets");
   await copyDirIfExists(LEGAL_DIR, "legal");
   await copyDirIfExists(PUBLIC_DIR, "public");
   await copyDirIfExists(STYLES_DIR, "styles");
 
-  // Build site html into dist/site (with partials injected)
+  // Copy site assets first (site.js, images, etc.)
+  await copySiteAssets();
+
+  // Then overwrite HTML with injected partials
   await buildSiteHtml();
 
-  // Copy _redirects to dist root if present
   if (await exists(REDIRECTS_SRC)) {
     await cp(REDIRECTS_SRC, REDIRECTS_DEST);
   }
