@@ -66,9 +66,15 @@
       box-shadow: 0 0 40px rgba(245, 158, 11, 0.4), 0 0 80px rgba(245, 158, 11, 0.2);
     }
 
-    .progress-glow {
-      box-shadow: 0 0 12px rgba(245, 158, 11, 0.5);
+    /* Match agreement header progress bar look */
+    .progress-glow{
+      background: linear-gradient(90deg,#F59E0B,#D97706);
+      box-shadow: 0 0 20px rgba(245,158,11,.5);
     }
+
+    /* Match agreement header step pulse */
+    @keyframes pulse-glow{ 0%,100%{box-shadow:0 0 20px rgba(245,158,11,.30)} 50%{box-shadow:0 0 40px rgba(245,158,11,.50)} }
+    .animate-pulse-glow{ animation:pulse-glow 2s ease-in-out infinite; }
 
     .step-done {
       background: linear-gradient(135deg, rgba(20, 184, 166, 0.2) 0%, rgba(13, 148, 136, 0.3) 100%);
@@ -105,73 +111,74 @@
   <div class="fixed inset-0 noise-overlay pointer-events-none"></div>
 
   <div class="relative min-h-full flex flex-col">
-    <!-- Sticky Flow Header -->
-    <header class="sticky top-0 z-50 glass-card border-b border-slate-800/50">
-      <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4">
-        <div class="flex items-center justify-between gap-4">
-          <!-- Left: Logo -->
-          <a href="/site/index.html" class="flex items-center gap-3 flex-shrink-0">
-            <div class="w-10 h-10 amber-gradient-bg rounded-xl flex items-center justify-center">
+    <!-- Sticky Header (match agreement.html structure) -->
+    <header class="sticky top-0 z-50 glass-card border-b border-slate-700/50">
+      <div class="max-w-6xl mx-auto px-4 py-4">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <!-- Logo -->
+          <a href="/site/index.html" class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center">
               <span class="font-black text-slate-950">TM</span>
             </div>
-            <span class="text-lg font-semibold text-slate-100 hidden sm:block">Tax Monitor Pro</span>
+            <span class="font-bold text-lg text-slate-100">Tax Monitor Pro</span>
           </a>
 
-          <!-- Center: Stepper -->
-          <div class="flex items-center gap-2 sm:gap-3">
-            <div class="flex items-center gap-1.5">
-              <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-full step-done border flex items-center justify-center">
-                <svg class="w-4 h-4 text-teal-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+          <!-- Stepper -->
+          <div class="flex items-center gap-2 sm:gap-4">
+            <div class="flex items-center gap-2">
+              <div class="w-7 h-7 rounded-full bg-emerald-500/20 border border-emerald-500 flex items-center justify-center">
+                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                 </svg>
               </div>
-              <span class="text-xs text-slate-400 hidden md:block">Intake</span>
+              <span class="text-sm text-slate-400 hidden sm:inline">Intake</span>
             </div>
 
-            <div class="w-4 sm:w-8 h-px bg-slate-700"></div>
+            <div class="w-8 h-0.5 bg-emerald-500/50"></div>
 
-            <div class="flex items-center gap-1.5">
-              <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-full step-done border flex items-center justify-center">
-                <svg class="w-4 h-4 text-teal-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+            <div class="flex items-center gap-2">
+              <div class="w-7 h-7 rounded-full bg-emerald-500/20 border border-emerald-500 flex items-center justify-center">
+                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                 </svg>
               </div>
-              <span class="text-xs text-slate-400 hidden md:block">Offer</span>
+              <span class="text-sm text-slate-400 hidden sm:inline">Offer</span>
             </div>
 
-            <div class="w-4 sm:w-8 h-px bg-slate-700"></div>
+            <div class="w-8 h-0.5 bg-emerald-500/50"></div>
 
-            <div class="flex items-center gap-1.5">
-              <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-full step-done border flex items-center justify-center">
-                <svg class="w-4 h-4 text-teal-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+            <div class="flex items-center gap-2">
+              <div class="w-7 h-7 rounded-full bg-emerald-500/20 border border-emerald-500 flex items-center justify-center">
+                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                 </svg>
               </div>
-              <span class="text-xs text-slate-400 hidden md:block">Agreement</span>
+              <span class="text-sm text-slate-400 hidden sm:inline">Agreement</span>
             </div>
 
-            <div class="w-4 sm:w-8 h-px bg-slate-700"></div>
+            <div class="w-8 h-0.5 bg-emerald-500/50"></div>
 
-            <div class="flex items-center gap-1.5">
-              <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-full step-active border flex items-center justify-center">
-                <span class="text-sm font-semibold text-amber-400">4</span>
+            <div class="flex items-center gap-2">
+              <div class="w-7 h-7 rounded-full bg-amber-500 flex items-center justify-center animate-pulse-glow">
+                <span class="text-xs font-bold text-slate-900">4</span>
               </div>
-              <span class="text-xs text-amber-400 font-medium hidden md:block">Payment</span>
+              <span class="text-sm font-semibold text-amber-400">Payment</span>
             </div>
           </div>
 
-          <!-- Right: Validity Pill -->
-          <div class="flex-shrink-0">
-            <div class="px-3 py-1.5 rounded-full bg-slate-800/60 border border-slate-700/50 text-xs text-slate-400">
-              <span class="hidden sm:inline">Valid for </span>7 days
-            </div>
+          <!-- Validity chip -->
+          <div class="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800/80 border border-slate-700">
+            <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <span class="text-xs text-slate-300">Valid for 7 days</span>
           </div>
         </div>
-      </div>
 
-      <!-- Progress Bar -->
-      <div class="h-1 bg-slate-800/50">
-        <div class="h-full amber-gradient-bg progress-glow" style="width: 100%"></div>
+        <!-- Progress bar (Payment = 100%) -->
+        <div class="mt-4 h-1 bg-slate-800 rounded-full overflow-hidden">
+          <div class="h-full w-full progress-glow rounded-full"></div>
+        </div>
       </div>
     </header>
 
