@@ -105,12 +105,9 @@ Root domain must not proxy lifecycle endpoints unless explicitly documented.
 
 ---
 
-# Repository Structure
-
-```
 /
 app/
-├─ index.html                (Start Here — Worker state-driven)
+├─ index.html
 ├─ login.html
 ├─ payment.html
 ├─ payment-success.html
@@ -153,7 +150,7 @@ site/
 ├─ site.js
 └─ support.html
 staff/
-├─ compliance-records.html   (Form 10 — Compliance Records)
+├─ compliance-records.html
 styles/
 ├─ app.css
 └─ site.css
@@ -505,6 +502,7 @@ Organization identity values must exist in Wrangler config.
 * Status-driven workflow
 * Worker-injected rendering state
 * Zero manual lifecycle transitions
+
 
 
 
