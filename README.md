@@ -111,10 +111,13 @@ Root domain must not proxy lifecycle endpoints unless explicitly documented.
 ```
 /
 app/
+├─ agreement.html
 ├─ index.html
+├─ intake.html
 ├─ login.html
-├─ payment.html
+├─ offer.html
 ├─ payment-success.html
+├─ payment.html
 ├─ partials/
 │  ├─ sidebar.html
 │  └─ topbar.html
@@ -123,6 +126,19 @@ app/
 │  │  └─ index.html
 │  ├─ files/
 │  │  └─ index.html
+│  ├─ flows/
+│  │  ├─ intake/
+│  │  │  ├─ agreement.html
+│  │  │  ├─ intake.html
+│  │  │  ├─ offer.html
+│  │  │  └─ payment.html
+│  │  └─ post-payment/
+│  │     ├─ address-update.html
+│  │     ├─ client-exit-survey.html
+│  │     ├─ compliance-report.html
+│  │     ├─ esign-2848.html
+│  │     ├─ filing-status.html
+│  │     └─ welcome.html
 │  ├─ messaging/
 │  │  └─ index.html
 │  ├─ office/
@@ -134,21 +150,8 @@ app/
 │  │  └─ proposals.html
 │  ├─ projects/
 │  │  └─ index.html
-│  ├─ support/
-│  │  └─ index.html
-│  └─ flows/
-│     ├─ intake/
-│     │  ├─ agreement.html
-│     │  ├─ intake.html
-│     │  ├─ offer.html
-│     │  └─ payment.html
-│     └─ post-payment/
-│        ├─ address-update.html
-│        ├─ client-exit-survey.html
-│        ├─ compliance-report.html
-│        ├─ esign-2848.html
-│        ├─ filing-status.html
-│        └─ welcome.html
+│  └─ support/
+│     └─ index.html
 assets/
 ├─ favicon.ico
 ├─ favicon.svg
@@ -403,6 +406,7 @@ Wrangler-only configuration.
 * Status-driven workflow
 * Worker-injected rendering state
 * Zero manual lifecycle transitions
+
 
 
 
