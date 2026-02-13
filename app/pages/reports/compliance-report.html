@@ -1,0 +1,394 @@
+<!-- /app/pages/reports/compliance-report.html -->
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tax Monitor Pro — Compliance Report</title>
+
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Favicon (match offer.html) -->
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" href="/assets/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+  <link rel="apple-touch-icon" href="/assets/favicon.ico" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['DM Sans', 'system-ui', 'sans-serif'] },
+          colors: {
+            slate: { 850: '#1a1f2e', 900: '#0f1219', 950: '#080a0f' },
+            amber: { 400: '#fbbf24', 500: '#f59e0b', 600: '#d97706' }
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    html, body { height: 100%; }
+    *, *::before, *::after { box-sizing: border-box; }
+    body { box-sizing: border-box; }
+    * { font-family: 'DM Sans', system-ui, sans-serif; }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .gradient-bg {
+      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+    }
+    .card-glow {
+      box-shadow: 0 0 40px rgba(251, 191, 36, 0.06), 0 0 90px rgba(251, 191, 36, 0.02);
+    }
+
+    .nav-item { transition: all 0.2s ease; }
+    .nav-item:hover { background: rgba(251, 191, 36, 0.08); }
+    .nav-item.active {
+      background: rgba(251, 191, 36, 0.12);
+      border-left: 2px solid #f59e0b;
+      color: #fff;
+    }
+
+    .noise-bg::before{
+      content:'';
+      position:fixed; inset:0;
+      opacity:.03;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      pointer-events:none;
+      z-index:1;
+    }
+
+    .aurora-blob{ position:absolute; border-radius:50%; filter:blur(100px); opacity:.14; animation:float 20s ease-in-out infinite; }
+    .aurora-1{ width:650px; height:420px; background:linear-gradient(135deg,#F59E0B,#D97706); top:8%; right:-12%; }
+    .aurora-2{ width:520px; height:360px; background:linear-gradient(135deg,#2DD4BF,#14B8A6); top:42%; left:-16%; opacity:.08; animation-delay:-7s; }
+    .aurora-3{ width:480px; height:320px; background:linear-gradient(135deg,#F59E0B,#EA580C); bottom:4%; right:18%; animation-delay:-14s; }
+    @keyframes float{ 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(30px,-30px) scale(1.05)} 66%{transform:translate(-20px,20px) scale(.95)} }
+
+    .glass-card{ background:rgba(15,23,42,.62); backdrop-filter:blur(20px); border:1px solid rgba(148,163,184,.12); }
+    .glass-card-light{ background:rgba(30,41,59,.50); backdrop-filter:blur(16px); border:1px solid rgba(148,163,184,.16); }
+
+    ::-webkit-scrollbar{ width:8px; }
+    ::-webkit-scrollbar-track{ background:#0B1220; }
+    ::-webkit-scrollbar-thumb{ background:#1E293B; border-radius:4px; }
+    ::-webkit-scrollbar-thumb:hover{ background:#334155; }
+  </style>
+</head>
+
+<body class="h-full bg-[#020617] text-slate-200 noise-bg overflow-hidden">
+  <div class="aurora-blob aurora-1"></div>
+  <div class="aurora-blob aurora-2"></div>
+  <div class="aurora-blob aurora-3"></div>
+
+  <div class="relative z-10 h-full">
+    <div class="flex h-full">
+
+      <!-- APP SIDEBAR PARTIAL -->
+      <!-- APP_SIDEBAR -->
+
+      <div class="flex-1 flex flex-col min-w-0">
+        <!-- APP TOPBAR PARTIAL -->
+        <!-- APP_TOPBAR -->
+
+        <main class="flex-1 overflow-auto">
+          <div class="max-w-6xl mx-auto px-6 py-8">
+
+            <section class="glass-card rounded-3xl p-6 sm:p-8 border border-slate-700/50 card-glow">
+              <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
+                <div class="space-y-2">
+                  <div class="text-xs uppercase tracking-wider text-slate-400">Compliance Report</div>
+                  <h1 id="headline" class="text-3xl sm:text-4xl font-semibold">
+                    <span class="gradient-text">Loading…</span>
+                  </h1>
+                  <p id="subcopy" class="text-slate-400 max-w-2xl">
+                    This page will reflect what is currently available for your account.
+                  </p>
+                </div>
+
+                <div class="flex flex-col gap-3">
+                  <a id="cta-required" href="/app/index.html" class="hidden inline-flex items-center justify-center rounded-xl px-4 py-2 text-sm font-semibold bg-amber-500 text-slate-950 hover:bg-amber-400 transition">
+                    Go to the next required step
+                  </a>
+                  <a id="cta-sample" href="https://taxmonitor.pro/#report-sample" class="hidden inline-flex items-center justify-center rounded-xl px-4 py-2 text-sm font-semibold border border-slate-700/70 bg-slate-950/20 text-slate-100 hover:bg-slate-950/35 transition">
+                    View interactive sample report
+                  </a>
+                </div>
+              </div>
+
+              <div id="status-banner" class="mt-6 rounded-2xl p-4 border border-slate-700/50 bg-slate-950/20">
+                <div class="flex items-start gap-3">
+                  <div class="w-9 h-9 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
+                    <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <div id="status-title" class="text-sm font-semibold text-slate-100">Report status</div>
+                    <div id="status-detail" class="text-sm text-slate-400">
+                      Checking your record…
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <div class="grid lg:grid-cols-3 gap-6 mt-6">
+              <section class="lg:col-span-2 glass-card rounded-3xl p-6 border border-slate-700/50">
+                <h2 class="text-lg font-semibold text-slate-100">Report Summary</h2>
+                <p class="text-sm text-slate-400 mt-1">These fields populate after your compliance step is complete.</p>
+
+                <div class="grid sm:grid-cols-2 gap-4 mt-6">
+                  <div class="glass-card-light rounded-2xl p-4 border border-slate-700/50">
+                    <div class="text-xs uppercase tracking-wider text-slate-500">Report date</div>
+                    <div id="report-date" class="text-base font-semibold text-slate-100 mt-1"></div>
+                  </div>
+
+                  <div class="glass-card-light rounded-2xl p-4 border border-slate-700/50">
+                    <div class="text-xs uppercase tracking-wider text-slate-500">Account status</div>
+                    <div id="account-status" class="text-base font-semibold text-slate-100 mt-1"></div>
+                  </div>
+
+                  <div class="glass-card-light rounded-2xl p-4 border border-slate-700/50">
+                    <div class="text-xs uppercase tracking-wider text-slate-500">Open issues</div>
+                    <div id="open-issues" class="text-base font-semibold text-slate-100 mt-1"></div>
+                  </div>
+
+                  <div class="glass-card-light rounded-2xl p-4 border border-slate-700/50">
+                    <div class="text-xs uppercase tracking-wider text-slate-500">Notices</div>
+                    <div id="notices" class="text-base font-semibold text-slate-100 mt-1"></div>
+                  </div>
+                </div>
+
+                <div class="mt-6 glass-card-light rounded-2xl p-4 border border-slate-700/50">
+                  <div class="text-xs uppercase tracking-wider text-slate-500">Summary notes</div>
+                  <div id="summary-notes" class="text-sm text-slate-300 mt-2 leading-relaxed"></div>
+                </div>
+              </section>
+
+              <section class="glass-card rounded-3xl p-6 border border-slate-700/50">
+                <h2 class="text-lg font-semibold text-slate-100">What to do next</h2>
+                <p id="next-steps" class="text-sm text-slate-400 mt-2">
+                  We’ll recommend the next step based on your record.
+                </p>
+
+                <div class="mt-5 space-y-3">
+                  <a href="/app/index.html" class="inline-flex w-full items-center justify-center rounded-xl px-4 py-3 text-sm font-semibold border border-slate-700/70 bg-slate-950/20 text-slate-100 hover:bg-slate-950/35 transition">
+                    Back to Start Here
+                  </a>
+                  <a href="/app/files.html" class="inline-flex w-full items-center justify-center rounded-xl px-4 py-3 text-sm font-semibold bg-amber-500 text-slate-950 hover:bg-amber-400 transition">
+                    Open files &amp; reports
+                  </a>
+                </div>
+              </section>
+            </div>
+
+            <p class="text-center text-slate-600 text-xs py-8">
+              Monitoring does not create IRS representation. Representation, filing, and resolution are separate engagements.
+            </p>
+
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      function safeText(s) {
+        return String(s || "").replace(/[<>]/g, "").replace(/\s+/g, " ").trim();
+      }
+
+      function safeFirstName(fullName) {
+        var s = String(fullName || '').trim();
+        if (!s) return 'there';
+        return s.split(/\s+/)[0] || 'there';
+      }
+
+      function initialsFromName(fullName) {
+        var s = String(fullName || '').trim();
+        if (!s) return 'TM';
+        var parts = s.split(/\s+/).filter(Boolean);
+        var first = parts[0] ? parts[0][0] : '';
+        var last = parts.length > 1 ? parts[parts.length - 1][0] : '';
+        var out = (first + last).toUpperCase();
+        return out || 'TM';
+      }
+
+      function setText(id, value) {
+        var el = document.getElementById(id);
+        if (el) el.textContent = String(value ?? '');
+      }
+
+      function setHTML(id, value) {
+        var el = document.getElementById(id);
+        if (el) el.textContent = String(value ?? '');
+      }
+
+      function applyNavActive() {
+        var path = (window.location && window.location.pathname) ? window.location.pathname : '';
+        var links = document.querySelectorAll('a.nav-item');
+        links.forEach(function (a) {
+          var href = (a.getAttribute('href') || '');
+          if (!href || href.indexOf('javascript:') === 0) return;
+
+          var normalizedHref = href.split('?')[0].split('#')[0];
+          var isActive =
+            normalizedHref === path ||
+            (normalizedHref !== '/' && normalizedHref.length > 1 && path.indexOf(normalizedHref) === 0);
+
+          a.classList.toggle('active', isActive);
+        });
+      }
+
+      function applyFlowPlaceholders(state) {
+        var flowLabel = document.getElementById('sidebar-flow-label');
+        var flowSubtitle = document.getElementById('sidebar-flow-subtitle');
+
+        if (flowLabel) flowLabel.textContent = 'Start Here';
+        if (flowSubtitle) flowSubtitle.textContent = 'Reports';
+      }
+
+      // Worker injects this. Safe fallback provided.
+      window.TM_APP_STATE = window.TM_APP_STATE || {
+        completed: {},
+        report: { ready: false },
+        topbar_mode: 'Monitoring Portal',
+        user_name: 'Jane Doe'
+      };
+
+      // Flow order matters.
+      var STEPS = [
+        { id: 1, key: 'intake_submitted', label: 'Intake', href: '/app/pages/flows/intake/intake.html' },
+        { id: 2, key: 'offer_accepted', label: 'Offer', href: '/app/pages/flows/intake/offer.html' },
+        { id: 3, key: 'agreement_accepted', label: 'Agreement', href: '/app/pages/flows/intake/agreement.html' },
+        { id: 4, key: 'payment_completed', label: 'Payment', href: '/app/pages/flows/intake/payment.html' },
+        { id: 5, key: 'welcome_confirmed', label: 'Welcome', href: '/app/pages/flows/post-payment/welcome.html' },
+        { id: 6, key: 'filing_status_submitted', label: 'Filing Status', href: '/app/pages/flows/post-payment/filing-status.html' },
+        { id: 7, key: 'address_update_submitted', label: 'Address Update', href: '/app/pages/flows/post-payment/address-update.html' },
+        { id: 8, key: 'esign_2848_submitted', label: 'eSign 2848', href: '/app/pages/flows/post-payment/esign-2848.html' },
+        { id: 9, key: 'compliance_submitted', label: 'Compliance', href: '/app/pages/reports/compliance-report.html' }
+      ];
+
+      function firstIncompleteStep(completed) {
+        for (var i = 0; i < STEPS.length; i++) {
+          if (!completed || !completed[STEPS[i].key]) return STEPS[i];
+        }
+        return null;
+      }
+
+      function applyUserIdentity(state) {
+        var fullName = safeText((state && state.user_name) ? state.user_name : 'Jane Doe');
+        var firstName = safeFirstName(fullName);
+        var initials = initialsFromName(fullName);
+
+        var sidebarName = document.getElementById('sidebar-user-name');
+        if (sidebarName) sidebarName.textContent = fullName;
+
+        var topbarName = document.getElementById('topbar-user-name');
+        if (topbarName) topbarName.textContent = fullName;
+
+        document.querySelectorAll('.tm-user-initials').forEach(function (el) {
+          el.textContent = initials;
+        });
+
+        return { fullName: fullName, firstName: firstName };
+      }
+
+      function showReady(uiName, report) {
+        setText('headline', uiName.firstName + ', here’s your compliance report.');
+        setText('subcopy', 'This report is generated from your completed onboarding and monitoring record.');
+
+        setText('status-title', 'Report ready');
+        setText('status-detail', 'Your report fields are populated based on your record.');
+
+        var r = report || {};
+        setText('report-date', safeText(r.report_date || ''));
+        setText('account-status', safeText(r.account_status || ''));
+        setText('open-issues', safeText((r.open_issues != null) ? r.open_issues : ''));
+        setText('notices', safeText((r.notices != null) ? r.notices : ''));
+        setHTML('summary-notes', safeText(r.summary_notes || ''));
+
+        setText('next-steps', 'You can download files from the archive or review your onboarding status in Start Here.');
+
+        var ctaReq = document.getElementById('cta-required');
+        var ctaSample = document.getElementById('cta-sample');
+        if (ctaReq) ctaReq.classList.add('hidden');
+        if (ctaSample) ctaSample.classList.add('hidden');
+      }
+
+      function showNotReady(uiName, requiredStep) {
+        setText('headline', 'Not ready yet.');
+        setText('subcopy', uiName.firstName + ', your compliance report will populate after you complete the required onboarding steps.');
+
+        setText('status-title', 'Report not generated');
+        setText('status-detail', requiredStep
+          ? ('Complete Step ' + requiredStep.id + ' (“' + requiredStep.label + '”) to generate your report fields.')
+          : 'Complete your onboarding steps to generate this report.'
+        );
+
+        // placeholders stay empty by design
+        setText('report-date', '');
+        setText('account-status', '');
+        setText('open-issues', '');
+        setText('notices', '');
+        setHTML('summary-notes', '');
+
+        setText('next-steps', requiredStep
+          ? ('Next step: Step ' + requiredStep.id + ' (“' + requiredStep.label + '”). Once complete, return here to view your populated report.')
+          : 'Next step: return to Start Here and complete the remaining steps.'
+        );
+
+        var ctaReq = document.getElementById('cta-required');
+        var ctaSample = document.getElementById('cta-sample');
+
+        if (ctaReq) {
+          ctaReq.classList.remove('hidden');
+          ctaReq.setAttribute('href', requiredStep ? requiredStep.href : '/app/index.html');
+          ctaReq.textContent = requiredStep ? ('Go to Step ' + requiredStep.id + ' — ' + requiredStep.label) : 'Back to Start Here';
+        }
+
+        if (ctaSample) ctaSample.classList.remove('hidden');
+      }
+
+      var uiName = applyUserIdentity(window.TM_APP_STATE);
+
+      // Sidebar labels
+      applyFlowPlaceholders(window.TM_APP_STATE);
+
+      // Label/header bits
+      var topbarMode = (window.TM_APP_STATE && window.TM_APP_STATE.topbar_mode) ? window.TM_APP_STATE.topbar_mode : 'Monitoring Portal';
+      setText('topbar-mode', topbarMode);
+
+      // Decide readiness
+      var completed = (window.TM_APP_STATE && window.TM_APP_STATE.completed) ? window.TM_APP_STATE.completed : {};
+      var report = (window.TM_APP_STATE && window.TM_APP_STATE.report) ? window.TM_APP_STATE.report : { ready: false };
+
+      // “Ready” can be driven by either:
+      // - report.ready === true, OR
+      // - completed.compliance_submitted === true (depending on your contract)
+      var ready = !!report.ready || !!completed.compliance_submitted;
+
+      if (ready) {
+        showReady(uiName, report);
+      } else {
+        var required = firstIncompleteStep(completed);
+        showNotReady(uiName, required);
+      }
+
+      applyNavActive();
+      window.addEventListener('popstate', applyNavActive);
+    })();
+  </script>
+</body>
+</html>
