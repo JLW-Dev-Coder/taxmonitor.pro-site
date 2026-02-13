@@ -6,11 +6,19 @@
  * - POST /cal/webhook
  * - POST /stripe/webhook
  * - POST /forms/intake
+ * - POST /forms/order
+ * - POST /forms/support
  *
  * Implemented:
- * - Receipts ledger (append-only)
- * - Canonical account upsert for intake
- * - ClickUp projection for intake (Accounts list)
+ * - Receipts ledger (append-only): receipts/form/{eventId}.json
+ * - Canonical objects (R2 authority):
+ *   - accounts/{accountId}.json
+ *   - orders/{orderId}.json
+ *   - support/{supportId}.json
+ * - ClickUp projections:
+ *   - Accounts list task creation on intake
+ *   - Order/Support list task creation on their forms
+ *   - Account task gets link fields to Order/Support tasks
  *
  * Contracts:
  * - R2 write occurs before ClickUp write
@@ -115,6 +123,56 @@ function normalizeIntakePayload(input) {
 }
 
 /* ------------------------------------------
+ * Order Normalization
+ * ------------------------------------------ */
+
+function normalizeOrderPayload(input) {
+  const get = (key) => {
+    const v = input?.[key];
+    return typeof v === "string" ? v.trim() : "";
+  };
+
+  const normalized = {
+    orderToken: get("CF_Order Token") || get("Order Token") || get("orderToken"),
+    orderType: get("Order Type") || get("orderType"),
+    primaryEmail: get("CRM Primary Email") || get("Email") || get("email"),
+    productName: get("Product Name") || get("Plan") || get("productName"),
+    notes: get("Notes") || get("notes"),
+  };
+
+  const missing = [];
+  if (!normalized.primaryEmail) missing.push("CRM Primary Email");
+  if (!normalized.productName && !normalized.orderType) missing.push("Product Name");
+
+  return { missing, normalized };
+}
+
+/* ------------------------------------------
+ * Support Normalization
+ * ------------------------------------------ */
+
+function normalizeSupportPayload(input) {
+  const get = (key) => {
+    const v = input?.[key];
+    return typeof v === "string" ? v.trim() : "";
+  };
+
+  const normalized = {
+    issueType: get("CF_Support Issue Type") || get("Issue Type") || get("issueType"),
+    orderToken: get("CF_Order Token") || get("Support Related Order ID") || get("orderToken"),
+    primaryEmail: get("CF_Support Email") || get("CRM Primary Email") || get("Email") || get("email"),
+    priority: get("CF_Support Priority") || get("Priority") || get("priority"),
+    summary: get("Summary") || get("Message") || get("summary"),
+  };
+
+  const missing = [];
+  if (!normalized.primaryEmail) missing.push("CF_Support Email");
+  if (!normalized.summary) missing.push("Summary");
+
+  return { missing, normalized };
+}
+
+/* ------------------------------------------
  * Ids + Throttle
  * ------------------------------------------ */
 
@@ -139,7 +197,6 @@ async function sha256Hex(input) {
 async function accountIdFromEmail(email) {
   const e = String(email || "").trim().toLowerCase();
   const hex = await sha256Hex(e);
-  // Deterministic UUID-ish from hash (stable, not random)
   return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-4${hex.slice(13, 16)}-a${hex.slice(
     17,
     20
@@ -154,8 +211,9 @@ function dayKeyUTC(date = new Date()) {
 }
 
 async function enforceEmailThrottle(env, email, opts = {}) {
-  const cooldownSeconds = Number(opts.cooldownSeconds ?? 600); // 10 minutes default
-  const maxPerDay = Number(opts.maxPerDay ?? 3); // 3/day default
+  const cooldownSeconds = Number(opts.cooldownSeconds ?? 600);
+  const maxPerDay = Number(opts.maxPerDay ?? 3);
+  const scope = String(opts.scope || "form:intake");
 
   const cleanEmail = String(email || "").trim().toLowerCase();
   if (!cleanEmail) return { ok: true };
@@ -165,7 +223,7 @@ async function enforceEmailThrottle(env, email, opts = {}) {
   const today = dayKeyUTC(now);
 
   const emailHash = await sha256Hex(cleanEmail);
-  const throttleKey = `rate/form:intake/email/${emailHash}.json`;
+  const throttleKey = `rate/${scope}/email/${emailHash}.json`;
 
   const existing = await readJsonR2(env, throttleKey);
   const lastAt = existing?.lastAt ? Date.parse(existing.lastAt) : 0;
@@ -194,6 +252,7 @@ async function enforceEmailThrottle(env, email, opts = {}) {
     countToday: countToday + 1,
     dayKey: today,
     lastAt: nowIso,
+    scope,
     updatedAt: nowIso,
   };
 
@@ -226,7 +285,9 @@ const CU_ACCOUNTS_CF = {
   accountFirstName: "f5c9f6da-c994-4733-a15f-59188b37f531",
   accountId: "e5f176ba-82c8-47d8-b3b1-0716d075f43f",
   accountLastName: "a348d629-fa05-45d8-a2dd-b909f78ddf49",
+  accountOrderTaskLink: "4b22ab15-26f3-4f6f-98b5-7b4f5446e62d",
   accountPrimaryEmail: "a105f99e-b33d-4d12-bb24-f7c827ec761a",
+  accountSupportTaskLink: "9e14a458-96fd-4109-a276-034d8270e15b",
 };
 
 async function clickUpRequest(env, path, options = {}) {
@@ -248,6 +309,28 @@ async function clickUpRequest(env, path, options = {}) {
   return body;
 }
 
+async function addClickUpComment(env, taskId, commentText) {
+  if (!taskId) return;
+
+  await clickUpRequest(env, `/task/${taskId}/comment`, {
+    method: "POST",
+    body: JSON.stringify({
+      comment_text: commentText,
+      notify_all: false,
+    }),
+  });
+}
+
+async function setClickUpTaskCustomField(env, taskId, fieldId, value) {
+  if (!taskId) return;
+  if (!fieldId) return;
+
+  await clickUpRequest(env, `/task/${taskId}/field/${fieldId}`, {
+    method: "POST",
+    body: JSON.stringify({ value }),
+  });
+}
+
 async function createClickUpAccountTask(env, account, receipt) {
   if (!env.CLICKUP_ACCOUNTS_LIST_ID) throw new Error("Missing CLICKUP_ACCOUNTS_LIST_ID");
 
@@ -258,7 +341,7 @@ async function createClickUpAccountTask(env, account, receipt) {
     `Company: ${account.metadata?.companyName || "—"}`,
     `Email: ${account.primaryEmail}`,
     `Received: ${receipt.timestamp}`,
-    `Trigger: form:intake`,
+    `Trigger: ${receipt.source}:${receipt.type}`,
     ``,
     `R2 Keys:`,
     `- accounts/${account.accountId}.json`,
@@ -294,16 +377,112 @@ async function createClickUpAccountTask(env, account, receipt) {
   return created?.id || null;
 }
 
-async function addClickUpComment(env, taskId, commentText) {
-  if (!taskId) return;
+async function ensureClickUpAccountTask(env, account, accountKey, receipt) {
+  const existingId = account?.clickUp?.accountTaskId || null;
 
-  await clickUpRequest(env, `/task/${taskId}/comment`, {
+  if (existingId) return existingId;
+  if (!env.CLICKUP_API_KEY || !env.CLICKUP_ACCOUNTS_LIST_ID) return null;
+
+  const createdId = await createClickUpAccountTask(env, account, receipt);
+
+  const comment = [
+    `tm_account=accounts/${account.accountId}.json`,
+    `tm_accountId=${account.accountId}`,
+    `tm_event=${receipt.source}:${receipt.type}`,
+    `tm_eventId=${receipt.eventId}`,
+    `tm_receipt=receipts/form/${receipt.eventId}.json`,
+  ].join(" ");
+
+  await addClickUpComment(env, createdId, comment);
+
+  const patched = {
+    ...account,
+    clickUp: {
+      ...(account.clickUp || {}),
+      accountTaskId: createdId,
+    },
+  };
+
+  await writeJsonR2(env, accountKey, patched);
+
+  return createdId;
+}
+
+async function createClickUpOrderTask(env, account, order, receipt) {
+  if (!env.CLICKUP_ORDERS_LIST_ID) throw new Error("Missing CLICKUP_ORDERS_LIST_ID");
+
+  const name = `Order — ${account.firstName || ""} ${account.lastName || ""}`.trim() || `Order — ${account.accountId}`;
+
+  const description = [
+    `Account: ${account.firstName || ""} ${account.lastName || ""}`.trim(),
+    `Account ID: ${account.accountId}`,
+    `Email: ${account.primaryEmail || "—"}`,
+    `Order ID: ${order.orderId}`,
+    `Product/Plan: ${order.productName || "—"}`,
+    `Type: ${order.orderType || "—"}`,
+    `Received: ${receipt.timestamp}`,
+    `Trigger: ${receipt.source}:${receipt.type}`,
+    ``,
+    `R2 Keys:`,
+    `- accounts/${account.accountId}.json`,
+    `- orders/${order.orderId}.json`,
+    `- receipts/form/${receipt.eventId}.json`,
+    ``,
+    `Notes: ${order.notes || "—"}`,
+  ].join("\n");
+
+  const payload = {
+    description,
+    name,
+    status: "New",
+  };
+
+  const created = await clickUpRequest(env, `/list/${env.CLICKUP_ORDERS_LIST_ID}/task`, {
     method: "POST",
-    body: JSON.stringify({
-      comment_text: commentText,
-      notify_all: false,
-    }),
+    body: JSON.stringify(payload),
   });
+
+  return created?.id || null;
+}
+
+async function createClickUpSupportTask(env, account, support, receipt) {
+  if (!env.CLICKUP_SUPPORT_LIST_ID) throw new Error("Missing CLICKUP_SUPPORT_LIST_ID");
+
+  const name =
+    `Support — ${account.firstName || ""} ${account.lastName || ""}`.trim() || `Support — ${account.accountId}`;
+
+  const description = [
+    `Account: ${account.firstName || ""} ${account.lastName || ""}`.trim(),
+    `Account ID: ${account.accountId}`,
+    `Email: ${account.primaryEmail || "—"}`,
+    `Support ID: ${support.supportId}`,
+    `Issue Type: ${support.issueType || "—"}`,
+    `Priority: ${support.priority || "—"}`,
+    `Related Order Token: ${support.orderToken || "—"}`,
+    `Received: ${receipt.timestamp}`,
+    `Trigger: ${receipt.source}:${receipt.type}`,
+    ``,
+    `R2 Keys:`,
+    `- accounts/${account.accountId}.json`,
+    `- receipts/form/${receipt.eventId}.json`,
+    `- support/${support.supportId}.json`,
+    ``,
+    `Summary:`,
+    `${support.summary || "—"}`,
+  ].join("\n");
+
+  const payload = {
+    description,
+    name,
+    status: "Open",
+  };
+
+  const created = await clickUpRequest(env, `/list/${env.CLICKUP_SUPPORT_LIST_ID}/task`, {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+
+  return created?.id || null;
 }
 
 /* ------------------------------------------
@@ -320,6 +499,8 @@ export default {
 
     if (isPath(url, "/cal/webhook")) return await handleCalWebhook(request, env, ctx);
     if (isPath(url, "/forms/intake")) return await handleFormsIntake(request, env, ctx);
+    if (isPath(url, "/forms/order")) return await handleFormsOrder(request, env, ctx);
+    if (isPath(url, "/forms/support")) return await handleFormsSupport(request, env, ctx);
     if (isPath(url, "/stripe/webhook")) return await handleStripeWebhook(request, env, ctx);
 
     return jsonResponse({ ok: false, error: "Not found" }, { status: 404 });
@@ -366,10 +547,19 @@ async function handleFormsIntake(request, env, ctx) {
     return jsonResponse({ ok: false, error: "Missing required fields", missing }, { status: 400 });
   }
 
-  // Anti-spam: email-based throttling (cooldown + daily cap)
+  const inboundEventId = parsed.data?.eventId;
+  const eventId = isUuidLike(inboundEventId) ? inboundEventId.trim() : crypto.randomUUID();
+  const receiptKey = `receipts/form/${eventId}.json`;
+
+  const existingReceipt = await readJsonR2(env, receiptKey);
+  if (existingReceipt && existingReceipt.processed === true) {
+    return jsonResponse({ ok: true, idempotent: true, eventId }, { status: 200 });
+  }
+
   const throttle = await enforceEmailThrottle(env, normalized.primaryEmail, {
-    cooldownSeconds: 600, // 10 minutes
-    maxPerDay: 3, // 3 submissions/day per email
+    cooldownSeconds: 600,
+    maxPerDay: 3,
+    scope: "form:intake",
   });
 
   if (!throttle.ok) {
@@ -377,23 +567,9 @@ async function handleFormsIntake(request, env, ctx) {
       { ok: false, error: throttle.error },
       {
         status: 429,
-        headers: {
-          "Retry-After": String(throttle.retryAfterSeconds || 60),
-        },
+        headers: { "Retry-After": String(throttle.retryAfterSeconds || 60) },
       }
     );
-  }
-
-  // Use inbound eventId if present, otherwise generate
-  const inboundEventId = parsed.data?.eventId;
-  const eventId = isUuidLike(inboundEventId) ? inboundEventId.trim() : crypto.randomUUID();
-
-  const receiptKey = `receipts/form/${eventId}.json`;
-
-  // True idempotency: if receipt exists and processed, return without side effects
-  const existingReceipt = await readJsonR2(env, receiptKey);
-  if (existingReceipt && existingReceipt.processed === true) {
-    return jsonResponse({ ok: true, idempotent: true, eventId }, { status: 200 });
   }
 
   const accountId = await accountIdFromEmail(normalized.primaryEmail);
@@ -405,21 +581,17 @@ async function handleFormsIntake(request, env, ctx) {
     source: "form",
     type: "intake",
     timestamp: new Date().toISOString(),
-    rawPayload: {
-      ...parsed.data,
-      eventId, // force alignment so rawPayload and receipt agree
-    },
+    rawPayload: { ...parsed.data, eventId },
     normalizedPayload: normalized,
     processed: false,
     processingError: null,
   };
 
-  // 1) Write receipt (append-only ledger)
   await writeJsonR2(env, receiptKey, receipt);
 
   try {
-    // 2) Upsert canonical account (R2 authority)
     const existingAccount = await readJsonR2(env, accountKey);
+
     const account = {
       accountId,
       activeOrders: Array.isArray(existingAccount?.activeOrders) ? existingAccount.activeOrders : [],
@@ -439,30 +611,22 @@ async function handleFormsIntake(request, env, ctx) {
       },
       primaryEmail: normalized.primaryEmail,
       stripeCustomerId: existingAccount?.stripeCustomerId || null,
+      clickUp: {
+        ...(existingAccount?.clickUp || {}),
+      },
     };
 
     await writeJsonR2(env, accountKey, account);
 
-    // 3) ClickUp projection (after R2 update)
     let clickUpTaskId = null;
     if (env.CLICKUP_API_KEY && env.CLICKUP_ACCOUNTS_LIST_ID) {
-      clickUpTaskId = await createClickUpAccountTask(env, account, receipt);
-
-      const comment = [
-        `tm_account=accounts/${account.accountId}.json`,
-        `tm_accountId=${account.accountId}`,
-        `tm_event=form:intake`,
-        `tm_eventId=${receipt.eventId}`,
-        `tm_receipt=receipts/form/${receipt.eventId}.json`,
-      ].join(" ");
-
-      await addClickUpComment(env, clickUpTaskId, comment);
+      clickUpTaskId = await ensureClickUpAccountTask(env, account, accountKey, receipt);
     }
 
-    // 4) Mark receipt processed
     receipt.processed = true;
     receipt.processingError = null;
     receipt.clickUpTaskId = clickUpTaskId;
+
     await writeJsonR2(env, receiptKey, receipt);
 
     return jsonResponse(
@@ -483,6 +647,302 @@ async function handleFormsIntake(request, env, ctx) {
 
     return jsonResponse(
       { ok: false, error: "Intake processing failed", eventId, details: receipt.processingError },
+      { status: 500 }
+    );
+  }
+}
+
+/* ------------------------------------------
+ * FORMS: Order
+ * ------------------------------------------ */
+
+async function handleFormsOrder(request, env, ctx) {
+  if (!requireMethod(request, ["POST"])) {
+    return jsonResponse({ ok: false, error: "Method not allowed" }, { status: 405 });
+  }
+
+  if (!env.R2_BUCKET) {
+    return jsonResponse({ ok: false, error: "R2_BUCKET binding missing." }, { status: 500 });
+  }
+
+  const parsed = await parseInboundBody(request);
+  if (!parsed.ok) {
+    return jsonResponse({ ok: false, error: parsed.error, details: parsed.details }, { status: 400 });
+  }
+
+  const { missing, normalized } = normalizeOrderPayload(parsed.data);
+  if (missing.length) {
+    return jsonResponse({ ok: false, error: "Missing required fields", missing }, { status: 400 });
+  }
+
+  const inboundEventId = parsed.data?.eventId;
+  const eventId = isUuidLike(inboundEventId) ? inboundEventId.trim() : crypto.randomUUID();
+  const receiptKey = `receipts/form/${eventId}.json`;
+
+  const existingReceipt = await readJsonR2(env, receiptKey);
+  if (existingReceipt && existingReceipt.processed === true) {
+    return jsonResponse({ ok: true, idempotent: true, eventId }, { status: 200 });
+  }
+
+  const throttle = await enforceEmailThrottle(env, normalized.primaryEmail, {
+    cooldownSeconds: 600,
+    maxPerDay: 10,
+    scope: "form:order",
+  });
+
+  if (!throttle.ok) {
+    return jsonResponse(
+      { ok: false, error: throttle.error },
+      { status: 429, headers: { "Retry-After": String(throttle.retryAfterSeconds || 60) } }
+    );
+  }
+
+  const accountId = await accountIdFromEmail(normalized.primaryEmail);
+  const accountKey = `accounts/${accountId}.json`;
+
+  const orderId = normalized.orderToken || eventId;
+  const orderKey = `orders/${orderId}.json`;
+
+  const receipt = {
+    accountId,
+    eventId,
+    source: "form",
+    type: "order",
+    timestamp: new Date().toISOString(),
+    rawPayload: { ...parsed.data, eventId },
+    normalizedPayload: normalized,
+    processed: false,
+    processingError: null,
+  };
+
+  await writeJsonR2(env, receiptKey, receipt);
+
+  try {
+    const existingAccount = await readJsonR2(env, accountKey);
+    if (!existingAccount) {
+      throw new Error("Account not found for email. Submit intake first or create account before order.");
+    }
+
+    const order = {
+      accountId,
+      createdAt: new Date().toISOString(),
+      orderId,
+      orderType: normalized.orderType || null,
+      productName: normalized.productName || null,
+      notes: normalized.notes || null,
+      status: "order_submitted",
+    };
+
+    await writeJsonR2(env, orderKey, order);
+
+    const account = {
+      ...existingAccount,
+      activeOrders: Array.isArray(existingAccount?.activeOrders)
+        ? Array.from(new Set([...(existingAccount.activeOrders || []), orderId]))
+        : [orderId],
+    };
+
+    await writeJsonR2(env, accountKey, account);
+
+    let orderTaskId = null;
+    let accountTaskId = null;
+
+    if (env.CLICKUP_API_KEY) {
+      accountTaskId = await ensureClickUpAccountTask(env, account, accountKey, receipt);
+
+      if (env.CLICKUP_ORDERS_LIST_ID) {
+        orderTaskId = await createClickUpOrderTask(env, account, order, receipt);
+
+        const comment = [
+          `tm_account=accounts/${account.accountId}.json`,
+          `tm_accountId=${account.accountId}`,
+          `tm_event=${receipt.source}:${receipt.type}`,
+          `tm_eventId=${receipt.eventId}`,
+          `tm_order=orders/${order.orderId}.json`,
+          `tm_receipt=receipts/form/${receipt.eventId}.json`,
+        ].join(" ");
+
+        await addClickUpComment(env, orderTaskId, comment);
+
+        await setClickUpTaskCustomField(
+          env,
+          accountTaskId,
+          CU_ACCOUNTS_CF.accountOrderTaskLink,
+          [orderTaskId]
+        );
+      }
+    }
+
+    receipt.processed = true;
+    receipt.processingError = null;
+    receipt.clickUpTaskId = orderTaskId;
+
+    await writeJsonR2(env, receiptKey, receipt);
+
+    return jsonResponse(
+      {
+        ok: true,
+        accountId,
+        eventId,
+        orderId,
+        orderTaskId,
+        message: "Order processed: receipt + canonical + ClickUp.",
+        receivedAs: parsed.type,
+      },
+      { status: 200 }
+    );
+  } catch (err) {
+    receipt.processed = false;
+    receipt.processingError = String(err?.message || err);
+    await writeJsonR2(env, receiptKey, receipt);
+
+    return jsonResponse(
+      { ok: false, error: "Order processing failed", eventId, details: receipt.processingError },
+      { status: 500 }
+    );
+  }
+}
+
+/* ------------------------------------------
+ * FORMS: Support
+ * ------------------------------------------ */
+
+async function handleFormsSupport(request, env, ctx) {
+  if (!requireMethod(request, ["POST"])) {
+    return jsonResponse({ ok: false, error: "Method not allowed" }, { status: 405 });
+  }
+
+  if (!env.R2_BUCKET) {
+    return jsonResponse({ ok: false, error: "R2_BUCKET binding missing." }, { status: 500 });
+  }
+
+  const parsed = await parseInboundBody(request);
+  if (!parsed.ok) {
+    return jsonResponse({ ok: false, error: parsed.error, details: parsed.details }, { status: 400 });
+  }
+
+  const { missing, normalized } = normalizeSupportPayload(parsed.data);
+  if (missing.length) {
+    return jsonResponse({ ok: false, error: "Missing required fields", missing }, { status: 400 });
+  }
+
+  const inboundEventId = parsed.data?.eventId;
+  const eventId = isUuidLike(inboundEventId) ? inboundEventId.trim() : crypto.randomUUID();
+  const receiptKey = `receipts/form/${eventId}.json`;
+
+  const existingReceipt = await readJsonR2(env, receiptKey);
+  if (existingReceipt && existingReceipt.processed === true) {
+    return jsonResponse({ ok: true, idempotent: true, eventId }, { status: 200 });
+  }
+
+  const throttle = await enforceEmailThrottle(env, normalized.primaryEmail, {
+    cooldownSeconds: 120,
+    maxPerDay: 25,
+    scope: "form:support",
+  });
+
+  if (!throttle.ok) {
+    return jsonResponse(
+      { ok: false, error: throttle.error },
+      { status: 429, headers: { "Retry-After": String(throttle.retryAfterSeconds || 60) } }
+    );
+  }
+
+  const accountId = await accountIdFromEmail(normalized.primaryEmail);
+  const accountKey = `accounts/${accountId}.json`;
+
+  const supportId = eventId;
+  const supportKey = `support/${supportId}.json`;
+
+  const receipt = {
+    accountId,
+    eventId,
+    source: "form",
+    type: "support",
+    timestamp: new Date().toISOString(),
+    rawPayload: { ...parsed.data, eventId },
+    normalizedPayload: normalized,
+    processed: false,
+    processingError: null,
+  };
+
+  await writeJsonR2(env, receiptKey, receipt);
+
+  try {
+    const existingAccount = await readJsonR2(env, accountKey);
+    if (!existingAccount) {
+      throw new Error("Account not found for email. Submit intake first or create account before support.");
+    }
+
+    const support = {
+      accountId,
+      createdAt: new Date().toISOString(),
+      issueType: normalized.issueType || null,
+      orderToken: normalized.orderToken || null,
+      priority: normalized.priority || null,
+      status: "support_submitted",
+      summary: normalized.summary || null,
+      supportId,
+    };
+
+    await writeJsonR2(env, supportKey, support);
+
+    const account = { ...existingAccount };
+
+    let supportTaskId = null;
+    let accountTaskId = null;
+
+    if (env.CLICKUP_API_KEY) {
+      accountTaskId = await ensureClickUpAccountTask(env, account, accountKey, receipt);
+
+      if (env.CLICKUP_SUPPORT_LIST_ID) {
+        supportTaskId = await createClickUpSupportTask(env, account, support, receipt);
+
+        const comment = [
+          `tm_account=accounts/${account.accountId}.json`,
+          `tm_accountId=${account.accountId}`,
+          `tm_event=${receipt.source}:${receipt.type}`,
+          `tm_eventId=${receipt.eventId}`,
+          `tm_receipt=receipts/form/${receipt.eventId}.json`,
+          `tm_support=support/${support.supportId}.json`,
+        ].join(" ");
+
+        await addClickUpComment(env, supportTaskId, comment);
+
+        await setClickUpTaskCustomField(
+          env,
+          accountTaskId,
+          CU_ACCOUNTS_CF.accountSupportTaskLink,
+          [supportTaskId]
+        );
+      }
+    }
+
+    receipt.processed = true;
+    receipt.processingError = null;
+    receipt.clickUpTaskId = supportTaskId;
+
+    await writeJsonR2(env, receiptKey, receipt);
+
+    return jsonResponse(
+      {
+        ok: true,
+        accountId,
+        eventId,
+        supportId,
+        supportTaskId,
+        message: "Support processed: receipt + canonical + ClickUp.",
+        receivedAs: parsed.type,
+      },
+      { status: 200 }
+    );
+  } catch (err) {
+    receipt.processed = false;
+    receipt.processingError = String(err?.message || err);
+    await writeJsonR2(env, receiptKey, receipt);
+
+    return jsonResponse(
+      { ok: false, error: "Support processing failed", eventId, details: receipt.processingError },
       { status: 500 }
     );
   }
