@@ -31,12 +31,12 @@ Tax Monitor Pro is a serverless CRM + delivery system for tax monitoring service
 
 ## Architecture Overview
 
-Cloudflare Pages (Portal + Marketing UI)  
-↓ (form POST / webhook)  
-Cloudflare Worker (API + Orchestration)  
-↓  
-Cloudflare R2 (Authoritative State + Receipts Ledger)  
-↓  
+Cloudflare Pages (Portal + Marketing UI)
+↓ (form POST / webhook)
+Cloudflare Worker (API + Orchestration)
+↓
+Cloudflare R2 (Authoritative State + Receipts Ledger)
+↓
 ClickUp (Human Task Execution)
 
 External systems:
@@ -56,12 +56,12 @@ Presentation and API layers are separated by subdomain.
 
 **Presentation (Pages):**
 
-* `https://taxmonitor.pro`
+* [https://taxmonitor.pro](https://taxmonitor.pro)
 * Serves `/app/*` and `/site/*`
 
 **API (Worker):**
 
-* `https://api.taxmonitor.pro`
+* [https://api.taxmonitor.pro](https://api.taxmonitor.pro)
 * All lifecycle, webhook, and form processing occurs here
 
 Worker is never hosted on the root marketing domain.
@@ -72,26 +72,22 @@ Worker is never hosted on the root marketing domain.
 
 All forms must POST directly to the Worker domain.
 
-Example:
+Examples:
 
 ```
-
-[https://api.taxmonitor.pro/forms/intake](https://api.taxmonitor.pro/forms/intake)
-[https://api.taxmonitor.pro/forms/offer](https://api.taxmonitor.pro/forms/offer)
-[https://api.taxmonitor.pro/forms/agreement](https://api.taxmonitor.pro/forms/agreement)
-[https://api.taxmonitor.pro/forms/payment](https://api.taxmonitor.pro/forms/payment)
-
+https://api.taxmonitor.pro/forms/intake
+https://api.taxmonitor.pro/forms/offer
+https://api.taxmonitor.pro/forms/agreement
+https://api.taxmonitor.pro/forms/payment
 ```
 
 Relative paths such as:
 
 ```
-
 action="/forms/intake"
-
 ```
 
-are not allowed unless the Worker is explicitly routed for that host.
+are not allowed.
 
 All HTML forms must use absolute API URLs.
 
@@ -101,7 +97,7 @@ All HTML forms must use absolute API URLs.
 
 Worker must include:
 
-* `api.taxmonitor.pro/*`
+* api.taxmonitor.pro/*
 
 Root domain must not proxy lifecycle endpoints unless explicitly documented.
 
@@ -110,7 +106,6 @@ Root domain must not proxy lifecycle endpoints unless explicitly documented.
 ## Repository Structure
 
 ```
-
 /
 app/
 ├─ agreement.html
@@ -157,13 +152,12 @@ styles/
 └─ site.css
 workers/
 └─ api/
-├─ src/
-│  └─ index.js
-└─ wrangler.toml
+   ├─ src/
+   │  └─ index.js
+   └─ wrangler.toml
 README.md
 _redirects
 build.mjs
-
 ```
 
 Structure Notes:
@@ -198,7 +192,7 @@ All inbound events:
 
 No direct ClickUp writes occur without R2 update first.
 
-All outbound email notifications are triggered after canonical state is updated in R2.
+All outbound email notifications occur **after canonical state is updated in R2**.
 
 ---
 
@@ -207,15 +201,13 @@ All outbound email notifications are triggered after canonical state is updated 
 ### R2 Buckets
 
 ```
-
 accounts/{accountId}.json
 orders/{orderId}.json
 receipts/{source}/{eventId}.json
 support/{supportId}.json
-
 ```
 
-R2 is the source of truth. ClickUp reflects operational state only.
+R2 is the source of truth.
 
 ---
 
@@ -243,6 +235,8 @@ R2 is the source of truth. ClickUp reflects operational state only.
 * productTier
 * status
 * stripeSubscriptionId
+
+All structured tax metadata lives here — not in ClickUp.
 
 ---
 
@@ -278,30 +272,144 @@ Purpose:
 
 ## ClickUp Structure
 
-ClickUp  
-└─ Admin  
-└─ Tax Monitor Pro  
-├─ Accounts (901710909567)  
-├─ Orders (901710818340)  
+ClickUp
+└─ Admin
+└─ Tax Monitor Pro
+├─ Accounts (901710909567)
+├─ Orders (901710818340)
 └─ Support (901710818377)
 
----
-
-## Status Contracts
-
-(unchanged — preserved exactly as you defined)
+ClickUp is a workflow projection of R2.
 
 ---
 
-## Lifecycle Flows
+# Status Contracts
 
-(unchanged)
+## Accounts — Lifecycle
+
+**Open**
+
+* Lead
+
+**Active / Custom**
+
+* Active Client
+* Active Prospect
+
+**Done**
+
+* Inactive Client
+* Inactive Prospect
+
+**Closed**
+
+* Case Closed (default)
+
+Purpose: relationship state only.
 
 ---
 
-## Idempotency + Safety
+## Orders — Delivery Pipeline
 
-(unchanged)
+**Open**
+
+* 0 Booking / Lead Capture
+
+**Active / Custom**
+
+* 1 Intake Triage
+* 2 Checkout/Payment
+* 3 Welcome Intro
+* 4 Filing Status
+* 5 Address Update
+* 6 IRS Authorization (2848)
+* 7 Wet Sig 2848 Down/Upload
+* 9 2848 Processing
+
+**Done**
+
+* 8 Client Exit Survey
+* 10 Compliance Records
+
+**Closed**
+
+* Complete (default)
+
+Orders status is the execution engine.
+
+---
+
+## Support — Ticket Lifecycle
+
+**Open**
+
+* Open / New
+
+**Active / Custom**
+
+* Blocked
+* Client Feedback
+* In Progress
+* In Review
+* Resolved
+* Waiting on Client
+
+**Done**
+
+* Complete
+
+**Closed**
+
+* Closed (default)
+
+Support status represents lifecycle and SLA state.
+
+There is no separate SLA Custom Field.
+
+---
+
+# Lifecycle Flows
+
+## Pre-Payment
+
+* agreement_accepted
+* intake_submitted
+* offer_accepted
+* payment_completed
+
+## Post-Payment
+
+* address_update_submitted
+* compliance_submitted
+* esign_2848_submitted
+* exit_survey_submitted
+* filing_status_submitted
+* welcome_confirmed
+
+All forms POST to Worker.
+
+Worker responsibilities:
+
+* Enforce lifecycle gating
+* Update canonical state
+* Update ClickUp task
+* Validate session/token
+* Write receipt
+* Trigger outbound notifications
+
+Out-of-order submissions must be rejected.
+
+---
+
+# Idempotency + Safety
+
+* All events deduplicated by eventId
+* Stripe Session ID used as payment dedupe key
+* Forms require eventId and optional session token validation
+* No direct ClickUp writes before R2 update
+* Stripe and Cal webhooks require signature validation
+* Email triggers only occur after canonical state update
+* Receipts are append-only and never mutated
 
 ---
 
@@ -315,12 +423,12 @@ The Cloudflare dashboard is not a source of truth for runtime configuration.
 
 Rules:
 
-* Do not define variables in the dashboard.
-* Do not mix dashboard config with Wrangler config.
-* Define Production and Preview explicitly using `env.production` and `env.preview` if values differ.
-* Define `R2_BUCKET` as an R2 binding in `wrangler.toml`, not as a plain text variable.
+* Do not define variables in the dashboard
+* Do not mix dashboard config with Wrangler config
+* Define Production and Preview explicitly if values differ
+* Define `R2_BUCKET` as a binding
 
-### Required names (Alphabetical)
+### Required Names (Alphabetical)
 
 **Bindings**
 
