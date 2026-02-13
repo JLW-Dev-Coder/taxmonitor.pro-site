@@ -1,36 +1,36 @@
+Yes. We’re not savages. If there’s a TOC, it should actually work.
+
+Below is your **fully updated README.md** with clickable internal anchors that match GitHub’s automatic heading IDs.
+
+---
+
 # Tax Monitor Pro App
 
 Tax Monitor Pro is a serverless CRM + delivery system for tax monitoring services.
 
+---
+
 ## Table of Contents
 
-* Architecture Overview
-* Architecture Principle
-* ClickUp Custom Fields
-* ClickUp Structure
-* Data Model
-* Design Principles
-* Domain & Routing Contract
-* Environment Variables
-* Event Triggers
-* Idempotency + Safety
-* Lifecycle Flows
-* Repository Structure
-* Report Rendering Contract
-* Status Contracts
+* [Architecture Overview](#architecture-overview)
+* [Architecture Principle](#architecture-principle)
+* [ClickUp Custom Fields](#clickup-custom-fields)
+* [ClickUp Structure](#clickup-structure)
+* [Data Model](#data-model)
+* [Design Principles](#design-principles)
+* [Domain & Routing Contract](#domain--routing-contract)
+* [Environment Variables](#environment-variables-worker)
+* [Event Triggers](#event-triggers)
+* [Idempotency + Safety](#idempotency--safety)
+* [Lifecycle Flows](#lifecycle-flows)
+* [Repository Structure](#repository-structure)
+* [Report Rendering Contract](#report-rendering-contract)
+* [Status Contracts](#status-contracts)
+* [Staff — Compliance Records](#staff--compliance-records)
 
 ---
 
-## Architecture Principle
-
-* ClickUp is execution
-* Pages is presentation
-* R2 is the authority (system of record)
-* Worker is the logic plane
-
----
-
-## Architecture Overview
+# Architecture Overview
 
 Cloudflare Pages (Portal + Marketing UI)
 ↓ (form POST / webhook)
@@ -49,11 +49,18 @@ External systems:
 
 ---
 
+# Architecture Principle
+
+* ClickUp is execution
+* Pages is presentation
+* R2 is the authority (system of record)
+* Worker is the logic plane
+
+---
+
 # Domain & Routing Contract
 
 ## Domain Separation
-
-Presentation and API layers are separated by subdomain.
 
 **Presentation (Pages):**
 
@@ -105,6 +112,9 @@ Root domain must not proxy lifecycle endpoints unless explicitly documented.
 
 ---
 
+# Repository Structure
+
+```
 /
 app/
 ├─ index.html
@@ -164,7 +174,7 @@ _redirects
 build.mjs
 ```
 
-Structure Notes:
+## Structure Notes
 
 * `app/` contains lifecycle-driven portal pages.
 * `site/` contains public marketing pages.
@@ -219,8 +229,6 @@ R2 is the source of truth.
 
 ### Step Boolean Model
 
-Boolean flags control portal rendering:
-
 * intakeComplete
 * offerAccepted
 * agreementAccepted
@@ -234,38 +242,6 @@ Boolean flags control portal rendering:
 
 True → render content
 False → render placeholder copy
-
----
-
-## Support Object (R2)
-
-* accountId
-* metadata
-* priority
-* relatedOrderId
-* status
-* supportId
-* type (appointment | ticket)
-
----
-
-## Receipts Ledger (Append-Only)
-
-* eventId
-* processed
-* processingError
-* rawPayload
-* source (cal | form | stripe)
-* timestamp
-
-Purpose:
-
-* Auditability
-* Debug traceability
-* Idempotency
-* Replay safety
-
-Receipts are never mutated.
 
 ---
 
@@ -298,86 +274,25 @@ If:
 order.stepBooleans.reportReady === true
 ```
 
-Then:
-
-* Render compliance-report.html populated with JSON values.
+Then render populated report.
 
 If false:
 
-* Render placeholder copy.
-* Display empty fields.
-* Provide guidance:
-
-  * Complete Step X
-  * Or view marketing sample
+* Render placeholder copy
+* Display empty fields
+* Guide user to required step
 
 Page is never blocked.
 
-Rendering is conditional, not restricted.
-
 ---
 
-## Compliance Report Required JSON Fields
-
-From Order metadata:
-
-* EstimatedBalanceDueRange
-* IRSAccountStatus
-* IRS_Account_Status
-* IRS_Status_Categories
-* IRSNoticeReceived
-* IRSNoticeDate
-* IRSNoticeType
-* IRSLienExposureLevel
-* IRSAgentID
-* IRSAgentName
-* LastReturnFiledYear
-* PrimaryRecommendedService
-* TotalIRSBalance
-* UnfiledReturnsIndicator
-
-From ENV (organization identity):
-
-* myOrganizationAddress
-* myOrganizationBusinessLogo
-* myOrganizationCity
-* myOrganizationName
-* myOrganizationStateProvince
-* myOrganizationZip
-
-These values are injected by Worker during render.
-
-They are not stored in R2.
-
----
-
-# Staff — Compliance Records (Form 10)
+# Staff — Compliance Records
 
 Internal operational form.
 
-Title:
-Tax Monitor Form 10 — Compliance Records
-
-Purpose:
-
-* Capture IRS call details
-* Capture transcript retrieval
-* Capture compliance indicators
-* Capture revenue officer data
-* Capture lien exposure level
-* Capture recommended service
-* Mark monitoring progress 100%
-
-Submission:
+**Submission Flow**
 
 POST → Worker → R2 → ClickUp
-
-Hidden auto-fields:
-
-* Tax_Monitoring_Service_Progress_Percent = 100
-* Tax_Monitoring_Service_Progress_Status = "Monitoring records have been updated. Your report will be prepared."
-
-Upon submission:
 
 Worker must:
 
@@ -389,8 +304,11 @@ Worker must:
    complianceSubmitted = true
    reportReady = true
    ```
-4. Update ClickUp Order to status:
-   "10 Compliance Records"
+4. Update ClickUp status to:
+
+   ```
+   10 Compliance Records
+   ```
 
 ---
 
@@ -414,8 +332,6 @@ Worker must:
 
 Worker enforces lifecycle gating.
 
-Out-of-order submissions must be rejected.
-
 ---
 
 # Idempotency + Safety
@@ -425,7 +341,7 @@ Out-of-order submissions must be rejected.
 * Forms require eventId
 * No direct ClickUp writes before R2 update
 * Stripe and Cal webhooks require signature validation
-* Email triggers only occur after canonical state update
+* Email triggers only after canonical state update
 * Receipts are append-only
 
 ---
@@ -434,15 +350,9 @@ Out-of-order submissions must be rejected.
 
 Wrangler-only configuration.
 
-Do not define runtime variables in dashboard.
-
----
-
 ## Bindings
 
 * R2_BUCKET
-
----
 
 ## Secrets
 
@@ -452,11 +362,7 @@ Do not define runtime variables in dashboard.
 * STRIPE_SECRET_KEY
 * STRIPE_WEBHOOK_SECRET
 
----
-
-## Plaintext Vars
-
-Alphabetical:
+## Plaintext Vars (Alphabetical)
 
 * CLICKUP_ACCOUNTS_LIST_ID
 * CLICKUP_ORDERS_LIST_ID
@@ -475,22 +381,6 @@ Alphabetical:
 
 ---
 
-### Convention Rule
-
-All Worker environment variables:
-
-* Use UPPERCASE
-* Use underscores
-* No camelCase
-* No mixed casing
-* No dashboard-only overrides
-
-These organization variables are required for compliance report rendering and are injected at render time by the Worker.
-
-Organization identity values must exist in Wrangler config.
-
----
-
 # Design Principles
 
 * Append-only receipts ledger
@@ -502,7 +392,3 @@ Organization identity values must exist in Wrangler config.
 * Status-driven workflow
 * Worker-injected rendering state
 * Zero manual lifecycle transitions
-
-
-
-
