@@ -206,9 +206,17 @@ are not allowed.
 │  ├─ pages/
 │  │  ├─ flows/
 │  │  │  ├─ intake/
-│  │  │  │  └─ offer.html
+│  │  │  │  ├─ agreement.html
+│  │  │  │  ├─ intake.html
+│  │  │  │  ├─ offer.html
+│  │  │  │  └─ payment.html
 │  │  │  └─ post-payment/
-│  │  │     └─ compliance-report.html
+│  │  │     ├─ address-update.html
+│  │  │     ├─ client-exit-survey.html
+│  │  │     ├─ compliance-report.html
+│  │  │     ├─ esign-2848.html
+│  │  │     ├─ filing-status.html
+│  │  │     └─ welcome.html
 │  │  └─ staff/
 │  │     └─ compliance-records.html
 │  ├─ partials/
@@ -240,10 +248,11 @@ are not allowed.
 │  ├─ app.css
 │  └─ site.css
 └─ workers/
-└─ api/
-├─ src/
-│  └─ index.js
-└─ wrangler.toml
+   └─ api/
+      ├─ src/
+      │  └─ index.js
+      └─ wrangler.toml
+
 
 ```
 
