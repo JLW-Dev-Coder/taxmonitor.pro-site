@@ -1,1167 +1,1453 @@
 <!-- /app/pages/staff/compliance-records.html -->
 <!doctype html>
 <html lang="en" class="h-full">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tax Monitor Pro — Staff — Compliance Records</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tax Compliance Dashboard</title>
 
-  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
-  <script src="/_sdk/element_sdk.js"></script>
+    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+    <script src="/_sdk/element_sdk.js"></script>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;family=Inter:wght@400;500;600;700&amp;display=swap"
+      rel="stylesheet"
+    />
 
-  <link rel="icon" href="https://taxmonitor.pro/favicon.ico" sizes="any">
-  <link rel="icon" href="https://taxmonitor.pro/assets/favicon.ico" sizes="any">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              mono: ["JetBrains Mono", "monospace"],
+              sans: ["Inter", "system-ui", "sans-serif"],
+            },
+            colors: {
+              slate: {
+                850: "#1a1f2e",
+                950: "#0d1117",
+              },
+            },
+          },
+        },
+      };
+    </script>
 
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: { sans: ['DM Sans', 'system-ui', 'sans-serif'] },
-          colors: {
-            slate: { 850:'#1a1f2e', 900:'#0f1219', 950:'#080a0f' },
-            amber: { 400:'#fbbf24', 500:'#f59e0b', 600:'#d97706' }
-          }
+    <style>
+      html,
+      body {
+        height: 100%;
+      }
+      .app-container {
+        height: 100%;
+        overflow: auto;
+      }
+
+      /* Custom scrollbar */
+      ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #1e293b;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #475569;
+        border-radius: 3px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #64748b;
+      }
+
+      /* Accordion animation */
+      .accordion-content {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-out;
+      }
+      .accordion-content.open {
+        max-height: 2000px;
+      }
+
+      /* Print styles */
+      @media print {
+        body {
+          background: white !important;
+        }
+        .no-print {
+          display: none !important;
+        }
+        .print-white {
+          background: white !important;
+          color: #1e293b !important;
         }
       }
-    };
-  </script>
 
-  <style>
-    html, body { height: 100%; }
-    *, *::before, *::after { box-sizing: border-box; }
-    * { font-family: 'DM Sans', system-ui, sans-serif; }
+      /* Tab active indicator */
+      .tab-active {
+        border-bottom: 2px solid #3b82f6;
+        color: #f8fafc;
+      }
 
-    .gradient-text{
-      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
-      -webkit-background-clip:text;
-      -webkit-text-fill-color:transparent;
-      background-clip:text;
-    }
-    .gradient-bg{
-      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
-    }
-    .card-glow{
-      box-shadow: 0 0 40px rgba(251, 191, 36, 0.06), 0 0 90px rgba(251, 191, 36, 0.02);
-    }
-    .noise-bg::before{
-      content:'';
-      position:fixed; inset:0;
-      opacity:.03;
-      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-      pointer-events:none;
-      z-index:1;
-    }
-    .aurora-blob{ position:absolute; border-radius:50%; filter:blur(100px); opacity:.14; animation:float 20s ease-in-out infinite; }
-    .aurora-1{ width:650px; height:420px; background:linear-gradient(135deg,#F59E0B,#D97706); top:8%; right:-12%; }
-    .aurora-2{ width:520px; height:360px; background:linear-gradient(135deg,#2DD4BF,#14B8A6); top:42%; left:-16%; opacity:.08; animation-delay:-7s; }
-    .aurora-3{ width:480px; height:320px; background:linear-gradient(135deg,#F59E0B,#EA580C); bottom:4%; right:18%; animation-delay:-14s; }
-    @keyframes float{ 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(30px,-30px) scale(1.05)} 66%{transform:translate(-20px,20px) scale(.95)} }
+      /* Input focus */
+      input:focus,
+      select:focus,
+      textarea:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+      }
+    </style>
 
-    /* Print rules: no gimmicks, full report */
-    @media print{
-      .no-print{ display:none !important; }
-      .print-expand{ display:block !important; }
-      body{ background:#fff !important; color:#000 !important; }
-      .card-glow{ box-shadow:none !important; }
-      .print-surface{ border:1px solid #ddd !important; background:#fff !important; }
-      a[href]:after{ content:""; }
-    }
-  </style>
-</head>
+    <style>
+      body {
+        box-sizing: border-box;
+      }
+    </style>
 
-<body class="h-full bg-[#020617] text-slate-200 noise-bg">
-  <div class="aurora-blob aurora-1"></div>
-  <div class="aurora-blob aurora-2"></div>
-  <div class="aurora-blob aurora-3"></div>
+    <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  </head>
 
-  <div class="relative z-10 min-h-full">
-    <header class="border-b border-slate-800/60 bg-slate-950/60 backdrop-blur">
-      <div class="mx-auto max-w-7xl px-6 py-5 flex items-center justify-between gap-4">
-        <div class="flex items-center gap-3">
-          <div class="h-10 w-10 rounded-xl gradient-bg text-slate-950 font-bold flex items-center justify-center">TM</div>
-          <div class="leading-tight">
-            <div class="font-semibold">Staff Console</div>
-            <div class="text-sm text-slate-400">Compliance Records → contract v2 → report generator</div>
-          </div>
-        </div>
-        <div class="no-print flex items-center gap-2">
-          <button id="btnPrint" class="px-3 py-2 rounded-xl border border-slate-700/70 bg-slate-900/60 hover:bg-slate-900 transition text-sm">Print</button>
-          <button id="btnDemo" class="px-3 py-2 rounded-xl border border-slate-700/70 bg-slate-900/60 hover:bg-slate-900 transition text-sm">Load demo</button>
-        </div>
-      </div>
-    </header>
-
-    <main class="mx-auto max-w-7xl px-6 py-8">
-      <div class="grid lg:grid-cols-12 gap-6">
-        <!-- Left: builder -->
-        <section class="lg:col-span-5 bg-slate-900/60 rounded-2xl border border-slate-800/50 p-6 card-glow">
-          <div class="flex items-start justify-between gap-3 mb-5">
-            <div>
-              <h1 class="text-xl font-semibold text-slate-100">Compliance builder</h1>
-              <p class="text-sm text-slate-400 mt-1">Tabs + accordions for live-call capture. Outputs contract v2 record.</p>
+  <body class="h-full bg-slate-950 text-slate-200 font-sans">
+    <div class="app-container flex flex-col">
+      <!-- Sticky Header -->
+      <header class="sticky top-0 z-50 bg-slate-900 border-b border-slate-700/50 px-6 py-3 no-print">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-6">
+            <!-- Logo -->
+            <div class="flex items-center gap-2">
+              <svg class="w-8 h-8 text-blue-500" viewBox="0 0 32 32" fill="none">
+                <rect x="2" y="4" width="28" height="24" rx="2" stroke="currentColor" stroke-width="2"></rect>
+                <path d="M8 12h16M8 16h12M8 20h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+                <circle cx="24" cy="20" r="4" fill="currentColor"></circle>
+              </svg>
+              <span class="font-semibold text-slate-100">TaxCompliance</span>
             </div>
-            <span id="statusPill" class="px-3 py-1 rounded-full bg-slate-800/70 border border-slate-700/60 text-xs text-slate-300">Idle</span>
-          </div>
 
-          <!-- Account loader -->
-          <div class="space-y-3">
-            <label class="text-xs text-slate-500 uppercase tracking-wider">Account JSON (paste existing accounts/{accountId}.json)</label>
-            <textarea id="accountJson" rows="6"
-              class="w-full rounded-xl bg-slate-950/40 border border-slate-700/60 px-4 py-3 text-sm text-slate-200 outline-none focus:ring-2 focus:ring-amber-500/30"
-              placeholder='Paste accounts/{accountId}.json here (optional).'></textarea>
-
-            <div class="grid sm:grid-cols-2 gap-3">
+            <!-- Client Info -->
+            <div class="flex items-center gap-4 pl-6 border-l border-slate-700">
               <div>
-                <label class="text-xs text-slate-500 uppercase tracking-wider">Account ID</label>
-                <input id="accountId" class="mt-1 w-full rounded-xl bg-slate-950/40 border border-slate-700/60 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-amber-500/30" placeholder="acct_..." />
+                <p class="text-xs text-slate-500 uppercase tracking-wide">Client</p>
+                <p id="header-client-name" class="font-medium text-slate-100">Margaret Chen</p>
               </div>
               <div>
-                <label class="text-xs text-slate-500 uppercase tracking-wider">Event ID</label>
-                <input id="eventId" class="mt-1 w-full rounded-xl bg-slate-950/40 border border-slate-700/60 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-amber-500/30" placeholder="cmp_..." />
+                <p class="text-xs text-slate-500 uppercase tracking-wide">ID</p>
+                <p id="header-client-id" class="font-mono text-sm text-slate-300">TC-2024-00847</p>
               </div>
             </div>
           </div>
 
-          <!-- Tabs -->
-          <div class="no-print mt-6">
-            <div class="flex items-center justify-between gap-3">
-              <div class="text-sm font-semibold text-slate-200">Call flow tabs</div>
-              <div class="text-xs text-slate-500">Option B: tabs + accordions</div>
+          <div class="flex items-center gap-4">
+            <!-- Status Badge -->
+            <div class="flex items-center gap-3">
+              <span
+                id="status-badge"
+                class="px-3 py-1 text-xs font-medium rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/30"
+                >DRAFT</span
+              >
+              <span class="text-xs text-slate-500">
+                Last saved: <span id="last-saved" class="text-slate-400">2 min ago</span>
+              </span>
             </div>
-            <div id="tabs" class="mt-3 flex flex-wrap gap-2"></div>
-          </div>
 
-          <!-- Tab content -->
-          <div id="tabPanel" class="mt-4"></div>
-
-          <!-- Actions -->
-          <div class="no-print mt-6 grid sm:grid-cols-2 gap-3">
-            <button id="btnGenerate" class="px-4 py-3 rounded-xl gradient-bg text-slate-950 font-semibold text-sm hover:opacity-90 transition">
-              Generate + preview
-            </button>
-            <button id="btnCopy" class="px-4 py-3 rounded-xl border border-slate-700/70 bg-slate-950/20 text-sm hover:bg-slate-950/35 transition">
-              Copy updated account JSON
-            </button>
-          </div>
-
-          <div class="no-print mt-4">
-            <label class="text-xs text-slate-500 uppercase tracking-wider">Updated accounts/{accountId}.json preview</label>
-            <textarea id="outputJson" rows="9"
-              class="mt-1 w-full rounded-xl bg-slate-950/40 border border-slate-700/60 px-4 py-3 text-xs text-slate-200 outline-none"></textarea>
-          </div>
-
-          <p class="mt-4 text-xs text-slate-500">
-            This page generates the compliance object. Your Worker still: receipt → upsert R2 → ClickUp projection.
-          </p>
-        </section>
-
-        <!-- Right: report -->
-        <section class="lg:col-span-7 bg-slate-900/60 rounded-2xl border border-slate-800/50 p-6 card-glow print-surface">
-          <div class="flex items-start justify-between gap-4 mb-5">
-            <div>
-              <h2 class="text-xl font-semibold text-slate-100">Report preview</h2>
-              <p class="text-sm text-slate-400 mt-1">Interactive for taxpayers, print-ready for reality.</p>
-            </div>
-            <div class="no-print flex items-center gap-2">
-              <button id="btnExpandAll" class="px-3 py-2 rounded-xl border border-slate-700/70 bg-slate-950/20 hover:bg-slate-950/35 transition text-sm">Expand</button>
-              <button id="btnCollapseAll" class="px-3 py-2 rounded-xl border border-slate-700/70 bg-slate-950/20 hover:bg-slate-950/35 transition text-sm">Collapse</button>
+            <!-- Action Buttons -->
+            <div class="flex items-center gap-2 pl-4 border-l border-slate-700">
+              <button
+                id="save-draft-btn"
+                class="px-4 py-2 text-sm font-medium text-slate-300 bg-slate-800 border border-slate-600 rounded-md hover:bg-slate-700 transition-colors"
+              >
+                Save Draft
+              </button>
+              <button
+                id="finalize-btn"
+                class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-colors"
+              >
+                Finalize Record
+              </button>
             </div>
           </div>
+        </div>
+      </header>
 
-          <!-- Header block -->
-          <div class="rounded-2xl border border-slate-800/60 bg-slate-950/25 overflow-hidden">
-            <div class="px-6 py-5 border-b border-slate-800/60 flex items-center justify-between gap-4">
-              <div class="flex items-center gap-3">
-                <div class="h-10 w-10 rounded-xl gradient-bg text-slate-950 font-bold flex items-center justify-center">TM</div>
-                <div>
-                  <div class="font-semibold">Federal Tax Record Report</div>
-                  <div id="reportSub" class="text-sm text-slate-400">Prepared for —</div>
+      <!-- Tab Navigation -->
+      <nav class="bg-slate-900 border-b border-slate-700/50 px-6 no-print">
+        <div class="flex items-center gap-1 -mb-px overflow-x-auto">
+          <button
+            class="tab-btn tab-active px-4 py-3 text-sm font-medium text-slate-400 hover:text-slate-200 border-b-2 border-transparent whitespace-nowrap transition-colors"
+            data-tab="overview"
+          >
+            Overview
+          </button>
+          <button
+            class="tab-btn px-4 py-3 text-sm font-medium text-slate-400 hover:text-slate-200 border-b-2 border-transparent whitespace-nowrap transition-colors"
+            data-tab="agent"
+          >
+            Agent
+          </button>
+          <button
+            class="tab-btn px-4 py-3 text-sm font-medium text-slate-400 hover:text-slate-200 border-b-2 border-transparent whitespace-nowrap transition-colors"
+            data-tab="authority"
+          >
+            Authority
+          </button>
+          <button
+            class="tab-btn px-4 py-3 text-sm font-medium text-slate-400 hover:text-slate-200 border-b-2 border-transparent whitespace-nowrap transition-colors"
+            data-tab="compliance"
+          >
+            Compliance
+          </button>
+          <button
+            class="tab-btn px-4 py-3 text-sm font-medium text-slate-400 hover:text-slate-200 border-b-2 border-transparent whitespace-nowrap transition-colors"
+            data-tab="notices"
+          >
+            Notices
+          </button>
+          <button
+            class="tab-btn px-4 py-3 text-sm font-medium text-slate-400 hover:text-slate-200 border-b-2 border-transparent whitespace-nowrap transition-colors"
+            data-tab="installment"
+          >
+            Installment Agreement
+          </button>
+          <button
+            class="tab-btn px-4 py-3 text-sm font-medium text-slate-400 hover:text-slate-200 border-b-2 border-transparent whitespace-nowrap transition-colors"
+            data-tab="revenue"
+          >
+            Revenue Officer
+          </button>
+          <button
+            class="tab-btn px-4 py-3 text-sm font-medium text-slate-400 hover:text-slate-200 border-b-2 border-transparent whitespace-nowrap transition-colors"
+            data-tab="transcripts"
+          >
+            Transcripts
+          </button>
+          <button
+            class="tab-btn px-4 py-3 text-sm font-medium text-slate-400 hover:text-slate-200 border-b-2 border-transparent whitespace-nowrap transition-colors"
+            data-tab="summary"
+          >
+            Summary
+          </button>
+        </div>
+      </nav>
+
+      <!-- Main Content -->
+      <main class="flex-1 p-6">
+        <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 h-full">
+          <!-- Left Column - Form Inputs -->
+          <div class="lg:col-span-3 space-y-4">
+            <!-- Overview Tab -->
+            <div id="tab-overview" class="tab-content space-y-4">
+              <!-- Client Information Accordion -->
+              <div class="accordion bg-slate-900 rounded-lg border border-slate-700/50">
+                <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="client-info">
+                  <div class="flex items-center gap-3">
+                    <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                      />
+                    </svg>
+                    <span class="font-medium text-slate-100">Client Information</span>
+                  </div>
+                  <svg class="accordion-icon w-5 h-5 text-slate-500 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                <div class="accordion-content open" id="accordion-client-info">
+                  <div class="px-4 pb-4 border-t border-slate-700/50 pt-4">
+                    <div class="grid grid-cols-2 gap-4">
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Full Legal Name</label>
+                        <input
+                          type="text"
+                          id="input-client-name"
+                          value="Margaret Chen"
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm placeholder-slate-500"
+                        />
+                      </div>
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">SSN (Last 4)</label>
+                        <input
+                          type="text"
+                          value="••••-4827"
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm font-mono"
+                        />
+                      </div>
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Filing Status</label>
+                        <select class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm">
+                          <option>Single</option>
+                          <option selected>Married Filing Jointly</option>
+                          <option>Married Filing Separately</option>
+                          <option>Head of Household</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">State of Residence</label>
+                        <select class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm">
+                          <option>Select state...</option>
+                          <option selected>California</option>
+                          <option>New York</option>
+                          <option>Texas</option>
+                        </select>
+                      </div>
+                    </div>
+                    <p class="mt-3 text-xs text-slate-500">Verify client identity before discussing account details with IRS representative.</p>
+                  </div>
                 </div>
               </div>
-              <span id="badgeStatus" class="px-3 py-1 rounded-full bg-slate-800/60 border border-slate-700/60 text-xs text-slate-200">Preview</span>
+
+              <!-- Account Status Accordion -->
+              <div class="accordion bg-slate-900 rounded-lg border border-slate-700/50">
+                <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="account-status">
+                  <div class="flex items-center gap-3">
+                    <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                    <span class="font-medium text-slate-100">Account Status</span>
+                  </div>
+                  <svg class="accordion-icon w-5 h-5 text-slate-500 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                <div class="accordion-content open" id="accordion-account-status">
+                  <div class="px-4 pb-4 border-t border-slate-700/50 pt-4">
+                    <div class="grid grid-cols-3 gap-4 mb-4">
+                      <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700/50">
+                        <p class="text-xs text-slate-500 uppercase tracking-wide">Total Balance</p>
+                        <p class="text-xl font-semibold text-red-400 font-mono mt-1">$24,847.32</p>
+                      </div>
+                      <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700/50">
+                        <p class="text-xs text-slate-500 uppercase tracking-wide">Penalties</p>
+                        <p class="text-xl font-semibold text-amber-400 font-mono mt-1">$3,218.00</p>
+                      </div>
+                      <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700/50">
+                        <p class="text-xs text-slate-500 uppercase tracking-wide">Interest</p>
+                        <p class="text-xl font-semibold text-amber-400 font-mono mt-1">$1,842.17</p>
+                      </div>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                      <span class="inline-flex items-center px-2.5 py-1 rounded text-xs font-medium bg-red-500/20 text-red-400 border border-red-500/30">
+                        <span class="w-1.5 h-1.5 rounded-full bg-red-400 mr-1.5"></span>
+                        Balance Due
+                      </span>
+                      <span
+                        class="inline-flex items-center px-2.5 py-1 rounded text-xs font-medium bg-amber-500/20 text-amber-400 border border-amber-500/30"
+                      >
+                        <span class="w-1.5 h-1.5 rounded-full bg-amber-400 mr-1.5"></span>
+                        Missing Returns (2)
+                      </span>
+                      <span
+                        class="inline-flex items-center px-2.5 py-1 rounded text-xs font-medium bg-orange-500/20 text-orange-400 border border-orange-500/30"
+                      >
+                        <span class="w-1.5 h-1.5 rounded-full bg-orange-400 mr-1.5"></span>
+                        Lien Risk: Medium
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Call Notes Accordion -->
+              <div class="accordion bg-slate-900 rounded-lg border border-slate-700/50">
+                <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="call-notes">
+                  <div class="flex items-center gap-3">
+                    <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                      />
+                    </svg>
+                    <span class="font-medium text-slate-100">Call Notes</span>
+                    <span class="px-2 py-0.5 text-xs bg-blue-500/20 text-blue-400 rounded">Live</span>
+                  </div>
+                  <svg class="accordion-icon w-5 h-5 text-slate-500 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                <div class="accordion-content open" id="accordion-call-notes">
+                  <div class="px-4 pb-4 border-t border-slate-700/50 pt-4">
+                    <div class="space-y-3">
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">IRS Representative</label>
+                        <input
+                          type="text"
+                          placeholder="Name and badge number"
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm placeholder-slate-500"
+                        />
+                      </div>
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Call Reference Number</label>
+                        <input
+                          type="text"
+                          placeholder="Reference # from IRS"
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm font-mono placeholder-slate-500"
+                        />
+                      </div>
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Discussion Notes</label>
+                        <textarea
+                          rows="4"
+                          placeholder="Document key points discussed..."
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm placeholder-slate-500 resize-none"
+                        ></textarea>
+                      </div>
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Action Items</label>
+                        <textarea
+                          rows="2"
+                          placeholder="Required follow-up actions..."
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm placeholder-slate-500 resize-none"
+                        ></textarea>
+                      </div>
+                    </div>
+                    <p class="mt-3 text-xs text-slate-500">All call notes are timestamped and saved automatically.</p>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <!-- Big selling numbers -->
-            <div class="p-6 grid sm:grid-cols-3 gap-4">
-              <div class="rounded-2xl border border-slate-800/60 bg-slate-950/30 p-4">
-                <div class="text-xs text-slate-500 uppercase tracking-wider">Estimated debt</div>
-                <div id="metricDebt" class="mt-1 text-2xl font-semibold">—</div>
-                <div class="text-xs text-slate-500 mt-2">Based on IRS records at review time.</div>
-              </div>
-              <div class="rounded-2xl border border-slate-800/60 bg-slate-950/30 p-4">
-                <div class="text-xs text-slate-500 uppercase tracking-wider">Recommendation</div>
-                <div id="metricRec" class="mt-1 text-2xl font-semibold">—</div>
-                <div class="text-xs text-slate-500 mt-2">Judgment + documentation trail.</div>
-              </div>
-              <div class="rounded-2xl border border-slate-800/60 bg-slate-950/30 p-4">
-                <div class="text-xs text-slate-500 uppercase tracking-wider">Lien exposure</div>
-                <div id="metricLien" class="mt-1 text-2xl font-semibold">—</div>
-                <div class="text-xs text-slate-500 mt-2">Signals urgency and escalation risk.</div>
+            <!-- Agent Tab -->
+            <div id="tab-agent" class="tab-content hidden space-y-4">
+              <div class="accordion bg-slate-900 rounded-lg border border-slate-700/50">
+                <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="poa-info">
+                  <div class="flex items-center gap-3">
+                    <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                      />
+                    </svg>
+                    <span class="font-medium text-slate-100">Power of Attorney (Form 2848)</span>
+                  </div>
+                  <svg class="accordion-icon w-5 h-5 text-slate-500 transition-transform rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                <div class="accordion-content open" id="accordion-poa-info">
+                  <div class="px-4 pb-4 border-t border-slate-700/50 pt-4">
+                    <div class="grid grid-cols-2 gap-4">
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Enrolled Agent Name</label>
+                        <input
+                          type="text"
+                          id="input-agent-name"
+                          value="James Morrison, EA"
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm"
+                        />
+                      </div>
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">CAF Number</label>
+                        <input
+                          type="text"
+                          value="1234-56789-R"
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm font-mono"
+                        />
+                      </div>
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">PTIN</label>
+                        <input
+                          type="text"
+                          value="P00123456"
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm font-mono"
+                        />
+                      </div>
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">POA Effective Date</label>
+                        <input
+                          type="date"
+                          value="2024-01-15"
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm"
+                        />
+                      </div>
+                      <div class="col-span-2">
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Tax Matters Authorized</label>
+                        <input
+                          type="text"
+                          value="Income Tax (1040) - Years 2020, 2021, 2022, 2023, 2024"
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm"
+                        />
+                      </div>
+                    </div>
+
+                    <div class="mt-4 flex items-center gap-2">
+                      <span class="inline-flex items-center px-2.5 py-1 rounded text-xs font-medium bg-green-500/20 text-green-400 border border-green-500/30">
+                        <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                          <path
+                            fill-rule="evenodd"
+                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                            clip-rule="evenodd"
+                          />
+                        </svg>
+                        Active on CAF
+                      </span>
+                      <span class="text-xs text-slate-500">Verified 01/15/2024</span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 
-            <!-- Year tabs -->
-            <div class="px-6 pb-6">
-              <div class="flex items-center justify-between gap-3 mb-3">
-                <div class="text-sm font-semibold text-slate-200">Year view</div>
-                <div class="text-xs text-slate-500">Tabs from balancesByYear</div>
-              </div>
-              <div id="yearTabs" class="flex flex-wrap gap-2"></div>
+            <!-- Authority Tab -->
+            <div id="tab-authority" class="tab-content hidden space-y-4">
+              <div class="accordion bg-slate-900 rounded-lg border border-slate-700/50">
+                <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="auth-scope">
+                  <div class="flex items-center gap-3">
+                    <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                      />
+                    </svg>
+                    <span class="font-medium text-slate-100">Authorization Scope</span>
+                  </div>
+                  <svg class="accordion-icon w-5 h-5 text-slate-500 transition-transform rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                <div class="accordion-content open" id="accordion-auth-scope">
+                  <div class="px-4 pb-4 border-t border-slate-700/50 pt-4">
+                    <div class="space-y-3">
+                      <div class="flex items-center justify-between p-3 bg-slate-800/50 rounded-lg border border-slate-700/50">
+                        <div>
+                          <p class="text-sm font-medium text-slate-100">Receive Tax Information</p>
+                          <p class="text-xs text-slate-500">Access account transcripts and notices</p>
+                        </div>
+                        <span class="px-2 py-1 text-xs font-medium bg-green-500/20 text-green-400 rounded">Authorized</span>
+                      </div>
 
-              <div id="yearPanel" class="mt-4 rounded-2xl border border-slate-800/60 bg-slate-950/25 p-5">
-                <div class="text-sm text-slate-400">Select a year.</div>
+                      <div class="flex items-center justify-between p-3 bg-slate-800/50 rounded-lg border border-slate-700/50">
+                        <div>
+                          <p class="text-sm font-medium text-slate-100">Represent Taxpayer</p>
+                          <p class="text-xs text-slate-500">Speak and negotiate on client's behalf</p>
+                        </div>
+                        <span class="px-2 py-1 text-xs font-medium bg-green-500/20 text-green-400 rounded">Authorized</span>
+                      </div>
+
+                      <div class="flex items-center justify-between p-3 bg-slate-800/50 rounded-lg border border-slate-700/50">
+                        <div>
+                          <p class="text-sm font-medium text-slate-100">Sign Return</p>
+                          <p class="text-xs text-slate-500">Execute tax returns on behalf of taxpayer</p>
+                        </div>
+                        <span class="px-2 py-1 text-xs font-medium bg-slate-600/50 text-slate-400 rounded">Not Authorized</span>
+                      </div>
+
+                      <div class="flex items-center justify-between p-3 bg-slate-800/50 rounded-lg border border-slate-700/50">
+                        <div>
+                          <p class="text-sm font-medium text-slate-100">Receive Refund Checks</p>
+                          <p class="text-xs text-slate-500">Accept refunds on taxpayer's behalf</p>
+                        </div>
+                        <span class="px-2 py-1 text-xs font-medium bg-slate-600/50 text-slate-400 rounded">Not Authorized</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Compliance Tab -->
+            <div id="tab-compliance" class="tab-content hidden space-y-4">
+              <!-- Year Tabs -->
+              <div class="flex items-center gap-1 p-1 bg-slate-800 rounded-lg w-fit">
+                <button class="year-tab px-4 py-2 text-sm font-medium rounded-md bg-blue-600 text-white" data-year="2024">2024</button>
+                <button class="year-tab px-4 py-2 text-sm font-medium rounded-md text-slate-400 hover:text-slate-200" data-year="2023">2023</button>
+                <button class="year-tab px-4 py-2 text-sm font-medium rounded-md text-slate-400 hover:text-slate-200" data-year="2022">2022</button>
+                <button class="year-tab px-4 py-2 text-sm font-medium rounded-md text-slate-400 hover:text-slate-200" data-year="2021">2021</button>
+                <button class="year-tab px-4 py-2 text-sm font-medium rounded-md text-slate-400 hover:text-slate-200" data-year="2020">2020</button>
+              </div>
+
+              <div class="accordion bg-slate-900 rounded-lg border border-slate-700/50">
+                <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="return-status">
+                  <div class="flex items-center gap-3">
+                    <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                      />
+                    </svg>
+                    <span class="font-medium text-slate-100">Return Status - <span id="compliance-year">2024</span></span>
+                  </div>
+                  <svg class="accordion-icon w-5 h-5 text-slate-500 transition-transform rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                <div class="accordion-content open" id="accordion-return-status">
+                  <div class="px-4 pb-4 border-t border-slate-700/50 pt-4">
+                    <div class="grid grid-cols-2 gap-4">
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Filing Status</label>
+                        <select class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm">
+                          <option>Filed - Accepted</option>
+                          <option selected>Filed - Under Review</option>
+                          <option>Not Filed</option>
+                          <option>Extension Filed</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Date Filed</label>
+                        <input type="date" value="2024-04-15" class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm" />
+                      </div>
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">AGI Reported</label>
+                        <input type="text" value="$142,500" class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm font-mono" />
+                      </div>
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Tax Liability</label>
+                        <input type="text" value="$28,340" class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm font-mono" />
+                      </div>
+                    </div>
+
+                    <div class="mt-4 p-3 bg-amber-500/10 border border-amber-500/30 rounded-lg">
+                      <div class="flex items-start gap-2">
+                        <svg class="w-4 h-4 text-amber-400 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                          <path
+                            fill-rule="evenodd"
+                            d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                            clip-rule="evenodd"
+                          />
+                        </svg>
+                        <div>
+                          <p class="text-sm font-medium text-amber-400">Under IRS Examination</p>
+                          <p class="text-xs text-amber-400/70 mt-0.5">CP2000 issued - unreported income discrepancy</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion bg-slate-900 rounded-lg border border-slate-700/50">
+                <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="balance-detail">
+                  <div class="flex items-center gap-3">
+                    <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                    <span class="font-medium text-slate-100">Balance Detail</span>
+                  </div>
+                  <svg class="accordion-icon w-5 h-5 text-slate-500 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                <div class="accordion-content" id="accordion-balance-detail">
+                  <div class="px-4 pb-4 border-t border-slate-700/50 pt-4">
+                    <table class="w-full text-sm">
+                      <thead>
+                        <tr class="text-xs text-slate-500 uppercase tracking-wide">
+                          <th class="text-left pb-2">Component</th>
+                          <th class="text-right pb-2">Amount</th>
+                        </tr>
+                      </thead>
+                      <tbody class="divide-y divide-slate-700/50">
+                        <tr>
+                          <td class="py-2 text-slate-300">Original Tax</td>
+                          <td class="py-2 text-right font-mono text-slate-100">$19,787.15</td>
+                        </tr>
+                        <tr>
+                          <td class="py-2 text-slate-300">Failure to Pay Penalty</td>
+                          <td class="py-2 text-right font-mono text-amber-400">$2,418.00</td>
+                        </tr>
+                        <tr>
+                          <td class="py-2 text-slate-300">Failure to File Penalty</td>
+                          <td class="py-2 text-right font-mono text-amber-400">$800.00</td>
+                        </tr>
+                        <tr>
+                          <td class="py-2 text-slate-300">Interest (computed daily)</td>
+                          <td class="py-2 text-right font-mono text-amber-400">$1,842.17</td>
+                        </tr>
+                        <tr class="font-medium">
+                          <td class="py-2 text-slate-100">Total Balance</td>
+                          <td class="py-2 text-right font-mono text-red-400">$24,847.32</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Notices Tab -->
+            <div id="tab-notices" class="tab-content hidden space-y-4">
+              <div class="accordion bg-slate-900 rounded-lg border border-slate-700/50">
+                <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="notice-history">
+                  <div class="flex items-center gap-3">
+                    <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                      />
+                    </svg>
+                    <span class="font-medium text-slate-100">Notice History</span>
+                    <span class="px-2 py-0.5 text-xs bg-red-500/20 text-red-400 rounded font-medium">3 Active</span>
+                  </div>
+                  <svg class="accordion-icon w-5 h-5 text-slate-500 transition-transform rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                <div class="accordion-content open" id="accordion-notice-history">
+                  <div class="px-4 pb-4 border-t border-slate-700/50 pt-4 space-y-3">
+                    <div class="p-3 bg-red-500/10 border border-red-500/30 rounded-lg">
+                      <div class="flex items-start justify-between">
+                        <div>
+                          <div class="flex items-center gap-2">
+                            <span class="font-mono text-sm font-medium text-slate-100">CP504</span>
+                            <span class="px-1.5 py-0.5 text-xs bg-red-500/30 text-red-400 rounded">Urgent</span>
+                          </div>
+                          <p class="text-sm text-slate-400 mt-1">Notice of Intent to Levy</p>
+                          <p class="text-xs text-slate-500 mt-0.5">Response deadline: Jan 28, 2025</p>
+                        </div>
+                        <span class="text-xs text-slate-500">Dec 14, 2024</span>
+                      </div>
+                    </div>
+
+                    <div class="p-3 bg-amber-500/10 border border-amber-500/30 rounded-lg">
+                      <div class="flex items-start justify-between">
+                        <div>
+                          <div class="flex items-center gap-2">
+                            <span class="font-mono text-sm font-medium text-slate-100">CP2000</span>
+                            <span class="px-1.5 py-0.5 text-xs bg-amber-500/30 text-amber-400 rounded">Pending</span>
+                          </div>
+                          <p class="text-sm text-slate-400 mt-1">Underreported Income - TY2023</p>
+                          <p class="text-xs text-slate-500 mt-0.5">Response deadline: Feb 15, 2025</p>
+                        </div>
+                        <span class="text-xs text-slate-500">Nov 20, 2024</span>
+                      </div>
+                    </div>
+
+                    <div class="p-3 bg-slate-800/50 border border-slate-700/50 rounded-lg">
+                      <div class="flex items-start justify-between">
+                        <div>
+                          <div class="flex items-center gap-2">
+                            <span class="font-mono text-sm font-medium text-slate-100">CP14</span>
+                            <span class="px-1.5 py-0.5 text-xs bg-green-500/30 text-green-400 rounded">Resolved</span>
+                          </div>
+                          <p class="text-sm text-slate-400 mt-1">Balance Due Notice - TY2022</p>
+                          <p class="text-xs text-slate-500 mt-0.5">Paid in full: Oct 1, 2024</p>
+                        </div>
+                        <span class="text-xs text-slate-500">Aug 15, 2024</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Installment Agreement Tab -->
+            <div id="tab-installment" class="tab-content hidden space-y-4">
+              <div class="accordion bg-slate-900 rounded-lg border border-slate-700/50">
+                <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="ia-status">
+                  <div class="flex items-center gap-3">
+                    <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"
+                      />
+                    </svg>
+                    <span class="font-medium text-slate-100">Installment Agreement Status</span>
+                  </div>
+                  <svg class="accordion-icon w-5 h-5 text-slate-500 transition-transform rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                <div class="accordion-content open" id="accordion-ia-status">
+                  <div class="px-4 pb-4 border-t border-slate-700/50 pt-4">
+                    <div class="p-3 bg-slate-800/50 rounded-lg border border-slate-700/50 mb-4">
+                      <div class="flex items-center justify-between">
+                        <div>
+                          <p class="text-sm font-medium text-slate-100">No Active Agreement</p>
+                          <p class="text-xs text-slate-500 mt-0.5">Client may qualify for streamlined IA</p>
+                        </div>
+                        <span class="px-2 py-1 text-xs bg-slate-600/50 text-slate-400 rounded">None</span>
+                      </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Requested Payment</label>
+                        <input
+                          type="text"
+                          placeholder="$0.00"
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm font-mono placeholder-slate-500"
+                        />
+                      </div>
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Payment Date</label>
+                        <select class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm">
+                          <option>Select day...</option>
+                          <option>1st of month</option>
+                          <option>15th of month</option>
+                          <option>28th of month</option>
+                        </select>
+                      </div>
+                      <div class="col-span-2">
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Agreement Type</label>
+                        <select class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm">
+                          <option>Select type...</option>
+                          <option>Streamlined IA (≤$50,000)</option>
+                          <option>Guaranteed IA (≤$10,000)</option>
+                          <option>Regular IA (Collection Info Required)</option>
+                          <option>Partial Pay IA</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <p class="mt-3 text-xs text-slate-500">Form 9465 or online payment agreement may be required.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Revenue Officer Tab -->
+            <div id="tab-revenue" class="tab-content hidden space-y-4">
+              <div class="accordion bg-slate-900 rounded-lg border border-slate-700/50">
+                <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="ro-info">
+                  <div class="flex items-center gap-3">
+                    <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                    <span class="font-medium text-slate-100">Revenue Officer Assignment</span>
+                  </div>
+                  <svg class="accordion-icon w-5 h-5 text-slate-500 transition-transform rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                <div class="accordion-content open" id="accordion-ro-info">
+                  <div class="px-4 pb-4 border-t border-slate-700/50 pt-4">
+                    <div class="p-3 bg-green-500/10 border border-green-500/30 rounded-lg mb-4">
+                      <div class="flex items-center gap-2">
+                        <svg class="w-4 h-4 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                          <path
+                            fill-rule="evenodd"
+                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                            clip-rule="evenodd"
+                          />
+                        </svg>
+                        <span class="text-sm font-medium text-green-400">No Revenue Officer Assigned</span>
+                      </div>
+                      <p class="text-xs text-green-400/70 mt-1">Account is in ACS (Automated Collection System)</p>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">RO Name</label>
+                        <input
+                          type="text"
+                          placeholder="Not assigned"
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm placeholder-slate-500"
+                          disabled
+                        />
+                      </div>
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">RO Badge #</label>
+                        <input
+                          type="text"
+                          placeholder="N/A"
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm font-mono placeholder-slate-500"
+                          disabled
+                        />
+                      </div>
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Territory</label>
+                        <input
+                          type="text"
+                          placeholder="N/A"
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm placeholder-slate-500"
+                          disabled
+                        />
+                      </div>
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Contact Number</label>
+                        <input
+                          type="text"
+                          placeholder="N/A"
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm placeholder-slate-500"
+                          disabled
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Transcripts Tab -->
+            <div id="tab-transcripts" class="tab-content hidden space-y-4">
+              <div class="accordion bg-slate-900 rounded-lg border border-slate-700/50">
+                <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="transcript-requests">
+                  <div class="flex items-center gap-3">
+                    <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                      />
+                    </svg>
+                    <span class="font-medium text-slate-100">Transcript Requests</span>
+                  </div>
+                  <svg class="accordion-icon w-5 h-5 text-slate-500 transition-transform rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                <div class="accordion-content open" id="accordion-transcript-requests">
+                  <div class="px-4 pb-4 border-t border-slate-700/50 pt-4">
+                    <div class="grid grid-cols-2 gap-3 mb-4">
+                      <label class="flex items-center gap-2 p-3 bg-slate-800/50 rounded-lg border border-slate-700/50 cursor-pointer hover:bg-slate-800">
+                        <input type="checkbox" checked class="w-4 h-4 rounded border-slate-600 text-blue-500 focus:ring-blue-500 focus:ring-offset-slate-900" />
+                        <div>
+                          <p class="text-sm font-medium text-slate-100">Account Transcript</p>
+                          <p class="text-xs text-slate-500">Payment history &amp; balances</p>
+                        </div>
+                      </label>
+                      <label class="flex items-center gap-2 p-3 bg-slate-800/50 rounded-lg border border-slate-700/50 cursor-pointer hover:bg-slate-800">
+                        <input type="checkbox" class="w-4 h-4 rounded border-slate-600 text-blue-500 focus:ring-blue-500 focus:ring-offset-slate-900" />
+                        <div>
+                          <p class="text-sm font-medium text-slate-100">Return Transcript</p>
+                          <p class="text-xs text-slate-500">Line items from filed return</p>
+                        </div>
+                      </label>
+                      <label class="flex items-center gap-2 p-3 bg-slate-800/50 rounded-lg border border-slate-700/50 cursor-pointer hover:bg-slate-800">
+                        <input type="checkbox" checked class="w-4 h-4 rounded border-slate-600 text-blue-500 focus:ring-blue-500 focus:ring-offset-slate-900" />
+                        <div>
+                          <p class="text-sm font-medium text-slate-100">Record of Account</p>
+                          <p class="text-xs text-slate-500">Combined return + account</p>
+                        </div>
+                      </label>
+                      <label class="flex items-center gap-2 p-3 bg-slate-800/50 rounded-lg border border-slate-700/50 cursor-pointer hover:bg-slate-800">
+                        <input type="checkbox" class="w-4 h-4 rounded border-slate-600 text-blue-500 focus:ring-blue-500 focus:ring-offset-slate-900" />
+                        <div>
+                          <p class="text-sm font-medium text-slate-100">Wage &amp; Income</p>
+                          <p class="text-xs text-slate-500">W-2s, 1099s received</p>
+                        </div>
+                      </label>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Tax Years</label>
+                        <input type="text" value="2020, 2021, 2022, 2023" class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm" />
+                      </div>
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Delivery Method</label>
+                        <select class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm">
+                          <option>Fax</option>
+                          <option selected>Mail to POA</option>
+                          <option>Mail to Taxpayer</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Summary Tab -->
+            <div id="tab-summary" class="tab-content hidden space-y-4">
+              <div class="accordion bg-slate-900 rounded-lg border border-slate-700/50">
+                <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="case-summary">
+                  <div class="flex items-center gap-3">
+                    <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
+                      />
+                    </svg>
+                    <span class="font-medium text-slate-100">Case Summary</span>
+                  </div>
+                  <svg class="accordion-icon w-5 h-5 text-slate-500 transition-transform rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                <div class="accordion-content open" id="accordion-case-summary">
+                  <div class="px-4 pb-4 border-t border-slate-700/50 pt-4">
+                    <div>
+                      <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Executive Summary</label>
+                      <textarea rows="6" class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm placeholder-slate-500 resize-none">
+Client has outstanding balance of $24,847.32 for TY2023 and TY2024. CP504 (Intent to Levy) issued 12/14/2024 with response deadline 01/28/2025. CP2000 pending for TY2023 unreported 1099-NEC income ($12,400). Client eligible for streamlined IA. Recommend: (1) Respond to CP2000 with documentation, (2) Request IA setup before levy action, (3) Request penalty abatement for reasonable cause.</textarea
+                      >
+                    </div>
+
+                    <div class="mt-4">
+                      <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Next Steps</label>
+                      <div class="space-y-2">
+                        <label class="flex items-center gap-2 p-2 bg-slate-800/50 rounded border border-slate-700/50">
+                          <input type="checkbox" class="w-4 h-4 rounded border-slate-600 text-blue-500" />
+                          <span class="text-sm text-slate-300">Submit CP2000 response with 1099-NEC documentation</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-2 bg-slate-800/50 rounded border border-slate-700/50">
+                          <input type="checkbox" class="w-4 h-4 rounded border-slate-600 text-blue-500" />
+                          <span class="text-sm text-slate-300">File Form 9465 for installment agreement</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-2 bg-slate-800/50 rounded border border-slate-700/50">
+                          <input type="checkbox" class="w-4 h-4 rounded border-slate-600 text-blue-500" />
+                          <span class="text-sm text-slate-300">Submit Form 843 for penalty abatement</span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
-          <!-- Sections -->
-          <div class="mt-6 space-y-3">
-            <details class="section rounded-2xl border border-slate-800/60 bg-slate-950/20 p-5" open>
-              <summary class="cursor-pointer list-none flex items-center justify-between gap-3">
-                <span class="font-semibold">Account snapshot</span>
-                <span class="text-xs text-slate-500">Core indicators</span>
-              </summary>
-              <div class="print-expand mt-4 grid sm:grid-cols-2 gap-3 text-sm">
-                <div class="rounded-xl border border-slate-800/60 bg-slate-950/20 p-4">
-                  <div class="text-xs text-slate-500 uppercase tracking-wider">Account status</div>
-                  <div id="snapAccountStatus" class="mt-1 font-semibold">—</div>
+          <!-- Right Column - Live Report Preview -->
+          <div class="lg:col-span-2">
+            <div class="sticky top-24">
+              <div class="bg-slate-900 rounded-lg border border-slate-700/50 overflow-hidden">
+                <div class="flex items-center justify-between px-4 py-3 border-b border-slate-700/50">
+                  <div class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                      />
+                    </svg>
+                    <span class="text-sm font-medium text-slate-100">Report Preview</span>
+                  </div>
+                  <button id="print-btn" class="text-xs text-blue-400 hover:text-blue-300">Print Report</button>
                 </div>
-                <div class="rounded-xl border border-slate-800/60 bg-slate-950/20 p-4">
-                  <div class="text-xs text-slate-500 uppercase tracking-wider">Total IRS balance</div>
-                  <div id="snapTotalBalance" class="mt-1 font-semibold">—</div>
-                </div>
-                <div class="rounded-xl border border-slate-800/60 bg-slate-950/20 p-4">
-                  <div class="text-xs text-slate-500 uppercase tracking-wider">Unfiled returns</div>
-                  <div id="snapUnfiled" class="mt-1 font-semibold">—</div>
-                </div>
-                <div class="rounded-xl border border-slate-800/60 bg-slate-950/20 p-4">
-                  <div class="text-xs text-slate-500 uppercase tracking-wider">Last return filed</div>
-                  <div id="snapLastFiled" class="mt-1 font-semibold">—</div>
+
+                <div id="report-preview" class="p-4 bg-white text-slate-900 max-h-[calc(100%-3rem)] overflow-y-auto">
+                  <div class="text-center border-b border-slate-200 pb-3 mb-4">
+                    <h1 class="text-lg font-bold text-slate-900">Tax Compliance Report</h1>
+                    <p class="text-xs text-slate-500 mt-1">Generated: <span id="report-date">January 15, 2025</span></p>
+                  </div>
+
+                  <div class="mb-4">
+                    <h2 class="text-xs font-bold text-slate-700 uppercase tracking-wide mb-2">Client Information</h2>
+                    <table class="w-full text-xs">
+                      <tbody>
+                        <tr>
+                          <td class="py-1 text-slate-500 w-1/3">Name</td>
+                          <td id="report-client-name" class="py-1 font-medium">Margaret Chen</td>
+                        </tr>
+                        <tr>
+                          <td class="py-1 text-slate-500">Client ID</td>
+                          <td id="report-client-id" class="py-1 font-mono">TC-2024-00847</td>
+                        </tr>
+                        <tr>
+                          <td class="py-1 text-slate-500">Status</td>
+                          <td class="py-1">
+                            <span class="px-1.5 py-0.5 bg-red-100 text-red-700 rounded text-xs font-medium">Balance Due</span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div class="mb-4">
+                    <h2 class="text-xs font-bold text-slate-700 uppercase tracking-wide mb-2">Account Summary</h2>
+                    <table class="w-full text-xs">
+                      <tbody>
+                        <tr class="border-b border-slate-100">
+                          <td class="py-1.5 text-slate-500">Total Balance</td>
+                          <td class="py-1.5 text-right font-mono font-medium text-red-600">$24,847.32</td>
+                        </tr>
+                        <tr class="border-b border-slate-100">
+                          <td class="py-1.5 text-slate-500">Original Tax</td>
+                          <td class="py-1.5 text-right font-mono">$19,787.15</td>
+                        </tr>
+                        <tr class="border-b border-slate-100">
+                          <td class="py-1.5 text-slate-500">Penalties</td>
+                          <td class="py-1.5 text-right font-mono">$3,218.00</td>
+                        </tr>
+                        <tr>
+                          <td class="py-1.5 text-slate-500">Interest</td>
+                          <td class="py-1.5 text-right font-mono">$1,842.17</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div class="mb-4">
+                    <h2 class="text-xs font-bold text-slate-700 uppercase tracking-wide mb-2">Active Notices</h2>
+                    <div class="space-y-1.5">
+                      <div class="flex items-center justify-between p-2 bg-red-50 rounded border border-red-100">
+                        <div>
+                          <span class="font-mono text-xs font-medium">CP504</span>
+                          <span class="text-xs text-slate-500 ml-2">Intent to Levy</span>
+                        </div>
+                        <span class="text-xs text-red-600 font-medium">Due: Jan 28</span>
+                      </div>
+                      <div class="flex items-center justify-between p-2 bg-amber-50 rounded border border-amber-100">
+                        <div>
+                          <span class="font-mono text-xs font-medium">CP2000</span>
+                          <span class="text-xs text-slate-500 ml-2">Underreported Income</span>
+                        </div>
+                        <span class="text-xs text-amber-600 font-medium">Due: Feb 15</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="mb-4">
+                    <h2 class="text-xs font-bold text-slate-700 uppercase tracking-wide mb-2">Risk Assessment</h2>
+                    <div class="grid grid-cols-3 gap-2">
+                      <div class="text-center p-2 bg-slate-50 rounded">
+                        <p class="text-xs text-slate-500">Lien</p>
+                        <p class="text-sm font-medium text-orange-600">Medium</p>
+                      </div>
+                      <div class="text-center p-2 bg-slate-50 rounded">
+                        <p class="text-xs text-slate-500">Levy</p>
+                        <p class="text-sm font-medium text-red-600">High</p>
+                      </div>
+                      <div class="text-center p-2 bg-slate-50 rounded">
+                        <p class="text-xs text-slate-500">Passport</p>
+                        <p class="text-sm font-medium text-green-600">Low</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="pt-3 border-t border-slate-200 text-center">
+                    <p class="text-xs text-slate-400">Prepared by: <span id="report-agent-name">James Morrison, EA</span></p>
+                    <p class="text-xs text-slate-400">CAF: 1234-56789-R</p>
+                  </div>
                 </div>
               </div>
-            </details>
-
-            <details class="section rounded-2xl border border-slate-800/60 bg-slate-950/20 p-5">
-              <summary class="cursor-pointer list-none flex items-center justify-between gap-3">
-                <span class="font-semibold">What changed</span>
-                <span class="text-xs text-slate-500">Latest vs previous</span>
-              </summary>
-              <div class="print-expand mt-4">
-                <div id="diffPanel" class="rounded-xl border border-slate-800/60 bg-slate-950/20 p-4 text-sm text-slate-300">
-                  Generate a record to see diffs.
-                </div>
-              </div>
-            </details>
-
-            <details class="section rounded-2xl border border-slate-800/60 bg-slate-950/20 p-5">
-              <summary class="cursor-pointer list-none flex items-center justify-between gap-3">
-                <span class="font-semibold">Internal notes</span>
-                <span class="text-xs text-slate-500">Staff-only</span>
-              </summary>
-              <div class="print-expand mt-4">
-                <div id="internalNotes" class="rounded-xl border border-slate-800/60 bg-slate-950/20 p-4 text-sm text-slate-300">—</div>
-              </div>
-            </details>
-
-            <div class="text-xs text-slate-500 mt-2">
-              Monitoring does not create IRS representation. Representation, filing, and resolution are separate engagements.
             </div>
           </div>
-        </section>
-      </div>
-    </main>
-  </div>
 
-  <script>
-    // =========================
-    // Contract + UI config
-    // =========================
-    const CONTRACT_DEMO_URL = "/app/contracts/tm_compliance_record.v2.example.json";
+        </div>
+      </main>
+    </div>
 
-    const TABS = [
-      { id: "overview", label: "Overview" },
-      { id: "agent", label: "Agent" },
-      { id: "authority", label: "Authority" },
-      { id: "compliance", label: "Compliance" },
-      { id: "notices", label: "Notices" },
-      { id: "ia", label: "IA" },
-      { id: "ro", label: "RO" },
-      { id: "transcripts", label: "Transcripts" },
-      { id: "summary", label: "Summary" },
-    ];
-
-    // Field keys from your contract sample (kept explicit, sorted)
-    const FIELD_KEYS = [
-      "Address_Line_1",
-      "Address_Line_2",
-      "City",
-      "Company_Name",
-      "Compliance_Activity_Type",
-      "Compliance_Internal_Notes",
-      "Compliance_Period_Covered",
-      "Estimated_Balance_Due_Range",
-      "IA_Details",
-      "IA_Established",
-      "IA_Last_Payment_Amount",
-      "IA_Last_Payment_Date",
-      "IA_Payment_Amount",
-      "IA_Payment_Date",
-      "IRS_Account_Status",
-      "IRS_Agent_Department",
-      "IRS_Agent_Department_Phone",
-      "IRS_Agent_ID",
-      "IRS_Agent_Name",
-      "IRS_Agent_Verification",
-      "IRS_Balance_By_Year_Status",
-      "IRS_Call_Confirmation_Date",
-      "IRS_Compliance_Section_Focus",
-      "IRS_Lien_Exposure_Level",
-      "IRS_Missing_Years",
-      "IRS_Notice_Date",
-      "IRS_Notice_Received",
-      "IRS_Notice_Type",
-      "IRS_Revenue_Officer_Fax",
-      "IRS_Revenue_Officer_Name",
-      "IRS_Revenue_Officer_Notes",
-      "IRS_Revenue_Officer_Phone",
-      "IRS_Status_Categories",
-      "Identity_Verification_Hold",
-      "Last_Return_Filed_Year",
-      "Primary_Recommended_Service",
-      "Resolution_Readiness_Status",
-      "Spouse_Separate_2848_Required",
-      "Spouse_Separate_2848_Required_Years",
-      "Spouse_Separate_Wet_Sig_2848_Required",
-      "State_Province",
-      "Tax_Monitoring_Service_Progress_Percent",
-      "Tax_Monitoring_Service_Progress_Status",
-      "Taxpayer_Separate_Wet_Sig_2848_Required",
-      "Total_IRS_Balance",
-      "Transcript_Delivery_Method",
-      "Transcript_Files_Upload",
-      "Transcript_Request_Made",
-      "Transcript_Retrieval_Date",
-      "Transcript_Retrieval_Notes",
-      "Transcript_Scope_Confirmed",
-      "Transcripts_Retrieved_From_SOR",
-      "Unfiled_Returns_Indicator",
-      "Wet_Sig_2848_Accepted_Status",
-      "Wet_Sig_2848_Notes",
-      "Wet_Sig_2848_Rejected_Notes",
-      "Wet_Sig_2848_Rejected_Type",
-      "ZIP_Postal_Code",
-    ].sort((a,b)=>a.localeCompare(b));
-
-    // =========================
-    // DOM helpers
-    // =========================
-    const $ = (id) => document.getElementById(id);
-
-    function setPill(text, tone) {
-      const el = $("statusPill");
-      el.textContent = text;
-      el.className = "px-3 py-1 rounded-full border text-xs";
-      const map = {
-        good: "bg-emerald-500/10 border-emerald-500/20 text-emerald-300",
-        idle: "bg-slate-800/70 border-slate-700/60 text-slate-300",
-        warn: "bg-amber-500/10 border-amber-500/20 text-amber-300",
+    <script>
+      // Default configuration
+      const defaultConfig = {
+        agent_name: "James Morrison, EA",
+        background_color: "#0d1117",
+        client_id: "TC-2024-00847",
+        client_name: "Margaret Chen",
+        font_family: "Inter",
+        font_size: 14,
+        primary_action_color: "#3b82f6",
+        secondary_action_color: "#64748b",
+        surface_color: "#1e293b",
+        text_color: "#e2e8f0",
       };
-      el.classList.add(...(map[tone] || map.idle).split(" "));
-    }
 
-    function nowIso() {
-      return new Date().toISOString();
-    }
+      let config = { ...defaultConfig };
+      let lastSaveTime = Date.now();
 
-    function newEventId(prefix="cmp") {
-      const r = Math.random().toString(16).slice(2, 10);
-      const stamp = new Date().toISOString().replace(/[-:]/g, "").slice(0, 15) + "Z";
-      return `${prefix}_${stamp}_${r}`;
-    }
+      // Initialize Element SDK
+      async function initializeApp() {
+        if (window.elementSdk) {
+          await window.elementSdk.init({
+            defaultConfig,
+            mapToCapabilities: (cfg) => ({
+              borderables: [],
+              fontEditable: {
+                get: () => cfg.font_family || defaultConfig.font_family,
+                set: (v) => {
+                  cfg.font_family = v;
+                  window.elementSdk.setConfig({ font_family: v });
+                },
+              },
+              fontSizeable: {
+                get: () => cfg.font_size || defaultConfig.font_size,
+                set: (v) => {
+                  cfg.font_size = v;
+                  window.elementSdk.setConfig({ font_size: v });
+                },
+              },
+              recolorables: [
+                {
+                  get: () => cfg.background_color || defaultConfig.background_color,
+                  set: (v) => {
+                    cfg.background_color = v;
+                    window.elementSdk.setConfig({ background_color: v });
+                  },
+                },
+                {
+                  get: () => cfg.surface_color || defaultConfig.surface_color,
+                  set: (v) => {
+                    cfg.surface_color = v;
+                    window.elementSdk.setConfig({ surface_color: v });
+                  },
+                },
+                {
+                  get: () => cfg.text_color || defaultConfig.text_color,
+                  set: (v) => {
+                    cfg.text_color = v;
+                    window.elementSdk.setConfig({ text_color: v });
+                  },
+                },
+                {
+                  get: () => cfg.primary_action_color || defaultConfig.primary_action_color,
+                  set: (v) => {
+                    cfg.primary_action_color = v;
+                    window.elementSdk.setConfig({ primary_action_color: v });
+                  },
+                },
+                {
+                  get: () => cfg.secondary_action_color || defaultConfig.secondary_action_color,
+                  set: (v) => {
+                    cfg.secondary_action_color = v;
+                    window.elementSdk.setConfig({ secondary_action_color: v });
+                  },
+                },
+              ],
+            }),
+            mapToEditPanelValues: (cfg) =>
+              new Map([
+                ["agent_name", cfg.agent_name || defaultConfig.agent_name],
+                ["client_id", cfg.client_id || defaultConfig.client_id],
+                ["client_name", cfg.client_name || defaultConfig.client_name],
+              ]),
+            onConfigChange: async (newConfig) => {
+              config = { ...config, ...newConfig };
+              applyConfig();
+            },
+          });
+        }
 
-    function safeJsonParse(s) {
-      try { return JSON.parse(String(s || "").trim()); } catch { return null; }
-    }
+        setupEventListeners();
+        applyConfig(); // ensure preview matches defaults on first load
+        updateLastSaved();
+        setInterval(updateLastSaved, 30000);
+      }
 
-    function escapeHtml(s) {
-      return String(s).replace(/[&<>"']/g, (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
-    }
+      function applyConfig() {
+        // Apply colors
+        const bgColor = config.background_color || defaultConfig.background_color;
+        const surfaceColor = config.surface_color || defaultConfig.surface_color;
+        const textColor = config.text_color || defaultConfig.text_color;
+        const primaryColor = config.primary_action_color || defaultConfig.primary_action_color;
 
-    function fmtUsdCents(cents) {
-      const n = Number(cents);
-      if (!Number.isFinite(n)) return "—";
-      return (n/100).toLocaleString(undefined, { style:"currency", currency:"USD", maximumFractionDigits:0 });
-    }
+        document.body.style.backgroundColor = bgColor;
+        document.body.style.color = textColor;
 
-    // =========================
-    // Tabs + accordions renderer
-    // =========================
-    function inputBase() {
-      return "mt-1 w-full rounded-xl bg-slate-950/40 border border-slate-700/60 px-4 py-3 text-sm text-slate-200 outline-none focus:ring-2 focus:ring-amber-500/30";
-    }
+        // Apply font
+        const fontFamily = config.font_family || defaultConfig.font_family;
+        const baseSize = config.font_size || defaultConfig.font_size;
+        document.body.style.fontFamily = `${fontFamily}, Inter, system-ui, sans-serif`;
+        document.body.style.fontSize = `${baseSize}px`;
 
-    function renderTabs(activeId) {
-      const host = $("tabs");
-      host.innerHTML = "";
-      for (const t of TABS) {
-        const btn = document.createElement("button");
-        const active = t.id === activeId;
-        btn.className = [
-          "px-3 py-2 rounded-xl border text-sm transition",
-          active
-            ? "border-amber-500/30 bg-amber-500/10 text-amber-200"
-            : "border-slate-700/70 bg-slate-950/20 text-slate-200 hover:bg-slate-950/35"
-        ].join(" ");
-        btn.textContent = t.label;
-        btn.addEventListener("click", () => {
-          window.__TM_ACTIVE_TAB = t.id;
-          renderTabs(t.id);
-          renderTabPanel(t.id);
+        // Update identity fields
+        const agentName = config.agent_name || defaultConfig.agent_name;
+        const clientId = config.client_id || defaultConfig.client_id;
+        const clientName = config.client_name || defaultConfig.client_name;
+
+        document.getElementById("header-client-id").textContent = clientId;
+        document.getElementById("header-client-name").textContent = clientName;
+
+        document.getElementById("input-agent-name").value = agentName;
+        document.getElementById("input-client-name").value = clientName;
+
+        document.getElementById("report-agent-name").textContent = agentName;
+        document.getElementById("report-client-id").textContent = clientId;
+        document.getElementById("report-client-name").textContent = clientName;
+
+        // Apply primary action color to buttons
+        const finalizeBtn = document.getElementById("finalize-btn");
+        finalizeBtn.style.backgroundColor = primaryColor;
+
+        // Apply surface color to accordions
+        document.querySelectorAll(".accordion").forEach((el) => {
+          el.style.backgroundColor = surfaceColor;
         });
-        host.appendChild(btn);
-      }
-    }
-
-    function fieldRow({ id, label, placeholder="", type="text", note="" }) {
-      const isTextarea = type === "textarea";
-      return `
-        <div>
-          <label class="text-xs text-slate-500 uppercase tracking-wider">${escapeHtml(label)}</label>
-          ${
-            isTextarea
-              ? `<textarea id="${escapeHtml(id)}" rows="3" class="${inputBase()}" placeholder="${escapeHtml(placeholder)}"></textarea>`
-              : `<input id="${escapeHtml(id)}" type="${escapeHtml(type)}" class="${inputBase()}" placeholder="${escapeHtml(placeholder)}" />`
-          }
-          ${note ? `<div class="text-xs text-slate-500 mt-2">${note}</div>` : ``}
-        </div>
-      `;
-    }
-
-    function accordion(title, subtitle, innerHtml, open=false) {
-      return `
-        <details class="section rounded-2xl border border-slate-800/60 bg-slate-950/20 p-5" ${open ? "open" : ""}>
-          <summary class="cursor-pointer list-none flex items-center justify-between gap-3">
-            <span class="font-semibold">${escapeHtml(title)}</span>
-            <span class="text-xs text-slate-500">${escapeHtml(subtitle || "")}</span>
-          </summary>
-          <div class="mt-4 grid sm:grid-cols-2 gap-4">
-            ${innerHtml}
-          </div>
-        </details>
-      `;
-    }
-
-    function renderTabPanel(tabId) {
-      const host = $("tabPanel");
-      const t = String(tabId || "overview");
-
-      // NOTE: Field ids are contract field keys where possible.
-      // For nested objects, we use dedicated ids.
-      const panels = {
-        overview: () => {
-          const a = accordion(
-            "Client + engagement",
-            "High-signal basics",
-            [
-              fieldRow({ id:"Company_Name", label:"Company_Name", placeholder:"John & Jane Doe LLC" }),
-              fieldRow({ id:"Compliance_Period_Covered", label:"Compliance_Period_Covered", placeholder:"2016–2026" }),
-              fieldRow({ id:"Estimated_Balance_Due_Range", label:"Estimated_Balance_Due_Range", placeholder:"$0" }),
-              fieldRow({ id:"Primary_Recommended_Service", label:"Primary_Recommended_Service", placeholder:"Tax Monitoring Ongoing" }),
-            ].join(""),
-            true
-          );
-
-          const b = accordion(
-            "Status indicators",
-            "Snapshot fields",
-            [
-              fieldRow({ id:"IRS_Account_Status", label:"IRS_Account_Status", placeholder:"Active" }),
-              fieldRow({ id:"Total_IRS_Balance", label:"Total_IRS_Balance", placeholder:"0" }),
-              fieldRow({ id:"IRS_Lien_Exposure_Level", label:"IRS_Lien_Exposure_Level", placeholder:"Low / Medium / High" }),
-              fieldRow({ id:"Unfiled_Returns_Indicator", label:"Unfiled_Returns_Indicator", placeholder:"No" }),
-              fieldRow({ id:"Last_Return_Filed_Year", label:"Last_Return_Filed_Year", placeholder:"2025" }),
-              fieldRow({ id:"IRS_Status_Categories", label:"IRS_Status_Categories", placeholder:'["None identified"]', note:"JSON array is allowed." }),
-            ].join(""),
-            false
-          );
-
-          return `${a}<div class="mt-3"></div>${b}`;
-        },
-
-        agent: () => {
-          const a = accordion(
-            "IRS agent",
-            "Capture first",
-            [
-              fieldRow({ id:"IRS_Agent_Name", label:"IRS_Agent_Name", placeholder:"Agent Name" }),
-              fieldRow({ id:"IRS_Agent_ID", label:"IRS_Agent_ID", placeholder:"A12345" }),
-              fieldRow({ id:"IRS_Agent_Department", label:"IRS_Agent_Department", placeholder:"PPS" }),
-              fieldRow({ id:"IRS_Agent_Department_Phone", label:"IRS_Agent_Department_Phone", placeholder:"800-xxx-xxxx" }),
-              fieldRow({ id:"IRS_Agent_Verification", label:"IRS_Agent_Verification", placeholder:"true / false" }),
-              fieldRow({ id:"IRS_Call_Confirmation_Date", label:"IRS_Call_Confirmation_Date", placeholder:"YYYY-MM-DD" }),
-            ].join(""),
-            true
-          );
-          return a;
-        },
-
-        authority: () => {
-          const a = accordion(
-            "Identity + gating",
-            "Holds and authority state",
-            [
-              fieldRow({ id:"Identity_Verification_Hold", label:"Identity_Verification_Hold", placeholder:"", note:"Blank if none." }),
-              fieldRow({ id:"Spouse_Separate_2848_Required", label:"Spouse_Separate_2848_Required", placeholder:"" }),
-              fieldRow({ id:"Spouse_Separate_2848_Required_Years", label:"Spouse_Separate_2848_Required_Years", placeholder:"" }),
-              fieldRow({ id:"Spouse_Separate_Wet_Sig_2848_Required", label:"Spouse_Separate_Wet_Sig_2848_Required", placeholder:"" }),
-              fieldRow({ id:"Taxpayer_Separate_Wet_Sig_2848_Required", label:"Taxpayer_Separate_Wet_Sig_2848_Required", placeholder:"" }),
-              fieldRow({ id:"Wet_Sig_2848_Accepted_Status", label:"Wet_Sig_2848_Accepted_Status", placeholder:"" }),
-              fieldRow({ id:"Wet_Sig_2848_Rejected_Type", label:"Wet_Sig_2848_Rejected_Type", placeholder:"" }),
-              fieldRow({ id:"Wet_Sig_2848_Rejected_Notes", label:"Wet_Sig_2848_Rejected_Notes", placeholder:"", type:"textarea" }),
-              fieldRow({ id:"Wet_Sig_2848_Notes", label:"Wet_Sig_2848_Notes", placeholder:"", type:"textarea" }),
-            ].join(""),
-            true
-          );
-          return a;
-        },
-
-        compliance: () => {
-          const a = accordion(
-            "Compliance core",
-            "Section focus + activity",
-            [
-              fieldRow({ id:"Compliance_Activity_Type", label:"Compliance_Activity_Type", placeholder:"Initial review" }),
-              fieldRow({ id:"IRS_Compliance_Section_Focus", label:"IRS_Compliance_Section_Focus", placeholder:"Compliance core" }),
-              fieldRow({ id:"IRS_Missing_Years", label:"IRS_Missing_Years", placeholder:"None" }),
-              fieldRow({ id:"IRS_Balance_By_Year_Status", label:"IRS_Balance_By_Year_Status", type:"textarea", placeholder:'Paste JSON balancesByYear object OR shorthand like:\n2024: $0 | 2025: $0 | 2026: $12,500', note:"This is used to generate balancesByYear year tabs in preview. For contract v2, we also store balancesByYear as a structured object." }),
-            ].join(""),
-            true
-          );
-
-          const b = accordion(
-            "Taxpayer address",
-            "Used in report header",
-            [
-              fieldRow({ id:"Address_Line_1", label:"Address_Line_1", placeholder:"123 Main St" }),
-              fieldRow({ id:"Address_Line_2", label:"Address_Line_2", placeholder:"" }),
-              fieldRow({ id:"City", label:"City", placeholder:"San Diego" }),
-              fieldRow({ id:"State_Province", label:"State_Province", placeholder:"CA" }),
-              fieldRow({ id:"ZIP_Postal_Code", label:"ZIP_Postal_Code", placeholder:"92101" }),
-            ].join(""),
-            false
-          );
-
-          return `${a}<div class="mt-3"></div>${b}`;
-        },
-
-        notices: () => {
-          const a = accordion(
-            "Notices",
-            "Most recent notice fields",
-            [
-              fieldRow({ id:"IRS_Notice_Received", label:"IRS_Notice_Received", placeholder:"No" }),
-              fieldRow({ id:"IRS_Notice_Type", label:"IRS_Notice_Type", placeholder:"", }),
-              fieldRow({ id:"IRS_Notice_Date", label:"IRS_Notice_Date", placeholder:"YYYY-MM-DD", }),
-            ].join(""),
-            true
-          );
-          return a;
-        },
-
-        ia: () => {
-          const a = accordion(
-            "Installment agreement",
-            "Capture only if relevant",
-            [
-              fieldRow({ id:"IA_Established", label:"IA_Established", placeholder:"" }),
-              fieldRow({ id:"IA_Details", label:"IA_Details", placeholder:"", type:"textarea" }),
-              fieldRow({ id:"IA_Payment_Date", label:"IA_Payment_Date", placeholder:"YYYY-MM-DD" }),
-              fieldRow({ id:"IA_Payment_Amount", label:"IA_Payment_Amount", placeholder:"12500" }),
-              fieldRow({ id:"IA_Last_Payment_Date", label:"IA_Last_Payment_Date", placeholder:"YYYY-MM-DD" }),
-              fieldRow({ id:"IA_Last_Payment_Amount", label:"IA_Last_Payment_Amount", placeholder:"12500" }),
-            ].join(""),
-            true
-          );
-          return a;
-        },
-
-        ro: () => {
-          const a = accordion(
-            "Revenue officer",
-            "Only if assigned",
-            [
-              fieldRow({ id:"IRS_Revenue_Officer_Name", label:"IRS_Revenue_Officer_Name", placeholder:"" }),
-              fieldRow({ id:"IRS_Revenue_Officer_Phone", label:"IRS_Revenue_Officer_Phone", placeholder:"" }),
-              fieldRow({ id:"IRS_Revenue_Officer_Fax", label:"IRS_Revenue_Officer_Fax", placeholder:"" }),
-              fieldRow({ id:"IRS_Revenue_Officer_Notes", label:"IRS_Revenue_Officer_Notes", placeholder:"", type:"textarea" }),
-            ].join(""),
-            true
-          );
-          return a;
-        },
-
-        transcripts: () => {
-          const a = accordion(
-            "Transcript handling",
-            "Request + retrieval",
-            [
-              fieldRow({ id:"Transcript_Request_Made", label:"Transcript_Request_Made", placeholder:"true / false" }),
-              fieldRow({ id:"Transcript_Scope_Confirmed", label:"Transcript_Scope_Confirmed", placeholder:"Full 10-year" }),
-              fieldRow({ id:"Transcript_Delivery_Method", label:"Transcript_Delivery_Method", placeholder:"SOR mailbox" }),
-              fieldRow({ id:"Transcripts_Retrieved_From_SOR", label:"Transcripts_Retrieved_From_SOR", placeholder:"" }),
-              fieldRow({ id:"Transcript_Retrieval_Date", label:"Transcript_Retrieval_Date", placeholder:"YYYY-MM-DD" }),
-              fieldRow({ id:"Transcript_Retrieval_Notes", label:"Transcript_Retrieval_Notes", placeholder:"", type:"textarea" }),
-              fieldRow({ id:"Transcript_Files_Upload", label:"Transcript_Files_Upload", placeholder:"[]", note:"JSON array is allowed." }),
-            ].join(""),
-            true
-          );
-          return a;
-        },
-
-        summary: () => {
-          const a = accordion(
-            "Recommendation",
-            "Service + readiness",
-            [
-              fieldRow({ id:"Primary_Recommended_Service", label:"Primary_Recommended_Service", placeholder:"Tax Monitoring Ongoing" }),
-              fieldRow({ id:"Resolution_Readiness_Status", label:"Resolution_Readiness_Status", placeholder:"Not applicable" }),
-              fieldRow({ id:"Tax_Monitoring_Service_Progress_Percent", label:"Tax_Monitoring_Service_Progress_Percent", placeholder:"100" }),
-              fieldRow({ id:"Tax_Monitoring_Service_Progress_Status", label:"Tax_Monitoring_Service_Progress_Status", placeholder:"Monitoring records have been updated. Your report will be prepared.", type:"textarea" }),
-            ].join(""),
-            true
-          );
-
-          const b = accordion(
-            "Internal notes",
-            "Staff-only",
-            [
-              fieldRow({ id:"Compliance_Internal_Notes", label:"Compliance_Internal_Notes", placeholder:"High-signal notes only.", type:"textarea" }),
-            ].join(""),
-            true
-          );
-
-          return `${a}<div class="mt-3"></div>${b}`;
-        },
-      };
-
-      host.innerHTML = (panels[t] ? panels[t]() : panels.overview());
-    }
-
-    // =========================
-    // balancesByYear parsing
-    // =========================
-    function currencyToCents(value) {
-      const s = String(value ?? "").replace(/[^0-9.-]/g, "");
-      const n = Number(s);
-      if (!Number.isFinite(n)) return null;
-      return Math.round(n * 100);
-    }
-
-    // Supports:
-    // 1) JSON object: {"2026":{"balanceCents":1250000,"collectionStatus":"None identified"...}}
-    // 2) Shorthand: "2024: $0 | 2025: $0 | 2026: $12,500"
-    function parseBalancesByYear(raw) {
-      const s = String(raw || "").trim();
-      if (!s) return {};
-
-      const asJson = safeJsonParse(s);
-      if (asJson && typeof asJson === "object" && !Array.isArray(asJson)) {
-        return normalizeBalancesByYear(asJson);
       }
 
-      const out = {};
-      const parts = s.split("|").map(x => x.trim()).filter(Boolean);
-      for (const part of parts) {
-        const m = part.match(/(\d{4})\s*:\s*(.+)$/);
-        if (!m) continue;
-        const year = m[1];
-        const cents = currencyToCents(m[2]);
-        out[year] = {
-          balanceCents: cents,
-          collectionStatus: cents === 0 ? "None identified" : "Balance due",
-          csedDate: null,
-          filed: null,
-          filingStatus: null,
-          hasLien: null,
-          isMissingOrUnfiled: null,
-          notes: ""
-        };
-      }
-      return normalizeBalancesByYear(out);
-    }
+      function setupEventListeners() {
+        // Accordion toggles
+        document.querySelectorAll(".accordion-header").forEach((header) => {
+          header.addEventListener("click", () => {
+            const accordionId = header.dataset.accordion;
+            const content = document.getElementById(`accordion-${accordionId}`);
+            const icon = header.querySelector(".accordion-icon");
 
-    function normalizeBalancesByYear(obj) {
-      const out = {};
-      for (const [year, v] of Object.entries(obj || {})) {
-        const y = String(year).trim();
-        if (!/^\d{4}$/.test(y)) continue;
-        const row = (v && typeof v === "object") ? v : {};
-        out[y] = {
-          balanceCents: (row.balanceCents === null || row.balanceCents === undefined) ? null : Number(row.balanceCents),
-          collectionStatus: row.collectionStatus ?? null,
-          csedDate: row.csedDate ?? null,
-          filed: row.filed ?? null,
-          filingStatus: row.filingStatus ?? null,
-          hasLien: row.hasLien ?? null,
-          isMissingOrUnfiled: row.isMissingOrUnfiled ?? null,
-          notes: row.notes ?? ""
-        };
-      }
-      return out;
-    }
-
-    function yearsFromBalances(balancesByYear) {
-      return Object.keys(balancesByYear || {})
-        .filter(y => /^\d{4}$/.test(String(y)))
-        .sort((a, b) => Number(b) - Number(a));
-    }
-
-    function bestYear(years) {
-      for (const y of years) if (Number(y) >= 2024) return y;
-      return years[0] || null;
-    }
-
-    // =========================
-    // Diff engine (fields + balances)
-    // =========================
-    function diffObjects(prev, next) {
-      const keys = Array.from(new Set([ ...Object.keys(prev || {}), ...Object.keys(next || {}) ])).sort((a,b)=>a.localeCompare(b));
-      const changes = [];
-      for (const k of keys) {
-        const a = prev?.[k];
-        const b = next?.[k];
-        const same = JSON.stringify(a ?? null) === JSON.stringify(b ?? null);
-        if (same) continue;
-        changes.push({ key: k, from: a ?? null, to: b ?? null });
-      }
-      return changes;
-    }
-
-    function renderDiff(changes) {
-      if (!changes.length) return `<div class="text-sm text-slate-300">No differences detected. Either it truly didn’t change, or the IRS is being unusually cooperative.</div>`;
-      const rows = changes.map(c => {
-        const from = escapeHtml(String(c.from ?? "—"));
-        const to = escapeHtml(String(c.to ?? "—"));
-        return `
-          <div class="rounded-xl border border-slate-800/60 bg-slate-950/20 p-3">
-            <div class="text-xs text-slate-500 uppercase tracking-wider">${escapeHtml(c.key)}</div>
-            <div class="mt-2 text-sm text-slate-300"><span class="text-slate-500">From:</span> ${from}</div>
-            <div class="mt-1 text-sm text-slate-300"><span class="text-slate-500">To:</span> ${to}</div>
-          </div>
-        `;
-      }).join("");
-      return `<div class="grid sm:grid-cols-2 gap-3">${rows}</div>`;
-    }
-
-    // =========================
-    // Report render (contract v2)
-    // =========================
-    function renderYearTabs(years, activeYear) {
-      const host = $("yearTabs");
-      host.innerHTML = "";
-      for (const y of years) {
-        const btn = document.createElement("button");
-        const active = String(y) === String(activeYear);
-        btn.className = [
-          "px-3 py-2 rounded-xl border text-sm transition",
-          active
-            ? "border-amber-500/30 bg-amber-500/10 text-amber-200"
-            : "border-slate-700/70 bg-slate-950/20 text-slate-200 hover:bg-slate-950/35"
-        ].join(" ");
-        btn.textContent = y;
-        btn.addEventListener("click", () => {
-          window.__TM_ACTIVE_YEAR = y;
-          renderYearPanel(window.__TM_BALANCES_BY_YEAR || {}, y);
-          renderYearTabs(years, y);
+            content.classList.toggle("open");
+            icon.classList.toggle("rotate-180");
+          });
         });
-        host.appendChild(btn);
-      }
-    }
 
-    function renderYearPanel(balancesByYear, activeYear) {
-      const panel = $("yearPanel");
-      const y = String(activeYear || "");
-      const row = balancesByYear?.[y];
-      if (!row) {
-        panel.innerHTML = `<div class="text-sm text-slate-400">No data for ${escapeHtml(y)}.</div>`;
-        return;
-      }
-
-      const balance = row.balanceCents === null ? "—" : fmtUsdCents(row.balanceCents);
-      const status = row.collectionStatus ?? "—";
-      const filed = (row.filed === null || row.filed === undefined) ? "—" : (row.filed ? "Yes" : "No");
-      const lien = (row.hasLien === null || row.hasLien === undefined) ? "—" : (row.hasLien ? "Yes" : "No");
-
-      panel.innerHTML = `
-        <div class="flex items-start justify-between gap-4">
-          <div>
-            <div class="text-xs text-slate-500 uppercase tracking-wider">Year</div>
-            <div class="mt-1 text-xl font-semibold">${escapeHtml(y)}</div>
-          </div>
-          <div class="text-right">
-            <div class="text-xs text-slate-500 uppercase tracking-wider">Balance</div>
-            <div class="mt-1 text-xl font-semibold">${escapeHtml(balance)}</div>
-          </div>
-        </div>
-        <div class="mt-4 grid sm:grid-cols-3 gap-3">
-          <div class="rounded-xl border border-slate-800/60 bg-slate-950/20 p-4">
-            <div class="text-xs text-slate-500 uppercase tracking-wider">Collection status</div>
-            <div class="mt-1 text-sm text-slate-200">${escapeHtml(status)}</div>
-          </div>
-          <div class="rounded-xl border border-slate-800/60 bg-slate-950/20 p-4">
-            <div class="text-xs text-slate-500 uppercase tracking-wider">Filed</div>
-            <div class="mt-1 text-sm text-slate-200">${escapeHtml(filed)}</div>
-          </div>
-          <div class="rounded-xl border border-slate-800/60 bg-slate-950/20 p-4">
-            <div class="text-xs text-slate-500 uppercase tracking-wider">Lien</div>
-            <div class="mt-1 text-sm text-slate-200">${escapeHtml(lien)}</div>
-          </div>
-        </div>
-        ${row.notes ? `<div class="mt-3 text-sm text-slate-400">${escapeHtml(row.notes)}</div>` : ``}
-      `;
-    }
-
-    function renderReport(record, previous) {
-      const fields = record?.fields || {};
-      const balancesByYear = record?.balancesByYear || {};
-
-      $("reportSub").textContent = fields.Company_Name ? `Prepared for ${fields.Company_Name}` : "Prepared for —";
-      $("metricDebt").textContent = fields.Estimated_Balance_Due_Range || "—";
-      $("metricRec").textContent = fields.Primary_Recommended_Service || "—";
-      $("metricLien").textContent = fields.IRS_Lien_Exposure_Level || "—";
-
-      $("snapAccountStatus").textContent = fields.IRS_Account_Status || "—";
-      $("snapLastFiled").textContent = fields.Last_Return_Filed_Year || "—";
-      $("snapTotalBalance").textContent = fields.Total_IRS_Balance ?? "—";
-      $("snapUnfiled").textContent = fields.Unfiled_Returns_Indicator || "—";
-
-      $("internalNotes").textContent = fields.Compliance_Internal_Notes || "—";
-
-      const years = yearsFromBalances(balancesByYear);
-      window.__TM_BALANCES_BY_YEAR = balancesByYear;
-
-      const active = window.__TM_ACTIVE_YEAR && years.includes(String(window.__TM_ACTIVE_YEAR))
-        ? String(window.__TM_ACTIVE_YEAR)
-        : bestYear(years);
-
-      window.__TM_ACTIVE_YEAR = active;
-
-      renderYearTabs(years, active);
-      if (active) renderYearPanel(balancesByYear, active);
-
-      const badge = $("badgeStatus");
-      const lien = String(fields.IRS_Lien_Exposure_Level || "").toLowerCase();
-      badge.className = "px-3 py-1 rounded-full text-xs border";
-      if (lien.includes("high")) badge.classList.add("bg-red-500/10","border-red-500/20","text-red-300");
-      else if (lien.includes("med")) badge.classList.add("bg-amber-500/10","border-amber-500/20","text-amber-300");
-      else badge.classList.add("bg-emerald-500/10","border-emerald-500/20","text-emerald-300");
-      badge.textContent = "Prepared";
-
-      if (!previous) {
-        $("diffPanel").innerHTML = `<div class="text-sm text-slate-300">No previous compliance record found. Create a second record and you’ll get a proper diff.</div>`;
-        return;
-      }
-
-      const changesA = diffObjects(previous.fields || {}, fields);
-      const changesB = diffObjects(previous.balancesByYear || {}, balancesByYear);
-      const combined = [
-        ...changesA.map(x => ({...x, key: `fields.${x.key}`})),
-        ...changesB.map(x => ({...x, key: `balancesByYear.${x.key}`}))
-      ].sort((a,b)=>a.key.localeCompare(b.key));
-
-      $("diffPanel").innerHTML = renderDiff(combined);
-    }
-
-    // =========================
-    // Contract v2 account updater
-    // =========================
-    function ensureAccountShape(account, accountId) {
-      const out = account && typeof account === "object" ? account : {};
-      if (!out.accountId) out.accountId = accountId || out.accountId || "";
-
-      if (!out.compliance) out.compliance = {};
-      if (!Array.isArray(out.compliance.records)) out.compliance.records = [];
-
-      return out;
-    }
-
-    function parseMaybeJsonValue(key, raw) {
-      const s = String(raw ?? "").trim();
-      if (!s) return null;
-
-      // Allow JSON arrays/objects for certain fields
-      if (key === "IRS_Status_Categories" || key === "Transcript_Files_Upload") {
-        const v = safeJsonParse(s);
-        if (v !== null) return v;
-      }
-
-      if (key === "IRS_Agent_Verification" || key === "Transcript_Request_Made") {
-        if (s.toLowerCase() === "true") return true;
-        if (s.toLowerCase() === "false") return false;
-      }
-
-      if (key === "Tax_Monitoring_Service_Progress_Percent") {
-        const n = Number(s);
-        return Number.isFinite(n) ? n : null;
-      }
-
-      // Keep strings by default
-      return s;
-    }
-
-    function buildFieldsFromForm() {
-      const fields = {};
-      for (const key of FIELD_KEYS) {
-        const el = $(key);
-        if (!el) { fields[key] = null; continue; }
-        fields[key] = parseMaybeJsonValue(key, el.value);
-      }
-      return fields;
-    }
-
-    function buildRecordFromForm(eventId, fields) {
-      const balancesByYear = parseBalancesByYear(fields.IRS_Balance_By_Year_Status || "");
-      const record = {
-        schema: { name: "tm_compliance_record", version: 2 },
-        createdAt: nowIso(),
-        eventId,
-
-        balancesByYear,
-
-        call: {
-          activityType: fields.Compliance_Activity_Type || null,
-          periodCovered: fields.Compliance_Period_Covered || null,
-          sectionFocus: fields.IRS_Compliance_Section_Focus || null,
-          callConfirmedDate: fields.IRS_Call_Confirmation_Date || null,
-          agent: {
-            name: fields.IRS_Agent_Name || null,
-            id: fields.IRS_Agent_ID || null,
-            department: fields.IRS_Agent_Department || null,
-            departmentPhone: fields.IRS_Agent_Department_Phone || null,
-            verified: fields.IRS_Agent_Verification ?? null,
+        // Agent name input sync
+        document.getElementById("input-agent-name").addEventListener("input", (e) => {
+          if (window.elementSdk) {
+            window.elementSdk.setConfig({ agent_name: e.target.value });
+          } else {
+            config.agent_name = e.target.value;
+            applyConfig();
           }
-        },
+        });
 
-        taxpayer: {
-          companyName: fields.Company_Name || null,
-          lastReturnFiledYear: fields.Last_Return_Filed_Year || null,
-          address: {
-            line1: fields.Address_Line_1 || null,
-            line2: fields.Address_Line_2 || null,
-            city: fields.City || null,
-            stateProvince: fields.State_Province || null,
-            zipPostalCode: fields.ZIP_Postal_Code || null,
+        // Client name input sync
+        document.getElementById("input-client-name").addEventListener("input", (e) => {
+          if (window.elementSdk) {
+            window.elementSdk.setConfig({ client_name: e.target.value });
+          } else {
+            config.client_name = e.target.value;
+            applyConfig();
           }
-        },
+        });
 
-        irs: {
-          accountStatus: fields.IRS_Account_Status || null,
-          estimatedBalanceDueRange: fields.Estimated_Balance_Due_Range || null,
-          totalBalanceCents: null,
-          statusCategories: Array.isArray(fields.IRS_Status_Categories) ? fields.IRS_Status_Categories : (fields.IRS_Status_Categories ? [fields.IRS_Status_Categories] : []),
-          missingYearsSummary: fields.IRS_Missing_Years || null,
-          unfiledReturnsIndicator: fields.Unfiled_Returns_Indicator || null,
-          lienExposureLevel: fields.IRS_Lien_Exposure_Level || null,
-          notices: {
-            mostRecent: {
-              received: fields.IRS_Notice_Received || null,
-              type: fields.IRS_Notice_Type ?? null,
-              date: fields.IRS_Notice_Date ?? null,
-            }
-          },
-          balanceByYearLegacyText: fields.IRS_Balance_By_Year_Status || ""
-        },
+        // Finalize button
+        document.getElementById("finalize-btn").addEventListener("click", () => {
+          const badge = document.getElementById("status-badge");
+          badge.textContent = "FINAL";
+          badge.classList.remove("bg-amber-500/20", "text-amber-400", "border-amber-500/30");
+          badge.classList.add("bg-green-500/20", "text-green-400", "border-green-500/30");
+          showToast("Record finalized");
+        });
 
-        transcripts: {
-          requestMade: fields.Transcript_Request_Made ?? null,
-          scopeConfirmed: fields.Transcript_Scope_Confirmed || null,
-          deliveryMethod: fields.Transcript_Delivery_Method || null,
-          files: Array.isArray(fields.Transcript_Files_Upload) ? fields.Transcript_Files_Upload : [],
-          retrieval: {
-            retrievedFromSOR: fields.Transcripts_Retrieved_From_SOR || "",
-            retrievalDate: fields.Transcript_Retrieval_Date ?? null,
-            notes: fields.Transcript_Retrieval_Notes || ""
+        // Print button
+        document.getElementById("print-btn").addEventListener("click", () => {
+          window.print();
+        });
+
+        // Save draft button
+        document.getElementById("save-draft-btn").addEventListener("click", () => {
+          lastSaveTime = Date.now();
+          updateLastSaved();
+          showToast("Draft saved successfully");
+        });
+
+        // Tab navigation
+        document.querySelectorAll(".tab-btn").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const tabId = btn.dataset.tab;
+            switchTab(tabId);
+          });
+        });
+
+        // Year tabs in Compliance
+        document.querySelectorAll(".year-tab").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            document.querySelectorAll(".year-tab").forEach((t) => {
+              t.classList.remove("bg-blue-600", "text-white");
+              t.classList.add("text-slate-400");
+            });
+            btn.classList.add("bg-blue-600", "text-white");
+            btn.classList.remove("text-slate-400");
+            document.getElementById("compliance-year").textContent = btn.dataset.year;
+          });
+        });
+      }
+
+      function showToast(message) {
+        const toast = document.createElement("div");
+        toast.className =
+          "fixed bottom-4 right-4 px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg shadow-lg text-sm text-slate-100 z-50 transform transition-all duration-300";
+        toast.textContent = message;
+        document.body.appendChild(toast);
+
+        setTimeout(() => {
+          toast.style.opacity = "0";
+          setTimeout(() => toast.remove(), 300);
+        }, 2000);
+      }
+
+      function switchTab(tabId) {
+        // Hide all tab contents
+        document.querySelectorAll(".tab-content").forEach((content) => {
+          content.classList.add("hidden");
+        });
+
+        // Remove active state from all tabs
+        document.querySelectorAll(".tab-btn").forEach((btn) => {
+          btn.classList.remove("tab-active");
+        });
+
+        // Show selected tab content
+        document.getElementById(`tab-${tabId}`).classList.remove("hidden");
+
+        // Add active state to selected tab
+        document.querySelector(`[data-tab="${tabId}"]`).classList.add("tab-active");
+      }
+
+      function updateLastSaved() {
+        const now = Date.now();
+        const diff = Math.floor((now - lastSaveTime) / 1000);
+        let text;
+
+        if (diff < 60) {
+          text = "just now";
+        } else if (diff < 3600) {
+          const mins = Math.floor(diff / 60);
+          text = `${mins} min ago`;
+        } else {
+          const hours = Math.floor(diff / 3600);
+          text = `${hours} hour${hours > 1 ? "s" : ""} ago`;
+        }
+
+        document.getElementById("last-saved").textContent = text;
+      }
+
+      // Update report date
+      document.getElementById("report-date").textContent = new Date().toLocaleDateString("en-US", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      });
+
+      // Initialize
+      initializeApp();
+    </script>
+
+    <script>
+      (function () {
+        function c() {
+          var b = a.contentDocument || a.contentWindow.document;
+          if (b) {
+            var d = b.createElement("script");
+            d.innerHTML =
+              "window.__CF$cv$params={r:'9cd879f59340eeaa',t:'MTc3MTAyOTIzMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
+            b.getElementsByTagName("head")[0].appendChild(d);
           }
-        },
-
-        workflows: {
-          identityVerificationHold: fields.Identity_Verification_Hold || "",
-          installmentAgreement: {
-            established: fields.IA_Established || "",
-            details: fields.IA_Details || "",
-            paymentDate: fields.IA_Payment_Date ?? null,
-            paymentAmountCents: fields.IA_Payment_Amount ? Number(fields.IA_Payment_Amount) : null,
-            lastPaymentDate: fields.IA_Last_Payment_Date ?? null,
-            lastPaymentAmountCents: fields.IA_Last_Payment_Amount ? Number(fields.IA_Last_Payment_Amount) : null,
-          },
-          revenueOfficer: {
-            name: fields.IRS_Revenue_Officer_Name || "",
-            phone: fields.IRS_Revenue_Officer_Phone || "",
-            fax: fields.IRS_Revenue_Officer_Fax || "",
-            notes: fields.IRS_Revenue_Officer_Notes || "",
+        }
+        if (document.body) {
+          var a = document.createElement("iframe");
+          a.height = 1;
+          a.width = 1;
+          a.style.position = "absolute";
+          a.style.top = 0;
+          a.style.left = 0;
+          a.style.border = "none";
+          a.style.visibility = "hidden";
+          document.body.appendChild(a);
+          if ("loading" !== document.readyState) c();
+          else if (window.addEventListener) document.addEventListener("DOMContentLoaded", c);
+          else {
+            var e = document.onreadystatechange || function () {};
+            document.onreadystatechange = function (b) {
+              e(b);
+              "loading" !== document.readyState && (document.onreadystatechange = e, c());
+            };
           }
-        },
-
-        wetSig2848: {
-          spouseSeparateRequired: fields.Spouse_Separate_2848_Required || "",
-          spouseSeparateRequiredYears: fields.Spouse_Separate_2848_Required_Years || "",
-          taxpayerWetSigRequired: fields.Taxpayer_Separate_Wet_Sig_2848_Required || "",
-          spouseWetSigRequired: fields.Spouse_Separate_Wet_Sig_2848_Required || "",
-          acceptedStatus: fields.Wet_Sig_2848_Accepted_Status || "",
-          rejectedType: fields.Wet_Sig_2848_Rejected_Type || "",
-          rejectedNotes: fields.Wet_Sig_2848_Rejected_Notes || "",
-          notes: fields.Wet_Sig_2848_Notes || "",
-        },
-
-        recommendation: {
-          primaryService: fields.Primary_Recommended_Service || null,
-          resolutionReadinessStatus: fields.Resolution_Readiness_Status || null,
-          why: ""
-        },
-
-        internal: {
-          notes: fields.Compliance_Internal_Notes || "",
-          progressPercent: fields.Tax_Monitoring_Service_Progress_Percent ?? null,
-          progressStatus: fields.Tax_Monitoring_Service_Progress_Status || ""
-        },
-
-        fields
-      };
-
-      return record;
-    }
-
-    function appendComplianceRecord(account, record) {
-      const records = Array.isArray(account.compliance.records) ? account.compliance.records : [];
-      const prev = records.length ? records[records.length - 1] : null;
-
-      records.push(record);
-      account.compliance.records = records;
-      account.compliance.latestEventId = record.eventId;
-
-      return { previous: prev, record };
-    }
-
-    // =========================
-    // Init / actions
-    // =========================
-    function expandCollapse(open) {
-      document.querySelectorAll("details.section").forEach(d => d.open = !!open);
-    }
-
-    function loadFromInjectedOrTextarea() {
-      const injected = window.TM_ACCOUNT && typeof window.TM_ACCOUNT === "object" ? window.TM_ACCOUNT : null;
-      if (injected) return injected;
-
-      const parsed = safeJsonParse($("accountJson").value);
-      if (parsed && typeof parsed === "object") return parsed;
-
-      return null;
-    }
-
-    function setFormFromRecord(record) {
-      const f = record?.fields || {};
-      for (const key of FIELD_KEYS) {
-        const el = $(key);
-        if (!el) continue;
-        const v = f[key];
-        el.value = (v === null || v === undefined) ? "" : (typeof v === "string" ? v : JSON.stringify(v));
-      }
-    }
-
-    async function setDemo() {
-      try {
-        const res = await fetch(CONTRACT_DEMO_URL, { cache: "no-store" });
-        if (!res.ok) throw new Error(`demo fetch ${res.status}`);
-        const demoAccount = await res.json();
-
-        const accountId = demoAccount.accountId || "acct_demo";
-        const eventId = demoAccount.compliance?.latestEventId || newEventId("cmp");
-
-        $("accountId").value = accountId;
-        $("eventId").value = eventId;
-
-        // Use latest record in demo if present
-        const recs = demoAccount.compliance?.records || [];
-        const latest = recs.length ? recs[recs.length - 1] : null;
-
-        // Seed the left textarea with an account-shaped object (so user can generate diff on next run)
-        $("accountJson").value = JSON.stringify(demoAccount, null, 2);
-
-        // Ensure tabs UI exists before setting fields
-        const activeTab = window.__TM_ACTIVE_TAB || "overview";
-        renderTabs(activeTab);
-        renderTabPanel(activeTab);
-
-        if (latest) setFormFromRecord(latest);
-
-        setPill("Demo loaded", "good");
-      } catch (e) {
-        setPill("Demo load failed", "warn");
-      }
-    }
-
-    function generate() {
-      const accountId = String($("accountId").value || "").trim();
-      const eventId = String($("eventId").value || "").trim() || newEventId("cmp");
-      $("eventId").value = eventId;
-
-      if (!accountId) {
-        setPill("Missing accountId", "warn");
-        return;
-      }
-
-      const existing = loadFromInjectedOrTextarea();
-      const account = ensureAccountShape(existing, accountId);
-
-      const fields = buildFieldsFromForm();
-      // Hard enforce accountId in top-level
-      account.accountId = accountId;
-
-      const record = buildRecordFromForm(eventId, fields);
-      const { previous } = appendComplianceRecord(account, record);
-
-      // Output
-      $("outputJson").value = JSON.stringify(account, null, 2);
-      renderReport(record, previous);
-
-      setPill("Generated", "good");
-    }
-
-    async function copyOutput() {
-      const text = $("outputJson").value || "";
-      if (!text.trim()) {
-        setPill("Nothing to copy", "warn");
-        return;
-      }
-      try {
-        await navigator.clipboard.writeText(text);
-        setPill("Copied", "good");
-      } catch {
-        setPill("Copy blocked", "warn");
-      }
-    }
-
-    // =========================
-    // Boot
-    // =========================
-    $("btnDemo").addEventListener("click", setDemo);
-    $("btnGenerate").addEventListener("click", generate);
-    $("btnCopy").addEventListener("click", copyOutput);
-    $("btnPrint").addEventListener("click", () => window.print());
-    $("btnExpandAll").addEventListener("click", () => expandCollapse(true));
-    $("btnCollapseAll").addEventListener("click", () => expandCollapse(false));
-
-    // Seed eventId + default tab
-    $("eventId").value = newEventId("cmp");
-    window.__TM_ACTIVE_TAB = "overview";
-    renderTabs(window.__TM_ACTIVE_TAB);
-    renderTabPanel(window.__TM_ACTIVE_TAB);
-    setPill("Idle", "idle");
-  </script>
-</body>
+        }
+      })();
+    </script>
+  </body>
 </html>
