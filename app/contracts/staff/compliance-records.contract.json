@@ -10,7 +10,7 @@
       "normalizeCheckboxToBoolean": true,
       "rejectUnknownValues": true
     },
-    "version": 2
+    "version": 3
   },
   "fields": {
     "Case_Summary_Notes": {
@@ -116,17 +116,44 @@
       "control": "radio",
       "nullable": true,
       "options": [
-        { "label": "IRS Automated Collections System — Business — (800) 231-3903", "value": "IRS Automated Collections System — Business — (800) 231-3903" },
-        { "label": "IRS Correspondence Examination — Individual — (800) 597-4347", "value": "IRS Correspondence Examination — Individual — (800) 597-4347" },
-        { "label": "IRS e-Help Desk (e-Services) — (800) 673-4348", "value": "IRS e-Help Desk (e-Services) — (800) 673-4348" },
+        {
+          "label": "IRS Automated Collections System — Business — (800) 231-3903",
+          "value": "IRS Automated Collections System — Business — (800) 231-3903"
+        },
+        {
+          "label": "IRS Correspondence Examination — Individual — (800) 597-4347",
+          "value": "IRS Correspondence Examination — Individual — (800) 597-4347"
+        },
+        {
+          "label": "IRS e-Help Desk (e-Services) — (800) 673-4348",
+          "value": "IRS e-Help Desk (e-Services) — (800) 673-4348"
+        },
         { "label": "IRS General Line — (844) 959-1040", "value": "IRS General Line — (844) 959-1040" },
-        { "label": "IRS Identity Verification — (800) 975-5084", "value": "IRS Identity Verification — (800) 975-5084" },
-        { "label": "IRS International Line — (877) 298-6617", "value": "IRS International Line — (877) 298-6617" },
-        { "label": "IRS OIC Brookhaven (Holtsville) — (800) 803-4980", "value": "IRS OIC Brookhaven (Holtsville) — (800) 803-4980" },
-        { "label": "IRS Practitioner Priority Service — Business — (800) 347-7801", "value": "IRS Practitioner Priority Service — Business — (800) 347-7801" },
-        { "label": "IRS Practitioner Priority Service — Individual — (800) 477-4580", "value": "IRS Practitioner Priority Service — Individual — (800) 477-4580" },
+        {
+          "label": "IRS Identity Verification — (800) 975-5084",
+          "value": "IRS Identity Verification — (800) 975-5084"
+        },
+        {
+          "label": "IRS International Line — (877) 298-6617",
+          "value": "IRS International Line — (877) 298-6617"
+        },
+        {
+          "label": "IRS OIC Brookhaven (Holtsville) — (800) 803-4980",
+          "value": "IRS OIC Brookhaven (Holtsville) — (800) 803-4980"
+        },
+        {
+          "label": "IRS Practitioner Priority Service — Business — (800) 347-7801",
+          "value": "IRS Practitioner Priority Service — Business — (800) 347-7801"
+        },
+        {
+          "label": "IRS Practitioner Priority Service — Individual — (800) 477-4580",
+          "value": "IRS Practitioner Priority Service — Individual — (800) 477-4580"
+        },
         { "label": "IRS Tax Exempt — (877) 755-7781", "value": "IRS Tax Exempt — (877) 755-7781" },
-        { "label": "IRS Underreporter — Individual — (800) 868-8209", "value": "IRS Underreporter — Individual — (800) 868-8209" }
+        {
+          "label": "IRS Underreporter — Individual — (800) 868-8209",
+          "value": "IRS Underreporter — Individual — (800) 868-8209"
+        }
       ],
       "storageType": "string"
     },
@@ -146,7 +173,10 @@
       "options": [
         { "label": "High — lien filed or filing imminent", "value": "High — lien filed or filing imminent" },
         { "label": "Low — compliant or protected status", "value": "Low — compliant or protected status" },
-        { "label": "Moderate — balance or status requires monitoring", "value": "Moderate — balance or status requires monitoring" },
+        {
+          "label": "Moderate — balance or status requires monitoring",
+          "value": "Moderate — balance or status requires monitoring"
+        },
         { "label": "Unknown — insufficient IRS confirmation", "value": "Unknown — insufficient IRS confirmation" }
       ],
       "storageType": "string"
@@ -426,6 +456,53 @@
     },
     "Return_2025_Total_Balance": { "control": "currency", "nullable": true, "storageType": "string" },
 
+    "Spouse_DOB": {
+      "control": "date",
+      "nullable": true,
+      "storageType": "string"
+    },
+    "Spouse_SSN": {
+      "control": "text",
+      "nullable": true,
+      "storageType": "string"
+    },
+
+    "Taxpayer_Address_1": {
+      "control": "text",
+      "nullable": true,
+      "storageType": "string"
+    },
+    "Taxpayer_Address_2": {
+      "control": "text",
+      "nullable": true,
+      "storageType": "string"
+    },
+    "Taxpayer_City": {
+      "control": "text",
+      "nullable": true,
+      "storageType": "string"
+    },
+    "Taxpayer_DOB": {
+      "control": "date",
+      "nullable": true,
+      "storageType": "string"
+    },
+    "Taxpayer_SSN": {
+      "control": "text",
+      "nullable": true,
+      "storageType": "string"
+    },
+    "Taxpayer_State": {
+      "control": "text",
+      "nullable": true,
+      "storageType": "string"
+    },
+    "Taxpayer_Zip": {
+      "control": "text",
+      "nullable": true,
+      "storageType": "string"
+    },
+
     "Total_Balance_With_Accruals": {
       "control": "currency",
       "nullable": true,
@@ -459,10 +536,7 @@
     },
     "Transcript_Request_Made": {
       "control": "checkbox",
-      "enumMapping": {
-        "checked": true,
-        "unchecked": false
-      },
+      "enumMapping": { "checked": true, "unchecked": false },
       "storageType": "boolean"
     },
     "Transcript_Retrieval_Date": {
@@ -509,6 +583,6 @@
   },
   "schema": {
     "name": "tm_staff_compliance_form_contract",
-    "version": 2
+    "version": 3
   }
 }
