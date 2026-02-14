@@ -136,6 +136,10 @@
                 <p class="text-xs text-slate-500 uppercase tracking-wide">ID</p>
                 <p id="header-client-id" class="font-mono text-sm text-slate-300">TC-2024-00847</p>
               </div>
+              <div class="hidden lg:block">
+                <p class="text-xs text-slate-500 uppercase tracking-wide">Order</p>
+                <p id="header-order-id" class="font-mono text-sm text-slate-300">—</p>
+              </div>
             </div>
           </div>
 
@@ -157,12 +161,14 @@
               <button
                 id="save-draft-btn"
                 class="px-4 py-2 text-sm font-medium text-slate-300 bg-slate-800 border border-slate-600 rounded-md hover:bg-slate-700 transition-colors"
+                type="button"
               >
                 Save Draft
               </button>
               <button
                 id="finalize-btn"
                 class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-colors"
+                type="button"
               >
                 Finalize Record
               </button>
@@ -177,54 +183,63 @@
           <button
             class="tab-btn tab-active px-4 py-3 text-sm font-medium text-slate-400 hover:text-slate-200 border-b-2 border-transparent whitespace-nowrap transition-colors"
             data-tab="overview"
+            type="button"
           >
             Overview
           </button>
           <button
             class="tab-btn px-4 py-3 text-sm font-medium text-slate-400 hover:text-slate-200 border-b-2 border-transparent whitespace-nowrap transition-colors"
             data-tab="agent"
+            type="button"
           >
             Agent
           </button>
           <button
             class="tab-btn px-4 py-3 text-sm font-medium text-slate-400 hover:text-slate-200 border-b-2 border-transparent whitespace-nowrap transition-colors"
             data-tab="authority"
+            type="button"
           >
             Authority
           </button>
           <button
             class="tab-btn px-4 py-3 text-sm font-medium text-slate-400 hover:text-slate-200 border-b-2 border-transparent whitespace-nowrap transition-colors"
             data-tab="compliance"
+            type="button"
           >
             Compliance
           </button>
           <button
             class="tab-btn px-4 py-3 text-sm font-medium text-slate-400 hover:text-slate-200 border-b-2 border-transparent whitespace-nowrap transition-colors"
             data-tab="notices"
+            type="button"
           >
             Notices
           </button>
           <button
             class="tab-btn px-4 py-3 text-sm font-medium text-slate-400 hover:text-slate-200 border-b-2 border-transparent whitespace-nowrap transition-colors"
             data-tab="installment"
+            type="button"
           >
             Installment Agreement
           </button>
           <button
             class="tab-btn px-4 py-3 text-sm font-medium text-slate-400 hover:text-slate-200 border-b-2 border-transparent whitespace-nowrap transition-colors"
             data-tab="revenue"
+            type="button"
           >
             Revenue Officer
           </button>
           <button
             class="tab-btn px-4 py-3 text-sm font-medium text-slate-400 hover:text-slate-200 border-b-2 border-transparent whitespace-nowrap transition-colors"
             data-tab="transcripts"
+            type="button"
           >
             Transcripts
           </button>
           <button
             class="tab-btn px-4 py-3 text-sm font-medium text-slate-400 hover:text-slate-200 border-b-2 border-transparent whitespace-nowrap transition-colors"
             data-tab="summary"
+            type="button"
           >
             Summary
           </button>
@@ -233,6 +248,10 @@
 
       <!-- Main Content -->
       <main class="flex-1 p-6">
+        <!-- Hidden identifiers for canonical write -->
+        <input id="input-account-id" type="hidden" value="" />
+        <input id="input-order-id" type="hidden" value="" />
+
         <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 h-full">
           <!-- Left Column - Form Inputs -->
           <div class="lg:col-span-3 space-y-4">
@@ -240,7 +259,7 @@
             <div id="tab-overview" class="tab-content space-y-4">
               <!-- Client Information Accordion -->
               <div class="accordion bg-slate-900 rounded-lg border border-slate-700/50">
-                <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="client-info">
+                <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="client-info" type="button">
                   <div class="flex items-center gap-3">
                     <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path
@@ -279,17 +298,17 @@
                       <div>
                         <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Filing Status</label>
                         <select class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm">
-                          <option>Single</option>
-                          <option selected>Married Filing Jointly</option>
-                          <option>Married Filing Separately</option>
                           <option>Head of Household</option>
+                          <option>Married Filing Jointly</option>
+                          <option>Married Filing Separately</option>
+                          <option selected>Single</option>
                         </select>
                       </div>
                       <div>
                         <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">State of Residence</label>
                         <select class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm">
-                          <option>Select state...</option>
-                          <option selected>California</option>
+                          <option selected>Select state...</option>
+                          <option>California</option>
                           <option>New York</option>
                           <option>Texas</option>
                         </select>
@@ -302,7 +321,7 @@
 
               <!-- Account Status Accordion -->
               <div class="accordion bg-slate-900 rounded-lg border border-slate-700/50">
-                <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="account-status">
+                <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="account-status" type="button">
                   <div class="flex items-center gap-3">
                     <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path
@@ -322,8 +341,14 @@
                   <div class="px-4 pb-4 border-t border-slate-700/50 pt-4">
                     <div class="grid grid-cols-3 gap-4 mb-4">
                       <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700/50">
-                        <p class="text-xs text-slate-500 uppercase tracking-wide">Total Balance</p>
-                        <p class="text-xl font-semibold text-red-400 font-mono mt-1">$24,847.32</p>
+                        <label class="text-xs text-slate-500 uppercase tracking-wide block">Total Balance</label>
+                        <input
+                          data-field="Total_IRS_Balance"
+                          inputmode="decimal"
+                          placeholder="$0.00"
+                          value="$24,847.32"
+                          class="mt-1 w-full bg-transparent border border-slate-700/50 rounded-md px-2 py-1 text-red-400 font-mono text-sm"
+                        />
                       </div>
                       <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700/50">
                         <p class="text-xs text-slate-500 uppercase tracking-wide">Penalties</p>
@@ -334,6 +359,113 @@
                         <p class="text-xl font-semibold text-amber-400 font-mono mt-1">$1,842.17</p>
                       </div>
                     </div>
+
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">IRS Account Status</label>
+                        <select
+                          data-field="IRS_Account_Status"
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm"
+                        >
+                          <option value="">Select...</option>
+                          <option value="0">Compliant</option>
+                          <option value="1">Limited Compliance</option>
+                          <option value="2">Non-Compliant</option>
+                          <option value="3">Unknown</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Estimated Balance Due Range</label>
+                        <select
+                          data-field="Estimated_Balance_Due_Range"
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm"
+                        >
+                          <option value="">Select...</option>
+                          <option>$10,000–$25,000</option>
+                          <option>$25,001–$50,000</option>
+                          <option>Over $50,000</option>
+                          <option>Under $10,000</option>
+                          <option>Unknown</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">IRS Missing Years</label>
+                        <select
+                          data-field="IRS_Missing_Years"
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm"
+                        >
+                          <option value="">Select...</option>
+                          <option>All years filed</option>
+                          <option>Missing prior to 10-year window</option>
+                          <option>Missing within 10-year window</option>
+                          <option>Unable to confirm</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Unfiled Returns Indicator</label>
+                        <select
+                          data-field="Unfiled_Returns_Indicator"
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm"
+                        >
+                          <option value="">Select...</option>
+                          <option>No</option>
+                          <option>Unsure</option>
+                          <option>Yes</option>
+                        </select>
+                      </div>
+                      <div class="col-span-2">
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">IRS Lien Exposure Level</label>
+                        <select
+                          data-field="IRS_Lien_Exposure_Level"
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm"
+                        >
+                          <option value="">Select...</option>
+                          <option>High — lien filed or filing imminent</option>
+                          <option>Low — compliant or protected status</option>
+                          <option>Moderate — balance or status requires monitoring</option>
+                          <option>Unknown — insufficient IRS confirmation</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="mb-3">
+                      <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">IRS Status Categories</label>
+                      <div class="grid grid-cols-2 gap-2">
+                        <label class="flex items-center gap-2 p-2 bg-slate-800/50 rounded border border-slate-700/50">
+                          <input type="checkbox" data-multi="IRS_Status_Categories" value="0" class="w-4 h-4 rounded border-slate-600 text-blue-500" />
+                          <span class="text-sm text-slate-300">Audit</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-2 bg-slate-800/50 rounded border border-slate-700/50">
+                          <input type="checkbox" data-multi="IRS_Status_Categories" value="1" class="w-4 h-4 rounded border-slate-600 text-blue-500" />
+                          <span class="text-sm text-slate-300">Collection</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-2 bg-slate-800/50 rounded border border-slate-700/50">
+                          <input type="checkbox" data-multi="IRS_Status_Categories" value="2" class="w-4 h-4 rounded border-slate-600 text-blue-500" />
+                          <span class="text-sm text-slate-300">Installment Agreement — Active</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-2 bg-slate-800/50 rounded border border-slate-700/50">
+                          <input type="checkbox" data-multi="IRS_Status_Categories" value="3" class="w-4 h-4 rounded border-slate-600 text-blue-500" />
+                          <span class="text-sm text-slate-300">Notice</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-2 bg-slate-800/50 rounded border border-slate-700/50">
+                          <input type="checkbox" data-multi="IRS_Status_Categories" value="4" class="w-4 h-4 rounded border-slate-600 text-blue-500" />
+                          <span class="text-sm text-slate-300">OIC</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-2 bg-slate-800/50 rounded border border-slate-700/50">
+                          <input type="checkbox" data-multi="IRS_Status_Categories" value="5" class="w-4 h-4 rounded border-slate-600 text-blue-500" />
+                          <span class="text-sm text-slate-300">Pending collection</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-2 bg-slate-800/50 rounded border border-slate-700/50">
+                          <input type="checkbox" data-multi="IRS_Status_Categories" value="6" class="w-4 h-4 rounded border-slate-600 text-blue-500" />
+                          <span class="text-sm text-slate-300">RO assigned</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-2 bg-slate-800/50 rounded border border-slate-700/50">
+                          <input type="checkbox" data-multi="IRS_Status_Categories" value="7" class="w-4 h-4 rounded border-slate-600 text-blue-500" />
+                          <span class="text-sm text-slate-300">None identified</span>
+                        </label>
+                      </div>
+                    </div>
+
                     <div class="flex flex-wrap gap-2">
                       <span class="inline-flex items-center px-2.5 py-1 rounded text-xs font-medium bg-red-500/20 text-red-400 border border-red-500/30">
                         <span class="w-1.5 h-1.5 rounded-full bg-red-400 mr-1.5"></span>
@@ -358,7 +490,7 @@
 
               <!-- Call Notes Accordion -->
               <div class="accordion bg-slate-900 rounded-lg border border-slate-700/50">
-                <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="call-notes">
+                <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="call-notes" type="button">
                   <div class="flex items-center gap-3">
                     <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path
@@ -377,6 +509,50 @@
                 </button>
                 <div class="accordion-content open" id="accordion-call-notes">
                   <div class="px-4 pb-4 border-t border-slate-700/50 pt-4">
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">IRS Agent Department</label>
+                        <select
+                          data-field="IRS_Agent_Department"
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm"
+                        >
+                          <option value="">Select...</option>
+                          <option value="0">IRS Administration Department (1040/PPS)</option>
+                          <option value="1">IRS Appeals Department</option>
+                          <option value="2">IRS Collection Department</option>
+                          <option value="3">IRS Examination Department</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">IRS Agent Department Phone</label>
+                        <select
+                          data-field="IRS_Agent_Department_Phone"
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm"
+                        >
+                          <option value="">Select...</option>
+                          <option>IRS Automated Collections System — Business — (800) 231-3903</option>
+                          <option>IRS Correspondence Examination — Individual — (800) 597-4347</option>
+                          <option>IRS e-Help Desk (e-Services) — (800) 673-4348</option>
+                          <option>IRS General Line — (844) 959-1040</option>
+                          <option>IRS Identity Verification — (800) 975-5084</option>
+                          <option>IRS International Line — (877) 298-6617</option>
+                          <option>IRS OIC Brookhaven (Holtsville) — (800) 803-4980</option>
+                          <option>IRS Practitioner Priority Service — Business — (800) 347-7801</option>
+                          <option>IRS Practitioner Priority Service — Individual — (800) 477-4580</option>
+                          <option>IRS Tax Exempt — (877) 755-7781</option>
+                          <option>IRS Underreporter — Individual — (800) 868-8209</option>
+                        </select>
+                      </div>
+                      <div class="col-span-2">
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">IRS Call Confirmation Date</label>
+                        <input
+                          type="date"
+                          data-field="IRS_Call_Confirmation_Date"
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm"
+                        />
+                      </div>
+                    </div>
+
                     <div class="space-y-3">
                       <div>
                         <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">IRS Representative</label>
@@ -420,7 +596,7 @@
             <!-- Agent Tab -->
             <div id="tab-agent" class="tab-content hidden space-y-4">
               <div class="accordion bg-slate-900 rounded-lg border border-slate-700/50">
-                <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="poa-info">
+                <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="poa-info" type="button">
                   <div class="flex items-center gap-3">
                     <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path
@@ -503,7 +679,7 @@
             <!-- Authority Tab -->
             <div id="tab-authority" class="tab-content hidden space-y-4">
               <div class="accordion bg-slate-900 rounded-lg border border-slate-700/50">
-                <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="auth-scope">
+                <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="auth-scope" type="button">
                   <div class="flex items-center gap-3">
                     <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path
@@ -563,15 +739,81 @@
             <div id="tab-compliance" class="tab-content hidden space-y-4">
               <!-- Year Tabs -->
               <div class="flex items-center gap-1 p-1 bg-slate-800 rounded-lg w-fit">
-                <button class="year-tab px-4 py-2 text-sm font-medium rounded-md bg-blue-600 text-white" data-year="2024">2024</button>
-                <button class="year-tab px-4 py-2 text-sm font-medium rounded-md text-slate-400 hover:text-slate-200" data-year="2023">2023</button>
-                <button class="year-tab px-4 py-2 text-sm font-medium rounded-md text-slate-400 hover:text-slate-200" data-year="2022">2022</button>
-                <button class="year-tab px-4 py-2 text-sm font-medium rounded-md text-slate-400 hover:text-slate-200" data-year="2021">2021</button>
-                <button class="year-tab px-4 py-2 text-sm font-medium rounded-md text-slate-400 hover:text-slate-200" data-year="2020">2020</button>
+                <button class="year-tab px-4 py-2 text-sm font-medium rounded-md bg-blue-600 text-white" data-year="2024" type="button">2024</button>
+                <button class="year-tab px-4 py-2 text-sm font-medium rounded-md text-slate-400 hover:text-slate-200" data-year="2023" type="button">2023</button>
+                <button class="year-tab px-4 py-2 text-sm font-medium rounded-md text-slate-400 hover:text-slate-200" data-year="2022" type="button">2022</button>
+                <button class="year-tab px-4 py-2 text-sm font-medium rounded-md text-slate-400 hover:text-slate-200" data-year="2021" type="button">2021</button>
+                <button class="year-tab px-4 py-2 text-sm font-medium rounded-md text-slate-400 hover:text-slate-200" data-year="2020" type="button">2020</button>
               </div>
 
               <div class="accordion bg-slate-900 rounded-lg border border-slate-700/50">
-                <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="return-status">
+                <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="compliance-core" type="button">
+                  <div class="flex items-center gap-3">
+                    <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                      />
+                    </svg>
+                    <span class="font-medium text-slate-100">Compliance Record Inputs</span>
+                  </div>
+                  <svg class="accordion-icon w-5 h-5 text-slate-500 transition-transform rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                <div class="accordion-content open" id="accordion-compliance-core">
+                  <div class="px-4 pb-4 border-t border-slate-700/50 pt-4">
+                    <div class="grid grid-cols-2 gap-4">
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Compliance Activity Type</label>
+                        <select
+                          data-field="Compliance_Activity_Type"
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm"
+                        >
+                          <option value="">Select...</option>
+                          <option>Filing compliance review</option>
+                          <option>IRS account verification</option>
+                          <option>IRS notice review</option>
+                          <option>IRS transcript request</option>
+                          <option>Status confirmation</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Compliance Period Covered</label>
+                        <select
+                          data-field="Compliance_Period_Covered"
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm"
+                        >
+                          <option value="">Select...</option>
+                          <option value="0">Current month</option>
+                          <option value="1">Initial 10-year review</option>
+                          <option value="2">Prior quarter</option>
+                          <option value="3">Prior tax year</option>
+                          <option value="4">Rolling review</option>
+                          <option value="5">Specific IRS notice period</option>
+                        </select>
+                      </div>
+                      <div class="col-span-2">
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Compliance Internal Notes</label>
+                        <textarea
+                          rows="4"
+                          data-field="Compliance_Internal_Notes"
+                          placeholder="Internal notes for this compliance record..."
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm placeholder-slate-500 resize-none"
+                        ></textarea>
+                      </div>
+                    </div>
+                    <p class="mt-3 text-xs text-slate-500">
+                      This section is what actually gets written to canonical state. The rest of the UI is just humans enjoying pixels.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion bg-slate-900 rounded-lg border border-slate-700/50">
+                <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="return-status" type="button">
                   <div class="flex items-center gap-3">
                     <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path
@@ -593,10 +835,10 @@
                       <div>
                         <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Filing Status</label>
                         <select class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm">
-                          <option>Filed - Accepted</option>
-                          <option selected>Filed - Under Review</option>
-                          <option>Not Filed</option>
                           <option>Extension Filed</option>
+                          <option selected>Filed - Accepted</option>
+                          <option>Filed - Under Review</option>
+                          <option>Not Filed</option>
                         </select>
                       </div>
                       <div>
@@ -633,7 +875,7 @@
               </div>
 
               <div class="accordion bg-slate-900 rounded-lg border border-slate-700/50">
-                <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="balance-detail">
+                <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="balance-detail" type="button">
                   <div class="flex items-center gap-3">
                     <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path
@@ -689,7 +931,65 @@
             <!-- Notices Tab -->
             <div id="tab-notices" class="tab-content hidden space-y-4">
               <div class="accordion bg-slate-900 rounded-lg border border-slate-700/50">
-                <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="notice-history">
+                <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="notice-inputs" type="button">
+                  <div class="flex items-center gap-3">
+                    <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                      />
+                    </svg>
+                    <span class="font-medium text-slate-100">Notice Inputs</span>
+                  </div>
+                  <svg class="accordion-icon w-5 h-5 text-slate-500 transition-transform rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                <div class="accordion-content open" id="accordion-notice-inputs">
+                  <div class="px-4 pb-4 border-t border-slate-700/50 pt-4">
+                    <div class="grid grid-cols-2 gap-4">
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">IRS Notice Received</label>
+                        <select
+                          data-field="IRS_Notice_Received"
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm"
+                        >
+                          <option value="">Select...</option>
+                          <option>No</option>
+                          <option>Yes</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">IRS Notice Date</label>
+                        <input
+                          type="date"
+                          data-field="IRS_Notice_Date"
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm"
+                        />
+                      </div>
+                      <div class="col-span-2">
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">IRS Notice Type</label>
+                        <select
+                          data-field="IRS_Notice_Type"
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm"
+                        >
+                          <option value="">Select...</option>
+                          <option>Computer Paragraph (CP) Notice</option>
+                          <option>IRS Letter (Other)</option>
+                          <option>Long Term (LT) Notice</option>
+                          <option>Notice Type Unknown</option>
+                        </select>
+                      </div>
+                    </div>
+                    <p class="mt-3 text-xs text-slate-500">The “Notice History” tiles below are visual. These fields are the canonical write.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion bg-slate-900 rounded-lg border border-slate-700/50">
+                <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="notice-history" type="button">
                   <div class="flex items-center gap-3">
                     <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path
@@ -757,7 +1057,7 @@
             <!-- Installment Agreement Tab -->
             <div id="tab-installment" class="tab-content hidden space-y-4">
               <div class="accordion bg-slate-900 rounded-lg border border-slate-700/50">
-                <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="ia-status">
+                <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="ia-status" type="button">
                   <div class="flex items-center gap-3">
                     <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path
@@ -775,43 +1075,52 @@
                 </button>
                 <div class="accordion-content open" id="accordion-ia-status">
                   <div class="px-4 pb-4 border-t border-slate-700/50 pt-4">
-                    <div class="p-3 bg-slate-800/50 rounded-lg border border-slate-700/50 mb-4">
-                      <div class="flex items-center justify-between">
-                        <div>
-                          <p class="text-sm font-medium text-slate-100">No Active Agreement</p>
-                          <p class="text-xs text-slate-500 mt-0.5">Client may qualify for streamlined IA</p>
-                        </div>
-                        <span class="px-2 py-1 text-xs bg-slate-600/50 text-slate-400 rounded">None</span>
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">IA Established</label>
+                        <select
+                          data-field="IA_Established"
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm"
+                        >
+                          <option value="">Select...</option>
+                          <option>No</option>
+                          <option>Unable to confirm</option>
+                          <option>Yes</option>
+                        </select>
                       </div>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-4">
                       <div>
                         <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Requested Payment</label>
                         <input
                           type="text"
+                          data-field="IA_Payment_Amount"
                           placeholder="$0.00"
                           class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm font-mono placeholder-slate-500"
                         />
                       </div>
                       <div>
                         <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Payment Date</label>
-                        <select class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm">
-                          <option>Select day...</option>
-                          <option>1st of month</option>
-                          <option>15th of month</option>
-                          <option>28th of month</option>
-                        </select>
+                        <input
+                          type="date"
+                          data-field="IA_Payment_Date"
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm"
+                        />
+                      </div>
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Last Payment Amount</label>
+                        <input
+                          type="text"
+                          data-field="IA_Last_Payment_Amount"
+                          placeholder="$0.00"
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm font-mono placeholder-slate-500"
+                        />
                       </div>
                       <div class="col-span-2">
-                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Agreement Type</label>
-                        <select class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm">
-                          <option>Select type...</option>
-                          <option>Streamlined IA (≤$50,000)</option>
-                          <option>Guaranteed IA (≤$10,000)</option>
-                          <option>Regular IA (Collection Info Required)</option>
-                          <option>Partial Pay IA</option>
-                        </select>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Last Payment Date</label>
+                        <input
+                          type="date"
+                          data-field="IA_Last_Payment_Date"
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm"
+                        />
                       </div>
                     </div>
 
@@ -824,7 +1133,7 @@
             <!-- Revenue Officer Tab -->
             <div id="tab-revenue" class="tab-content hidden space-y-4">
               <div class="accordion bg-slate-900 rounded-lg border border-slate-700/50">
-                <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="ro-info">
+                <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="ro-info" type="button">
                   <div class="flex items-center gap-3">
                     <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path
@@ -842,58 +1151,47 @@
                 </button>
                 <div class="accordion-content open" id="accordion-ro-info">
                   <div class="px-4 pb-4 border-t border-slate-700/50 pt-4">
-                    <div class="p-3 bg-green-500/10 border border-green-500/30 rounded-lg mb-4">
-                      <div class="flex items-center gap-2">
-                        <svg class="w-4 h-4 text-green-400" fill="currentColor" viewBox="0 0 20 20">
-                          <path
-                            fill-rule="evenodd"
-                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                            clip-rule="evenodd"
-                          />
-                        </svg>
-                        <span class="text-sm font-medium text-green-400">No Revenue Officer Assigned</span>
-                      </div>
-                      <p class="text-xs text-green-400/70 mt-1">Account is in ACS (Automated Collection System)</p>
-                    </div>
-
                     <div class="grid grid-cols-2 gap-4">
                       <div>
-                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">RO Name</label>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">IRS Revenue Officer Name</label>
                         <input
                           type="text"
-                          placeholder="Not assigned"
+                          data-field="IRS_Revenue_Officer_Name"
+                          placeholder="Name"
                           class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm placeholder-slate-500"
-                          disabled
                         />
                       </div>
                       <div>
-                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">RO Badge #</label>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">IRS Revenue Officer Phone</label>
                         <input
                           type="text"
-                          placeholder="N/A"
-                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm font-mono placeholder-slate-500"
-                          disabled
+                          data-field="IRS_Revenue_Officer_Phone"
+                          placeholder="Phone"
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm placeholder-slate-500"
                         />
                       </div>
                       <div>
-                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Territory</label>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">IRS Revenue Officer Fax</label>
                         <input
                           type="text"
-                          placeholder="N/A"
+                          data-field="IRS_Revenue_Officer_Fax"
+                          placeholder="Fax"
                           class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm placeholder-slate-500"
-                          disabled
                         />
                       </div>
-                      <div>
-                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Contact Number</label>
-                        <input
-                          type="text"
-                          placeholder="N/A"
-                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm placeholder-slate-500"
-                          disabled
-                        />
+                      <div></div>
+                      <div class="col-span-2">
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">IRS Revenue Officer Notes</label>
+                        <textarea
+                          rows="3"
+                          data-field="IRS_Revenue_Officer_Notes"
+                          placeholder="Notes about RO assignment..."
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm placeholder-slate-500 resize-none"
+                        ></textarea>
                       </div>
                     </div>
+
+                    <p class="mt-3 text-xs text-slate-500">If no RO assigned, leave blank. Blank is a valid state. Humans love those.</p>
                   </div>
                 </div>
               </div>
@@ -902,7 +1200,7 @@
             <!-- Transcripts Tab -->
             <div id="tab-transcripts" class="tab-content hidden space-y-4">
               <div class="accordion bg-slate-900 rounded-lg border border-slate-700/50">
-                <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="transcript-requests">
+                <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="transcript-requests" type="button">
                   <div class="flex items-center gap-3">
                     <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path
@@ -920,6 +1218,90 @@
                 </button>
                 <div class="accordion-content open" id="accordion-transcript-requests">
                   <div class="px-4 pb-4 border-t border-slate-700/50 pt-4">
+                    <div class="flex items-center justify-between mb-4">
+                      <label class="flex items-center gap-2">
+                        <input
+                          type="checkbox"
+                          data-field="Transcript_Request_Made"
+                          class="w-4 h-4 rounded border-slate-600 text-blue-500 focus:ring-blue-500 focus:ring-offset-slate-900"
+                        />
+                        <span class="text-sm text-slate-300">Transcript Request Made</span>
+                      </label>
+                      <span class="text-xs text-slate-500">Canonical checkbox</span>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Transcript Delivery Method</label>
+                        <select
+                          data-field="Transcript_Delivery_Method"
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm"
+                        >
+                          <option value="">Select...</option>
+                          <option>CAF mailbox</option>
+                          <option>Fax</option>
+                          <option>Online account</option>
+                          <option>Pending POA processing</option>
+                          <option>Secure mailbox (SOR)</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Transcript Scope Confirmed</label>
+                        <select
+                          data-field="Transcript_Scope_Confirmed"
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm"
+                        >
+                          <option value="">Select...</option>
+                          <option value="0">Access denied</option>
+                          <option value="1">Current year only</option>
+                          <option value="2">Full 10-year access</option>
+                          <option value="3">Partial access</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Transcripts Retrieved From SOR</label>
+                        <select
+                          data-field="Transcripts_Retrieved_From_SOR"
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm"
+                        >
+                          <option value="">Select...</option>
+                          <option>No</option>
+                          <option>Unknown</option>
+                          <option>Yes</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Transcript Retrieval Date</label>
+                        <input
+                          type="date"
+                          data-field="Transcript_Retrieval_Date"
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm"
+                        />
+                      </div>
+                      <div class="col-span-2">
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Transcript Retrieval Notes</label>
+                        <textarea
+                          rows="3"
+                          data-field="Transcript_Retrieval_Notes"
+                          placeholder="Retrieval notes..."
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm placeholder-slate-500 resize-none"
+                        ></textarea>
+                      </div>
+                      <div class="col-span-2">
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Transcript Files Upload</label>
+                        <input
+                          id="input-transcript-files"
+                          type="file"
+                          multiple
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm"
+                        />
+                        <p class="mt-2 text-xs text-slate-500">
+                          This page submits metadata. Your Worker should handle the actual upload pipeline (R2 receipts + canonical update).
+                        </p>
+                      </div>
+                    </div>
+
+                    <!-- Keep your original "pretty checkboxes" (visual only) -->
                     <div class="grid grid-cols-2 gap-3 mb-4">
                       <label class="flex items-center gap-2 p-3 bg-slate-800/50 rounded-lg border border-slate-700/50 cursor-pointer hover:bg-slate-800">
                         <input type="checkbox" checked class="w-4 h-4 rounded border-slate-600 text-blue-500 focus:ring-blue-500 focus:ring-offset-slate-900" />
@@ -950,21 +1332,6 @@
                         </div>
                       </label>
                     </div>
-
-                    <div class="grid grid-cols-2 gap-4">
-                      <div>
-                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Tax Years</label>
-                        <input type="text" value="2020, 2021, 2022, 2023" class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm" />
-                      </div>
-                      <div>
-                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Delivery Method</label>
-                        <select class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm">
-                          <option>Fax</option>
-                          <option selected>Mail to POA</option>
-                          <option>Mail to Taxpayer</option>
-                        </select>
-                      </div>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -973,7 +1340,7 @@
             <!-- Summary Tab -->
             <div id="tab-summary" class="tab-content hidden space-y-4">
               <div class="accordion bg-slate-900 rounded-lg border border-slate-700/50">
-                <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="case-summary">
+                <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="case-summary" type="button">
                   <div class="flex items-center gap-3">
                     <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path
@@ -1003,17 +1370,23 @@ Client has outstanding balance of $24,847.32 for TY2023 and TY2024. CP504 (Inten
                       <div class="space-y-2">
                         <label class="flex items-center gap-2 p-2 bg-slate-800/50 rounded border border-slate-700/50">
                           <input type="checkbox" class="w-4 h-4 rounded border-slate-600 text-blue-500" />
-                          <span class="text-sm text-slate-300">Submit CP2000 response with 1099-NEC documentation</span>
+                          <span class="text-sm text-slate-300">File Form 9465 for installment agreement</span>
                         </label>
                         <label class="flex items-center gap-2 p-2 bg-slate-800/50 rounded border border-slate-700/50">
                           <input type="checkbox" class="w-4 h-4 rounded border-slate-600 text-blue-500" />
-                          <span class="text-sm text-slate-300">File Form 9465 for installment agreement</span>
+                          <span class="text-sm text-slate-300">Submit CP2000 response with 1099-NEC documentation</span>
                         </label>
                         <label class="flex items-center gap-2 p-2 bg-slate-800/50 rounded border border-slate-700/50">
                           <input type="checkbox" class="w-4 h-4 rounded border-slate-600 text-blue-500" />
                           <span class="text-sm text-slate-300">Submit Form 843 for penalty abatement</span>
                         </label>
                       </div>
+                    </div>
+
+                    <div class="mt-4 p-3 bg-slate-800/50 rounded border border-slate-700/50">
+                      <p class="text-xs text-slate-500">
+                        The canonical write for this form is based on the contract keys (IRS_* / Transcript_* / Compliance_* / IA_*). This “summary” is for humans.
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -1037,7 +1410,7 @@ Client has outstanding balance of $24,847.32 for TY2023 and TY2024. CP504 (Inten
                     </svg>
                     <span class="text-sm font-medium text-slate-100">Report Preview</span>
                   </div>
-                  <button id="print-btn" class="text-xs text-blue-400 hover:text-blue-300">Print Report</button>
+                  <button id="print-btn" class="text-xs text-blue-400 hover:text-blue-300" type="button">Print Report</button>
                 </div>
 
                 <div id="report-preview" class="p-4 bg-white text-slate-900 max-h-[calc(100%-3rem)] overflow-y-auto">
@@ -1074,7 +1447,7 @@ Client has outstanding balance of $24,847.32 for TY2023 and TY2024. CP504 (Inten
                       <tbody>
                         <tr class="border-b border-slate-100">
                           <td class="py-1.5 text-slate-500">Total Balance</td>
-                          <td class="py-1.5 text-right font-mono font-medium text-red-600">$24,847.32</td>
+                          <td id="report-total-balance" class="py-1.5 text-right font-mono font-medium text-red-600">$24,847.32</td>
                         </tr>
                         <tr class="border-b border-slate-100">
                           <td class="py-1.5 text-slate-500">Original Tax</td>
@@ -1117,7 +1490,7 @@ Client has outstanding balance of $24,847.32 for TY2023 and TY2024. CP504 (Inten
                     <div class="grid grid-cols-3 gap-2">
                       <div class="text-center p-2 bg-slate-50 rounded">
                         <p class="text-xs text-slate-500">Lien</p>
-                        <p class="text-sm font-medium text-orange-600">Medium</p>
+                        <p id="report-lien" class="text-sm font-medium text-orange-600">—</p>
                       </div>
                       <div class="text-center p-2 bg-slate-50 rounded">
                         <p class="text-xs text-slate-500">Levy</p>
@@ -1135,6 +1508,16 @@ Client has outstanding balance of $24,847.32 for TY2023 and TY2024. CP504 (Inten
                     <p class="text-xs text-slate-400">CAF: 1234-56789-R</p>
                   </div>
                 </div>
+              </div>
+
+              <div class="mt-4 bg-slate-900 rounded-lg border border-slate-700/50 p-4 no-print">
+                <p class="text-xs text-slate-400">
+                  Submission: Writes a receipt first (Worker), then canonical order/account update, then ClickUp projection. The only sane way to do it.
+                </p>
+                <p class="text-xs text-slate-500 mt-2">
+                  Endpoint used:
+                  <span class="font-mono text-slate-300" id="debug-endpoint">—</span>
+                </p>
               </div>
             </div>
           </div>
@@ -1160,6 +1543,182 @@ Client has outstanding balance of $24,847.32 for TY2023 and TY2024. CP504 (Inten
 
       let config = { ...defaultConfig };
       let lastSaveTime = Date.now();
+
+      function safeTrim(v) {
+        return typeof v === "string" ? v.trim() : v;
+      }
+
+      function uuidv4() {
+        // RFC4122-ish, good enough for idempotency keys in browsers
+        if (crypto && crypto.randomUUID) return crypto.randomUUID();
+        const bytes = crypto.getRandomValues(new Uint8Array(16));
+        bytes[6] = (bytes[6] & 0x0f) | 0x40;
+        bytes[8] = (bytes[8] & 0x3f) | 0x80;
+        const hex = [...bytes].map((b) => b.toString(16).padStart(2, "0")).join("");
+        return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
+      }
+
+      function getQueryParam(name) {
+        const u = new URL(window.location.href);
+        return u.searchParams.get(name) || "";
+      }
+
+      function setIdentifiersFromUrl() {
+        const accountId = getQueryParam("accountId") || getQueryParam("account_id");
+        const orderId = getQueryParam("orderId") || getQueryParam("order_id");
+
+        document.getElementById("input-account-id").value = accountId;
+        document.getElementById("input-order-id").value = orderId;
+
+        if (orderId) document.getElementById("header-order-id").textContent = orderId;
+
+        // If client_id isn't provided, fall back to orderId (human-facing)
+        if (!config.client_id && orderId) {
+          config.client_id = orderId;
+          applyConfig();
+        }
+      }
+
+      function collectFields() {
+        const fields = {};
+
+        document.querySelectorAll("[data-field]").forEach((el) => {
+          const key = el.getAttribute("data-field");
+          if (!key) return;
+
+          if (el.type === "checkbox") {
+            fields[key] = !!el.checked;
+            return;
+          }
+
+          if (el.tagName === "SELECT") {
+            fields[key] = safeTrim(el.value);
+            return;
+          }
+
+          fields[key] = safeTrim(el.value || "");
+        });
+
+        // Multi-select checkboxes (contract: array of string values)
+        const multi = {};
+        document.querySelectorAll("input[type='checkbox'][data-multi]").forEach((el) => {
+          const key = el.getAttribute("data-multi");
+          if (!key) return;
+          if (!multi[key]) multi[key] = [];
+          if (el.checked) multi[key].push(el.value);
+        });
+        Object.keys(multi).forEach((k) => (fields[k] = multi[k]));
+
+        // Transcript file metadata (not the files themselves)
+        const fileEl = document.getElementById("input-transcript-files");
+        if (fileEl && fileEl.files) {
+          const meta = [];
+          for (const f of fileEl.files) {
+            meta.push({
+              lastModified: f.lastModified || null,
+              name: f.name || "",
+              size: f.size || null,
+              type: f.type || "",
+            });
+          }
+          fields["Transcript_Files_Upload"] = meta;
+        }
+
+        return fields;
+      }
+
+      function buildPayload(mode) {
+        const accountId = document.getElementById("input-account-id").value || "";
+        const orderId = document.getElementById("input-order-id").value || "";
+        const fields = collectFields();
+
+        // Minimal, stable envelope (Worker can map -> canonical tm_compliance_record)
+        return {
+          accountId,
+          eventId: uuidv4(),
+          formType: "staff_compliance_records",
+          mode, // "draft" | "final"
+          orderId,
+          submittedAt: new Date().toISOString(),
+          ui: {
+            page: window.location.pathname,
+            userAgent: navigator.userAgent,
+          },
+          fields,
+        };
+      }
+
+      function getEndpoints() {
+        // Primary and fallback (no guessing game with the user; we just try both)
+        const primary = "https://api.taxmonitor.pro/forms/staff/compliance-records";
+        const fallback = "https://api.taxmonitor.pro/forms/compliance-records";
+        return { fallback, primary };
+      }
+
+      async function postJson(url, payload) {
+        const res = await fetch(url, {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        });
+
+        const text = await res.text().catch(() => "");
+        let json = null;
+        try {
+          json = text ? JSON.parse(text) : null;
+        } catch {
+          json = null;
+        }
+
+        return { json, ok: res.ok, status: res.status, text, url };
+      }
+
+      async function submitForm(mode) {
+        const badge = document.getElementById("status-badge");
+        const saveBtn = document.getElementById("save-draft-btn");
+        const finalizeBtn = document.getElementById("finalize-btn");
+
+        saveBtn.disabled = true;
+        finalizeBtn.disabled = true;
+
+        const payload = buildPayload(mode);
+        const { primary, fallback } = getEndpoints();
+        document.getElementById("debug-endpoint").textContent = primary;
+
+        let result = await postJson(primary, payload);
+
+        if (!result.ok) {
+          document.getElementById("debug-endpoint").textContent = fallback;
+          result = await postJson(fallback, payload);
+        }
+
+        if (!result.ok) {
+          showToast(`Save failed (${result.status}). Check Worker logs.`);
+          saveBtn.disabled = false;
+          finalizeBtn.disabled = false;
+          return;
+        }
+
+        lastSaveTime = Date.now();
+        updateLastSaved();
+
+        if (mode === "final") {
+          badge.textContent = "FINAL";
+          badge.classList.remove("bg-amber-500/20", "text-amber-400", "border-amber-500/30");
+          badge.classList.add("bg-green-500/20", "text-green-400", "border-green-500/30");
+          showToast("Record finalized");
+        } else {
+          badge.textContent = "DRAFT";
+          badge.classList.remove("bg-green-500/20", "text-green-400", "border-green-500/30");
+          badge.classList.add("bg-amber-500/20", "text-amber-400", "border-amber-500/30");
+          showToast("Draft saved successfully");
+        }
+
+        saveBtn.disabled = false;
+        finalizeBtn.disabled = false;
+      }
 
       // Initialize Element SDK
       async function initializeApp() {
@@ -1233,6 +1792,7 @@ Client has outstanding balance of $24,847.32 for TY2023 and TY2024. CP504 (Inten
           });
         }
 
+        setIdentifiersFromUrl();
         setupEventListeners();
         applyConfig(); // ensure preview matches defaults on first load
         updateLastSaved();
@@ -1278,6 +1838,13 @@ Client has outstanding balance of $24,847.32 for TY2023 and TY2024. CP504 (Inten
         document.querySelectorAll(".accordion").forEach((el) => {
           el.style.backgroundColor = surfaceColor;
         });
+
+        // Keep preview synced
+        const total = document.querySelector("[data-field='Total_IRS_Balance']");
+        if (total) document.getElementById("report-total-balance").textContent = total.value || "—";
+
+        const lien = document.querySelector("[data-field='IRS_Lien_Exposure_Level']");
+        if (lien) document.getElementById("report-lien").textContent = lien.value ? lien.value.split("—")[0].trim() : "—";
       }
 
       function setupEventListeners() {
@@ -1313,25 +1880,19 @@ Client has outstanding balance of $24,847.32 for TY2023 and TY2024. CP504 (Inten
           }
         });
 
-        // Finalize button
-        document.getElementById("finalize-btn").addEventListener("click", () => {
-          const badge = document.getElementById("status-badge");
-          badge.textContent = "FINAL";
-          badge.classList.remove("bg-amber-500/20", "text-amber-400", "border-amber-500/30");
-          badge.classList.add("bg-green-500/20", "text-green-400", "border-green-500/30");
-          showToast("Record finalized");
+        // Save draft button (canonical write, draft mode)
+        document.getElementById("save-draft-btn").addEventListener("click", async () => {
+          await submitForm("draft");
+        });
+
+        // Finalize button (canonical write, final mode)
+        document.getElementById("finalize-btn").addEventListener("click", async () => {
+          await submitForm("final");
         });
 
         // Print button
         document.getElementById("print-btn").addEventListener("click", () => {
           window.print();
-        });
-
-        // Save draft button
-        document.getElementById("save-draft-btn").addEventListener("click", () => {
-          lastSaveTime = Date.now();
-          updateLastSaved();
-          showToast("Draft saved successfully");
         });
 
         // Tab navigation
@@ -1354,6 +1915,21 @@ Client has outstanding balance of $24,847.32 for TY2023 and TY2024. CP504 (Inten
             document.getElementById("compliance-year").textContent = btn.dataset.year;
           });
         });
+
+        // Keep preview synced on key inputs
+        const total = document.querySelector("[data-field='Total_IRS_Balance']");
+        if (total) {
+          total.addEventListener("input", () => {
+            document.getElementById("report-total-balance").textContent = total.value || "—";
+          });
+        }
+
+        const lien = document.querySelector("[data-field='IRS_Lien_Exposure_Level']");
+        if (lien) {
+          lien.addEventListener("change", () => {
+            document.getElementById("report-lien").textContent = lien.value ? lien.value.split("—")[0].trim() : "—";
+          });
+        }
       }
 
       function showToast(message) {
