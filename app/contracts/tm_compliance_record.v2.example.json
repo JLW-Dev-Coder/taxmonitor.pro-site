@@ -1,9 +1,3 @@
-// /contracts/staff/compliance-records.contract.json
-// Tax Monitor Pro — Staff Compliance Records Contract
-// Source: SuiteDash GET /company/meta
-// Governs: Form 10 — Compliance Records
-// Version: 2
-// Authority: R2 Canonical + SuiteDash CF Enum Alignment
 {
   "contract": {
     "authority": [
