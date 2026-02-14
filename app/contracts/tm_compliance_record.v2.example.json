@@ -1,12 +1,21 @@
 {
-  "schema": { "name": "tm_compliance_record", "version": 4 },
-  "identifiers": { "accountId": "", "orderId": "" },
+  "schema": { "name": "tm_compliance_record", "version": 5 },
+
+  "identifiers": {
+    "accountId": "",
+    "orderId": ""
+  },
+
   "compliance": {
+    "Case_Summary_Notes": null,
+
     "Compliance_Activity_Type": null,
     "Compliance_Internal_Notes": null,
     "Compliance_Period_Covered": null,
+
     "Estimated_Balance_Due_Range": null,
     "IA_Established": null,
+
     "IRS_Account_Status": null,
     "IRS_Agent_Department": null,
     "IRS_Agent_Department_Phone": null,
@@ -21,6 +30,18 @@
     "IRS_Revenue_Officer_Notes": null,
     "IRS_Revenue_Officer_Phone": null,
     "IRS_Status_Categories": [],
+
+    "Spouse_DOB": null,
+    "Spouse_SSN": null,
+
+    "Taxpayer_Address_1": null,
+    "Taxpayer_Address_2": null,
+    "Taxpayer_City": null,
+    "Taxpayer_DOB": null,
+    "Taxpayer_SSN": null,
+    "Taxpayer_State": null,
+    "Taxpayer_Zip": null,
+
     "Transcript_Delivery_Method": null,
     "Transcript_Files_Upload": [],
     "Transcript_Request_Made": false,
@@ -30,10 +51,12 @@
     "Transcripts_Retrieved_From_SOR": null,
     "Unfiled_Returns_Indicator": null
   },
+
   "dates": {
     "IA_Last_Payment_Date": null,
     "IA_Payment_Date": null
   },
+
   "financialSummary": {
     "IA_Last_Payment_Amount": null,
     "IA_Payment_Amount": null,
@@ -45,6 +68,7 @@
     "Total_Balance_With_Accruals": null,
     "Total_Balance_With_Accruals_v_Return_10_Year_Balance_Diff": null
   },
+
   "returns": {
     "window": { "endYear": 2025, "startYear": 2016 },
     "years": {
@@ -60,7 +84,9 @@
       "2025": { "CSED": null, "Filed": false, "Filing_Status": null, "Total_Balance": null }
     }
   },
+
   "notes": {},
+
   "system": {
     "complianceSubmitted": false,
     "lastUpdated": null,
