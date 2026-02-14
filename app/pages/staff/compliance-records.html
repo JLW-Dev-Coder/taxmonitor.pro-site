@@ -1988,8 +1988,57 @@ Client has outstanding balance of $24,847.32 for TY2023 and TY2024. CP504 (Inten
         year: "numeric",
       });
 
+      // Currency formatting helpers
+      function parseCurrency(value) {
+        if (value === null || value === undefined) return 0;
+        const cleaned = String(value).replace(/[^0-9.-]+/g, "");
+        const n = parseFloat(cleaned);
+        return Number.isFinite(n) ? n : 0;
+      }
+
+      function formatCurrency(value) {
+        const number = typeof value === "number" ? value : parseCurrency(value);
+        return number.toLocaleString("en-US", {
+          currency: "USD",
+          minimumFractionDigits: 2,
+          style: "currency",
+        });
+      }
+
+      function attachCurrencyFormatter(inputSelector, previewSelector) {
+        const input = document.querySelector(inputSelector);
+        const preview = previewSelector ? document.querySelector(previewSelector) : null;
+        if (!input) return;
+
+        const syncPreview = () => {
+          if (preview) preview.textContent = input.value || "—";
+        };
+
+        // Format any initial value already in the input
+        input.value = formatCurrency(input.value);
+        syncPreview();
+
+        input.addEventListener("blur", () => {
+          input.value = formatCurrency(input.value);
+          syncPreview();
+        });
+
+        input.addEventListener("focus", () => {
+          const raw = parseCurrency(input.value);
+          input.value = raw ? String(raw) : "";
+        });
+
+        input.addEventListener("input", syncPreview);
+      }
+
+      // Attach formatters once DOM exists
+      document.addEventListener("DOMContentLoaded", () => {
+        attachCurrencyFormatter('[data-field="Total_IRS_Balance"]', "#report-total-balance");
+      });
+
       // Initialize
       initializeApp();
+
     </script>
 
     <script>
