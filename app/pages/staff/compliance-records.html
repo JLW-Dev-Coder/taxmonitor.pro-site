@@ -85,7 +85,7 @@
           <div class="h-10 w-10 rounded-xl gradient-bg text-slate-950 font-bold flex items-center justify-center">TM</div>
           <div class="leading-tight">
             <div class="font-semibold">Staff Console</div>
-            <div class="text-sm text-slate-400">Compliance Records → report generator</div>
+            <div class="text-sm text-slate-400">Compliance Records → contract v2 → report generator</div>
           </div>
         </div>
         <div class="no-print flex items-center gap-2">
@@ -101,73 +101,42 @@
         <section class="lg:col-span-5 bg-slate-900/60 rounded-2xl border border-slate-800/50 p-6 card-glow">
           <div class="flex items-start justify-between gap-3 mb-5">
             <div>
-              <h1 class="text-xl font-semibold text-slate-100">Compliance payload</h1>
-              <p class="text-sm text-slate-400 mt-1">Non-HTML fields only. Generates balancesByYear + diffs.</p>
+              <h1 class="text-xl font-semibold text-slate-100">Compliance builder</h1>
+              <p class="text-sm text-slate-400 mt-1">Tabs + accordions for live-call capture. Outputs contract v2 record.</p>
             </div>
             <span id="statusPill" class="px-3 py-1 rounded-full bg-slate-800/70 border border-slate-700/60 text-xs text-slate-300">Idle</span>
           </div>
 
           <!-- Account loader -->
           <div class="space-y-3">
-            <label class="text-xs text-slate-500 uppercase tracking-wider">Account JSON (paste or injected)</label>
-            <textarea id="accountJson" rows="7"
+            <label class="text-xs text-slate-500 uppercase tracking-wider">Account JSON (paste existing accounts/{accountId}.json)</label>
+            <textarea id="accountJson" rows="6"
               class="w-full rounded-xl bg-slate-950/40 border border-slate-700/60 px-4 py-3 text-sm text-slate-200 outline-none focus:ring-2 focus:ring-amber-500/30"
               placeholder='Paste accounts/{accountId}.json here (optional).'></textarea>
 
             <div class="grid sm:grid-cols-2 gap-3">
               <div>
                 <label class="text-xs text-slate-500 uppercase tracking-wider">Account ID</label>
-                <input id="accountId" class="mt-1 w-full rounded-xl bg-slate-950/40 border border-slate-700/60 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-amber-500/30" placeholder="acc_..." />
+                <input id="accountId" class="mt-1 w-full rounded-xl bg-slate-950/40 border border-slate-700/60 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-amber-500/30" placeholder="acct_..." />
               </div>
               <div>
                 <label class="text-xs text-slate-500 uppercase tracking-wider">Event ID</label>
-                <input id="eventId" class="mt-1 w-full rounded-xl bg-slate-950/40 border border-slate-700/60 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-amber-500/30" placeholder="evt_..." />
+                <input id="eventId" class="mt-1 w-full rounded-xl bg-slate-950/40 border border-slate-700/60 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-amber-500/30" placeholder="cmp_..." />
               </div>
             </div>
           </div>
 
-          <!-- Core fields: report drivers -->
-          <div class="mt-6 grid sm:grid-cols-2 gap-4">
-            <div class="sm:col-span-2">
-              <label class="text-xs text-slate-500 uppercase tracking-wider">Company Name</label>
-              <input id="Company_Name" class="mt-1 w-full rounded-xl bg-slate-950/40 border border-slate-700/60 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-amber-500/30" placeholder="John & Jane Doe LLC" />
+          <!-- Tabs -->
+          <div class="no-print mt-6">
+            <div class="flex items-center justify-between gap-3">
+              <div class="text-sm font-semibold text-slate-200">Call flow tabs</div>
+              <div class="text-xs text-slate-500">Option B: tabs + accordions</div>
             </div>
-
-            <div>
-              <label class="text-xs text-slate-500 uppercase tracking-wider">Compliance_Period_Covered</label>
-              <input id="Compliance_Period_Covered" class="mt-1 w-full rounded-xl bg-slate-950/40 border border-slate-700/60 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-amber-500/30" placeholder="2024" />
-            </div>
-            <div>
-              <label class="text-xs text-slate-500 uppercase tracking-wider">Estimated_Balance_Due_Range</label>
-              <input id="Estimated_Balance_Due_Range" class="mt-1 w-full rounded-xl bg-slate-950/40 border border-slate-700/60 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-amber-500/30" placeholder="$0 - $2,500" />
-            </div>
-
-            <div>
-              <label class="text-xs text-slate-500 uppercase tracking-wider">IRS_Lien_Exposure_Level</label>
-              <input id="IRS_Lien_Exposure_Level" class="mt-1 w-full rounded-xl bg-slate-950/40 border border-slate-700/60 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-amber-500/30" placeholder="Low / Medium / High" />
-            </div>
-            <div>
-              <label class="text-xs text-slate-500 uppercase tracking-wider">Primary_Recommended_Service</label>
-              <input id="Primary_Recommended_Service" class="mt-1 w-full rounded-xl bg-slate-950/40 border border-slate-700/60 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-amber-500/30" placeholder="Monitoring" />
-            </div>
-
-            <div class="sm:col-span-2">
-              <label class="text-xs text-slate-500 uppercase tracking-wider">IRS_Balance_By_Year_Status</label>
-              <textarea id="IRS_Balance_By_Year_Status" rows="4"
-                class="mt-1 w-full rounded-xl bg-slate-950/40 border border-slate-700/60 px-4 py-3 text-sm text-slate-200 outline-none focus:ring-2 focus:ring-amber-500/30"
-                placeholder='Examples:
-2024: $2,384 | 2025: $0
-{"2024":{"balance":2384,"status":"Balance due"},"2025":{"balance":0,"status":"Clear"}}'></textarea>
-              <p class="text-xs text-slate-500 mt-2">This is used to generate <code class="text-slate-300">derived.balancesByYear</code> and year tabs.</p>
-            </div>
-
-            <div class="sm:col-span-2">
-              <label class="text-xs text-slate-500 uppercase tracking-wider">Compliance_Internal_Notes</label>
-              <textarea id="Compliance_Internal_Notes" rows="3"
-                class="mt-1 w-full rounded-xl bg-slate-950/40 border border-slate-700/60 px-4 py-3 text-sm text-slate-200 outline-none focus:ring-2 focus:ring-amber-500/30"
-                placeholder="High-signal notes only. This is not a diary."></textarea>
-            </div>
+            <div id="tabs" class="mt-3 flex flex-wrap gap-2"></div>
           </div>
+
+          <!-- Tab content -->
+          <div id="tabPanel" class="mt-4"></div>
 
           <!-- Actions -->
           <div class="no-print mt-6 grid sm:grid-cols-2 gap-3">
@@ -186,7 +155,7 @@
           </div>
 
           <p class="mt-4 text-xs text-slate-500">
-            This page generates the compliance object. Your Worker should still: receipt → upsert accounts → ClickUp projection.
+            This page generates the compliance object. Your Worker still: receipt → upsert R2 → ClickUp projection.
           </p>
         </section>
 
@@ -239,7 +208,7 @@
             <div class="px-6 pb-6">
               <div class="flex items-center justify-between gap-3 mb-3">
                 <div class="text-sm font-semibold text-slate-200">Year view</div>
-                <div class="text-xs text-slate-500">2024+ tabs from balancesByYear</div>
+                <div class="text-xs text-slate-500">Tabs from balancesByYear</div>
               </div>
               <div id="yearTabs" class="flex flex-wrap gap-2"></div>
 
@@ -308,68 +277,70 @@
   </div>
 
   <script>
-    // ====== Field inventory (non-HTML fields only) ======
-    // Kept explicit so we never "accidentally" leak instructional blocks into R2.
+    // =========================
+    // Contract + UI config
+    // =========================
+    const CONTRACT_DEMO_URL = "/app/contracts/tm_compliance_record.v2.example.json";
+
+    const TABS = [
+      { id: "overview", label: "Overview" },
+      { id: "agent", label: "Agent" },
+      { id: "authority", label: "Authority" },
+      { id: "compliance", label: "Compliance" },
+      { id: "notices", label: "Notices" },
+      { id: "ia", label: "IA" },
+      { id: "ro", label: "RO" },
+      { id: "transcripts", label: "Transcripts" },
+      { id: "summary", label: "Summary" },
+    ];
+
+    // Field keys from your contract sample (kept explicit, sorted)
     const FIELD_KEYS = [
-      // Address
+      "Address_Line_1",
       "Address_Line_2",
       "City",
-      "State_Province",
-      "ZIP_Postal_Code",
-
-      // Compliance meta
+      "Company_Name",
       "Compliance_Activity_Type",
+      "Compliance_Internal_Notes",
       "Compliance_Period_Covered",
-      "IRS_Compliance_Section_Focus",
-
-      // Company
-      "Company Name",
-
-      // Identity hold
-      "Identity_Verification_Hold",
-
-      // Installment agreement
+      "Estimated_Balance_Due_Range",
       "IA_Details",
       "IA_Established",
       "IA_Last_Payment_Amount",
       "IA_Last_Payment_Date",
       "IA_Payment_Amount",
       "IA_Payment_Date",
-
-      // IRS agent
+      "IRS_Account_Status",
       "IRS_Agent_Department",
       "IRS_Agent_Department_Phone",
       "IRS_Agent_ID",
       "IRS_Agent_Name",
       "IRS_Agent_Verification",
-
-      // IRS account core
-      "Estimated_Balance_Due_Range",
-      "IRS_Account_Status",
       "IRS_Balance_By_Year_Status",
+      "IRS_Call_Confirmation_Date",
+      "IRS_Compliance_Section_Focus",
+      "IRS_Lien_Exposure_Level",
       "IRS_Missing_Years",
-      "IRS_Status_Categories",
-      "Last_Return_Filed_Year",
-      "Total_IRS_Balance",
-      "Unfiled_Returns_Indicator",
-
-      // IRS notices
       "IRS_Notice_Date",
       "IRS_Notice_Received",
       "IRS_Notice_Type",
-
-      // Lien / recommended path
-      "IRS_Lien_Exposure_Level",
-      "Primary_Recommended_Service",
-      "Primary_Recommended_Status",
-
-      // Revenue officer
       "IRS_Revenue_Officer_Fax",
       "IRS_Revenue_Officer_Name",
       "IRS_Revenue_Officer_Notes",
       "IRS_Revenue_Officer_Phone",
-
-      // Transcript handling
+      "IRS_Status_Categories",
+      "Identity_Verification_Hold",
+      "Last_Return_Filed_Year",
+      "Primary_Recommended_Service",
+      "Resolution_Readiness_Status",
+      "Spouse_Separate_2848_Required",
+      "Spouse_Separate_2848_Required_Years",
+      "Spouse_Separate_Wet_Sig_2848_Required",
+      "State_Province",
+      "Tax_Monitoring_Service_Progress_Percent",
+      "Tax_Monitoring_Service_Progress_Status",
+      "Taxpayer_Separate_Wet_Sig_2848_Required",
+      "Total_IRS_Balance",
       "Transcript_Delivery_Method",
       "Transcript_Files_Upload",
       "Transcript_Request_Made",
@@ -377,17 +348,17 @@
       "Transcript_Retrieval_Notes",
       "Transcript_Scope_Confirmed",
       "Transcripts_Retrieved_From_SOR",
+      "Unfiled_Returns_Indicator",
+      "Wet_Sig_2848_Accepted_Status",
+      "Wet_Sig_2848_Notes",
+      "Wet_Sig_2848_Rejected_Notes",
+      "Wet_Sig_2848_Rejected_Type",
+      "ZIP_Postal_Code",
+    ].sort((a,b)=>a.localeCompare(b));
 
-      // Internal
-      "Compliance_Internal_Notes",
-      "IRS_Call_Confirmation_Date",
-
-      // Hidden status fields
-      "Tax_Monitoring_Service_Progress_Percent",
-      "Tax_Monitoring_Service_Progress_Status",
-    ].sort((a, b) => a.localeCompare(b));
-
-    // ====== DOM helpers ======
+    // =========================
+    // DOM helpers
+    // =========================
     const $ = (id) => document.getElementById(id);
 
     function setPill(text, tone) {
@@ -406,26 +377,293 @@
       return new Date().toISOString();
     }
 
-    function newEventId() {
+    function newEventId(prefix="cmp") {
       const r = Math.random().toString(16).slice(2, 10);
-      const stamp = new Date().toISOString().replace(/[-:]/g, "").slice(0, 15);
-      return `evt_${stamp}_${r}`;
+      const stamp = new Date().toISOString().replace(/[-:]/g, "").slice(0, 15) + "Z";
+      return `${prefix}_${stamp}_${r}`;
     }
 
     function safeJsonParse(s) {
       try { return JSON.parse(String(s || "").trim()); } catch { return null; }
     }
 
-    function currencyToNumber(value) {
-      const s = String(value ?? "").replace(/[^0-9.-]/g, "");
-      const n = Number(s);
-      return Number.isFinite(n) ? n : null;
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>"']/g, (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
     }
 
-    // ====== balancesByYear parser (for derived model) ======
+    function fmtUsdCents(cents) {
+      const n = Number(cents);
+      if (!Number.isFinite(n)) return "—";
+      return (n/100).toLocaleString(undefined, { style:"currency", currency:"USD", maximumFractionDigits:0 });
+    }
+
+    // =========================
+    // Tabs + accordions renderer
+    // =========================
+    function inputBase() {
+      return "mt-1 w-full rounded-xl bg-slate-950/40 border border-slate-700/60 px-4 py-3 text-sm text-slate-200 outline-none focus:ring-2 focus:ring-amber-500/30";
+    }
+
+    function renderTabs(activeId) {
+      const host = $("tabs");
+      host.innerHTML = "";
+      for (const t of TABS) {
+        const btn = document.createElement("button");
+        const active = t.id === activeId;
+        btn.className = [
+          "px-3 py-2 rounded-xl border text-sm transition",
+          active
+            ? "border-amber-500/30 bg-amber-500/10 text-amber-200"
+            : "border-slate-700/70 bg-slate-950/20 text-slate-200 hover:bg-slate-950/35"
+        ].join(" ");
+        btn.textContent = t.label;
+        btn.addEventListener("click", () => {
+          window.__TM_ACTIVE_TAB = t.id;
+          renderTabs(t.id);
+          renderTabPanel(t.id);
+        });
+        host.appendChild(btn);
+      }
+    }
+
+    function fieldRow({ id, label, placeholder="", type="text", note="" }) {
+      const isTextarea = type === "textarea";
+      return `
+        <div>
+          <label class="text-xs text-slate-500 uppercase tracking-wider">${escapeHtml(label)}</label>
+          ${
+            isTextarea
+              ? `<textarea id="${escapeHtml(id)}" rows="3" class="${inputBase()}" placeholder="${escapeHtml(placeholder)}"></textarea>`
+              : `<input id="${escapeHtml(id)}" type="${escapeHtml(type)}" class="${inputBase()}" placeholder="${escapeHtml(placeholder)}" />`
+          }
+          ${note ? `<div class="text-xs text-slate-500 mt-2">${note}</div>` : ``}
+        </div>
+      `;
+    }
+
+    function accordion(title, subtitle, innerHtml, open=false) {
+      return `
+        <details class="section rounded-2xl border border-slate-800/60 bg-slate-950/20 p-5" ${open ? "open" : ""}>
+          <summary class="cursor-pointer list-none flex items-center justify-between gap-3">
+            <span class="font-semibold">${escapeHtml(title)}</span>
+            <span class="text-xs text-slate-500">${escapeHtml(subtitle || "")}</span>
+          </summary>
+          <div class="mt-4 grid sm:grid-cols-2 gap-4">
+            ${innerHtml}
+          </div>
+        </details>
+      `;
+    }
+
+    function renderTabPanel(tabId) {
+      const host = $("tabPanel");
+      const t = String(tabId || "overview");
+
+      // NOTE: Field ids are contract field keys where possible.
+      // For nested objects, we use dedicated ids.
+      const panels = {
+        overview: () => {
+          const a = accordion(
+            "Client + engagement",
+            "High-signal basics",
+            [
+              fieldRow({ id:"Company_Name", label:"Company_Name", placeholder:"John & Jane Doe LLC" }),
+              fieldRow({ id:"Compliance_Period_Covered", label:"Compliance_Period_Covered", placeholder:"2016–2026" }),
+              fieldRow({ id:"Estimated_Balance_Due_Range", label:"Estimated_Balance_Due_Range", placeholder:"$0" }),
+              fieldRow({ id:"Primary_Recommended_Service", label:"Primary_Recommended_Service", placeholder:"Tax Monitoring Ongoing" }),
+            ].join(""),
+            true
+          );
+
+          const b = accordion(
+            "Status indicators",
+            "Snapshot fields",
+            [
+              fieldRow({ id:"IRS_Account_Status", label:"IRS_Account_Status", placeholder:"Active" }),
+              fieldRow({ id:"Total_IRS_Balance", label:"Total_IRS_Balance", placeholder:"0" }),
+              fieldRow({ id:"IRS_Lien_Exposure_Level", label:"IRS_Lien_Exposure_Level", placeholder:"Low / Medium / High" }),
+              fieldRow({ id:"Unfiled_Returns_Indicator", label:"Unfiled_Returns_Indicator", placeholder:"No" }),
+              fieldRow({ id:"Last_Return_Filed_Year", label:"Last_Return_Filed_Year", placeholder:"2025" }),
+              fieldRow({ id:"IRS_Status_Categories", label:"IRS_Status_Categories", placeholder:'["None identified"]', note:"JSON array is allowed." }),
+            ].join(""),
+            false
+          );
+
+          return `${a}<div class="mt-3"></div>${b}`;
+        },
+
+        agent: () => {
+          const a = accordion(
+            "IRS agent",
+            "Capture first",
+            [
+              fieldRow({ id:"IRS_Agent_Name", label:"IRS_Agent_Name", placeholder:"Agent Name" }),
+              fieldRow({ id:"IRS_Agent_ID", label:"IRS_Agent_ID", placeholder:"A12345" }),
+              fieldRow({ id:"IRS_Agent_Department", label:"IRS_Agent_Department", placeholder:"PPS" }),
+              fieldRow({ id:"IRS_Agent_Department_Phone", label:"IRS_Agent_Department_Phone", placeholder:"800-xxx-xxxx" }),
+              fieldRow({ id:"IRS_Agent_Verification", label:"IRS_Agent_Verification", placeholder:"true / false" }),
+              fieldRow({ id:"IRS_Call_Confirmation_Date", label:"IRS_Call_Confirmation_Date", placeholder:"YYYY-MM-DD" }),
+            ].join(""),
+            true
+          );
+          return a;
+        },
+
+        authority: () => {
+          const a = accordion(
+            "Identity + gating",
+            "Holds and authority state",
+            [
+              fieldRow({ id:"Identity_Verification_Hold", label:"Identity_Verification_Hold", placeholder:"", note:"Blank if none." }),
+              fieldRow({ id:"Spouse_Separate_2848_Required", label:"Spouse_Separate_2848_Required", placeholder:"" }),
+              fieldRow({ id:"Spouse_Separate_2848_Required_Years", label:"Spouse_Separate_2848_Required_Years", placeholder:"" }),
+              fieldRow({ id:"Spouse_Separate_Wet_Sig_2848_Required", label:"Spouse_Separate_Wet_Sig_2848_Required", placeholder:"" }),
+              fieldRow({ id:"Taxpayer_Separate_Wet_Sig_2848_Required", label:"Taxpayer_Separate_Wet_Sig_2848_Required", placeholder:"" }),
+              fieldRow({ id:"Wet_Sig_2848_Accepted_Status", label:"Wet_Sig_2848_Accepted_Status", placeholder:"" }),
+              fieldRow({ id:"Wet_Sig_2848_Rejected_Type", label:"Wet_Sig_2848_Rejected_Type", placeholder:"" }),
+              fieldRow({ id:"Wet_Sig_2848_Rejected_Notes", label:"Wet_Sig_2848_Rejected_Notes", placeholder:"", type:"textarea" }),
+              fieldRow({ id:"Wet_Sig_2848_Notes", label:"Wet_Sig_2848_Notes", placeholder:"", type:"textarea" }),
+            ].join(""),
+            true
+          );
+          return a;
+        },
+
+        compliance: () => {
+          const a = accordion(
+            "Compliance core",
+            "Section focus + activity",
+            [
+              fieldRow({ id:"Compliance_Activity_Type", label:"Compliance_Activity_Type", placeholder:"Initial review" }),
+              fieldRow({ id:"IRS_Compliance_Section_Focus", label:"IRS_Compliance_Section_Focus", placeholder:"Compliance core" }),
+              fieldRow({ id:"IRS_Missing_Years", label:"IRS_Missing_Years", placeholder:"None" }),
+              fieldRow({ id:"IRS_Balance_By_Year_Status", label:"IRS_Balance_By_Year_Status", type:"textarea", placeholder:'Paste JSON balancesByYear object OR shorthand like:\n2024: $0 | 2025: $0 | 2026: $12,500', note:"This is used to generate balancesByYear year tabs in preview. For contract v2, we also store balancesByYear as a structured object." }),
+            ].join(""),
+            true
+          );
+
+          const b = accordion(
+            "Taxpayer address",
+            "Used in report header",
+            [
+              fieldRow({ id:"Address_Line_1", label:"Address_Line_1", placeholder:"123 Main St" }),
+              fieldRow({ id:"Address_Line_2", label:"Address_Line_2", placeholder:"" }),
+              fieldRow({ id:"City", label:"City", placeholder:"San Diego" }),
+              fieldRow({ id:"State_Province", label:"State_Province", placeholder:"CA" }),
+              fieldRow({ id:"ZIP_Postal_Code", label:"ZIP_Postal_Code", placeholder:"92101" }),
+            ].join(""),
+            false
+          );
+
+          return `${a}<div class="mt-3"></div>${b}`;
+        },
+
+        notices: () => {
+          const a = accordion(
+            "Notices",
+            "Most recent notice fields",
+            [
+              fieldRow({ id:"IRS_Notice_Received", label:"IRS_Notice_Received", placeholder:"No" }),
+              fieldRow({ id:"IRS_Notice_Type", label:"IRS_Notice_Type", placeholder:"", }),
+              fieldRow({ id:"IRS_Notice_Date", label:"IRS_Notice_Date", placeholder:"YYYY-MM-DD", }),
+            ].join(""),
+            true
+          );
+          return a;
+        },
+
+        ia: () => {
+          const a = accordion(
+            "Installment agreement",
+            "Capture only if relevant",
+            [
+              fieldRow({ id:"IA_Established", label:"IA_Established", placeholder:"" }),
+              fieldRow({ id:"IA_Details", label:"IA_Details", placeholder:"", type:"textarea" }),
+              fieldRow({ id:"IA_Payment_Date", label:"IA_Payment_Date", placeholder:"YYYY-MM-DD" }),
+              fieldRow({ id:"IA_Payment_Amount", label:"IA_Payment_Amount", placeholder:"12500" }),
+              fieldRow({ id:"IA_Last_Payment_Date", label:"IA_Last_Payment_Date", placeholder:"YYYY-MM-DD" }),
+              fieldRow({ id:"IA_Last_Payment_Amount", label:"IA_Last_Payment_Amount", placeholder:"12500" }),
+            ].join(""),
+            true
+          );
+          return a;
+        },
+
+        ro: () => {
+          const a = accordion(
+            "Revenue officer",
+            "Only if assigned",
+            [
+              fieldRow({ id:"IRS_Revenue_Officer_Name", label:"IRS_Revenue_Officer_Name", placeholder:"" }),
+              fieldRow({ id:"IRS_Revenue_Officer_Phone", label:"IRS_Revenue_Officer_Phone", placeholder:"" }),
+              fieldRow({ id:"IRS_Revenue_Officer_Fax", label:"IRS_Revenue_Officer_Fax", placeholder:"" }),
+              fieldRow({ id:"IRS_Revenue_Officer_Notes", label:"IRS_Revenue_Officer_Notes", placeholder:"", type:"textarea" }),
+            ].join(""),
+            true
+          );
+          return a;
+        },
+
+        transcripts: () => {
+          const a = accordion(
+            "Transcript handling",
+            "Request + retrieval",
+            [
+              fieldRow({ id:"Transcript_Request_Made", label:"Transcript_Request_Made", placeholder:"true / false" }),
+              fieldRow({ id:"Transcript_Scope_Confirmed", label:"Transcript_Scope_Confirmed", placeholder:"Full 10-year" }),
+              fieldRow({ id:"Transcript_Delivery_Method", label:"Transcript_Delivery_Method", placeholder:"SOR mailbox" }),
+              fieldRow({ id:"Transcripts_Retrieved_From_SOR", label:"Transcripts_Retrieved_From_SOR", placeholder:"" }),
+              fieldRow({ id:"Transcript_Retrieval_Date", label:"Transcript_Retrieval_Date", placeholder:"YYYY-MM-DD" }),
+              fieldRow({ id:"Transcript_Retrieval_Notes", label:"Transcript_Retrieval_Notes", placeholder:"", type:"textarea" }),
+              fieldRow({ id:"Transcript_Files_Upload", label:"Transcript_Files_Upload", placeholder:"[]", note:"JSON array is allowed." }),
+            ].join(""),
+            true
+          );
+          return a;
+        },
+
+        summary: () => {
+          const a = accordion(
+            "Recommendation",
+            "Service + readiness",
+            [
+              fieldRow({ id:"Primary_Recommended_Service", label:"Primary_Recommended_Service", placeholder:"Tax Monitoring Ongoing" }),
+              fieldRow({ id:"Resolution_Readiness_Status", label:"Resolution_Readiness_Status", placeholder:"Not applicable" }),
+              fieldRow({ id:"Tax_Monitoring_Service_Progress_Percent", label:"Tax_Monitoring_Service_Progress_Percent", placeholder:"100" }),
+              fieldRow({ id:"Tax_Monitoring_Service_Progress_Status", label:"Tax_Monitoring_Service_Progress_Status", placeholder:"Monitoring records have been updated. Your report will be prepared.", type:"textarea" }),
+            ].join(""),
+            true
+          );
+
+          const b = accordion(
+            "Internal notes",
+            "Staff-only",
+            [
+              fieldRow({ id:"Compliance_Internal_Notes", label:"Compliance_Internal_Notes", placeholder:"High-signal notes only.", type:"textarea" }),
+            ].join(""),
+            true
+          );
+
+          return `${a}<div class="mt-3"></div>${b}`;
+        },
+      };
+
+      host.innerHTML = (panels[t] ? panels[t]() : panels.overview());
+    }
+
+    // =========================
+    // balancesByYear parsing
+    // =========================
+    function currencyToCents(value) {
+      const s = String(value ?? "").replace(/[^0-9.-]/g, "");
+      const n = Number(s);
+      if (!Number.isFinite(n)) return null;
+      return Math.round(n * 100);
+    }
+
     // Supports:
-    // 1) JSON object in textarea
-    // 2) Pipe / comma delimited "2024: $2,384 | 2025: $0"
+    // 1) JSON object: {"2026":{"balanceCents":1250000,"collectionStatus":"None identified"...}}
+    // 2) Shorthand: "2024: $0 | 2025: $0 | 2026: $12,500"
     function parseBalancesByYear(raw) {
       const s = String(raw || "").trim();
       if (!s) return {};
@@ -438,13 +676,20 @@
       const out = {};
       const parts = s.split("|").map(x => x.trim()).filter(Boolean);
       for (const part of parts) {
-        // "2024: $2,384 (Balance due)" or "2024: $0"
-        const m = part.match(/(\d{4})\s*:\s*([^()]+)(?:\(([^)]+)\))?/);
+        const m = part.match(/(\d{4})\s*:\s*(.+)$/);
         if (!m) continue;
         const year = m[1];
-        const bal = currencyToNumber(m[2]);
-        const status = String(m[3] || "").trim() || (bal === 0 ? "Clear" : "Balance due");
-        out[year] = { balance: bal ?? 0, status };
+        const cents = currencyToCents(m[2]);
+        out[year] = {
+          balanceCents: cents,
+          collectionStatus: cents === 0 ? "None identified" : "Balance due",
+          csedDate: null,
+          filed: null,
+          filingStatus: null,
+          hasLien: null,
+          isMissingOrUnfiled: null,
+          notes: ""
+        };
       }
       return normalizeBalancesByYear(out);
     }
@@ -454,9 +699,17 @@
       for (const [year, v] of Object.entries(obj || {})) {
         const y = String(year).trim();
         if (!/^\d{4}$/.test(y)) continue;
-        const balance = typeof v === "object" && v ? (Number(v.balance) || 0) : Number(v) || 0;
-        const status = typeof v === "object" && v && v.status ? String(v.status) : (balance === 0 ? "Clear" : "Balance due");
-        out[y] = { balance, status };
+        const row = (v && typeof v === "object") ? v : {};
+        out[y] = {
+          balanceCents: (row.balanceCents === null || row.balanceCents === undefined) ? null : Number(row.balanceCents),
+          collectionStatus: row.collectionStatus ?? null,
+          csedDate: row.csedDate ?? null,
+          filed: row.filed ?? null,
+          filingStatus: row.filingStatus ?? null,
+          hasLien: row.hasLien ?? null,
+          isMissingOrUnfiled: row.isMissingOrUnfiled ?? null,
+          notes: row.notes ?? ""
+        };
       }
       return out;
     }
@@ -468,18 +721,19 @@
     }
 
     function bestYear(years) {
-      // Most recent year >= 2024 preferred
       for (const y of years) if (Number(y) >= 2024) return y;
       return years[0] || null;
     }
 
-    // ====== Diff engine ======
-    function diffFields(prevFields, nextFields) {
-      const keys = Array.from(new Set([ ...Object.keys(prevFields || {}), ...Object.keys(nextFields || {}) ])).sort((a,b)=>a.localeCompare(b));
+    // =========================
+    // Diff engine (fields + balances)
+    // =========================
+    function diffObjects(prev, next) {
+      const keys = Array.from(new Set([ ...Object.keys(prev || {}), ...Object.keys(next || {}) ])).sort((a,b)=>a.localeCompare(b));
       const changes = [];
       for (const k of keys) {
-        const a = prevFields?.[k];
-        const b = nextFields?.[k];
+        const a = prev?.[k];
+        const b = next?.[k];
         const same = JSON.stringify(a ?? null) === JSON.stringify(b ?? null);
         if (same) continue;
         changes.push({ key: k, from: a ?? null, to: b ?? null });
@@ -503,17 +757,9 @@
       return `<div class="grid sm:grid-cols-2 gap-3">${rows}</div>`;
     }
 
-    // ====== Render ======
-    function escapeHtml(s) {
-      return String(s).replace(/[&<>"']/g, (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
-    }
-
-    function fmtUsd(n) {
-      const x = Number(n);
-      if (!Number.isFinite(x)) return "—";
-      return x.toLocaleString(undefined, { style:"currency", currency:"USD", maximumFractionDigits:0 });
-    }
-
+    // =========================
+    // Report render (contract v2)
+    // =========================
     function renderYearTabs(years, activeYear) {
       const host = $("yearTabs");
       host.innerHTML = "";
@@ -544,6 +790,12 @@
         panel.innerHTML = `<div class="text-sm text-slate-400">No data for ${escapeHtml(y)}.</div>`;
         return;
       }
+
+      const balance = row.balanceCents === null ? "—" : fmtUsdCents(row.balanceCents);
+      const status = row.collectionStatus ?? "—";
+      const filed = (row.filed === null || row.filed === undefined) ? "—" : (row.filed ? "Yes" : "No");
+      const lien = (row.hasLien === null || row.hasLien === undefined) ? "—" : (row.hasLien ? "Yes" : "No");
+
       panel.innerHTML = `
         <div class="flex items-start justify-between gap-4">
           <div>
@@ -552,34 +804,44 @@
           </div>
           <div class="text-right">
             <div class="text-xs text-slate-500 uppercase tracking-wider">Balance</div>
-            <div class="mt-1 text-xl font-semibold">${fmtUsd(row.balance)}</div>
+            <div class="mt-1 text-xl font-semibold">${escapeHtml(balance)}</div>
           </div>
         </div>
-        <div class="mt-4 rounded-xl border border-slate-800/60 bg-slate-950/20 p-4">
-          <div class="text-xs text-slate-500 uppercase tracking-wider">Status</div>
-          <div class="mt-1 text-sm text-slate-200">${escapeHtml(row.status || "—")}</div>
+        <div class="mt-4 grid sm:grid-cols-3 gap-3">
+          <div class="rounded-xl border border-slate-800/60 bg-slate-950/20 p-4">
+            <div class="text-xs text-slate-500 uppercase tracking-wider">Collection status</div>
+            <div class="mt-1 text-sm text-slate-200">${escapeHtml(status)}</div>
+          </div>
+          <div class="rounded-xl border border-slate-800/60 bg-slate-950/20 p-4">
+            <div class="text-xs text-slate-500 uppercase tracking-wider">Filed</div>
+            <div class="mt-1 text-sm text-slate-200">${escapeHtml(filed)}</div>
+          </div>
+          <div class="rounded-xl border border-slate-800/60 bg-slate-950/20 p-4">
+            <div class="text-xs text-slate-500 uppercase tracking-wider">Lien</div>
+            <div class="mt-1 text-sm text-slate-200">${escapeHtml(lien)}</div>
+          </div>
         </div>
+        ${row.notes ? `<div class="mt-3 text-sm text-slate-400">${escapeHtml(row.notes)}</div>` : ``}
       `;
     }
 
-    function renderReport(complianceLatest, previous) {
-      const fields = complianceLatest?.fields || {};
-      const derived = complianceLatest?.derived || {};
+    function renderReport(record, previous) {
+      const fields = record?.fields || {};
+      const balancesByYear = record?.balancesByYear || {};
 
-      $("reportSub").textContent = fields["Company Name"] ? `Prepared for ${fields["Company Name"]}` : "Prepared for —";
+      $("reportSub").textContent = fields.Company_Name ? `Prepared for ${fields.Company_Name}` : "Prepared for —";
       $("metricDebt").textContent = fields.Estimated_Balance_Due_Range || "—";
       $("metricRec").textContent = fields.Primary_Recommended_Service || "—";
       $("metricLien").textContent = fields.IRS_Lien_Exposure_Level || "—";
 
       $("snapAccountStatus").textContent = fields.IRS_Account_Status || "—";
       $("snapLastFiled").textContent = fields.Last_Return_Filed_Year || "—";
-      $("snapTotalBalance").textContent = fields.Total_IRS_Balance || "—";
+      $("snapTotalBalance").textContent = fields.Total_IRS_Balance ?? "—";
       $("snapUnfiled").textContent = fields.Unfiled_Returns_Indicator || "—";
 
       $("internalNotes").textContent = fields.Compliance_Internal_Notes || "—";
 
-      const balancesByYear = derived.balancesByYear || {};
-      const years = derived.years || yearsFromBalances(balancesByYear);
+      const years = yearsFromBalances(balancesByYear);
       window.__TM_BALANCES_BY_YEAR = balancesByYear;
 
       const active = window.__TM_ACTIVE_YEAR && years.includes(String(window.__TM_ACTIVE_YEAR))
@@ -597,83 +859,200 @@
       if (lien.includes("high")) badge.classList.add("bg-red-500/10","border-red-500/20","text-red-300");
       else if (lien.includes("med")) badge.classList.add("bg-amber-500/10","border-amber-500/20","text-amber-300");
       else badge.classList.add("bg-emerald-500/10","border-emerald-500/20","text-emerald-300");
-      badge.textContent = fields.Primary_Recommended_Status || "Prepared";
+      badge.textContent = "Prepared";
 
-      const changes = previous ? diffFields(previous.fields || {}, fields) : [];
-      $("diffPanel").innerHTML = previous
-        ? renderDiff(changes)
-        : `<div class="text-sm text-slate-300">No previous compliance record found. Create a second record and you’ll get a proper diff.</div>`;
+      if (!previous) {
+        $("diffPanel").innerHTML = `<div class="text-sm text-slate-300">No previous compliance record found. Create a second record and you’ll get a proper diff.</div>`;
+        return;
+      }
+
+      const changesA = diffObjects(previous.fields || {}, fields);
+      const changesB = diffObjects(previous.balancesByYear || {}, balancesByYear);
+      const combined = [
+        ...changesA.map(x => ({...x, key: `fields.${x.key}`})),
+        ...changesB.map(x => ({...x, key: `balancesByYear.${x.key}`}))
+      ].sort((a,b)=>a.key.localeCompare(b.key));
+
+      $("diffPanel").innerHTML = renderDiff(combined);
     }
 
-    // ====== Account updater ======
+    // =========================
+    // Contract v2 account updater
+    // =========================
     function ensureAccountShape(account, accountId) {
       const out = account && typeof account === "object" ? account : {};
       if (!out.accountId) out.accountId = accountId || out.accountId || "";
+
       if (!out.compliance) out.compliance = {};
-      if (!out.compliance.history) out.compliance.history = [];
+      if (!Array.isArray(out.compliance.records)) out.compliance.records = [];
+
       return out;
     }
 
+    function parseMaybeJsonValue(key, raw) {
+      const s = String(raw ?? "").trim();
+      if (!s) return null;
+
+      // Allow JSON arrays/objects for certain fields
+      if (key === "IRS_Status_Categories" || key === "Transcript_Files_Upload") {
+        const v = safeJsonParse(s);
+        if (v !== null) return v;
+      }
+
+      if (key === "IRS_Agent_Verification" || key === "Transcript_Request_Made") {
+        if (s.toLowerCase() === "true") return true;
+        if (s.toLowerCase() === "false") return false;
+      }
+
+      if (key === "Tax_Monitoring_Service_Progress_Percent") {
+        const n = Number(s);
+        return Number.isFinite(n) ? n : null;
+      }
+
+      // Keep strings by default
+      return s;
+    }
+
     function buildFieldsFromForm() {
-      // Map form inputs into FIELD_KEYS
       const fields = {};
       for (const key of FIELD_KEYS) {
-        // UI inputs use simplified IDs for a couple of fields
-        if (key === "Company Name") {
-          const v = $("Company_Name")?.value ?? "";
-          fields[key] = v.trim() || null;
-          continue;
-        }
         const el = $(key);
-        if (el) {
-          const v = String(el.value ?? "").trim();
-          fields[key] = v ? v : null;
-        } else {
-          // Not all fields are on-screen in this first version. Still preserve keyspace.
-          fields[key] = null;
-        }
+        if (!el) { fields[key] = null; continue; }
+        fields[key] = parseMaybeJsonValue(key, el.value);
       }
-      // Also include IRS_Balance_By_Year_Status from its textarea
-      fields.IRS_Balance_By_Year_Status = String($("IRS_Balance_By_Year_Status")?.value ?? "").trim() || null;
       return fields;
     }
 
-    function buildDerived(fields) {
-      const balancesByYear = parseBalancesByYear(fields.IRS_Balance_By_Year_Status);
-      const years = yearsFromBalances(balancesByYear);
+    function buildRecordFromForm(eventId, fields) {
+      const balancesByYear = parseBalancesByYear(fields.IRS_Balance_By_Year_Status || "");
+      const record = {
+        schema: { name: "tm_compliance_record", version: 2 },
+        createdAt: nowIso(),
+        eventId,
 
-      // Keep it 2024+ focused, but don’t delete data if older exists.
-      const years2024Plus = years.filter(y => Number(y) >= 2024);
-      const yearsOut = years2024Plus.length ? years2024Plus : years;
-
-      return {
         balancesByYear,
-        years: yearsOut,
+
+        call: {
+          activityType: fields.Compliance_Activity_Type || null,
+          periodCovered: fields.Compliance_Period_Covered || null,
+          sectionFocus: fields.IRS_Compliance_Section_Focus || null,
+          callConfirmedDate: fields.IRS_Call_Confirmation_Date || null,
+          agent: {
+            name: fields.IRS_Agent_Name || null,
+            id: fields.IRS_Agent_ID || null,
+            department: fields.IRS_Agent_Department || null,
+            departmentPhone: fields.IRS_Agent_Department_Phone || null,
+            verified: fields.IRS_Agent_Verification ?? null,
+          }
+        },
+
+        taxpayer: {
+          companyName: fields.Company_Name || null,
+          lastReturnFiledYear: fields.Last_Return_Filed_Year || null,
+          address: {
+            line1: fields.Address_Line_1 || null,
+            line2: fields.Address_Line_2 || null,
+            city: fields.City || null,
+            stateProvince: fields.State_Province || null,
+            zipPostalCode: fields.ZIP_Postal_Code || null,
+          }
+        },
+
+        irs: {
+          accountStatus: fields.IRS_Account_Status || null,
+          estimatedBalanceDueRange: fields.Estimated_Balance_Due_Range || null,
+          totalBalanceCents: null,
+          statusCategories: Array.isArray(fields.IRS_Status_Categories) ? fields.IRS_Status_Categories : (fields.IRS_Status_Categories ? [fields.IRS_Status_Categories] : []),
+          missingYearsSummary: fields.IRS_Missing_Years || null,
+          unfiledReturnsIndicator: fields.Unfiled_Returns_Indicator || null,
+          lienExposureLevel: fields.IRS_Lien_Exposure_Level || null,
+          notices: {
+            mostRecent: {
+              received: fields.IRS_Notice_Received || null,
+              type: fields.IRS_Notice_Type ?? null,
+              date: fields.IRS_Notice_Date ?? null,
+            }
+          },
+          balanceByYearLegacyText: fields.IRS_Balance_By_Year_Status || ""
+        },
+
+        transcripts: {
+          requestMade: fields.Transcript_Request_Made ?? null,
+          scopeConfirmed: fields.Transcript_Scope_Confirmed || null,
+          deliveryMethod: fields.Transcript_Delivery_Method || null,
+          files: Array.isArray(fields.Transcript_Files_Upload) ? fields.Transcript_Files_Upload : [],
+          retrieval: {
+            retrievedFromSOR: fields.Transcripts_Retrieved_From_SOR || "",
+            retrievalDate: fields.Transcript_Retrieval_Date ?? null,
+            notes: fields.Transcript_Retrieval_Notes || ""
+          }
+        },
+
+        workflows: {
+          identityVerificationHold: fields.Identity_Verification_Hold || "",
+          installmentAgreement: {
+            established: fields.IA_Established || "",
+            details: fields.IA_Details || "",
+            paymentDate: fields.IA_Payment_Date ?? null,
+            paymentAmountCents: fields.IA_Payment_Amount ? Number(fields.IA_Payment_Amount) : null,
+            lastPaymentDate: fields.IA_Last_Payment_Date ?? null,
+            lastPaymentAmountCents: fields.IA_Last_Payment_Amount ? Number(fields.IA_Last_Payment_Amount) : null,
+          },
+          revenueOfficer: {
+            name: fields.IRS_Revenue_Officer_Name || "",
+            phone: fields.IRS_Revenue_Officer_Phone || "",
+            fax: fields.IRS_Revenue_Officer_Fax || "",
+            notes: fields.IRS_Revenue_Officer_Notes || "",
+          }
+        },
+
+        wetSig2848: {
+          spouseSeparateRequired: fields.Spouse_Separate_2848_Required || "",
+          spouseSeparateRequiredYears: fields.Spouse_Separate_2848_Required_Years || "",
+          taxpayerWetSigRequired: fields.Taxpayer_Separate_Wet_Sig_2848_Required || "",
+          spouseWetSigRequired: fields.Spouse_Separate_Wet_Sig_2848_Required || "",
+          acceptedStatus: fields.Wet_Sig_2848_Accepted_Status || "",
+          rejectedType: fields.Wet_Sig_2848_Rejected_Type || "",
+          rejectedNotes: fields.Wet_Sig_2848_Rejected_Notes || "",
+          notes: fields.Wet_Sig_2848_Notes || "",
+        },
+
+        recommendation: {
+          primaryService: fields.Primary_Recommended_Service || null,
+          resolutionReadinessStatus: fields.Resolution_Readiness_Status || null,
+          why: ""
+        },
+
+        internal: {
+          notes: fields.Compliance_Internal_Notes || "",
+          progressPercent: fields.Tax_Monitoring_Service_Progress_Percent ?? null,
+          progressStatus: fields.Tax_Monitoring_Service_Progress_Status || ""
+        },
+
+        fields
       };
+
+      return record;
     }
 
-    function appendCompliance(account, eventId, fields) {
-      const derived = buildDerived(fields);
-      const record = {
-        createdAt: nowIso(),
-        derived,
-        eventId,
-        fields,
-        source: "staff:compliance_records",
-      };
+    function appendComplianceRecord(account, record) {
+      const records = Array.isArray(account.compliance.records) ? account.compliance.records : [];
+      const prev = records.length ? records[records.length - 1] : null;
 
-      const history = Array.isArray(account.compliance.history) ? account.compliance.history : [];
-      const prev = history.length ? history[history.length - 1] : null;
-
-      history.push(record);
-      account.compliance.history = history;
-      account.compliance.latest = record;
-      account.compliance.latestEventId = eventId;
+      records.push(record);
+      account.compliance.records = records;
+      account.compliance.latestEventId = record.eventId;
 
       return { previous: prev, record };
     }
 
-    // ====== Init / actions ======
+    // =========================
+    // Init / actions
+    // =========================
+    function expandCollapse(open) {
+      document.querySelectorAll("details.section").forEach(d => d.open = !!open);
+    }
+
     function loadFromInjectedOrTextarea() {
       const injected = window.TM_ACCOUNT && typeof window.TM_ACCOUNT === "object" ? window.TM_ACCOUNT : null;
       if (injected) return injected;
@@ -684,53 +1063,51 @@
       return null;
     }
 
-    function setDemo() {
-      $("accountId").value = "acc_demo_john_jane_doe";
-      $("eventId").value = newEventId();
-      $("Company_Name").value = "JOHN & JANE DOE";
-      $("Compliance_Period_Covered").value = "2025";
-      $("Estimated_Balance_Due_Range").value = "$0 - $2,500";
-      $("IRS_Lien_Exposure_Level").value = "Low";
-      $("Primary_Recommended_Service").value = "Monitoring";
-      $("IRS_Balance_By_Year_Status").value = "2024: $2,384 | 2025: $0";
-      $("Compliance_Internal_Notes").value = "No enforcement indicators. Notice activity not confirmed on call.";
+    function setFormFromRecord(record) {
+      const f = record?.fields || {};
+      for (const key of FIELD_KEYS) {
+        const el = $(key);
+        if (!el) continue;
+        const v = f[key];
+        el.value = (v === null || v === undefined) ? "" : (typeof v === "string" ? v : JSON.stringify(v));
+      }
+    }
 
-      const base = {
-        accountId: "acc_demo_john_jane_doe",
-        compliance: {
-          history: [
-            {
-              createdAt: "2026-01-10T18:25:00.000Z",
-              derived: {
-                balancesByYear: { "2024": { balance: 4100, status: "Balance due" } },
-                years: ["2024"]
-              },
-              eventId: "evt_20260110_demo_prev",
-              fields: {
-                "Company Name": "JOHN & JANE DOE",
-                Estimated_Balance_Due_Range: "$2,500 - $5,000",
-                IRS_Lien_Exposure_Level: "Medium",
-                Primary_Recommended_Service: "Evaluation",
-                Primary_Recommended_Status: "Review",
-                IRS_Account_Status: "Balance due",
-                Total_IRS_Balance: "$4,100",
-                Unfiled_Returns_Indicator: "No",
-                Last_Return_Filed_Year: "2024",
-                IRS_Balance_By_Year_Status: "2024: $4,100",
-                Compliance_Internal_Notes: "Prior check showed higher balance."
-              },
-              source: "staff:compliance_records"
-            }
-          ]
-        }
-      };
-      $("accountJson").value = JSON.stringify(base, null, 2);
-      setPill("Demo loaded", "good");
+    async function setDemo() {
+      try {
+        const res = await fetch(CONTRACT_DEMO_URL, { cache: "no-store" });
+        if (!res.ok) throw new Error(`demo fetch ${res.status}`);
+        const demoAccount = await res.json();
+
+        const accountId = demoAccount.accountId || "acct_demo";
+        const eventId = demoAccount.compliance?.latestEventId || newEventId("cmp");
+
+        $("accountId").value = accountId;
+        $("eventId").value = eventId;
+
+        // Use latest record in demo if present
+        const recs = demoAccount.compliance?.records || [];
+        const latest = recs.length ? recs[recs.length - 1] : null;
+
+        // Seed the left textarea with an account-shaped object (so user can generate diff on next run)
+        $("accountJson").value = JSON.stringify(demoAccount, null, 2);
+
+        // Ensure tabs UI exists before setting fields
+        const activeTab = window.__TM_ACTIVE_TAB || "overview";
+        renderTabs(activeTab);
+        renderTabPanel(activeTab);
+
+        if (latest) setFormFromRecord(latest);
+
+        setPill("Demo loaded", "good");
+      } catch (e) {
+        setPill("Demo load failed", "warn");
+      }
     }
 
     function generate() {
       const accountId = String($("accountId").value || "").trim();
-      const eventId = String($("eventId").value || "").trim() || newEventId();
+      const eventId = String($("eventId").value || "").trim() || newEventId("cmp");
       $("eventId").value = eventId;
 
       if (!accountId) {
@@ -742,13 +1119,11 @@
       const account = ensureAccountShape(existing, accountId);
 
       const fields = buildFieldsFromForm();
+      // Hard enforce accountId in top-level
+      account.accountId = accountId;
 
-      // Keep Company Name consistent
-      if (!fields["Company Name"] && $("Company_Name").value.trim()) {
-        fields["Company Name"] = $("Company_Name").value.trim();
-      }
-
-      const { previous, record } = appendCompliance(account, eventId, fields);
+      const record = buildRecordFromForm(eventId, fields);
+      const { previous } = appendComplianceRecord(account, record);
 
       // Output
       $("outputJson").value = JSON.stringify(account, null, 2);
@@ -771,11 +1146,9 @@
       }
     }
 
-    function expandCollapse(open) {
-      document.querySelectorAll("details.section").forEach(d => d.open = !!open);
-    }
-
-    // Wire buttons
+    // =========================
+    // Boot
+    // =========================
     $("btnDemo").addEventListener("click", setDemo);
     $("btnGenerate").addEventListener("click", generate);
     $("btnCopy").addEventListener("click", copyOutput);
@@ -783,8 +1156,11 @@
     $("btnExpandAll").addEventListener("click", () => expandCollapse(true));
     $("btnCollapseAll").addEventListener("click", () => expandCollapse(false));
 
-    // Seed eventId
-    $("eventId").value = newEventId();
+    // Seed eventId + default tab
+    $("eventId").value = newEventId("cmp");
+    window.__TM_ACTIVE_TAB = "overview";
+    renderTabs(window.__TM_ACTIVE_TAB);
+    renderTabPanel(window.__TM_ACTIVE_TAB);
     setPill("Idle", "idle");
   </script>
 </body>
