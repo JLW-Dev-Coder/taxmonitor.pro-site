@@ -1425,6 +1425,11 @@ Client has outstanding balance of $24,847.32 for TY2023 and TY2024. CP504 (Inten
                               <td class="py-1.5 text-slate-500">Total Balance</td>
                               <td id="report-total-balance" class="py-1.5 text-right font-mono font-medium text-red-600">—</td>
                             </tr>
+
+                            <tr class="border-b border-slate-100">
+                              <td class="py-1.5 text-slate-500">Total Balance + Accruals</td>
+                              <td id="report-total-with-accruals" class="py-1.5 text-right font-mono font-medium text-red-600">—</td>
+                            </tr>
                           </tbody>
                         </table>
                       </div>
@@ -1886,6 +1891,39 @@ Client has outstanding balance of $24,847.32 for TY2023 and TY2024. CP504 (Inten
         });
       }
 
+      function updateTotalWithAccrualsPreview() {
+        const totalEl = document.querySelector('[data-field="Total_IRS_Balance"]');
+        const penaltiesEl = document.querySelector('[data-field="IRS_Penalties"]');
+        const interestEl = document.querySelector('[data-field="IRS_Interest"]');
+
+        const out = document.getElementById("report-total-with-accruals");
+        if (!out) return;
+
+        const total = parseCurrency(totalEl?.value);
+        const penalties = parseCurrency(penaltiesEl?.value);
+        const interest = parseCurrency(interestEl?.value);
+
+        out.textContent = formatCurrency(total + penalties + interest);
+      }
+
+      function wireTotalWithAccrualsPreview() {
+        const selectors = [
+          '[data-field="IRS_Interest"]',
+          '[data-field="IRS_Penalties"]',
+          '[data-field="Total_IRS_Balance"]',
+        ];
+
+        selectors.forEach((sel) => {
+          const el = document.querySelector(sel);
+          if (!el) return;
+          el.addEventListener("input", updateTotalWithAccrualsPreview);
+          el.addEventListener("blur", updateTotalWithAccrualsPreview);
+          el.addEventListener("change", updateTotalWithAccrualsPreview);
+        });
+
+        updateTotalWithAccrualsPreview();
+      }
+
       function attachCurrencyFormatter(inputSelector, previewSelector) {
         const input = document.querySelector(inputSelector);
         const preview = previewSelector ? document.querySelector(previewSelector) : null;
@@ -1911,11 +1949,13 @@ Client has outstanding balance of $24,847.32 for TY2023 and TY2024. CP504 (Inten
         input.addEventListener("input", syncPreview);
       }
 
-   document.addEventListener("DOMContentLoaded", () => {
-    attachCurrencyFormatter('[data-field="IRS_Penalties"]', "#report-penalties");
-    attachCurrencyFormatter('[data-field="IRS_Interest"]', "#report-interest");
-    attachCurrencyFormatter('[data-field="Total_IRS_Balance"]', "#report-total-balance");
-  });
+      document.addEventListener("DOMContentLoaded", () => {
+        attachCurrencyFormatter('[data-field="IRS_Penalties"]', "#report-penalties");
+        attachCurrencyFormatter('[data-field="IRS_Interest"]', "#report-interest");
+        attachCurrencyFormatter('[data-field="Total_IRS_Balance"]', "#report-total-balance");
+
+        wireTotalWithAccrualsPreview();
+      });
 
       initializeApp();
     </script>
