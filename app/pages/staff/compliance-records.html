@@ -352,6 +352,7 @@
 
                     <div class="accordion-content open" id="accordion-account-status">
                       <div class="px-4 pb-4 border-t border-slate-700/50 pt-4">
+
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
                           <!-- Total Balance -->
                           <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700/50">
@@ -788,607 +789,61 @@
                     </div>
                   </div>
 
-                  <div class="accordion bg-slate-900 rounded-lg border border-slate-700/50">
-                    <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="return-status" type="button">
-                      <div class="flex items-center gap-3">
-                        <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                          />
-                        </svg>
-                        <span class="font-medium text-slate-100">Return Status - <span id="compliance-year">2024</span></span>
+              <div class="accordion bg-slate-900 rounded-lg border border-slate-700/50">
+                <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="return-status" type="button">
+                  <div class="flex items-center gap-3">
+                    <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                      />
+                    </svg>
+                    <span class="font-medium text-slate-100">Return Status - <span id="compliance-year">2024</span></span>
+                  </div>
+                  <svg class="accordion-icon w-5 h-5 text-slate-500 transition-transform rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                <div class="accordion-content open" id="accordion-return-status">
+                  <div class="px-4 pb-4 border-t border-slate-700/50 pt-4">
+                    <div class="grid grid-cols-2 gap-4">
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Filing Status</label>
+                        <select class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm">
+                          <option>Extension Filed</option>
+                          <option selected>Filed - Accepted</option>
+                          <option>Filed - Under Review</option>
+                          <option>Not Filed</option>
+                        </select>
                       </div>
-                      <svg class="accordion-icon w-5 h-5 text-slate-500 transition-transform rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                      </svg>
-                    </button>
-                    <div class="accordion-content open" id="accordion-return-status">
-                      <div class="px-4 pb-4 border-t border-slate-700/50 pt-4">
-                        <div class="grid grid-cols-2 gap-4">
-                          <div>
-                            <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Filing Status</label>
-                            <select class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm">
-                              <option>Extension Filed</option>
-                              <option selected>Filed - Accepted</option>
-                              <option>Filed - Under Review</option>
-                              <option>Not Filed</option>
-                            </select>
-                          </div>
-                          <div>
-                            <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Date Filed</label>
-                            <input type="date" value="2024-04-15" class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm" />
-                          </div>
-                          <div>
-                            <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">AGI Reported</label>
-                            <input type="text" value="$142,500" class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm font-mono" />
-                          </div>
-                          <div>
-                            <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Tax Liability</label>
-                            <input type="text" value="$28,340" class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm font-mono" />
-                          </div>
-                        </div>
-
-                        <div class="mt-4 p-3 bg-amber-500/10 border border-amber-500/30 rounded-lg">
-                          <div class="flex items-start gap-2">
-                            <svg class="w-4 h-4 text-amber-400 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                              <path
-                                fill-rule="evenodd"
-                                d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
-                                clip-rule="evenodd"
-                              />
-                            </svg>
-                            <div>
-                              <p class="text-sm font-medium text-amber-400">Under IRS Examination</p>
-                              <p class="text-xs text-amber-400/70 mt-0.5">CP2000 issued - unreported income discrepancy</p>
-                            </div>
-                          </div>
-                        </div>
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Date Filed</label>
+                        <input type="date" value="2024-04-15" class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm" />
+                      </div>
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">AGI Reported</label>
+                        <input type="text" value="$142,500" class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm font-mono" />
+                      </div>
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Tax Liability</label>
+                        <input type="text" value="$28,340" class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm font-mono" />
                       </div>
                     </div>
-                  </div>
 
-                  <div class="accordion bg-slate-900 rounded-lg border border-slate-700/50">
-                    <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="balance-detail" type="button">
-                      <div class="flex items-center gap-3">
-                        <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <div class="mt-4 p-3 bg-amber-500/10 border border-amber-500/30 rounded-lg">
+                      <div class="flex items-start gap-2">
+                        <svg class="w-4 h-4 text-amber-400 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                           <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                            fill-rule="evenodd"
+                            d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                            clip-rule="evenodd"
                           />
                         </svg>
-                        <span class="font-medium text-slate-100">Balance Detail</span>
-                      </div>
-                      <svg class="accordion-icon w-5 h-5 text-slate-500 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                      </svg>
-                    </button>
-                    <div class="accordion-content" id="accordion-balance-detail">
-                      <div class="px-4 pb-4 border-t border-slate-700/50 pt-4">
-                        <table class="w-full text-sm">
-                          <thead>
-                            <tr class="text-xs text-slate-500 uppercase tracking-wide">
-                              <th class="text-left pb-2">Component</th>
-                              <th class="text-right pb-2">Amount</th>
-                            </tr>
-                          </thead>
-                          <tbody class="divide-y divide-slate-700/50">
-                            <tr>
-                              <td class="py-2 text-slate-300">Original Tax</td>
-                              <td class="py-2 text-right font-mono text-slate-100">$19,787.15</td>
-                            </tr>
-                            <tr>
-                              <td class="py-2 text-slate-300">Failure to Pay Penalty</td>
-                              <td class="py-2 text-right font-mono text-amber-400">$2,418.00</td>
-                            </tr>
-                            <tr>
-                              <td class="py-2 text-slate-300">Failure to File Penalty</td>
-                              <td class="py-2 text-right font-mono text-amber-400">$800.00</td>
-                            </tr>
-                            <tr>
-                              <td class="py-2 text-slate-300">Interest (computed daily)</td>
-                              <td class="py-2 text-right font-mono text-amber-400">$1,842.17</td>
-                            </tr>
-                            <tr class="font-medium">
-                              <td class="py-2 text-slate-100">Total Balance</td>
-                              <td class="py-2 text-right font-mono text-red-400">$24,847.32</td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Notices Tab -->
-                <div id="tab-notices" class="tab-content hidden space-y-4">
-                  <div class="accordion bg-slate-900 rounded-lg border border-slate-700/50">
-                    <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="notice-inputs" type="button">
-                      <div class="flex items-center gap-3">
-                        <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-                          />
-                        </svg>
-                        <span class="font-medium text-slate-100">Notice Inputs</span>
-                      </div>
-                      <svg class="accordion-icon w-5 h-5 text-slate-500 transition-transform rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                      </svg>
-                    </button>
-                    <div class="accordion-content open" id="accordion-notice-inputs">
-                      <div class="px-4 pb-4 border-t border-slate-700/50 pt-4">
-                        <div class="grid grid-cols-2 gap-4">
-                          <div>
-                            <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">IRS Notice Received</label>
-                            <select
-                              data-field="IRS_Notice_Received"
-                              class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm"
-                            >
-                              <option value="">Select...</option>
-                              <option>No</option>
-                              <option>Yes</option>
-                            </select>
-                          </div>
-                          <div>
-                            <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">IRS Notice Date</label>
-                            <input
-                              type="date"
-                              data-field="IRS_Notice_Date"
-                              class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm"
-                            />
-                          </div>
-                          <div class="col-span-2">
-                            <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">IRS Notice Type</label>
-                            <select
-                              data-field="IRS_Notice_Type"
-                              class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm"
-                            >
-                              <option value="">Select...</option>
-                              <option>Computer Paragraph (CP) Notice</option>
-                              <option>IRS Letter (Other)</option>
-                              <option>Long Term (LT) Notice</option>
-                              <option>Notice Type Unknown</option>
-                            </select>
-                          </div>
-                        </div>
-                        <p class="mt-3 text-xs text-slate-500">The “Notice History” tiles below are visual. These fields are the canonical write.</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="accordion bg-slate-900 rounded-lg border border-slate-700/50">
-                    <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="notice-history" type="button">
-                      <div class="flex items-center gap-3">
-                        <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-                          />
-                        </svg>
-                        <span class="font-medium text-slate-100">Notice History</span>
-                        <span class="px-2 py-0.5 text-xs bg-red-500/20 text-red-400 rounded font-medium">3 Active</span>
-                      </div>
-                      <svg class="accordion-icon w-5 h-5 text-slate-500 transition-transform rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                      </svg>
-                    </button>
-                    <div class="accordion-content open" id="accordion-notice-history">
-                      <div class="px-4 pb-4 border-t border-slate-700/50 pt-4 space-y-3">
-                        <div class="p-3 bg-red-500/10 border border-red-500/30 rounded-lg">
-                          <div class="flex items-start justify-between">
-                            <div>
-                              <div class="flex items-center gap-2">
-                                <span class="font-mono text-sm font-medium text-slate-100">CP504</span>
-                                <span class="px-1.5 py-0.5 text-xs bg-red-500/30 text-red-400 rounded">Urgent</span>
-                              </div>
-                              <p class="text-sm text-slate-400 mt-1">Notice of Intent to Levy</p>
-                              <p class="text-xs text-slate-500 mt-0.5">Response deadline: Jan 28, 2025</p>
-                            </div>
-                            <span class="text-xs text-slate-500">Dec 14, 2024</span>
-                          </div>
-                        </div>
-
-                        <div class="p-3 bg-amber-500/10 border border-amber-500/30 rounded-lg">
-                          <div class="flex items-start justify-between">
-                            <div>
-                              <div class="flex items-center gap-2">
-                                <span class="font-mono text-sm font-medium text-slate-100">CP2000</span>
-                                <span class="px-1.5 py-0.5 text-xs bg-amber-500/30 text-amber-400 rounded">Pending</span>
-                              </div>
-                              <p class="text-sm text-slate-400 mt-1">Underreported Income - TY2023</p>
-                              <p class="text-xs text-slate-500 mt-0.5">Response deadline: Feb 15, 2025</p>
-                            </div>
-                            <span class="text-xs text-slate-500">Nov 20, 2024</span>
-                          </div>
-                        </div>
-
-                        <div class="p-3 bg-slate-800/50 border border-slate-700/50 rounded-lg">
-                          <div class="flex items-start justify-between">
-                            <div>
-                              <div class="flex items-center gap-2">
-                                <span class="font-mono text-sm font-medium text-slate-100">CP14</span>
-                                <span class="px-1.5 py-0.5 text-xs bg-green-500/30 text-green-400 rounded">Resolved</span>
-                              </div>
-                              <p class="text-sm text-slate-400 mt-1">Balance Due Notice - TY2022</p>
-                              <p class="text-xs text-slate-500 mt-0.5">Paid in full: Oct 1, 2024</p>
-                            </div>
-                            <span class="text-xs text-slate-500">Aug 15, 2024</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Installment Agreement Tab -->
-                <div id="tab-installment" class="tab-content hidden space-y-4">
-                  <div class="accordion bg-slate-900 rounded-lg border border-slate-700/50">
-                    <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="ia-status" type="button">
-                      <div class="flex items-center gap-3">
-                        <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"
-                          />
-                        </svg>
-                        <span class="font-medium text-slate-100">Installment Agreement Status</span>
-                      </div>
-                      <svg class="accordion-icon w-5 h-5 text-slate-500 transition-transform rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                      </svg>
-                    </button>
-                    <div class="accordion-content open" id="accordion-ia-status">
-                      <div class="px-4 pb-4 border-t border-slate-700/50 pt-4">
-                        <div class="grid grid-cols-2 gap-4 mb-4">
-                          <div>
-                            <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">IA Established</label>
-                            <select
-                              data-field="IA_Established"
-                              class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm"
-                            >
-                              <option value="">Select...</option>
-                              <option>No</option>
-                              <option>Unable to confirm</option>
-                              <option>Yes</option>
-                            </select>
-                          </div>
-                          <div>
-                            <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Requested Payment</label>
-                            <input
-                              type="text"
-                              data-field="IA_Payment_Amount"
-                              placeholder="$0.00"
-                              class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm font-mono placeholder-slate-500"
-                            />
-                          </div>
-                          <div>
-                            <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Payment Date</label>
-                            <input
-                              type="date"
-                              data-field="IA_Payment_Date"
-                              class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm"
-                            />
-                          </div>
-                          <div>
-                            <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Last Payment Amount</label>
-                            <input
-                              type="text"
-                              data-field="IA_Last_Payment_Amount"
-                              placeholder="$0.00"
-                              class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm font-mono placeholder-slate-500"
-                            />
-                          </div>
-                          <div class="col-span-2">
-                            <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Last Payment Date</label>
-                            <input
-                              type="date"
-                              data-field="IA_Last_Payment_Date"
-                              class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm"
-                            />
-                          </div>
-                        </div>
-
-                        <p class="mt-3 text-xs text-slate-500">Form 9465 or online payment agreement may be required.</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Revenue Officer Tab -->
-                <div id="tab-revenue" class="tab-content hidden space-y-4">
-                  <div class="accordion bg-slate-900 rounded-lg border border-slate-700/50">
-                    <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="ro-info" type="button">
-                      <div class="flex items-center gap-3">
-                        <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                          />
-                        </svg>
-                        <span class="font-medium text-slate-100">Revenue Officer Assignment</span>
-                      </div>
-                      <svg class="accordion-icon w-5 h-5 text-slate-500 transition-transform rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                      </svg>
-                    </button>
-                    <div class="accordion-content open" id="accordion-ro-info">
-                      <div class="px-4 pb-4 border-t border-slate-700/50 pt-4">
-                        <div class="grid grid-cols-2 gap-4">
-                          <div>
-                            <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">IRS Revenue Officer Name</label>
-                            <input
-                              type="text"
-                              data-field="IRS_Revenue_Officer_Name"
-                              placeholder="Name"
-                              class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm placeholder-slate-500"
-                            />
-                          </div>
-                          <div>
-                            <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">IRS Revenue Officer Phone</label>
-                            <input
-                              type="text"
-                              data-field="IRS_Revenue_Officer_Phone"
-                              placeholder="Phone"
-                              class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm placeholder-slate-500"
-                            />
-                          </div>
-
-                          <div>
-                            <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">IRS Revenue Officer Mobile Phone</label>
-                            <input
-                              type="text"
-                              data-field="IRS_Revenue_Officer_Mobile_Phone"
-                              placeholder="Mobile"
-                              class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm placeholder-slate-500"
-                            />
-                          </div>
-
-                          <div>
-                            <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">IRS Revenue Officer Email</label>
-                            <input
-                              type="email"
-                              data-field="IRS_Revenue_Officer_Email"
-                              placeholder="Email"
-                              class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm placeholder-slate-500"
-                            />
-                          </div>
-
-                          <div>
-                            <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">IRS Revenue Officer Fax</label>
-                            <input
-                              type="text"
-                              data-field="IRS_Revenue_Officer_Fax"
-                              placeholder="Fax"
-                              class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm placeholder-slate-500"
-                            />
-                          </div>
-                          <div></div>
-                          <div class="col-span-2">
-                            <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">IRS Revenue Officer Notes</label>
-                            <textarea
-                              rows="3"
-                              data-field="IRS_Revenue_Officer_Notes"
-                              placeholder="Notes about RO assignment..."
-                              class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm placeholder-slate-500 resize-none"
-                            ></textarea>
-                          </div>
-                        </div>
-
-                        <p class="mt-3 text-xs text-slate-500">If no RO assigned, leave blank. Blank is a valid state. Humans love those.</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Transcripts Tab -->
-                <div id="tab-transcripts" class="tab-content hidden space-y-4">
-                  <div class="accordion bg-slate-900 rounded-lg border border-slate-700/50">
-                    <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="transcript-requests" type="button">
-                      <div class="flex items-center gap-3">
-                        <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                          />
-                        </svg>
-                        <span class="font-medium text-slate-100">Transcript Requests</span>
-                      </div>
-                      <svg class="accordion-icon w-5 h-5 text-slate-500 transition-transform rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                      </svg>
-                    </button>
-                    <div class="accordion-content open" id="accordion-transcript-requests">
-                      <div class="px-4 pb-4 border-t border-slate-700/50 pt-4">
-                        <div class="flex items-center justify-between mb-4">
-                          <label class="flex items-center gap-2">
-                            <input
-                              type="checkbox"
-                              data-field="Transcript_Request_Made"
-                              class="w-4 h-4 rounded border-slate-600 text-blue-500 focus:ring-blue-500 focus:ring-offset-slate-900"
-                            />
-                            <span class="text-sm text-slate-300">Transcript Request Made</span>
-                          </label>
-                          <span class="text-xs text-slate-500">Canonical checkbox</span>
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-4 mb-4">
-                          <div>
-                            <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Transcript Delivery Method</label>
-                            <select
-                              data-field="Transcript_Delivery_Method"
-                              class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm"
-                            >
-                              <option value="">Select...</option>
-                              <option>CAF mailbox</option>
-                              <option>Fax</option>
-                              <option>Online account</option>
-                              <option>Pending POA processing</option>
-                              <option>Secure mailbox (SOR)</option>
-                            </select>
-                          </div>
-                          <div>
-                            <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Transcript Scope Confirmed</label>
-                            <select
-                              data-field="Transcript_Scope_Confirmed"
-                              class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm"
-                            >
-                              <option value="">Select...</option>
-                              <option value="0">Access denied</option>
-                              <option value="1">Current year only</option>
-                              <option value="2">Full 10-year access</option>
-                              <option value="3">Partial access</option>
-                            </select>
-                          </div>
-                          <div>
-                            <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Transcripts Retrieved From SOR</label>
-                            <select
-                              data-field="Transcripts_Retrieved_From_SOR"
-                              class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm"
-                            >
-                              <option value="">Select...</option>
-                              <option>No</option>
-                              <option>Unknown</option>
-                              <option>Yes</option>
-                            </select>
-                          </div>
-                          <div>
-                            <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Transcript Retrieval Date</label>
-                            <input
-                              type="date"
-                              data-field="Transcript_Retrieval_Date"
-                              class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm"
-                            />
-                          </div>
-                          <div class="col-span-2">
-                            <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Transcript Retrieval Notes</label>
-                            <textarea
-                              rows="3"
-                              data-field="Transcript_Retrieval_Notes"
-                              placeholder="Retrieval notes..."
-                              class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm placeholder-slate-500 resize-none"
-                            ></textarea>
-                          </div>
-                          <div class="col-span-2">
-                            <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Transcript Files Upload</label>
-                            <input
-                              id="input-transcript-files"
-                              type="file"
-                              multiple
-                              class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm"
-                            />
-                            <p class="mt-2 text-xs text-slate-500">
-                              This page submits metadata. Your Worker should handle the actual upload pipeline (R2 receipts + canonical update).
-                            </p>
-                          </div>
-                        </div>
-
-                        <!-- Keep your original "pretty checkboxes" (visual only) -->
-                        <div class="grid grid-cols-2 gap-3 mb-4">
-                          <label class="flex items-center gap-2 p-3 bg-slate-800/50 rounded-lg border border-slate-700/50 cursor-pointer hover:bg-slate-800">
-                            <input type="checkbox" checked class="w-4 h-4 rounded border-slate-600 text-blue-500 focus:ring-blue-500 focus:ring-offset-slate-900" />
-                            <div>
-                              <p class="text-sm font-medium text-slate-100">Account Transcript</p>
-                              <p class="text-xs text-slate-500">Payment history &amp; balances</p>
-                            </div>
-                          </label>
-                          <label class="flex items-center gap-2 p-3 bg-slate-800/50 rounded-lg border border-slate-700/50 cursor-pointer hover:bg-slate-800">
-                            <input type="checkbox" class="w-4 h-4 rounded border-slate-600 text-blue-500 focus:ring-blue-500 focus:ring-offset-slate-900" />
-                            <div>
-                              <p class="text-sm font-medium text-slate-100">Return Transcript</p>
-                              <p class="text-xs text-slate-500">Line items from filed return</p>
-                            </div>
-                          </label>
-                          <label class="flex items-center gap-2 p-3 bg-slate-800/50 rounded-lg border border-slate-700/50 cursor-pointer hover:bg-slate-800">
-                            <input type="checkbox" checked class="w-4 h-4 rounded border-slate-600 text-blue-500 focus:ring-blue-500 focus:ring-offset-slate-900" />
-                            <div>
-                              <p class="text-sm font-medium text-slate-100">Record of Account</p>
-                              <p class="text-xs text-slate-500">Combined return + account</p>
-                            </div>
-                          </label>
-                          <label class="flex items-center gap-2 p-3 bg-slate-800/50 rounded-lg border border-slate-700/50 cursor-pointer hover:bg-slate-800">
-                            <input type="checkbox" class="w-4 h-4 rounded border-slate-600 text-blue-500 focus:ring-blue-500 focus:ring-offset-slate-900" />
-                            <div>
-                              <p class="text-sm font-medium text-slate-100">Wage &amp; Income</p>
-                              <p class="text-xs text-slate-500">W-2s, 1099s received</p>
-                            </div>
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Summary Tab -->
-                <div id="tab-summary" class="tab-content hidden space-y-4">
-                  <div class="accordion bg-slate-900 rounded-lg border border-slate-700/50">
-                    <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="case-summary" type="button">
-                      <div class="flex items-center gap-3">
-                        <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
-                          />
-                        </svg>
-                        <span class="font-medium text-slate-100">Case Summary</span>
-                      </div>
-                      <svg class="accordion-icon w-5 h-5 text-slate-500 transition-transform rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                      </svg>
-                    </button>
-                    <div class="accordion-content open" id="accordion-case-summary">
-                      <div class="px-4 pb-4 border-t border-slate-700/50 pt-4">
                         <div>
-                          <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Executive Summary</label>
-                          <textarea
-                            rows="6"
-                            data-field="Case_Summary_Notes"
-                            placeholder="Case summary notes for the report..."
-                            class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm placeholder-slate-500 resize-none"
-                          >
-Client has outstanding balance of $24,847.32 for TY2023 and TY2024. CP504 (Intent to Levy) issued 12/14/2024 with response deadline 01/28/2025. CP2000 pending for TY2023 unreported 1099-NEC income ($12,400). Client eligible for streamlined IA. Recommend: (1) Respond to CP2000 with documentation, (2) Request IA setup before levy action, (3) Request penalty abatement for reasonable cause.</textarea
-                          >
-                        </div>
-
-                        <div class="mt-4">
-                          <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Next Steps</label>
-                          <div class="space-y-2">
-                            <label class="flex items-center gap-2 p-2 bg-slate-800/50 rounded border border-slate-700/50">
-                              <input type="checkbox" class="w-4 h-4 rounded border-slate-600 text-blue-500" />
-                              <span class="text-sm text-slate-300">File Form 9465 for installment agreement</span>
-                            </label>
-                            <label class="flex items-center gap-2 p-2 bg-slate-800/50 rounded border border-slate-700/50">
-                              <input type="checkbox" class="w-4 h-4 rounded border-slate-600 text-blue-500" />
-                              <span class="text-sm text-slate-300">Submit CP2000 response with 1099-NEC documentation</span>
-                            </label>
-                            <label class="flex items-center gap-2 p-2 bg-slate-800/50 rounded border border-slate-700/50">
-                              <input type="checkbox" class="w-4 h-4 rounded border-slate-600 text-blue-500" />
-                              <span class="text-sm text-slate-300">Submit Form 843 for penalty abatement</span>
-                            </label>
-                          </div>
-                        </div>
-
-                        <div class="mt-4 p-3 bg-slate-800/50 rounded border border-slate-700/50">
-                          <p class="text-xs text-slate-500">
-                            The canonical write for this form is based on the contract keys (IRS_* / Transcript_* / Compliance_* / IA_*). This “summary” is for humans.
-                          </p>
+                          <p class="text-sm font-medium text-amber-400">Under IRS Examination</p>
+                          <p class="text-xs text-amber-400/70 mt-0.5">CP2000 issued - unreported income discrepancy</p>
                         </div>
                       </div>
                     </div>
@@ -1396,7 +851,554 @@ Client has outstanding balance of $24,847.32 for TY2023 and TY2024. CP504 (Inten
                 </div>
               </div>
 
-              <!-- Right Column - Live Report Preview -->
+              <div class="accordion bg-slate-900 rounded-lg border border-slate-700/50">
+                <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="balance-detail" type="button">
+                  <div class="flex items-center gap-3">
+                    <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                    <span class="font-medium text-slate-100">Balance Detail</span>
+                  </div>
+                  <svg class="accordion-icon w-5 h-5 text-slate-500 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                <div class="accordion-content" id="accordion-balance-detail">
+                  <div class="px-4 pb-4 border-t border-slate-700/50 pt-4">
+                    <table class="w-full text-sm">
+                      <thead>
+                        <tr class="text-xs text-slate-500 uppercase tracking-wide">
+                          <th class="text-left pb-2">Component</th>
+                          <th class="text-right pb-2">Amount</th>
+                        </tr>
+                      </thead>
+                      <tbody class="divide-y divide-slate-700/50">
+                        <tr>
+                          <td class="py-2 text-slate-300">Original Tax</td>
+                          <td class="py-2 text-right font-mono text-slate-100">$19,787.15</td>
+                        </tr>
+                        <tr>
+                          <td class="py-2 text-slate-300">Failure to Pay Penalty</td>
+                          <td class="py-2 text-right font-mono text-amber-400">$2,418.00</td>
+                        </tr>
+                        <tr>
+                          <td class="py-2 text-slate-300">Failure to File Penalty</td>
+                          <td class="py-2 text-right font-mono text-amber-400">$800.00</td>
+                        </tr>
+                        <tr>
+                          <td class="py-2 text-slate-300">Interest (computed daily)</td>
+                          <td class="py-2 text-right font-mono text-amber-400">$1,842.17</td>
+                        </tr>
+                        <tr class="font-medium">
+                          <td class="py-2 text-slate-100">Total Balance</td>
+                          <td class="py-2 text-right font-mono text-red-400">$24,847.32</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Notices Tab -->
+            <div id="tab-notices" class="tab-content hidden space-y-4">
+              <div class="accordion bg-slate-900 rounded-lg border border-slate-700/50">
+                <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="notice-inputs" type="button">
+                  <div class="flex items-center gap-3">
+                    <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                      />
+                    </svg>
+                    <span class="font-medium text-slate-100">Notice Inputs</span>
+                  </div>
+                  <svg class="accordion-icon w-5 h-5 text-slate-500 transition-transform rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                <div class="accordion-content open" id="accordion-notice-inputs">
+                  <div class="px-4 pb-4 border-t border-slate-700/50 pt-4">
+                    <div class="grid grid-cols-2 gap-4">
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">IRS Notice Received</label>
+                        <select
+                          data-field="IRS_Notice_Received"
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm"
+                        >
+                          <option value="">Select...</option>
+                          <option>No</option>
+                          <option>Yes</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">IRS Notice Date</label>
+                        <input
+                          type="date"
+                          data-field="IRS_Notice_Date"
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm"
+                        />
+                      </div>
+                      <div class="col-span-2">
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">IRS Notice Type</label>
+                        <select
+                          data-field="IRS_Notice_Type"
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm"
+                        >
+                          <option value="">Select...</option>
+                          <option>Computer Paragraph (CP) Notice</option>
+                          <option>IRS Letter (Other)</option>
+                          <option>Long Term (LT) Notice</option>
+                          <option>Notice Type Unknown</option>
+                        </select>
+                      </div>
+                    </div>
+                    <p class="mt-3 text-xs text-slate-500">The “Notice History” tiles below are visual. These fields are the canonical write.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion bg-slate-900 rounded-lg border border-slate-700/50">
+                <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="notice-history" type="button">
+                  <div class="flex items-center gap-3">
+                    <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                      />
+                    </svg>
+                    <span class="font-medium text-slate-100">Notice History</span>
+                    <span class="px-2 py-0.5 text-xs bg-red-500/20 text-red-400 rounded font-medium">3 Active</span>
+                  </div>
+                  <svg class="accordion-icon w-5 h-5 text-slate-500 transition-transform rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                <div class="accordion-content open" id="accordion-notice-history">
+                  <div class="px-4 pb-4 border-t border-slate-700/50 pt-4 space-y-3">
+                    <div class="p-3 bg-red-500/10 border border-red-500/30 rounded-lg">
+                      <div class="flex items-start justify-between">
+                        <div>
+                          <div class="flex items-center gap-2">
+                            <span class="font-mono text-sm font-medium text-slate-100">CP504</span>
+                            <span class="px-1.5 py-0.5 text-xs bg-red-500/30 text-red-400 rounded">Urgent</span>
+                          </div>
+                          <p class="text-sm text-slate-400 mt-1">Notice of Intent to Levy</p>
+                          <p class="text-xs text-slate-500 mt-0.5">Response deadline: Jan 28, 2025</p>
+                        </div>
+                        <span class="text-xs text-slate-500">Dec 14, 2024</span>
+                      </div>
+                    </div>
+
+                    <div class="p-3 bg-amber-500/10 border border-amber-500/30 rounded-lg">
+                      <div class="flex items-start justify-between">
+                        <div>
+                          <div class="flex items-center gap-2">
+                            <span class="font-mono text-sm font-medium text-slate-100">CP2000</span>
+                            <span class="px-1.5 py-0.5 text-xs bg-amber-500/30 text-amber-400 rounded">Pending</span>
+                          </div>
+                          <p class="text-sm text-slate-400 mt-1">Underreported Income - TY2023</p>
+                          <p class="text-xs text-slate-500 mt-0.5">Response deadline: Feb 15, 2025</p>
+                        </div>
+                        <span class="text-xs text-slate-500">Nov 20, 2024</span>
+                      </div>
+                    </div>
+
+                    <div class="p-3 bg-slate-800/50 border border-slate-700/50 rounded-lg">
+                      <div class="flex items-start justify-between">
+                        <div>
+                          <div class="flex items-center gap-2">
+                            <span class="font-mono text-sm font-medium text-slate-100">CP14</span>
+                            <span class="px-1.5 py-0.5 text-xs bg-green-500/30 text-green-400 rounded">Resolved</span>
+                          </div>
+                          <p class="text-sm text-slate-400 mt-1">Balance Due Notice - TY2022</p>
+                          <p class="text-xs text-slate-500 mt-0.5">Paid in full: Oct 1, 2024</p>
+                        </div>
+                        <span class="text-xs text-slate-500">Aug 15, 2024</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Installment Agreement Tab -->
+            <div id="tab-installment" class="tab-content hidden space-y-4">
+              <div class="accordion bg-slate-900 rounded-lg border border-slate-700/50">
+                <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="ia-status" type="button">
+                  <div class="flex items-center gap-3">
+                    <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"
+                      />
+                    </svg>
+                    <span class="font-medium text-slate-100">Installment Agreement Status</span>
+                  </div>
+                  <svg class="accordion-icon w-5 h-5 text-slate-500 transition-transform rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                <div class="accordion-content open" id="accordion-ia-status">
+                  <div class="px-4 pb-4 border-t border-slate-700/50 pt-4">
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">IA Established</label>
+                        <select
+                          data-field="IA_Established"
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm"
+                        >
+                          <option value="">Select...</option>
+                          <option>No</option>
+                          <option>Unable to confirm</option>
+                          <option>Yes</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Requested Payment</label>
+                        <input
+                          type="text"
+                          data-field="IA_Payment_Amount"
+                          placeholder="$0.00"
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm font-mono placeholder-slate-500"
+                        />
+                      </div>
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Payment Date</label>
+                        <input
+                          type="date"
+                          data-field="IA_Payment_Date"
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm"
+                        />
+                      </div>
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Last Payment Amount</label>
+                        <input
+                          type="text"
+                          data-field="IA_Last_Payment_Amount"
+                          placeholder="$0.00"
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm font-mono placeholder-slate-500"
+                        />
+                      </div>
+                      <div class="col-span-2">
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Last Payment Date</label>
+                        <input
+                          type="date"
+                          data-field="IA_Last_Payment_Date"
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm"
+                        />
+                      </div>
+                    </div>
+
+                    <p class="mt-3 text-xs text-slate-500">Form 9465 or online payment agreement may be required.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Revenue Officer Tab -->
+            <div id="tab-revenue" class="tab-content hidden space-y-4">
+              <div class="accordion bg-slate-900 rounded-lg border border-slate-700/50">
+                <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="ro-info" type="button">
+                  <div class="flex items-center gap-3">
+                    <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                    <span class="font-medium text-slate-100">Revenue Officer Assignment</span>
+                  </div>
+                  <svg class="accordion-icon w-5 h-5 text-slate-500 transition-transform rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                <div class="accordion-content open" id="accordion-ro-info">
+                  <div class="px-4 pb-4 border-t border-slate-700/50 pt-4">
+                    <div class="grid grid-cols-2 gap-4">
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">IRS Revenue Officer Name</label>
+                        <input
+                          type="text"
+                          data-field="IRS_Revenue_Officer_Name"
+                          placeholder="Name"
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm placeholder-slate-500"
+                        />
+                      </div>
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">IRS Revenue Officer Phone</label>
+                        <input
+                          type="text"
+                          data-field="IRS_Revenue_Officer_Phone"
+                          placeholder="Phone"
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm placeholder-slate-500"
+                        />
+                      </div>
+
+                      <!-- Piece B: Mobile + Email -->
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">IRS Revenue Officer Mobile Phone</label>
+                        <input
+                          type="text"
+                          data-field="IRS_Revenue_Officer_Mobile_Phone"
+                          placeholder="Mobile"
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm placeholder-slate-500"
+                        />
+                      </div>
+
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">IRS Revenue Officer Email</label>
+                        <input
+                          type="email"
+                          data-field="IRS_Revenue_Officer_Email"
+                          placeholder="Email"
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm placeholder-slate-500"
+                        />
+                      </div>
+
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">IRS Revenue Officer Fax</label>
+                        <input
+                          type="text"
+                          data-field="IRS_Revenue_Officer_Fax"
+                          placeholder="Fax"
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm placeholder-slate-500"
+                        />
+                      </div>
+                      <div></div>
+                      <div class="col-span-2">
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">IRS Revenue Officer Notes</label>
+                        <textarea
+                          rows="3"
+                          data-field="IRS_Revenue_Officer_Notes"
+                          placeholder="Notes about RO assignment..."
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm placeholder-slate-500 resize-none"
+                        ></textarea>
+                      </div>
+                    </div>
+
+                    <p class="mt-3 text-xs text-slate-500">If no RO assigned, leave blank. Blank is a valid state. Humans love those.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Transcripts Tab -->
+            <div id="tab-transcripts" class="tab-content hidden space-y-4">
+              <div class="accordion bg-slate-900 rounded-lg border border-slate-700/50">
+                <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="transcript-requests" type="button">
+                  <div class="flex items-center gap-3">
+                    <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                      />
+                    </svg>
+                    <span class="font-medium text-slate-100">Transcript Requests</span>
+                  </div>
+                  <svg class="accordion-icon w-5 h-5 text-slate-500 transition-transform rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                <div class="accordion-content open" id="accordion-transcript-requests">
+                  <div class="px-4 pb-4 border-t border-slate-700/50 pt-4">
+                    <div class="flex items-center justify-between mb-4">
+                      <label class="flex items-center gap-2">
+                        <input
+                          type="checkbox"
+                          data-field="Transcript_Request_Made"
+                          class="w-4 h-4 rounded border-slate-600 text-blue-500 focus:ring-blue-500 focus:ring-offset-slate-900"
+                        />
+                        <span class="text-sm text-slate-300">Transcript Request Made</span>
+                      </label>
+                      <span class="text-xs text-slate-500">Canonical checkbox</span>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Transcript Delivery Method</label>
+                        <select
+                          data-field="Transcript_Delivery_Method"
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm"
+                        >
+                          <option value="">Select...</option>
+                          <option>CAF mailbox</option>
+                          <option>Fax</option>
+                          <option>Online account</option>
+                          <option>Pending POA processing</option>
+                          <option>Secure mailbox (SOR)</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Transcript Scope Confirmed</label>
+                        <select
+                          data-field="Transcript_Scope_Confirmed"
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm"
+                        >
+                          <option value="">Select...</option>
+                          <option value="0">Access denied</option>
+                          <option value="1">Current year only</option>
+                          <option value="2">Full 10-year access</option>
+                          <option value="3">Partial access</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Transcripts Retrieved From SOR</label>
+                        <select
+                          data-field="Transcripts_Retrieved_From_SOR"
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm"
+                        >
+                          <option value="">Select...</option>
+                          <option>No</option>
+                          <option>Unknown</option>
+                          <option>Yes</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Transcript Retrieval Date</label>
+                        <input
+                          type="date"
+                          data-field="Transcript_Retrieval_Date"
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm"
+                        />
+                      </div>
+                      <div class="col-span-2">
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Transcript Retrieval Notes</label>
+                        <textarea
+                          rows="3"
+                          data-field="Transcript_Retrieval_Notes"
+                          placeholder="Retrieval notes..."
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm placeholder-slate-500 resize-none"
+                        ></textarea>
+                      </div>
+                      <div class="col-span-2">
+                        <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Transcript Files Upload</label>
+                        <input
+                          id="input-transcript-files"
+                          type="file"
+                          multiple
+                          class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm"
+                        />
+                        <p class="mt-2 text-xs text-slate-500">
+                          This page submits metadata. Your Worker should handle the actual upload pipeline (R2 receipts + canonical update).
+                        </p>
+                      </div>
+                    </div>
+
+                    <!-- Keep your original "pretty checkboxes" (visual only) -->
+                    <div class="grid grid-cols-2 gap-3 mb-4">
+                      <label class="flex items-center gap-2 p-3 bg-slate-800/50 rounded-lg border border-slate-700/50 cursor-pointer hover:bg-slate-800">
+                        <input type="checkbox" checked class="w-4 h-4 rounded border-slate-600 text-blue-500 focus:ring-blue-500 focus:ring-offset-slate-900" />
+                        <div>
+                          <p class="text-sm font-medium text-slate-100">Account Transcript</p>
+                          <p class="text-xs text-slate-500">Payment history &amp; balances</p>
+                        </div>
+                      </label>
+                      <label class="flex items-center gap-2 p-3 bg-slate-800/50 rounded-lg border border-slate-700/50 cursor-pointer hover:bg-slate-800">
+                        <input type="checkbox" class="w-4 h-4 rounded border-slate-600 text-blue-500 focus:ring-blue-500 focus:ring-offset-slate-900" />
+                        <div>
+                          <p class="text-sm font-medium text-slate-100">Return Transcript</p>
+                          <p class="text-xs text-slate-500">Line items from filed return</p>
+                        </div>
+                      </label>
+                      <label class="flex items-center gap-2 p-3 bg-slate-800/50 rounded-lg border border-slate-700/50 cursor-pointer hover:bg-slate-800">
+                        <input type="checkbox" checked class="w-4 h-4 rounded border-slate-600 text-blue-500 focus:ring-blue-500 focus:ring-offset-slate-900" />
+                        <div>
+                          <p class="text-sm font-medium text-slate-100">Record of Account</p>
+                          <p class="text-xs text-slate-500">Combined return + account</p>
+                        </div>
+                      </label>
+                      <label class="flex items-center gap-2 p-3 bg-slate-800/50 rounded-lg border border-slate-700/50 cursor-pointer hover:bg-slate-800">
+                        <input type="checkbox" class="w-4 h-4 rounded border-slate-600 text-blue-500 focus:ring-blue-500 focus:ring-offset-slate-900" />
+                        <div>
+                          <p class="text-sm font-medium text-slate-100">Wage &amp; Income</p>
+                          <p class="text-xs text-slate-500">W-2s, 1099s received</p>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Summary Tab -->
+            <div id="tab-summary" class="tab-content hidden space-y-4">
+              <div class="accordion bg-slate-900 rounded-lg border border-slate-700/50">
+                <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="case-summary" type="button">
+                  <div class="flex items-center gap-3">
+                    <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
+                      />
+                    </svg>
+                    <span class="font-medium text-slate-100">Case Summary</span>
+                  </div>
+                  <svg class="accordion-icon w-5 h-5 text-slate-500 transition-transform rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                <div class="accordion-content open" id="accordion-case-summary">
+                  <div class="px-4 pb-4 border-t border-slate-700/50 pt-4">
+                    <div>
+                      <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Executive Summary</label>
+                      <textarea
+                        rows="6"
+                        data-field="Case_Summary_Notes"
+                        placeholder="Case summary notes for the report..."
+                        class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm placeholder-slate-500 resize-none"
+                      >
+Client has outstanding balance of $24,847.32 for TY2023 and TY2024. CP504 (Intent to Levy) issued 12/14/2024 with response deadline 01/28/2025. CP2000 pending for TY2023 unreported 1099-NEC income ($12,400). Client eligible for streamlined IA. Recommend: (1) Respond to CP2000 with documentation, (2) Request IA setup before levy action, (3) Request penalty abatement for reasonable cause.</textarea
+                      >
+                    </div>
+
+                    <div class="mt-4">
+                      <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Next Steps</label>
+                      <div class="space-y-2">
+                        <label class="flex items-center gap-2 p-2 bg-slate-800/50 rounded border border-slate-700/50">
+                          <input type="checkbox" class="w-4 h-4 rounded border-slate-600 text-blue-500" />
+                          <span class="text-sm text-slate-300">File Form 9465 for installment agreement</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-2 bg-slate-800/50 rounded border border-slate-700/50">
+                          <input type="checkbox" class="w-4 h-4 rounded border-slate-600 text-blue-500" />
+                          <span class="text-sm text-slate-300">Submit CP2000 response with 1099-NEC documentation</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-2 bg-slate-800/50 rounded border border-slate-700/50">
+                          <input type="checkbox" class="w-4 h-4 rounded border-slate-600 text-blue-500" />
+                          <span class="text-sm text-slate-300">Submit Form 843 for penalty abatement</span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="mt-4 p-3 bg-slate-800/50 rounded border border-slate-700/50">
+                      <p class="text-xs text-slate-500">
+                        The canonical write for this form is based on the contract keys (IRS_* / Transcript_* / Compliance_* / IA_*). This “summary” is for humans.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column - Live Report Preview -->
               <div class="lg:col-span-2">
                 <div class="sticky top-24">
                   <div class="bg-slate-900 rounded-lg border border-slate-700/50 overflow-hidden">
@@ -1459,6 +1461,7 @@ Client has outstanding balance of $24,847.32 for TY2023 and TY2024. CP504 (Inten
                         </table>
                       </div>
 
+                      <!-- Piece E: Summary section in preview -->
                       <div class="mb-4">
                         <h2 class="text-xs font-bold text-slate-700 uppercase tracking-wide mb-2">Summary</h2>
                         <div id="report-case-summary" class="text-xs text-slate-700 whitespace-pre-wrap">—</div>
@@ -1481,6 +1484,7 @@ Client has outstanding balance of $24,847.32 for TY2023 and TY2024. CP504 (Inten
                   </div>
                 </div>
               </div>
+
             </div>
           </main>
         </div>
@@ -1789,8 +1793,9 @@ Client has outstanding balance of $24,847.32 for TY2023 and TY2024. CP504 (Inten
         const total = document.querySelector('[data-field="Total_IRS_Balance"]');
         if (total) document.getElementById("report-total-balance").textContent = total.value || "—";
 
-        const lien = document.querySelector('[data-field="IRS_Lien_Exposure_Level"]');
-        if (lien) document.getElementById("report-lien").textContent = lien.value ? lien.value.split("—")[0].trim() : "—";
+        // Keep these preview helpers in sync on config refresh too
+        updateCaseSummaryPreview();
+        updateTotalWithAccrualsPreview();
       }
 
       function setupEventListeners() {
@@ -1850,13 +1855,7 @@ Client has outstanding balance of $24,847.32 for TY2023 and TY2024. CP504 (Inten
         if (total) {
           total.addEventListener("input", () => {
             document.getElementById("report-total-balance").textContent = total.value || "—";
-          });
-        }
-
-        const lien = document.querySelector('[data-field="IRS_Lien_Exposure_Level"]');
-        if (lien) {
-          lien.addEventListener("change", () => {
-            document.getElementById("report-lien").textContent = lien.value ? lien.value.split("—")[0].trim() : "—";
+            updateTotalWithAccrualsPreview();
           });
         }
       }
@@ -1920,6 +1919,7 @@ Client has outstanding balance of $24,847.32 for TY2023 and TY2024. CP504 (Inten
         });
       }
 
+      // Piece E: Case summary preview helper
       function updateCaseSummaryPreview() {
         const el = document.querySelector('[data-field="Case_Summary_Notes"]');
         const out = document.getElementById("report-case-summary");
@@ -1975,6 +1975,7 @@ Client has outstanding balance of $24,847.32 for TY2023 and TY2024. CP504 (Inten
         input.addEventListener("blur", () => {
           input.value = formatCurrency(input.value);
           syncPreview();
+          updateTotalWithAccrualsPreview();
         });
 
         input.addEventListener("focus", () => {
@@ -1982,16 +1983,19 @@ Client has outstanding balance of $24,847.32 for TY2023 and TY2024. CP504 (Inten
           input.value = raw ? String(raw) : "";
         });
 
-        input.addEventListener("input", syncPreview);
+        input.addEventListener("input", () => {
+          syncPreview();
+          updateTotalWithAccrualsPreview();
+        });
       }
 
       document.addEventListener("DOMContentLoaded", () => {
+        // Piece D/F: swap selectors to new canonical keys
         attachCurrencyFormatter('[data-field="IRS_Penalties_Total"]', "#report-penalties");
         attachCurrencyFormatter('[data-field="IRS_Interest_Total"]', "#report-interest");
         attachCurrencyFormatter('[data-field="Total_IRS_Balance"]', "#report-total-balance");
 
-        wireTotalWithAccrualsPreview();
-
+        // Piece E: initialize + wire summary preview
         updateCaseSummaryPreview();
         const cs = document.querySelector('[data-field="Case_Summary_Notes"]');
         if (cs) {
@@ -1999,6 +2003,8 @@ Client has outstanding balance of $24,847.32 for TY2023 and TY2024. CP504 (Inten
           cs.addEventListener("blur", updateCaseSummaryPreview);
           cs.addEventListener("change", updateCaseSummaryPreview);
         }
+
+        wireTotalWithAccrualsPreview();
       });
 
       initializeApp();
