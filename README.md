@@ -112,6 +112,8 @@ Root domain must not proxy lifecycle endpoints unless explicitly documented.
 /
 
 app/
+   ├─ contracts/
+      └─ tm_compliance_record.v2.example.json
    ├─ pages/
       ├─ calendar/
          └─ index.html
