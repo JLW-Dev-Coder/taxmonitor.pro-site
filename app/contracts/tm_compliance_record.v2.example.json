@@ -1,57 +1,49 @@
 {
-  "schema": {
-    "name": "tm_compliance_record",
-    "version": 3
-  },
-  "identifiers": {
-    "accountId": "",
-    "orderId": ""
-  },
+  "schema": { "name": "tm_compliance_record", "version": 3 },
+  "identifiers": { "accountId": "", "orderId": "" },
   "compliance": {
-    "Compliance_Activity_Type": "",
-    "Compliance_Internal_Notes": "",
-    "Compliance_Period_Covered": "",
-    "Estimated_Balance_Due_Range": "",
-    "IA_Established": "",
-    "IRS_Account_Status": "",
-    "IRS_Agent_Department": "",
-    "IRS_Agent_Department_Phone": "",
-    "IRS_Call_Confirmation_Date": "",
-    "IRS_Lien_Exposure_Level": "",
-    "IRS_Missing_Years": "",
-    "IRS_Notice_Date": "",
-    "IRS_Notice_Received": "",
-    "IRS_Notice_Type": "",
-    "IRS_Revenue_Officer_Fax": "",
-    "IRS_Revenue_Officer_Name": "",
-    "IRS_Revenue_Officer_Notes": "",
-    "IRS_Revenue_Officer_Phone": "",
+    "Compliance_Activity_Type": null,
+    "Compliance_Internal_Notes": null,
+    "Compliance_Period_Covered": null,
+    "Estimated_Balance_Due_Range": null,
+    "IA_Established": null,
+    "IRS_Account_Status": null,
+    "IRS_Agent_Department": null,
+    "IRS_Agent_Department_Phone": null,
+    "IRS_Call_Confirmation_Date": null,
+    "IRS_Lien_Exposure_Level": null,
+    "IRS_Missing_Years": null,
+    "IRS_Notice_Date": null,
+    "IRS_Notice_Received": null,
+    "IRS_Notice_Type": null,
+    "IRS_Revenue_Officer_Fax": null,
+    "IRS_Revenue_Officer_Name": null,
+    "IRS_Revenue_Officer_Notes": null,
+    "IRS_Revenue_Officer_Phone": null,
     "IRS_Status_Categories": [],
-    "Transcript_Delivery_Method": "",
+    "Transcript_Delivery_Method": null,
     "Transcript_Files_Upload": [],
     "Transcript_Request_Made": false,
-    "Transcript_Retrieval_Date": "",
-    "Transcript_Retrieval_Notes": "",
-    "Transcript_Scope_Confirmed": "",
-    "Transcripts_Retrieved_From_SOR": "",
-    "Unfiled_Returns_Indicator": ""
-  },
-  "financialSummary": {
-    "IA_Last_Payment_Amount": "",
-    "IA_Payment_Amount": "",
-    "Total_IRS_Balance": ""
+    "Transcript_Retrieval_Date": null,
+    "Transcript_Retrieval_Notes": null,
+    "Transcript_Scope_Confirmed": null,
+    "Transcripts_Retrieved_From_SOR": null,
+    "Unfiled_Returns_Indicator": null
   },
   "dates": {
-    "IA_Last_Payment_Date": "",
-    "IA_Payment_Date": ""
+    "IA_Last_Payment_Date": null,
+    "IA_Payment_Date": null
   },
-  "notes": {
-    "Compliance_Internal_Notes": ""
+  "financialSummary": {
+    "IA_Last_Payment_Amount": null,
+    "IA_Payment_Amount": null,
+    "Total_IRS_Balance": null
   },
+  "notes": {},
   "system": {
     "complianceSubmitted": false,
-    "lastUpdated": "",
+    "lastUpdated": null,
     "reportReady": false,
-    "updatedBy": ""
+    "updatedBy": null
   }
 }
