@@ -1,189 +1,210 @@
+// /contracts/staff/compliance-records.contract.json
+// Tax Monitor Pro — Staff Compliance Records Contract
+// Source: SuiteDash GET /company/meta
+// Governs: Form 10 — Compliance Records
+// Version: 2
+// Authority: R2 Canonical + SuiteDash CF Enum Alignment
 {
-  "accountId": "acct_123",
-  "compliance": {
-    "latestEventId": "cmp_2026_02_13T193000Z_abc123",
-    "records": [
-      {
-        "schema": {
-          "name": "tm_compliance_record",
-          "version": 2
-        },
-        "createdAt": "2026-02-13T19:30:00Z",
-        "eventId": "cmp_2026_02_13T193000Z_abc123",
-
-        "balancesByYear": {
-          "2016": { "balanceCents": null, "collectionStatus": null, "csedDate": null, "filed": null, "filingStatus": null, "hasLien": null, "isMissingOrUnfiled": null, "notes": "" },
-          "2017": { "balanceCents": null, "collectionStatus": null, "csedDate": null, "filed": null, "filingStatus": null, "hasLien": null, "isMissingOrUnfiled": null, "notes": "" },
-          "2018": { "balanceCents": null, "collectionStatus": null, "csedDate": null, "filed": null, "filingStatus": null, "hasLien": null, "isMissingOrUnfiled": null, "notes": "" },
-          "2019": { "balanceCents": null, "collectionStatus": null, "csedDate": null, "filed": null, "filingStatus": null, "hasLien": null, "isMissingOrUnfiled": null, "notes": "" },
-          "2020": { "balanceCents": null, "collectionStatus": null, "csedDate": null, "filed": null, "filingStatus": null, "hasLien": null, "isMissingOrUnfiled": null, "notes": "" },
-          "2021": { "balanceCents": null, "collectionStatus": null, "csedDate": null, "filed": null, "filingStatus": null, "hasLien": null, "isMissingOrUnfiled": null, "notes": "" },
-          "2022": { "balanceCents": null, "collectionStatus": null, "csedDate": null, "filed": null, "filingStatus": null, "hasLien": null, "isMissingOrUnfiled": null, "notes": "" },
-          "2023": { "balanceCents": null, "collectionStatus": null, "csedDate": null, "filed": null, "filingStatus": null, "hasLien": null, "isMissingOrUnfiled": null, "notes": "" },
-          "2024": { "balanceCents": 0, "collectionStatus": "None identified", "csedDate": null, "filed": true, "filingStatus": "MFJ", "hasLien": false, "isMissingOrUnfiled": false, "notes": "" },
-          "2025": { "balanceCents": 0, "collectionStatus": "None identified", "csedDate": null, "filed": true, "filingStatus": "MFJ", "hasLien": false, "isMissingOrUnfiled": false, "notes": "" },
-          "2026": { "balanceCents": 1250000, "collectionStatus": "None identified", "csedDate": null, "filed": false, "filingStatus": "MFJ", "hasLien": false, "isMissingOrUnfiled": false, "notes": "" }
-        },
-
-        "call": {
-          "activityType": "Initial review",
-          "periodCovered": "2016–2026",
-          "sectionFocus": "Compliance core",
-          "callConfirmedDate": "2026-02-13",
-          "agent": {
-            "name": "Agent Name",
-            "id": "A12345",
-            "department": "PPS",
-            "departmentPhone": "800-xxx-xxxx",
-            "verified": true
-          }
-        },
-
-        "taxpayer": {
-          "companyName": "John & Jane Doe LLC",
-          "lastReturnFiledYear": "2025",
-          "address": {
-            "line1": "123 Main St",
-            "line2": "",
-            "city": "San Diego",
-            "stateProvince": "CA",
-            "zipPostalCode": "92101"
-          }
-        },
-
-        "irs": {
-          "accountStatus": "Active",
-          "estimatedBalanceDueRange": "$0",
-          "totalBalanceCents": 0,
-          "statusCategories": ["None identified"],
-          "missingYearsSummary": "None",
-          "unfiledReturnsIndicator": "No",
-          "lienExposureLevel": "Low",
-          "notices": {
-            "mostRecent": {
-              "received": "No",
-              "type": null,
-              "date": null
-            }
-          },
-          "balanceByYearLegacyText": ""
-        },
-
-        "transcripts": {
-          "requestMade": true,
-          "scopeConfirmed": "Full 10-year",
-          "deliveryMethod": "SOR mailbox",
-          "files": [],
-          "retrieval": {
-            "retrievedFromSOR": "",
-            "retrievalDate": null,
-            "notes": ""
-          }
-        },
-
-        "workflows": {
-          "identityVerificationHold": "",
-          "installmentAgreement": {
-            "established": "",
-            "details": "",
-            "paymentDate": null,
-            "paymentAmountCents": null,
-            "lastPaymentDate": null,
-            "lastPaymentAmountCents": null
-          },
-          "revenueOfficer": {
-            "name": "",
-            "phone": "",
-            "fax": "",
-            "notes": ""
-          }
-        },
-
-        "wetSig2848": {
-          "spouseSeparateRequired": "",
-          "spouseSeparateRequiredYears": "",
-          "taxpayerWetSigRequired": "",
-          "spouseWetSigRequired": "",
-          "acceptedStatus": "",
-          "rejectedType": "",
-          "rejectedNotes": "",
-          "notes": ""
-        },
-
-        "recommendation": {
-          "primaryService": "Tax Monitoring Ongoing",
-          "resolutionReadinessStatus": "Not applicable",
-          "why": "Stable account indicators, no notice activity, no balances due."
-        },
-
-        "internal": {
-          "notes": "",
-          "progressPercent": 100,
-          "progressStatus": "Monitoring records have been updated. Your report will be prepared."
-        },
-
-        "fields": {
-          "Address_Line_1": "123 Main St",
-          "Address_Line_2": "",
-          "City": "San Diego",
-          "Company_Name": "John & Jane Doe LLC",
-          "Compliance_Activity_Type": "Initial review",
-          "Compliance_Internal_Notes": "",
-          "Compliance_Period_Covered": "2016–2026",
-          "Estimated_Balance_Due_Range": "$0",
-          "IA_Details": "",
-          "IA_Established": "",
-          "IA_Last_Payment_Amount": null,
-          "IA_Last_Payment_Date": null,
-          "IA_Payment_Amount": null,
-          "IA_Payment_Date": null,
-          "IRS_Agent_Department": "PPS",
-          "IRS_Agent_Department_Phone": "800-xxx-xxxx",
-          "IRS_Agent_ID": "A12345",
-          "IRS_Agent_Name": "Agent Name",
-          "IRS_Agent_Verification": true,
-          "IRS_Account_Status": "Active",
-          "IRS_Balance_By_Year_Status": "",
-          "IRS_Call_Confirmation_Date": "2026-02-13",
-          "IRS_Compliance_Section_Focus": "Compliance core",
-          "IRS_Lien_Exposure_Level": "Low",
-          "IRS_Missing_Years": "None",
-          "IRS_Notice_Date": null,
-          "IRS_Notice_Received": "No",
-          "IRS_Notice_Type": null,
-          "IRS_Revenue_Officer_Fax": "",
-          "IRS_Revenue_Officer_Name": "",
-          "IRS_Revenue_Officer_Notes": "",
-          "IRS_Revenue_Officer_Phone": "",
-          "IRS_Status_Categories": ["None identified"],
-          "Identity_Verification_Hold": "",
-          "Last_Return_Filed_Year": "2025",
-          "Primary_Recommended_Service": "Tax Monitoring Ongoing",
-          "Resolution_Readiness_Status": "Not applicable",
-          "Spouse_Separate_2848_Required": "",
-          "Spouse_Separate_2848_Required_Years": "",
-          "Spouse_Separate_Wet_Sig_2848_Required": "",
-          "State_Province": "CA",
-          "Tax_Monitoring_Service_Progress_Percent": 100,
-          "Tax_Monitoring_Service_Progress_Status": "Monitoring records have been updated. Your report will be prepared.",
-          "Taxpayer_Separate_Wet_Sig_2848_Required": "",
-          "Total_IRS_Balance": 0,
-          "Transcript_Delivery_Method": "SOR mailbox",
-          "Transcript_Files_Upload": [],
-          "Transcript_Request_Made": true,
-          "Transcript_Retrieval_Date": null,
-          "Transcript_Retrieval_Notes": "",
-          "Transcript_Scope_Confirmed": "Full 10-year",
-          "Transcripts_Retrieved_From_SOR": "",
-          "Unfiled_Returns_Indicator": "No",
-          "Wet_Sig_2848_Accepted_Status": "",
-          "Wet_Sig_2848_Notes": "",
-          "Wet_Sig_2848_Rejected_Notes": "",
-          "Wet_Sig_2848_Rejected_Type": "",
-          "ZIP_Postal_Code": "92101"
-        }
-      }
-    ]
+  "contract": {
+    "authority": [
+      "R2 Canonical",
+      "SuiteDash CF Enum Alignment"
+    ],
+    "governs": "Form 10 — Compliance Records",
+    "path": "/contracts/staff/compliance-records.contract.json",
+    "referenceTitle": "Tax Monitor Form 10 — Compliance Records",
+    "source": "SuiteDash GET /company/meta"
+  },
+  "fields": {
+    "Compliance_Activity_Type": {
+      "control": "radio",
+      "options": [
+        { "label": "Filing compliance review", "value": "Filing compliance review" },
+        { "label": "IRS account verification", "value": "IRS account verification" },
+        { "label": "IRS notice review", "value": "IRS notice review" },
+        { "label": "IRS transcript request", "value": "IRS transcript request" },
+        { "label": "Status confirmation", "value": "Status confirmation" }
+      ],
+      "sdFieldId": "d2446996-df79-4775-bebe-8002ff27b59a",
+      "storageType": "string"
+    },
+    "Compliance_Period_Covered": {
+      "control": "radio",
+      "options": [
+        { "label": "Current month", "value": "0" },
+        { "label": "Initial 10-year review", "value": "1" },
+        { "label": "Prior quarter", "value": "2" },
+        { "label": "Prior tax year", "value": "3" },
+        { "label": "Rolling review", "value": "4" },
+        { "label": "Specific IRS notice period", "value": "5" }
+      ],
+      "sdFieldId": "f1fb8e2a-50d2-4b4c-8f66-58945210500b",
+      "storageType": "string"
+    },
+    "Estimated_Balance_Due_Range": {
+      "control": "dropdown",
+      "options": [
+        { "label": "$10,000–$25,000", "value": "$10,000–$25,000" },
+        { "label": "$25,001–$50,000", "value": "$25,001–$50,000" },
+        { "label": "Over $50,000", "value": "Over $50,000" },
+        { "label": "Under $10,000", "value": "Under $10,000" },
+        { "label": "Unknown", "value": "Unknown" }
+      ],
+      "sdFieldId": "5f664323-6735-4a14-8a69-463449aa2ae5",
+      "storageType": "string"
+    },
+    "IA_Established": {
+      "control": "dropdown",
+      "options": [
+        { "label": "No", "value": "No" },
+        { "label": "Unable to confirm", "value": "Unable to confirm" },
+        { "label": "Yes", "value": "Yes" }
+      ],
+      "sdFieldId": "44c25ac1-2307-4ca4-9951-ac602880444e",
+      "storageType": "string"
+    },
+    "IRS_Account_Status": {
+      "control": "dropdown",
+      "options": [
+        { "label": "Compliant", "value": "0" },
+        { "label": "Limited Compliance", "value": "1" },
+        { "label": "Non-Compliant", "value": "2" },
+        { "label": "Unknown", "value": "3" }
+      ],
+      "sdFieldId": "fd3202e5-f45c-4acc-9c0b-e10a39ef6986",
+      "storageType": "string"
+    },
+    "IRS_Agent_Department": {
+      "control": "radio",
+      "options": [
+        { "label": "IRS Administration Department (1040/PPS)", "value": "0" },
+        { "label": "IRS Appeals Department", "value": "1" },
+        { "label": "IRS Collection Department", "value": "2" },
+        { "label": "IRS Examination Department", "value": "3" }
+      ],
+      "sdFieldId": "68476e59-f7f4-47a2-a3fb-00eda25d5e61",
+      "storageType": "string"
+    },
+    "IRS_Agent_Department_Phone": {
+      "control": "radio",
+      "options": [
+        { "label": "IRS Automated Collections System — Business — (800) 231-3903", "value": "IRS Automated Collections System — Business — (800) 231-3903" },
+        { "label": "IRS Correspondence Examination — Individual — (800) 597-4347", "value": "IRS Correspondence Examination — Individual — (800) 597-4347" },
+        { "label": "IRS e-Help Desk (e-Services) — (800) 673-4348", "value": "IRS e-Help Desk (e-Services) — (800) 673-4348" },
+        { "label": "IRS General Line — (844) 959-1040", "value": "IRS General Line — (844) 959-1040" },
+        { "label": "IRS Identity Verification — (800) 975-5084", "value": "IRS Identity Verification — (800) 975-5084" },
+        { "label": "IRS International Line — (877) 298-6617", "value": "IRS International Line — (877) 298-6617" },
+        { "label": "IRS OIC Brookhaven (Holtsville) — (800) 803-4980", "value": "IRS OIC Brookhaven (Holtsville) — (800) 803-4980" },
+        { "label": "IRS Practitioner Priority Service — Business — (800) 347-7801", "value": "IRS Practitioner Priority Service — Business — (800) 347-7801" },
+        { "label": "IRS Practitioner Priority Service — Individual — (800) 477-4580", "value": "IRS Practitioner Priority Service — Individual — (800) 477-4580" },
+        { "label": "IRS Tax Exempt — (877) 755-7781", "value": "IRS Tax Exempt — (877) 755-7781" },
+        { "label": "IRS Underreporter — Individual — (800) 868-8209", "value": "IRS Underreporter — Individual — (800) 868-8209" }
+      ],
+      "sdFieldId": "e9944fd2-28c1-405b-8fea-dea828c4cce4",
+      "storageType": "string"
+    },
+    "IRS_Lien_Exposure_Level": {
+      "control": "dropdown",
+      "options": [
+        { "label": "High — lien filed or filing imminent", "value": "High — lien filed or filing imminent" },
+        { "label": "Low — compliant or protected status", "value": "Low — compliant or protected status" },
+        { "label": "Moderate — balance or status requires monitoring", "value": "Moderate — balance or status requires monitoring" },
+        { "label": "Unknown — insufficient IRS confirmation", "value": "Unknown — insufficient IRS confirmation" }
+      ],
+      "sdFieldId": "28c71a61-d894-4866-8b38-0c333cf24a6c",
+      "storageType": "string"
+    },
+    "IRS_Missing_Years": {
+      "control": "radio",
+      "options": [
+        { "label": "All years filed", "value": "All years filed" },
+        { "label": "Missing prior to 10-year window", "value": "Missing prior to 10-year window" },
+        { "label": "Missing within 10-year window", "value": "Missing within 10-year window" },
+        { "label": "Unable to confirm", "value": "Unable to confirm" }
+      ],
+      "sdFieldId": "e5464464-6c56-486f-967b-c4f98c715870",
+      "storageType": "string"
+    },
+    "IRS_Notice_Received": {
+      "control": "radio",
+      "options": [
+        { "label": "No", "value": "No" },
+        { "label": "Yes", "value": "Yes" }
+      ],
+      "sdFieldId": "c12a4811-d5bf-477b-85d5-804588aaad29",
+      "storageType": "string"
+    },
+    "IRS_Notice_Type": {
+      "control": "dropdown",
+      "options": [
+        { "label": "Computer Paragraph (CP) Notice", "value": "Computer Paragraph (CP) Notice" },
+        { "label": "IRS Letter (Other)", "value": "IRS Letter (Other)" },
+        { "label": "Long Term (LT) Notice", "value": "Long Term (LT) Notice" },
+        { "label": "Notice Type Unknown", "value": "Notice Type Unknown" }
+      ],
+      "sdFieldId": "4dbb0bb1-5443-45a9-b3ab-12e7372a70a1",
+      "storageType": "string"
+    },
+    "IRS_Status_Categories": {
+      "control": "multiselect",
+      "options": [
+        { "label": "Audit", "value": "0" },
+        { "label": "Collection", "value": "1" },
+        { "label": "Installment Agreement — Active", "value": "2" },
+        { "label": "None identified", "value": "7" },
+        { "label": "Notice", "value": "3" },
+        { "label": "OIC", "value": "4" },
+        { "label": "Pending collection", "value": "5" },
+        { "label": "RO assigned", "value": "6" }
+      ],
+      "sdFieldId": "8fe0d984-27e8-489a-ae12-d2fe51eaef13",
+      "storageType": "array"
+    },
+    "Transcript_Delivery_Method": {
+      "control": "dropdown",
+      "options": [
+        { "label": "CAF mailbox", "value": "CAF mailbox" },
+        { "label": "Fax", "value": "Fax" },
+        { "label": "Online account", "value": "Online account" },
+        { "label": "Pending POA processing", "value": "Pending POA processing" },
+        { "label": "Secure mailbox (SOR)", "value": "Secure mailbox (SOR)" }
+      ],
+      "sdFieldId": "267566b7-5932-4ec1-9b47-e7fe04d98fac",
+      "storageType": "string"
+    },
+    "Transcript_Request_Made": {
+      "control": "checkbox",
+      "enumMapping": {
+        "checked": true,
+        "unchecked": false
+      },
+      "sdFieldId": "99156496-804e-4496-8678-4ffa51a6cd51",
+      "storageType": "boolean"
+    },
+    "Transcript_Scope_Confirmed": {
+      "control": "dropdown",
+      "options": [
+        { "label": "Access denied", "value": "0" },
+        { "label": "Current year only", "value": "1" },
+        { "label": "Full 10-year access", "value": "2" },
+        { "label": "Partial access", "value": "3" }
+      ],
+      "sdFieldId": "bc946004-1dd3-4f42-94dd-6a16ba81f8ad",
+      "storageType": "string"
+    },
+    "Unfiled_Returns_Indicator": {
+      "control": "radio",
+      "options": [
+        { "label": "No", "value": "No" },
+        { "label": "Unsure", "value": "Unsure" },
+        { "label": "Yes", "value": "Yes" }
+      ],
+      "sdFieldId": "e8462210-a372-41f7-a4db-45ef015039de",
+      "storageType": "string"
+    }
+  },
+  "schema": {
+    "name": "tm_staff_compliance_form_contract",
+    "version": 2
   }
 }
-
