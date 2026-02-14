@@ -1,0 +1,151 @@
+{
+  "contract": {
+    "authority": ["ClickUp API (projection target)"],
+    "governs": "ClickUp — Orders List Projection",
+    "path": "/contracts/clickup/orders.list.contract.json",
+    "source": "Tax Monitor Pro",
+    "title": "Tax Monitor Pro — ClickUp Orders List Contract",
+    "validation": {
+      "enumStrict": true,
+      "rejectUnknownValues": true
+    },
+    "version": 1
+  },
+  "clickup": {
+    "folder": {
+      "id": "90176523466",
+      "name": "Tax Monitor Pro"
+    },
+    "list": {
+      "id": "901710818340",
+      "inbound_address": "a.t.901710818340.u-10505295.0b3157d1-1e16-4f3b-9bf7-4b04b75f6876@tasks.clickup.com",
+      "name": "Orders",
+      "space": {
+        "id": "90170896661",
+        "name": "Admin"
+      }
+    }
+  },
+  "fields": {
+    "Order 2848 Signed PDF URL": {
+      "id": "26206c04-13c0-4f4c-8628-ae023d97eb67",
+      "type": "url"
+    },
+    "Order 2848 Unsigned PDF URL": {
+      "id": "0f5b0ff4-1637-4cd9-a522-560c9b24bcd8",
+      "type": "url"
+    },
+    "Order Agreement Signed PDF URL": {
+      "id": "b156f6bd-9697-429f-a651-43e2ad12a87a",
+      "type": "url"
+    },
+    "Order Compliance Report PDF URL": {
+      "id": "3c4c2986-c8df-47b7-a676-258333c71558",
+      "type": "url"
+    },
+    "Order ID": {
+      "id": "32868356-2259-49a0-b311-c05b8aff8b5a",
+      "type": "short_text"
+    },
+    "Stripe Customer ID": {
+      "id": "a5e09a6a-5c14-4efe-86a7-3f76fa7739e6",
+      "type": "short_text"
+    },
+    "Stripe Payment Status": {
+      "id": "1b9a762e-cf3e-47d7-8ae7-98efe9e11eab",
+      "type": "short_text"
+    },
+    "Stripe Payment URL": {
+      "id": "0609cd0b-dd5e-4523-a21f-c4df8e9da4db",
+      "type": "url"
+    },
+    "Stripe Session ID": {
+      "id": "57e6c42b-a471-4316-92dc-23ce0f59d8b4",
+      "type": "short_text"
+    }
+  },
+  "statuses": [
+    {
+      "id": "sc901710818340_EScr18sR",
+      "name": "0 booking / lead capture",
+      "orderindex": 0,
+      "type": "open"
+    },
+    {
+      "id": "sc901710818340_H1s6qUpl",
+      "name": "1 intake triage",
+      "orderindex": 1,
+      "type": "custom"
+    },
+    {
+      "id": "sc901710818340_gXpr285o",
+      "name": "2 checkout/payment",
+      "orderindex": 2,
+      "type": "custom"
+    },
+    {
+      "id": "sc901710818340_82P5UrpG",
+      "name": "3 welcome intro",
+      "orderindex": 3,
+      "type": "custom"
+    },
+    {
+      "id": "sc901710818340_jl3RflvZ",
+      "name": "4 filing status",
+      "orderindex": 4,
+      "type": "custom"
+    },
+    {
+      "id": "sc901710818340_HjezCL7t",
+      "name": "5 address update",
+      "orderindex": 5,
+      "type": "custom"
+    },
+    {
+      "id": "sc901710818340_fppmRovU",
+      "name": "6 irs authorization (2848)",
+      "orderindex": 6,
+      "type": "custom"
+    },
+    {
+      "id": "sc901710818340_nEMLAvAn",
+      "name": "7 wet sig 2848 down/upload",
+      "orderindex": 7,
+      "type": "custom"
+    },
+    {
+      "id": "sc901710818340_HyMtwTA4",
+      "name": "9 2848 processing",
+      "orderindex": 8,
+      "type": "custom"
+    },
+    {
+      "id": "sc901710818340_JxDKqOXO",
+      "name": "8 client exit survey",
+      "orderindex": 9,
+      "type": "done"
+    },
+    {
+      "id": "sc901710818340_NRtM421G",
+      "name": "10 compliance records",
+      "orderindex": 10,
+      "type": "done"
+    },
+    {
+      "id": "sc901710818340_f2RyCWx4",
+      "name": "template",
+      "orderindex": 11,
+      "type": "done"
+    },
+    {
+      "id": "sc901710818340_SJVkqZtD",
+      "name": "complete",
+      "orderindex": 12,
+      "type": "closed"
+    }
+  ],
+  "schema": {
+    "name": "tm_clickup_orders_list_contract",
+    "version": 1
+  }
+}

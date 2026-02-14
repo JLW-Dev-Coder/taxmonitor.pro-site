@@ -1,0 +1,127 @@
+{
+  "contract": {
+    "authority": ["ClickUp API (projection target)"],
+    "governs": "ClickUp — Support List Projection",
+    "path": "/contracts/clickup/support.list.contract.json",
+    "source": "Tax Monitor Pro",
+    "title": "Tax Monitor Pro — ClickUp Support List Contract",
+    "validation": {
+      "enumStrict": true,
+      "rejectUnknownValues": true
+    },
+    "version": 1
+  },
+  "clickup": {
+    "folder": {
+      "id": "90176523466",
+      "name": "Tax Monitor Pro"
+    },
+    "list": {
+      "id": "901710818377",
+      "inbound_address": "a.t.901710818377.u-10505295.067b0f45-cd13-4f96-a904-de4d52fdeaf9@tasks.clickup.com",
+      "name": "Support",
+      "space": {
+        "id": "90170896661",
+        "name": "Admin"
+      }
+    }
+  },
+  "fields": {
+    "Support Action Required": {
+      "id": "aac0816d-0e05-4c57-8196-6098929f35ac",
+      "options": [
+        {
+          "id": "165c6aac-bb5a-420c-a64b-bca47b769e21",
+          "name": "Acknowledge",
+          "orderindex": 0
+        },
+        {
+          "id": "a233b302-7779-4136-bb37-eff6cd5e41cc",
+          "name": "Triage",
+          "orderindex": 1
+        },
+        {
+          "id": "8c45bf38-2cc7-45bc-9c48-9dae275938a3",
+          "name": "Resolve",
+          "orderindex": 2
+        },
+        {
+          "id": "dc9e42fb-a1ef-4b3e-a037-cc5b41d33209",
+          "name": "Close",
+          "orderindex": 3
+        }
+      ],
+      "type": "drop_down"
+    },
+    "Support Email": {
+      "id": "7f547901-690d-4f39-8851-d19e19f87bf8",
+      "type": "email"
+    },
+    "Support Priority": {
+      "id": "b96403c7-028a-48eb-b6b1-349f295244b5",
+      "options": [
+        {
+          "id": "fe8469b4-0ee1-4fa0-993d-bc9458f1ab6d",
+          "name": "🟦 Low — As Scheduled",
+          "orderindex": 0
+        },
+        {
+          "id": "ea5fda7f-7c60-4e72-9034-0434836950a2",
+          "name": "🟨 Normal — 3–5 Days",
+          "orderindex": 1
+        },
+        {
+          "id": "8f155d97-8512-489f-88c6-77973e76e3c8",
+          "name": "🟧 High — 48 Hours",
+          "orderindex": 2
+        },
+        {
+          "id": "c8862a36-00cd-41b2-94be-22120bfe2f0b",
+          "name": "🟥 Critical — Today",
+          "orderindex": 3
+        }
+      ],
+      "type": "drop_down"
+    },
+    "Support Related Order ID": {
+      "id": "423fda3b-f7c0-471e-aaa2-464d78db0a31",
+      "type": "short_text"
+    },
+    "Support Type": {
+      "id": "e09d9f53-4f03-49fe-8c5f-abe3b160b167",
+      "options": [
+        { "id": "5f847513-d4dd-4e45-af47-b229dbfbbb8f", "name": "Appt - Demo", "orderindex": 0 },
+        { "id": "a8d9484d-df52-42fa-a2c8-e4df801e398e", "name": "Appt - Exit / Offboarding", "orderindex": 1 },
+        { "id": "6ac3e8dc-ca14-4c84-b4da-a8fbefa6ad13", "name": "Appt - Onboarding", "orderindex": 3 },
+        { "id": "75f47f09-fa16-40d4-9be3-583102361799", "name": "Appt - Intro", "orderindex": 2 },
+        { "id": "27d991dd-a5ee-4713-a844-ddc53650756b", "name": "Appt - Support", "orderindex": 4 },
+        { "id": "360e0d08-ae19-4a08-a7bf-08ac4579f7e2", "name": "Ticket - Address Update", "orderindex": 11 },
+        { "id": "fcd840f5-2a38-43db-92c9-611403fa90f6", "name": "Ticket - Offer", "orderindex": 6 },
+        { "id": "f5e26bdf-adb1-4ad4-a9f7-97f63a6d2977", "name": "Ticket - Agreement", "orderindex": 7 },
+        { "id": "b3ae14e7-981d-4756-a14f-7d9a901392d0", "name": "Ticket - Intake", "orderindex": 5 },
+        { "id": "789e2a6b-0c5c-4b3c-8b65-851d4eb4d798", "name": "Ticket - Compliance Report", "orderindex": 13 },
+        { "id": "231f2d26-3bad-4c35-b8e4-a8b126415751", "name": "Ticket - Client Exit Survey", "orderindex": 14 },
+        { "id": "ee2d7f9f-e102-4d91-9afa-431361d6bdcf", "name": "Ticket - Esign 2848", "orderindex": 12 },
+        { "id": "75ec9e09-bb75-4f4a-bc24-35c7da294c26", "name": "Ticket - Filing Status", "orderindex": 10 },
+        { "id": "27f0a9ac-ba0f-4d04-bb02-0a90acdadfac", "name": "Ticket - Payment", "orderindex": 8 },
+        { "id": "349565f0-90d8-4c35-be41-62cd33ef3398", "name": "Ticket - Welcome", "orderindex": 9 }
+      ],
+      "type": "drop_down"
+    }
+  },
+  "statuses": [
+    { "id": "sc901710818377_dn2dRFVb", "name": "open / new", "orderindex": 0, "type": "open" },
+    { "id": "sc901710818377_OKMm7y2k", "name": "in progress", "orderindex": 1, "type": "custom" },
+    { "id": "sc901710818377_gpKVHSl7", "name": "waiting on client", "orderindex": 2, "type": "custom" },
+    { "id": "sc901710818377_HlAcH0UR", "name": "blocked", "orderindex": 3, "type": "custom" },
+    { "id": "sc901710818377_fdQqQDwm", "name": "in review", "orderindex": 4, "type": "custom" },
+    { "id": "sc901710818377_cExcoTWL", "name": "resolved", "orderindex": 5, "type": "custom" },
+    { "id": "sc901710818377_B9XfYTKa", "name": "client feedback", "orderindex": 6, "type": "custom" },
+    { "id": "sc901710818377_eLZNX2kO", "name": "complete", "orderindex": 7, "type": "done" },
+    { "id": "sc901710818377_jEEaBdaL", "name": "Closed", "orderindex": 8, "type": "closed" }
+  ],
+  "schema": {
+    "name": "tm_clickup_support_list_contract",
+    "version": 1
+  }
+}
