@@ -1,0 +1,84 @@
+{
+  "contract": {
+    "authority": [
+      "R2 Canonical"
+    ],
+    "governs": "Form — Post-payment — Address Update",
+    "path": "/contracts/contracts/forms/post-payment/address-update.contract.json",
+    "source": "Tax Monitor Pro",
+    "title": "Form — Post-payment — Address Update Contract",
+    "validation": {
+      "enumStrict": true,
+      "normalizeCheckboxToBoolean": true,
+      "rejectUnknownValues": true
+    },
+    "version": 1
+  },
+  "schema": {
+    "name": "tm_form_post_payment_address_update",
+    "version": 1
+  },
+  "fields": {
+    "accountId": {
+      "control": "text",
+      "storageType": "string",
+      "nullable": true
+    },
+    "eventId": {
+      "control": "text",
+      "storageType": "string",
+      "nullable": false,
+      "required": true
+    },
+    "orderId": {
+      "control": "text",
+      "storageType": "string",
+      "nullable": true
+    },
+    "sessionToken": {
+      "control": "text",
+      "storageType": "string",
+      "nullable": false,
+      "required": true
+    },
+    "Tax_Monitoring_Service_Progress_Percent": {
+      "control": "number",
+      "storageType": "number",
+      "nullable": true
+    },
+    "Tax_Monitoring_Service_Progress_Status": {
+      "control": "textarea",
+      "storageType": "string",
+      "nullable": true
+    },
+    "Taxpayer_Address_City": {
+      "control": "text",
+      "storageType": "string",
+      "nullable": false,
+      "required": true
+    },
+    "Taxpayer_Address_Line_1": {
+      "control": "text",
+      "storageType": "string",
+      "nullable": false,
+      "required": true
+    },
+    "Taxpayer_Address_Line_2": {
+      "control": "text",
+      "storageType": "string",
+      "nullable": true
+    },
+    "Taxpayer_Address_State": {
+      "control": "text",
+      "storageType": "string",
+      "nullable": false,
+      "required": true
+    },
+    "Taxpayer_Address_Zip": {
+      "control": "text",
+      "storageType": "string",
+      "nullable": false,
+      "required": true
+    }
+  }
+}

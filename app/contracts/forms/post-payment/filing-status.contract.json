@@ -1,0 +1,117 @@
+{
+  "contract": {
+    "authority": [
+      "R2 Canonical"
+    ],
+    "governs": "Form — Post-payment — Filing Status",
+    "path": "/contracts/contracts/forms/post-payment/filing-status.contract.json",
+    "source": "Tax Monitor Pro",
+    "title": "Form — Post-payment — Filing Status Contract",
+    "validation": {
+      "enumStrict": true,
+      "normalizeCheckboxToBoolean": true,
+      "rejectUnknownValues": true
+    },
+    "version": 1
+  },
+  "schema": {
+    "name": "tm_form_post_payment_filing_status",
+    "version": 1
+  },
+  "fields": {
+    "accountId": {
+      "control": "text",
+      "storageType": "string",
+      "nullable": true
+    },
+    "eventId": {
+      "control": "text",
+      "storageType": "string",
+      "nullable": false,
+      "required": true
+    },
+    "Marital_Status": {
+      "control": "dropdown",
+      "storageType": "string",
+      "nullable": true,
+      "options": [
+        {
+          "label": "Head of household",
+          "value": "Head of household"
+        },
+        {
+          "label": "Married filing jointly",
+          "value": "Married filing jointly"
+        },
+        {
+          "label": "Married filing separately",
+          "value": "Married filing separately"
+        },
+        {
+          "label": "Single",
+          "value": "Single"
+        },
+        {
+          "label": "Widow(er)",
+          "value": "Widow(er)"
+        }
+      ]
+    },
+    "orderId": {
+      "control": "text",
+      "storageType": "string",
+      "nullable": true
+    },
+    "sessionToken": {
+      "control": "text",
+      "storageType": "string",
+      "nullable": false,
+      "required": true
+    },
+    "Spouse_Full_Legal_Name": {
+      "control": "text",
+      "storageType": "string",
+      "nullable": true
+    },
+    "Spouse_Separate_2848_Required": {
+      "control": "dropdown",
+      "storageType": "string",
+      "nullable": true,
+      "options": [
+        {
+          "label": "No — I was not married during the compliance years",
+          "value": "No — I was not married during the compliance years"
+        },
+        {
+          "label": "Yes — I was married during one or more compliance years",
+          "value": "Yes — I was married during one or more compliance years"
+        }
+      ]
+    },
+    "Tax_Monitoring_Plan_Selected": {
+      "control": "text",
+      "storageType": "string",
+      "nullable": true
+    },
+    "Tax_Monitoring_Service_Progress_Percent": {
+      "control": "number",
+      "storageType": "number",
+      "nullable": true
+    },
+    "Tax_Monitoring_Service_Progress_Status": {
+      "control": "textarea",
+      "storageType": "string",
+      "nullable": true
+    },
+    "Taxpayer_Full_Legal_Name": {
+      "control": "text",
+      "storageType": "string",
+      "nullable": true
+    },
+    "Taxpayer_SSN_ITIN": {
+      "control": "text",
+      "storageType": "string",
+      "nullable": true
+    }
+  }
+}

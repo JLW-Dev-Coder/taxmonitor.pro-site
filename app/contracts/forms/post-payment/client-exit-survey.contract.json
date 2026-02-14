@@ -1,0 +1,155 @@
+{
+  "contract": {
+    "authority": [
+      "R2 Canonical"
+    ],
+    "governs": "Form — Post-payment — Client Exit Survey",
+    "path": "/contracts/contracts/forms/post-payment/client-exit-survey.contract.json",
+    "source": "Tax Monitor Pro",
+    "title": "Form — Post-payment — Client Exit Survey Contract",
+    "validation": {
+      "enumStrict": true,
+      "normalizeCheckboxToBoolean": true,
+      "rejectUnknownValues": true
+    },
+    "version": 1
+  },
+  "schema": {
+    "name": "tm_form_post_payment_client_exit_survey",
+    "version": 1
+  },
+  "fields": {
+    "accountId": {
+      "control": "text",
+      "storageType": "string",
+      "nullable": true
+    },
+    "eventId": {
+      "control": "text",
+      "storageType": "string",
+      "nullable": false,
+      "required": true
+    },
+    "Exit_Followup_Allowed": {
+      "control": "dropdown",
+      "storageType": "string",
+      "nullable": true,
+      "options": [
+        {
+          "label": "No",
+          "value": "No"
+        },
+        {
+          "label": "Yes",
+          "value": "Yes"
+        }
+      ]
+    },
+    "Exit_Improvement_Feedback": {
+      "control": "text",
+      "storageType": "string",
+      "nullable": true
+    },
+    "Exit_Positive_Feedback": {
+      "control": "text",
+      "storageType": "string",
+      "nullable": true
+    },
+    "Exit_Reason": {
+      "control": "dropdown",
+      "storageType": "string",
+      "nullable": true,
+      "options": [
+        {
+          "label": "Chose a different provider",
+          "value": "Chose a different provider"
+        },
+        {
+          "label": "No longer need monitoring",
+          "value": "No longer need monitoring"
+        },
+        {
+          "label": "Price / budget concerns",
+          "value": "Price / budget concerns"
+        },
+        {
+          "label": "Service completed as intended",
+          "value": "Service completed as intended"
+        },
+        {
+          "label": "Switching to resolution services",
+          "value": "Switching to resolution services"
+        },
+        {
+          "label": "Temporary pause",
+          "value": "Temporary pause"
+        },
+        {
+          "label": "Unsure / other",
+          "value": "Unsure / other"
+        }
+      ]
+    },
+    "Future_Support_Interest": {
+      "control": "dropdown",
+      "storageType": "string",
+      "nullable": true,
+      "options": [
+        {
+          "label": "Appeals support",
+          "value": "Appeals support"
+        },
+        {
+          "label": "Bookkeeping or cleanup",
+          "value": "Bookkeeping or cleanup"
+        },
+        {
+          "label": "Compliance-only monitoring",
+          "value": "Compliance-only monitoring"
+        },
+        {
+          "label": "IRS resolution services",
+          "value": "IRS resolution services"
+        },
+        {
+          "label": "Not interested at this time",
+          "value": "Not interested at this time"
+        },
+        {
+          "label": "Unsure / revisit later",
+          "value": "Unsure / revisit later"
+        }
+      ]
+    },
+    "orderId": {
+      "control": "text",
+      "storageType": "string",
+      "nullable": true
+    },
+    "Service_Outcome_Met": {
+      "control": "dropdown",
+      "storageType": "string",
+      "nullable": true,
+      "options": [
+        {
+          "label": "No",
+          "value": "No"
+        },
+        {
+          "label": "Partially",
+          "value": "Partially"
+        },
+        {
+          "label": "Yes",
+          "value": "Yes"
+        }
+      ]
+    },
+    "sessionToken": {
+      "control": "text",
+      "storageType": "string",
+      "nullable": false,
+      "required": true
+    }
+  }
+}

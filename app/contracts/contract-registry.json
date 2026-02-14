@@ -1,0 +1,270 @@
+{
+  "contractRegistryVersion": 1,
+  "baseUrl": "https://api.taxmonitor.pro",
+  "entries": [
+    {
+      "id": "form_agreement",
+      "version": 1,
+      "path": "app/contracts/forms/agreement.contract.json",
+      "method": "POST",
+      "endpoint": "/forms/agreement",
+      "receiptSource": "form",
+      "governs": "Form Agreement",
+      "requiresAuth": false,
+      "writes": [
+        "accounts",
+        "orders"
+      ],
+      "clickupProjection": [
+        {
+          "list": "Orders",
+          "fields": [
+            "Order Agreement Signed PDF URL",
+            "Order ID"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "form_intake",
+      "version": 1,
+      "path": "app/contracts/forms/intake.contract.json",
+      "method": "POST",
+      "endpoint": "/forms/intake",
+      "receiptSource": "form",
+      "governs": "Form Intake",
+      "requiresAuth": false,
+      "writes": [
+        "accounts",
+        "orders"
+      ],
+      "clickupProjection": [
+        {
+          "list": "Orders",
+          "fields": [
+            "Order ID",
+            "Order Status",
+            "Order Service Progress Percent",
+            "Order Service Progress Status",
+            "Order Token"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "form_offer",
+      "version": 1,
+      "path": "app/contracts/forms/offer.contract.json",
+      "method": "POST",
+      "endpoint": "/forms/offer",
+      "receiptSource": "form",
+      "governs": "Form Offer",
+      "requiresAuth": false,
+      "writes": [
+        "orders"
+      ],
+      "clickupProjection": [
+        {
+          "list": "Orders",
+          "fields": [
+            "Order ID",
+            "Order Selected Plan"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "form_payment",
+      "version": 1,
+      "path": "app/contracts/forms/payment.contract.json",
+      "method": "POST",
+      "endpoint": "/forms/payment",
+      "receiptSource": "form",
+      "governs": "Form Payment",
+      "requiresAuth": false,
+      "writes": [
+        "orders"
+      ],
+      "clickupProjection": [
+        {
+          "list": "Orders",
+          "fields": [
+            "Order ID",
+            "Order Status",
+            "Stripe Checkout Session ID"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "form_post_payment_address_update",
+      "version": 1,
+      "path": "app/contracts/forms/post-payment/address-update.contract.json",
+      "method": "POST",
+      "endpoint": "/forms/post-payment/address-update",
+      "receiptSource": "form",
+      "governs": "Form Post Payment Address Update",
+      "requiresAuth": false,
+      "writes": [
+        "accounts",
+        "orders"
+      ],
+      "clickupProjection": [
+        {
+          "list": "Orders",
+          "fields": [
+            "Order ID",
+            "Order Service Progress Percent",
+            "Order Service Progress Status",
+            "Order Status"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "form_post_payment_client_exit_survey",
+      "version": 1,
+      "path": "app/contracts/forms/post-payment/client-exit-survey.contract.json",
+      "method": "POST",
+      "endpoint": "/forms/post-payment/client-exit-survey",
+      "receiptSource": "form",
+      "governs": "Form Post Payment Client Exit Survey",
+      "requiresAuth": false,
+      "writes": [
+        "orders"
+      ],
+      "clickupProjection": [
+        {
+          "list": "Orders",
+          "fields": [
+            "Order ID",
+            "Order Status"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "form_post_payment_compliance_report",
+      "version": 1,
+      "path": "app/contracts/forms/post-payment/compliance-report.contract.json",
+      "method": "POST",
+      "endpoint": "/forms/post-payment/compliance-report",
+      "receiptSource": "form",
+      "governs": "Form Post Payment Compliance Report",
+      "requiresAuth": false,
+      "writes": [
+        "orders"
+      ],
+      "clickupProjection": [
+        {
+          "list": "Orders",
+          "fields": [
+            "Order Compliance Report PDF URL",
+            "Order ID",
+            "Order Status"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "form_post_payment_esign_2848",
+      "version": 1,
+      "path": "app/contracts/forms/post-payment/esign-2848.contract.json",
+      "method": "POST",
+      "endpoint": "/forms/post-payment/esign-2848",
+      "receiptSource": "form",
+      "governs": "Form Post Payment Esign 2848",
+      "requiresAuth": false,
+      "writes": [
+        "accounts",
+        "orders"
+      ],
+      "clickupProjection": [
+        {
+          "list": "Orders",
+          "fields": [
+            "Order 2848 Signed PDF URL",
+            "Order 2848 Unsigned PDF URL",
+            "Order Status"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "form_post_payment_filing_status",
+      "version": 1,
+      "path": "app/contracts/forms/post-payment/filing-status.contract.json",
+      "method": "POST",
+      "endpoint": "/forms/post-payment/filing-status",
+      "receiptSource": "form",
+      "governs": "Form Post Payment Filing Status",
+      "requiresAuth": false,
+      "writes": [
+        "accounts",
+        "orders"
+      ],
+      "clickupProjection": [
+        {
+          "list": "Accounts",
+          "fields": [
+            "Account First Name",
+            "Account Last Name",
+            "Account Primary Email"
+          ]
+        },
+        {
+          "list": "Orders",
+          "fields": [
+            "Order ID",
+            "Order Status"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "form_post_payment_welcome",
+      "version": 1,
+      "path": "app/contracts/forms/post-payment/welcome.contract.json",
+      "method": "POST",
+      "endpoint": "/forms/post-payment/welcome",
+      "receiptSource": "form",
+      "governs": "Form Post Payment Welcome",
+      "requiresAuth": false,
+      "writes": [
+        "orders"
+      ],
+      "clickupProjection": [
+        {
+          "list": "Orders",
+          "fields": [
+            "Order ID",
+            "Order Status"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "form_staff_compliance_records",
+      "version": 1,
+      "path": "app/contracts/staff/compliance-records.contract.json",
+      "method": "POST",
+      "endpoint": "/forms/staff/compliance-records",
+      "receiptSource": "form",
+      "governs": "Form Staff Compliance Records",
+      "requiresAuth": true,
+      "writes": [
+        "accounts",
+        "orders"
+      ],
+      "clickupProjection": [
+        {
+          "list": "Orders",
+          "fields": [
+            "Order Compliance Report PDF URL",
+            "Order Status"
+          ]
+        }
+      ]
+    }
+  ]
+}

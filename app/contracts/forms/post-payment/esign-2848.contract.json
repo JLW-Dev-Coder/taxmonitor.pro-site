@@ -1,0 +1,210 @@
+{
+  "contract": {
+    "authority": [
+      "R2 Canonical"
+    ],
+    "governs": "Form — Post-payment — eSign 2848",
+    "path": "/contracts/contracts/forms/post-payment/esign-2848.contract.json",
+    "source": "Tax Monitor Pro",
+    "title": "Form — Post-payment — eSign 2848 Contract",
+    "validation": {
+      "enumStrict": true,
+      "normalizeCheckboxToBoolean": true,
+      "rejectUnknownValues": true
+    },
+    "version": 1
+  },
+  "schema": {
+    "name": "tm_form_post_payment_esign_2848",
+    "version": 1
+  },
+  "fields": {
+    "2848_Acts_Auth_Additional": {
+      "control": "textarea",
+      "storageType": "string",
+      "nullable": true
+    },
+    "2848_Acts_Auth_Descr_of_Matter": {
+      "control": "textarea",
+      "storageType": "string",
+      "nullable": true
+    },
+    "2848_Acts_Auth_Tax_Form_Number": {
+      "control": "text",
+      "storageType": "string",
+      "nullable": true
+    },
+    "2848_Rep_1_Address_City": {
+      "control": "text",
+      "storageType": "string",
+      "nullable": true
+    },
+    "2848_Rep_1_Address_Line_1": {
+      "control": "text",
+      "storageType": "string",
+      "nullable": true
+    },
+    "2848_Rep_1_Address_Line_2": {
+      "control": "text",
+      "storageType": "string",
+      "nullable": true
+    },
+    "2848_Rep_1_Address_State": {
+      "control": "text",
+      "storageType": "string",
+      "nullable": true
+    },
+    "2848_Rep_1_Address_Zip": {
+      "control": "number",
+      "storageType": "number",
+      "nullable": true
+    },
+    "2848_Rep_1_CAF": {
+      "control": "text",
+      "storageType": "string",
+      "nullable": true
+    },
+    "2848_Rep_1_Declar_of_Repr_Auth_Date": {
+      "control": "date",
+      "storageType": "string",
+      "nullable": true
+    },
+    "2848_Rep_1_Declar_of_Repr_Auth_Number": {
+      "control": "text",
+      "storageType": "string",
+      "nullable": true
+    },
+    "2848_Rep_1_Declar_of_Repr_Designation_Letter": {
+      "control": "text",
+      "storageType": "string",
+      "nullable": true
+    },
+    "2848_Rep_1_Declar_of_Repr_Licensing_Juris_State": {
+      "control": "text",
+      "storageType": "string",
+      "nullable": true
+    },
+    "2848_Rep_1_Fax": {
+      "control": "text",
+      "storageType": "string",
+      "nullable": true
+    },
+    "2848_Rep_1_First_Name": {
+      "control": "text",
+      "storageType": "string",
+      "nullable": false,
+      "required": true
+    },
+    "2848_Rep_1_Last_Name": {
+      "control": "text",
+      "storageType": "string",
+      "nullable": false,
+      "required": true
+    },
+    "2848_Rep_1_PTIN": {
+      "control": "text",
+      "storageType": "string",
+      "nullable": true
+    },
+    "2848_Rep_1_Telephone": {
+      "control": "text",
+      "storageType": "string",
+      "nullable": true
+    },
+    "accountId": {
+      "control": "text",
+      "storageType": "string",
+      "nullable": true
+    },
+    "Esigned_2848_Upload": {
+      "control": "file",
+      "storageType": "string",
+      "nullable": true
+    },
+    "eventId": {
+      "control": "text",
+      "storageType": "string",
+      "nullable": false,
+      "required": true
+    },
+    "IRS_Compliance_Section_Focus": {
+      "control": "text",
+      "storageType": "string",
+      "nullable": false,
+      "required": true
+    },
+    "Monitoring_Authorization_Status": {
+      "control": "text",
+      "storageType": "string",
+      "nullable": true
+    },
+    "orderId": {
+      "control": "text",
+      "storageType": "string",
+      "nullable": true
+    },
+    "sessionToken": {
+      "control": "text",
+      "storageType": "string",
+      "nullable": false,
+      "required": true
+    },
+    "Tax_Monitoring_Service_Progress_Percent": {
+      "control": "number",
+      "storageType": "number",
+      "nullable": true
+    },
+    "Tax_Monitoring_Service_Progress_Status": {
+      "control": "textarea",
+      "storageType": "string",
+      "nullable": true
+    },
+    "Taxpayer_Separate_Wet_Sig_2848_Required": {
+      "control": "dropdown",
+      "storageType": "string",
+      "nullable": true,
+      "options": [
+        {
+          "label": "No",
+          "value": "No"
+        },
+        {
+          "label": "Yes",
+          "value": "Yes"
+        }
+      ]
+    },
+    "Wet_Sig_2848_Confirmed": {
+      "control": "checkbox",
+      "storageType": "boolean",
+      "nullable": true,
+      "enumMapping": {
+        "trueValues": [
+          "Yes",
+          "true",
+          "on",
+          "1",
+          "checked"
+        ],
+        "falseValues": [
+          "No",
+          "false",
+          "off",
+          "0",
+          "unchecked",
+          ""
+        ]
+      }
+    },
+    "Wet_Sig_2848_Notes": {
+      "control": "textarea",
+      "storageType": "string",
+      "nullable": true
+    },
+    "Wet_Sig_2848_Upload": {
+      "control": "file",
+      "storageType": "string",
+      "nullable": true
+    }
+  }
+}

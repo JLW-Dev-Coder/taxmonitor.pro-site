@@ -2,29 +2,28 @@
 
 Tax Monitor Pro is a serverless CRM + delivery system for tax monitoring services.
 
-The system is **contract-driven**.
-Forms do not define behavior — JSON contracts define behavior.
-
 ---
 
 ## Table of Contents
 
 * [Architecture Overview](#architecture-overview)
 * [Architecture Principle](#architecture-principle)
-* [Contract Registry](#contract-registry)
-* [Contract-Driven Architecture](#contract-driven-architecture)
+* [ClickUp Custom Fields](#clickup-custom-fields)
+* [ClickUp Structure](#clickup-structure)
+* [Contracts](#contracts)
 * [Data Model](#data-model)
+* [Design Principles](#design-principles)
 * [Domain & Routing Contract](#domain--routing-contract)
 * [Endpoints](#endpoints)
-* [Authentication & PPI Protection](#authentication--ppi-protection)
-* [ClickUp Projection Contracts](#clickup-projection-contracts)
-* [PDF Generation + Overrides](#pdf-generation--overrides)
+* [Environment Variables](#environment-variables-worker)
+* [Event Triggers](#event-triggers)
 * [Idempotency + Safety](#idempotency--safety)
 * [Lifecycle Flows](#lifecycle-flows)
 * [Repository Structure](#repository-structure)
 * [Report Rendering Contract](#report-rendering-contract)
+* [Security + Auth](#security--auth)
 * [Staff — Compliance Records](#staff--compliance-records)
-* [Design Principles](#design-principles)
+* [Webhooks](#webhooks)
 
 ---
 
@@ -34,422 +33,237 @@ Cloudflare Pages (Portal + Marketing UI)
 ↓ (form POST / webhook)
 Cloudflare Worker (API + Orchestration + State Injection)
 ↓
-Cloudflare R2 (Authoritative State + Receipts Ledger)
+R2 (Canonical Authority + Receipts)
 ↓
-ClickUp (Human Execution Layer)
-
-External systems:
-
-* Cal.com (Bookings)
-* Google Workspace (Transactional Email Sending)
-* Online Forms (Lifecycle + Post-Payment)
-* Stripe (Payments)
+ClickUp (Projection Layer)
 
 ---
 
 # Architecture Principle
 
-* ClickUp is execution
-* JSON contracts govern behavior
-* Pages is presentation
-* R2 is the authority (system of record)
-* Worker is the logic plane
-* No lifecycle transitions occur outside Worker
-* No ClickUp write occurs before R2 update
+**R2 is the authority. ClickUp is a projection.**
+
+Every inbound event must follow this write order (non-negotiable):
+
+1. Write append-only receipt: `receipts/{source}/{eventId}.json`
+2. Upsert canonical: `orders/{orderId}.json` and/or `accounts/{accountId}.json`
+3. Update ClickUp (projection layer)
+
+No ClickUp writes before canonical state is updated.
 
 ---
 
-# Contract Registry
+# ClickUp Custom Fields
 
-All form contracts are registered in:
+See:
 
-```
-app/contracts/contract-registry.json
-```
-
-The registry defines:
-
-* Contract ID
-* Version
-* Endpoint
-* Method
-* Receipt source
-* Canonical object writes
-* ClickUp projection behavior
-* Auth requirement
-
-No contract may exist without registry inclusion.
+* `app/contracts/clickup/accounts.list.contract.json`
+* `app/contracts/clickup/orders.list.contract.json`
+* `app/contracts/clickup/support.list.contract.json`
 
 ---
 
-# Contract-Driven Architecture
+# ClickUp Structure
 
-## Core Concept
+Lists:
 
-Forms do not define data structures.
-HTML does not define valid options.
-External systems do not define canonical state.
-
-The JSON contract defines:
-
-* Field controls
-* Storage types
-* Enum values
-* Strict validation rules
-* Nullable behavior
-* Boolean normalization
-* Worker enforcement rules
+* Accounts: `901710909567`
+* Orders: `901710818340`
+* Support: `901710818377`
 
 ---
 
-## Worker Validation Flow
+# Contracts
 
-When any form submits:
+Contracts are the source of truth for:
 
-1. Worker selects contract from registry
-2. Worker validates:
+* Allowed enum values (dropdown / radio / multiselect)
+* Validation strictness
+* Worker storage mapping
 
-   * Enum strictness
-   * Unknown field rejection
-   * Boolean normalization
-   * Required field presence
-   * Type alignment
-3. Worker writes append-only receipt:
+**No enums live in HTML.** HTML renders options injected by Worker state or contract-driven UI code.
 
-   ```
-   receipts/{source}/{eventId}.json
-   ```
-4. Worker upserts canonical object:
+Validation flags required in every form contract:
 
-   ```
-   orders/{orderId}.json
-   accounts/{accountId}.json
-   support/{supportId}.json
-   ```
-5. Worker updates ClickUp
-6. Worker triggers downstream email
+* `enumStrict=true`
+* `rejectUnknownValues=true`
+* `normalizeCheckboxToBoolean=true`
 
-Forms cannot bypass validation.
+Registry:
+
+* `app/contracts/contract-registry.json`
 
 ---
 
 # Data Model
 
-R2 is authoritative.
+R2 keys:
 
-Canonical paths:
+* `accounts/{accountId}.json`
+* `orders/{orderId}.json`
+* `support/{supportId}.json`
+* `receipts/{source}/{eventId}.json` (append-only)
 
-```
-accounts/{accountId}.json
-orders/{orderId}.json
-support/{supportId}.json
-receipts/{source}/{eventId}.json
-```
-
-Orders are primary rendering objects.
-
-Accounts are secondary reference objects.
-
----
-
-# Domain & Routing Contract
-
-## Domain Separation
-
-Pages:
-
-```
-https://taxmonitor.pro
-```
-
-Worker:
-
-```
-https://api.taxmonitor.pro
-```
-
-Worker is never hosted on root marketing domain.
-
----
-
-## Form Submission Rule
-
-All forms must POST directly to Worker domain.
-
-Example:
-
-```
-POST https://api.taxmonitor.pro/forms/intake
-```
-
-Relative paths are not allowed.
-
----
-
-# Endpoints
-
-## Read Endpoints
-
-```
-GET /orders/{orderId}
-```
-
----
-
-## Client Form Endpoints (10)
-
-```
-POST /forms/agreement
-POST /forms/intake
-POST /forms/offer
-POST /forms/payment
-POST /forms/post-payment/address-update
-POST /forms/post-payment/client-exit-survey
-POST /forms/post-payment/compliance-report
-POST /forms/post-payment/esign-2848
-POST /forms/post-payment/filing-status
-POST /forms/post-payment/welcome
-```
-
----
-
-## Staff Endpoint (1)
-
-```
-POST /forms/staff/compliance-records
-```
-
----
-
-## Webhook Endpoints
-
-```
-POST /webhooks/cal
-POST /webhooks/stripe
-```
-
-Stripe and Cal webhooks require signature validation.
-
----
-
-# Authentication & PPI Protection
-
-## PPI Handling
-
-The system processes Personally Identifiable Information including:
-
-* SSN (masked by default)
-* Address
-* Filing status
-* IRS balances
-* Revenue officer details
-
-Rules:
-
-* SSN masked by default in UI
-* No raw SSN logged
-* No PPI written to console logs
-* Receipts contain validated payload only
-* Worker never logs request bodies in production
-
----
-
-## Staff Authentication
-
-Staff endpoints must require authentication.
-
-Allowed patterns:
-
-* Cloudflare Access JWT validation
-* OAuth (Google Workspace)
-* Signed session token
-
-Until explicitly implemented, staff routes must deny unauthenticated requests.
-
----
-
-## Client Access
-
-Client read access must require:
-
-* Non-guessable Order ID
-* Token-based validation for sensitive reads
-* No public indexable URLs for reports
-
----
-
-# ClickUp Projection Contracts
-
-ClickUp is projection only.
-
-Lists:
-
-* Accounts — `901710909567`
-* Orders — `901710818340`
-* Support — `901710818377`
-
-ClickUp JSON projection contracts must define:
-
-* List ID
-* Custom Field IDs
-* Status IDs
-* Option IDs for dropdowns
-
-Includes Orders status:
-
-```
-template
-```
-
-ClickUp must never be treated as source of truth.
-
----
-
-# PDF Generation + Overrides
-
-## Compliance Report
-
-When compliance is finalized:
-
-1. Worker generates PDF
-2. Worker stores PDF in R2
-3. Worker updates Orders CF:
-
-   ```
-   Order Compliance Report PDF URL
-   ```
-4. Worker sets:
-
-   ```
-   complianceSubmitted = true
-   reportReady = true
-   ```
-5. Worker updates ClickUp status:
-
-   ```
-   10 Compliance Records
-   ```
-
-Client may download report anytime.
-
-Staff may regenerate PDF override if needed.
-
----
-
-# Idempotency + Safety
-
-* All events deduplicated by eventId
-* Stripe Session ID is payment dedupe key
-* Append-only receipts
-* Unknown enum values rejected
-* No direct ClickUp writes before R2 update
-* Email triggered only after canonical state update
-* Worker is stateless
-* R2 is authoritative
-
----
-
-# Lifecycle Flows
-
-Pre-Payment:
-
-1. Booking
-2. Intake
-3. Offer
-4. Agreement
-5. Payment
-
-Post-Payment:
-
-6. Welcome
-7. Filing Status
-8. Address Update
-9. IRS Authorization (2848)
-10. Compliance Report
-11. Exit Survey
-
-Lifecycle gating enforced at Worker level.
-
----
-
-# Repository Structure
-
-```
-.
-├─ app/
-│  ├─ contracts/
-│  │  ├─ clickup/
-│  │  ├─ forms/
-│  │  └─ staff/
-│  ├─ pages/
-│  │  ├─ flows/
-│  │  └─ staff/
-│  └─ partials/
-├─ assets/
-├─ legal/
-├─ site/
-├─ styles/
-└─ workers/
-```
-
-Contracts are authoritative over UI.
-
----
-
-# Report Rendering Contract
-
-Primary source:
-
-```
-orders/{orderId}.json
-```
-
-Rendering rule:
-
-```
-order.stepBooleans.reportReady === true
-```
-
-If true → populated report
-If false → placeholder content
-
-Report page never blocks.
-
----
-
-# Staff — Compliance Records
-
-Internal operational form.
-
-This form:
-
-* Is contract-driven
-* Is enum-strict
-* Controls complianceSubmitted
-* Controls reportReady
-* Generates Compliance PDF
-* Updates ClickUp
-* Closes lifecycle
-
-Canonical endpoint:
-
-```
-POST https://api.taxmonitor.pro/forms/staff/compliance-records
-```
+R2 is authoritative. ClickUp is derived.
 
 ---
 
 # Design Principles
 
-* Append-only receipts ledger
-* ClickUp as projection layer only
-* Contract-driven validation
-* Email after canonical state update
-* Idempotent processing
-* R2 authority
-* Stateless Worker
-* Status-driven workflow
-* Worker-injected rendering state
-* Zero manual lifecycle transitions
-* Explicit endpoints
-* No hidden state
+* Email only after canonical state update (R2 first)
+* Receipt-first write order for every inbound event
+* Worker injects rendering state into Pages responses
+* Idempotency based on receipt `eventId` (dedupe key)
+
+---
+
+# Domain & Routing Contract
+
+Pages:
+
+* `https://taxmonitor.pro` (serves `/site/*` and `/app/*`)
+
+Worker API:
+
+* `https://api.taxmonitor.pro` (route: `api.taxmonitor.pro/*`)
+
+Forms must POST to absolute Worker URLs:
+
+* `https://api.taxmonitor.pro/forms/*`
+
+---
+
+# Endpoints
+
+Worker base:
+
+* `https://api.taxmonitor.pro`
+
+## Read endpoints
+
+* `GET /orders/{orderId}` (non-negotiable)
+
+## Form submit endpoints
+
+Client (token-gated):
+
+* `POST /forms/agreement`
+* `POST /forms/intake`
+* `POST /forms/offer`
+* `POST /forms/payment`
+* `POST /forms/post-payment/address-update`
+* `POST /forms/post-payment/client-exit-survey`
+* `POST /forms/post-payment/compliance-report`
+* `POST /forms/post-payment/esign-2848`
+* `POST /forms/post-payment/filing-status`
+* `POST /forms/post-payment/welcome`
+
+Staff (auth required):
+
+* `POST /forms/staff/compliance-records`
+
+---
+
+# Security + Auth
+
+## Default policy
+
+**Deny by default.** Any endpoint without an explicit auth policy must reject requests.
+
+## Staff endpoints
+
+Staff endpoints require authentication.
+
+Auth mechanism: **TBD (blocked until chosen).**
+
+Until chosen and implemented, staff endpoints must:
+
+* Return `401/403` by default
+* Never accept unauthenticated writes
+
+## Client endpoints
+
+Client form endpoints are token-gated by a **non-guessable Order Token** (a.k.a. `sessionToken`).
+
+Requirements:
+
+* Token must be validated server-side on every request
+* Token must map to a single Order ID
+* Token must not be derivable from Order ID
+
+---
+
+# PPI + PII Handling
+
+Never log raw:
+
+* SSN
+* DOB
+* Full street address
+
+UI rules:
+
+* SSN is masked by default (last-4 only)
+* Full SSN may only be revealed via a controlled, client-side toggle (never logged)
+
+Worker rules:
+
+* Receipts may store necessary values, but logs must never include raw PII/PPI
+* Sanitized logging only (e.g., last-4, redacted fields)
+
+---
+
+# Report Rendering Contract
+
+Orders are primary. Accounts are secondary.
+
+When `reportReady=false`:
+
+* Render placeholders
+* Do not show report download links
+
+## Compliance Report PDF URL rule
+
+When a compliance report PDF is generated (staff finalization or defined client trigger):
+
+1. Worker stores PDF in R2
+2. Worker produces a URL
+3. Worker updates Orders task CF:
+
+* `Order Compliance Report PDF URL`
+* Field ID: `3c4c2986-c8df-47b7-a676-258333c71558`
+
+Client UI must read this field to display the download link.
+
+---
+
+# Staff — Compliance Records
+
+Contract:
+
+* `app/contracts/staff/compliance-records.contract.json`
+
+Behavior:
+
+* Writes receipt then upserts canonical Order/Account
+* Updates ClickUp Orders status to `10 compliance records` when final
+
+---
+
+# Webhooks
+
+Webhook endpoints must validate signatures.
+
+## Stripe
+
+* `POST /webhooks/stripe`
+* Validate using `STRIPE_WEBHOOK_SECRET`
+* Dedupe key: Stripe Session ID
+
+## Cal.com
+
+* `POST /webhooks/cal`
+* Validate using `CAL_WEBHOOK_SECRET`
+* Dedupe key: Cal event ID
+
+Google Workspace email is outbound-only. No inbound email endpoint exists.
