@@ -1,5 +1,5 @@
 {
-  "schema": { "name": "tm_compliance_record", "version": 3 },
+  "schema": { "name": "tm_compliance_record", "version": 4 },
   "identifiers": { "accountId": "", "orderId": "" },
   "compliance": {
     "Compliance_Activity_Type": null,
@@ -37,7 +37,28 @@
   "financialSummary": {
     "IA_Last_Payment_Amount": null,
     "IA_Payment_Amount": null,
-    "Total_IRS_Balance": null
+
+    "IRS_Interest_Total": null,
+    "IRS_Penalties_Total": null,
+
+    "Total_IRS_Balance": null,
+    "Total_Balance_With_Accruals": null,
+    "Total_Balance_With_Accruals_v_Return_10_Year_Balance_Diff": null
+  },
+  "returns": {
+    "window": { "endYear": 2025, "startYear": 2016 },
+    "years": {
+      "2016": { "CSED": null, "Filed": false, "Filing_Status": null, "Total_Balance": null },
+      "2017": { "CSED": null, "Filed": false, "Filing_Status": null, "Total_Balance": null },
+      "2018": { "CSED": null, "Filed": false, "Filing_Status": null, "Total_Balance": null },
+      "2019": { "CSED": null, "Filed": false, "Filing_Status": null, "Total_Balance": null },
+      "2020": { "CSED": null, "Filed": false, "Filing_Status": null, "Total_Balance": null },
+      "2021": { "CSED": null, "Filed": false, "Filing_Status": null, "Total_Balance": null },
+      "2022": { "CSED": null, "Filed": false, "Filing_Status": null, "Total_Balance": null },
+      "2023": { "CSED": null, "Filed": false, "Filing_Status": null, "Total_Balance": null },
+      "2024": { "CSED": null, "Filed": false, "Filing_Status": null, "Total_Balance": null },
+      "2025": { "CSED": null, "Filed": false, "Filing_Status": null, "Total_Balance": null }
+    }
   },
   "notes": {},
   "system": {

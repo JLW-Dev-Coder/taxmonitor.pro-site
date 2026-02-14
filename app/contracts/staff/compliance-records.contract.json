@@ -1,8 +1,6 @@
 {
   "contract": {
-    "authority": [
-      "R2 Canonical"
-    ],
+    "authority": ["R2 Canonical"],
     "governs": "Form 10 — Compliance Records",
     "path": "/contracts/staff/compliance-records.contract.json",
     "source": "Tax Monitor Pro",
@@ -12,33 +10,18 @@
       "normalizeCheckboxToBoolean": true,
       "rejectUnknownValues": true
     },
-    "version": 1
+    "version": 2
   },
   "fields": {
     "Compliance_Activity_Type": {
       "control": "radio",
       "nullable": true,
       "options": [
-        {
-          "label": "Filing compliance review",
-          "value": "Filing compliance review"
-        },
-        {
-          "label": "IRS account verification",
-          "value": "IRS account verification"
-        },
-        {
-          "label": "IRS notice review",
-          "value": "IRS notice review"
-        },
-        {
-          "label": "IRS transcript request",
-          "value": "IRS transcript request"
-        },
-        {
-          "label": "Status confirmation",
-          "value": "Status confirmation"
-        }
+        { "label": "Filing compliance review", "value": "Filing compliance review" },
+        { "label": "IRS account verification", "value": "IRS account verification" },
+        { "label": "IRS notice review", "value": "IRS notice review" },
+        { "label": "IRS transcript request", "value": "IRS transcript request" },
+        { "label": "Status confirmation", "value": "Status confirmation" }
       ],
       "storageType": "string"
     },
@@ -51,30 +34,12 @@
       "control": "radio",
       "nullable": true,
       "options": [
-        {
-          "label": "Current month",
-          "value": "0"
-        },
-        {
-          "label": "Initial 10-year review",
-          "value": "1"
-        },
-        {
-          "label": "Prior quarter",
-          "value": "2"
-        },
-        {
-          "label": "Prior tax year",
-          "value": "3"
-        },
-        {
-          "label": "Rolling review",
-          "value": "4"
-        },
-        {
-          "label": "Specific IRS notice period",
-          "value": "5"
-        }
+        { "label": "Current month", "value": "0" },
+        { "label": "Initial 10-year review", "value": "1" },
+        { "label": "Prior quarter", "value": "2" },
+        { "label": "Prior tax year", "value": "3" },
+        { "label": "Rolling review", "value": "4" },
+        { "label": "Specific IRS notice period", "value": "5" }
       ],
       "storageType": "string"
     },
@@ -82,26 +47,11 @@
       "control": "dropdown",
       "nullable": true,
       "options": [
-        {
-          "label": "$10,000–$25,000",
-          "value": "$10,000–$25,000"
-        },
-        {
-          "label": "$25,001–$50,000",
-          "value": "$25,001–$50,000"
-        },
-        {
-          "label": "Over $50,000",
-          "value": "Over $50,000"
-        },
-        {
-          "label": "Under $10,000",
-          "value": "Under $10,000"
-        },
-        {
-          "label": "Unknown",
-          "value": "Unknown"
-        }
+        { "label": "$10,000–$25,000", "value": "$10,000–$25,000" },
+        { "label": "$25,001–$50,000", "value": "$25,001–$50,000" },
+        { "label": "Over $50,000", "value": "Over $50,000" },
+        { "label": "Under $10,000", "value": "Under $10,000" },
+        { "label": "Unknown", "value": "Unknown" }
       ],
       "storageType": "string"
     },
@@ -109,18 +59,9 @@
       "control": "dropdown",
       "nullable": true,
       "options": [
-        {
-          "label": "No",
-          "value": "No"
-        },
-        {
-          "label": "Unable to confirm",
-          "value": "Unable to confirm"
-        },
-        {
-          "label": "Yes",
-          "value": "Yes"
-        }
+        { "label": "No", "value": "No" },
+        { "label": "Unable to confirm", "value": "Unable to confirm" },
+        { "label": "Yes", "value": "Yes" }
       ],
       "storageType": "string"
     },
@@ -148,22 +89,10 @@
       "control": "dropdown",
       "nullable": true,
       "options": [
-        {
-          "label": "Compliant",
-          "value": "0"
-        },
-        {
-          "label": "Limited Compliance",
-          "value": "1"
-        },
-        {
-          "label": "Non-Compliant",
-          "value": "2"
-        },
-        {
-          "label": "Unknown",
-          "value": "3"
-        }
+        { "label": "Compliant", "value": "0" },
+        { "label": "Limited Compliance", "value": "1" },
+        { "label": "Non-Compliant", "value": "2" },
+        { "label": "Unknown", "value": "3" }
       ],
       "storageType": "string"
     },
@@ -171,22 +100,10 @@
       "control": "radio",
       "nullable": true,
       "options": [
-        {
-          "label": "IRS Administration Department (1040/PPS)",
-          "value": "0"
-        },
-        {
-          "label": "IRS Appeals Department",
-          "value": "1"
-        },
-        {
-          "label": "IRS Collection Department",
-          "value": "2"
-        },
-        {
-          "label": "IRS Examination Department",
-          "value": "3"
-        }
+        { "label": "IRS Administration Department (1040/PPS)", "value": "0" },
+        { "label": "IRS Appeals Department", "value": "1" },
+        { "label": "IRS Collection Department", "value": "2" },
+        { "label": "IRS Examination Department", "value": "3" }
       ],
       "storageType": "string"
     },
@@ -206,22 +123,10 @@
           "label": "IRS e-Help Desk (e-Services) — (800) 673-4348",
           "value": "IRS e-Help Desk (e-Services) — (800) 673-4348"
         },
-        {
-          "label": "IRS General Line — (844) 959-1040",
-          "value": "IRS General Line — (844) 959-1040"
-        },
-        {
-          "label": "IRS Identity Verification — (800) 975-5084",
-          "value": "IRS Identity Verification — (800) 975-5084"
-        },
-        {
-          "label": "IRS International Line — (877) 298-6617",
-          "value": "IRS International Line — (877) 298-6617"
-        },
-        {
-          "label": "IRS OIC Brookhaven (Holtsville) — (800) 803-4980",
-          "value": "IRS OIC Brookhaven (Holtsville) — (800) 803-4980"
-        },
+        { "label": "IRS General Line — (844) 959-1040", "value": "IRS General Line — (844) 959-1040" },
+        { "label": "IRS Identity Verification — (800) 975-5084", "value": "IRS Identity Verification — (800) 975-5084" },
+        { "label": "IRS International Line — (877) 298-6617", "value": "IRS International Line — (877) 298-6617" },
+        { "label": "IRS OIC Brookhaven (Holtsville) — (800) 803-4980", "value": "IRS OIC Brookhaven (Holtsville) — (800) 803-4980" },
         {
           "label": "IRS Practitioner Priority Service — Business — (800) 347-7801",
           "value": "IRS Practitioner Priority Service — Business — (800) 347-7801"
@@ -230,14 +135,8 @@
           "label": "IRS Practitioner Priority Service — Individual — (800) 477-4580",
           "value": "IRS Practitioner Priority Service — Individual — (800) 477-4580"
         },
-        {
-          "label": "IRS Tax Exempt — (877) 755-7781",
-          "value": "IRS Tax Exempt — (877) 755-7781"
-        },
-        {
-          "label": "IRS Underreporter — Individual — (800) 868-8209",
-          "value": "IRS Underreporter — Individual — (800) 868-8209"
-        }
+        { "label": "IRS Tax Exempt — (877) 755-7781", "value": "IRS Tax Exempt — (877) 755-7781" },
+        { "label": "IRS Underreporter — Individual — (800) 868-8209", "value": "IRS Underreporter — Individual — (800) 868-8209" }
       ],
       "storageType": "string"
     },
@@ -246,26 +145,19 @@
       "nullable": true,
       "storageType": "string"
     },
+    "IRS_Interest_Total": {
+      "control": "currency",
+      "nullable": true,
+      "storageType": "string"
+    },
     "IRS_Lien_Exposure_Level": {
       "control": "dropdown",
       "nullable": true,
       "options": [
-        {
-          "label": "High — lien filed or filing imminent",
-          "value": "High — lien filed or filing imminent"
-        },
-        {
-          "label": "Low — compliant or protected status",
-          "value": "Low — compliant or protected status"
-        },
-        {
-          "label": "Moderate — balance or status requires monitoring",
-          "value": "Moderate — balance or status requires monitoring"
-        },
-        {
-          "label": "Unknown — insufficient IRS confirmation",
-          "value": "Unknown — insufficient IRS confirmation"
-        }
+        { "label": "High — lien filed or filing imminent", "value": "High — lien filed or filing imminent" },
+        { "label": "Low — compliant or protected status", "value": "Low — compliant or protected status" },
+        { "label": "Moderate — balance or status requires monitoring", "value": "Moderate — balance or status requires monitoring" },
+        { "label": "Unknown — insufficient IRS confirmation", "value": "Unknown — insufficient IRS confirmation" }
       ],
       "storageType": "string"
     },
@@ -273,22 +165,10 @@
       "control": "radio",
       "nullable": true,
       "options": [
-        {
-          "label": "All years filed",
-          "value": "All years filed"
-        },
-        {
-          "label": "Missing prior to 10-year window",
-          "value": "Missing prior to 10-year window"
-        },
-        {
-          "label": "Missing within 10-year window",
-          "value": "Missing within 10-year window"
-        },
-        {
-          "label": "Unable to confirm",
-          "value": "Unable to confirm"
-        }
+        { "label": "All years filed", "value": "All years filed" },
+        { "label": "Missing prior to 10-year window", "value": "Missing prior to 10-year window" },
+        { "label": "Missing within 10-year window", "value": "Missing within 10-year window" },
+        { "label": "Unable to confirm", "value": "Unable to confirm" }
       ],
       "storageType": "string"
     },
@@ -301,14 +181,8 @@
       "control": "radio",
       "nullable": true,
       "options": [
-        {
-          "label": "No",
-          "value": "No"
-        },
-        {
-          "label": "Yes",
-          "value": "Yes"
-        }
+        { "label": "No", "value": "No" },
+        { "label": "Yes", "value": "Yes" }
       ],
       "storageType": "string"
     },
@@ -316,23 +190,16 @@
       "control": "dropdown",
       "nullable": true,
       "options": [
-        {
-          "label": "Computer Paragraph (CP) Notice",
-          "value": "Computer Paragraph (CP) Notice"
-        },
-        {
-          "label": "IRS Letter (Other)",
-          "value": "IRS Letter (Other)"
-        },
-        {
-          "label": "Long Term (LT) Notice",
-          "value": "Long Term (LT) Notice"
-        },
-        {
-          "label": "Notice Type Unknown",
-          "value": "Notice Type Unknown"
-        }
+        { "label": "Computer Paragraph (CP) Notice", "value": "Computer Paragraph (CP) Notice" },
+        { "label": "IRS Letter (Other)", "value": "IRS Letter (Other)" },
+        { "label": "Long Term (LT) Notice", "value": "Long Term (LT) Notice" },
+        { "label": "Notice Type Unknown", "value": "Notice Type Unknown" }
       ],
+      "storageType": "string"
+    },
+    "IRS_Penalties_Total": {
+      "control": "currency",
+      "nullable": true,
       "storageType": "string"
     },
     "IRS_Revenue_Officer_Fax": {
@@ -358,40 +225,216 @@
     "IRS_Status_Categories": {
       "control": "multiselect",
       "options": [
-        {
-          "label": "Audit",
-          "value": "0"
-        },
-        {
-          "label": "Collection",
-          "value": "1"
-        },
-        {
-          "label": "Installment Agreement — Active",
-          "value": "2"
-        },
-        {
-          "label": "None identified",
-          "value": "7"
-        },
-        {
-          "label": "Notice",
-          "value": "3"
-        },
-        {
-          "label": "OIC",
-          "value": "4"
-        },
-        {
-          "label": "Pending collection",
-          "value": "5"
-        },
-        {
-          "label": "RO assigned",
-          "value": "6"
-        }
+        { "label": "Audit", "value": "0" },
+        { "label": "Collection", "value": "1" },
+        { "label": "Installment Agreement — Active", "value": "2" },
+        { "label": "None identified", "value": "7" },
+        { "label": "Notice", "value": "3" },
+        { "label": "OIC", "value": "4" },
+        { "label": "Pending collection", "value": "5" },
+        { "label": "RO assigned", "value": "6" }
       ],
       "storageType": "array"
+    },
+    "Return_2016_CSED": { "control": "date", "nullable": true, "storageType": "string" },
+    "Return_2016_Filed": {
+      "control": "checkbox",
+      "enumMapping": { "checked": true, "unchecked": false },
+      "storageType": "boolean"
+    },
+    "Return_2016_Filing_Status": {
+      "control": "dropdown",
+      "nullable": true,
+      "options": [
+        { "label": "Extension Filed", "value": "Extension Filed" },
+        { "label": "Filed - Accepted", "value": "Filed - Accepted" },
+        { "label": "Filed - Under Review", "value": "Filed - Under Review" },
+        { "label": "Not Filed", "value": "Not Filed" }
+      ],
+      "storageType": "string"
+    },
+    "Return_2016_Total_Balance": { "control": "currency", "nullable": true, "storageType": "string" },
+
+    "Return_2017_CSED": { "control": "date", "nullable": true, "storageType": "string" },
+    "Return_2017_Filed": {
+      "control": "checkbox",
+      "enumMapping": { "checked": true, "unchecked": false },
+      "storageType": "boolean"
+    },
+    "Return_2017_Filing_Status": {
+      "control": "dropdown",
+      "nullable": true,
+      "options": [
+        { "label": "Extension Filed", "value": "Extension Filed" },
+        { "label": "Filed - Accepted", "value": "Filed - Accepted" },
+        { "label": "Filed - Under Review", "value": "Filed - Under Review" },
+        { "label": "Not Filed", "value": "Not Filed" }
+      ],
+      "storageType": "string"
+    },
+    "Return_2017_Total_Balance": { "control": "currency", "nullable": true, "storageType": "string" },
+
+    "Return_2018_CSED": { "control": "date", "nullable": true, "storageType": "string" },
+    "Return_2018_Filed": {
+      "control": "checkbox",
+      "enumMapping": { "checked": true, "unchecked": false },
+      "storageType": "boolean"
+    },
+    "Return_2018_Filing_Status": {
+      "control": "dropdown",
+      "nullable": true,
+      "options": [
+        { "label": "Extension Filed", "value": "Extension Filed" },
+        { "label": "Filed - Accepted", "value": "Filed - Accepted" },
+        { "label": "Filed - Under Review", "value": "Filed - Under Review" },
+        { "label": "Not Filed", "value": "Not Filed" }
+      ],
+      "storageType": "string"
+    },
+    "Return_2018_Total_Balance": { "control": "currency", "nullable": true, "storageType": "string" },
+
+    "Return_2019_CSED": { "control": "date", "nullable": true, "storageType": "string" },
+    "Return_2019_Filed": {
+      "control": "checkbox",
+      "enumMapping": { "checked": true, "unchecked": false },
+      "storageType": "boolean"
+    },
+    "Return_2019_Filing_Status": {
+      "control": "dropdown",
+      "nullable": true,
+      "options": [
+        { "label": "Extension Filed", "value": "Extension Filed" },
+        { "label": "Filed - Accepted", "value": "Filed - Accepted" },
+        { "label": "Filed - Under Review", "value": "Filed - Under Review" },
+        { "label": "Not Filed", "value": "Not Filed" }
+      ],
+      "storageType": "string"
+    },
+    "Return_2019_Total_Balance": { "control": "currency", "nullable": true, "storageType": "string" },
+
+    "Return_2020_CSED": { "control": "date", "nullable": true, "storageType": "string" },
+    "Return_2020_Filed": {
+      "control": "checkbox",
+      "enumMapping": { "checked": true, "unchecked": false },
+      "storageType": "boolean"
+    },
+    "Return_2020_Filing_Status": {
+      "control": "dropdown",
+      "nullable": true,
+      "options": [
+        { "label": "Extension Filed", "value": "Extension Filed" },
+        { "label": "Filed - Accepted", "value": "Filed - Accepted" },
+        { "label": "Filed - Under Review", "value": "Filed - Under Review" },
+        { "label": "Not Filed", "value": "Not Filed" }
+      ],
+      "storageType": "string"
+    },
+    "Return_2020_Total_Balance": { "control": "currency", "nullable": true, "storageType": "string" },
+
+    "Return_2021_CSED": { "control": "date", "nullable": true, "storageType": "string" },
+    "Return_2021_Filed": {
+      "control": "checkbox",
+      "enumMapping": { "checked": true, "unchecked": false },
+      "storageType": "boolean"
+    },
+    "Return_2021_Filing_Status": {
+      "control": "dropdown",
+      "nullable": true,
+      "options": [
+        { "label": "Extension Filed", "value": "Extension Filed" },
+        { "label": "Filed - Accepted", "value": "Filed - Accepted" },
+        { "label": "Filed - Under Review", "value": "Filed - Under Review" },
+        { "label": "Not Filed", "value": "Not Filed" }
+      ],
+      "storageType": "string"
+    },
+    "Return_2021_Total_Balance": { "control": "currency", "nullable": true, "storageType": "string" },
+
+    "Return_2022_CSED": { "control": "date", "nullable": true, "storageType": "string" },
+    "Return_2022_Filed": {
+      "control": "checkbox",
+      "enumMapping": { "checked": true, "unchecked": false },
+      "storageType": "boolean"
+    },
+    "Return_2022_Filing_Status": {
+      "control": "dropdown",
+      "nullable": true,
+      "options": [
+        { "label": "Extension Filed", "value": "Extension Filed" },
+        { "label": "Filed - Accepted", "value": "Filed - Accepted" },
+        { "label": "Filed - Under Review", "value": "Filed - Under Review" },
+        { "label": "Not Filed", "value": "Not Filed" }
+      ],
+      "storageType": "string"
+    },
+    "Return_2022_Total_Balance": { "control": "currency", "nullable": true, "storageType": "string" },
+
+    "Return_2023_CSED": { "control": "date", "nullable": true, "storageType": "string" },
+    "Return_2023_Filed": {
+      "control": "checkbox",
+      "enumMapping": { "checked": true, "unchecked": false },
+      "storageType": "boolean"
+    },
+    "Return_2023_Filing_Status": {
+      "control": "dropdown",
+      "nullable": true,
+      "options": [
+        { "label": "Extension Filed", "value": "Extension Filed" },
+        { "label": "Filed - Accepted", "value": "Filed - Accepted" },
+        { "label": "Filed - Under Review", "value": "Filed - Under Review" },
+        { "label": "Not Filed", "value": "Not Filed" }
+      ],
+      "storageType": "string"
+    },
+    "Return_2023_Total_Balance": { "control": "currency", "nullable": true, "storageType": "string" },
+
+    "Return_2024_CSED": { "control": "date", "nullable": true, "storageType": "string" },
+    "Return_2024_Filed": {
+      "control": "checkbox",
+      "enumMapping": { "checked": true, "unchecked": false },
+      "storageType": "boolean"
+    },
+    "Return_2024_Filing_Status": {
+      "control": "dropdown",
+      "nullable": true,
+      "options": [
+        { "label": "Extension Filed", "value": "Extension Filed" },
+        { "label": "Filed - Accepted", "value": "Filed - Accepted" },
+        { "label": "Filed - Under Review", "value": "Filed - Under Review" },
+        { "label": "Not Filed", "value": "Not Filed" }
+      ],
+      "storageType": "string"
+    },
+    "Return_2024_Total_Balance": { "control": "currency", "nullable": true, "storageType": "string" },
+
+    "Return_2025_CSED": { "control": "date", "nullable": true, "storageType": "string" },
+    "Return_2025_Filed": {
+      "control": "checkbox",
+      "enumMapping": { "checked": true, "unchecked": false },
+      "storageType": "boolean"
+    },
+    "Return_2025_Filing_Status": {
+      "control": "dropdown",
+      "nullable": true,
+      "options": [
+        { "label": "Extension Filed", "value": "Extension Filed" },
+        { "label": "Filed - Accepted", "value": "Filed - Accepted" },
+        { "label": "Filed - Under Review", "value": "Filed - Under Review" },
+        { "label": "Not Filed", "value": "Not Filed" }
+      ],
+      "storageType": "string"
+    },
+    "Return_2025_Total_Balance": { "control": "currency", "nullable": true, "storageType": "string" },
+
+    "Total_Balance_With_Accruals": {
+      "control": "currency",
+      "nullable": true,
+      "storageType": "string"
+    },
+    "Total_Balance_With_Accruals_v_Return_10_Year_Balance_Diff": {
+      "control": "currency",
+      "nullable": true,
+      "storageType": "string"
     },
     "Total_IRS_Balance": {
       "control": "currency",
@@ -402,26 +445,11 @@
       "control": "dropdown",
       "nullable": true,
       "options": [
-        {
-          "label": "CAF mailbox",
-          "value": "CAF mailbox"
-        },
-        {
-          "label": "Fax",
-          "value": "Fax"
-        },
-        {
-          "label": "Online account",
-          "value": "Online account"
-        },
-        {
-          "label": "Pending POA processing",
-          "value": "Pending POA processing"
-        },
-        {
-          "label": "Secure mailbox (SOR)",
-          "value": "Secure mailbox (SOR)"
-        }
+        { "label": "CAF mailbox", "value": "CAF mailbox" },
+        { "label": "Fax", "value": "Fax" },
+        { "label": "Online account", "value": "Online account" },
+        { "label": "Pending POA processing", "value": "Pending POA processing" },
+        { "label": "Secure mailbox (SOR)", "value": "Secure mailbox (SOR)" }
       ],
       "storageType": "string"
     },
@@ -451,22 +479,10 @@
       "control": "dropdown",
       "nullable": true,
       "options": [
-        {
-          "label": "Access denied",
-          "value": "0"
-        },
-        {
-          "label": "Current year only",
-          "value": "1"
-        },
-        {
-          "label": "Full 10-year access",
-          "value": "2"
-        },
-        {
-          "label": "Partial access",
-          "value": "3"
-        }
+        { "label": "Access denied", "value": "0" },
+        { "label": "Current year only", "value": "1" },
+        { "label": "Full 10-year access", "value": "2" },
+        { "label": "Partial access", "value": "3" }
       ],
       "storageType": "string"
     },
@@ -474,18 +490,9 @@
       "control": "dropdown",
       "nullable": true,
       "options": [
-        {
-          "label": "No",
-          "value": "No"
-        },
-        {
-          "label": "Unknown",
-          "value": "Unknown"
-        },
-        {
-          "label": "Yes",
-          "value": "Yes"
-        }
+        { "label": "No", "value": "No" },
+        { "label": "Unknown", "value": "Unknown" },
+        { "label": "Yes", "value": "Yes" }
       ],
       "storageType": "string"
     },
@@ -493,24 +500,15 @@
       "control": "radio",
       "nullable": true,
       "options": [
-        {
-          "label": "No",
-          "value": "No"
-        },
-        {
-          "label": "Unsure",
-          "value": "Unsure"
-        },
-        {
-          "label": "Yes",
-          "value": "Yes"
-        }
+        { "label": "No", "value": "No" },
+        { "label": "Unsure", "value": "Unsure" },
+        { "label": "Yes", "value": "Yes" }
       ],
       "storageType": "string"
     }
   },
   "schema": {
     "name": "tm_staff_compliance_form_contract",
-    "version": 1
+    "version": 2
   }
 }
