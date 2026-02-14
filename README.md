@@ -2,12 +2,16 @@
 
 Tax Monitor Pro is a serverless CRM + delivery system for tax monitoring services.
 
+The system is **contract-driven**.
+Forms do not define behavior — JSON contracts define behavior.
+
 ---
 
 ## Table of Contents
 
 * [Architecture Overview](#architecture-overview)
 * [Architecture Principle](#architecture-principle)
+* [Contract-Driven Architecture](#contract-driven-architecture)
 * [ClickUp Custom Fields](#clickup-custom-fields)
 * [ClickUp Structure](#clickup-structure)
 * [Data Model](#data-model)
@@ -49,6 +53,84 @@ External systems:
 * Pages is presentation
 * R2 is the authority (system of record)
 * Worker is the logic plane
+* JSON contracts govern behavior
+
+---
+
+# Contract-Driven Architecture
+
+## Core Concept
+
+Forms do not define data structures.
+HTML does not define valid options.
+SuiteDash does not define canonical state.
+
+The **JSON contract defines everything**:
+
+* Field controls (radio, dropdown, multiselect, checkbox)
+* Valid enum values
+* Storage types
+* SuiteDash field alignment
+* Validation behavior
+* Boolean normalization rules
+
+---
+
+## Contract Location
+
+Example:
+
+```
+/contracts/staff/compliance-records.contract.json
+```
+
+Contracts are:
+
+* Versioned
+* Deterministic
+* Parse-safe JSON (no comments)
+* Enforced by Worker
+* Authoritative over UI
+
+---
+
+## Worker Validation Flow
+
+When a form submits:
+
+1. Worker selects contract by form slug
+2. Worker validates:
+
+   * Field presence
+   * Enum strictness
+   * Type alignment
+   * Boolean normalization
+3. Worker rejects unknown values
+4. Worker writes append-only receipt
+5. Worker upserts canonical R2 object
+6. Worker updates ClickUp
+7. Worker triggers downstream email or state transition
+
+No form may bypass contract validation.
+
+---
+
+## Why This Matters
+
+The Staff Compliance form directly controls:
+
+* `complianceSubmitted`
+* `reportReady`
+* Final deliverable rendering
+* Order lifecycle closure
+
+This form is the operational gate that determines:
+
+```
+contract closed
+```
+
+Without contract validation, the system cannot be trusted.
 
 ---
 
@@ -56,12 +138,12 @@ External systems:
 
 ## Domain Separation
 
-**Presentation (Pages):**
+Presentation (Pages):
 
 * [https://taxmonitor.pro](https://taxmonitor.pro)
 * Serves `/app/*` and `/site/*`
 
-**API (Worker):**
+API (Worker):
 
 * [https://api.taxmonitor.pro](https://api.taxmonitor.pro)
 * All lifecycle, webhook, and form processing occurs here
@@ -92,187 +174,91 @@ action="/forms/intake"
 
 are not allowed.
 
-All HTML forms must use absolute API URLs.
-
----
-
-## Worker Routes
-
-Worker must include:
-
-* api.taxmonitor.pro/*
-
-Root domain must not proxy lifecycle endpoints unless explicitly documented.
-
 ---
 
 # Repository Structure
 
 ```
-/
-
 app/
-   ├─ contracts/
-      └─ tm_compliance_record.v2.example.json
-   ├─ pages/
-      ├─ calendar/
-         └─ index.html
-      ├─ files/
-         └─ index.html
-      ├─ flows/
-         ├─ intake/
-            ├─ agreement.html
-            ├─ intake.html
-            ├─ offer.html
-            └─ payment.html
-         └─ post-payment/
-            ├─ address-update.html
-            ├─ client-exit-survey.html
-            ├─ compliance-report.html
-            ├─ esign-2848.html
-            ├─ filing-status.html
-            └─ welcome.html
-      ├─ messaging/
-         └─ index.html
-      ├─ office/
-         ├─ estimates.html
-         ├─ files.html
-         ├─ invoices.html
-         ├─ my-billing.html
-         ├─ payments.html
-         └─ proposals.html
-      ├─ projects/
-         └─ index.html
-      ├─ staff/
-         └─ compliance-records.html
-      └─ support/
-         └─ index.html
-   ├─ partials/
-      ├─ sidebar.html
-      └─ topbar.html
-   ├─ agreement.html
-   ├─ index.html
-   ├─ intake.html
-   ├─ login.html
-   ├─ offer.html
-   ├─ payment-success.html
-   └─ payment.html
-
-assets/
-   ├─ favicon.ico
-   ├─ favicon.svg
-   └─ logo.svg
-
-legal/
-   ├─ privacy.html
-   └─ terms.html
-
-public/
-   └─ .gitkeep
-
-site/
-   ├─ partials/
-      ├─ footer.html
-      └─ header.html
-   ├─ resources/
-      ├─ 433F.html
-      └─ case-studies.html
-   ├─ contact.html
-   ├─ index.html
-   ├─ pricing.html
-   ├─ site.js
-   └─ support.html
-
-styles/
-   ├─ app.css
-   └─ site.css
-
+   contracts/
+      compliance-records.contract.json
+   pages/
+      staff/
+         compliance-records.html
 workers/
-   └─ api/
-      ├─ src/
-         └─ index.js
-      └─ wrangler.toml
-
-README.md
-_redirects
-build.mjs
-
+   api/
+      src/
+         index.js
 ```
+
+---
 
 ## Structure Notes
 
-* `app/` contains lifecycle-driven portal pages.
-* `site/` contains public marketing pages.
-* `staff/` contains internal operational tools.
-* `workers/api/` contains orchestration logic.
-* ClickUp reflects operational state only.
-* R2 stores canonical data.
-* Worker injects state into Pages via JSON bootstrap.
+* `contracts/` contains authoritative JSON schemas.
+* `staff/` forms must render from contract enums.
+* Worker must import and validate against contracts.
+* No hardcoded enum values allowed in HTML.
+* Contracts are the only source of truth for dropdown/radio options.
 
 ---
 
-# Data Model
+# Staff — Compliance Records
 
-## R2 Buckets
+Internal operational form.
+
+This form:
+
+* Is contract-driven
+* Is enum-strict
+* Updates canonical order state
+* Marks deliverable as ready
+* Closes operational lifecycle
+
+---
+
+## Submission Flow
+
+POST → Worker → R2 → ClickUp
+
+Worker must:
+
+1. Write receipt
+2. Validate against compliance contract
+3. Normalize checkbox fields
+4. Update order metadata
+5. Set:
 
 ```
-accounts/{accountId}.json
-orders/{orderId}.json
-receipts/{source}/{eventId}.json
-support/{supportId}.json
+complianceSubmitted = true
+reportReady = true
 ```
 
-R2 is the source of truth.
+6. Update ClickUp status to:
+
+```
+10 Compliance Records
+```
 
 ---
 
-## Account Object (R2)
+## Rendering Dependency
 
-* accountId
-* activeOrders[]
-* firstName
-* lastName
-* lifecycleState
-* metadata
-* primaryEmail
-* stripeCustomerId
+Compliance report page renders based on:
 
----
+```
+order.stepBooleans.reportReady === true
+```
 
-## Order Object (R2) — Primary Rendering Source
+If true → populated report
+If false → placeholder content
 
-* accountId
-* deliveryState
-* deliverableUrls
-* metadata
-* orderId
-* orderToken
-* productTier
-* status
-* stripeSubscriptionId
-* stepBooleans
-
-### Step Boolean Model
-
-* intakeComplete
-* offerAccepted
-* agreementAccepted
-* paymentCompleted
-* welcomeConfirmed
-* filingStatusSubmitted
-* addressUpdateSubmitted
-* esign2848Submitted
-* complianceSubmitted
-* reportReady
-
-True → render content
-False → render placeholder copy
+Report page never blocks.
+Lifecycle gating occurs at Worker level only.
 
 ---
 
 # Report Rendering Contract
-
-## Rendering Source
 
 Primary:
 
@@ -286,76 +272,7 @@ Secondary:
 accounts/{accountId}.json
 ```
 
-Worker reads Order first.
-Worker reads Account if referenced in Order.
-
----
-
-## Compliance Report Logic
-
-If:
-
-```
-order.stepBooleans.reportReady === true
-```
-
-Then render populated report.
-
-If false:
-
-* Render placeholder copy
-* Display empty fields
-* Guide user to required step
-
-Page is never blocked.
-
----
-
-# Staff — Compliance Records
-
-Internal operational form.
-
-**Submission Flow**
-
-POST → Worker → R2 → ClickUp
-
-Worker must:
-
-1. Write receipt
-2. Update order metadata
-3. Set:
-
-   ```
-   complianceSubmitted = true
-   reportReady = true
-   ```
-4. Update ClickUp status to:
-
-   ```
-   10 Compliance Records
-   ```
-
----
-
-# Lifecycle Flows
-
-## Pre-Payment
-
-* agreement_accepted
-* intake_submitted
-* offer_accepted
-* payment_completed
-
-## Post-Payment
-
-* address_update_submitted
-* compliance_submitted
-* esign_2848_submitted
-* exit_survey_submitted
-* filing_status_submitted
-* welcome_confirmed
-
-Worker enforces lifecycle gating.
+Order object is the authoritative rendering source.
 
 ---
 
@@ -368,41 +285,8 @@ Worker enforces lifecycle gating.
 * Stripe and Cal webhooks require signature validation
 * Email triggers only after canonical state update
 * Receipts are append-only
-
----
-
-# Environment Variables (Worker)
-
-Wrangler-only configuration.
-
-## Bindings
-
-* R2_BUCKET
-
-## Secrets
-
-* CAL_WEBHOOK_SECRET
-* CLICKUP_API_KEY
-* GOOGLE_PRIVATE_KEY
-* STRIPE_SECRET_KEY
-* STRIPE_WEBHOOK_SECRET
-
-## Plaintext Vars (Alphabetical)
-
-* CLICKUP_ACCOUNTS_LIST_ID
-* CLICKUP_ORDERS_LIST_ID
-* CLICKUP_SUPPORT_LIST_ID
-* GOOGLE_CLIENT_EMAIL
-* GOOGLE_TOKEN_URI
-* GOOGLE_WORKSPACE_USER_INFO
-* GOOGLE_WORKSPACE_USER_NO_REPLY
-* GOOGLE_WORKSPACE_USER_SUPPORT
-* MY_ORGANIZATION_ADDRESS
-* MY_ORGANIZATION_BUSINESS_LOGO
-* MY_ORGANIZATION_CITY
-* MY_ORGANIZATION_NAME
-* MY_ORGANIZATION_STATE_PROVINCE
-* MY_ORGANIZATION_ZIP
+* Contract validation is strict
+* Unknown enum values are rejected
 
 ---
 
@@ -410,6 +294,7 @@ Wrangler-only configuration.
 
 * Append-only receipts ledger
 * ClickUp as projection layer only
+* Contract-driven validation
 * Email after canonical state update
 * Idempotent processing
 * R2 authority
@@ -418,12 +303,19 @@ Wrangler-only configuration.
 * Worker-injected rendering state
 * Zero manual lifecycle transitions
 
+---
 
+# What Just Happened Architecturally
 
+The compliance JSON contract now:
 
+* Bridges operational staff execution
+* Controls canonical state mutation
+* Determines report rendering
+* Governs order closure
 
+The system is no longer form-driven.
 
+It is contract-driven.
 
-
-
-
+That is the architectural turning point.
