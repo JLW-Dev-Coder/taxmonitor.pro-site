@@ -245,13 +245,13 @@ Google Workspace is outbound-only. No inbound email ingestion at launch.
 
 # Repository Structure
 
-```
 taxmonitor.pro-site/
 ├─ .gitattributes
 ├─ .gitignore
 ├─ README.md
 ├─ _redirects
 ├─ build.mjs
+│
 ├─ app/
 │  ├─ agreement.html
 │  ├─ index.html
@@ -260,29 +260,94 @@ taxmonitor.pro-site/
 │  ├─ offer.html
 │  ├─ payment.html
 │  ├─ payment-success.html
+│  │
 │  ├─ contracts/
+│  │  ├─ contract-registry.json
+│  │  │
 │  │  ├─ clickup/
 │  │  │  ├─ accounts.list.contract.json
 │  │  │  ├─ orders.list.contract.json
 │  │  │  └─ support.list.contract.json
+│  │  │
 │  │  ├─ forms/
+│  │  │  ├─ agreement.contract.json
+│  │  │  ├─ intake.contract.json
+│  │  │  ├─ offer.contract.json
+│  │  │  ├─ payment.contract.json
 │  │  │  └─ post-payment/
-│  │  └─ staff/
-│  │     └─ compliance-records.contract.json
-│  │  └─ contract-registry.json
+│  │  │     ├─ address-update.contract.json
+│  │  │     ├─ client-exit-survey.contract.json
+│  │  │     ├─ compliance-report.contract.json
+│  │  │     ├─ esign-2848.contract.json
+│  │  │     ├─ filing-status.contract.json
+│  │  │     └─ welcome.contract.json
+│  │  │
+│  │  ├─ staff/
+│  │  │  └─ compliance-records.contract.json
+│  │  │
+│  │  └─ tm_compliance_record.v2.example.json
+│  │
 │  ├─ pages/
+│  │  ├─ calendar.html
+│  │  ├─ files.html
+│  │  ├─ messaging.html
+│  │  ├─ office.html
+│  │  ├─ projects.html
+│  │  ├─ support.html
+│  │  │
 │  │  ├─ flows/
 │  │  │  ├─ intake/
+│  │  │  │  ├─ agreement.html
+│  │  │  │  ├─ intake.html
+│  │  │  │  ├─ offer.html
+│  │  │  │  └─ payment.html
+│  │  │  │
 │  │  │  └─ post-payment/
+│  │  │     ├─ address-update.html
+│  │  │     ├─ client-exit-survey.html
+│  │  │     ├─ compliance-report.html
+│  │  │     ├─ esign-2848.html
+│  │  │     ├─ filing-status.html
+│  │  │     └─ welcome.html
+│  │  │
 │  │  └─ staff/
-│  └─ partials/
-├─ assets/
-├─ legal/
-├─ public/
-├─ site/
+│  │     └─ compliance-records.html
+│  │
 │  ├─ partials/
-│  └─ resources/
+│  │  ├─ sidebar.html
+│  │  └─ topbar.html
+│
+├─ assets/
+│  ├─ favicon.ico
+│  └─ logo.svg
+│
+├─ legal/
+│  ├─ privacy.html
+│  └─ terms.html
+│
+├─ public/
+│  └─ .gitkeep
+│
+├─ site/
+│  ├─ case-studies.html
+│  ├─ contact.html
+│  ├─ index.html
+│  ├─ pricing.html
+│  ├─ support.html
+│  │
+│  ├─ partials/
+│  │  ├─ footer.html
+│  │  └─ header.html
+│  │
+│  ├─ resources/
+│  │  └─ 433f.html
+│  │
+│  └─ site.js
+│
 ├─ styles/
+│  ├─ app.css
+│  └─ site.css
+│
 └─ workers/
    └─ api/
       ├─ wrangler.toml

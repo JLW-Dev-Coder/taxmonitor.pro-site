@@ -27,12 +27,12 @@
     },
     {
       "name": "Order 2848 Unsigned PDF URL",
-      "id": "7f6b4cfe-8ef8-4334-9d1a-fcfc47c8a687",
+      "id": "0f5b0ff4-1637-4cd9-a522-560c9b24bcd8",
       "type": "url"
     },
     {
       "name": "Order Agreement Signed PDF URL",
-      "id": "1e2a6925-11cb-4c2a-80c5-b8e9fef2f5da",
+      "id": "b156f6bd-9697-429f-a651-43e2ad12a87a",
       "type": "url"
     },
     {
@@ -42,27 +42,27 @@
     },
     {
       "name": "Order ID",
-      "id": "fdc9091f-4d32-4af9-89c8-8d6ae2f53b0a",
+      "id": "32868356-2259-49a0-b311-c05b8aff8b5a",
       "type": "text"
     },
     {
-      "name": "Order Service Progress Percent",
-      "id": "f2fa7402-2b62-4b4b-9c93-9a3b4da38d76",
-      "type": "number"
-    },
-    {
-      "name": "Order Service Progress Status",
-      "id": "bdbb7a2a-6c1f-4b8d-8abf-6b7f6db3a8d7",
+      "name": "Stripe Customer ID",
+      "id": "a5e09a6a-5c14-4efe-86a7-3f76fa7739e6",
       "type": "text"
     },
     {
-      "name": "Order Token",
-      "id": "a7f6d8a6-bc76-4e91-a0b9-5f4fd7e5c7a1",
+      "name": "Stripe Payment Status",
+      "id": "1b9a762e-cf3e-47d7-8ae7-98efe9e11eab",
       "type": "text"
     },
     {
-      "name": "Stripe Checkout Session ID",
-      "id": "c1f2d3a4-b5c6-4789-9abc-def012345678",
+      "name": "Stripe Payment URL",
+      "id": "0609cd0b-dd5e-4523-a21f-c4df8e9da4db",
+      "type": "url"
+    },
+    {
+      "name": "Stripe Session ID",
+      "id": "57e6c42b-a471-4316-92dc-23ce0f59d8b4",
       "type": "text"
     }
   ],
@@ -80,58 +80,70 @@
       "orderindex": 1
     },
     {
-      "name": "10 compliance records",
-      "id": "sc901710818340_5kz0w9Jw",
-      "type": "closed",
-      "orderindex": 10
-    },
-    {
-      "name": "2 checkout/payment",
-      "id": "sc901710818340_gXpr285o",
+      "name": "2 offer",
+      "id": "sc901710818340_5MaphtSq",
       "type": "custom",
       "orderindex": 2
     },
     {
-      "name": "3 welcome confirmed",
-      "id": "sc901710818340_Kn8a0mQz",
+      "name": "3 agreement",
+      "id": "sc901710818340_IGRRBG1n",
       "type": "custom",
       "orderindex": 3
     },
     {
-      "name": "4 filing status submitted",
-      "id": "sc901710818340_2w8lqz1T",
+      "name": "4 checkout/payment",
+      "id": "sc901710818340_gXpr285o",
       "type": "custom",
       "orderindex": 4
     },
     {
-      "name": "5 address update submitted",
-      "id": "sc901710818340_0vR2b9zS",
+      "name": "5 welcome intro",
+      "id": "sc901710818340_82P5UrpG",
       "type": "custom",
       "orderindex": 5
     },
     {
-      "name": "6 esign 2848 submitted",
-      "id": "sc901710818340_pG7d9xQm",
+      "name": "6 filing status",
+      "id": "sc901710818340_jl3RflvZ",
       "type": "custom",
       "orderindex": 6
     },
     {
-      "name": "7 compliance submitted",
-      "id": "sc901710818340_9mQ0v2kH",
+      "name": "7 address update",
+      "id": "sc901710818340_HjezCL7t",
       "type": "custom",
       "orderindex": 7
     },
     {
-      "name": "8 report ready",
-      "id": "sc901710818340_rP8k2mVq",
+      "name": "8 irs authorization (2848)",
+      "id": "sc901710818340_fppmRovU",
       "type": "custom",
       "orderindex": 8
     },
     {
-      "name": "9 exit survey submitted",
-      "id": "sc901710818340_zX1m0qLp",
-      "type": "custom",
+      "name": "9 staff compliance records",
+      "id": "sc901710818340_NRtM421G",
+      "type": "done",
       "orderindex": 9
+    },
+    {
+      "name": "10 compliance report",
+      "id": "sc901710818340_JxDKqOXO",
+      "type": "done",
+      "orderindex": 10
+    },
+    {
+      "name": "11 client exit survey",
+      "id": "sc901710818340_f2RyCWx4",
+      "type": "done",
+      "orderindex": 11
+    },
+    {
+      "name": "complete",
+      "id": "sc901710818340_SJVkqZtD",
+      "type": "closed",
+      "orderindex": 12
     }
   ]
 }
