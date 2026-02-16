@@ -1,8 +1,6 @@
 {
   "contract": {
-    "authority": [
-      "R2 Canonical"
-    ],
+    "authority": ["R2 Canonical"],
     "governs": "ClickUp Projection — Orders List",
     "path": "/contracts/clickup/orders.list.contract.json",
     "source": "Tax Monitor Pro",
@@ -21,129 +19,82 @@
   "listId": "901710818340",
   "customFields": [
     {
-      "name": "Order 2848 Signed PDF URL",
-      "id": "26206c04-13c0-4f4c-8628-ae023d97eb67",
-      "type": "url"
-    },
-    {
-      "name": "Order 2848 Unsigned PDF URL",
-      "id": "0f5b0ff4-1637-4cd9-a522-560c9b24bcd8",
-      "type": "url"
-    },
-    {
-      "name": "Order Agreement Signed PDF URL",
-      "id": "b156f6bd-9697-429f-a651-43e2ad12a87a",
-      "type": "url"
-    },
-    {
-      "name": "Order Compliance Report PDF URL",
       "id": "3c4c2986-c8df-47b7-a676-258333c71558",
+      "name": "Order Compliance Report PDF URL",
       "type": "url"
     },
     {
-      "name": "Order ID",
       "id": "32868356-2259-49a0-b311-c05b8aff8b5a",
-      "type": "text"
+      "name": "Order ID",
+      "type": "short_text"
     },
     {
-      "name": "Stripe Customer ID",
-      "id": "a5e09a6a-5c14-4efe-86a7-3f76fa7739e6",
-      "type": "text"
-    },
-    {
-      "name": "Stripe Payment Status",
-      "id": "1b9a762e-cf3e-47d7-8ae7-98efe9e11eab",
-      "type": "text"
-    },
-    {
-      "name": "Stripe Payment URL",
-      "id": "0609cd0b-dd5e-4523-a21f-c4df8e9da4db",
+      "id": "26206c04-13c0-4f4c-8628-ae023d97eb67",
+      "name": "Order 2848 Signed PDF URL",
       "type": "url"
     },
     {
-      "name": "Stripe Session ID",
+      "id": "0f5b0ff4-1637-4cd9-a522-560c9b24bcd8",
+      "name": "Order 2848 Unsigned PDF URL",
+      "type": "url"
+    },
+    {
+      "id": "b156f6bd-9697-429f-a651-43e2ad12a87a",
+      "name": "Order Agreement Signed PDF URL",
+      "type": "url"
+    },
+    {
+      "id": "0455921e-2f37-4167-b7ce-50f34490c5cb",
+      "name": "Order Status",
+      "type": "drop_down",
+      "options": [
+        {
+          "id": "5457cd9f-c363-4694-abad-f3a8f3d6123d",
+          "value": "Authorization & Processing"
+        },
+        {
+          "id": "1a874014-6e8b-4d7d-99bb-71d5fcc855e7",
+          "value": "Booking, Intake & Payment"
+        },
+        {
+          "id": "7be69bba-29cf-460f-9069-e4b882c6bb76",
+          "value": "Delivery & Exit"
+        },
+        {
+          "id": "9e0837a8-10c2-4a2c-9621-1230c7885512",
+          "value": "Onboarding"
+        }
+      ]
+    },
+    {
+      "id": "a5e09a6a-5c14-4efe-86a7-3f76fa7739e6",
+      "name": "Stripe Customer ID",
+      "type": "short_text"
+    },
+    {
       "id": "57e6c42b-a471-4316-92dc-23ce0f59d8b4",
-      "type": "text"
+      "name": "Stripe Session ID",
+      "type": "short_text"
+    },
+    {
+      "id": "1b9a762e-cf3e-47d7-8ae7-98efe9e11eab",
+      "name": "Stripe Payment Status",
+      "type": "short_text"
+    },
+    {
+      "id": "0609cd0b-dd5e-4523-a21f-c4df8e9da4db",
+      "name": "Stripe Payment URL",
+      "type": "url"
     }
   ],
   "statuses": [
     {
-      "name": "0 booking / lead capture",
-      "id": "sc901710818340_EScr18sR",
-      "type": "open",
-      "orderindex": 0
+      "name": "open",
+      "type": "open"
     },
     {
-      "name": "1 intake triage",
-      "id": "sc901710818340_H1s6qUpl",
-      "type": "custom",
-      "orderindex": 1
-    },
-    {
-      "name": "2 offer",
-      "id": "sc901710818340_5MaphtSq",
-      "type": "custom",
-      "orderindex": 2
-    },
-    {
-      "name": "3 agreement",
-      "id": "sc901710818340_IGRRBG1n",
-      "type": "custom",
-      "orderindex": 3
-    },
-    {
-      "name": "4 checkout/payment",
-      "id": "sc901710818340_gXpr285o",
-      "type": "custom",
-      "orderindex": 4
-    },
-    {
-      "name": "5 welcome intro",
-      "id": "sc901710818340_82P5UrpG",
-      "type": "custom",
-      "orderindex": 5
-    },
-    {
-      "name": "6 filing status",
-      "id": "sc901710818340_jl3RflvZ",
-      "type": "custom",
-      "orderindex": 6
-    },
-    {
-      "name": "7 address update",
-      "id": "sc901710818340_HjezCL7t",
-      "type": "custom",
-      "orderindex": 7
-    },
-    {
-      "name": "8 irs authorization (2848)",
-      "id": "sc901710818340_fppmRovU",
-      "type": "custom",
-      "orderindex": 8
-    },
-    {
-      "name": "9 staff compliance records",
-      "id": "sc901710818340_NRtM421G",
-      "type": "done",
-      "orderindex": 9
-    },
-    {
-      "name": "10 compliance report",
-      "id": "sc901710818340_JxDKqOXO",
-      "type": "done",
-      "orderindex": 10
-    },
-    {
-      "name": "11 client exit survey",
-      "id": "sc901710818340_f2RyCWx4",
-      "type": "done",
-      "orderindex": 11
-    },
-    {
-      "name": "complete",
-      "id": "sc901710818340_SJVkqZtD",
-      "type": "closed",
-      "orderindex": 12
+      "name": "closed",
+      "type": "closed"
     }
   ]
 }
