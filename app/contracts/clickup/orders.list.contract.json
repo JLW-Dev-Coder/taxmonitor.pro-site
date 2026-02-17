@@ -1,6 +1,8 @@
 {
   "contract": {
-    "authority": ["R2 Canonical"],
+    "authority": [
+      "R2 Canonical"
+    ],
     "governs": "ClickUp Projection — Orders List",
     "path": "/contracts/clickup/orders.list.contract.json",
     "source": "Tax Monitor Pro",
@@ -10,14 +12,19 @@
       "normalizeCheckboxToBoolean": true,
       "rejectUnknownValues": true
     },
-    "version": 1
+    "version": 2
   },
   "schema": {
     "name": "tm_clickup_orders_list_contract",
-    "version": 1
+    "version": 2
   },
   "listId": "901710818340",
   "customFields": [
+    {
+      "id": "b156f6bd-9697-429f-a651-43e2ad12a87a",
+      "name": "Order Agreement Signed PDF URL",
+      "type": "url"
+    },
     {
       "id": "3c4c2986-c8df-47b7-a676-258333c71558",
       "name": "Order Compliance Report PDF URL",
@@ -39,41 +46,75 @@
       "type": "url"
     },
     {
-      "id": "b156f6bd-9697-429f-a651-43e2ad12a87a",
-      "name": "Order Agreement Signed PDF URL",
-      "type": "url"
-    },
-    {
       "id": "0455921e-2f37-4167-b7ce-50f34490c5cb",
       "name": "Order Status",
       "type": "drop_down",
       "options": [
         {
-          "id": "5457cd9f-c363-4694-abad-f3a8f3d6123d",
-          "value": "Authorization & Processing"
+          "id": "f72a5aaf-84fb-46ee-937e-91650a87cea9",
+          "name": "Intake Submitted (Form 1)",
+          "orderindex": 0
         },
         {
-          "id": "1a874014-6e8b-4d7d-99bb-71d5fcc855e7",
-          "value": "Booking, Intake & Payment"
+          "id": "cf8580d5-0d64-435a-8e85-c17ce220a672",
+          "name": "Offer Submitted (Form 2)",
+          "orderindex": 1
         },
         {
-          "id": "7be69bba-29cf-460f-9069-e4b882c6bb76",
-          "value": "Delivery & Exit"
+          "id": "f9acea68-ba1f-4313-8f01-7d5e9b723bea",
+          "name": "Agreement Submitted (Form 3)",
+          "orderindex": 2
         },
         {
-          "id": "9e0837a8-10c2-4a2c-9621-1230c7885512",
-          "value": "Onboarding"
+          "id": "77f0a7d9-8536-4a8e-a3e4-d9cf0e1a8b98",
+          "name": "Payment Submitted (Form 4)",
+          "orderindex": 3
+        },
+        {
+          "id": "2adcbda3-9a75-419f-a738-74afdeeb7c1f",
+          "name": "Welcome Submitted (Form 5)",
+          "orderindex": 4
+        },
+        {
+          "id": "7061f7dd-9c80-4373-9555-d4f969aa5bc8",
+          "name": "Filing Status Submitted (Form 6)",
+          "orderindex": 5
+        },
+        {
+          "id": "0d3f9e49-2932-4561-975e-d86b92454928",
+          "name": "Address Update Submitted (Form 7)",
+          "orderindex": 6
+        },
+        {
+          "id": "a1a9f429-fdd4-4c6b-8ce7-c15314aae580",
+          "name": "2848 Submitted (Form 8)",
+          "orderindex": 7
+        },
+        {
+          "id": "8210bfbe-31c6-4001-b428-7d58696d5baa",
+          "name": "Wet Signed 2848 Submitted (Form 9)",
+          "orderindex": 8
+        },
+        {
+          "id": "bfa4797b-bb17-454a-9b2c-edccf657ca71",
+          "name": "Compliance Records Submitted (Form 10)",
+          "orderindex": 9
+        },
+        {
+          "id": "85619fae-ef23-42fc-bedb-3a73c00b745e",
+          "name": "Compliance Report Submitted (Form 11)",
+          "orderindex": 10
+        },
+        {
+          "id": "edcb7355-4b03-41e1-b962-77a172f68c19",
+          "name": "Client Exit Survey Submitted (Form 12)",
+          "orderindex": 11
         }
       ]
     },
     {
       "id": "a5e09a6a-5c14-4efe-86a7-3f76fa7739e6",
       "name": "Stripe Customer ID",
-      "type": "short_text"
-    },
-    {
-      "id": "57e6c42b-a471-4316-92dc-23ce0f59d8b4",
-      "name": "Stripe Session ID",
       "type": "short_text"
     },
     {
@@ -85,15 +126,76 @@
       "id": "0609cd0b-dd5e-4523-a21f-c4df8e9da4db",
       "name": "Stripe Payment URL",
       "type": "url"
+    },
+    {
+      "id": "57e6c42b-a471-4316-92dc-23ce0f59d8b4",
+      "name": "Stripe Session ID",
+      "type": "short_text"
     }
   ],
   "statuses": [
     {
-      "name": "open",
+      "color": "#87909e",
+      "id": "sc901710818340_s8B72nYa",
+      "orderindex": 0,
+      "status": "new / open",
+      "status_group": "subcat_901710818340",
       "type": "open"
     },
     {
-      "name": "closed",
+      "color": "#5f55ee",
+      "id": "sc901710818340_spZYI3Oq",
+      "orderindex": 1,
+      "status": "blocked",
+      "status_group": "subcat_901710818340",
+      "type": "custom"
+    },
+    {
+      "color": "#0091ff",
+      "id": "sc901710818340_9xB3Rwet",
+      "orderindex": 2,
+      "status": "in progress",
+      "status_group": "subcat_901710818340",
+      "type": "custom"
+    },
+    {
+      "color": "#1090e0",
+      "id": "sc901710818340_BNfUYlBk",
+      "orderindex": 3,
+      "status": "needs review",
+      "status_group": "subcat_901710818340",
+      "type": "custom"
+    },
+    {
+      "color": "#008844",
+      "id": "sc901710818340_h9IawejR",
+      "orderindex": 4,
+      "status": "waiting on client",
+      "status_group": "subcat_901710818340",
+      "type": "custom"
+    },
+    {
+      "color": "#a18072",
+      "id": "sc901710818340_SJVkqZtD",
+      "orderindex": 5,
+      "status": "complete",
+      "status_group": "subcat_901710818340",
+      "type": "done"
+    },
+    {
+      "color": "#f76808",
+      "id": "sc901710818340_NRtM421G",
+      "orderindex": 6,
+      "status": "template",
+      "status_group": "subcat_901710818340",
+      "type": "done"
+    },
+    {
+      "color": "#008844",
+      "id": "sc901710818340_br3XTyBW",
+      "orderindex": 7,
+      "status": "Closed",
+      "status_group": "subcat_901710818340",
       "type": "closed"
     }
   ]
