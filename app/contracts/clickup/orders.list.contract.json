@@ -47,8 +47,8 @@
     },
     {
       "id": "0455921e-2f37-4167-b7ce-50f34490c5cb",
-      "name": "Order Status",
-      "type": "drop_down",
+      "name": "Order Form Submitted",
+      "type": "label",
       "options": [
         {
           "id": "f72a5aaf-84fb-46ee-937e-91650a87cea9",
