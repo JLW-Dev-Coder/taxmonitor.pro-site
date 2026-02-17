@@ -1,3 +1,5 @@
+# README.md
+
 # Tax Monitor Pro
 Serverless · Contract-Driven · Idempotent · Event-Driven
 * * *
@@ -208,6 +210,7 @@ If receipt exists → exit safely.
 │  │  │     └─ client-exit-survey.contract.json
 │  │  ├─ staff/
 │  │  │  └─ compliance-records.contract.json
+│  │  ├─ contract-registry.json
 │  │  └─ tm_compliance_record.v2.example.json
 │  ├─ index.html
 │  ├─ intake.html
