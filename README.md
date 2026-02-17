@@ -200,38 +200,31 @@ If receipt exists → exit safely.
 
 ```dpr
 .
-├─ app/
-│  ├─ agreement.html
-│  ├─ contracts/
-│  │  ├─ clickup/
-│  │  │  ├─ account.list.contract.json
-│  │  │  ├─ orders.list.contract.json
-│  │  │  └─ support.list.contract.json
-│  │  ├─ forms/
-│  │  │  ├─ intake/
-│  │  │  │  ├─ agreement.contract.json
-│  │  │  │  ├─ intake.contract.json
-│  │  │  │  ├─ offer.contract.json
-│  │  │  │  └─ payment.contract.json
-│  │  │  └─ post-payment/
-│  │  │     ├─ welcome.contract.json
-│  │  │     ├─ filing-status.contract.json
-│  │  │     ├─ address-update.contract.json
-│  │  │     ├─ esign-2848.contract.json
-│  │  │     ├─ wet-signed-2848.contract.json
-│  │  │     ├─ compliance-report.contract.json
-│  │  │     └─ client-exit-survey.contract.json
-│  │  ├─ staff/
-│  │  │  └─ compliance-records.contract.json
-│  │  ├─ webhooks/
-│  │  │  └─ compliance-records.contract.json
-│  │  ├─ contract-registry.json
-│  │  ├─ tm_compliance_record.v2.example.json
-│  │  └─ webhook-registry.json
-│  ├─ index.html
-│  ├─ intake.html
-│  ├─ login.html
-│  ├─ offer.html
+app/
+├─ contracts/
+│  ├─ clickup/
+│  │  ├─ accounts.list.contract.json
+│  │  ├─ orders.list.contract.json
+│  │  └─ support.list.contract.json
+│  ├─ forms/
+│  │  └─ post-payment/
+│  │     ├─ address-update.contract.json
+│  │     ├─ client-exit-survey.contract.json
+│  │     ├─ compliance-report.contract.json
+│  │     ├─ esign-2848.contract.json
+│  │     ├─ filing-status.contract.json
+│  │     └─ welcome.contract.json
+│  ├─ staff/
+│  │  └─ compliance-records.contract.json
+│  ├─ webhooks/
+│  │  ├─ cal.booking_cancelled.contract.json
+│  │  ├─ cal.booking_created.contract.json
+│  │  ├─ cal.booking_rescheduled.contract.json
+│  │  ├─ stripe.checkout_session_completed.contract.json
+│  │  └─ stripe.payment_intent_succeeded.contract.json
+│  ├─ contract-registry.json
+│  ├─ tm_compliance_record.v2.example.json
+│  └─ webhook-registry.json
 │  ├─ pages/
 │  │  ├─ calendar.html
 │  │  ├─ files.html
@@ -257,6 +250,11 @@ If receipt exists → exit safely.
 │  ├─ partials/
 │  │  ├─ sidebar.html
 │  │  └─ topbar.html
+│  ├─ agreement.html
+│  ├─ index.html
+│  ├─ intake.html
+│  ├─ login.html
+│  ├─ offer.html
 │  ├─ payment-success.html
 │  └─ payment.html
 ├─ assets/
@@ -287,9 +285,10 @@ If receipt exists → exit safely.
       ├─ src/
       │  └─ index.js
       └─ wrangler.toml
-├─ build.mjs
 ├─ .gitattributes
 ├─ .gitignore
+├─ build.mjs
+├─ MARKET.md
 ├─ README.md
 ├─ _redirects
 ```
@@ -394,3 +393,100 @@ Canonical fields:
 *   esign2848RepresentativeSignedAt
 *   esign2848UrlTaxpayerSignedPdf
 *   esign2848UrlFinalPdf
+
+# Variables and Secrets
+Define the environment variables and secrets for your Worker used at runtime
+
+Secret
+CAL_WEBHOOK_SECRET
+Value encrypted
+
+
+Plaintext
+CLICKUP_ACCOUNTS_LIST_ID
+901710909567
+
+
+Secret
+CLICKUP_API_KEY
+Value encrypted
+
+
+Plaintext
+CLICKUP_ORDERS_LIST_ID
+901710818340
+
+
+Plaintext
+CLICKUP_SUPPORT_LIST_ID
+901710818377
+
+
+Plaintext
+GOOGLE_CLIENT_EMAIL
+tax-monitor-worker@tax-monitor-pro.iam.gserviceaccount.com
+
+
+Secret
+GOOGLE_PRIVATE_KEY
+Value encrypted
+
+
+Plaintext
+GOOGLE_TOKEN_URI
+https://oauth2.googleapis.com/token
+
+
+Plaintext
+GOOGLE_WORKSPACE_USER_INFO
+info@taxmonitor.pro
+
+
+Plaintext
+GOOGLE_WORKSPACE_USER_NO_REPLY
+no-reply@taxmonitor.pro
+
+
+Plaintext
+GOOGLE_WORKSPACE_USER_SUPPORT
+support@taxmonitor.pro
+
+
+Plaintext
+MY_ORGANIZATION_ADDRESS
+1175 Avocado Avenue Suite 101 PMB 1010
+
+
+Plaintext
+MY_ORGANIZATION_BUSINESS_LOGO
+https://taxmonitor.pro/assets/logo.svg
+
+
+Plaintext
+MY_ORGANIZATION_CITY
+El Cajon
+
+
+Plaintext
+MY_ORGANIZATION_NAME
+Tax Monitor Pro
+
+
+Plaintext
+MY_ORGANIZATION_STATE_PROVINCE
+CA
+
+
+Plaintext
+MY_ORGANIZATION_ZIP
+92020
+
+
+Secret
+STRIPE_SECRET_KEY
+Value encrypted
+
+
+Secret
+STRIPE_WEBHOOK_SECRET
+Value encrypted

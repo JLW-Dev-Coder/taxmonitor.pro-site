@@ -13,7 +13,7 @@
       "dedupeKey": "event.id",
       "receiptKeyPattern": "receipts/{source}/{eventId}.json",
       "signature": {
-        "header": "Cal-Signature",
+        "header": "x-cal-signature-256",
         "secretEnvVar": "CAL_WEBHOOK_SECRET",
         "required": true
       },
@@ -35,7 +35,7 @@
       "dedupeKey": "event.id",
       "receiptKeyPattern": "receipts/{source}/{eventId}.json",
       "signature": {
-        "header": "Cal-Signature",
+        "header": "x-cal-signature-256",
         "secretEnvVar": "CAL_WEBHOOK_SECRET",
         "required": true
       },
@@ -57,7 +57,7 @@
       "dedupeKey": "event.id",
       "receiptKeyPattern": "receipts/{source}/{eventId}.json",
       "signature": {
-        "header": "Cal-Signature",
+        "header": "x-cal-signature-256",
         "secretEnvVar": "CAL_WEBHOOK_SECRET",
         "required": true
       },
