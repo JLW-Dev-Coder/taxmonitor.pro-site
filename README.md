@@ -1,5 +1,7 @@
 # README.md
 
+# [README.md](http://README.md)
+
 # Tax Monitor Pro
 Serverless · Contract-Driven · Idempotent · Event-Driven
 * * *
@@ -83,12 +85,17 @@ Contracts are versioned and enforced by the Worker.
 
 # Core Stack (Alphabetical)
 *   [Cal.com](http://Cal.com) — Appointment booking webhooks
+    *   BOOKING\_CANCELLED
+    *   BOOKING\_CREATED
+    *   BOOKING\_RESCHEDULED
 *   ClickUp — Human execution layer (projection only)
 *   Cloudflare Pages — UI (portal + marketing)
 *   Cloudflare R2 — Canonical authority + append-only receipts
 *   Cloudflare Worker — API, orchestration, validation
 *   Google Workspace — Transactional email (only permitted email system)
 *   Stripe — Payment webhooks
+    *   checkout.session.completed
+    *   payment\_intent.succeeded
 * * *
 
 # Data Model (R2 Canonical Authority)
