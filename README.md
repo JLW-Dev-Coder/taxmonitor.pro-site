@@ -85,17 +85,23 @@ Contracts are versioned and enforced by the Worker.
 
 # Core Stack (Alphabetical)
 *   [Cal.com](http://Cal.com) — Appointment booking webhooks
-    *   BOOKING\_CANCELLED
-    *   BOOKING\_CREATED
-    *   BOOKING\_RESCHEDULED
+    *   Webhooks:
+      *   BOOKING\_CANCELLED
+      *   BOOKING\_CREATED
+      *   BOOKING\_RESCHEDULED
+    *   Endpoint:
+      *   https://api.taxmonitor.pro/cal/webhook
 *   ClickUp — Human execution layer (projection only)
 *   Cloudflare Pages — UI (portal + marketing)
 *   Cloudflare R2 — Canonical authority + append-only receipts
 *   Cloudflare Worker — API, orchestration, validation
 *   Google Workspace — Transactional email (only permitted email system)
 *   Stripe — Payment webhooks
-    *   checkout.session.completed
-    *   payment\_intent.succeeded
+    *   Webhooks:
+      *   checkout.session.completed
+      *   payment\_intent.succeeded
+    *   Endpoint:
+      *   https://api.taxmonitor.pro/stripe/webhook
 * * *
 
 # Data Model (R2 Canonical Authority)
@@ -217,8 +223,11 @@ If receipt exists → exit safely.
 │  │  │     └─ client-exit-survey.contract.json
 │  │  ├─ staff/
 │  │  │  └─ compliance-records.contract.json
+│  │  ├─ webhooks/
+│  │  │  └─ compliance-records.contract.json
 │  │  ├─ contract-registry.json
-│  │  └─ tm_compliance_record.v2.example.json
+│  │  ├─ tm_compliance_record.v2.example.json
+│  │  └─ webhook-registry.json
 │  ├─ index.html
 │  ├─ intake.html
 │  ├─ login.html

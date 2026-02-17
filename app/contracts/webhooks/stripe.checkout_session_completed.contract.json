@@ -1,0 +1,27 @@
+{
+  "contract": {
+    "authority": ["R2 Canonical"],
+    "governs": "Stripe Webhook — checkout.session.completed",
+    "path": "app/contracts/webhooks/stripe.checkout_session_completed.contract.json",
+    "source": "Tax Monitor Pro",
+    "title": "Tax Monitor Pro — Stripe Webhook Contract — checkout.session.completed",
+    "validation": {
+      "enumStrict": true,
+      "normalizeCheckboxToBoolean": true,
+      "rejectUnknownValues": true
+    },
+    "version": 1
+  },
+  "event": {
+    "required": ["id", "type", "created"],
+    "properties": {
+      "id": { "type": "string" },
+      "type": { "type": "string", "enum": ["checkout.session.completed"] },
+      "created": { "type": "number" }
+    }
+  },
+  "data": {
+    "type": "object",
+    "description": "Vendor payload pass-through. Worker must store receipt, upsert orders canonical (paymentCompleted), then project Orders in ClickUp."
+  }
+}

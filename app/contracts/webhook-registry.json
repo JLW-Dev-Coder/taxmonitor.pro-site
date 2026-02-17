@@ -1,0 +1,112 @@
+{
+  "webhookRegistryVersion": 1,
+  "baseUrl": "https://api.taxmonitor.pro",
+  "entries": [
+    {
+      "id": "cal_booking_cancelled",
+      "version": 1,
+      "path": "app/contracts/webhooks/cal.booking_cancelled.contract.json",
+      "method": "POST",
+      "endpoint": "/cal/webhook",
+      "receiptSource": "cal",
+      "eventType": "BOOKING_CANCELLED",
+      "dedupeKey": "event.id",
+      "receiptKeyPattern": "receipts/{source}/{eventId}.json",
+      "signature": {
+        "header": "Cal-Signature",
+        "secretEnvVar": "CAL_WEBHOOK_SECRET",
+        "required": true
+      },
+      "writes": ["support"],
+      "clickupProjection": [
+        {
+          "list": "Support"
+        }
+      ]
+    },
+    {
+      "id": "cal_booking_created",
+      "version": 1,
+      "path": "app/contracts/webhooks/cal.booking_created.contract.json",
+      "method": "POST",
+      "endpoint": "/cal/webhook",
+      "receiptSource": "cal",
+      "eventType": "BOOKING_CREATED",
+      "dedupeKey": "event.id",
+      "receiptKeyPattern": "receipts/{source}/{eventId}.json",
+      "signature": {
+        "header": "Cal-Signature",
+        "secretEnvVar": "CAL_WEBHOOK_SECRET",
+        "required": true
+      },
+      "writes": ["support"],
+      "clickupProjection": [
+        {
+          "list": "Support"
+        }
+      ]
+    },
+    {
+      "id": "cal_booking_rescheduled",
+      "version": 1,
+      "path": "app/contracts/webhooks/cal.booking_rescheduled.contract.json",
+      "method": "POST",
+      "endpoint": "/cal/webhook",
+      "receiptSource": "cal",
+      "eventType": "BOOKING_RESCHEDULED",
+      "dedupeKey": "event.id",
+      "receiptKeyPattern": "receipts/{source}/{eventId}.json",
+      "signature": {
+        "header": "Cal-Signature",
+        "secretEnvVar": "CAL_WEBHOOK_SECRET",
+        "required": true
+      },
+      "writes": ["support"],
+      "clickupProjection": [
+        {
+          "list": "Support"
+        }
+      ]
+    },
+    {
+      "id": "stripe_checkout_session_completed",
+      "version": 1,
+      "path": "app/contracts/webhooks/stripe.checkout_session_completed.contract.json",
+      "method": "POST",
+      "endpoint": "/stripe/webhook",
+      "receiptSource": "stripe",
+      "eventType": "checkout.session.completed",
+      "dedupeKey": "event.id",
+      "receiptKeyPattern": "receipts/{source}/{eventId}.json",
+      "signature": {
+        "header": "Stripe-Signature",
+        "secretEnvVar": "STRIPE_WEBHOOK_SECRET",
+        "required": true
+      },
+      "writes": ["orders"],
+      "clickupProjection": [
+        {
+          "list": "Orders"
+        }
+      ]
+    },
+    {
+      "id": "stripe_payment_intent_succeeded",
+      "version": 1,
+      "path": "app/contracts/webhooks/stripe.payment_intent_succeeded.contract.json",
+      "method": "POST",
+      "endpoint": "/stripe/webhook",
+      "receiptSource": "stripe",
+      "eventType": "payment_intent.succeeded",
+      "dedupeKey": "event.id",
+      "receiptKeyPattern": "receipts/{source}/{eventId}.json",
+      "signature": {
+        "header": "Stripe-Signature",
+        "secretEnvVar": "STRIPE_WEBHOOK_SECRET",
+        "required": true
+      },
+      "writes": ["receipts"],
+      "clickupProjection": []
+    }
+  ]
+}

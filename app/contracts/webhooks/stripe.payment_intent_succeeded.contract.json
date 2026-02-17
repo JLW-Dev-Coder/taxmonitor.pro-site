@@ -1,0 +1,27 @@
+{
+  "contract": {
+    "authority": ["R2 Canonical"],
+    "governs": "Stripe Webhook — payment_intent.succeeded",
+    "path": "app/contracts/webhooks/stripe.payment_intent_succeeded.contract.json",
+    "source": "Tax Monitor Pro",
+    "title": "Tax Monitor Pro — Stripe Webhook Contract — payment_intent.succeeded",
+    "validation": {
+      "enumStrict": true,
+      "normalizeCheckboxToBoolean": true,
+      "rejectUnknownValues": true
+    },
+    "version": 1
+  },
+  "event": {
+    "required": ["id", "type", "created"],
+    "properties": {
+      "id": { "type": "string" },
+      "type": { "type": "string", "enum": ["payment_intent.succeeded"] },
+      "created": { "type": "number" }
+    }
+  },
+  "data": {
+    "type": "object",
+    "description": "Vendor payload pass-through. Worker must store receipt. No lifecycle advancement required."
+  }
+}

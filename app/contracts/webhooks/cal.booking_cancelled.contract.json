@@ -1,0 +1,27 @@
+{
+  "contract": {
+    "authority": ["R2 Canonical"],
+    "governs": "Cal.com Webhook — BOOKING_CANCELLED",
+    "path": "app/contracts/webhooks/cal.booking_cancelled.contract.json",
+    "source": "Tax Monitor Pro",
+    "title": "Tax Monitor Pro — Cal.com Webhook Contract — BOOKING_CANCELLED",
+    "validation": {
+      "enumStrict": true,
+      "normalizeCheckboxToBoolean": true,
+      "rejectUnknownValues": true
+    },
+    "version": 1
+  },
+  "event": {
+    "required": ["id", "type", "created"],
+    "properties": {
+      "id": { "type": "string" },
+      "type": { "type": "string", "enum": ["BOOKING_CANCELLED"] },
+      "created": { "type": "number" }
+    }
+  },
+  "data": {
+    "type": "object",
+    "description": "Vendor payload pass-through. Worker must store receipt and update support canonical."
+  }
+}
