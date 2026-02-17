@@ -1,10 +1,17 @@
 {
   "contract": {
-    "authority": ["R2 Canonical"],
-    "governs": "ClickUp Projection — Orders List",
-    "path": "/contracts/clickup/orders.list.contract.json",
+    "authority": [
+      "ClickUp Projection"
+    ],
+    "clickup": {
+      "listId": "901710909567",
+      "listName": "Accounts",
+      "overrideStatuses": true
+    },
+    "governs": "ClickUp List — Accounts",
+    "path": "/contracts/clickup/accounts.list.contract.json",
     "source": "Tax Monitor Pro",
-    "title": "Tax Monitor Pro — ClickUp Orders List Contract",
+    "title": "Tax Monitor Pro — ClickUp Accounts List Contract",
     "validation": {
       "enumStrict": true,
       "normalizeCheckboxToBoolean": true,
@@ -12,89 +19,194 @@
     },
     "version": 1
   },
-  "schema": {
-    "name": "tm_clickup_orders_list_contract",
-    "version": 1
-  },
-  "listId": "901710818340",
-  "customFields": [
-    {
-      "id": "3c4c2986-c8df-47b7-a676-258333c71558",
-      "name": "Order Compliance Report PDF URL",
-      "type": "url"
-    },
-    {
-      "id": "32868356-2259-49a0-b311-c05b8aff8b5a",
-      "name": "Order ID",
-      "type": "short_text"
-    },
-    {
-      "id": "26206c04-13c0-4f4c-8628-ae023d97eb67",
-      "name": "Order 2848 Signed PDF URL",
-      "type": "url"
-    },
-    {
-      "id": "0f5b0ff4-1637-4cd9-a522-560c9b24bcd8",
-      "name": "Order 2848 Unsigned PDF URL",
-      "type": "url"
-    },
-    {
-      "id": "b156f6bd-9697-429f-a651-43e2ad12a87a",
-      "name": "Order Agreement Signed PDF URL",
-      "type": "url"
-    },
-    {
-      "id": "0455921e-2f37-4167-b7ce-50f34490c5cb",
-      "name": "Order Status",
-      "type": "drop_down",
-      "options": [
-        {
-          "id": "5457cd9f-c363-4694-abad-f3a8f3d6123d",
-          "value": "Authorization & Processing"
-        },
-        {
-          "id": "1a874014-6e8b-4d7d-99bb-71d5fcc855e7",
-          "value": "Booking, Intake & Payment"
-        },
-        {
-          "id": "7be69bba-29cf-460f-9069-e4b882c6bb76",
-          "value": "Delivery & Exit"
-        },
-        {
-          "id": "9e0837a8-10c2-4a2c-9621-1230c7885512",
-          "value": "Onboarding"
-        }
-      ]
-    },
-    {
-      "id": "a5e09a6a-5c14-4efe-86a7-3f76fa7739e6",
-      "name": "Stripe Customer ID",
-      "type": "short_text"
-    },
-    {
-      "id": "57e6c42b-a471-4316-92dc-23ce0f59d8b4",
-      "name": "Stripe Session ID",
-      "type": "short_text"
-    },
-    {
-      "id": "1b9a762e-cf3e-47d7-8ae7-98efe9e11eab",
-      "name": "Stripe Payment Status",
-      "type": "short_text"
-    },
-    {
-      "id": "0609cd0b-dd5e-4523-a21f-c4df8e9da4db",
-      "name": "Stripe Payment URL",
-      "type": "url"
-    }
-  ],
   "statuses": [
     {
-      "name": "open",
+      "color": "#87909e",
+      "id": "sc901710909567_xIp7IGFz",
+      "orderindex": 0,
+      "status": "lead",
       "type": "open"
     },
     {
-      "name": "closed",
+      "color": "#5f55ee",
+      "id": "sc901710909567_28lOSeqB",
+      "orderindex": 1,
+      "status": "active prospect",
+      "type": "custom"
+    },
+    {
+      "color": "#30a46c",
+      "id": "sc901710909567_HQFUVvsP",
+      "orderindex": 2,
+      "status": "active client",
+      "type": "custom"
+    },
+    {
+      "color": "#f76808",
+      "id": "sc901710909567_FQloihMJ",
+      "orderindex": 3,
+      "status": "inactive prospect",
+      "type": "done"
+    },
+    {
+      "color": "#e5484d",
+      "id": "sc901710909567_xkb7cJgK",
+      "orderindex": 4,
+      "status": "inactive client",
+      "type": "done"
+    },
+    {
+      "color": "#008844",
+      "id": "sc901710909567_3L7zz4ba",
+      "orderindex": 5,
+      "status": "case closed",
       "type": "closed"
     }
-  ]
+  ],
+  "fields": {
+    "Account_First_Name": {
+      "clickupFieldId": "f5c9f6da-c994-4733-a15f-59188b37f531",
+      "clickupType": "short_text",
+      "name": "Account First Name"
+    },
+    "Account_ID": {
+      "clickupFieldId": "e5f176ba-82c8-47d8-b3b1-0716d075f43f",
+      "clickupType": "short_text",
+      "name": "Account ID"
+    },
+    "Account_Last_Name": {
+      "clickupFieldId": "a348d629-fa05-45d8-a2dd-b909f78ddf49",
+      "clickupType": "short_text",
+      "name": "Account Last Name"
+    },
+    "Account_Order_Status": {
+      "clickupFieldId": "1cd4911f-d48c-47d9-8855-9cf4388eb55f",
+      "clickupType": "drop_down",
+      "name": "Account Order Status",
+      "options": [
+        {
+          "id": "58138186-ee2d-4b69-a450-8b9be992f373",
+          "name": "Intake",
+          "orderindex": 0
+        },
+        {
+          "id": "4f3be53e-f32f-4579-8488-c706be3ed0fa",
+          "name": "Offer",
+          "orderindex": 1
+        },
+        {
+          "id": "f453cca4-5deb-4609-aebc-f9910b35ddd5",
+          "name": "Payment",
+          "orderindex": 2
+        },
+        {
+          "id": "36f544f0-d8d8-43f7-8f2e-3464ca6257e8",
+          "name": "Welcome",
+          "orderindex": 3
+        },
+        {
+          "id": "5fac546d-2190-41c9-8313-08bba49bdf92",
+          "name": "Filing Status",
+          "orderindex": 4
+        },
+        {
+          "id": "537c3236-e717-43ad-a1d2-6573d5f6af5b",
+          "name": "Address",
+          "orderindex": 5
+        },
+        {
+          "id": "c8a9d6ea-cd39-4b4d-8e31-33889eed526f",
+          "name": "2848 eSign",
+          "orderindex": 6
+        },
+        {
+          "id": "76f78f0b-e002-4b65-b7f0-1cb308f12cd6",
+          "name": "Wet Sig (if needed)",
+          "orderindex": 7
+        },
+        {
+          "id": "f839c319-3c2b-4cea-8cc1-3efcea6ebaec",
+          "name": "Processing",
+          "orderindex": 8
+        },
+        {
+          "id": "09a89b4e-2bb5-46dd-acff-72d4c2b4cf08",
+          "name": "Compliance Records",
+          "orderindex": 9
+        },
+        {
+          "id": "7039dccc-4880-4a8a-8651-fac764e3fb59",
+          "name": "Exit",
+          "orderindex": 10
+        }
+      ]
+    },
+    "Account_Order_Task_Link": {
+      "clickupFieldId": "4b22ab15-26f3-4f6f-98b5-7b4f5446e62d",
+      "clickupType": "tasks",
+      "name": "Account Order Task Link"
+    },
+    "Account_Primary_Email": {
+      "clickupFieldId": "a105f99e-b33d-4d12-bb24-f7c827ec761a",
+      "clickupType": "email",
+      "name": "Account Primary Email"
+    },
+    "Account_Support_Status": {
+      "clickupFieldId": "bbdf5418-8be0-452d-8bd0-b9f46643375e",
+      "clickupType": "drop_down",
+      "name": "Account Support Status",
+      "options": [
+        {
+          "id": "8045fc60-bfa4-474c-b6e0-dedba0f6f993",
+          "name": "Open / New",
+          "orderindex": 0
+        },
+        {
+          "id": "4fa76dee-a591-4fff-ad19-d71774341d3b",
+          "name": "In Progress ",
+          "orderindex": 1
+        },
+        {
+          "id": "228c6ef0-4895-4cdb-8cae-4d1e1bb49fde",
+          "name": "Waiting on Client",
+          "orderindex": 2
+        },
+        {
+          "id": "c05a8aa5-f7f9-4b00-bd8d-079295791afc",
+          "name": "Blocked",
+          "orderindex": 3
+        },
+        {
+          "id": "338405a0-7247-4911-8253-46509305c54d",
+          "name": "In Review",
+          "orderindex": 4
+        },
+        {
+          "id": "725ec226-d821-4291-ba88-2b9584cefa4b",
+          "name": "Client Feedback",
+          "orderindex": 5
+        },
+        {
+          "id": "fcd73c66-d5dd-4b6c-8304-d6a90ad65c3d",
+          "name": "Resolved",
+          "orderindex": 6
+        },
+        {
+          "id": "741f1d07-8409-4c1b-ad5f-4243793b5710",
+          "name": "Complete",
+          "orderindex": 7
+        },
+        {
+          "id": "3c97368c-56b7-472b-98d0-4bd5d1825f3d",
+          "name": "Closed",
+          "orderindex": 8
+        }
+      ]
+    },
+    "Account_Support_Task_Link": {
+      "clickupFieldId": "9e14a458-96fd-4109-a276-034d8270e15b",
+      "clickupType": "tasks",
+      "name": "Account Support Task Link"
+    }
+  }
 }
