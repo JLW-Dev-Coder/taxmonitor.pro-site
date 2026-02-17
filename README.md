@@ -1,355 +1,347 @@
-# Tax Monitor Pro App
+# README.md
 
-Tax Monitor Pro is a serverless CRM + delivery system for proactive IRS monitoring and compliance reporting.
+# Tax Monitor Pro
+Serverless · Contract-Driven · Idempotent · Event-Driven
+* * *
+## Table of Contents (Alphabetical)
+*   Authentication Model
+*   ClickUp Projection Layer
+*   Contracts (Source of Truth)
+*   Core Stack
+*   Data Model (R2 Canonical Authority)
+*   Domains & Routing
+*   Event Trigger System
+*   Idempotency & Safety
+*   Operational Checklist
+*   Processing Contract (Write Order)
+*   Repository Structure (Exact Tree)
+*   Security & Legal Controls
+*   Staff Compliance Records Gate
+*   System Architecture
+*   What Tax Monitor Pro Is
+*   2848 Two-Signature Sequence
+* * *
+# What Tax Monitor Pro Is
+Tax Monitor Pro is a **serverless CRM + delivery system for tax monitoring services**.
+It is:
+*   Contract-driven
+*   Idempotent
+*   Event-driven
+*   Worker-first
+*   R2-authoritative
+HTML never defines valid data.
+JSON contracts define valid data.
+* * *
+# Core Stack (Alphabetical)
+*   [Cal.com](http://Cal.com) — Appointment booking webhooks
+*   ClickUp — Human execution layer (projection only)
+*   Cloudflare Pages — UI (portal + marketing)
+*   Cloudflare R2 — Canonical authority + append-only receipts
+*   Cloudflare Worker — API, orchestration, validation
+*   Google Workspace — Transactional email (only permitted email system)
+*   Stripe — Payment webhooks
+* * *
+# System Architecture
+Presentation Layer
+Cloudflare Pages serves:
+*   `/app/*`
+*   `/site/*`
+Logic Layer
+Cloudflare Worker:
+*   Validates inbound events
+*   Writes receipts
+*   Upserts canonical objects
+*   Projects to ClickUp
+*   Sends email (after canonical update only)
+Storage Layer
+Cloudflare R2:
+*   Canonical objects
+*   Append-only receipt ledger
+Execution Layer
+ClickUp:
+*   Accounts list
+*   Orders list
+*   Support list
+* * *
+# Domains & Routing
+UI Domain:
 
-This system is built on:
+Serves:
+*   `/app/*`
+*   `/site/*`
+API Domain:
 
-* Cloudflare Pages (UI)
-* Cloudflare Workers (API + orchestration)
-* Cloudflare R2 (canonical authority)
-* ClickUp (projection layer only)
-* Stripe (payments)
-* Cal.com (appointments)
-* Google Workspace (outbound email only)
+Route:
 
-R2 is the authority. ClickUp is a projection.
-
----
-
-# Architecture Overview
-
-Cloudflare Pages (Portal + Marketing UI)
-↓ (form POST / webhook)
-Cloudflare Worker (API + orchestration + validation)
-↓
-R2 (canonical storage + receipts)
-↓
-ClickUp (projection layer)
-
----
-
-# Core Principle
-
-## R2 is authority
-
-Every inbound event must:
-
-1. Write append-only receipt
-   `receipts/{source}/{eventId}.json`
-
-2. Upsert canonical object
-   `orders/{orderId}.json`
-   `accounts/{accountId}.json`
-   `support/{supportId}.json`
-
-3. Then update ClickUp
-
-ClickUp must never be written before canonical state is updated.
-
----
-
-# Lifecycle Model
-
-## Phase 0 — Lead Capture, Intake & Payment
-
-1. Intake
-2. Offer
-3. Agreement
-4. Payment
-
-Automation only. No operator involvement.
-
----
-
-## Phase 1 — ESign 2848 / Review
-
-5. Welcome
-6. Filing Status
-7. Address Update
-8. eSign 2848
-
-Operator involvement begins only after:
-
-`stepBooleans.esign2848Submitted = true`
-
----
-
-## Phase 2 — Processing / Due Diligence
-
-9. Authorization + CAF
-10. Record Retrieval + Analysis
-
-Operator responsibilities:
-
-* Review 2848
-* Submit to CAF / IRS
-* Verify authorization
-* Handle rejection loops
-* Retrieve transcripts
-* Analyze compliance data
-
-Authorization unlock rule:
-
-```
-cafVerified === true
-OR
-wetSignatureVerified === true
+```plain
+api.taxmonitor.pro/*
 ```
 
----
+All forms must POST to absolute URLs:
 
-## Phase 3 — Tax Record / Discuss Results
+No relative form actions allowed.
+* * *
+# Repository Structure (Exact Tree)
+**This structure is authoritative and must not be modified without updating this file.**
 
-11. Compliance Report
-12. Results Appointment
-13. Exit Survey
-14. Support Ticket
-
-Report ready when:
-
-```
-reportReady === true
-```
-
----
-
-# Operator Boundary
-
-Operator begins work only after eSign 2848 submission.
-
-Operator never:
-
-* Builds 2848 manually
-* Creates Orders manually
-* Updates ClickUp as source of truth
-* Tracks status in comments
-
-All state lives in R2 canonical.
-
----
-
-# Canonical Order Model (R2)
-
-Example:
-
-```json
-{
-  "orderId": "ord_...",
-  "accountId": "acct_...",
-  "stepBooleans": {
-    "addressUpdateSubmitted": false,
-    "agreementAccepted": false,
-    "complianceSubmitted": false,
-    "esign2848Submitted": false,
-    "filingStatusSubmitted": false,
-    "intakeComplete": false,
-    "offerAccepted": false,
-    "paymentCompleted": false,
-    "reportReady": false,
-    "welcomeConfirmed": false
-  },
-  "ops": {
-    "cafSubmitted": false,
-    "cafVerified": false,
-    "esign2848PdfKey": null,
-    "esign2848PdfUrl": null,
-    "wetSignaturePdfKey": null,
-    "wetSignaturePdfUrl": null,
-    "wetSignatureRequired": false,
-    "wetSignatureVerified": false
-  },
-  "authorization": {
-    "cafActive": false,
-    "cafNumber": null,
-    "cafVerifiedDate": null,
-    "poaEffectiveDate": null,
-    "repFullName": null,
-    "repPtin": null,
-    "taxMattersAuthorized": null
-  }
-}
-```
-
----
-
-# Artifact Storage (R2)
-
-Templates:
-
-```
-templates/2848/page2-signed.pdf
-```
-
-Generated artifacts:
-
-```
-orders/{orderId}/artifacts/2848/esigned.pdf
-orders/{orderId}/artifacts/2848/wet-signed.pdf
-orders/{orderId}/artifacts/compliance-report/latest.pdf
-```
-
-Compliance PDF URL is written to Orders task CF:
-`Order Compliance Report PDF URL`
-Field ID:
-`3c4c2986-c8df-47b7-a676-258333c71558`
-
----
-
-# Endpoints
-
-Worker Base:
-
-```
-https://api.taxmonitor.pro
-```
-
-## Read
-
-```
-GET /orders/{orderId}
-```
-
-## Form Submissions
-
-```
-POST /forms/intake
-POST /forms/offer
-POST /forms/agreement
-POST /forms/payment
-POST /forms/post-payment/welcome
-POST /forms/post-payment/filing-status
-POST /forms/post-payment/address-update
-POST /forms/post-payment/esign-2848
-POST /forms/post-payment/compliance-report
-POST /forms/post-payment/client-exit-survey
-POST /forms/staff/compliance-records
-POST /forms/support/ticket
-```
-
-All forms must POST to absolute Worker URLs.
-
----
-
-# Security & PPI Rules
-
-* No public PPI in logs
-* Never log raw SSN/DOB
-* UI masks SSN by default
-* Client endpoints are token-gated
-* Staff endpoints require authentication (deny-by-default if mechanism not configured)
-* Webhooks must validate signatures (Stripe + Cal)
-
-Google Workspace is outbound-only. No inbound email ingestion at launch.
-
----
-
-# Repository Structure
-
-taxmonitor.pro-site/
-├─ .gitattributes
-├─ .gitignore
-├─ README.md
-├─ _redirects
-├─ build.mjs
-│
+```dpr
+.
 ├─ app/
 │  ├─ agreement.html
+│  ├─ contracts/
+│  │  ├─ clickup/
+│  │  │  ├─ account.list.contract.json
+│  │  │  ├─ orders.list.contract.json
+│  │  │  └─ support.list.contract.json
+│  │  ├─ forms/
+│  │  │  ├─ intake/
+│  │  │  │  ├─ agreement.contract.json
+│  │  │  │  ├─ intake.contract.json
+│  │  │  │  ├─ offer.contract.json
+│  │  │  │  └─ payment.contract.json
+│  │  │  └─ post-payment/
+│  │  │     ├─ welcome.contract.json
+│  │  │     ├─ filing-status.contract.json
+│  │  │     ├─ address-update.contract.json
+│  │  │     ├─ esign-2848.contract.json
+│  │  │     ├─ wet-signed-2848.contract.json
+│  │  │     ├─ compliance-report.contract.json
+│  │  │     └─ client-exit-survey.contract.json
+│  │  ├─ staff/
+│  │  │  └─ compliance-records.contract.json
+│  │  └─ tm_compliance_record.v2.example.json
 │  ├─ index.html
 │  ├─ intake.html
 │  ├─ login.html
 │  ├─ offer.html
-│  ├─ payment.html
-│  ├─ payment-success.html
-│  │
-│  ├─ contracts/
-│  │  ├─ contract-registry.json
-│  │  │
-│  │  ├─ clickup/
-│  │  │  ├─ accounts.list.contract.json
-│  │  │  ├─ orders.list.contract.json
-│  │  │  └─ support.list.contract.json
-│  │  │
-│  │  ├─ forms/
-│  │  │  ├─ agreement.contract.json
-│  │  │  ├─ intake.contract.json
-│  │  │  ├─ offer.contract.json
-│  │  │  ├─ payment.contract.json
-│  │  │  └─ post-payment/
-│  │  │     ├─ address-update.contract.json
-│  │  │     ├─ client-exit-survey.contract.json
-│  │  │     ├─ compliance-report.contract.json
-│  │  │     ├─ esign-2848.contract.json
-│  │  │     ├─ filing-status.contract.json
-│  │  │     └─ welcome.contract.json
-│  │  │
-│  │  ├─ staff/
-│  │  │  └─ compliance-records.contract.json
-│  │  │
-│  │  └─ tm_compliance_record.v2.example.json
-│  │
 │  ├─ pages/
 │  │  ├─ calendar.html
 │  │  ├─ files.html
-│  │  ├─ messaging.html
-│  │  ├─ office.html
-│  │  ├─ projects.html
-│  │  ├─ support.html
-│  │  │
 │  │  ├─ flows/
 │  │  │  ├─ intake/
 │  │  │  │  ├─ agreement.html
 │  │  │  │  ├─ intake.html
 │  │  │  │  ├─ offer.html
 │  │  │  │  └─ payment.html
-│  │  │  │
 │  │  │  └─ post-payment/
-│  │  │     ├─ address-update.html
-│  │  │     ├─ client-exit-survey.html
-│  │  │     ├─ compliance-report.html
-│  │  │     ├─ esign-2848.html
+│  │  │     ├─ welcome.html
 │  │  │     ├─ filing-status.html
-│  │  │     └─ welcome.html
-│  │  │
-│  │  └─ staff/
+│  │  │     ├─ address-update.html
+│  │  │     ├─ esign-2848.html
+│  │  │     ├─ compliance-report.html
+│  │  │     └─ client-exit-survey.html
+│  │  ├─ messaging.html
+│  │  ├─ office.html
+│  │  ├─ projects.html
+│  │  ├─ staff/
 │  │     └─ compliance-records.html
-│  │
+│  │  └─ support.html
 │  ├─ partials/
 │  │  ├─ sidebar.html
 │  │  └─ topbar.html
-│
+│  ├─ payment-success.html
+│  └─ payment.html
 ├─ assets/
 │  ├─ favicon.ico
 │  └─ logo.svg
-│
 ├─ legal/
 │  ├─ privacy.html
 │  └─ terms.html
-│
 ├─ public/
 │  └─ .gitkeep
-│
 ├─ site/
 │  ├─ case-studies.html
 │  ├─ contact.html
 │  ├─ index.html
-│  ├─ pricing.html
-│  ├─ support.html
-│  │
 │  ├─ partials/
 │  │  ├─ footer.html
 │  │  └─ header.html
-│  │
+│  ├─ pricing.html
 │  ├─ resources/
 │  │  └─ 433f.html
-│  │
-│  └─ site.js
-│
+│  ├─ site.js
+│  └─ support.html
 ├─ styles/
 │  ├─ app.css
 │  └─ site.css
-│
 └─ workers/
    └─ api/
-      ├─ wrangler.toml
-      └─ src/
-         └─ index.js
+      ├─ src/
+      │  └─ index.js
+      └─ wrangler.toml
+├─ build.mjs
+├─ .gitattributes
+├─ .gitignore
+├─ README.md
+├─ _redirects
+```
+
+Rules:
+*   All JSON contracts live in `app/contracts/`
+*   UI flows live in `app/pages/`
+*   Worker code lives in `workers/api/src/`
+*   Cloudflare config lives in `workers/api/wrangler.toml`
+*   Static assets live in `assets/`
+*   Public marketing content lives in `site/`
+*   Legal docs live in `legal/`
+*   Styles live in `styles/`
+*   Remove legacy folders (e.g., dist/) if unused
+* * *
+# Contracts (Source of Truth)
+All workflows are governed by versioned JSON contracts.
+Validation Rules:
+*   Strict enum enforcement
+*   rejectUnknownValues = true
+*   normalizeCheckboxToBoolean = true
+*   No hardcoded dropdown options in HTML
+*   No inferred business logic from UI
+Contracts are versioned and enforced by the Worker.
+* * *
+# Event Trigger System
+Final Trigger Set (Alphabetical):
+*   Appt
+*   Email
+*   Form
+*   Login
+*   Message
+*   Payment
+*   Task
+*   Visit
+Trigger Sources:
+Appt → [Cal.com](http://Cal.com) webhook
+Email → Google Workspace outbound (post-canonical)
+Form → All portal + staff submissions
+Login → Auth endpoints
+Message → In-app + logged outbound
+Payment → Stripe webhook
+Task → ClickUp webhook
+Visit → Client-side beacon
+All triggers:
+Worker → Receipt → Canonical Upsert → ClickUp Projection → Optional Email
+* * *
+# Processing Contract (Write Order)
+For every inbound event:
+1. Validate signature (if webhook)
+2. Validate payload against contract
+3. Write append-only receipt:
+4. `receipts/{source}/{eventId}.json`
+5. Upsert canonical object
+6. Update ClickUp
+7. Send email (if required)
+If receipt exists → exit safely.
+* * *
+# Data Model (R2 Canonical Authority)
+
+```bash
+accounts/{accountId}.json
+orders/{orderId}.json
+support/{supportId}.json
+receipts/{source}/{eventId}.json
+```
+
+Receipts are immutable ledger entries.
+* * *
+# ClickUp Projection Layer
+List IDs:
+Accounts — 901710909567
+Orders — 901710818340
+Support — 901710818377
+ClickUp is never authoritative.
+* * *
+# Authentication Model
+Supported:
+*   Google OAuth
+*   Magic Link
+*   SSO (SAML/OIDC)
+Endpoints (Alphabetical):
+
+```perl
+POST /auth/google
+GET  /auth/google/callback
+POST /auth/logout
+POST /auth/magic-link/request
+POST /auth/magic-link/verify
+POST /auth/sso/callback
+POST /auth/sso/init
+GET  /auth/session
+```
+
+All login events:
+*   Write login receipt
+*   Upsert canonical account
+*   Update lastLoginAt
+*   Issue HTTP-only secure cookie
+Stored in:
+
+```css
+accounts/{accountId}.json
+auth: {
+  provider,
+  lastLoginAt,
+  lastActiveAt
+}
+```
+
+* * *
+# Staff Compliance Records Gate
+Endpoint:
+
+```elixir
+POST https://api.taxmonitor.pro/forms/staff/compliance-records
+```
+
+Validates against:
+
+```plain
+app/contracts/staff/compliance-records.contract.json
+```
+
+On final submission:
+*   complianceSubmitted = true
+*   reportReady = true
+ClickUp status updated to:
+10 Compliance Records
+* * *
+# 2848 Two-Signature Sequence
+Both signatures occur on Page 2.
+Sequence:
+1. Generate Page 1 + Page 2
+2. Taxpayer signs Page 2
+3. Representative signs Page 2
+4. Store final signed PDF in R2
+Canonical fields:
+*   esign2848Status (draft | taxpayer\_signed | fully\_signed)
+*   esign2848TaxpayerSignedAt
+*   esign2848RepresentativeSignedAt
+*   esign2848UrlTaxpayerSignedPdf
+*   esign2848UrlFinalPdf
+TREE 15 = taxpayer signed
+TREE 16 = representative signed + final stored
+* * *
+# Idempotency & Safety
+*   Every event must include eventId
+*   Stripe dedupe key: Stripe Session ID
+*   Cal dedupe key: Cal event ID
+*   Receipt written before canonical change
+*   No duplicate tasks
+*   No duplicate emails
+*   Retry-safe processing
+* * *
+# Security & Legal Controls
+*   Deny-by-default endpoints
+*   Webhook signature validation (Stripe + Cal)
+*   No secrets in client payloads
+*   PII masked in UI
+*   No raw SSN logging
+*   R2 is authority
+*   ClickUp holds projection only
+* * *
+# Operational Checklist
+*   All forms POST to absolute Worker URLs
+*   Every event includes eventId
+*   Receipt written before state change
+*   Canonical upsert before ClickUp update
+*   Emails sent only after canonical update
+*   Contracts versioned and enforced
+*   Login writes receipt
+*   2848 state machine enforced
