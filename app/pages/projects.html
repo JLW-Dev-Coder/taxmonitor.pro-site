@@ -95,9 +95,10 @@
   <div class="min-h-full flex">
 
     <!-- Sidebar (partial) -->
-    <aside id="tm-sidebar" class="hidden lg:block w-72 shrink-0 border-r border-slate-800/60 bg-slate-950/20">
+    <div id="tm-sidebar" class="hidden lg:block shrink-0">
       <!-- injected -->
-    </aside>
+    </div>
+
 
     <!-- Main column -->
     <div class="flex-1 min-w-0 flex flex-col">
@@ -940,7 +941,7 @@
       const slug = getQueryParam('order') || 'order.sample';
 
       // FIX: build output is dist/mock/... so the public URL is /mock/...
-      const url = `/mock/orders/${slug}.json`;
+      const url = `/public/mock/orders/${slug}.json`;
 
       const res = await fetch(url, { cache: 'no-store' });
       if (!res.ok) throw new Error(`Mock order not found: ${url}`);
