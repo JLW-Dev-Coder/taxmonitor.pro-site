@@ -1,267 +1,250 @@
 {
-  "contract": {
-    "authority": [
-      "R2 Canonical"
+  "clickup": {
+    "list": {
+      "id": "901710818377",
+      "name": "Support"
+    },
+    "statuses": [
+      {
+        "color": "#1090e0",
+        "id": "sc901710818377_HlAcH0UR",
+        "orderindex": 3,
+        "status": "blocked",
+        "type": "custom"
+      },
+      {
+        "color": "#aa8d80",
+        "id": "sc901710818377_B9XfYTKa",
+        "orderindex": 6,
+        "status": "client feedback",
+        "type": "custom"
+      },
+      {
+        "color": "#008844",
+        "id": "sc901710818377_jEEaBdaL",
+        "orderindex": 8,
+        "status": "Closed",
+        "type": "closed"
+      },
+      {
+        "color": "#656f7d",
+        "id": "sc901710818377_eLZNX2kO",
+        "orderindex": 7,
+        "status": "complete",
+        "type": "done"
+      },
+      {
+        "color": "#5f55ee",
+        "id": "sc901710818377_OKMm7y2k",
+        "orderindex": 1,
+        "status": "in progress",
+        "type": "custom"
+      },
+      {
+        "color": "#b660e0",
+        "id": "sc901710818377_fdQqQDwm",
+        "orderindex": 4,
+        "status": "in review",
+        "type": "custom"
+      },
+      {
+        "color": "#87909e",
+        "id": "sc901710818377_dn2dRFVb",
+        "orderindex": 0,
+        "status": "open / new",
+        "type": "open"
+      },
+      {
+        "color": "#f8ae00",
+        "id": "sc901710818377_cExcoTWL",
+        "orderindex": 5,
+        "status": "resolved",
+        "type": "custom"
+      },
+      {
+        "color": "#4466ff",
+        "id": "sc901710818377_gpKVHSl7",
+        "orderindex": 2,
+        "status": "waiting on client",
+        "type": "custom"
+      }
     ],
-    "governs": "ClickUp Projection — Support List",
-    "path": "/contracts/clickup/support.list.contract.json",
-    "source": "Tax Monitor Pro",
-    "title": "Tax Monitor Pro — ClickUp Support List Contract",
-    "validation": {
-      "enumStrict": true,
-      "normalizeCheckboxToBoolean": true,
-      "rejectUnknownValues": true
-    },
-    "version": 1
-  },
-  "schema": {
-    "name": "tm_clickup_support_list_contract",
-    "version": 1
-  },
-  "listId": "901710818377",
-  "customFields": [
-    {
-      "id": "aac0816d-0e05-4c57-8196-6098929f35ac",
-      "name": "Support Action Required",
-      "type": "drop_down",
-      "options": [
-        {
-          "color": "#E65100",
-          "id": "165c6aac-bb5a-420c-a64b-bca47b769e21",
-          "name": "Acknowledge",
-          "orderindex": 0
-        },
-        {
-          "color": "#1bbc9c",
-          "id": "a233b302-7779-4136-bb37-eff6cd5e41cc",
-          "name": "Triage",
-          "orderindex": 1
-        },
-        {
-          "color": "#b5bcc2",
-          "id": "8c45bf38-2cc7-45bc-9c48-9dae275938a3",
-          "name": "Resolve",
-          "orderindex": 2
-        },
-        {
-          "color": "#EA80FC",
-          "id": "dc9e42fb-a1ef-4b3e-a037-cc5b41d33209",
-          "name": "Close",
-          "orderindex": 3
-        }
-      ]
-    },
-    {
-      "id": "7f547901-690d-4f39-8851-d19e19f87bf8",
-      "name": "Support Email",
-      "type": "email"
-    },
-    {
-      "id": "b96403c7-028a-48eb-b6b1-349f295244b5",
-      "name": "Support Priority",
-      "type": "drop_down",
-      "options": [
-        {
-          "color": "#0091ff",
-          "id": "fe8469b4-0ee1-4fa0-993d-bc9458f1ab6d",
-          "name": "≡ƒƒª Low ΓÇö As Scheduled",
-          "orderindex": 0
-        },
-        {
-          "color": "#ffc53d",
-          "id": "ea5fda7f-7c60-4e72-9034-0434836950a2",
-          "name": "≡ƒƒ¿ Normal ΓÇö 3ΓÇô5 Days",
-          "orderindex": 1
-        },
-        {
-          "color": "#f76808",
-          "id": "8f155d97-8512-489f-88c6-77973e76e3c8",
-          "name": "≡ƒƒº High ΓÇö 48 Hours",
-          "orderindex": 2
-        },
-        {
-          "color": "#e5484d",
-          "id": "c8862a36-00cd-41b2-94be-22120bfe2f0b",
-          "name": "≡ƒƒÑ Critical ΓÇ— Today",
-          "orderindex": 3
-        }
-      ]
-    },
-    {
-      "id": "423fda3b-f7c0-471e-aaa2-464d78db0a31",
-      "name": "Support Related Order ID",
-      "type": "short_text"
-    },
-    {
-      "id": "e09d9f53-4f03-49fe-8c5f-abe3b160b167",
-      "name": "Support Type",
-      "type": "drop_down",
-      "options": [
-        {
-          "color": "#b5bcc2",
-          "id": "5f847513-d4dd-4e45-af47-b229dbfbbb8f",
-          "name": "Appt - Demo",
-          "orderindex": 0
-        },
-        {
-          "color": "#04A9F4",
-          "id": "a8d9484d-df52-42fa-a2c8-e4df801e398e",
-          "name": "Appt - Exit / Offboarding",
-          "orderindex": 1
-        },
-        {
-          "color": "#3397dd",
-          "id": "75f47f09-fa16-40d4-9be3-583102361799",
-          "name": "Appt - Intro",
-          "orderindex": 2
-        },
-        {
-          "color": "#3397dd",
-          "id": "6ac3e8dc-ca14-4c84-b4da-a8fbefa6ad13",
-          "name": "Appt - Onboarding",
-          "orderindex": 3
-        },
-        {
-          "color": "#3082B7",
-          "id": "27d991dd-a5ee-4713-a844-ddc53650756b",
-          "name": "Appt - Support",
-          "orderindex": 4
-        },
-        {
-          "color": "#e50000",
-          "id": "b3ae14e7-981d-4756-a14f-7d9a901392d0",
-          "name": "Ticket - Intake",
-          "orderindex": 5
-        },
-        {
-          "color": "#bf55ec",
-          "id": "fcd840f5-2a38-43db-92c9-611403fa90f6",
-          "name": "Ticket - Offer",
-          "orderindex": 6
-        },
-        {
-          "color": "#800000",
-          "id": "f5e26bdf-adb1-4ad4-a9f7-97f63a6d2977",
-          "name": "Ticket - Agreement",
-          "orderindex": 7
-        },
-        {
-          "color": "#667684",
-          "id": "27f0a9ac-ba0f-4d04-bb02-0a90acdadfac",
-          "name": "Ticket - Payment",
-          "orderindex": 8
-        },
-        {
-          "color": "#FF4081",
-          "id": "349565f0-90d8-4c35-be41-62cd33ef3398",
-          "name": "Ticket - Welcome",
-          "orderindex": 9
-        },
-        {
-          "color": "#bf55ec",
-          "id": "75ec9e09-bb75-4f4a-bc24-35c7da294c26",
-          "name": "Ticket - Filing Status",
-          "orderindex": 10
-        },
-        {
-          "color": "#b5bcc2",
-          "id": "360e0d08-ae19-4a08-a7bf-08ac4579f7e2",
-          "name": "Ticket - Address Update",
-          "orderindex": 11
-        },
-        {
-          "color": "#b5bcc2",
-          "id": "ee2d7f9f-e102-4d91-9afa-431361d6bdcf",
-          "name": "Ticket - Esign 2848",
-          "orderindex": 12
-        },
-        {
-          "color": "#b5bcc2",
-          "id": "789e2a6b-0c5c-4b3c-8b65-851d4eb4d798",
-          "name": "Ticket - Compliance Report",
-          "orderindex": 13
-        },
-        {
-          "color": "#02BCD4",
-          "id": "231f2d26-3bad-4c35-b8e4-a8b126415751",
-          "name": "Ticket - Client Exit Survey",
-          "orderindex": 14
-        }
-      ]
+    "fields": {
+      "Support_Action_Required": {
+        "clickupFieldId": "aac0816d-0e05-4c57-8196-6098929f35ac",
+        "clickupType": "drop_down",
+        "name": "Support Action Required",
+        "options": [
+          {
+            "color": "#E65100",
+            "id": "165c6aac-bb5a-420c-a64b-bca47b769e21",
+            "name": "Acknowledge",
+            "orderindex": 0
+          },
+          {
+            "color": "#EA80FC",
+            "id": "dc9e42fb-a1ef-4b3e-a037-cc5b41d33209",
+            "name": "Close",
+            "orderindex": 3
+          },
+          {
+            "color": "#b5bcc2",
+            "id": "8c45bf38-2cc7-45bc-9c48-9dae275938a3",
+            "name": "Resolve",
+            "orderindex": 2
+          },
+          {
+            "color": "#1bbc9c",
+            "id": "a233b302-7779-4136-bb37-eff6cd5e41cc",
+            "name": "Triage",
+            "orderindex": 1
+          }
+        ]
+      },
+      "Support_Email": {
+        "clickupFieldId": "7f547901-690d-4f39-8851-d19e19f87bf8",
+        "clickupType": "email",
+        "name": "Support Email"
+      },
+      "Support_Priority": {
+        "clickupFieldId": "b96403c7-028a-48eb-b6b1-349f295244b5",
+        "clickupType": "drop_down",
+        "name": "Support Priority",
+        "options": [
+          {
+            "color": "#e5484d",
+            "id": "c8862a36-00cd-41b2-94be-22120bfe2f0b",
+            "name": "🟥 Critical — Today",
+            "orderindex": 3
+          },
+          {
+            "color": "#f76808",
+            "id": "8f155d97-8512-489f-88c6-77973e76e3c8",
+            "name": "🟧 High — 48 Hours",
+            "orderindex": 2
+          },
+          {
+            "color": "#0091ff",
+            "id": "fe8469b4-0ee1-4fa0-993d-bc9458f1ab6d",
+            "name": "🟦 Low — As Scheduled",
+            "orderindex": 0
+          },
+          {
+            "color": "#ffc53d",
+            "id": "ea5fda7f-7c60-4e72-9034-0434836950a2",
+            "name": "🟨 Normal — 3–5 Days",
+            "orderindex": 1
+          }
+        ]
+      },
+      "Support_Related_Order_ID": {
+        "clickupFieldId": "423fda3b-f7c0-471e-aaa2-464d78db0a31",
+        "clickupType": "short_text",
+        "name": "Support Related Order ID"
+      },
+      "Support_Type": {
+        "clickupFieldId": "e09d9f53-4f03-49fe-8c5f-abe3b160b167",
+        "clickupType": "drop_down",
+        "name": "Support Type",
+        "options": [
+          {
+            "color": "#b5bcc2",
+            "id": "5f847513-d4dd-4e45-af47-b229dbfbbb8f",
+            "name": "Appt - Demo",
+            "orderindex": 0
+          },
+          {
+            "color": "#04A9F4",
+            "id": "a8d9484d-df52-42fa-a2c8-e4df801e398e",
+            "name": "Appt - Exit / Offboarding",
+            "orderindex": 1
+          },
+          {
+            "color": "#3397dd",
+            "id": "75f47f09-fa16-40d4-9be3-583102361799",
+            "name": "Appt - Intro",
+            "orderindex": 2
+          },
+          {
+            "color": "#3397dd",
+            "id": "6ac3e8dc-ca14-4c84-b4da-a8fbefa6ad13",
+            "name": "Appt - Onboarding",
+            "orderindex": 3
+          },
+          {
+            "color": "#3082B7",
+            "id": "27d991dd-a5ee-4713-a844-ddc53650756b",
+            "name": "Appt - Support",
+            "orderindex": 4
+          },
+          {
+            "color": "#b5bcc2",
+            "id": "789e2a6b-0c5c-4b3c-8b65-851d4eb4d798",
+            "name": "Ticket - Compliance Report",
+            "orderindex": 14
+          },
+          {
+            "color": "#800000",
+            "id": "f5e26bdf-adb1-4ad4-a9f7-97f63a6d2977",
+            "name": "Ticket - Agreement",
+            "orderindex": 7
+          },
+          {
+            "color": "#b5bcc2",
+            "id": "360e0d08-ae19-4a08-a7bf-08ac4579f7e2",
+            "name": "Ticket - Address Update",
+            "orderindex": 11
+          },
+          {
+            "color": "#02BCD4",
+            "id": "231f2d26-3bad-4c35-b8e4-a8b126415751",
+            "name": "Ticket - Client Exit Survey",
+            "orderindex": 15
+          },
+          {
+            "color": "#b5bcc2",
+            "id": "ee2d7f9f-e102-4d91-9afa-431361d6bdcf",
+            "name": "Ticket - Esign 2848",
+            "orderindex": 12
+          },
+          {
+            "color": "#bf55ec",
+            "id": "75ec9e09-bb75-4f4a-bc24-35c7da294c26",
+            "name": "Ticket - Filing Status",
+            "orderindex": 10
+          },
+          {
+            "color": "#e50000",
+            "id": "b3ae14e7-981d-4756-a14f-7d9a901392d0",
+            "name": "Ticket - Intake",
+            "orderindex": 5
+          },
+          {
+            "color": "#bf55ec",
+            "id": "fcd840f5-2a38-43db-92c9-611403fa90f6",
+            "name": "Ticket - Offer",
+            "orderindex": 6
+          },
+          {
+            "color": "#667684",
+            "id": "27f0a9ac-ba0f-4d04-bb02-0a90acdadfac",
+            "name": "Ticket - Payment",
+            "orderindex": 8
+          },
+          {
+            "color": "#7C4DFF",
+            "id": "6aa21211-7691-42fc-9feb-b624f634f8a3",
+            "name": "Ticket - Wet Sign 2848",
+            "orderindex": 13
+          },
+          {
+            "color": "#FF4081",
+            "id": "349565f0-90d8-4c35-be41-62cd33ef3398",
+            "name": "Ticket - Welcome",
+            "orderindex": 9
+          }
+        ]
+      }
     }
-  ],
-  "statuses": [
-    {
-      "color": "#87909e",
-      "id": "sc901710818377_dn2dRFVb",
-      "orderindex": 0,
-      "status": "new / open",
-      "status_group": "subcat_901710818377",
-      "type": "open"
-    },
-    {
-      "color": "#5f55ee",
-      "id": "sc901710818377_OKMm7y2k",
-      "orderindex": 1,
-      "status": "in progress",
-      "status_group": "subcat_901710818377",
-      "type": "custom"
-    },
-    {
-      "color": "#4466ff",
-      "id": "sc901710818377_gpKVHSl7",
-      "orderindex": 2,
-      "status": "waiting on client",
-      "status_group": "subcat_901710818377",
-      "type": "custom"
-    },
-    {
-      "color": "#1090e0",
-      "id": "sc901710818377_HlAcH0UR",
-      "orderindex": 3,
-      "status": "blocked",
-      "status_group": "subcat_901710818377",
-      "type": "custom"
-    },
-    {
-      "color": "#b660e0",
-      "id": "sc901710818377_fdQqQDwm",
-      "orderindex": 4,
-      "status": "in review",
-      "status_group": "subcat_901710818377",
-      "type": "custom"
-    },
-    {
-      "color": "#f8ae00",
-      "id": "sc901710818377_cExcoTWL",
-      "orderindex": 5,
-      "status": "resolved",
-      "status_group": "subcat_901710818377",
-      "type": "custom"
-    },
-    {
-      "color": "#aa8d80",
-      "id": "sc901710818377_B9XfYTKa",
-      "orderindex": 6,
-      "status": "client feedback",
-      "status_group": "subcat_901710818377",
-      "type": "custom"
-    },
-    {
-      "color": "#656f7d",
-      "id": "sc901710818377_eLZNX2kO",
-      "orderindex": 7,
-      "status": "complete",
-      "status_group": "subcat_901710818377",
-      "type": "done"
-    },
-    {
-      "color": "#008844",
-      "id": "sc901710818377_jEEaBdaL",
-      "orderindex": 8,
-      "status": "Closed",
-      "status_group": "subcat_901710818377",
-      "type": "closed"
-    }
-  ]
+  }
 }
