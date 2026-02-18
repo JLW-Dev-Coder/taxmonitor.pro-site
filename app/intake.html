@@ -28,525 +28,544 @@
     * { font-family: 'DM Sans', sans-serif; }
 
     /* Noise texture overlay (match offer.html) */
-    .noise-bg::before{
-      content:'';
-      position:fixed; inset:0;
-      opacity:.03;
-      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-      pointer-events:none;
-      z-index:1;
+    .noise-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.06;
+      background-image:
+        radial-gradient(circle at 1px 1px, rgba(255,255,255,0.06) 1px, transparent 0);
+      background-size: 3px 3px;
+      z-index: 0;
     }
 
-    /* Aurora blobs (match offer.html) */
-    .aurora-blob{ position:absolute; border-radius:50%; filter:blur(100px); opacity:.14; animation:float 20s ease-in-out infinite; }
-    .aurora-1{ width:650px; height:420px; background:linear-gradient(135deg,#F59E0B,#D97706); top:8%; right:-12%; }
-    .aurora-2{ width:520px; height:360px; background:linear-gradient(135deg,#2DD4BF,#14B8A6); top:42%; left:-16%; opacity:.08; animation-delay:-7s; }
-    .aurora-3{ width:480px; height:320px; background:linear-gradient(135deg,#F59E0B,#EA580C); bottom:4%; right:18%; animation-delay:-14s; }
-    @keyframes float{ 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(30px,-30px) scale(1.05)} 66%{transform:translate(-20px,20px) scale(.95)} }
+    /* Aurora background */
+    .aurora {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .aurora-blob {
+      position: absolute;
+      border-radius: 9999px;
+      filter: blur(80px);
+      opacity: 0.45;
+      animation: float 18s ease-in-out infinite;
+    }
+    .aurora-blob-1 {
+      width: 520px;
+      height: 520px;
+      background: radial-gradient(circle, rgba(245,158,11,0.95) 0%, transparent 70%);
+      top: -210px;
+      right: -140px;
+    }
+    .aurora-blob-2 {
+      width: 520px;
+      height: 520px;
+      background: radial-gradient(circle, rgba(239,68,68,0.7) 0%, transparent 70%);
+      bottom: -220px;
+      left: -150px;
+      animation-delay: 2s;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) translateX(0px); }
+      50% { transform: translateY(-18px) translateX(10px); }
+    }
 
-    /* Glass (match offer.html) */
-    .glass-card{ background:rgba(15,23,42,.62); backdrop-filter:blur(20px); border:1px solid rgba(148,163,184,.12); }
-    .glass-card-light{ background:rgba(30,41,59,.50); backdrop-filter:blur(16px); border:1px solid rgba(148,163,184,.16); }
+    /* Glass card surface */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
 
-    /* Glow (match offer.html) */
-    .glow-amber{ box-shadow:0 0 40px rgba(245,158,11,.26), 0 0 80px rgba(245,158,11,.10); }
-    .glow-amber-soft{ box-shadow:0 0 30px rgba(245,158,11,.18); }
-    .progress-glow{ background:linear-gradient(90deg,#F59E0B,#D97706); box-shadow:0 0 20px rgba(245,158,11,.5); }
-    .glow-divider{ height:1px; background:linear-gradient(90deg,transparent,rgba(245,158,11,.5),transparent); }
+    /* Progress + glow helpers (offer.html parity) */
+    .progress-glow {
+      background: linear-gradient(90deg, #f59e0b, #d97706);
+      box-shadow: 0 0 20px rgba(245,158,11,0.45);
+    }
+    .glow-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(245,158,11,0.35), transparent);
+    }
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 20px rgba(245,158,11,0.30); }
+      50% { box-shadow: 0 0 40px rgba(245,158,11,0.50); }
+    }
+    .animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
 
-    @keyframes pulse-glow{ 0%,100%{box-shadow:0 0 20px rgba(245,158,11,.30)} 50%{box-shadow:0 0 40px rgba(245,158,11,.50)} }
-    .animate-pulse-glow{ animation:pulse-glow 2s ease-in-out infinite; }
+    /* Animated gradient text (marketing polish) */
+    .gradient-text {
+      background: linear-gradient(135deg, #f59e0b, #ef4444, #f59e0b, #fbbf24);
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: gradientShift 4s ease infinite;
+    }
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
 
-    /* Scrollbar (match offer.html) */
-    ::-webkit-scrollbar{ width:8px; }
-    ::-webkit-scrollbar-track{ background:#0B1220; }
-    ::-webkit-scrollbar-thumb{ background:#1E293B; border-radius:4px; }
-    ::-webkit-scrollbar-thumb:hover{ background:#334155; }
+    /* Gradient border wrapper (subtle) */
+    .gradient-border { position: relative; }
+    .gradient-border::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: inherit;
+      padding: 2px;
+      background: linear-gradient(135deg, rgba(245,158,11,0.9), rgba(239,68,68,0.7), rgba(251,191,36,0.9));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0.55;
+      pointer-events: none;
+    }
+
+    /* Smooth load-in */
+    .fade-in-up { opacity: 0; transform: translateY(10px); animation: fadeInUp 600ms ease forwards; }
+    .delay-1 { animation-delay: 80ms; }
+    .delay-2 { animation-delay: 160ms; }
+    .delay-3 { animation-delay: 240ms; }
+    @keyframes fadeInUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Custom scrollbars for WebKit */
+    ::-webkit-scrollbar { width: 10px; height: 10px; }
+    ::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.25); border-radius: 9999px; }
+    ::-webkit-scrollbar-track { background: rgba(2, 6, 23, 0.35); }
   </style>
-
-  <style>
-    /* Flatpickr theme (dark + amber) */
-    .flatpickr-calendar {
-      background: rgba(2, 6, 23, 0.98);
-      border: 1px solid rgba(148, 163, 184, 0.25);
-      border-radius: 16px;
-      box-shadow: 0 18px 60px rgba(0, 0, 0, 0.55);
-      color: rgba(241, 245, 249, 0.92);
-      font-family: 'DM Sans', sans-serif;
-    }
-    .flatpickr-current-month,
-    .flatpickr-weekday { color: rgba(226, 232, 240, 0.9); }
-    .flatpickr-day { border-radius: 12px; color: rgba(241, 245, 249, 0.88); }
-    .flatpickr-day:hover {
-      background: rgba(245, 158, 11, 0.12);
-      border-color: rgba(245, 158, 11, 0.25);
-    }
-    .flatpickr-day.selected,
-    .flatpickr-day.startRange,
-    .flatpickr-day.endRange {
-      background: linear-gradient(135deg, #F59E0B, #D97706);
-      border-color: rgba(245, 158, 11, 0.35);
-      color: rgba(2, 6, 23, 0.98);
-    }
-    .flatpickr-months .flatpickr-prev-month,
-    .flatpickr-months .flatpickr-next-month { color: rgba(226, 232, 240, 0.8); }
-  </style>
-
-  <style>@view-transition { navigation: auto; }</style>
 </head>
 
-<body class="h-full bg-[#020617] text-slate-200 noise-bg overflow-auto">
-  <!-- Aurora (match offer.html) -->
-  <div class="aurora-blob aurora-1"></div>
-  <div class="aurora-blob aurora-2"></div>
-  <div class="aurora-blob aurora-3"></div>
+<body class="h-full bg-slate-950 text-slate-100">
+  <div class="aurora">
+    <div class="aurora-blob aurora-blob-1"></div>
+    <div class="aurora-blob aurora-blob-2"></div>
+  </div>
+  <div class="noise-bg"></div>
 
-  <div class="relative z-10 min-h-full w-full">
-    <!-- Sticky Header (match offer.html structure) -->
-    <header class="sticky top-0 z-50 glass-card border-b border-slate-700/50">
-      <div class="max-w-6xl mx-auto px-4 py-4">
-        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <!-- Logo -->
-          <a href="/site/index.html" class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center">
-              <span class="font-black text-slate-950">TM</span>
-            </div>
-            <span class="font-bold text-lg text-slate-100">Tax Monitor Pro</span>
-          </a>
-
-          <!-- Stepper -->
-          <div class="flex items-center gap-2 sm:gap-4">
-            <div class="flex items-center gap-2">
-              <div class="w-7 h-7 rounded-full bg-amber-500 flex items-center justify-center animate-pulse-glow">
-                <span class="text-xs font-bold text-slate-900">1</span>
-              </div>
-              <span class="text-sm font-semibold text-amber-400">Intake</span>
-            </div>
-
-            <div class="w-8 h-0.5 bg-slate-600"></div>
-
-            <div class="flex items-center gap-2">
-              <div class="w-7 h-7 rounded-full bg-slate-700 border border-slate-600 flex items-center justify-center">
-                <span class="text-xs text-slate-400">2</span>
-              </div>
-              <span class="text-sm text-slate-500 hidden sm:inline">Offer</span>
-            </div>
-
-            <div class="w-8 h-0.5 bg-slate-600"></div>
-
-            <div class="flex items-center gap-2">
-              <div class="w-7 h-7 rounded-full bg-slate-700 border border-slate-600 flex items-center justify-center">
-                <span class="text-xs text-slate-400">3</span>
-              </div>
-              <span class="text-sm text-slate-500 hidden sm:inline">Agreement</span>
-            </div>
-
-            <div class="w-8 h-0.5 bg-slate-600"></div>
-
-            <div class="flex items-center gap-2">
-              <div class="w-7 h-7 rounded-full bg-slate-700 border border-slate-600 flex items-center justify-center">
-                <span class="text-xs text-slate-400">4</span>
-              </div>
-              <span class="text-sm text-slate-500 hidden sm:inline">Payment</span>
-            </div>
+  <!-- Sticky Header + Flow Stepper (Intake → Offer → Agreement → Payment) -->
+  <header class="sticky top-0 z-50 glass-card border-b border-slate-800/60">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4">
+      <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <!-- Brand -->
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center">
+            <span class="font-black text-slate-950">TM</span>
           </div>
-
-          <!-- Validity chip -->
-          <div class="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800/80 border border-slate-700">
-            <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-            </svg>
-            <span class="text-xs text-slate-300">Valid for 7 days</span>
+          <div>
+            <div class="font-bold text-slate-100">Tax Monitor Pro</div>
+            <div class="text-xs text-slate-400">Intake</div>
           </div>
         </div>
 
-        <!-- Progress bar (Intake = 25%) -->
-        <div class="mt-4 h-1 bg-slate-800 rounded-full overflow-hidden">
-          <div class="h-full w-1/4 progress-glow rounded-full"></div>
+        <!-- Stepper -->
+        <div class="flex items-center gap-2 sm:gap-4">
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-full bg-amber-500 flex items-center justify-center animate-pulse-glow">
+              <span class="text-xs font-bold text-slate-950">1</span>
+            </div>
+            <span class="text-sm font-semibold text-amber-400">Intake</span>
+          </div>
+
+          <div class="w-8 h-0.5 bg-slate-700"></div>
+
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center">
+              <span class="text-xs text-slate-400">2</span>
+            </div>
+            <span class="text-sm text-slate-500 hidden sm:inline">Offer</span>
+          </div>
+
+          <div class="w-8 h-0.5 bg-slate-700"></div>
+
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center">
+              <span class="text-xs text-slate-400">3</span>
+            </div>
+            <span class="text-sm text-slate-500 hidden sm:inline">Agreement</span>
+          </div>
+
+          <div class="w-8 h-0.5 bg-slate-700"></div>
+
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center">
+              <span class="text-xs text-slate-400">4</span>
+            </div>
+            <span class="text-sm text-slate-500 hidden sm:inline">Payment</span>
+          </div>
         </div>
+
+        <!-- Back -->
+        <a
+          href="/app/index.html"
+          class="inline-flex items-center gap-2 rounded-full border border-slate-800/70 bg-black/20 px-3 py-1.5 text-xs font-semibold text-slate-300 hover:text-amber-300 hover:border-amber-500/30"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+          </svg>
+          Back
+        </a>
       </div>
-    </header>
 
-    <!-- Spacing updated to match offer/agreement/payment "vertical air" -->
-    <main class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-      <div class="max-w-5xl mx-auto space-y-8">
-        <!-- Page Title (match offer.html layout) -->
-        <div class="text-center space-y-3">
-          <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
-            Your Tax Monitoring Intake
-          </h1>
-          <p class="text-lg sm:text-xl text-slate-400">Visibility first. Decisions second.</p>
-        </div>
+      <!-- Progress bar -->
+      <div class="mt-4 h-1 bg-slate-900/60 rounded-full overflow-hidden">
+        <div class="h-full w-1/4 progress-glow rounded-full"></div>
+      </div>
+    </div>
+  </header>
 
-        <!-- Form Card (match offer.html surface) -->
-        <section class="glass-card rounded-3xl p-6 sm:p-8">
-          <form
-            id="tm-intake"
-            data-tm-form
-            method="post"
-            action="https://api.taxmonitor.pro/forms/intake"
-            accept-charset="UTF-8"
-            class="space-y-8"
-          >
-            <!-- Idempotency + validation helpers -->
-            <input id="tm_event_id" name="eventId" type="hidden" value="">
-            <input id="tm_session_token" name="sessionToken" type="hidden" value="">
+<main class="max-w-2xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+    <div class="relative z-10">
+      <div class="text-center space-y-3 fade-in-up delay-1 mb-8">
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold gradient-text">
+          Your Tax Monitoring Intake
+        </h1>
+        <p class="text-lg sm:text-xl text-slate-400">Visibility first. Decisions second.</p>
+      </div>
 
-            <!-- Identity -->
-            <div class="grid gap-4 md:grid-cols-2">
+      <!-- Form Card (match offer.html surface) -->
+      <section class="glass-card gradient-border rounded-3xl p-6 sm:p-8 fade-in-up delay-2">
+        <form
+          id="tm-intake"
+          data-tm-form
+          method="post"
+          action="https://api.taxmonitor.pro/forms/intake"
+          accept-charset="UTF-8"
+          class="space-y-8"
+        >
+          <!-- Idempotency + validation helpers -->
+          <input id="tm_event_id" name="eventId" type="hidden" value="">
+          <input id="tm_session_token" name="sessionToken" type="hidden" value="">
+
+          <!-- Identity -->
+          <div class="flex items-center justify-between gap-4">
+            <div>
+              <h2 class="text-lg font-semibold text-slate-100">Your information</h2>
+              <p class="mt-1 text-sm text-slate-500">Enough to identify you and deliver your monitoring report.</p>
+            </div>
+            <span class="hidden sm:inline-flex rounded-full border border-slate-800/70 bg-black/20 px-3 py-1 text-xs text-slate-400">Step 1 of 1</span>
+          </div>
+
+          <div class="grid gap-4 md:grid-cols-2">
+            <div>
+              <label for="crm_first_name" class="block text-sm font-semibold text-slate-200 mb-2">First name</label>
+              <input
+                id="crm_first_name"
+                name="CRM First Name"
+                autocomplete="given-name"
+                class="w-full rounded-xl border border-slate-700/70 bg-slate-950/40 px-4 py-3 text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
+                placeholder="First name"
+                required
+                type="text"
+              >
+            </div>
+
+            <div>
+              <label for="crm_last_name" class="block text-sm font-semibold text-slate-200 mb-2">Last name</label>
+              <input
+                id="crm_last_name"
+                name="CRM Last Name"
+                autocomplete="family-name"
+                class="w-full rounded-xl border border-slate-700/70 bg-slate-950/40 px-4 py-3 text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
+                placeholder="Last name"
+                required
+                type="text"
+              >
+            </div>
+
+            <div class="md:col-span-2">
+              <label for="crm_primary_email" class="block text-sm font-semibold text-slate-200 mb-2">Primary email</label>
+              <input
+                id="crm_primary_email"
+                name="CRM Primary Email"
+                autocomplete="email"
+                inputmode="email"
+                class="w-full rounded-xl border border-slate-700/70 bg-slate-950/40 px-4 py-3 text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
+                placeholder="you@company.com"
+                required
+                type="email"
+              >
+            </div>
+
+            <div class="md:col-span-2">
+              <label for="crm_company_name" class="block text-sm font-semibold text-slate-200 mb-2">Company name (optional)</label>
+              <input
+                id="crm_company_name"
+                name="CRM Company Name"
+                autocomplete="organization"
+                class="w-full rounded-xl border border-slate-700/70 bg-slate-950/40 px-4 py-3 text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
+                placeholder="Company"
+                type="text"
+              >
+            </div>
+
+            <div class="pt-2 border-t border-slate-800/60"></div>
+
+            <div class="flex items-start justify-between gap-4 md:col-span-2">
               <div>
-                <label for="crm_first_name" class="block text-sm font-semibold text-slate-200 mb-2">First name</label>
-                <input
-                  id="crm_first_name"
-                  name="CRM First Name"
-                  autocomplete="given-name"
-                  class="w-full rounded-xl border border-slate-700/70 bg-slate-950/40 px-4 py-3 text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
-                  placeholder="First name"
-                  required
-                  type="text"
-                >
-              </div>
-
-              <div>
-                <label for="crm_last_name" class="block text-sm font-semibold text-slate-200 mb-2">Last name</label>
-                <input
-                  id="crm_last_name"
-                  name="CRM Last Name"
-                  autocomplete="family-name"
-                  class="w-full rounded-xl border border-slate-700/70 bg-slate-950/40 px-4 py-3 text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
-                  placeholder="Last name"
-                  required
-                  type="text"
-                >
-              </div>
-
-              <div class="md:col-span-2">
-                <label for="crm_primary_email" class="block text-sm font-semibold text-slate-200 mb-2">Primary email</label>
-                <input
-                  id="crm_primary_email"
-                  name="CRM Primary Email"
-                  autocomplete="email"
-                  inputmode="email"
-                  class="w-full rounded-xl border border-slate-700/70 bg-slate-950/40 px-4 py-3 text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
-                  placeholder="you@company.com"
-                  required
-                  type="email"
-                >
-              </div>
-
-              <div class="md:col-span-2">
-                <label for="crm_company_name" class="block text-sm font-semibold text-slate-200 mb-2">Company name (optional)</label>
-                <input
-                  id="crm_company_name"
-                  name="CRM Company Name"
-                  autocomplete="organization"
-                  class="w-full rounded-xl border border-slate-700/70 bg-slate-950/40 px-4 py-3 text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
-                  placeholder="Company / firm / household"
-                  type="text"
-                >
+                <h2 class="text-lg font-semibold text-slate-100">Tax snapshot</h2>
+                <p class="mt-1 text-sm text-slate-500">Tell us what you know. Leave anything blank if you are unsure.</p>
               </div>
             </div>
 
-            <div class="glow-divider"></div>
+            <div>
+              <label for="urgency_level" class="block text-sm font-semibold text-slate-200 mb-2">Urgency level</label>
+              <select
+                id="urgency_level"
+                name="Urgency Level"
+                class="w-full rounded-xl border border-slate-700/70 bg-slate-950/40 px-4 py-3 text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
+                required
+              >
+                <option value="">Select one</option>
+                <option value="1 — Low">1 — Low</option>
+                <option value="2 — Medium">2 — Medium</option>
+                <option value="3 — High">3 — High</option>
+                <option value="4 — Critical">4 — Critical</option>
+              </select>
+              <p class="mt-2 text-xs text-slate-500">How quickly you need clarity and a plan.</p>
+            </div>
 
-            <!-- Situation -->
-            <div class="grid gap-4 md:grid-cols-2">
+            <div>
+              <label for="irs_notice_received" class="block text-sm font-semibold text-slate-200 mb-2">IRS notice received?</label>
+              <select
+                id="irs_notice_received"
+                name="IRS Notice Received"
+                class="w-full rounded-xl border border-slate-700/70 bg-slate-950/40 px-4 py-3 text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
+                required
+              >
+                <option value="">Select one</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+                <option value="Not Sure">Not Sure</option>
+              </select>
+              <p class="mt-2 text-xs text-slate-500">Any letters, notices, or collections correspondence.</p>
+            </div>
+
+            <div>
+              <label for="irs_notice_type" class="block text-sm font-semibold text-slate-200 mb-2">IRS notice type (optional)</label>
+              <select
+                id="irs_notice_type"
+                name="IRS Notice Type"
+                class="w-full rounded-xl border border-slate-700/70 bg-slate-950/40 px-4 py-3 text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
+              >
+                <option value="">Select one</option>
+                <option value="CP">CP</option>
+                <option value="LT">LT</option>
+                <option value="Letter">Letter</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="irs_notice_date" class="block text-sm font-semibold text-slate-200 mb-2">IRS notice date (optional)</label>
+              <input
+                id="irs_notice_date"
+                name="IRS Notice Date"
+                class="w-full rounded-xl border border-slate-700/70 bg-slate-950/40 px-4 py-3 text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
+                placeholder="YYYY-MM-DD"
+                type="text"
+              >
+              <p class="mt-2 text-xs text-slate-500">If you don’t know the exact date, leave blank.</p>
+            </div>
+
+            <div class="md:col-span-2">
+              <label class="block text-sm font-semibold text-slate-200 mb-2">Primary concern</label>
+
+              <input id="primary_concern_value" name="Primary Concern" type="hidden" value="">
+
+              <div class="grid gap-3 sm:grid-cols-2">
+                <label class="flex items-start gap-3 rounded-xl border border-slate-800/60 bg-black/20 p-4">
+                  <input class="mt-1 tm-concern" type="checkbox" value="IRS Notices">
+                  <span>
+                    <span class="block font-semibold text-slate-200">IRS Notices</span>
+                    <span class="block text-sm text-slate-500">You received letters and want clarity.</span>
+                  </span>
+                </label>
+
+                <label class="flex items-start gap-3 rounded-xl border border-slate-800/60 bg-black/20 p-4">
+                  <input class="mt-1 tm-concern" type="checkbox" value="Unfiled Returns">
+                  <span>
+                    <span class="block font-semibold text-slate-200">Unfiled Returns</span>
+                    <span class="block text-sm text-slate-500">You might have missing returns.</span>
+                  </span>
+                </label>
+
+                <label class="flex items-start gap-3 rounded-xl border border-slate-800/60 bg-black/20 p-4">
+                  <input class="mt-1 tm-concern" type="checkbox" value="Balance Due">
+                  <span>
+                    <span class="block font-semibold text-slate-200">Balance Due</span>
+                    <span class="block text-sm text-slate-500">You suspect you owe taxes.</span>
+                  </span>
+                </label>
+
+                <label class="flex items-start gap-3 rounded-xl border border-slate-800/60 bg-black/20 p-4">
+                  <input class="mt-1 tm-concern" type="checkbox" value="Transcript Monitoring">
+                  <span>
+                    <span class="block font-semibold text-slate-200">Transcript Monitoring</span>
+                    <span class="block text-sm text-slate-500">You want proactive account visibility.</span>
+                  </span>
+                </label>
+              </div>
+              <p class="mt-2 text-xs text-slate-500">Select one. We’ll tailor the next steps to this.</p>
+            </div>
+
+            <div>
+              <label for="unfiled_returns_indicator" class="block text-sm font-semibold text-slate-200 mb-2">Unfiled returns indicator</label>
+              <select
+                id="unfiled_returns_indicator"
+                name="Unfiled Returns Indicator"
+                class="w-full rounded-xl border border-slate-700/70 bg-slate-950/40 px-4 py-3 text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
+                required
+              >
+                <option value="">Select one</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+                <option value="Not Sure">Not Sure</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="estimated_balance_due_range" class="block text-sm font-semibold text-slate-200 mb-2">Estimated balance due range</label>
+              <select
+                id="estimated_balance_due_range"
+                name="Estimated Balance Due Range"
+                class="w-full rounded-xl border border-slate-700/70 bg-slate-950/40 px-4 py-3 text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
+                required
+              >
+                <option value="">Select one</option>
+                <option value="$0">$0</option>
+                <option value="$1–$5,000">$1–$5,000</option>
+                <option value="$5,001–$10,000">$5,001–$10,000</option>
+                <option value="$10,001–$25,000">$10,001–$25,000</option>
+                <option value="$25,001–$50,000">$25,001–$50,000</option>
+                <option value="$50,001–$100,000">$50,001–$100,000</option>
+                <option value="$100,000+">$100,000+</option>
+                <option value="Not Sure">Not Sure</option>
+              </select>
+            </div>
+
+            <div class="pt-2 border-t border-slate-800/60"></div>
+
+            <div class="flex items-start justify-between gap-4 md:col-span-2">
               <div>
-                <label for="estimated_balance_due_range" class="block text-sm font-semibold text-slate-200 mb-2">Estimated balance due range</label>
-                <select
-                  id="estimated_balance_due_range"
-                  name="Estimated Balance Due Range"
-                  class="w-full rounded-xl border border-slate-700/70 bg-slate-950/40 px-4 py-3 text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
-                  required
-                >
-                  <option value="" disabled selected>Select one</option>
-                  <option value="$10,000–$25,000">$10,000–$25,000</option>
-                  <option value="$25,001–$50,000">$25,001–$50,000</option>
-                  <option value="$50,001–$100,000">$50,001–$100,000</option>
-                  <option value="Over $100,000">Over $100,000</option>
-                  <option value="Under $10,000">Under $10,000</option>
-                  <option value="Unknown">Unknown</option>
-                </select>
-              </div>
-
-              <div>
-                <label for="urgency_level" class="block text-sm font-semibold text-slate-200 mb-2">Urgency level</label>
-                <select
-                  id="urgency_level"
-                  name="Urgency Level"
-                  class="w-full rounded-xl border border-slate-700/70 bg-slate-950/40 px-4 py-3 text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
-                  required
-                >
-                  <option value="" disabled selected>Select one</option>
-                  <option value="High">High</option>
-                  <option value="Low">Low</option>
-                  <option value="Medium">Medium</option>
-                  <option value="Unsure">Unsure</option>
-                </select>
-              </div>
-
-              <div>
-                <label for="irs_notice_received" class="block text-sm font-semibold text-slate-200 mb-2">IRS notice received?</label>
-                <select
-                  id="irs_notice_received"
-                  name="IRS Notice Received"
-                  class="w-full rounded-xl border border-slate-700/70 bg-slate-950/40 px-4 py-3 text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
-                  required
-                >
-                  <option value="" disabled selected>Select one</option>
-                  <option value="No">No</option>
-                  <option value="Unsure">Unsure</option>
-                  <option value="Yes">Yes</option>
-                </select>
-              </div>
-
-              <div>
-                <label for="irs_notice_type" class="block text-sm font-semibold text-slate-200 mb-2">IRS notice type</label>
-                <select
-                  id="irs_notice_type"
-                  name="IRS Notice Type"
-                  class="w-full rounded-xl border border-slate-700/70 bg-slate-950/40 px-4 py-3 text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
-                >
-                  <option value="" selected>Optional</option>
-                  <option value="Computer Paragraph (CP) Notice">Computer Paragraph (CP) Notice</option>
-                  <option value="IRS Letter (Other)">IRS Letter (Other)</option>
-                  <option value="Long Term (LT) Notice">Long Term (LT) Notice</option>
-                  <option value="Notice Type Unknown">Notice Type Unknown</option>
-                </select>
-              </div>
-
-              <div class="md:col-span-2">
-                <label for="irs_notice_date" class="block text-sm font-semibold text-slate-200 mb-2">IRS notice date (optional)</label>
-                <input
-                  id="irs_notice_date"
-                  name="IRS Notice Date"
-                  class="w-full rounded-xl border border-slate-700/70 bg-slate-950/40 px-4 py-3 text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
-                  type="text"
-                  placeholder="YYYY-MM-DD"
-                >
-                <p class="mt-2 text-xs text-slate-500">If you don’t know the exact date, leave blank.</p>
-              </div>
-
-              <div class="md:col-span-2">
-                <label class="block text-sm font-semibold text-slate-200 mb-2">Primary concern</label>
-
-                <input id="primary_concern_value" name="Primary Concern" type="hidden" value="">
-
-                <div class="grid gap-3 sm:grid-cols-2">
-                  <label class="flex items-start gap-3 rounded-xl border border-slate-800/60 bg-black/20 p-4">
-                    <input class="mt-1 tm-concern" type="checkbox" value="IRS Notices">
-                    <span>
-                      <span class="block font-semibold text-slate-200">IRS Notices</span>
-                      <span class="block text-sm text-slate-500">You received letters or notices and want stability.</span>
-                    </span>
-                  </label>
-
-                  <label class="flex items-start gap-3 rounded-xl border border-slate-800/60 bg-black/20 p-4">
-                    <input class="mt-1 tm-concern" type="checkbox" value="Monitoring Account Changes">
-                    <span>
-                      <span class="block font-semibold text-slate-200">Monitoring Account Changes</span>
-                      <span class="block text-sm text-slate-500">You want eyes on transcripts for new activity.</span>
-                    </span>
-                  </label>
-
-                  <label class="flex items-start gap-3 rounded-xl border border-slate-800/60 bg-black/20 p-4">
-                    <input class="mt-1 tm-concern" type="checkbox" value="Preventing Escalation">
-                    <span>
-                      <span class="block font-semibold text-slate-200">Preventing Escalation</span>
-                      <span class="block text-sm text-slate-500">You want early warning before things get worse.</span>
-                    </span>
-                  </label>
-
-                  <label class="flex items-start gap-3 rounded-xl border border-slate-800/60 bg-black/20 p-4">
-                    <input class="mt-1 tm-concern" type="checkbox" value="Unsure / General Concern">
-                    <span>
-                      <span class="block font-semibold text-slate-200">Unsure / General Concern</span>
-                      <span class="block text-sm text-slate-500">You’re not sure yet; you want a baseline view.</span>
-                    </span>
-                  </label>
-                </div>
-
-                <p class="mt-2 text-xs text-slate-500">Select all that apply.</p>
-              </div>
-
-              <div class="md:col-span-2">
-                <label for="unfiled_returns_indicator" class="block text-sm font-semibold text-slate-200 mb-2">Unfiled returns indicator</label>
-                <select
-                  id="unfiled_returns_indicator"
-                  name="Unfiled Returns Indicator"
-                  class="w-full rounded-xl border border-slate-700/70 bg-slate-950/40 px-4 py-3 text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
-                  required
-                >
-                  <option value="" disabled selected>Select one</option>
-                  <option value="No">No</option>
-                  <option value="Unsure">Unsure</option>
-                  <option value="Yes">Yes</option>
-                </select>
-                <p class="mt-2 text-xs text-slate-500">This is used only to route monitoring recommendations.</p>
+                <h2 class="text-lg font-semibold text-slate-100">Agreement & consent</h2>
+                <p class="mt-1 text-sm text-slate-500">We monitor and report. We do not represent you before the IRS.</p>
               </div>
             </div>
 
-            <div class="glow-divider"></div>
-
-            <!-- Acknowledgement -->
-            <div class="rounded-2xl border border-slate-800/60 bg-black/20 p-5">
-              <label class="flex items-start gap-3">
-                <input id="monitoring_ack" type="checkbox" class="mt-1" required>
+            <div class="md:col-span-2">
+              <label class="flex items-start gap-3 rounded-2xl border border-slate-800/60 bg-black/20 p-4">
+                <input
+                  id="irs_monitoring_only_ack"
+                  name="IRS Monitoring Only Acknowledged"
+                  type="checkbox"
+                  class="mt-1"
+                  value="true"
+                  required
+                >
                 <span>
-                  <span class="block font-semibold text-slate-200">Monitoring-only acknowledgement</span>
-                  <span class="block text-sm text-slate-500">I understand monitoring does not create IRS representation. Representation, filing, and resolution are separate engagements.</span>
+                  <span class="block font-semibold text-slate-200">I understand this service is monitoring-only</span>
+                  <span class="block text-sm text-slate-500">Monitoring does not create IRS representation. If representation is needed, we’ll handle that separately.</span>
                 </span>
               </label>
-
-              <input id="monitoring_ack_value" name="IRS Monitoring Only Acknowledged" type="hidden" value="No">
             </div>
+          </div>
 
-            <!-- Submit -->
-            <div class="grid gap-3 md:grid-cols-2">
-              <button
-                type="submit"
-                class="inline-flex w-full items-center justify-center rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 px-4 py-3 text-sm font-semibold text-slate-950 hover:from-amber-400 hover:to-amber-500 transition"
-              >Submit intake →</button>
+          <!-- Submit -->
+          <div class="grid gap-3 sm:grid-cols-2">
+            <a
+              href="/app/index.html"
+              class="inline-flex w-full items-center justify-center rounded-2xl border border-slate-800/70 bg-black/20 px-6 py-3 font-semibold text-slate-200 hover:bg-black/30"
+            >
+              Back
+            </a>
+            <button
+              type="submit"
+              class="inline-flex w-full items-center justify-center rounded-2xl bg-amber-500 px-6 py-3 font-semibold text-slate-950 shadow-lg shadow-amber-500/20 hover:bg-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-500/40"
+              data-tm-submit
+            >
+              Continue
+            </button>
+          </div>
 
-              <a
-                href="/site/pricing.html"
-                class="inline-flex w-full items-center justify-center rounded-xl border border-slate-700/70 bg-slate-950/20 px-4 py-3 text-sm font-semibold text-slate-100 hover:bg-slate-950/35 transition"
-              >View pricing</a>
-            </div>
+          <!-- Error display -->
+          <div id="tm_error" class="hidden rounded-2xl border border-red-500/30 bg-red-500/10 p-4 text-sm text-red-200"></div>
+        </form>
+      </section>
+    </div>
+  </main>
 
-            <div id="tm-error" class="hidden rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-200"></div>
-
-            <div class="text-xs text-slate-500">
-              After submission, this page redirects to <code class="text-slate-300">/app/offer.html</code>.
-            </div>
-          </form>
-        </section>
-
-        <div class="text-center text-sm text-slate-500">
-          Monitoring does not create IRS representation. Representation, filing, and resolution are separate engagements.
-        </div>
-      </div>
-    </main>
-
-    <!-- Footer (match offer.html) -->
-    <footer class="border-t border-slate-800/60 mt-12 bg-slate-950/40">
-      <div class="max-w-6xl mx-auto px-4 py-8 text-center text-xs text-slate-500">
-        <div>© <span id="footer-year"></span> Tax Monitor Pro. All rights reserved.</div>
-        <div class="mt-3 flex items-center justify-center gap-4">
-          <a class="hover:text-slate-300 transition" href="/legal/privacy.html">Privacy</a>
-          <a class="hover:text-slate-300 transition" href="/legal/terms.html">Terms</a>
-        </div>
-      </div>
-    </footer>
-  </div>
-
+  <!-- Shared helpers (offer.html parity) -->
   <script>
     (function () {
-      var y = document.getElementById('footer-year');
-      if (y) y.textContent = String(new Date().getFullYear());
-    })();
-  </script>
-
-  <!-- Common helpers (same on every page) -->
-  <script>
-    (function () {
-      function getEndpointSlug(formEl) {
-        try {
-          var action = String(formEl.getAttribute('action') || '');
-          var u = new URL(action, window.location.origin);
-          var parts = (u.pathname || '').split('/').filter(Boolean);
-          return String(parts[parts.length - 1] || 'form').trim() || 'form';
-        } catch (e) {
-          return 'form';
+      // Minimal shared helpers with safe fallbacks
+      window.tmCommon = window.tmCommon || {
+        ensureEventId: function (form) {
+          var el = document.getElementById('tm_event_id');
+          if (!el) return;
+          if (el.value) return;
+          var id = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : (Date.now() + '-' + Math.random().toString(16).slice(2));
+          el.value = id;
+        },
+        syncSessionToken: function () {
+          var qs = new URLSearchParams(window.location.search || '');
+          var token = qs.get('sessionToken') || '';
+          var el = document.getElementById('tm_session_token');
+          if (el) el.value = token;
+        },
+        disableSubmit: function (form) {
+          var btn = form.querySelector('[data-tm-submit]');
+          if (!btn) return;
+          btn.disabled = true;
+          btn.dataset.tmLabel = btn.textContent;
+          btn.textContent = 'Submitting…';
+          btn.classList.add('opacity-80', 'cursor-not-allowed');
+        },
+        restoreSubmit: function (form) {
+          var btn = form.querySelector('[data-tm-submit]');
+          if (!btn) return;
+          btn.disabled = false;
+          if (btn.dataset.tmLabel) btn.textContent = btn.dataset.tmLabel;
+          btn.classList.remove('opacity-80', 'cursor-not-allowed');
+        },
+        showError: function (msg) {
+          var el = document.getElementById('tm_error');
+          if (!el) return;
+          el.textContent = msg || 'Something went wrong.';
+          el.classList.remove('hidden');
         }
-      }
-
-      function ensureEventId(formEl) {
-        var el = document.getElementById('tm_event_id');
-        if (!el) return;
-
-        var endpoint = getEndpointSlug(formEl || document.querySelector('form'));
-        var key = 'tm:' + endpoint + ':eventId';
-
-        var existing = sessionStorage.getItem(key);
-        if (!existing) {
-          existing = (crypto && crypto.randomUUID) ? crypto.randomUUID() : String(Date.now());
-          sessionStorage.setItem(key, existing);
-        }
-        el.value = existing;
-      }
-
-      function syncSessionToken() {
-        var el = document.getElementById('tm_session_token');
-        if (!el) return;
-
-        var params = new URLSearchParams(window.location.search || '');
-        var t = params.get('token') || params.get('sessionToken') || '';
-        el.value = t;
-      }
-
-      function disableSubmit(formEl) {
-        if (!formEl) return;
-
-        var btn = formEl.querySelector('button[type="submit"]');
-        if (!btn) return;
-
-        btn.disabled = true;
-        btn.setAttribute('aria-disabled', 'true');
-        btn.dataset.originalText = btn.textContent || '';
-        btn.textContent = 'Submitting...';
-      }
-
-      function showError(text) {
-        var box = document.getElementById('tm-error');
-        if (!box) return;
-        box.textContent = String(text || 'Submission failed.');
-        box.classList.remove('hidden');
-      }
-
-      function restoreSubmit(formEl) {
-        if (!formEl) return;
-
-        var btn = formEl.querySelector('button[type="submit"]');
-        if (!btn) return;
-
-        btn.disabled = false;
-        btn.removeAttribute('aria-disabled');
-        btn.textContent = btn.dataset.originalText || 'Submit';
-      }
-
-      window.tmCommon = {
-        disableSubmit: disableSubmit,
-        ensureEventId: ensureEventId,
-        getEndpointSlug: getEndpointSlug,
-        restoreSubmit: restoreSubmit,
-        showError: showError,
-        syncSessionToken: syncSessionToken
       };
-    })();
-  </script>
 
-  <!-- Intake-specific mapping + submit via fetch + redirect -->
-  <script>
-    (function () {
-      var ack = document.getElementById('monitoring_ack');
-      var ackValue = document.getElementById('monitoring_ack_value');
-      var concerns = Array.prototype.slice.call(document.querySelectorAll('.tm-concern'));
-      var concernsValue = document.getElementById('primary_concern_value');
       var form = document.getElementById('tm-intake');
+      var ack = document.getElementById('irs_monitoring_only_ack');
+      var concerns = document.querySelectorAll('.tm-concern');
 
       function syncAck() {
-        if (!ackValue) return;
-        ackValue.value = ack && ack.checked ? 'Yes' : 'No';
+        if (!ack) return;
+        ack.value = ack.checked ? 'true' : 'false';
       }
 
       function syncConcerns() {
-        if (!concernsValue) return;
+        var out = document.getElementById('primary_concern_value');
+        if (!out) return;
         var picked = [];
         for (var i = 0; i < concerns.length; i++) {
-          if (concerns[i].checked) picked.push(String(concerns[i].value || '').trim());
+          if (concerns[i].checked) picked.push(concerns[i].value);
         }
-        concernsValue.value = picked.filter(Boolean).join(',');
+        // Single-select feel: keep first if multiple
+        if (picked.length > 1) {
+          for (var j = 1; j < concerns.length; j++) concerns[j].checked = false;
+          picked = picked.slice(0, 1);
+        }
+        out.value = picked.map(Boolean).join(',');
       }
 
       if (ack) ack.addEventListener('change', syncAck);
