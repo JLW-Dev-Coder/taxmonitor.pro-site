@@ -1,265 +1,262 @@
-<!--/app/pages/projects.html-->
+<!-- /app/pages/projects.html -->
 <!doctype html>
 <html lang="en" class="h-full">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tax Monitor Pro - Project Map</title>
+
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet" />
+
   <style>
     * { font-family: 'DM Sans', sans-serif; }
     body { box-sizing: border-box; }
+
     .glow-amber { box-shadow: 0 0 20px rgba(251, 191, 36, 0.3); }
     .glow-green { box-shadow: 0 0 15px rgba(34, 197, 94, 0.2); }
-    .connector-line { stroke-dasharray: 8 4; animation: dash 20s linear infinite; }
+
+    .connector-line {
+      stroke-dasharray: 8 4;
+      animation: dash 20s linear infinite;
+    }
+
     @keyframes dash { to { stroke-dashoffset: -100; } }
+
     @keyframes pulse-glow {
       0%, 100% { box-shadow: 0 0 20px rgba(251, 191, 36, 0.3); }
       50% { box-shadow: 0 0 30px rgba(251, 191, 36, 0.5); }
     }
+
     .node-current { animation: pulse-glow 2s ease-in-out infinite; }
+
     .node-card { transition: all 0.3s ease; }
+
     .node-card:not(.locked):hover {
       transform: translateY(-2px);
       box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
     }
-    .node-card.locked { opacity: 0.5; cursor: not-allowed; }
+
+    .node-card.locked {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
     .detail-panel { animation: slideIn 0.3s ease; }
+
     @keyframes slideIn {
       from { opacity: 0; transform: translateX(20px); }
       to { opacity: 1; transform: translateX(0); }
     }
+
     .phase-connector {
       background: linear-gradient(90deg, transparent, rgba(251, 191, 36, 0.3), transparent);
     }
+
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: #1e293b; }
     ::-webkit-scrollbar-thumb { background: #475569; border-radius: 3px; }
     ::-webkit-scrollbar-thumb:hover { background: #64748b; }
-    .fade-wrap { opacity: 1; transform: translateY(0); }
-    .fade-out { opacity: 0; transform: translateY(6px); transition: opacity 180ms ease, transform 180ms ease; }
-    .fade-in  { opacity: 1; transform: translateY(0); transition: opacity 240ms ease, transform 240ms ease; }
-    .skeleton {
-      position: relative;
-      overflow: hidden;
-      background: rgba(148, 163, 184, 0.08);
-      border: 1px solid rgba(148, 163, 184, 0.10);
-    }
-    .skeleton::after {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: -40%;
-      width: 40%;
-      height: 100%;
-      background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(241, 245, 249, 0.08),
-        transparent
-      );
-      animation: shimmer 1.1s ease-in-out infinite;
-    }
-    @keyframes shimmer {
-      0% { left: -40%; }
-      100% { left: 110%; }
-    }
   </style>
 </head>
-<body class="h-full bg-slate-900 text-slate-100 overflow-auto">
-  <div class="min-h-full flex">
-    <!-- Sidebar (partial) -->
-    <div id="tm-sidebar" class="hidden lg:block shrink-0">
-      <!-- injected -->
-    </div>
 
-    <!-- Main column -->
-    <div class="flex-1 min-w-0 flex flex-col">
-      <!-- Topbar (partial) -->
-      <div id="tm-topbar" class="shrink-0">
-        <!-- injected -->
+<!--
+  SCROLL FIX NOTE:
+  Flex + overflow requires min-h-0 on the flex children you want to scroll.
+  The roadmap (left panel) is now guaranteed scrollable via:
+  - body overflow-hidden
+  - main flex-1 min-h-0
+  - left panel min-h-0 overflow-auto
+-->
+
+<body class="h-screen bg-slate-900 text-slate-100 overflow-hidden">
+  <div class="h-screen flex">
+
+    <!-- SIDEBAR (inline) -->
+    <aside class="w-64 bg-slate-900 border-r border-slate-800/50 flex flex-col shrink-0">
+      <div class="p-5 border-b border-slate-800/50">
+        <div class="flex items-center gap-3">
+          <div
+            class="w-10 h-10 rounded-lg flex items-center justify-center font-bold text-slate-900 text-lg"
+            style="background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);"
+            aria-hidden="true"
+          >
+            TM
+          </div>
+          <div>
+            <div class="font-semibold text-white text-sm">Tax Monitor Pro</div>
+            <div class="text-xs text-slate-500">IRS Monitoring</div>
+          </div>
+        </div>
       </div>
 
-      <!-- Main Content -->
-      <main class="flex-1 flex flex-col lg:flex-row overflow-hidden">
-        <!-- Left Panel -->
-        <div class="lg:w-2/3 overflow-auto p-4 lg:p-6">
-          <!-- Sample Journey controls -->
-          <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
-            <div class="flex items-center gap-2">
-              <span class="text-xs text-slate-400">Preview:</span>
-              <span id="journey-label" class="text-xs font-medium text-slate-200">Live</span>
-            </div>
-            <div class="flex items-center gap-2">
-              <button
-                id="btn-my-journey"
-                class="px-3 py-1.5 rounded-lg bg-slate-800/60 border border-slate-700/50 text-xs text-slate-200 hover:border-emerald-500/40 hover:text-white transition-colors"
-                type="button"
-              >My Journey</button>
-              <button
-                id="btn-sample-journey"
-                class="px-3 py-1.5 rounded-lg bg-slate-800/60 border border-slate-700/50 text-xs text-slate-200 hover:border-amber-500/40 hover:text-white transition-colors"
-                type="button"
-              >Sample Journey</button>
-              <button
-                id="journey-next"
-                class="px-3 py-1.5 rounded-lg bg-amber-500/20 border border-amber-500/30 text-xs text-amber-300 hover:bg-amber-500/30 transition-colors"
-                type="button"
-              >Next Step</button>
-            </div>
+      <div class="p-5 border-b border-slate-800/50">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-full bg-gradient-to-br from-slate-700 to-slate-800 flex items-center justify-center text-sm font-medium text-slate-300 tm-user-initials">TM</div>
+          <div class="flex-1 min-w-0">
+            <div id="sidebar-user-name" class="font-medium text-sm text-white truncate">Jane Doe</div>
+            <div id="sidebar-account-label" class="text-xs text-slate-500">Account: Monitoring</div>
           </div>
+        </div>
+        <a href="javascript:void(0)" class="text-xs text-amber-500 hover:text-amber-400 mt-2 inline-block transition-colors">Edit profile</a>
+      </div>
 
-          <!-- Phase Progress Bar -->
-          <div class="mb-4 bg-slate-800/20 border border-slate-700/30 rounded-xl p-3">
-            <div class="flex items-center gap-2">
-              <span class="text-xs text-slate-400 whitespace-nowrap">Phases:</span>
-              <div id="phase-indicators" class="flex items-center gap-1 flex-1 overflow-x-auto"></div>
-            </div>
-          </div>
+      <nav class="flex-1 py-4 px-3">
+        <ul class="space-y-1">
+          <li>
+            <a href="/app/index.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-white">
+              <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+              </svg>
+              Start Here
+            </a>
+          </li>
 
-          <!-- Smooth-loading wrapper -->
-          <div id="left-wrap" class="fade-wrap fade-in">
-            <div id="mind-map" class="space-y-8"></div>
+          <li>
+            <a href="/app/pages/calendar.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-400 hover:text-white">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+              </svg>
+              Calendar
+            </a>
+          </li>
 
-            <!-- Skeleton (shown while loading) -->
-            <div id="mind-map-skeleton" class="hidden space-y-4">
-              <div class="skeleton rounded-xl h-10"></div>
-              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                <div class="skeleton rounded-xl h-24"></div>
-                <div class="skeleton rounded-xl h-24"></div>
-                <div class="skeleton rounded-xl h-24"></div>
-                <div class="skeleton rounded-xl h-24"></div>
-              </div>
-              <div class="skeleton rounded-xl h-10"></div>
-              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                <div class="skeleton rounded-xl h-24"></div>
-                <div class="skeleton rounded-xl h-24"></div>
-                <div class="skeleton rounded-xl h-24"></div>
-                <div class="skeleton rounded-xl h-24"></div>
-              </div>
-            </div>
+          <li>
+            <a href="/app/pages/files.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-400 hover:text-white">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/>
+              </svg>
+              Files
+            </a>
+          </li>
+
+          <li>
+            <a href="/app/pages/messaging.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-400 hover:text-white">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 10h8m-8 4h5m-7 7l-3 3V5a2 2 0 012-2h14a2 2 0 012 2v12a2 2 0 01-2 2H7z"/>
+              </svg>
+              Messaging
+            </a>
+          </li>
+
+          <li>
+            <a href="/app/pages/office.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-400 hover:text-white">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 21h18M5 21V7a2 2 0 012-2h3v16M14 21V3h3a2 2 0 012 2v16"/>
+              </svg>
+              Office
+            </a>
+          </li>
+
+          <li>
+            <a href="/app/pages/projects.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-white">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5h6m-8 4h10M7 13h10M7 17h6"/>
+              </svg>
+              Projects
+            </a>
+          </li>
+
+          <li>
+            <a href="/app/pages/support.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-400 hover:text-white">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/>
+              </svg>
+              Support
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="p-4 border-t border-slate-800/50">
+        <p id="sidebar-footnote" class="text-[11px] text-slate-500 leading-relaxed">Monitoring does not create IRS representation.</p>
+      </div>
+    </aside>
+
+    <!-- MAIN COLUMN -->
+    <div class="flex-1 min-w-0 flex flex-col h-screen overflow-hidden">
+
+      <!-- TOPBAR (inline) -->
+      <header class="h-16 bg-slate-900/50 border-b border-slate-800/50 flex items-center justify-between px-6 shrink-0">
+        <div class="flex items-center gap-3">
+          <div class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800/50 border border-slate-700/50">
+            <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+            <span id="topbar-mode" class="text-xs text-slate-300">Monitoring Portal</span>
           </div>
         </div>
 
-        <!-- Right Panel -->
-        <div class="lg:w-1/3 border-t lg:border-t-0 lg:border-l border-slate-700/50 bg-slate-800/30 overflow-auto">
-          <div id="right-wrap" class="fade-wrap fade-in">
-            <div id="detail-panel" class="p-4 lg:p-6"></div>
+        <div class="flex items-center gap-2">
+          <button class="p-2 text-slate-400 hover:text-white transition-colors" aria-label="Search">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+            </svg>
+          </button>
 
-            <!-- Skeleton -->
-            <div id="detail-skeleton" class="hidden p-4 lg:p-6 space-y-3">
-              <div class="skeleton rounded-xl h-10"></div>
-              <div class="skeleton rounded-xl h-20"></div>
-              <div class="skeleton rounded-xl h-20"></div>
-              <div class="skeleton rounded-xl h-12"></div>
-            </div>
+          <button class="p-2 text-slate-400 hover:text-white transition-colors relative" aria-label="Notifications">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+            </svg>
+            <span id="notif-dot" class="absolute top-1.5 right-1.5 w-2 h-2 bg-amber-500 rounded-full"></span>
+          </button>
+
+          <a href="/app/pages/support.html" class="p-2 text-slate-400 hover:text-white transition-colors" aria-label="Help">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </a>
+
+          <div class="w-8 h-8 rounded-full bg-gradient-to-br from-slate-600 to-slate-700 flex items-center justify-center text-sm font-medium text-slate-300 cursor-pointer hover:ring-2 hover:ring-amber-500/50 transition-all tm-user-initials">TM</div>
+          <span id="topbar-user-name" class="sr-only">Jane Doe</span>
+        </div>
+      </header>
+
+      <!-- PHASE PROGRESS BAR -->
+      <div class="bg-slate-800/30 border-b border-slate-700/30 shrink-0">
+        <div class="max-w-7xl mx-auto px-4 py-3">
+          <div class="flex items-center gap-2">
+            <div id="phase-indicators" class="flex items-center gap-1 flex-1"></div>
           </div>
         </div>
+      </div>
+
+      <!-- MAIN CONTENT (min-h-0 is the key) -->
+      <main class="flex-1 min-h-0 flex flex-col lg:flex-row overflow-hidden">
+
+        <!-- Left Panel: Roadmap (SCROLLABLE) -->
+        <section class="lg:w-2/3 flex-1 min-h-0 overflow-y-auto overscroll-contain p-4 lg:p-6" aria-label="Roadmap">
+          <div id="mind-map" class="space-y-8 pb-24"></div>
+        </section>
+
+        <!-- Right Panel: Detail View (SCROLLABLE) -->
+        <aside class="lg:w-1/3 flex-1 min-h-0 border-t lg:border-t-0 lg:border-l border-slate-700/50 bg-slate-800/30 overflow-y-auto overscroll-contain" aria-label="Details">
+          <div id="detail-panel" class="p-4 lg:p-6"></div>
+        </aside>
+
       </main>
 
       <!-- Activity Timeline Footer -->
-      <footer class="border-t border-slate-700/50 bg-slate-800/50">
+      <footer class="border-t border-slate-700/50 bg-slate-800/50 shrink-0">
         <div class="max-w-7xl mx-auto px-4 py-3">
           <div class="flex items-center gap-2 text-xs text-slate-400">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <span>Recent Activity:</span>
             <div id="activity-timeline" class="flex items-center gap-4 overflow-x-auto flex-1"></div>
           </div>
         </div>
       </footer>
+
     </div>
   </div>
 
   <script>
-    // =========================================================
-    // Theme (Element SDK-compatible, but SDK init is gated)
-    // =========================================================
-
-    let selectedStep = null;
-    let config = {};
-
-    const defaultConfig = {
-      page_title: 'Tax Monitor Pro',
-      welcome_message: 'Your Compliance Journey',
-      background_color: '#0f172a',
-      surface_color: '#1e293b',
-      text_color: '#f1f5f9',
-      primary_color: '#f59e0b',
-      secondary_color: '#475569'
-    };
-
-    async function onConfigChange(newConfig) {
-      config = newConfig || {};
-      applyColors();
-    }
-
-    function applyColors() {
-      const bgColor = config.background_color || defaultConfig.background_color;
-      const textColor = config.text_color || defaultConfig.text_color;
-      document.body.style.backgroundColor = bgColor;
-      document.body.style.color = textColor;
-    }
-
-    function mapToCapabilities(cfg) {
-      return {
-        recolorables: [
-          { get: () => cfg.background_color || defaultConfig.background_color, set: (v) => { cfg.background_color = v; window.elementSdk?.setConfig?.({ background_color: v }); } },
-          { get: () => cfg.surface_color || defaultConfig.surface_color, set: (v) => { cfg.surface_color = v; window.elementSdk?.setConfig?.({ surface_color: v }); } },
-          { get: () => cfg.text_color || defaultConfig.text_color, set: (v) => { cfg.text_color = v; window.elementSdk?.setConfig?.({ text_color: v }); } },
-          { get: () => cfg.primary_color || defaultConfig.primary_color, set: (v) => { cfg.primary_color = v; window.elementSdk?.setConfig?.({ primary_color: v }); } },
-          { get: () => cfg.secondary_color || defaultConfig.secondary_color, set: (v) => { cfg.secondary_color = v; window.elementSdk?.setConfig?.({ secondary_color: v }); } }
-        ],
-        borderables: [],
-        fontEditable: undefined,
-        fontSizeable: undefined
-      };
-    }
-
-    function mapToEditPanelValues(cfg) {
-      return new Map([
-        ['page_title', cfg.page_title || defaultConfig.page_title],
-        ['welcome_message', cfg.welcome_message || defaultConfig.welcome_message]
-      ]);
-    }
-
-    // =========================================================
-    // Icons
-    // =========================================================
-
-    const icons = {
-      'arrow-right': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>',
-      'calendar': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>',
-      'chart': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>',
-      'check': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>',
-      'clipboard': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>',
-      'credit-card': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>',
-      'document': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>',
-      'key': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/>',
-      'lock': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>',
-      'location': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>',
-      'pencil': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>',
-      'search': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>',
-      'shield': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>',
-      'sparkles': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>',
-      'star': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>',
-      'support': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/>',
-      'user-group': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>'
-    };
-
-    function getIcon(name, className = 'w-5 h-5') {
-      return `<svg class="${className}" fill="none" stroke="currentColor" viewBox="0 0 24 24">${icons[name] || icons['document']}</svg>`;
-    }
-
-    // =========================================================
-    // Step map (static metadata + links), status computed from canonical
-    // =========================================================
-
+    // Project data structure
     const projectData = {
       phases: [
         {
@@ -267,35 +264,55 @@
           name: 'Lead Capture & Payment',
           connector: 'Unlocked after Payment',
           steps: [
-            { id: 'intake', name: 'Intake', status: 'locked', type: 'form', icon: 'clipboard',
+            {
+              id: 'intake',
+              name: 'Intake',
+              status: 'complete',
+              type: 'form',
+              icon: 'clipboard',
               microcopy: 'Initial information collection',
               description: 'We collect your basic information to understand your tax situation and determine how we can help you.',
-              whatWeNeed: ['Brief description of issue', 'Contact information', 'Full legal name', 'Tax years of concern'],
-              whatWeDo: ['Assign a case specialist', 'Prepare next steps', 'Review your submission'],
+              whatWeNeed: ['Full legal name', 'Contact information', 'Tax years of concern', 'Brief description of issue'],
+              whatWeDo: ['Review your submission', 'Assign a case specialist', 'Prepare next steps'],
               formFields: ['Full Name', 'Email', 'Phone', 'Tax Years', 'Issue Type', 'Description'],
               link: '/app/pages/flows/intake/intake.html'
             },
-            { id: 'offer', name: 'Offer', status: 'locked', type: 'form', icon: 'document',
+            {
+              id: 'offer',
+              name: 'Offer',
+              status: 'complete',
+              type: 'form',
+              icon: 'document',
               microcopy: 'Service proposal review',
               description: 'Review our proposed services and pricing based on your specific tax situation.',
-              whatWeNeed: ['Confirmation of scope', 'Review of proposed services'],
-              whatWeDo: ['Answer questions', 'Customize service package', 'Provide transparent pricing'],
+              whatWeNeed: ['Review of proposed services', 'Confirmation of scope'],
+              whatWeDo: ['Customize service package', 'Provide transparent pricing', 'Answer questions'],
               formFields: ['Service Selection', 'Add-ons', 'Payment Plan', 'Questions'],
               link: '/app/pages/flows/intake/offer.html'
             },
-            { id: 'agreement', name: 'Agreement', status: 'locked', type: 'form', icon: 'shield',
+            {
+              id: 'agreement',
+              name: 'Agreement',
+              status: 'complete',
+              type: 'form',
+              icon: 'shield',
               microcopy: 'Service agreement signing',
               description: 'Sign our service agreement to formalize our engagement and protect both parties.',
-              whatWeNeed: ['Agreement acknowledgment', 'Electronic signature'],
-              whatWeDo: ['Begin onboarding', 'Provide clear terms', 'Secure your data'],
+              whatWeNeed: ['Electronic signature', 'Agreement acknowledgment'],
+              whatWeDo: ['Provide clear terms', 'Secure your data', 'Begin onboarding'],
               formFields: ['Agreement Review', 'Terms Acceptance', 'E-Signature', 'Date'],
               link: '/app/pages/flows/intake/agreement.html'
             },
-            { id: 'payment', name: 'Payment', status: 'locked', type: 'form', icon: 'credit-card',
+            {
+              id: 'payment',
+              name: 'Payment',
+              status: 'complete',
+              type: 'form',
+              icon: 'credit-card',
               microcopy: 'Secure payment processing',
               description: 'Complete your payment to activate your account and begin the compliance process.',
-              whatWeNeed: ['Billing information', 'Payment method'],
-              whatWeDo: ['Activate account', 'Process securely', 'Send receipt'],
+              whatWeNeed: ['Payment method', 'Billing information'],
+              whatWeDo: ['Process securely', 'Send receipt', 'Activate account'],
               formFields: ['Payment Method', 'Billing Address', 'Amount', 'Confirmation'],
               link: '/app/pages/flows/intake/payment.html'
             }
@@ -306,37 +323,57 @@
           name: 'ESign 2848 / Review',
           connector: 'Operator starts here',
           steps: [
-            { id: 'welcome', name: 'Welcome', status: 'locked', type: 'form', icon: 'sparkles',
+            {
+              id: 'welcome',
+              name: 'Welcome',
+              status: 'complete',
+              type: 'form',
+              icon: 'sparkles',
               microcopy: 'Account setup & orientation',
               description: 'Complete your welcome questionnaire to help us personalize your experience.',
-              whatWeNeed: ['Availability windows', 'Communication preferences'],
-              whatWeDo: ['Assign your team', 'Create your timeline', 'Set up your portal'],
+              whatWeNeed: ['Communication preferences', 'Availability windows'],
+              whatWeDo: ['Set up your portal', 'Assign your team', 'Create your timeline'],
               formFields: ['Preferred Contact Method', 'Best Times', 'Timezone', 'Additional Info'],
-              link: '/app/pages/flows/post-payment/welcome.html'
+              link: '/app/pages/flows/review/welcome.html'
             },
-            { id: 'filing-status', name: 'Filing Status', status: 'locked', type: 'form', icon: 'user-group',
+            {
+              id: 'filing-status',
+              name: 'Filing Status',
+              status: 'complete',
+              type: 'form',
+              icon: 'user-group',
               microcopy: 'Verify filing status details',
               description: 'Confirm your current filing status to ensure accurate representation with the IRS.',
               whatWeNeed: ['Current filing status', 'Dependent information'],
-              whatWeDo: ['Flag discrepancies', 'Update if needed', 'Verify against IRS records'],
+              whatWeDo: ['Verify against IRS records', 'Flag discrepancies', 'Update if needed'],
               formFields: ['Filing Status', 'Spouse Info', 'Dependents', 'Changes'],
-              link: '/app/pages/flows/post-payment/filing-status.html'
+              link: '/app/pages/flows/review/filing-status.html'
             },
-            { id: 'address-update', name: 'Address Update', status: 'locked', type: 'form', icon: 'location',
+            {
+              id: 'address-update',
+              name: 'Address Update',
+              status: 'current',
+              type: 'form',
+              icon: 'location',
               microcopy: 'Confirm current address',
               description: 'Verify your current mailing address to ensure all IRS correspondence reaches you.',
-              whatWeNeed: ['Address history if changed', 'Current mailing address'],
-              whatWeDo: ['Confirm receipt', 'Redirect correspondence', 'Update IRS records'],
+              whatWeNeed: ['Current mailing address', 'Address history if changed'],
+              whatWeDo: ['Update IRS records', 'Redirect correspondence', 'Confirm receipt'],
               formFields: ['Street Address', 'City', 'State', 'ZIP', 'Previous Address'],
-              link: '/app/pages/flows/post-payment/address-update.html'
+              link: '/app/pages/flows/review/address-update.html'
             },
-            { id: 'esign-2848', name: 'eSign 2848', status: 'locked', type: 'form', icon: 'pencil',
+            {
+              id: 'esign-2848',
+              name: 'eSign 2848',
+              status: 'ready',
+              type: 'form',
+              icon: 'pencil',
               microcopy: 'Power of Attorney authorization',
               description: 'Sign Form 2848 to authorize us to represent you before the IRS and access your records.',
               whatWeNeed: ['Electronic signature', 'Identity verification'],
-              whatWeDo: ['Begin representation', 'File with IRS', 'Obtain CAF number'],
+              whatWeDo: ['File with IRS', 'Obtain CAF number', 'Begin representation'],
               formFields: ['Taxpayer Info', 'Representative Info', 'Tax Matters', 'Signature', 'Date'],
-              link: '/app/pages/flows/post-payment/esign-2848.html'
+              link: '/app/pages/flows/review/esign-2848.html'
             }
           ]
         },
@@ -345,20 +382,30 @@
           name: 'Processing / Due Diligence',
           connector: 'Requires CAF Verified',
           steps: [
-            { id: 'authorization-caf', name: 'Authorization + CAF', status: 'locked', type: 'operator', icon: 'key',
+            {
+              id: 'authorization-caf',
+              name: 'Authorization + CAF',
+              status: 'locked',
+              type: 'operator',
+              icon: 'key',
               microcopy: 'IRS authorization processing',
               description: 'We process your Form 2848 with the IRS and obtain your Centralized Authorization File (CAF) number.',
               whatWeNeed: ['Completed 2848', 'Patience while processing'],
               whatWeDo: ['Submit to IRS', 'Track processing', 'Verify authorization'],
-              checklist: ['Receive CAF confirmation', 'Submit Form 2848 to IRS', 'Test record access', 'Verify access level'],
+              checklist: ['Submit Form 2848 to IRS', 'Receive CAF confirmation', 'Verify access level', 'Test record access'],
               estimate: '3-5 business days'
             },
-            { id: 'record-retrieval', name: 'Record Retrieval + Analysis', status: 'locked', type: 'operator', icon: 'search',
+            {
+              id: 'record-retrieval',
+              name: 'Record Retrieval + Analysis',
+              status: 'locked',
+              type: 'operator',
+              icon: 'search',
               microcopy: 'IRS record analysis',
               description: 'We retrieve your complete tax records from the IRS and perform comprehensive analysis.',
-              whatWeNeed: ['Any additional documents', 'CAF verification'],
-              whatWeDo: ['Analyze records', 'Document findings', 'Identify issues', 'Pull IRS transcripts', 'Prepare findings'],
-              checklist: ['Analyze records', 'Cross-reference data', 'Document findings', 'Request account transcripts', 'Request return transcripts', 'Request wage & income'],
+              whatWeNeed: ['CAF verification', 'Any additional documents'],
+              whatWeDo: ['Pull IRS transcripts', 'Analyze records', 'Identify issues', 'Prepare findings'],
+              checklist: ['Request wage & income', 'Request account transcripts', 'Request return transcripts', 'Cross-reference data', 'Document findings'],
               estimate: '5-7 business days'
             }
           ]
@@ -368,29 +415,44 @@
           name: 'Results',
           connector: null,
           steps: [
-            { id: 'compliance-report', name: 'Compliance Report', status: 'locked', type: 'operator', icon: 'chart',
+            {
+              id: 'compliance-report',
+              name: 'Compliance Report',
+              status: 'locked',
+              type: 'operator',
+              icon: 'chart',
               microcopy: 'Comprehensive findings report',
               description: 'Receive your detailed compliance report with findings, recommendations, and next steps.',
-              whatWeNeed: ['Questions prepared', 'Review of findings'],
+              whatWeNeed: ['Review of findings', 'Questions prepared'],
               whatWeDo: ['Compile findings', 'Create recommendations', 'Prepare presentation'],
               checklist: ['Compile all findings', 'Create visual summary', 'Draft recommendations', 'Prepare action items'],
               estimate: '2-3 business days'
             },
-            { id: 'results-appointment', name: 'Results Appointment', status: 'locked', type: 'form', icon: 'calendar',
+            {
+              id: 'results-appointment',
+              name: 'Results Appointment',
+              status: 'locked',
+              type: 'form',
+              icon: 'calendar',
               microcopy: 'Schedule results review',
               description: 'Schedule your appointment to review findings with your assigned specialist.',
               whatWeNeed: ['Available time slots', 'Questions list'],
-              whatWeDo: ['Answer questions', 'Discuss next steps', 'Present findings'],
+              whatWeDo: ['Present findings', 'Answer questions', 'Discuss next steps'],
               formFields: ['Preferred Date', 'Preferred Time', 'Meeting Type', 'Topics to Discuss'],
-              link: '/app/pages/calendar.html'
+              link: '/app/pages/flows/results/appointment.html'
             },
-            { id: 'exit-survey', name: 'Exit Survey', status: 'locked', type: 'form', icon: 'star',
+            {
+              id: 'exit-survey',
+              name: 'Exit Survey',
+              status: 'locked',
+              type: 'form',
+              icon: 'star',
               microcopy: 'Share your feedback',
               description: 'Help us improve by sharing your experience with our service.',
               whatWeNeed: ['Honest feedback', 'Suggestions'],
-              whatWeDo: ['Follow up if needed', 'Improve services', 'Review feedback'],
+              whatWeDo: ['Review feedback', 'Improve services', 'Follow up if needed'],
               formFields: ['Overall Rating', 'Service Quality', 'Communication', 'Recommendations', 'Comments'],
-              link: '/app/pages/flows/post-payment/client-exit-survey.html'
+              link: '/app/pages/flows/results/exit-survey.html'
             }
           ]
         }
@@ -405,39 +467,102 @@
           microcopy: 'Get help anytime',
           description: 'Need assistance? Submit a support ticket and our team will respond within 24 hours.',
           whatWeNeed: ['Issue description', 'Relevant details'],
-          whatWeDo: ['Assign specialist', 'Resolve promptly', 'Review immediately'],
+          whatWeDo: ['Review immediately', 'Assign specialist', 'Resolve promptly'],
           formFields: ['Subject', 'Category', 'Priority', 'Description', 'Attachments'],
-          link: '/app/pages/support.html'
+          link: '/app/pages/support/ticket.html'
         }
       ],
       activities: [
-        { text: 'Loaded project map', time: 'Now', type: 'info' }
+        { text: 'Payment confirmed', time: '2 days ago', type: 'success' },
+        { text: 'Filing status submitted', time: '1 day ago', type: 'success' },
+        { text: 'Welcome packet sent', time: '1 day ago', type: 'info' },
+        { text: 'Address update pending', time: 'Now', type: 'warning' }
       ]
     };
 
-    // =========================================================
-    // Status styling
-    // =========================================================
+    let selectedStep = null;
+    let config = {};
+
+    const defaultConfig = {
+      page_title: 'Tax Monitor Pro',
+      welcome_message: 'Your Compliance Journey',
+      background_color: '#0f172a',
+      surface_color: '#1e293b',
+      text_color: '#f1f5f9',
+      primary_color: '#f59e0b',
+      secondary_color: '#475569'
+    };
+
+    // Icon SVGs
+    const icons = {
+      'arrow-right': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>',
+      'calendar': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>',
+      'chart': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>',
+      'check': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>',
+      'clipboard': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>',
+      'credit-card': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>',
+      'document': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>',
+      'key': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/>',
+      'location': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>',
+      'lock': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>',
+      'pencil': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>',
+      'search': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>',
+      'shield': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>',
+      'sparkles': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>',
+      'star': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>',
+      'support': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/>',
+      'user-group': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>'
+    };
+
+    function getIcon(name, className = 'w-5 h-5') {
+      return `<svg class="${className}" fill="none" stroke="currentColor" viewBox="0 0 24 24">${icons[name] || icons['document']}</svg>`;
+    }
 
     function getStatusStyles(status) {
       const styles = {
-        complete: { bg: 'bg-emerald-500/20', border: 'border-emerald-500/30', text: 'text-emerald-400', pill: 'bg-emerald-500/20 text-emerald-400', pillText: 'Complete' },
-        current:  { bg: 'bg-amber-500/20',   border: 'border-amber-500/50',   text: 'text-amber-400',   pill: 'bg-amber-500/20 text-amber-400',   pillText: 'Current'  },
-        ready:    { bg: 'bg-slate-700/50',   border: 'border-slate-600/50',   text: 'text-slate-300',   pill: 'bg-blue-500/20 text-blue-400',     pillText: 'Ready'    },
-        locked:   { bg: 'bg-slate-800/50',   border: 'border-slate-700/30',   text: 'text-slate-500',   pill: 'bg-slate-600/20 text-slate-500',   pillText: 'Locked'   },
-        blocked:  { bg: 'bg-red-500/10',     border: 'border-red-500/30',     text: 'text-red-400',     pill: 'bg-red-500/20 text-red-400',       pillText: 'Blocked'  }
+        complete: {
+          bg: 'bg-emerald-500/20',
+          border: 'border-emerald-500/30',
+          pill: 'bg-emerald-500/20 text-emerald-400',
+          pillText: 'Complete',
+          text: 'text-emerald-400'
+        },
+        current: {
+          bg: 'bg-amber-500/20',
+          border: 'border-amber-500/50',
+          pill: 'bg-amber-500/20 text-amber-400',
+          pillText: 'Current',
+          text: 'text-amber-400'
+        },
+        ready: {
+          bg: 'bg-slate-700/50',
+          border: 'border-slate-600/50',
+          pill: 'bg-blue-500/20 text-blue-400',
+          pillText: 'Ready',
+          text: 'text-slate-300'
+        },
+        locked: {
+          bg: 'bg-slate-800/50',
+          border: 'border-slate-700/30',
+          pill: 'bg-slate-600/20 text-slate-500',
+          pillText: 'Locked',
+          text: 'text-slate-500'
+        },
+        blocked: {
+          bg: 'bg-red-500/10',
+          border: 'border-red-500/30',
+          pill: 'bg-red-500/20 text-red-400',
+          pillText: 'Blocked',
+          text: 'text-red-400'
+        }
       };
       return styles[status] || styles.locked;
     }
 
-    // =========================================================
-    // Render: phase indicators + mind map + detail panel
-    // =========================================================
-
     function renderPhaseIndicators() {
       const container = document.getElementById('phase-indicators');
-
       let html = '';
+
       projectData.phases.forEach((phase, index) => {
         const isComplete = phase.steps.every(s => s.status === 'complete');
         const isCurrent = phase.steps.some(s => s.status === 'current');
@@ -459,17 +584,43 @@
       container.innerHTML = html;
     }
 
+    function renderStepNode(step) {
+      const styles = getStatusStyles(step.status);
+      const isLocked = step.status === 'locked';
+      const isCurrent = step.status === 'current';
+      const isComplete = step.status === 'complete';
+      const isSelected = selectedStep === step.id;
+
+      return `
+        <div
+          class="node-card p-4 rounded-xl border ${styles.border} ${styles.bg} ${isLocked ? 'locked' : 'cursor-pointer'} ${isCurrent ? 'node-current' : ''} ${isSelected ? 'ring-2 ring-amber-500/50' : ''}"
+          data-step-id="${step.id}"
+        >
+          <div class="flex items-start justify-between mb-3">
+            <div class="w-10 h-10 rounded-lg ${isComplete ? 'bg-emerald-500/20' : isCurrent ? 'bg-amber-500/20' : 'bg-slate-700/50'} flex items-center justify-center ${styles.text}">
+              ${isComplete ? getIcon('check') : isLocked ? getIcon('lock') : getIcon(step.icon)}
+            </div>
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-medium ${styles.pill}">
+              ${styles.pillText}
+            </span>
+          </div>
+          <h3 class="font-semibold text-white text-sm mb-1">${step.name}</h3>
+          <p class="text-xs ${styles.text} line-clamp-2">${step.microcopy}</p>
+        </div>
+      `;
+    }
+
     function renderMindMap() {
       const container = document.getElementById('mind-map');
-
       let html = '';
 
-      projectData.phases.forEach((phase) => {
-        const styles = getStatusStyles(
+      projectData.phases.forEach(phase => {
+        const phaseStatus =
           phase.steps.every(s => s.status === 'complete') ? 'complete' :
           phase.steps.some(s => s.status === 'current') ? 'current' :
-          'locked'
-        );
+          'locked';
+
+        const styles = getStatusStyles(phaseStatus);
 
         html += `
           <div class="phase-section">
@@ -481,7 +632,7 @@
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
-              ${phase.steps.map((step, stepIndex) => renderStepNode(step, phase.id, stepIndex)).join('')}
+              ${phase.steps.map(renderStepNode).join('')}
             </div>
 
             ${phase.connector ? `
@@ -500,7 +651,7 @@
             <span class="text-xs uppercase tracking-wider">Cross-Phase Support</span>
           </div>
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-            ${projectData.crossPhaseSteps.map(step => renderStepNode(step, 'support', 0)).join('')}
+            ${projectData.crossPhaseSteps.map(renderStepNode).join('')}
           </div>
         </div>
       `;
@@ -508,42 +659,13 @@
       container.innerHTML = html;
 
       document.querySelectorAll('.node-card:not(.locked)').forEach(node => {
-        node.addEventListener('click', () => {
-          const stepId = node.dataset.stepId;
-          selectStep(stepId);
-        });
+        node.addEventListener('click', () => selectStep(node.dataset.stepId));
       });
 
       if (!selectedStep) {
         const currentStep = projectData.phases.flatMap(p => p.steps).find(s => s.status === 'current');
         if (currentStep) selectStep(currentStep.id);
       }
-    }
-
-    function renderStepNode(step) {
-      const styles = getStatusStyles(step.status);
-      const isLocked = step.status === 'locked';
-      const isCurrent = step.status === 'current';
-      const isComplete = step.status === 'complete';
-      const isSelected = selectedStep === step.id;
-
-      return `
-        <div
-          class="node-card p-4 rounded-xl border ${styles.border} ${styles.bg} ${isLocked ? 'locked' : 'cursor-pointer'} ${isCurrent ? 'node-current' : ''} ${isSelected ? 'ring-2 ring-amber-500/50' : ''}"
-          data-step-id="${step.id}"
-        >
-          <div class="flex items-start justify-between mb-3">
-            <div class="w-10 h-10 rounded-lg ${isComplete ? 'bg-emerald-500/20' : isCurrent ? 'bg-amber-500/20' : 'bg-slate-700/50'} flex items-center justify-center ${styles.text}">
-              ${isComplete ? getIcon('check', 'w-5 h-5') : isLocked ? getIcon('lock', 'w-5 h-5') : getIcon(step.icon, 'w-5 h-5')}
-            </div>
-            <span class="px-2 py-0.5 rounded-full text-[10px] font-medium ${styles.pill}">
-              ${styles.pillText}
-            </span>
-          </div>
-          <h3 class="font-semibold text-white text-sm mb-1">${step.name}</h3>
-          <p class="text-xs ${styles.text} line-clamp-2">${step.microcopy}</p>
-        </div>
-      `;
     }
 
     function selectStep(stepId) {
@@ -562,7 +684,125 @@
         const step = phase.steps.find(s => s.id === stepId);
         if (step) return step;
       }
-      return projectData.crossPhaseSteps.find(s => s.id === stepId);
+      return projectData.crossPhaseSteps.find(s => s.id === stepId) || null;
+    }
+
+    function renderFormContent(step) {
+      const isComplete = step.status === 'complete';
+      if (!step.formFields) return '';
+
+      return `
+        <div class="bg-slate-800/30 rounded-lg p-4 border border-slate-700/30">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Form Preview</h3>
+            ${isComplete ? `<span class="flex items-center gap-1 text-xs text-slate-500">${getIcon('lock', 'w-3 h-3')}Submitted</span>` : ''}
+          </div>
+          <div class="space-y-2">
+            ${step.formFields.slice(0, 5).map(field => `
+              <div class="flex items-center gap-2 px-3 py-2 rounded-lg ${isComplete ? 'bg-slate-700/30 opacity-60' : 'bg-slate-700/50'}">
+                <span class="w-2 h-2 rounded-full ${isComplete ? 'bg-emerald-500' : 'bg-slate-500'}"></span>
+                <span class="text-sm ${isComplete ? 'text-slate-400' : 'text-slate-300'}">${field}</span>
+                ${isComplete ? `<span class="ml-auto text-xs text-emerald-400">✓</span>` : ''}
+              </div>
+            `).join('')}
+            ${step.formFields.length > 5 ? `<p class="text-xs text-slate-500 text-center pt-2">+${step.formFields.length - 5} more fields</p>` : ''}
+          </div>
+          ${isComplete ? `<p class="text-xs text-slate-500 mt-3 italic">Changes require a support request.</p>` : ''}
+        </div>
+      `;
+    }
+
+    function renderOperatorContent(step) {
+      const statusMap = {
+        locked: { text: 'Pending', class: 'text-slate-400 bg-slate-700/50' },
+        current: { text: 'In Progress', class: 'text-amber-400 bg-amber-500/20' },
+        complete: { text: 'Complete', class: 'text-emerald-400 bg-emerald-500/20' },
+        blocked: { text: 'Waiting on You', class: 'text-red-400 bg-red-500/20' }
+      };
+
+      const status = statusMap[step.status] || statusMap.locked;
+
+      return `
+        <div class="bg-slate-800/30 rounded-lg p-4 border border-slate-700/30">
+          <div class="flex items-center justify-between mb-4">
+            <span class="px-3 py-1 rounded-full text-xs font-medium ${status.class}">${status.text}</span>
+            ${step.estimate ? `<span class="text-xs text-slate-500">Est. ${step.estimate}</span>` : ''}
+          </div>
+
+          <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Processing Checklist</h3>
+          <div class="space-y-2">
+            ${(step.checklist || []).map((item, index) => {
+              const isItemComplete = step.status === 'complete' || (step.status === 'current' && index === 0);
+              return `
+                <div class="flex items-center gap-3 px-3 py-2 rounded-lg bg-slate-700/30">
+                  <div class="w-5 h-5 rounded-full ${isItemComplete ? 'bg-emerald-500/20 text-emerald-400' : 'bg-slate-600/50 text-slate-500'} flex items-center justify-center flex-shrink-0">
+                    ${isItemComplete ? getIcon('check', 'w-3 h-3') : `<span class="text-xs">${index + 1}</span>`}
+                  </div>
+                  <span class="text-sm ${isItemComplete ? 'text-slate-400 line-through' : 'text-slate-300'}">${item}</span>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderPrimaryAction(step) {
+      const isLocked = step.status === 'locked';
+      const isComplete = step.status === 'complete';
+      const isOperator = step.type === 'operator';
+
+      if (isLocked) {
+        return `
+          <button disabled class="w-full py-3 px-4 rounded-xl bg-slate-700/50 text-slate-500 font-medium flex items-center justify-center gap-2 cursor-not-allowed">
+            ${getIcon('lock')}
+            Step Locked
+          </button>
+        `;
+      }
+
+      if (isComplete && !isOperator) {
+        return `
+          <button class="w-full py-3 px-4 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-medium flex items-center justify-center gap-2 hover:bg-emerald-500/30 transition-colors">
+            ${getIcon('document')}
+            View Submission
+          </button>
+        `;
+      }
+
+      if (isOperator) {
+        return `
+          <button class="w-full py-3 px-4 rounded-xl bg-purple-500/20 text-purple-400 border border-purple-500/30 font-medium flex items-center justify-center gap-2 hover:bg-purple-500/30 transition-colors">
+            ${getIcon('chart')}
+            View Report
+          </button>
+        `;
+      }
+
+      if (step.id === 'support-ticket') {
+        return `
+          <button class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-slate-900 font-semibold flex items-center justify-center gap-2 hover:from-amber-400 hover:to-amber-500 transition-all shadow-lg shadow-amber-500/20">
+            ${getIcon('support')}
+            Contact Support
+          </button>
+        `;
+      }
+
+      if (step.id === 'results-appointment') {
+        return `
+          <button class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-slate-900 font-semibold flex items-center justify-center gap-2 hover:from-amber-400 hover:to-amber-500 transition-all shadow-lg shadow-amber-500/20">
+            ${getIcon('calendar')}
+            Schedule Appointment
+          </button>
+        `;
+      }
+
+      return `
+        <button class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-slate-900 font-semibold flex items-center justify-center gap-2 hover:from-amber-400 hover:to-amber-500 transition-all shadow-lg shadow-amber-500/20">
+          ${getIcon('pencil')}
+          ${step.status === 'current' ? 'Continue Form' : 'Open Form'}
+        </button>
+      `;
     }
 
     function renderDetailPanel() {
@@ -575,7 +815,7 @@
               ${getIcon('document', 'w-8 h-8 text-slate-500')}
             </div>
             <h3 class="text-lg font-medium text-slate-400 mb-2">Select a Step</h3>
-            <p class="text-sm text-slate-500">Click any step to view details.</p>
+            <p class="text-sm text-slate-500">Click on any step in the roadmap to view details</p>
           </div>
         `;
         return;
@@ -596,9 +836,7 @@
             <div class="flex-1 min-w-0">
               <div class="flex items-center gap-2 mb-1">
                 <h2 class="text-xl font-bold text-white">${step.name}</h2>
-                <span class="px-2 py-0.5 rounded-full text-xs font-medium ${styles.pill}">
-                  ${styles.pillText}
-                </span>
+                <span class="px-2 py-0.5 rounded-full text-xs font-medium ${styles.pill}">${styles.pillText}</span>
               </div>
               ${isOperator ? `
                 <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-purple-500/20 text-purple-400 text-xs">
@@ -629,6 +867,7 @@
                 `).join('')}
               </ul>
             </div>
+
             <div class="bg-slate-800/50 rounded-lg p-4">
               <h3 class="text-xs font-semibold text-emerald-400 uppercase tracking-wider mb-3 flex items-center gap-2">
                 ${getIcon('sparkles', 'w-4 h-4')}
@@ -650,143 +889,17 @@
           <div class="flex flex-col gap-3 mt-6">
             ${renderPrimaryAction(step)}
             <div class="flex items-center gap-3 text-xs">
-              <a href="/app/pages/files.html" class="text-slate-400 hover:text-amber-400 transition-colors flex items-center gap-1">
-                ${getIcon('document', 'w-4 h-4')}
-                View Files
-              </a>
-              <a href="/app/pages/calendar.html" class="text-slate-400 hover:text-amber-400 transition-colors flex items-center gap-1">
+              <a href="#" class="text-slate-400 hover:text-amber-400 transition-colors flex items-center gap-1">
                 ${getIcon('calendar', 'w-4 h-4')}
                 View Timeline
+              </a>
+              <a href="#" class="text-slate-400 hover:text-amber-400 transition-colors flex items-center gap-1">
+                ${getIcon('document', 'w-4 h-4')}
+                View Files
               </a>
             </div>
           </div>
         </div>
-      `;
-    }
-
-    function renderFormContent(step) {
-      const isComplete = step.status === 'complete';
-      if (!step.formFields) return '';
-
-      return `
-        <div class="bg-slate-800/30 rounded-lg p-4 border border-slate-700/30">
-          <div class="flex items-center justify-between mb-3">
-            <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Form Preview</h3>
-            ${isComplete ? `
-              <span class="flex items-center gap-1 text-xs text-slate-500">
-                ${getIcon('lock', 'w-3 h-3')}
-                Submitted
-              </span>
-            ` : ''}
-          </div>
-          <div class="space-y-2">
-            ${step.formFields.slice(0, 5).map(field => `
-              <div class="flex items-center gap-2 px-3 py-2 rounded-lg ${isComplete ? 'bg-slate-700/30 opacity-60' : 'bg-slate-700/50'}">
-                <span class="w-2 h-2 rounded-full ${isComplete ? 'bg-emerald-500' : 'bg-slate-500'}"></span>
-                <span class="text-sm ${isComplete ? 'text-slate-400' : 'text-slate-300'}">${field}</span>
-                ${isComplete ? `<span class="ml-auto text-xs text-emerald-400">✓</span>` : ''}
-              </div>
-            `).join('')}
-            ${step.formFields.length > 5 ? `<p class="text-xs text-slate-500 text-center pt-2">+${step.formFields.length - 5} more fields</p>` : ''}
-          </div>
-          ${isComplete ? `<p class="text-xs text-slate-500 mt-3 italic">Changes require a support request.</p>` : ''}
-        </div>
-      `;
-    }
-
-    function renderOperatorContent(step) {
-      const statusMap = {
-        blocked:  { text: 'Waiting on You', class: 'text-red-400 bg-red-500/20' },
-        complete: { text: 'Complete',      class: 'text-emerald-400 bg-emerald-500/20' },
-        current:  { text: 'In Progress',   class: 'text-amber-400 bg-amber-500/20' },
-        locked:   { text: 'Pending',       class: 'text-slate-400 bg-slate-700/50' }
-      };
-
-      const status = statusMap[step.status] || statusMap.locked;
-
-      return `
-        <div class="bg-slate-800/30 rounded-lg p-4 border border-slate-700/30">
-          <div class="flex items-center justify-between mb-4">
-            <span class="px-3 py-1 rounded-full text-xs font-medium ${status.class}">
-              ${status.text}
-            </span>
-            ${step.estimate ? `<span class="text-xs text-slate-500">Est. ${step.estimate}</span>` : ''}
-          </div>
-
-          <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Processing Checklist</h3>
-          <div class="space-y-2">
-            ${(step.checklist || []).map((item, index) => {
-              const isItemComplete = step.status === 'complete' || (step.status === 'current' && index === 0);
-              return `
-                <div class="flex items-center gap-3 px-3 py-2 rounded-lg bg-slate-700/30">
-                  <div class="w-5 h-5 rounded-full ${isItemComplete ? 'bg-emerald-500/20 text-emerald-400' : 'bg-slate-600/50 text-slate-500'} flex items-center justify-center flex-shrink-0">
-                    ${isItemComplete ? getIcon('check', 'w-3 h-3') : `<span class="text-xs">${index + 1}</span>`}
-                  </div>
-                  <span class="text-sm ${isItemComplete ? 'text-slate-400 line-through' : 'text-slate-300'}">${item}</span>
-                </div>
-              `;
-            }).join('')}
-          </div>
-        </div>
-      `;
-    }
-
-    function renderPrimaryAction(step) {
-      const isLocked = step.status === 'locked';
-      const isComplete = step.status === 'complete';
-      const isOperator = step.type === 'operator';
-      const query = window.location.search || '';
-
-      if (isLocked) {
-        return `
-          <button disabled class="w-full py-3 px-4 rounded-xl bg-slate-700/50 text-slate-500 font-medium flex items-center justify-center gap-2 cursor-not-allowed">
-            ${getIcon('lock', 'w-5 h-5')}
-            Step Locked
-          </button>
-        `;
-      }
-
-      if (isComplete && !isOperator) {
-        return `
-          <a href="${(step.link || '#') + query}" class="w-full py-3 px-4 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-medium flex items-center justify-center gap-2 hover:bg-emerald-500/30 transition-colors">
-            ${getIcon('document', 'w-5 h-5')}
-            View Submission
-          </a>
-        `;
-      }
-
-      if (isOperator) {
-        return `
-          <a href="/app/pages/files.html${query}" class="w-full py-3 px-4 rounded-xl bg-purple-500/20 text-purple-400 border border-purple-500/30 font-medium flex items-center justify-center gap-2 hover:bg-purple-500/30 transition-colors">
-            ${getIcon('chart', 'w-5 h-5')}
-            View Report
-          </a>
-        `;
-      }
-
-      if (step.id === 'support-ticket') {
-        return `
-          <a href="${(step.link || '/app/pages/support.html') + query}" class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-slate-900 font-semibold flex items-center justify-center gap-2 hover:from-amber-400 hover:to-amber-500 transition-all shadow-lg shadow-amber-500/20">
-            ${getIcon('support', 'w-5 h-5')}
-            Contact Support
-          </a>
-        `;
-      }
-
-      if (step.id === 'results-appointment') {
-        return `
-          <a href="${(step.link || '/app/pages/calendar.html') + query}" class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-slate-900 font-semibold flex items-center justify-center gap-2 hover:from-amber-400 hover:to-amber-500 transition-all shadow-lg shadow-amber-500/20">
-            ${getIcon('calendar', 'w-5 h-5')}
-            Schedule Appointment
-          </a>
-        `;
-      }
-
-      return `
-        <a href="${(step.link || '#') + query}" class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-slate-900 font-semibold flex items-center justify-center gap-2 hover:from-amber-400 hover:to-amber-500 transition-all shadow-lg shadow-amber-500/20">
-          ${getIcon('pencil', 'w-5 h-5')}
-          ${step.status === 'current' ? 'Continue' : 'Open'}
-        </a>
       `;
     }
 
@@ -810,301 +923,52 @@
       `).join('');
     }
 
-    // =========================================================
-    // Partials
-    // =========================================================
-
-    async function injectPartial(targetId, url) {
-      const el = document.getElementById(targetId);
-      if (!el) return;
-
-      try {
-        const res = await fetch(url, { cache: 'no-store' });
-        if (!res.ok) throw new Error(`Failed partial ${url}`);
-        el.innerHTML = await res.text();
-      } catch (e) {
-        console.error(e);
-        el.innerHTML = '';
-      }
+    function applyColors() {
+      const bgColor = config.background_color || defaultConfig.background_color;
+      const textColor = config.text_color || defaultConfig.text_color;
+      document.body.style.backgroundColor = bgColor;
+      document.body.style.color = textColor;
     }
 
-    // =========================================================
-    // Canonical loader: Worker later, mock now
-    // =========================================================
-
-    function getQueryParam(name) {
-      const url = new URL(window.location.href);
-      return url.searchParams.get(name);
+    async function onConfigChange(newConfig) {
+      config = newConfig;
+      applyColors();
     }
 
-    function setQueryParams(pairs) {
-      const url = new URL(window.location.href);
-      for (const [k, v] of Object.entries(pairs)) {
-        if (v === null) url.searchParams.delete(k);
-        else url.searchParams.set(k, v);
-      }
-      history.pushState({}, '', url.pathname + url.search);
-    }
-
-    function computeStatusByStep(order) {
-      const stepBooleans = order?.stepBooleans || {};
-
-      const sequence = [
-        { stepId: 'intake',            key: 'intakeComplete',         source: 'stepBooleans' },
-        { stepId: 'offer',             key: 'offerAccepted',          source: 'stepBooleans' },
-        { stepId: 'agreement',         key: 'agreementAccepted',      source: 'stepBooleans' },
-        { stepId: 'payment',           key: 'paymentCompleted',       source: 'stepBooleans' },
-
-        { stepId: 'welcome',           key: 'welcomeConfirmed',       source: 'stepBooleans' },
-        { stepId: 'filing-status',     key: 'filingStatusSubmitted',  source: 'stepBooleans' },
-        { stepId: 'address-update',    key: 'addressUpdateSubmitted', source: 'stepBooleans' },
-        { stepId: 'esign-2848',        key: 'esign2848Submitted',     source: 'stepBooleans' },
-
-        { stepId: 'compliance-report', key: 'reportReady',            source: 'top' },
-
-        { stepId: 'exit-survey',       key: 'exitSurveySubmitted',    source: 'stepBooleans' }
-      ];
-
-      const isComplete = (item) => {
-        if (item.source === 'top') return Boolean(order?.[item.key]);
-        return Boolean(stepBooleans?.[item.key]);
+    function mapToCapabilities(cfg) {
+      return {
+        borderables: [],
+        fontEditable: undefined,
+        fontSizeable: undefined,
+        recolorables: [
+          { get: () => cfg.background_color || defaultConfig.background_color, set: (value) => { cfg.background_color = value; window.elementSdk.setConfig({ background_color: value }); } },
+          { get: () => cfg.surface_color || defaultConfig.surface_color, set: (value) => { cfg.surface_color = value; window.elementSdk.setConfig({ surface_color: value }); } },
+          { get: () => cfg.text_color || defaultConfig.text_color, set: (value) => { cfg.text_color = value; window.elementSdk.setConfig({ text_color: value }); } },
+          { get: () => cfg.primary_color || defaultConfig.primary_color, set: (value) => { cfg.primary_color = value; window.elementSdk.setConfig({ primary_color: value }); } },
+          { get: () => cfg.secondary_color || defaultConfig.secondary_color, set: (value) => { cfg.secondary_color = value; window.elementSdk.setConfig({ secondary_color: value }); } }
+        ]
       };
-
-      const firstIncomplete = sequence.find(item => !isComplete(item));
-      const currentStepId = firstIncomplete ? firstIncomplete.stepId : null;
-
-      const statusById = {};
-      for (const item of sequence) {
-        if (isComplete(item)) { statusById[item.stepId] = 'complete'; continue; }
-        if (currentStepId && item.stepId === currentStepId) { statusById[item.stepId] = 'current'; continue; }
-        if (currentStepId) {
-          const idx = sequence.findIndex(s => s.stepId === item.stepId);
-          const curIdx = sequence.findIndex(s => s.stepId === currentStepId);
-          statusById[item.stepId] = idx > curIdx ? 'locked' : 'ready';
-          continue;
-        }
-        statusById[item.stepId] = 'complete';
-      }
-
-      return statusById;
     }
 
-    function applyOrderToProject(order) {
-      const statusById = computeStatusByStep(order);
-
-      for (const phase of projectData.phases) {
-        for (const step of phase.steps) {
-          if (statusById[step.id]) step.status = statusById[step.id];
-        }
-      }
-
-      for (const s of projectData.crossPhaseSteps) s.status = 'ready';
-
-      if (Array.isArray(order?.timeline)) projectData.activities = order.timeline;
-
-      const initials = typeof order?.clientInitials === 'string' ? order.clientInitials.trim() : '';
-      const initialsEl = document.querySelector('#tm-sidebar .tm-user-initials');
-      if (initialsEl && initials) initialsEl.textContent = initials.slice(0, 3).toUpperCase();
-    }
-
-    async function loadOrderMock() {
-      const slug = getQueryParam('order') || 'order.sample';
-      const url = `/mock/orders/${slug}.json`;
-
-      const res = await fetch(url, { cache: 'no-store' });
-      if (!res.ok) throw new Error(`Mock order not found: ${url}`);
-      return await res.json();
-    }
-
-    async function loadOrderFromWorker() {
-      const API_BASE = 'https://api.taxmonitor.pro';
-
-      const sessionRes = await fetch(`${API_BASE}/auth/session`, { credentials: 'include' });
-      if (!sessionRes.ok) throw new Error('No session');
-
-      const session = await sessionRes.json();
-      const orderId = session.orderId || session.activeOrderId;
-      if (!orderId) throw new Error('Session missing orderId');
-
-      const orderRes = await fetch(`${API_BASE}/orders/${encodeURIComponent(orderId)}`, { credentials: 'include' });
-      if (!orderRes.ok) throw new Error('Order read failed');
-
-      return await orderRes.json();
-    }
-
-    async function loadCanonicalOrderAuto() {
-      const forceMock = getQueryParam('mock') === '1';
-
-      if (!forceMock) {
-        try { return await loadOrderFromWorker(); }
-        catch (e) { /* Worker doesn't exist yet. Expected. */ }
-      }
-
-      return await loadOrderMock();
-    }
-
-    // =========================================================
-    // Smooth load helpers
-    // =========================================================
-
-    function showSkeleton(show) {
-      const mind = document.getElementById('mind-map');
-      const mindSkel = document.getElementById('mind-map-skeleton');
-      const detail = document.getElementById('detail-panel');
-      const detailSkel = document.getElementById('detail-skeleton');
-
-      if (show) {
-        if (mind) mind.classList.add('hidden');
-        if (detail) detail.classList.add('hidden');
-        if (mindSkel) mindSkel.classList.remove('hidden');
-        if (detailSkel) detailSkel.classList.remove('hidden');
-      } else {
-        if (mindSkel) mindSkel.classList.add('hidden');
-        if (detailSkel) detailSkel.classList.add('hidden');
-        if (mind) mind.classList.remove('hidden');
-        if (detail) detail.classList.remove('hidden');
-      }
-    }
-
-    async function animateSwap(fn) {
-      const left = document.getElementById('left-wrap');
-      const right = document.getElementById('right-wrap');
-
-      left?.classList.remove('fade-in');
-      right?.classList.remove('fade-in');
-      left?.classList.add('fade-out');
-      right?.classList.add('fade-out');
-
-      await new Promise(r => setTimeout(r, 120));
-
-      fn();
-
-      left?.classList.remove('fade-out');
-      right?.classList.remove('fade-out');
-      left?.classList.add('fade-in');
-      right?.classList.add('fade-in');
-    }
-
-    // =========================================================
-    // Sample Journey
-    // =========================================================
-
-    const journeyOrders = ['journey-0', 'journey-1', 'journey-2', 'journey-3'];
-
-    function getCurrentJourneyIndex() {
-      const slug = getQueryParam('order') || '';
-      return journeyOrders.indexOf(slug);
-    }
-
-    function setJourneyLabel() {
-      const label = document.getElementById('journey-label');
-      if (!label) return;
-
-      const idx = getCurrentJourneyIndex();
-      if (getQueryParam('mock') !== '1' || idx === -1) {
-        label.textContent = 'Live';
-        return;
-      }
-
-      label.textContent = `Sample ${idx + 1} of ${journeyOrders.length}`;
-    }
-
-    function setNextEnabled() {
-      const btn = document.getElementById('journey-next');
-      if (!btn) return;
-
-      const idx = getCurrentJourneyIndex();
-      const isSample = getQueryParam('mock') === '1' && idx !== -1;
-
-      btn.disabled = !isSample;
-      btn.classList.toggle('opacity-50', !isSample);
-      btn.classList.toggle('cursor-not-allowed', !isSample);
-    }
-
-    async function loadAndRender() {
-      showSkeleton(true);
-
-      try {
-        const order = await loadCanonicalOrderAuto();
-        selectedStep = null;
-        applyOrderToProject(order);
-
-        await animateSwap(() => {
-          renderPhaseIndicators();
-          renderMindMap();
-          renderDetailPanel();
-          renderActivityTimeline();
-          setJourneyLabel();
-          setNextEnabled();
-        });
-      } catch (e) {
-        console.error(e);
-        await animateSwap(() => {
-          renderPhaseIndicators();
-          renderMindMap();
-          renderDetailPanel();
-          renderActivityTimeline();
-          setJourneyLabel();
-          setNextEnabled();
-        });
-      } finally {
-        showSkeleton(false);
-      }
-    }
-
-    function wireJourneyButtons() {
-      const btnSample = document.getElementById('btn-sample-journey');
-      const btnMine = document.getElementById('btn-my-journey');
-      const btnNext = document.getElementById('journey-next');
-
-      btnSample?.addEventListener('click', async () => {
-        setQueryParams({ mock: '1', order: 'journey-0' });
-        await loadAndRender();
-      });
-
-      btnMine?.addEventListener('click', async () => {
-        setQueryParams({ mock: null, order: null });
-        await loadAndRender();
-      });
-
-      btnNext?.addEventListener('click', async () => {
-        const idx = getCurrentJourneyIndex();
-        if (getQueryParam('mock') !== '1' || idx === -1) return;
-
-        const nextIdx = Math.min(idx + 1, journeyOrders.length - 1);
-        setQueryParams({ mock: '1', order: journeyOrders[nextIdx] });
-        await loadAndRender();
-      });
-
-      window.addEventListener('popstate', () => { loadAndRender(); });
-    }
-
-    // =========================================================
-    // Init
-    // =========================================================
-
-    function shouldInitElementSdk() {
-      const params = new URLSearchParams(window.location.search);
-      return params.get('editor') === '1';
-    }
-
-    async function init() {
-      await Promise.all([
-        injectPartial('tm-sidebar', '/app/partials/sidebar.html'),
-        injectPartial('tm-topbar', '/app/partials/topbar.html')
+    function mapToEditPanelValues(cfg) {
+      return new Map([
+        ['page_title', cfg.page_title || defaultConfig.page_title],
+        ['welcome_message', cfg.welcome_message || defaultConfig.welcome_message]
       ]);
+    }
 
-      wireJourneyButtons();
-      await loadAndRender();
+    function init() {
+      renderActivityTimeline();
+      renderMindMap();
+      renderPhaseIndicators();
       applyColors();
 
-      // HARD GATE: prevents SDK "double page" injection unless explicitly requested
-      if (shouldInitElementSdk() && window.elementSdk?.init) {
+      if (window.elementSdk) {
         window.elementSdk.init({
           defaultConfig,
-          onConfigChange,
           mapToCapabilities,
-          mapToEditPanelValues
+          mapToEditPanelValues,
+          onConfigChange
         });
       }
     }
