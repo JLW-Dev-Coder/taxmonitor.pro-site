@@ -80,6 +80,7 @@
       border: 1px solid rgba(255, 255, 255, 0.10);
       backdrop-filter: blur(18px);
       -webkit-backdrop-filter: blur(18px);
+      border-radius: 16px; /* match offer.html */
     }
 
     /* Progress + glow helpers (offer.html parity) */
@@ -224,11 +225,20 @@
 
 <main class="max-w-2xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
     <div class="relative z-10">
-      <div class="text-center space-y-3 fade-in-up delay-1 mb-8">
-        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold gradient-text">
+      <!-- Title / Hero (match offer.html title block styling) -->
+      <div class="glass-card p-8 text-center fade-in-up delay-1 mb-10">
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/20 mb-6">
+          <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span class="text-amber-400 font-medium text-sm">Monitoring Profile Initiated</span>
+        </div>
+        <h1 class="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
           Your Tax Monitoring Intake
         </h1>
-        <p class="text-lg sm:text-xl text-slate-400">Visibility first. Decisions second.</p>
+        <p class="text-slate-400 text-lg max-w-2xl mx-auto mb-6">Visibility first. Decisions second.</p>
+        <div class="h-px w-full glow-divider"></div>
+        <div class="mt-6 text-sm text-slate-500">Fill out the form below to generate your monitoring offer.</div>
       </div>
 
       <!-- Form Card (match offer.html surface) -->
@@ -251,7 +261,7 @@
               <h2 class="text-lg font-semibold text-slate-100">Your information</h2>
               <p class="mt-1 text-sm text-slate-500">Enough to identify you and deliver your monitoring report.</p>
             </div>
-            <span class="hidden sm:inline-flex rounded-full border border-slate-800/70 bg-black/20 px-3 py-1 text-xs text-slate-400">Step 1 of 1</span>
+            
           </div>
 
           <div class="grid gap-4 md:grid-cols-2">
@@ -502,6 +512,25 @@
       </section>
     </div>
   </main>
+
+  <!-- Footer (match offer.html) -->
+  <footer class="glass-card mx-4 mb-4 px-6 py-4">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+      <p class="text-slate-500 text-sm">© <span id="footer-year"></span> Tax Monitor Pro. All rights reserved.</p>
+      <div class="flex items-center gap-6">
+        <a href="/site/contact.html" class="text-slate-400 hover:text-amber-400 text-sm transition-colors">Contact Support</a>
+        <a href="/legal/privacy.html" class="text-slate-400 hover:text-amber-400 text-sm transition-colors">Privacy Policy</a>
+        <a href="/legal/terms.html" class="text-slate-400 hover:text-amber-400 text-sm transition-colors">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var y = document.getElementById('footer-year');
+      if (y) y.textContent = String(new Date().getFullYear());
+    })();
+  </script>
 
   <!-- Shared helpers (offer.html parity) -->
   <script>
