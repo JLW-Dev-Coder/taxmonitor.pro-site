@@ -1,0 +1,27 @@
+{
+  "orderId": "ord_journey_1",
+  "accountId": "acct_journey",
+  "createdAt": "2026-02-17T00:00:00.000Z",
+  "reportReady": false,
+  "sessionToken": "sess_journey_1",
+  "stepBooleans": {
+    "addressUpdateSubmitted": false,
+    "agreementAccepted": true,
+    "complianceSubmitted": false,
+    "esign2848Submitted": false,
+    "exitSurveySubmitted": false,
+    "filingStatusSubmitted": false,
+    "intakeComplete": true,
+    "offerAccepted": true,
+    "paymentCompleted": true,
+    "wetSig2848Submitted": false,
+    "welcomeConfirmed": false
+  },
+  "timeline": [
+    { "text": "Intake complete", "time": "Earlier", "type": "success" },
+    { "text": "Offer accepted", "time": "Earlier", "type": "success" },
+    { "text": "Agreement accepted", "time": "Earlier", "type": "success" },
+    { "text": "Payment completed", "time": "Earlier", "type": "success" }
+  ],
+  "clientInitials": "SJ"
+}

@@ -1,0 +1,1094 @@
+<!doctype html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tax Monitor Pro - Project Map</title>
+
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+
+  <!-- Element SDK (for your Canva-style config tooling) -->
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet" />
+
+  <style>
+    * { font-family: 'DM Sans', sans-serif; }
+    body { box-sizing: border-box; }
+
+    .glow-amber { box-shadow: 0 0 20px rgba(251, 191, 36, 0.3); }
+    .glow-green { box-shadow: 0 0 15px rgba(34, 197, 94, 0.2); }
+
+    .connector-line {
+      stroke-dasharray: 8 4;
+      animation: dash 20s linear infinite;
+    }
+
+    @keyframes dash { to { stroke-dashoffset: -100; } }
+
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 20px rgba(251, 191, 36, 0.3); }
+      50% { box-shadow: 0 0 30px rgba(251, 191, 36, 0.5); }
+    }
+
+    .node-current { animation: pulse-glow 2s ease-in-out infinite; }
+
+    .node-card { transition: all 0.3s ease; }
+    .node-card:not(.locked):hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    }
+    .node-card.locked { opacity: 0.5; cursor: not-allowed; }
+
+    .detail-panel { animation: slideIn 0.3s ease; }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(20px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .phase-connector {
+      background: linear-gradient(90deg, transparent, rgba(251, 191, 36, 0.3), transparent);
+    }
+
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #1e293b; }
+    ::-webkit-scrollbar-thumb { background: #475569; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #64748b; }
+  </style>
+</head>
+
+<body class="h-full bg-slate-900 text-slate-100 overflow-auto">
+  <div class="min-h-full flex">
+
+    <!-- Sidebar (partial) -->
+    <aside id="tm-sidebar" class="hidden lg:block w-72 shrink-0 border-r border-slate-800/60 bg-slate-950/20">
+      <!-- injected -->
+    </aside>
+
+    <!-- Main column -->
+    <div class="flex-1 min-w-0 flex flex-col">
+
+      <!-- Topbar (partial) -->
+      <div id="tm-topbar" class="shrink-0">
+        <!-- injected -->
+      </div>
+
+      <!-- Page header (Canva) -->
+      <header class="border-b border-slate-700/50 bg-slate-800/50 backdrop-blur-sm sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center">
+                <svg class="w-6 h-6 text-slate-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+              </div>
+              <div>
+                <h1 id="page-title" class="text-lg font-bold text-white">Tax Monitor Pro</h1>
+                <p id="welcome-message" class="text-xs text-slate-400">Your Compliance Journey</p>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-4">
+              <span id="portal-mode" class="text-sm text-slate-400">Client Portal</span>
+              <div class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center">
+                <span id="avatar-initials" class="text-sm font-medium text-amber-400">TM</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Phase Progress Bar -->
+      <div class="bg-slate-800/30 border-b border-slate-700/30">
+        <div class="max-w-7xl mx-auto px-4 py-3">
+          <div class="flex items-center gap-2">
+            <div id="phase-indicators" class="flex items-center gap-1 flex-1"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <main class="flex-1 flex flex-col lg:flex-row overflow-hidden">
+        <!-- Left Panel -->
+        <div class="lg:w-2/3 overflow-auto p-4 lg:p-6">
+
+          <!-- Sample Journey controls -->
+          <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-2">
+              <span class="text-xs text-slate-400">Preview:</span>
+              <span id="journey-label" class="text-xs font-medium text-slate-200">Live</span>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <a
+                href="/app/pages/projects.html?mock=1&order=journey-0"
+                class="px-3 py-1.5 rounded-lg bg-slate-800/60 border border-slate-700/50 text-xs text-slate-200 hover:border-amber-500/40 hover:text-white transition-colors"
+              >Sample Journey</a>
+
+              <button
+                id="journey-next"
+                class="px-3 py-1.5 rounded-lg bg-amber-500/20 border border-amber-500/30 text-xs text-amber-300 hover:bg-amber-500/30 transition-colors"
+                type="button"
+              >Next Step</button>
+            </div>
+          </div>
+
+          <div id="mind-map" class="space-y-8"></div>
+        </div>
+
+        <!-- Right Panel -->
+        <div class="lg:w-1/3 border-t lg:border-t-0 lg:border-l border-slate-700/50 bg-slate-800/30 overflow-auto">
+          <div id="detail-panel" class="p-4 lg:p-6"></div>
+        </div>
+      </main>
+
+      <!-- Activity Timeline Footer -->
+      <footer class="border-t border-slate-700/50 bg-slate-800/50">
+        <div class="max-w-7xl mx-auto px-4 py-3">
+          <div class="flex items-center gap-2 text-xs text-slate-400">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span>Recent Activity:</span>
+            <div id="activity-timeline" class="flex items-center gap-4 overflow-x-auto flex-1"></div>
+          </div>
+        </div>
+      </footer>
+
+    </div>
+  </div>
+
+  <script>
+    // =========================================================
+    // Config (Element SDK) + Theme
+    // =========================================================
+
+    let selectedStep = null;
+    let config = {};
+
+    const defaultConfig = {
+      page_title: 'Tax Monitor Pro',
+      welcome_message: 'Your Compliance Journey',
+      background_color: '#0f172a',
+      surface_color: '#1e293b',
+      text_color: '#f1f5f9',
+      primary_color: '#f59e0b',
+      secondary_color: '#475569'
+    };
+
+    async function onConfigChange(newConfig) {
+      config = newConfig || {};
+
+      const pageTitle = document.getElementById('page-title');
+      const welcomeMessage = document.getElementById('welcome-message');
+
+      if (pageTitle) pageTitle.textContent = config.page_title || defaultConfig.page_title;
+      if (welcomeMessage) welcomeMessage.textContent = config.welcome_message || defaultConfig.welcome_message;
+
+      applyColors();
+    }
+
+    function applyColors() {
+      const bgColor = config.background_color || defaultConfig.background_color;
+      const textColor = config.text_color || defaultConfig.text_color;
+
+      document.body.style.backgroundColor = bgColor;
+      document.body.style.color = textColor;
+    }
+
+    function mapToCapabilities(cfg) {
+      return {
+        recolorables: [
+          { get: () => cfg.background_color || defaultConfig.background_color, set: (v) => { cfg.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+          { get: () => cfg.surface_color || defaultConfig.surface_color, set: (v) => { cfg.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+          { get: () => cfg.text_color || defaultConfig.text_color, set: (v) => { cfg.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+          { get: () => cfg.primary_color || defaultConfig.primary_color, set: (v) => { cfg.primary_color = v; window.elementSdk.setConfig({ primary_color: v }); } },
+          { get: () => cfg.secondary_color || defaultConfig.secondary_color, set: (v) => { cfg.secondary_color = v; window.elementSdk.setConfig({ secondary_color: v }); } }
+        ],
+        borderables: [],
+        fontEditable: undefined,
+        fontSizeable: undefined
+      };
+    }
+
+    function mapToEditPanelValues(cfg) {
+      return new Map([
+        ['page_title', cfg.page_title || defaultConfig.page_title],
+        ['welcome_message', cfg.welcome_message || defaultConfig.welcome_message]
+      ]);
+    }
+
+    // =========================================================
+    // Icons
+    // =========================================================
+
+    const icons = {
+      'arrow-right': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>',
+      'calendar': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>',
+      'chart': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>',
+      'check': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>',
+      'clipboard': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>',
+      'credit-card': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>',
+      'document': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>',
+      'key': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/>',
+      'lock': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>',
+      'location': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>',
+      'pencil': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>',
+      'search': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>',
+      'shield': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>',
+      'sparkles': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>',
+      'star': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>',
+      'support': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/>',
+      'user-group': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>'
+    };
+
+    function getIcon(name, className = 'w-5 h-5') {
+      return `<svg class="${className}" fill="none" stroke="currentColor" viewBox="0 0 24 24">${icons[name] || icons['document']}</svg>`;
+    }
+
+    // =========================================================
+    // Step map (static metadata + links), status computed from canonical
+    // =========================================================
+
+    const projectData = {
+      phases: [
+        {
+          id: 0,
+          name: 'Lead Capture & Payment',
+          connector: 'Unlocked after Payment',
+          steps: [
+            {
+              id: 'intake',
+              name: 'Intake',
+              status: 'locked',
+              type: 'form',
+              icon: 'clipboard',
+              microcopy: 'Initial information collection',
+              description: 'We collect your basic information to understand your tax situation and determine how we can help you.',
+              whatWeNeed: ['Brief description of issue', 'Contact information', 'Full legal name', 'Tax years of concern'],
+              whatWeDo: ['Assign a case specialist', 'Prepare next steps', 'Review your submission'],
+              formFields: ['Full Name', 'Email', 'Phone', 'Tax Years', 'Issue Type', 'Description'],
+              link: '/app/pages/flows/intake/intake.html'
+            },
+            {
+              id: 'offer',
+              name: 'Offer',
+              status: 'locked',
+              type: 'form',
+              icon: 'document',
+              microcopy: 'Service proposal review',
+              description: 'Review our proposed services and pricing based on your specific tax situation.',
+              whatWeNeed: ['Confirmation of scope', 'Review of proposed services'],
+              whatWeDo: ['Answer questions', 'Customize service package', 'Provide transparent pricing'],
+              formFields: ['Service Selection', 'Add-ons', 'Payment Plan', 'Questions'],
+              link: '/app/pages/flows/intake/offer.html'
+            },
+            {
+              id: 'agreement',
+              name: 'Agreement',
+              status: 'locked',
+              type: 'form',
+              icon: 'shield',
+              microcopy: 'Service agreement signing',
+              description: 'Sign our service agreement to formalize our engagement and protect both parties.',
+              whatWeNeed: ['Agreement acknowledgment', 'Electronic signature'],
+              whatWeDo: ['Begin onboarding', 'Provide clear terms', 'Secure your data'],
+              formFields: ['Agreement Review', 'Terms Acceptance', 'E-Signature', 'Date'],
+              link: '/app/pages/flows/intake/agreement.html'
+            },
+            {
+              id: 'payment',
+              name: 'Payment',
+              status: 'locked',
+              type: 'form',
+              icon: 'credit-card',
+              microcopy: 'Secure payment processing',
+              description: 'Complete your payment to activate your account and begin the compliance process.',
+              whatWeNeed: ['Billing information', 'Payment method'],
+              whatWeDo: ['Activate account', 'Process securely', 'Send receipt'],
+              formFields: ['Payment Method', 'Billing Address', 'Amount', 'Confirmation'],
+              link: '/app/pages/flows/intake/payment.html'
+            }
+          ]
+        },
+        {
+          id: 1,
+          name: 'ESign 2848 / Review',
+          connector: 'Operator starts here',
+          steps: [
+            {
+              id: 'welcome',
+              name: 'Welcome',
+              status: 'locked',
+              type: 'form',
+              icon: 'sparkles',
+              microcopy: 'Account setup & orientation',
+              description: 'Complete your welcome questionnaire to help us personalize your experience.',
+              whatWeNeed: ['Availability windows', 'Communication preferences'],
+              whatWeDo: ['Assign your team', 'Create your timeline', 'Set up your portal'],
+              formFields: ['Preferred Contact Method', 'Best Times', 'Timezone', 'Additional Info'],
+              link: '/app/pages/flows/post-payment/welcome.html'
+            },
+            {
+              id: 'filing-status',
+              name: 'Filing Status',
+              status: 'locked',
+              type: 'form',
+              icon: 'user-group',
+              microcopy: 'Verify filing status details',
+              description: 'Confirm your current filing status to ensure accurate representation with the IRS.',
+              whatWeNeed: ['Current filing status', 'Dependent information'],
+              whatWeDo: ['Flag discrepancies', 'Update if needed', 'Verify against IRS records'],
+              formFields: ['Filing Status', 'Spouse Info', 'Dependents', 'Changes'],
+              link: '/app/pages/flows/post-payment/filing-status.html'
+            },
+            {
+              id: 'address-update',
+              name: 'Address Update',
+              status: 'locked',
+              type: 'form',
+              icon: 'location',
+              microcopy: 'Confirm current address',
+              description: 'Verify your current mailing address to ensure all IRS correspondence reaches you.',
+              whatWeNeed: ['Address history if changed', 'Current mailing address'],
+              whatWeDo: ['Confirm receipt', 'Redirect correspondence', 'Update IRS records'],
+              formFields: ['Street Address', 'City', 'State', 'ZIP', 'Previous Address'],
+              link: '/app/pages/flows/post-payment/address-update.html'
+            },
+            {
+              id: 'esign-2848',
+              name: 'eSign 2848',
+              status: 'locked',
+              type: 'form',
+              icon: 'pencil',
+              microcopy: 'Power of Attorney authorization',
+              description: 'Sign Form 2848 to authorize us to represent you before the IRS and access your records.',
+              whatWeNeed: ['Electronic signature', 'Identity verification'],
+              whatWeDo: ['Begin representation', 'File with IRS', 'Obtain CAF number'],
+              formFields: ['Taxpayer Info', 'Representative Info', 'Tax Matters', 'Signature', 'Date'],
+              link: '/app/pages/flows/post-payment/esign-2848.html'
+            }
+          ]
+        },
+        {
+          id: 2,
+          name: 'Processing / Due Diligence',
+          connector: 'Requires CAF Verified',
+          steps: [
+            {
+              id: 'authorization-caf',
+              name: 'Authorization + CAF',
+              status: 'locked',
+              type: 'operator',
+              icon: 'key',
+              microcopy: 'IRS authorization processing',
+              description: 'We process your Form 2848 with the IRS and obtain your Centralized Authorization File (CAF) number.',
+              whatWeNeed: ['Completed 2848', 'Patience while processing'],
+              whatWeDo: ['Submit to IRS', 'Track processing', 'Verify authorization'],
+              checklist: ['Receive CAF confirmation', 'Submit Form 2848 to IRS', 'Test record access', 'Verify access level'],
+              estimate: '3-5 business days'
+            },
+            {
+              id: 'record-retrieval',
+              name: 'Record Retrieval + Analysis',
+              status: 'locked',
+              type: 'operator',
+              icon: 'search',
+              microcopy: 'IRS record analysis',
+              description: 'We retrieve your complete tax records from the IRS and perform comprehensive analysis.',
+              whatWeNeed: ['Any additional documents', 'CAF verification'],
+              whatWeDo: ['Analyze records', 'Document findings', 'Identify issues', 'Pull IRS transcripts', 'Prepare findings'],
+              checklist: ['Analyze records', 'Cross-reference data', 'Document findings', 'Request account transcripts', 'Request return transcripts', 'Request wage & income'],
+              estimate: '5-7 business days'
+            }
+          ]
+        },
+        {
+          id: 3,
+          name: 'Results',
+          connector: null,
+          steps: [
+            {
+              id: 'compliance-report',
+              name: 'Compliance Report',
+              status: 'locked',
+              type: 'operator',
+              icon: 'chart',
+              microcopy: 'Comprehensive findings report',
+              description: 'Receive your detailed compliance report with findings, recommendations, and next steps.',
+              whatWeNeed: ['Questions prepared', 'Review of findings'],
+              whatWeDo: ['Compile findings', 'Create recommendations', 'Prepare presentation'],
+              checklist: ['Compile all findings', 'Create visual summary', 'Draft recommendations', 'Prepare action items'],
+              estimate: '2-3 business days'
+            },
+            {
+              id: 'results-appointment',
+              name: 'Results Appointment',
+              status: 'locked',
+              type: 'form',
+              icon: 'calendar',
+              microcopy: 'Schedule results review',
+              description: 'Schedule your appointment to review findings with your assigned specialist.',
+              whatWeNeed: ['Available time slots', 'Questions list'],
+              whatWeDo: ['Answer questions', 'Discuss next steps', 'Present findings'],
+              formFields: ['Preferred Date', 'Preferred Time', 'Meeting Type', 'Topics to Discuss'],
+              link: '/app/pages/calendar.html'
+            },
+            {
+              id: 'exit-survey',
+              name: 'Exit Survey',
+              status: 'locked',
+              type: 'form',
+              icon: 'star',
+              microcopy: 'Share your feedback',
+              description: 'Help us improve by sharing your experience with our service.',
+              whatWeNeed: ['Honest feedback', 'Suggestions'],
+              whatWeDo: ['Follow up if needed', 'Improve services', 'Review feedback'],
+              formFields: ['Overall Rating', 'Service Quality', 'Communication', 'Recommendations', 'Comments'],
+              link: '/app/pages/flows/post-payment/client-exit-survey.html'
+            }
+          ]
+        }
+      ],
+      crossPhaseSteps: [
+        {
+          id: 'support-ticket',
+          name: 'Support Ticket',
+          status: 'ready',
+          type: 'form',
+          icon: 'support',
+          microcopy: 'Get help anytime',
+          description: 'Need assistance? Submit a support ticket and our team will respond within 24 hours.',
+          whatWeNeed: ['Issue description', 'Relevant details'],
+          whatWeDo: ['Assign specialist', 'Resolve promptly', 'Review immediately'],
+          formFields: ['Subject', 'Category', 'Priority', 'Description', 'Attachments'],
+          link: '/app/pages/support.html'
+        }
+      ],
+      activities: [
+        { text: 'Loaded project map', time: 'Now', type: 'info' }
+      ]
+    };
+
+    // =========================================================
+    // Status styling
+    // =========================================================
+
+    function getStatusStyles(status) {
+      const styles = {
+        complete: { bg: 'bg-emerald-500/20', border: 'border-emerald-500/30', text: 'text-emerald-400', pill: 'bg-emerald-500/20 text-emerald-400', pillText: 'Complete' },
+        current:  { bg: 'bg-amber-500/20', border: 'border-amber-500/50', text: 'text-amber-400',   pill: 'bg-amber-500/20 text-amber-400',   pillText: 'Current'  },
+        ready:    { bg: 'bg-slate-700/50',   border: 'border-slate-600/50',   text: 'text-slate-300',   pill: 'bg-blue-500/20 text-blue-400',       pillText: 'Ready'    },
+        locked:   { bg: 'bg-slate-800/50',   border: 'border-slate-700/30',   text: 'text-slate-500',   pill: 'bg-slate-600/20 text-slate-500',     pillText: 'Locked'   },
+        blocked:  { bg: 'bg-red-500/10',     border: 'border-red-500/30',     text: 'text-red-400',     pill: 'bg-red-500/20 text-red-400',         pillText: 'Blocked'  }
+      };
+      return styles[status] || styles.locked;
+    }
+
+    // =========================================================
+    // Render: phase indicators + mind map + detail panel
+    // =========================================================
+
+    function renderPhaseIndicators() {
+      const container = document.getElementById('phase-indicators');
+
+      let html = '';
+      projectData.phases.forEach((phase, index) => {
+        const isComplete = phase.steps.every(s => s.status === 'complete');
+        const isCurrent = phase.steps.some(s => s.status === 'current');
+
+        let statusClass = 'bg-slate-700 text-slate-400';
+        if (isComplete) statusClass = 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30';
+        else if (isCurrent) statusClass = 'bg-amber-500/20 text-amber-400 border border-amber-500/50';
+
+        html += `
+          <div class="flex items-center ${index < projectData.phases.length - 1 ? 'flex-1' : ''}">
+            <div class="px-3 py-1.5 rounded-full text-xs font-medium ${statusClass} whitespace-nowrap">
+              Phase ${phase.id}: ${phase.name}
+            </div>
+            ${index < projectData.phases.length - 1 ? `<div class="flex-1 h-0.5 mx-2 phase-connector rounded-full"></div>` : ''}
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    function renderMindMap() {
+      const container = document.getElementById('mind-map');
+
+      let html = '';
+
+      projectData.phases.forEach((phase) => {
+        const styles = getStatusStyles(
+          phase.steps.every(s => s.status === 'complete') ? 'complete' :
+          phase.steps.some(s => s.status === 'current') ? 'current' :
+          'locked'
+        );
+
+        html += `
+          <div class="phase-section">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-8 h-8 rounded-lg ${styles.bg} ${styles.border} border flex items-center justify-center">
+                <span class="text-sm font-bold ${styles.text}">${phase.id}</span>
+              </div>
+              <h2 class="text-lg font-semibold text-white">${phase.name}</h2>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
+              ${phase.steps.map((step, stepIndex) => renderStepNode(step, phase.id, stepIndex)).join('')}
+            </div>
+
+            ${phase.connector ? `
+              <div class="flex items-center gap-2 text-xs text-slate-500 ml-4 mb-2">
+                ${getIcon('arrow-right', 'w-4 h-4')}
+                <span class="italic">${phase.connector}</span>
+              </div>
+            ` : ''}
+          </div>
+        `;
+      });
+
+      html += `
+        <div class="mt-6 pt-6 border-t border-slate-700/30">
+          <div class="flex items-center gap-2 mb-4 text-slate-400">
+            <span class="text-xs uppercase tracking-wider">Cross-Phase Support</span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            ${projectData.crossPhaseSteps.map(step => renderStepNode(step, 'support', 0)).join('')}
+          </div>
+        </div>
+      `;
+
+      container.innerHTML = html;
+
+      document.querySelectorAll('.node-card:not(.locked)').forEach(node => {
+        node.addEventListener('click', () => {
+          const stepId = node.dataset.stepId;
+          selectStep(stepId);
+        });
+      });
+
+      if (!selectedStep) {
+        const currentStep = projectData.phases.flatMap(p => p.steps).find(s => s.status === 'current');
+        if (currentStep) selectStep(currentStep.id);
+      }
+    }
+
+    function renderStepNode(step) {
+      const styles = getStatusStyles(step.status);
+      const isLocked = step.status === 'locked';
+      const isCurrent = step.status === 'current';
+      const isComplete = step.status === 'complete';
+      const isSelected = selectedStep === step.id;
+
+      return `
+        <div
+          class="node-card p-4 rounded-xl border ${styles.border} ${styles.bg} ${isLocked ? 'locked' : 'cursor-pointer'} ${isCurrent ? 'node-current' : ''} ${isSelected ? 'ring-2 ring-amber-500/50' : ''}"
+          data-step-id="${step.id}"
+        >
+          <div class="flex items-start justify-between mb-3">
+            <div class="w-10 h-10 rounded-lg ${isComplete ? 'bg-emerald-500/20' : isCurrent ? 'bg-amber-500/20' : 'bg-slate-700/50'} flex items-center justify-center ${styles.text}">
+              ${isComplete ? getIcon('check', 'w-5 h-5') : isLocked ? getIcon('lock', 'w-5 h-5') : getIcon(step.icon, 'w-5 h-5')}
+            </div>
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-medium ${styles.pill}">
+              ${styles.pillText}
+            </span>
+          </div>
+          <h3 class="font-semibold text-white text-sm mb-1">${step.name}</h3>
+          <p class="text-xs ${styles.text} line-clamp-2">${step.microcopy}</p>
+        </div>
+      `;
+    }
+
+    function selectStep(stepId) {
+      selectedStep = stepId;
+
+      document.querySelectorAll('.node-card').forEach(node => {
+        node.classList.remove('ring-2', 'ring-amber-500/50');
+        if (node.dataset.stepId === stepId) node.classList.add('ring-2', 'ring-amber-500/50');
+      });
+
+      renderDetailPanel();
+    }
+
+    function findStep(stepId) {
+      for (const phase of projectData.phases) {
+        const step = phase.steps.find(s => s.id === stepId);
+        if (step) return step;
+      }
+      return projectData.crossPhaseSteps.find(s => s.id === stepId);
+    }
+
+    function renderDetailPanel() {
+      const container = document.getElementById('detail-panel');
+
+      if (!selectedStep) {
+        container.innerHTML = `
+          <div class="flex flex-col items-center justify-center h-64 text-center">
+            <div class="w-16 h-16 rounded-full bg-slate-700/50 flex items-center justify-center mb-4">
+              ${getIcon('document', 'w-8 h-8 text-slate-500')}
+            </div>
+            <h3 class="text-lg font-medium text-slate-400 mb-2">Select a Step</h3>
+            <p class="text-sm text-slate-500">Click any step to view details.</p>
+          </div>
+        `;
+        return;
+      }
+
+      const step = findStep(selectedStep);
+      if (!step) return;
+
+      const styles = getStatusStyles(step.status);
+      const isOperator = step.type === 'operator';
+
+      container.innerHTML = `
+        <div class="detail-panel">
+          <div class="flex items-start gap-4 mb-6">
+            <div class="w-14 h-14 rounded-xl ${styles.bg} ${styles.border} border flex items-center justify-center ${styles.text} flex-shrink-0">
+              ${getIcon(step.icon, 'w-7 h-7')}
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 mb-1">
+                <h2 class="text-xl font-bold text-white">${step.name}</h2>
+                <span class="px-2 py-0.5 rounded-full text-xs font-medium ${styles.pill}">
+                  ${styles.pillText}
+                </span>
+              </div>
+              ${isOperator ? `
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-purple-500/20 text-purple-400 text-xs">
+                  ${getIcon('shield', 'w-3 h-3')}
+                  Internal Processing
+                </span>
+              ` : ''}
+            </div>
+          </div>
+
+          <div class="mb-6">
+            <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">What This Step Does</h3>
+            <p class="text-sm text-slate-300 leading-relaxed">${step.description}</p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div class="bg-slate-800/50 rounded-lg p-4">
+              <h3 class="text-xs font-semibold text-amber-400 uppercase tracking-wider mb-3 flex items-center gap-2">
+                ${getIcon('user-group', 'w-4 h-4')}
+                What We Need From You
+              </h3>
+              <ul class="space-y-2">
+                ${(step.whatWeNeed || []).map(item => `
+                  <li class="flex items-start gap-2 text-sm text-slate-300">
+                    <span class="w-1.5 h-1.5 rounded-full bg-amber-500 mt-1.5 flex-shrink-0"></span>
+                    ${item}
+                  </li>
+                `).join('')}
+              </ul>
+            </div>
+            <div class="bg-slate-800/50 rounded-lg p-4">
+              <h3 class="text-xs font-semibold text-emerald-400 uppercase tracking-wider mb-3 flex items-center gap-2">
+                ${getIcon('sparkles', 'w-4 h-4')}
+                What We Do
+              </h3>
+              <ul class="space-y-2">
+                ${(step.whatWeDo || []).map(item => `
+                  <li class="flex items-start gap-2 text-sm text-slate-300">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-1.5 flex-shrink-0"></span>
+                    ${item}
+                  </li>
+                `).join('')}
+              </ul>
+            </div>
+          </div>
+
+          ${isOperator ? renderOperatorContent(step) : renderFormContent(step)}
+
+          <div class="flex flex-col gap-3 mt-6">
+            ${renderPrimaryAction(step)}
+            <div class="flex items-center gap-3 text-xs">
+              <a href="/app/pages/files.html" class="text-slate-400 hover:text-amber-400 transition-colors flex items-center gap-1">
+                ${getIcon('document', 'w-4 h-4')}
+                View Files
+              </a>
+              <a href="/app/pages/calendar.html" class="text-slate-400 hover:text-amber-400 transition-colors flex items-center gap-1">
+                ${getIcon('calendar', 'w-4 h-4')}
+                View Timeline
+              </a>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderFormContent(step) {
+      const isComplete = step.status === 'complete';
+      if (!step.formFields) return '';
+
+      return `
+        <div class="bg-slate-800/30 rounded-lg p-4 border border-slate-700/30">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Form Preview</h3>
+            ${isComplete ? `
+              <span class="flex items-center gap-1 text-xs text-slate-500">
+                ${getIcon('lock', 'w-3 h-3')}
+                Submitted
+              </span>
+            ` : ''}
+          </div>
+          <div class="space-y-2">
+            ${step.formFields.slice(0, 5).map(field => `
+              <div class="flex items-center gap-2 px-3 py-2 rounded-lg ${isComplete ? 'bg-slate-700/30 opacity-60' : 'bg-slate-700/50'}">
+                <span class="w-2 h-2 rounded-full ${isComplete ? 'bg-emerald-500' : 'bg-slate-500'}"></span>
+                <span class="text-sm ${isComplete ? 'text-slate-400' : 'text-slate-300'}">${field}</span>
+                ${isComplete ? `<span class="ml-auto text-xs text-emerald-400">✓</span>` : ''}
+              </div>
+            `).join('')}
+            ${step.formFields.length > 5 ? `<p class="text-xs text-slate-500 text-center pt-2">+${step.formFields.length - 5} more fields</p>` : ''}
+          </div>
+          ${isComplete ? `<p class="text-xs text-slate-500 mt-3 italic">Changes require a support request.</p>` : ''}
+        </div>
+      `;
+    }
+
+    function renderOperatorContent(step) {
+      const statusMap = {
+        locked:   { text: 'Pending',        class: 'text-slate-400 bg-slate-700/50' },
+        current:  { text: 'In Progress',    class: 'text-amber-400 bg-amber-500/20' },
+        complete: { text: 'Complete',       class: 'text-emerald-400 bg-emerald-500/20' },
+        blocked:  { text: 'Waiting on You', class: 'text-red-400 bg-red-500/20' }
+      };
+
+      const status = statusMap[step.status] || statusMap.locked;
+
+      return `
+        <div class="bg-slate-800/30 rounded-lg p-4 border border-slate-700/30">
+          <div class="flex items-center justify-between mb-4">
+            <span class="px-3 py-1 rounded-full text-xs font-medium ${status.class}">
+              ${status.text}
+            </span>
+            ${step.estimate ? `<span class="text-xs text-slate-500">Est. ${step.estimate}</span>` : ''}
+          </div>
+
+          <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Processing Checklist</h3>
+          <div class="space-y-2">
+            ${(step.checklist || []).map((item, index) => {
+              const isItemComplete = step.status === 'complete' || (step.status === 'current' && index === 0);
+              return `
+                <div class="flex items-center gap-3 px-3 py-2 rounded-lg bg-slate-700/30">
+                  <div class="w-5 h-5 rounded-full ${isItemComplete ? 'bg-emerald-500/20 text-emerald-400' : 'bg-slate-600/50 text-slate-500'} flex items-center justify-center flex-shrink-0">
+                    ${isItemComplete ? getIcon('check', 'w-3 h-3') : `<span class="text-xs">${index + 1}</span>`}
+                  </div>
+                  <span class="text-sm ${isItemComplete ? 'text-slate-400 line-through' : 'text-slate-300'}">${item}</span>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderPrimaryAction(step) {
+      const isLocked = step.status === 'locked';
+      const isComplete = step.status === 'complete';
+      const isOperator = step.type === 'operator';
+      const query = window.location.search || '';
+
+      if (isLocked) {
+        return `
+          <button disabled class="w-full py-3 px-4 rounded-xl bg-slate-700/50 text-slate-500 font-medium flex items-center justify-center gap-2 cursor-not-allowed">
+            ${getIcon('lock', 'w-5 h-5')}
+            Step Locked
+          </button>
+        `;
+      }
+
+      if (isComplete && !isOperator) {
+        return `
+          <a href="${(step.link || '#') + query}" class="w-full py-3 px-4 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-medium flex items-center justify-center gap-2 hover:bg-emerald-500/30 transition-colors">
+            ${getIcon('document', 'w-5 h-5')}
+            View Submission
+          </a>
+        `;
+      }
+
+      if (isOperator) {
+        return `
+          <a href="/app/pages/files.html${query}" class="w-full py-3 px-4 rounded-xl bg-purple-500/20 text-purple-400 border border-purple-500/30 font-medium flex items-center justify-center gap-2 hover:bg-purple-500/30 transition-colors">
+            ${getIcon('chart', 'w-5 h-5')}
+            View Report
+          </a>
+        `;
+      }
+
+      if (step.id === 'support-ticket') {
+        return `
+          <a href="${(step.link || '/app/pages/support.html') + query}" class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-slate-900 font-semibold flex items-center justify-center gap-2 hover:from-amber-400 hover:to-amber-500 transition-all shadow-lg shadow-amber-500/20">
+            ${getIcon('support', 'w-5 h-5')}
+            Contact Support
+          </a>
+        `;
+      }
+
+      if (step.id === 'results-appointment') {
+        return `
+          <a href="${(step.link || '/app/pages/calendar.html') + query}" class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-slate-900 font-semibold flex items-center justify-center gap-2 hover:from-amber-400 hover:to-amber-500 transition-all shadow-lg shadow-amber-500/20">
+            ${getIcon('calendar', 'w-5 h-5')}
+            Schedule Appointment
+          </a>
+        `;
+      }
+
+      return `
+        <a href="${(step.link || '#') + query}" class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-slate-900 font-semibold flex items-center justify-center gap-2 hover:from-amber-400 hover:to-amber-500 transition-all shadow-lg shadow-amber-500/20">
+          ${getIcon('pencil', 'w-5 h-5')}
+          ${step.status === 'current' ? 'Continue' : 'Open'}
+        </a>
+      `;
+    }
+
+    function renderActivityTimeline() {
+      const container = document.getElementById('activity-timeline');
+
+      const typeStyles = {
+        error: 'bg-red-500',
+        info: 'bg-blue-500',
+        success: 'bg-emerald-500',
+        warning: 'bg-amber-500'
+      };
+
+      container.innerHTML = projectData.activities.map(activity => `
+        <div class="flex items-center gap-2 whitespace-nowrap">
+          <span class="w-1.5 h-1.5 rounded-full ${typeStyles[activity.type] || typeStyles.info}"></span>
+          <span class="text-slate-300">${activity.text}</span>
+          <span class="text-slate-500">•</span>
+          <span class="text-slate-500">${activity.time}</span>
+        </div>
+      `).join('');
+    }
+
+    // =========================================================
+    // Partials
+    // =========================================================
+
+    async function injectPartial(targetId, url) {
+      const el = document.getElementById(targetId);
+      if (!el) return;
+
+      try {
+        const res = await fetch(url, { cache: 'no-store' });
+        if (!res.ok) throw new Error(`Failed partial ${url}`);
+        el.innerHTML = await res.text();
+      } catch (e) {
+        console.error(e);
+        el.innerHTML = '';
+      }
+    }
+
+    // =========================================================
+    // Canonical loader: Worker later, mock now
+    // =========================================================
+
+    function getQueryParam(name) {
+      const url = new URL(window.location.href);
+      return url.searchParams.get(name);
+    }
+
+    function computeStatusByStep(order) {
+      const stepBooleans = order?.stepBooleans || {};
+
+      const sequence = [
+        { stepId: 'intake',           key: 'intakeComplete',         source: 'stepBooleans' },
+        { stepId: 'offer',            key: 'offerAccepted',          source: 'stepBooleans' },
+        { stepId: 'agreement',        key: 'agreementAccepted',      source: 'stepBooleans' },
+        { stepId: 'payment',          key: 'paymentCompleted',       source: 'stepBooleans' },
+
+        { stepId: 'welcome',          key: 'welcomeConfirmed',       source: 'stepBooleans' },
+        { stepId: 'filing-status',    key: 'filingStatusSubmitted',  source: 'stepBooleans' },
+        { stepId: 'address-update',   key: 'addressUpdateSubmitted', source: 'stepBooleans' },
+        { stepId: 'esign-2848',       key: 'esign2848Submitted',     source: 'stepBooleans' },
+
+        { stepId: 'compliance-report', key: 'reportReady',            source: 'top' },
+
+        { stepId: 'exit-survey',      key: 'exitSurveySubmitted',    source: 'stepBooleans' }
+      ];
+
+      const isComplete = (item) => {
+        if (item.source === 'top') return Boolean(order?.[item.key]);
+        return Boolean(stepBooleans?.[item.key]);
+      };
+
+      const firstIncomplete = sequence.find(item => !isComplete(item));
+      const currentStepId = firstIncomplete ? firstIncomplete.stepId : null;
+
+      const statusById = {};
+      for (const item of sequence) {
+        if (isComplete(item)) {
+          statusById[item.stepId] = 'complete';
+          continue;
+        }
+
+        if (currentStepId && item.stepId === currentStepId) {
+          statusById[item.stepId] = 'current';
+          continue;
+        }
+
+        if (currentStepId) {
+          const idx = sequence.findIndex(s => s.stepId === item.stepId);
+          const curIdx = sequence.findIndex(s => s.stepId === currentStepId);
+          statusById[item.stepId] = idx > curIdx ? 'locked' : 'ready';
+          continue;
+        }
+
+        statusById[item.stepId] = 'complete';
+      }
+
+      return statusById;
+    }
+
+    function applyOrderToProject(order) {
+      const statusById = computeStatusByStep(order);
+
+      for (const phase of projectData.phases) {
+        for (const step of phase.steps) {
+          if (statusById[step.id]) step.status = statusById[step.id];
+        }
+      }
+
+      for (const s of projectData.crossPhaseSteps) s.status = 'ready';
+
+      if (Array.isArray(order?.timeline)) projectData.activities = order.timeline;
+
+      const initialsEl = document.getElementById('avatar-initials');
+      if (initialsEl && typeof order?.clientInitials === 'string' && order.clientInitials.trim()) {
+        initialsEl.textContent = order.clientInitials.trim().slice(0, 3).toUpperCase();
+      }
+    }
+
+    async function loadOrderMock() {
+      const slug = getQueryParam('order') || 'sample';
+      const url = `/public/mock/orders/${slug}.json`;
+      const res = await fetch(url, { cache: 'no-store' });
+      if (!res.ok) throw new Error(`Mock order not found: ${url}`);
+      return await res.json();
+    }
+
+    async function loadOrderFromWorker() {
+      const API_BASE = 'https://api.taxmonitor.pro';
+
+      const sessionRes = await fetch(`${API_BASE}/auth/session`, { credentials: 'include' });
+      if (!sessionRes.ok) throw new Error('No session');
+
+      const session = await sessionRes.json();
+      const orderId = session.orderId || session.activeOrderId;
+      if (!orderId) throw new Error('Session missing orderId');
+
+      const orderRes = await fetch(`${API_BASE}/orders/${encodeURIComponent(orderId)}`, { credentials: 'include' });
+      if (!orderRes.ok) throw new Error('Order read failed');
+
+      return await orderRes.json();
+    }
+
+    async function loadCanonicalOrderAuto() {
+      const forceMock = getQueryParam('mock') === '1';
+
+      if (!forceMock) {
+        try {
+          return await loadOrderFromWorker();
+        } catch (e) {
+          // Worker doesn't exist yet. Expected.
+        }
+      }
+
+      return await loadOrderMock();
+    }
+
+    // =========================================================
+    // Sample Journey
+    // =========================================================
+
+    const journeyOrders = ['journey-0', 'journey-1', 'journey-2', 'journey-3'];
+
+    function getCurrentJourneyIndex() {
+      const slug = getQueryParam('order') || '';
+      return journeyOrders.indexOf(slug);
+    }
+
+    function setJourneyLabel() {
+      const label = document.getElementById('journey-label');
+      if (!label) return;
+
+      const idx = getCurrentJourneyIndex();
+      if (idx === -1) {
+        label.textContent = 'Live';
+        return;
+      }
+
+      label.textContent = `Sample ${idx + 1} of ${journeyOrders.length}`;
+    }
+
+    function wireJourneyNext() {
+      const btn = document.getElementById('journey-next');
+      if (!btn) return;
+
+      const idx = getCurrentJourneyIndex();
+      if (idx === -1) {
+        btn.disabled = true;
+        btn.classList.add('opacity-50', 'cursor-not-allowed');
+        return;
+      }
+
+      btn.addEventListener('click', () => {
+        const nextIdx = Math.min(idx + 1, journeyOrders.length - 1);
+        const nextSlug = journeyOrders[nextIdx];
+        const url = new URL(window.location.href);
+        url.searchParams.set('mock', '1');
+        url.searchParams.set('order', nextSlug);
+        window.location.href = url.toString();
+      });
+    }
+
+    // =========================================================
+    // Init
+    // =========================================================
+
+    async function init() {
+      await Promise.all([
+        injectPartial('tm-sidebar', '/app/partials/sidebar.html'),
+        injectPartial('tm-topbar', '/app/partials/topbar.html')
+      ]);
+
+      try {
+        const order = await loadCanonicalOrderAuto();
+        applyOrderToProject(order);
+      } catch (e) {
+        console.error(e);
+      }
+
+      setJourneyLabel();
+      wireJourneyNext();
+
+      renderPhaseIndicators();
+      renderMindMap();
+      renderDetailPanel();
+      renderActivityTimeline();
+      applyColors();
+
+      if (window.elementSdk) {
+        window.elementSdk.init({
+          defaultConfig,
+          onConfigChange,
+          mapToCapabilities,
+          mapToEditPanelValues
+        });
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>
