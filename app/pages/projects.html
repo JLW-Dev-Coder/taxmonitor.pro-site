@@ -21,11 +21,6 @@
     .glow-amber { box-shadow: 0 0 20px rgba(251, 191, 36, 0.3); }
     .glow-green { box-shadow: 0 0 15px rgba(34, 197, 94, 0.2); }
 
-    .connector-line {
-      stroke-dasharray: 8 4;
-      animation: dash 20s linear infinite;
-    }
-
     @keyframes dash { to { stroke-dashoffset: -100; } }
 
     @keyframes pulse-glow {
@@ -37,14 +32,15 @@
 
     .node-card { transition: all 0.3s ease; }
 
-    .node-card:not(.locked):hover {
+    .node-card:hover {
       transform: translateY(-2px);
       box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
     }
 
+    /* Locked nodes are still clickable (we show messaging instead of blocking clicks). */
     .node-card.locked {
-      opacity: 0.5;
-      cursor: not-allowed;
+      opacity: 0.65;
+      cursor: pointer;
     }
 
     .detail-panel { animation: slideIn 0.3s ease; }
@@ -68,10 +64,7 @@
 <!--
   SCROLL FIX NOTE:
   Flex + overflow requires min-h-0 on the flex children you want to scroll.
-  The roadmap (left panel) is now guaranteed scrollable via:
-  - body overflow-hidden
-  - main flex-1 min-h-0
-  - left panel min-h-0 overflow-auto
+  Roadmap uses: main(min-h-0) + roadmap(min-h-0 overflow-y-auto)
 -->
 
 <body class="h-screen bg-slate-900 text-slate-100 overflow-hidden">
@@ -224,16 +217,16 @@
         </div>
       </div>
 
-      <!-- MAIN CONTENT (min-h-0 is the key) -->
+      <!-- MAIN CONTENT -->
       <main class="flex-1 min-h-0 flex flex-col lg:flex-row overflow-hidden">
 
-        <!-- Left Panel: Roadmap (SCROLLABLE) -->
-        <section class="lg:w-2/3 flex-1 min-h-0 overflow-y-auto overscroll-contain p-4 lg:p-6" aria-label="Roadmap">
+        <!-- Roadmap (scrollable) -->
+        <section class="flex-1 min-w-0 min-h-0 overflow-y-auto overscroll-contain p-4 lg:p-6" aria-label="Roadmap">
           <div id="mind-map" class="space-y-8 pb-24"></div>
         </section>
 
-        <!-- Right Panel: Detail View (SCROLLABLE) -->
-        <aside class="lg:w-1/3 flex-1 min-h-0 border-t lg:border-t-0 lg:border-l border-slate-700/50 bg-slate-800/30 overflow-y-auto overscroll-contain" aria-label="Details">
+        <!-- Details (scrollable) -->
+        <aside class="w-full lg:w-[35rem] shrink-0 min-h-0 border-t lg:border-t-0 lg:border-l border-slate-700/50 bg-slate-800/30 overflow-y-auto overscroll-contain" aria-label="Details">
           <div id="detail-panel" class="p-4 lg:p-6"></div>
         </aside>
 
@@ -256,7 +249,10 @@
   </div>
 
   <script>
-    // Project data structure
+    // Demo flags
+    const DEMO_LOCK_ALL = true;
+    const WET_SIGNATURE_REQUIRED = true; // toggle for Phase 2 wet signature requirement
+
     const projectData = {
       phases: [
         {
@@ -321,7 +317,7 @@
         {
           id: 1,
           name: 'ESign 2848 / Review',
-          connector: 'Operator starts here',
+          connector: 'Next: IRS Authorization & Review Begins',
           steps: [
             {
               id: 'welcome',
@@ -395,6 +391,21 @@
               checklist: ['Submit Form 2848 to IRS', 'Receive CAF confirmation', 'Verify access level', 'Test record access'],
               estimate: '3-5 business days'
             },
+            ...(WET_SIGNATURE_REQUIRED ? [
+              {
+                id: 'wet-signature-2848',
+                name: 'Wet Signature Required (2848)',
+                status: 'locked',
+                type: 'form',
+                icon: 'pencil',
+                microcopy: 'Print, sign, and upload Form 2848',
+                description: 'In certain cases, the IRS requires a physical (wet) signature on Form 2848. Please print, sign, and upload the completed form so we can proceed.',
+                whatWeNeed: ['Printed Form 2848', 'Handwritten signature', 'Uploaded signed copy (PDF)'],
+                whatWeDo: ['Review for accuracy', 'Submit to IRS', 'Confirm receipt'],
+                formFields: ['Download 2848', 'Upload Signed Copy'],
+                link: '/app/pages/flows/review/wet-sign-2848.html'
+              }
+            ] : []),
             {
               id: 'record-retrieval',
               name: 'Record Retrieval + Analysis',
@@ -434,11 +445,16 @@
               status: 'locked',
               type: 'form',
               icon: 'calendar',
-              microcopy: 'Schedule results review',
-              description: 'Schedule your appointment to review findings with your assigned specialist.',
-              whatWeNeed: ['Available time slots', 'Questions list'],
-              whatWeDo: ['Present findings', 'Answer questions', 'Discuss next steps'],
-              formFields: ['Preferred Date', 'Preferred Time', 'Meeting Type', 'Topics to Discuss'],
+              microcopy: 'Staff schedules your review appointment',
+              description: 'Your assigned specialist will schedule your results appointment after the compliance report is ready.',
+              whatWeNeed: ['Keep an eye out for a scheduling message'],
+              whatWeDo: ['Send scheduling options', 'Confirm appointment time', 'Prepare review agenda'],
+              formFields: [
+                "Client's Preferred Date",
+                "Client's Preferred Time",
+                "Meeting Type",
+                "Topics to Discuss"
+              ],
               link: '/app/pages/flows/results/appointment.html'
             },
             {
@@ -465,11 +481,11 @@
           type: 'form',
           icon: 'support',
           microcopy: 'Get help anytime',
-          description: 'Need assistance? Submit a support ticket and our team will respond within 24 hours.',
+          description: 'Need assistance? Visit the Support page and our team will respond within 24 hours.',
           whatWeNeed: ['Issue description', 'Relevant details'],
           whatWeDo: ['Review immediately', 'Assign specialist', 'Resolve promptly'],
           formFields: ['Subject', 'Category', 'Priority', 'Description', 'Attachments'],
-          link: '/app/pages/support/ticket.html'
+          link: '/app/pages/support.html'
         }
       ],
       activities: [
@@ -484,16 +500,15 @@
     let config = {};
 
     const defaultConfig = {
-      page_title: 'Tax Monitor Pro',
-      welcome_message: 'Your Compliance Journey',
       background_color: '#0f172a',
+      page_title: 'Tax Monitor Pro',
+      primary_color: '#f59e0b',
+      secondary_color: '#475569',
       surface_color: '#1e293b',
       text_color: '#f1f5f9',
-      primary_color: '#f59e0b',
-      secondary_color: '#475569'
+      welcome_message: 'Your Compliance Journey'
     };
 
-    // Icon SVGs
     const icons = {
       'arrow-right': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>',
       'calendar': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>',
@@ -515,48 +530,47 @@
     };
 
     function getIcon(name, className = 'w-5 h-5') {
-      return `<svg class="${className}" fill="none" stroke="currentColor" viewBox="0 0 24 24">${icons[name] || icons['document']}</svg>`;
+      return `<svg class="${className}" fill="none" stroke="currentColor" viewBox="0 0 24 24">${icons[name] || icons.document}</svg>`;
     }
 
     function getStatusStyles(status) {
       const styles = {
-        complete: {
-          bg: 'bg-emerald-500/20',
-          border: 'border-emerald-500/30',
-          pill: 'bg-emerald-500/20 text-emerald-400',
-          pillText: 'Complete',
-          text: 'text-emerald-400'
-        },
-        current: {
-          bg: 'bg-amber-500/20',
-          border: 'border-amber-500/50',
-          pill: 'bg-amber-500/20 text-amber-400',
-          pillText: 'Current',
-          text: 'text-amber-400'
-        },
-        ready: {
-          bg: 'bg-slate-700/50',
-          border: 'border-slate-600/50',
-          pill: 'bg-blue-500/20 text-blue-400',
-          pillText: 'Ready',
-          text: 'text-slate-300'
-        },
-        locked: {
-          bg: 'bg-slate-800/50',
-          border: 'border-slate-700/30',
-          pill: 'bg-slate-600/20 text-slate-500',
-          pillText: 'Locked',
-          text: 'text-slate-500'
-        },
-        blocked: {
-          bg: 'bg-red-500/10',
-          border: 'border-red-500/30',
-          pill: 'bg-red-500/20 text-red-400',
-          pillText: 'Blocked',
-          text: 'text-red-400'
-        }
+        blocked: { bg: 'bg-red-500/10', border: 'border-red-500/30', pill: 'bg-red-500/20 text-red-400', pillText: 'Blocked', text: 'text-red-400' },
+        complete: { bg: 'bg-emerald-500/20', border: 'border-emerald-500/30', pill: 'bg-emerald-500/20 text-emerald-400', pillText: 'Complete', text: 'text-emerald-400' },
+        current: { bg: 'bg-amber-500/20', border: 'border-amber-500/50', pill: 'bg-amber-500/20 text-amber-400', pillText: 'Current', text: 'text-amber-400' },
+        locked: { bg: 'bg-slate-800/50', border: 'border-slate-700/30', pill: 'bg-slate-600/20 text-slate-500', pillText: 'Locked', text: 'text-slate-500' },
+        ready: { bg: 'bg-slate-700/50', border: 'border-slate-600/50', pill: 'bg-blue-500/20 text-blue-400', pillText: 'Ready', text: 'text-slate-300' }
       };
       return styles[status] || styles.locked;
+    }
+
+    function getLinearSteps() {
+      return [
+        ...projectData.phases.flatMap(p => p.steps),
+        ...projectData.crossPhaseSteps
+      ];
+    }
+
+    function getPrerequisiteStep(stepId) {
+      const steps = getLinearSteps();
+      const index = steps.findIndex(s => s.id === stepId);
+      if (index > 0) return steps[index - 1];
+      return null;
+    }
+
+    function lockAllSteps() {
+      projectData.phases.forEach(phase => {
+        phase.steps.forEach(step => { step.status = 'locked'; });
+      });
+
+      // Demo start: Intake is the only unlocked step.
+      const intake = projectData.phases.flatMap(p => p.steps).find(s => s.id === 'intake');
+      if (intake) intake.status = 'ready';
+
+      // Support remains available.
+      projectData.crossPhaseSteps.forEach(step => {
+        step.status = (step.id === 'support-ticket') ? 'ready' : 'locked';
+      });
     }
 
     function renderPhaseIndicators() {
@@ -590,10 +604,16 @@
       const isCurrent = step.status === 'current';
       const isComplete = step.status === 'complete';
       const isSelected = selectedStep === step.id;
+      const isStart = step.id === 'intake';
+
+      const prerequisite = getPrerequisiteStep(step.id);
+      const lockedMessage = isLocked
+        ? (prerequisite ? `Locked — complete ${prerequisite.name} first` : 'Locked')
+        : step.microcopy;
 
       return `
         <div
-          class="node-card p-4 rounded-xl border ${styles.border} ${styles.bg} ${isLocked ? 'locked' : 'cursor-pointer'} ${isCurrent ? 'node-current' : ''} ${isSelected ? 'ring-2 ring-amber-500/50' : ''}"
+          class="node-card p-4 rounded-xl border ${styles.border} ${styles.bg} ${isLocked ? 'locked' : 'cursor-pointer'} ${(isCurrent || isStart) ? 'node-current' : ''} ${isSelected ? 'ring-2 ring-amber-500/50' : ''} ${isStart ? 'ring-2 ring-amber-500/40' : ''}"
           data-step-id="${step.id}"
         >
           <div class="flex items-start justify-between mb-3">
@@ -605,7 +625,7 @@
             </span>
           </div>
           <h3 class="font-semibold text-white text-sm mb-1">${step.name}</h3>
-          <p class="text-xs ${styles.text} line-clamp-2">${step.microcopy}</p>
+          <p class="text-xs ${styles.text} line-clamp-2">${lockedMessage}</p>
         </div>
       `;
     }
@@ -658,7 +678,7 @@
 
       container.innerHTML = html;
 
-      document.querySelectorAll('.node-card:not(.locked)').forEach(node => {
+      document.querySelectorAll('.node-card').forEach(node => {
         node.addEventListener('click', () => selectStep(node.dataset.stepId));
       });
 
@@ -714,10 +734,10 @@
 
     function renderOperatorContent(step) {
       const statusMap = {
-        locked: { text: 'Pending', class: 'text-slate-400 bg-slate-700/50' },
-        current: { text: 'In Progress', class: 'text-amber-400 bg-amber-500/20' },
+        blocked: { text: 'Waiting on You', class: 'text-red-400 bg-red-500/20' },
         complete: { text: 'Complete', class: 'text-emerald-400 bg-emerald-500/20' },
-        blocked: { text: 'Waiting on You', class: 'text-red-400 bg-red-500/20' }
+        current: { text: 'In Progress', class: 'text-amber-400 bg-amber-500/20' },
+        locked: { text: 'Pending', class: 'text-slate-400 bg-slate-700/50' }
       };
 
       const status = statusMap[step.status] || statusMap.locked;
@@ -747,61 +767,130 @@
       `;
     }
 
-    function renderPrimaryAction(step) {
-      const isLocked = step.status === 'locked';
+    function getDynamicButtonConfig(step) {
       const isComplete = step.status === 'complete';
+      const isLocked = step.status === 'locked';
       const isOperator = step.type === 'operator';
+      const isSupport = step.id === 'support-ticket';
 
-      if (isLocked) {
+      // Support is always available
+      if (isSupport) {
+        return { href: '/app/pages/support.html', icon: 'support', label: 'Go To Support Page', style: 'primary' };
+      }
+
+      // Operator steps are read-only from this page
+      if (isOperator) {
+        return { href: '#', icon: 'chart', label: 'View Processing Details', style: 'operator' };
+      }
+
+      const varietyMap = {
+        agreement: { edit: 'Edit Agreement', view: 'View Signed Agreement' },
+        'address-update': { edit: 'Edit Address Information', view: 'View Address Details' },
+        'esign-2848': { edit: 'Complete eSign 2848', view: 'View eSigned 2848' },
+        'exit-survey': { edit: 'Complete Exit Survey', view: 'View Survey Submission' },
+        'filing-status': { edit: 'Edit Filing Status', view: 'View Filing Status' },
+        intake: { edit: 'Edit Intake Form', view: 'View Intake Form' },
+        offer: { edit: 'Edit Offer Details', view: 'View Offer Summary' },
+        payment: { edit: 'Update Payment Method', view: 'View Payment Receipt' },
+        'results-appointment': { edit: 'Await Staff Scheduling', view: 'View Scheduled Results Appointment' },
+        welcome: { edit: 'Edit Welcome Info', view: 'View Welcome Responses' },
+        'wet-signature-2848': { edit: 'Upload Signed 2848', view: 'View Uploaded 2848' }
+      };
+
+      const map = varietyMap[step.id] || { edit: `Edit ${step.name}`, view: `View ${step.name}` };
+
+      // Results appointment is staff-scheduled, always ghost unless complete.
+      if (step.id === 'results-appointment' && !isComplete) {
+        return { href: step.link || '#', icon: 'lock', label: map.edit, style: 'ghost' };
+      }
+
+      if (isComplete) {
+        return { href: step.link || '#', icon: 'search', label: map.view, style: 'complete' };
+      }
+
+      // Unlocked editable steps are orange; locked steps are ghost.
+      return {
+        href: step.link || '#',
+        icon: isLocked ? 'lock' : 'pencil',
+        label: map.edit,
+        style: isLocked ? 'ghost' : 'primary'
+      };
+    }
+
+    function renderPrimaryAction(step) {
+      const cfg = getDynamicButtonConfig(step);
+
+      if (cfg.style === 'operator') {
         return `
-          <button disabled class="w-full py-3 px-4 rounded-xl bg-slate-700/50 text-slate-500 font-medium flex items-center justify-center gap-2 cursor-not-allowed">
-            ${getIcon('lock')}
-            Step Locked
+          <button
+            class="w-full py-3 px-4 rounded-xl font-medium flex items-center justify-center gap-2 transition-all bg-slate-800/40 text-slate-300 border border-slate-700/40 hover:bg-slate-800/60"
+            data-action="noop"
+            type="button"
+          >
+            ${getIcon(cfg.icon)}
+            ${cfg.label}
           </button>
         `;
       }
 
-      if (isComplete && !isOperator) {
-        return `
-          <button class="w-full py-3 px-4 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-medium flex items-center justify-center gap-2 hover:bg-emerald-500/30 transition-colors">
-            ${getIcon('document')}
-            View Submission
-          </button>
-        `;
-      }
+      const baseClass = cfg.style === 'complete'
+        ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/30'
+        : cfg.style === 'ghost'
+          ? 'bg-slate-800/40 text-slate-300 border border-slate-700/40 hover:bg-slate-800/60'
+          : 'bg-gradient-to-r from-amber-500 to-amber-600 text-slate-900 hover:from-amber-400 hover:to-amber-500 shadow-lg shadow-amber-500/20';
+
+      const weightClass = cfg.style === 'ghost' ? 'font-medium' : 'font-semibold';
+
+      return `
+        <button
+          class="w-full py-3 px-4 rounded-xl ${weightClass} flex items-center justify-center gap-2 transition-all ${baseClass}"
+          data-action="navigate"
+          data-href="${cfg.href}"
+          type="button"
+        >
+          ${getIcon(cfg.icon)}
+          ${cfg.label}
+        </button>
+      `;
+    }
+
+    function renderDetailBadge(step) {
+      const isOperator = step.type === 'operator';
+      const isSupport = step.id === 'support-ticket';
+      const isStaffScheduled = step.id === 'results-appointment';
 
       if (isOperator) {
         return `
-          <button class="w-full py-3 px-4 rounded-xl bg-purple-500/20 text-purple-400 border border-purple-500/30 font-medium flex items-center justify-center gap-2 hover:bg-purple-500/30 transition-colors">
-            ${getIcon('chart')}
-            View Report
-          </button>
+          <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-purple-500/20 text-purple-400 text-xs">
+            ${getIcon('shield', 'w-3 h-3')}
+            Internal Processing
+          </span>
         `;
       }
 
-      if (step.id === 'support-ticket') {
+      if (isStaffScheduled) {
         return `
-          <button class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-slate-900 font-semibold flex items-center justify-center gap-2 hover:from-amber-400 hover:to-amber-500 transition-all shadow-lg shadow-amber-500/20">
-            ${getIcon('support')}
-            Contact Support
-          </button>
+          <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-slate-700/40 text-slate-300 text-xs">
+            ${getIcon('lock', 'w-3 h-3')}
+            Staff Scheduled
+          </span>
         `;
       }
 
-      if (step.id === 'results-appointment') {
+      if (isSupport) {
         return `
-          <button class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-slate-900 font-semibold flex items-center justify-center gap-2 hover:from-amber-400 hover:to-amber-500 transition-all shadow-lg shadow-amber-500/20">
-            ${getIcon('calendar')}
-            Schedule Appointment
-          </button>
+          <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-amber-500/15 text-amber-300 text-xs">
+            ${getIcon('support', 'w-3 h-3')}
+            Optional — If You Need Help
+          </span>
         `;
       }
 
       return `
-        <button class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-slate-900 font-semibold flex items-center justify-center gap-2 hover:from-amber-400 hover:to-amber-500 transition-all shadow-lg shadow-amber-500/20">
-          ${getIcon('pencil')}
-          ${step.status === 'current' ? 'Continue Form' : 'Open Form'}
-        </button>
+        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-amber-500/20 text-amber-400 text-xs">
+          ${getIcon('user-group', 'w-3 h-3')}
+          Action Required From You
+        </span>
       `;
     }
 
@@ -838,12 +927,7 @@
                 <h2 class="text-xl font-bold text-white">${step.name}</h2>
                 <span class="px-2 py-0.5 rounded-full text-xs font-medium ${styles.pill}">${styles.pillText}</span>
               </div>
-              ${isOperator ? `
-                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-purple-500/20 text-purple-400 text-xs">
-                  ${getIcon('shield', 'w-3 h-3')}
-                  Internal Processing
-                </span>
-              ` : ''}
+              ${renderDetailBadge(step)}
             </div>
           </div>
 
@@ -901,6 +985,21 @@
           </div>
         </div>
       `;
+
+      wireDetailPanelActions(container);
+    }
+
+    function wireDetailPanelActions(container) {
+      container.querySelectorAll('button[data-action]').forEach(btn => {
+        const action = btn.getAttribute('data-action');
+        if (action !== 'navigate') return;
+
+        btn.addEventListener('click', () => {
+          const href = btn.getAttribute('data-href');
+          if (!href || href === '#') return;
+          window.location.href = href;
+        });
+      });
     }
 
     function renderActivityTimeline() {
@@ -942,10 +1041,10 @@
         fontSizeable: undefined,
         recolorables: [
           { get: () => cfg.background_color || defaultConfig.background_color, set: (value) => { cfg.background_color = value; window.elementSdk.setConfig({ background_color: value }); } },
-          { get: () => cfg.surface_color || defaultConfig.surface_color, set: (value) => { cfg.surface_color = value; window.elementSdk.setConfig({ surface_color: value }); } },
-          { get: () => cfg.text_color || defaultConfig.text_color, set: (value) => { cfg.text_color = value; window.elementSdk.setConfig({ text_color: value }); } },
           { get: () => cfg.primary_color || defaultConfig.primary_color, set: (value) => { cfg.primary_color = value; window.elementSdk.setConfig({ primary_color: value }); } },
-          { get: () => cfg.secondary_color || defaultConfig.secondary_color, set: (value) => { cfg.secondary_color = value; window.elementSdk.setConfig({ secondary_color: value }); } }
+          { get: () => cfg.secondary_color || defaultConfig.secondary_color, set: (value) => { cfg.secondary_color = value; window.elementSdk.setConfig({ secondary_color: value }); } },
+          { get: () => cfg.surface_color || defaultConfig.surface_color, set: (value) => { cfg.surface_color = value; window.elementSdk.setConfig({ surface_color: value }); } },
+          { get: () => cfg.text_color || defaultConfig.text_color, set: (value) => { cfg.text_color = value; window.elementSdk.setConfig({ text_color: value }); } }
         ]
       };
     }
@@ -957,7 +1056,67 @@
       ]);
     }
 
+    // Tiny smoke tests. These run in the browser console.
+    function assert(condition, message) {
+      if (!condition) throw new Error(message);
+    }
+
+    function runTests() {
+      try {
+        const readyIntake = { id: 'intake', status: 'ready', type: 'form', icon: 'clipboard', link: '/app/pages/flows/intake/intake.html', name: 'Intake' };
+        const lockedOffer = { id: 'offer', status: 'locked', type: 'form', icon: 'document', link: '/app/pages/flows/intake/offer.html', name: 'Offer' };
+        const completeOffer = { id: 'offer', status: 'complete', type: 'form', icon: 'document', link: '/app/pages/flows/intake/offer.html', name: 'Offer' };
+        const staffScheduled = { id: 'results-appointment', status: 'locked', type: 'form', icon: 'calendar', link: '/app/pages/flows/results/appointment.html', name: 'Results Appointment' };
+        const operatorStep = { id: 'z', status: 'current', type: 'operator', icon: 'chart' };
+        const supportStep = { id: 'support-ticket', status: 'ready', type: 'form', icon: 'support' };
+
+        const intakeHtml = renderPrimaryAction(readyIntake);
+        const lockedOfferHtml = renderPrimaryAction(lockedOffer);
+        const completeOfferHtml = renderPrimaryAction(completeOffer);
+        const staffScheduledHtml = renderPrimaryAction(staffScheduled);
+        const operatorHtml = renderPrimaryAction(operatorStep);
+        const supportHtml = renderPrimaryAction(supportStep);
+
+        assert(intakeHtml.includes('Edit Intake Form'), 'Expected ready intake button to say Edit Intake Form');
+        assert(intakeHtml.includes('from-amber-500'), 'Expected ready intake button to be orange');
+
+        assert(lockedOfferHtml.includes('Edit Offer Details'), 'Expected locked offer button to say Edit Offer Details');
+        assert(!lockedOfferHtml.includes('from-amber-500'), 'Expected locked offer button to NOT be orange');
+
+        assert(completeOfferHtml.includes('View Offer Summary'), 'Expected completed offer button to say View Offer Summary');
+        assert(completeOfferHtml.includes('bg-emerald-500/20'), 'Expected completed offer button to use complete style');
+
+        assert(staffScheduledHtml.includes('Await Staff Scheduling'), 'Expected results appointment to say Await Staff Scheduling when locked');
+        assert(!staffScheduledHtml.includes('from-amber-500'), 'Expected staff-scheduled results appointment to be ghost/inactive');
+
+        assert(operatorHtml.includes('View Processing Details'), 'Expected operator primary action to say View Processing Details');
+        assert(!operatorHtml.includes('bg-purple-500/20'), 'Expected operator button to NOT use purple style');
+
+        assert(supportHtml.includes('Go To Support Page'), 'Expected support primary action to say Go To Support Page');
+
+        const phase2 = projectData.phases.find(p => p.id === 2);
+        assert(!!phase2, 'Expected Phase 2 to exist');
+
+        if (WET_SIGNATURE_REQUIRED) {
+          assert(phase2.steps.some(s => s.id === 'wet-signature-2848'), 'Expected wet signature step in Phase 2 when required');
+        } else {
+          assert(!phase2.steps.some(s => s.id === 'wet-signature-2848'), 'Expected wet signature step NOT in Phase 2 when not required');
+        }
+
+        console.info('[projects.html] tests: PASS');
+      } catch (err) {
+        console.error('[projects.html] tests: FAIL', err);
+        throw err;
+      }
+    }
+
     function init() {
+      if (DEMO_LOCK_ALL) {
+        lockAllSteps();
+        selectedStep = 'intake';
+      }
+
+      runTests();
       renderActivityTimeline();
       renderMindMap();
       renderPhaseIndicators();
