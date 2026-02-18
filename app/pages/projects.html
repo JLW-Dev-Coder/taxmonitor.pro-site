@@ -27,14 +27,12 @@
       stroke-dasharray: 8 4;
       animation: dash 20s linear infinite;
     }
-
     @keyframes dash { to { stroke-dashoffset: -100; } }
 
     @keyframes pulse-glow {
       0%, 100% { box-shadow: 0 0 20px rgba(251, 191, 36, 0.3); }
       50% { box-shadow: 0 0 30px rgba(251, 191, 36, 0.5); }
     }
-
     .node-current { animation: pulse-glow 2s ease-in-out infinite; }
 
     .node-card { transition: all 0.3s ease; }
@@ -58,16 +56,48 @@
     ::-webkit-scrollbar-track { background: #1e293b; }
     ::-webkit-scrollbar-thumb { background: #475569; border-radius: 3px; }
     ::-webkit-scrollbar-thumb:hover { background: #64748b; }
+
+    /* Smooth “ease” loading */
+    .fade-wrap { opacity: 1; transform: translateY(0); }
+    .fade-out { opacity: 0; transform: translateY(6px); transition: opacity 180ms ease, transform 180ms ease; }
+    .fade-in  { opacity: 1; transform: translateY(0); transition: opacity 240ms ease, transform 240ms ease; }
+
+    /* Skeleton shimmer */
+    .skeleton {
+      position: relative;
+      overflow: hidden;
+      background: rgba(148, 163, 184, 0.08);
+      border: 1px solid rgba(148, 163, 184, 0.10);
+    }
+    .skeleton::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -40%;
+      width: 40%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(241, 245, 249, 0.08),
+        transparent
+      );
+      animation: shimmer 1.1s ease-in-out infinite;
+    }
+    @keyframes shimmer {
+      0% { left: -40%; }
+      100% { left: 110%; }
+    }
   </style>
 </head>
 
 <body class="h-full bg-slate-900 text-slate-100 overflow-auto">
   <div class="min-h-full flex">
 
-    <!-- Sidebar (partial host) -->
-    <div id="tm-sidebar" class="hidden lg:block shrink-0">
+    <!-- Sidebar (partial) -->
+    <aside id="tm-sidebar" class="hidden lg:block w-72 shrink-0 border-r border-slate-800/60 bg-slate-950/20">
       <!-- injected -->
-    </div>
+    </aside>
 
     <!-- Main column -->
     <div class="flex-1 min-w-0 flex flex-col">
@@ -75,42 +105,6 @@
       <!-- Topbar (partial) -->
       <div id="tm-topbar" class="shrink-0">
         <!-- injected -->
-      </div>
-
-      <!-- Page header (Canva) -->
-      <header class="border-b border-slate-700/50 bg-slate-800/50 backdrop-blur-sm sticky top-0 z-40">
-        <div class="max-w-7xl mx-auto px-4 py-4">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center">
-                <svg class="w-6 h-6 text-slate-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                </svg>
-              </div>
-              <div>
-                <h1 id="page-title" class="text-lg font-bold text-white">Tax Monitor Pro</h1>
-                <p id="welcome-message" class="text-xs text-slate-400">Your Compliance Journey</p>
-              </div>
-            </div>
-
-            <div class="flex items-center gap-4">
-              <span id="portal-mode" class="text-sm text-slate-400">Client Portal</span>
-              <div class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center">
-                <span id="avatar-initials" class="text-sm font-medium text-amber-400">TM</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <!-- Phase Progress Bar -->
-      <div class="bg-slate-800/30 border-b border-slate-700/30">
-        <div class="max-w-7xl mx-auto px-4 py-3">
-          <div class="flex items-center gap-2">
-            <div id="phase-indicators" class="flex items-center gap-1 flex-1"></div>
-          </div>
-        </div>
       </div>
 
       <!-- Main Content -->
@@ -126,10 +120,17 @@
             </div>
 
             <div class="flex items-center gap-2">
-              <a
-                href="/app/pages/projects.html?mock=1&order=journey-0"
+              <button
+                id="btn-sample-journey"
                 class="px-3 py-1.5 rounded-lg bg-slate-800/60 border border-slate-700/50 text-xs text-slate-200 hover:border-amber-500/40 hover:text-white transition-colors"
-              >Sample Journey</a>
+                type="button"
+              >Sample Journey</button>
+
+              <button
+                id="btn-my-journey"
+                class="px-3 py-1.5 rounded-lg bg-slate-800/60 border border-slate-700/50 text-xs text-slate-200 hover:border-emerald-500/40 hover:text-white transition-colors"
+                type="button"
+              >My Journey</button>
 
               <button
                 id="journey-next"
@@ -139,12 +140,51 @@
             </div>
           </div>
 
-          <div id="mind-map" class="space-y-8"></div>
+          <!-- Phase Progress Bar (kept, but NOT sticky, and not a second header) -->
+          <div class="mb-4 bg-slate-800/20 border border-slate-700/30 rounded-xl p-3">
+            <div class="flex items-center gap-2">
+              <span class="text-xs text-slate-400 whitespace-nowrap">Phases:</span>
+              <div id="phase-indicators" class="flex items-center gap-1 flex-1 overflow-x-auto"></div>
+            </div>
+          </div>
+
+          <!-- Smooth-loading wrapper -->
+          <div id="left-wrap" class="fade-wrap fade-in">
+            <div id="mind-map" class="space-y-8"></div>
+
+            <!-- Skeleton (shown while loading) -->
+            <div id="mind-map-skeleton" class="hidden space-y-4">
+              <div class="skeleton rounded-xl h-10"></div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                <div class="skeleton rounded-xl h-24"></div>
+                <div class="skeleton rounded-xl h-24"></div>
+                <div class="skeleton rounded-xl h-24"></div>
+                <div class="skeleton rounded-xl h-24"></div>
+              </div>
+              <div class="skeleton rounded-xl h-10"></div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                <div class="skeleton rounded-xl h-24"></div>
+                <div class="skeleton rounded-xl h-24"></div>
+                <div class="skeleton rounded-xl h-24"></div>
+                <div class="skeleton rounded-xl h-24"></div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Right Panel -->
         <div class="lg:w-1/3 border-t lg:border-t-0 lg:border-l border-slate-700/50 bg-slate-800/30 overflow-auto">
-          <div id="detail-panel" class="p-4 lg:p-6"></div>
+          <div id="right-wrap" class="fade-wrap fade-in">
+            <div id="detail-panel" class="p-4 lg:p-6"></div>
+
+            <!-- Skeleton -->
+            <div id="detail-skeleton" class="hidden p-4 lg:p-6 space-y-3">
+              <div class="skeleton rounded-xl h-10"></div>
+              <div class="skeleton rounded-xl h-20"></div>
+              <div class="skeleton rounded-xl h-20"></div>
+              <div class="skeleton rounded-xl h-12"></div>
+            </div>
+          </div>
         </div>
       </main>
 
@@ -185,20 +225,12 @@
 
     async function onConfigChange(newConfig) {
       config = newConfig || {};
-
-      const pageTitle = document.getElementById('page-title');
-      const welcomeMessage = document.getElementById('welcome-message');
-
-      if (pageTitle) pageTitle.textContent = config.page_title || defaultConfig.page_title;
-      if (welcomeMessage) welcomeMessage.textContent = config.welcome_message || defaultConfig.welcome_message;
-
       applyColors();
     }
 
     function applyColors() {
       const bgColor = config.background_color || defaultConfig.background_color;
       const textColor = config.text_color || defaultConfig.text_color;
-
       document.body.style.backgroundColor = bgColor;
       document.body.style.color = textColor;
     }
@@ -264,12 +296,7 @@
           name: 'Lead Capture & Payment',
           connector: 'Unlocked after Payment',
           steps: [
-            {
-              id: 'intake',
-              name: 'Intake',
-              status: 'locked',
-              type: 'form',
-              icon: 'clipboard',
+            { id: 'intake', name: 'Intake', status: 'locked', type: 'form', icon: 'clipboard',
               microcopy: 'Initial information collection',
               description: 'We collect your basic information to understand your tax situation and determine how we can help you.',
               whatWeNeed: ['Brief description of issue', 'Contact information', 'Full legal name', 'Tax years of concern'],
@@ -277,12 +304,7 @@
               formFields: ['Full Name', 'Email', 'Phone', 'Tax Years', 'Issue Type', 'Description'],
               link: '/app/pages/flows/intake/intake.html'
             },
-            {
-              id: 'offer',
-              name: 'Offer',
-              status: 'locked',
-              type: 'form',
-              icon: 'document',
+            { id: 'offer', name: 'Offer', status: 'locked', type: 'form', icon: 'document',
               microcopy: 'Service proposal review',
               description: 'Review our proposed services and pricing based on your specific tax situation.',
               whatWeNeed: ['Confirmation of scope', 'Review of proposed services'],
@@ -290,12 +312,7 @@
               formFields: ['Service Selection', 'Add-ons', 'Payment Plan', 'Questions'],
               link: '/app/pages/flows/intake/offer.html'
             },
-            {
-              id: 'agreement',
-              name: 'Agreement',
-              status: 'locked',
-              type: 'form',
-              icon: 'shield',
+            { id: 'agreement', name: 'Agreement', status: 'locked', type: 'form', icon: 'shield',
               microcopy: 'Service agreement signing',
               description: 'Sign our service agreement to formalize our engagement and protect both parties.',
               whatWeNeed: ['Agreement acknowledgment', 'Electronic signature'],
@@ -303,12 +320,7 @@
               formFields: ['Agreement Review', 'Terms Acceptance', 'E-Signature', 'Date'],
               link: '/app/pages/flows/intake/agreement.html'
             },
-            {
-              id: 'payment',
-              name: 'Payment',
-              status: 'locked',
-              type: 'form',
-              icon: 'credit-card',
+            { id: 'payment', name: 'Payment', status: 'locked', type: 'form', icon: 'credit-card',
               microcopy: 'Secure payment processing',
               description: 'Complete your payment to activate your account and begin the compliance process.',
               whatWeNeed: ['Billing information', 'Payment method'],
@@ -323,12 +335,7 @@
           name: 'ESign 2848 / Review',
           connector: 'Operator starts here',
           steps: [
-            {
-              id: 'welcome',
-              name: 'Welcome',
-              status: 'locked',
-              type: 'form',
-              icon: 'sparkles',
+            { id: 'welcome', name: 'Welcome', status: 'locked', type: 'form', icon: 'sparkles',
               microcopy: 'Account setup & orientation',
               description: 'Complete your welcome questionnaire to help us personalize your experience.',
               whatWeNeed: ['Availability windows', 'Communication preferences'],
@@ -336,12 +343,7 @@
               formFields: ['Preferred Contact Method', 'Best Times', 'Timezone', 'Additional Info'],
               link: '/app/pages/flows/post-payment/welcome.html'
             },
-            {
-              id: 'filing-status',
-              name: 'Filing Status',
-              status: 'locked',
-              type: 'form',
-              icon: 'user-group',
+            { id: 'filing-status', name: 'Filing Status', status: 'locked', type: 'form', icon: 'user-group',
               microcopy: 'Verify filing status details',
               description: 'Confirm your current filing status to ensure accurate representation with the IRS.',
               whatWeNeed: ['Current filing status', 'Dependent information'],
@@ -349,12 +351,7 @@
               formFields: ['Filing Status', 'Spouse Info', 'Dependents', 'Changes'],
               link: '/app/pages/flows/post-payment/filing-status.html'
             },
-            {
-              id: 'address-update',
-              name: 'Address Update',
-              status: 'locked',
-              type: 'form',
-              icon: 'location',
+            { id: 'address-update', name: 'Address Update', status: 'locked', type: 'form', icon: 'location',
               microcopy: 'Confirm current address',
               description: 'Verify your current mailing address to ensure all IRS correspondence reaches you.',
               whatWeNeed: ['Address history if changed', 'Current mailing address'],
@@ -362,12 +359,7 @@
               formFields: ['Street Address', 'City', 'State', 'ZIP', 'Previous Address'],
               link: '/app/pages/flows/post-payment/address-update.html'
             },
-            {
-              id: 'esign-2848',
-              name: 'eSign 2848',
-              status: 'locked',
-              type: 'form',
-              icon: 'pencil',
+            { id: 'esign-2848', name: 'eSign 2848', status: 'locked', type: 'form', icon: 'pencil',
               microcopy: 'Power of Attorney authorization',
               description: 'Sign Form 2848 to authorize us to represent you before the IRS and access your records.',
               whatWeNeed: ['Electronic signature', 'Identity verification'],
@@ -382,12 +374,7 @@
           name: 'Processing / Due Diligence',
           connector: 'Requires CAF Verified',
           steps: [
-            {
-              id: 'authorization-caf',
-              name: 'Authorization + CAF',
-              status: 'locked',
-              type: 'operator',
-              icon: 'key',
+            { id: 'authorization-caf', name: 'Authorization + CAF', status: 'locked', type: 'operator', icon: 'key',
               microcopy: 'IRS authorization processing',
               description: 'We process your Form 2848 with the IRS and obtain your Centralized Authorization File (CAF) number.',
               whatWeNeed: ['Completed 2848', 'Patience while processing'],
@@ -395,12 +382,7 @@
               checklist: ['Receive CAF confirmation', 'Submit Form 2848 to IRS', 'Test record access', 'Verify access level'],
               estimate: '3-5 business days'
             },
-            {
-              id: 'record-retrieval',
-              name: 'Record Retrieval + Analysis',
-              status: 'locked',
-              type: 'operator',
-              icon: 'search',
+            { id: 'record-retrieval', name: 'Record Retrieval + Analysis', status: 'locked', type: 'operator', icon: 'search',
               microcopy: 'IRS record analysis',
               description: 'We retrieve your complete tax records from the IRS and perform comprehensive analysis.',
               whatWeNeed: ['Any additional documents', 'CAF verification'],
@@ -415,12 +397,7 @@
           name: 'Results',
           connector: null,
           steps: [
-            {
-              id: 'compliance-report',
-              name: 'Compliance Report',
-              status: 'locked',
-              type: 'operator',
-              icon: 'chart',
+            { id: 'compliance-report', name: 'Compliance Report', status: 'locked', type: 'operator', icon: 'chart',
               microcopy: 'Comprehensive findings report',
               description: 'Receive your detailed compliance report with findings, recommendations, and next steps.',
               whatWeNeed: ['Questions prepared', 'Review of findings'],
@@ -428,12 +405,7 @@
               checklist: ['Compile all findings', 'Create visual summary', 'Draft recommendations', 'Prepare action items'],
               estimate: '2-3 business days'
             },
-            {
-              id: 'results-appointment',
-              name: 'Results Appointment',
-              status: 'locked',
-              type: 'form',
-              icon: 'calendar',
+            { id: 'results-appointment', name: 'Results Appointment', status: 'locked', type: 'form', icon: 'calendar',
               microcopy: 'Schedule results review',
               description: 'Schedule your appointment to review findings with your assigned specialist.',
               whatWeNeed: ['Available time slots', 'Questions list'],
@@ -441,12 +413,7 @@
               formFields: ['Preferred Date', 'Preferred Time', 'Meeting Type', 'Topics to Discuss'],
               link: '/app/pages/calendar.html'
             },
-            {
-              id: 'exit-survey',
-              name: 'Exit Survey',
-              status: 'locked',
-              type: 'form',
-              icon: 'star',
+            { id: 'exit-survey', name: 'Exit Survey', status: 'locked', type: 'form', icon: 'star',
               microcopy: 'Share your feedback',
               description: 'Help us improve by sharing your experience with our service.',
               whatWeNeed: ['Honest feedback', 'Suggestions'],
@@ -484,10 +451,10 @@
     function getStatusStyles(status) {
       const styles = {
         complete: { bg: 'bg-emerald-500/20', border: 'border-emerald-500/30', text: 'text-emerald-400', pill: 'bg-emerald-500/20 text-emerald-400', pillText: 'Complete' },
-        current:  { bg: 'bg-amber-500/20', border: 'border-amber-500/50', text: 'text-amber-400',   pill: 'bg-amber-500/20 text-amber-400',   pillText: 'Current'  },
-        ready:    { bg: 'bg-slate-700/50',   border: 'border-slate-600/50',   text: 'text-slate-300',   pill: 'bg-blue-500/20 text-blue-400',       pillText: 'Ready'    },
-        locked:   { bg: 'bg-slate-800/50',   border: 'border-slate-700/30',   text: 'text-slate-500',   pill: 'bg-slate-600/20 text-slate-500',     pillText: 'Locked'   },
-        blocked:  { bg: 'bg-red-500/10',     border: 'border-red-500/30',     text: 'text-red-400',     pill: 'bg-red-500/20 text-red-400',         pillText: 'Blocked'  }
+        current:  { bg: 'bg-amber-500/20',   border: 'border-amber-500/50',   text: 'text-amber-400',   pill: 'bg-amber-500/20 text-amber-400',   pillText: 'Current'  },
+        ready:    { bg: 'bg-slate-700/50',   border: 'border-slate-600/50',   text: 'text-slate-300',   pill: 'bg-blue-500/20 text-blue-400',     pillText: 'Ready'    },
+        locked:   { bg: 'bg-slate-800/50',   border: 'border-slate-700/30',   text: 'text-slate-500',   pill: 'bg-slate-600/20 text-slate-500',   pillText: 'Locked'   },
+        blocked:  { bg: 'bg-red-500/10',     border: 'border-red-500/30',     text: 'text-red-400',     pill: 'bg-red-500/20 text-red-400',       pillText: 'Blocked'  }
       };
       return styles[status] || styles.locked;
     }
@@ -899,23 +866,32 @@
       return url.searchParams.get(name);
     }
 
+    function setQueryParams(pairs) {
+      const url = new URL(window.location.href);
+      for (const [k, v] of Object.entries(pairs)) {
+        if (v === null) url.searchParams.delete(k);
+        else url.searchParams.set(k, v);
+      }
+      history.pushState({}, '', url.pathname + url.search);
+    }
+
     function computeStatusByStep(order) {
       const stepBooleans = order?.stepBooleans || {};
 
       const sequence = [
-        { stepId: 'intake',           key: 'intakeComplete',         source: 'stepBooleans' },
-        { stepId: 'offer',            key: 'offerAccepted',          source: 'stepBooleans' },
-        { stepId: 'agreement',        key: 'agreementAccepted',      source: 'stepBooleans' },
-        { stepId: 'payment',          key: 'paymentCompleted',       source: 'stepBooleans' },
+        { stepId: 'intake',            key: 'intakeComplete',         source: 'stepBooleans' },
+        { stepId: 'offer',             key: 'offerAccepted',          source: 'stepBooleans' },
+        { stepId: 'agreement',         key: 'agreementAccepted',      source: 'stepBooleans' },
+        { stepId: 'payment',           key: 'paymentCompleted',       source: 'stepBooleans' },
 
-        { stepId: 'welcome',          key: 'welcomeConfirmed',       source: 'stepBooleans' },
-        { stepId: 'filing-status',    key: 'filingStatusSubmitted',  source: 'stepBooleans' },
-        { stepId: 'address-update',   key: 'addressUpdateSubmitted', source: 'stepBooleans' },
-        { stepId: 'esign-2848',       key: 'esign2848Submitted',     source: 'stepBooleans' },
+        { stepId: 'welcome',           key: 'welcomeConfirmed',       source: 'stepBooleans' },
+        { stepId: 'filing-status',     key: 'filingStatusSubmitted',  source: 'stepBooleans' },
+        { stepId: 'address-update',    key: 'addressUpdateSubmitted', source: 'stepBooleans' },
+        { stepId: 'esign-2848',        key: 'esign2848Submitted',     source: 'stepBooleans' },
 
         { stepId: 'compliance-report', key: 'reportReady',            source: 'top' },
 
-        { stepId: 'exit-survey',      key: 'exitSurveySubmitted',    source: 'stepBooleans' }
+        { stepId: 'exit-survey',       key: 'exitSurveySubmitted',    source: 'stepBooleans' }
       ];
 
       const isComplete = (item) => {
@@ -928,23 +904,14 @@
 
       const statusById = {};
       for (const item of sequence) {
-        if (isComplete(item)) {
-          statusById[item.stepId] = 'complete';
-          continue;
-        }
-
-        if (currentStepId && item.stepId === currentStepId) {
-          statusById[item.stepId] = 'current';
-          continue;
-        }
-
+        if (isComplete(item)) { statusById[item.stepId] = 'complete'; continue; }
+        if (currentStepId && item.stepId === currentStepId) { statusById[item.stepId] = 'current'; continue; }
         if (currentStepId) {
           const idx = sequence.findIndex(s => s.stepId === item.stepId);
           const curIdx = sequence.findIndex(s => s.stepId === currentStepId);
           statusById[item.stepId] = idx > curIdx ? 'locked' : 'ready';
           continue;
         }
-
         statusById[item.stepId] = 'complete';
       }
 
@@ -964,15 +931,17 @@
 
       if (Array.isArray(order?.timeline)) projectData.activities = order.timeline;
 
-      const initialsEl = document.getElementById('avatar-initials');
-      if (initialsEl && typeof order?.clientInitials === 'string' && order.clientInitials.trim()) {
-        initialsEl.textContent = order.clientInitials.trim().slice(0, 3).toUpperCase();
-      }
+      const initials = typeof order?.clientInitials === 'string' ? order.clientInitials.trim() : '';
+      const initialsEl = document.querySelector('#tm-sidebar .tm-user-initials');
+      if (initialsEl && initials) initialsEl.textContent = initials.slice(0, 3).toUpperCase();
     }
 
     async function loadOrderMock() {
-      const slug = getQueryParam('order') || 'sample';
-      const url = `/public/mock/orders/${slug}.json`;
+      const slug = getQueryParam('order') || 'order.sample';
+
+      // FIX: build output is dist/mock/... so the public URL is /mock/...
+      const url = `/mock/orders/${slug}.json`;
+
       const res = await fetch(url, { cache: 'no-store' });
       if (!res.ok) throw new Error(`Mock order not found: ${url}`);
       return await res.json();
@@ -998,14 +967,54 @@
       const forceMock = getQueryParam('mock') === '1';
 
       if (!forceMock) {
-        try {
-          return await loadOrderFromWorker();
-        } catch (e) {
-          // Worker doesn't exist yet. Expected.
-        }
+        try { return await loadOrderFromWorker(); }
+        catch (e) { /* Worker doesn't exist yet. Expected. */ }
       }
 
       return await loadOrderMock();
+    }
+
+    // =========================================================
+    // Smooth load helpers
+    // =========================================================
+
+    function showSkeleton(show) {
+      const mind = document.getElementById('mind-map');
+      const mindSkel = document.getElementById('mind-map-skeleton');
+      const detail = document.getElementById('detail-panel');
+      const detailSkel = document.getElementById('detail-skeleton');
+
+      if (show) {
+        if (mind) mind.classList.add('hidden');
+        if (detail) detail.classList.add('hidden');
+        if (mindSkel) mindSkel.classList.remove('hidden');
+        if (detailSkel) detailSkel.classList.remove('hidden');
+      } else {
+        if (mindSkel) mindSkel.classList.add('hidden');
+        if (detailSkel) detailSkel.classList.add('hidden');
+        if (mind) mind.classList.remove('hidden');
+        if (detail) detail.classList.remove('hidden');
+      }
+    }
+
+    async function animateSwap(fn) {
+      const left = document.getElementById('left-wrap');
+      const right = document.getElementById('right-wrap');
+
+      left?.classList.remove('fade-in');
+      right?.classList.remove('fade-in');
+      left?.classList.add('fade-out');
+      right?.classList.add('fade-out');
+
+      // Let fade-out start
+      await new Promise(r => setTimeout(r, 120));
+
+      fn();
+
+      left?.classList.remove('fade-out');
+      right?.classList.remove('fade-out');
+      left?.classList.add('fade-in');
+      right?.classList.add('fade-in');
     }
 
     // =========================================================
@@ -1024,7 +1033,7 @@
       if (!label) return;
 
       const idx = getCurrentJourneyIndex();
-      if (idx === -1) {
+      if (getQueryParam('mock') !== '1' || idx === -1) {
         label.textContent = 'Live';
         return;
       }
@@ -1032,25 +1041,77 @@
       label.textContent = `Sample ${idx + 1} of ${journeyOrders.length}`;
     }
 
-    function wireJourneyNext() {
+    function setNextEnabled() {
       const btn = document.getElementById('journey-next');
       if (!btn) return;
 
       const idx = getCurrentJourneyIndex();
-      if (idx === -1) {
-        btn.disabled = true;
-        btn.classList.add('opacity-50', 'cursor-not-allowed');
-        return;
-      }
+      const isSample = getQueryParam('mock') === '1' && idx !== -1;
 
-      btn.addEventListener('click', () => {
-        const nextIdx = Math.min(idx + 1, journeyOrders.length - 1);
-        const nextSlug = journeyOrders[nextIdx];
-        const url = new URL(window.location.href);
-        url.searchParams.set('mock', '1');
-        url.searchParams.set('order', nextSlug);
-        window.location.href = url.toString();
+      btn.disabled = !isSample;
+      btn.classList.toggle('opacity-50', !isSample);
+      btn.classList.toggle('cursor-not-allowed', !isSample);
+    }
+
+    async function loadAndRender() {
+      showSkeleton(true);
+
+      try {
+        const order = await loadCanonicalOrderAuto();
+
+        // reset selection when swapping datasets
+        selectedStep = null;
+
+        applyOrderToProject(order);
+
+        await animateSwap(() => {
+          renderPhaseIndicators();
+          renderMindMap();
+          renderDetailPanel();
+          renderActivityTimeline();
+          setJourneyLabel();
+          setNextEnabled();
+        });
+      } catch (e) {
+        console.error(e);
+        await animateSwap(() => {
+          renderPhaseIndicators();
+          renderMindMap();
+          renderDetailPanel();
+          renderActivityTimeline();
+          setJourneyLabel();
+          setNextEnabled();
+        });
+      } finally {
+        showSkeleton(false);
+      }
+    }
+
+    function wireJourneyButtons() {
+      const btnSample = document.getElementById('btn-sample-journey');
+      const btnMine = document.getElementById('btn-my-journey');
+      const btnNext = document.getElementById('journey-next');
+
+      btnSample?.addEventListener('click', async () => {
+        setQueryParams({ mock: '1', order: 'journey-0' });
+        await loadAndRender();
       });
+
+      btnMine?.addEventListener('click', async () => {
+        setQueryParams({ mock: null, order: null });
+        await loadAndRender();
+      });
+
+      btnNext?.addEventListener('click', async () => {
+        const idx = getCurrentJourneyIndex();
+        if (getQueryParam('mock') !== '1' || idx === -1) return;
+
+        const nextIdx = Math.min(idx + 1, journeyOrders.length - 1);
+        setQueryParams({ mock: '1', order: journeyOrders[nextIdx] });
+        await loadAndRender();
+      });
+
+      window.addEventListener('popstate', () => { loadAndRender(); });
     }
 
     // =========================================================
@@ -1059,24 +1120,13 @@
 
     async function init() {
       await Promise.all([
-        injectPartial('tm-sidebar', '/partials/sidebar.html'),
-        injectPartial('tm-topbar', '/partials/topbar.html')
+        injectPartial('tm-sidebar', '/app/partials/sidebar.html'),
+        injectPartial('tm-topbar', '/app/partials/topbar.html')
       ]);
 
-      try {
-        const order = await loadCanonicalOrderAuto();
-        applyOrderToProject(order);
-      } catch (e) {
-        console.error(e);
-      }
+      wireJourneyButtons();
+      await loadAndRender();
 
-      setJourneyLabel();
-      wireJourneyNext();
-
-      renderPhaseIndicators();
-      renderMindMap();
-      renderDetailPanel();
-      renderActivityTimeline();
       applyColors();
 
       if (window.elementSdk) {
