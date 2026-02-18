@@ -64,10 +64,10 @@
 <body class="h-full bg-slate-900 text-slate-100 overflow-auto">
   <div class="min-h-full flex">
 
-    <!-- Sidebar (partial) -->
-    <aside id="tm-sidebar" class="hidden lg:block w-72 shrink-0 border-r border-slate-800/60 bg-slate-950/20">
+    <!-- Sidebar (partial host) -->
+    <div id="tm-sidebar" class="hidden lg:block shrink-0">
       <!-- injected -->
-    </aside>
+    </div>
 
     <!-- Main column -->
     <div class="flex-1 min-w-0 flex flex-col">
@@ -1059,8 +1059,8 @@
 
     async function init() {
       await Promise.all([
-        injectPartial('tm-sidebar', '/app/partials/sidebar.html'),
-        injectPartial('tm-topbar', '/app/partials/topbar.html')
+        injectPartial('tm-sidebar', '/partials/sidebar.html'),
+        injectPartial('tm-topbar', '/partials/topbar.html')
       ]);
 
       try {
