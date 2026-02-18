@@ -75,12 +75,14 @@
     <div id="tm-sidebar" class="hidden lg:block shrink-0">
       <!-- injected -->
     </div>
+
     <!-- Main column -->
     <div class="flex-1 min-w-0 flex flex-col">
       <!-- Topbar (partial) -->
       <div id="tm-topbar" class="shrink-0">
         <!-- injected -->
       </div>
+
       <!-- Main Content -->
       <main class="flex-1 flex flex-col lg:flex-row overflow-hidden">
         <!-- Left Panel -->
@@ -109,6 +111,7 @@
               >Next Step</button>
             </div>
           </div>
+
           <!-- Phase Progress Bar -->
           <div class="mb-4 bg-slate-800/20 border border-slate-700/30 rounded-xl p-3">
             <div class="flex items-center gap-2">
@@ -116,9 +119,11 @@
               <div id="phase-indicators" class="flex items-center gap-1 flex-1 overflow-x-auto"></div>
             </div>
           </div>
+
           <!-- Smooth-loading wrapper -->
           <div id="left-wrap" class="fade-wrap fade-in">
             <div id="mind-map" class="space-y-8"></div>
+
             <!-- Skeleton (shown while loading) -->
             <div id="mind-map-skeleton" class="hidden space-y-4">
               <div class="skeleton rounded-xl h-10"></div>
@@ -138,10 +143,12 @@
             </div>
           </div>
         </div>
+
         <!-- Right Panel -->
         <div class="lg:w-1/3 border-t lg:border-t-0 lg:border-l border-slate-700/50 bg-slate-800/30 overflow-auto">
           <div id="right-wrap" class="fade-wrap fade-in">
             <div id="detail-panel" class="p-4 lg:p-6"></div>
+
             <!-- Skeleton -->
             <div id="detail-skeleton" class="hidden p-4 lg:p-6 space-y-3">
               <div class="skeleton rounded-xl h-10"></div>
@@ -152,6 +159,7 @@
           </div>
         </div>
       </main>
+
       <!-- Activity Timeline Footer -->
       <footer class="border-t border-slate-700/50 bg-slate-800/50">
         <div class="max-w-7xl mx-auto px-4 py-3">
@@ -170,7 +178,7 @@
 
   <script>
     // =========================================================
-    // Config (Element SDK) + Theme
+    // Theme (Element SDK-compatible, but SDK init is gated)
     // =========================================================
 
     let selectedStep = null;
@@ -201,11 +209,11 @@
     function mapToCapabilities(cfg) {
       return {
         recolorables: [
-          { get: () => cfg.background_color || defaultConfig.background_color, set: (v) => { cfg.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
-          { get: () => cfg.surface_color || defaultConfig.surface_color, set: (v) => { cfg.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
-          { get: () => cfg.text_color || defaultConfig.text_color, set: (v) => { cfg.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
-          { get: () => cfg.primary_color || defaultConfig.primary_color, set: (v) => { cfg.primary_color = v; window.elementSdk.setConfig({ primary_color: v }); } },
-          { get: () => cfg.secondary_color || defaultConfig.secondary_color, set: (v) => { cfg.secondary_color = v; window.elementSdk.setConfig({ secondary_color: v }); } }
+          { get: () => cfg.background_color || defaultConfig.background_color, set: (v) => { cfg.background_color = v; window.elementSdk?.setConfig?.({ background_color: v }); } },
+          { get: () => cfg.surface_color || defaultConfig.surface_color, set: (v) => { cfg.surface_color = v; window.elementSdk?.setConfig?.({ surface_color: v }); } },
+          { get: () => cfg.text_color || defaultConfig.text_color, set: (v) => { cfg.text_color = v; window.elementSdk?.setConfig?.({ text_color: v }); } },
+          { get: () => cfg.primary_color || defaultConfig.primary_color, set: (v) => { cfg.primary_color = v; window.elementSdk?.setConfig?.({ primary_color: v }); } },
+          { get: () => cfg.secondary_color || defaultConfig.secondary_color, set: (v) => { cfg.secondary_color = v; window.elementSdk?.setConfig?.({ secondary_color: v }); } }
         ],
         borderables: [],
         fontEditable: undefined,
@@ -688,10 +696,10 @@
 
     function renderOperatorContent(step) {
       const statusMap = {
-        locked:   { text: 'Pending',        class: 'text-slate-400 bg-slate-700/50' },
-        current:  { text: 'In Progress',    class: 'text-amber-400 bg-amber-500/20' },
-        complete: { text: 'Complete',       class: 'text-emerald-400 bg-emerald-500/20' },
-        blocked:  { text: 'Waiting on You', class: 'text-red-400 bg-red-500/20' }
+        blocked:  { text: 'Waiting on You', class: 'text-red-400 bg-red-500/20' },
+        complete: { text: 'Complete',      class: 'text-emerald-400 bg-emerald-500/20' },
+        current:  { text: 'In Progress',   class: 'text-amber-400 bg-amber-500/20' },
+        locked:   { text: 'Pending',       class: 'text-slate-400 bg-slate-700/50' }
       };
 
       const status = statusMap[step.status] || statusMap.locked;
@@ -901,10 +909,7 @@
 
     async function loadOrderMock() {
       const slug = getQueryParam('order') || 'order.sample';
-
-      // FIX: build output is dist/mock/... so the public URL is /mock/...
       const url = `/mock/orders/${slug}.json`;
-
 
       const res = await fetch(url, { cache: 'no-store' });
       if (!res.ok) throw new Error(`Mock order not found: ${url}`);
@@ -970,7 +975,6 @@
       left?.classList.add('fade-out');
       right?.classList.add('fade-out');
 
-      // Let fade-out start
       await new Promise(r => setTimeout(r, 120));
 
       fn();
@@ -1022,10 +1026,7 @@
 
       try {
         const order = await loadCanonicalOrderAuto();
-
-        // reset selection when swapping datasets
         selectedStep = null;
-
         applyOrderToProject(order);
 
         await animateSwap(() => {
@@ -1082,6 +1083,11 @@
     // Init
     // =========================================================
 
+    function shouldInitElementSdk() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('editor') === '1';
+    }
+
     async function init() {
       await Promise.all([
         injectPartial('tm-sidebar', '/app/partials/sidebar.html'),
@@ -1090,10 +1096,10 @@
 
       wireJourneyButtons();
       await loadAndRender();
-
       applyColors();
 
-      if (window.elementSdk) {
+      // HARD GATE: prevents SDK "double page" injection unless explicitly requested
+      if (shouldInitElementSdk() && window.elementSdk?.init) {
         window.elementSdk.init({
           defaultConfig,
           onConfigChange,
