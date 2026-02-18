@@ -1,12 +1,22 @@
 {
+  "clickupProjection": [
+    {
+      "list": "Orders",
+      "updates": [
+        {
+          "fieldName": "Order 2848 Signed PDF URL",
+          "from": "effects.ordersPatch.artifacts.order2848SignedPdfR2Key",
+          "transform": "r2KeyToDownloadUrl"
+        }
+      ]
+    }
+  ],
   "contract": {
-    "authority": [
-      "R2 Canonical"
-    ],
-    "governs": "Form Ingestion — Wet Signed 2848 (Form 9) → Orders Canonical → ClickUp Projection",
+    "authority": ["R2 Canonical"],
+    "governs": "Form — Post-payment — Wet Signed 2848",
     "path": "app/contracts/forms/post-payment/wet-signed-2848.contract.json",
     "source": "Tax Monitor Pro",
-    "title": "Tax Monitor Pro — Form 9 — Wet Signed 2848 Submitted",
+    "title": "Tax Monitor Pro — Form Contract — Post-payment — Wet Signed 2848 Submitted",
     "validation": {
       "enumStrict": true,
       "normalizeCheckboxToBoolean": true,
@@ -14,30 +24,34 @@
     },
     "version": 1
   },
-  "schema": {
-    "name": "tm_form_wet_signed_2848",
-    "version": 1
-  },
   "delivery": {
-    "dedupeKey": "eventId",
-    "endpoint": "https://api.taxmonitor.pro/forms/post-payment/wet-signed-2848",
-    "eventType": "WET_SIGNED_2848_SUBMITTED",
+    "endpoint": "/forms/post-payment/wet-signed-2848",
     "method": "POST",
     "receiptKeyPattern": "receipts/{source}/{eventId}.json",
-    "receiptSource": "form",
-    "writes": [
-      "orders"
-    ]
+    "receiptSource": "form"
+  },
+  "effects": {
+    "dedupeKey": "payload.eventId",
+    "writes": ["orders"],
+    "writeOrder": ["receiptAppend", "canonicalUpsert", "clickupProjection"],
+    "receiptAppend": {
+      "to": "receipts/{source}/{eventId}.json"
+    },
+    "canonicalUpsert": {
+      "target": "orders/{orderId}.json",
+      "patchFrom": "effects.ordersPatch"
+    },
+    "ordersPatch": {
+      "artifacts": {
+        "order2848SignedPdfR2Key": "{payload.wetSigned2848.r2Key}"
+      },
+      "stepBooleans": {
+        "wetSig2848Submitted": true
+      }
+    }
   },
   "payload": {
-    "required": [
-      "accountId",
-      "eventId",
-      "orderId",
-      "submittedAt",
-      "submitterRole",
-      "wetSigned2848"
-    ],
+    "additionalProperties": false,
     "properties": {
       "accountId": {
         "type": "string",
@@ -57,25 +71,15 @@
       },
       "submitterRole": {
         "type": "string",
-        "enum": [
-          "client",
-          "staff"
-        ]
+        "enum": ["client", "staff"]
       },
       "wetSigned2848": {
         "type": "object",
-        "required": [
-          "contentType",
-          "filename",
-          "r2Key",
-          "sizeBytes"
-        ],
+        "additionalProperties": false,
         "properties": {
           "contentType": {
             "type": "string",
-            "enum": [
-              "application/pdf"
-            ]
+            "enum": ["application/pdf"]
           },
           "filename": {
             "type": "string",
@@ -86,37 +90,22 @@
             "minLength": 10
           },
           "sha256": {
-            "type": "string",
+            "type": ["string", "null"],
             "minLength": 16
           },
           "sizeBytes": {
             "type": "number",
             "minimum": 1
           }
-        }
+        },
+        "required": ["contentType", "filename", "r2Key", "sizeBytes"]
       }
-    }
+    },
+    "required": ["accountId", "eventId", "orderId", "submittedAt", "submitterRole", "wetSigned2848"],
+    "type": "object"
   },
-  "effects": {
-    "ordersPatch": {
-      "artifacts": {
-        "order2848SignedPdfR2Key": "{payload.wetSigned2848.r2Key}"
-      },
-      "stepBooleans": {
-        "esign2848Submitted": true
-      }
-    }
-  },
-  "clickupProjection": [
-    {
-      "list": "Orders",
-      "updates": [
-        {
-          "fieldName": "Order 2848 Signed PDF URL",
-          "from": "ordersPatch.artifacts.order2848SignedPdfR2Key",
-          "transform": "r2KeyToDownloadUrl"
-        }
-      ]
-    }
-  ]
+  "schema": {
+    "name": "tm_form_wet_signed_2848",
+    "version": 1
+  }
 }

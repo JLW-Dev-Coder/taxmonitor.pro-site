@@ -1,12 +1,11 @@
 {
+  "clickupProjection": [],
   "contract": {
-    "authority": [
-      "R2 Canonical"
-    ],
-    "governs": "Form — Post-payment — Client Exit Survey",
-    "path": "/contracts/contracts/forms/post-payment/client-exit-survey.contract.json",
+    "authority": ["R2 Canonical"],
+    "governs": "Form — Post-payment — Exit Survey",
+    "path": "app/contracts/forms/post-payment/exit-survey.contract.json",
     "source": "Tax Monitor Pro",
-    "title": "Form — Post-payment — Client Exit Survey Contract",
+    "title": "Tax Monitor Pro — Form Contract — Post-payment — Exit Survey",
     "validation": {
       "enumStrict": true,
       "normalizeCheckboxToBoolean": true,
@@ -14,142 +13,91 @@
     },
     "version": 1
   },
-  "schema": {
-    "name": "tm_form_post_payment_client_exit_survey",
-    "version": 1
+  "delivery": {
+    "endpoint": "/forms/post-payment/exit-survey",
+    "method": "POST",
+    "receiptKeyPattern": "receipts/{source}/{eventId}.json",
+    "receiptSource": "form"
   },
-  "fields": {
-    "accountId": {
-      "control": "text",
-      "storageType": "string",
-      "nullable": true
+  "effects": {
+    "dedupeKey": "payload.eventId",
+    "writes": ["orders"],
+    "writeOrder": ["receiptAppend", "canonicalUpsert", "clickupProjection"],
+    "receiptAppend": {
+      "to": "receipts/{source}/{eventId}.json"
     },
-    "eventId": {
-      "control": "text",
-      "storageType": "string",
-      "nullable": false,
-      "required": true
-    },
-    "Exit_Followup_Allowed": {
-      "control": "dropdown",
-      "storageType": "string",
-      "nullable": true,
-      "options": [
-        {
-          "label": "No",
-          "value": "No"
-        },
-        {
-          "label": "Yes",
-          "value": "Yes"
+    "canonicalUpsert": {
+      "target": "orders/{orderId}.json",
+      "patch": {
+        "stepBooleans": {
+          "exitSurveySubmitted": true
         }
-      ]
-    },
-    "Exit_Improvement_Feedback": {
-      "control": "text",
-      "storageType": "string",
-      "nullable": true
-    },
-    "Exit_Positive_Feedback": {
-      "control": "text",
-      "storageType": "string",
-      "nullable": true
-    },
-    "Exit_Reason": {
-      "control": "dropdown",
-      "storageType": "string",
-      "nullable": true,
-      "options": [
-        {
-          "label": "Chose a different provider",
-          "value": "Chose a different provider"
-        },
-        {
-          "label": "No longer need monitoring",
-          "value": "No longer need monitoring"
-        },
-        {
-          "label": "Price / budget concerns",
-          "value": "Price / budget concerns"
-        },
-        {
-          "label": "Service completed as intended",
-          "value": "Service completed as intended"
-        },
-        {
-          "label": "Switching to resolution services",
-          "value": "Switching to resolution services"
-        },
-        {
-          "label": "Temporary pause",
-          "value": "Temporary pause"
-        },
-        {
-          "label": "Unsure / other",
-          "value": "Unsure / other"
-        }
-      ]
-    },
-    "Future_Support_Interest": {
-      "control": "dropdown",
-      "storageType": "string",
-      "nullable": true,
-      "options": [
-        {
-          "label": "Appeals support",
-          "value": "Appeals support"
-        },
-        {
-          "label": "Bookkeeping or cleanup",
-          "value": "Bookkeeping or cleanup"
-        },
-        {
-          "label": "Compliance-only monitoring",
-          "value": "Compliance-only monitoring"
-        },
-        {
-          "label": "IRS resolution services",
-          "value": "IRS resolution services"
-        },
-        {
-          "label": "Not interested at this time",
-          "value": "Not interested at this time"
-        },
-        {
-          "label": "Unsure / revisit later",
-          "value": "Unsure / revisit later"
-        }
-      ]
-    },
-    "orderId": {
-      "control": "text",
-      "storageType": "string",
-      "nullable": true
-    },
-    "Service_Outcome_Met": {
-      "control": "dropdown",
-      "storageType": "string",
-      "nullable": true,
-      "options": [
-        {
-          "label": "No",
-          "value": "No"
-        },
-        {
-          "label": "Partially",
-          "value": "Partially"
-        },
-        {
-          "label": "Yes",
-          "value": "Yes"
-        }
-      ]
-    },
-    "sessionToken": {
-      "control": "text",
-      "storageType": "string",
-      "nullable": false,
-      "required": true
+      }
     }
+  },
+  "payload": {
+    "required": ["eventId", "orderId", "sessionToken"],
+    "type": "object",
+    "properties": {
+      "Exit_Followup_Allowed": {
+        "type": ["string", "null"],
+        "enum": ["No", "Yes"]
+      },
+      "Exit_Improvement_Feedback": {
+        "type": ["string", "null"],
+        "maxLength": 5000
+      },
+      "Exit_Positive_Feedback": {
+        "type": ["string", "null"],
+        "maxLength": 5000
+      },
+      "Exit_Reason": {
+        "type": ["string", "null"],
+        "enum": [
+          "Chose a different provider",
+          "No longer need monitoring",
+          "Price / budget concerns",
+          "Service completed as intended",
+          "Switching to resolution services",
+          "Temporary pause",
+          "Unsure / other"
+        ]
+      },
+      "Future_Support_Interest": {
+        "type": ["string", "null"],
+        "enum": [
+          "Appeals support",
+          "Bookkeeping or cleanup",
+          "Compliance-only monitoring",
+          "IRS resolution services",
+          "Not interested at this time",
+          "Unsure / revisit later"
+        ]
+      },
+      "Service_Outcome_Met": {
+        "type": ["string", "null"],
+        "enum": ["No", "Partially", "Yes"]
+      },
+      "accountId": {
+        "type": ["string", "null"]
+      },
+      "eventId": {
+        "type": "string",
+        "minLength": 1
+      },
+      "orderId": {
+        "type": "string",
+        "minLength": 1
+      },
+      "sessionToken": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "additionalProperties": false
+  },
+  "schema": {
+    "name": "tm_form_post_payment_exit_survey",
+    "version": 1
   }
 }

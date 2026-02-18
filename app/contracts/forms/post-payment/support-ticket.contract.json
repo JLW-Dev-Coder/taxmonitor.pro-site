@@ -1,12 +1,41 @@
 {
+  "clickupProjection": [
+    {
+      "list": "Support",
+      "createTask": {
+        "name": "Support — {payload.support.subject}",
+        "status": "open / new"
+      },
+      "updates": [
+        {
+          "fieldName": "Support Action Required",
+          "from": "effects.supportPatch.actionRequired"
+        },
+        {
+          "fieldName": "Support Email",
+          "from": "effects.supportPatch.email"
+        },
+        {
+          "fieldName": "Support Priority",
+          "from": "effects.supportPatch.priority"
+        },
+        {
+          "fieldName": "Support Related Order ID",
+          "from": "effects.supportPatch.relatedOrderId"
+        },
+        {
+          "fieldName": "Support Type",
+          "from": "effects.supportPatch.type"
+        }
+      ]
+    }
+  ],
   "contract": {
-    "authority": [
-      "R2 Canonical"
-    ],
-    "governs": "Form Ingestion — Form 13 Support Ticket → Support Canonical → ClickUp Projection",
+    "authority": ["R2 Canonical"],
+    "governs": "Form — Support — Support Ticket",
     "path": "app/contracts/forms/support/support-ticket.contract.json",
     "source": "Tax Monitor Pro",
-    "title": "Tax Monitor Pro — Form 13 — Support Ticket Submitted",
+    "title": "Tax Monitor Pro — Form Contract — Support — Support Ticket Submitted",
     "validation": {
       "enumStrict": true,
       "normalizeCheckboxToBoolean": true,
@@ -14,28 +43,52 @@
     },
     "version": 1
   },
-  "schema": {
-    "name": "tm_form_support_ticket",
-    "version": 1
-  },
   "delivery": {
-    "dedupeKey": "eventId",
-    "endpoint": "https://api.taxmonitor.pro/forms/support/support-ticket",
-    "eventType": "SUPPORT_TICKET_SUBMITTED",
+    "endpoint": "/forms/support/support-ticket",
     "method": "POST",
     "receiptKeyPattern": "receipts/{source}/{eventId}.json",
-    "receiptSource": "form",
-    "writes": [
-      "support"
-    ]
+    "receiptSource": "form"
+  },
+  "effects": {
+    "dedupeKey": "payload.eventId",
+    "note": "Assumes supportId === eventId for support/{supportId}.json. If different, update canonicalUpsert.target.",
+    "writes": ["support"],
+    "writeOrder": ["receiptAppend", "canonicalUpsert", "clickupProjection"],
+    "receiptAppend": {
+      "to": "receipts/{source}/{eventId}.json"
+    },
+    "canonicalUpsert": {
+      "target": "support/{supportId}.json",
+      "supportIdFrom": "payload.eventId",
+      "patch": {
+        "accountId": "{payload.accountId}",
+        "actionRequired": "{payload.support.actionRequired}",
+        "email": "{payload.support.email}",
+        "message": "{payload.support.message}",
+        "priority": "{payload.support.priority}",
+        "relatedOrderId": "{payload.support.relatedOrderId}",
+        "status": "open / new",
+        "subject": "{payload.support.subject}",
+        "submittedAt": "{payload.submittedAt}",
+        "type": "{payload.support.type}",
+        "uploads": "{payload.support.uploads}"
+      }
+    },
+    "supportPatch": {
+      "accountId": "{payload.accountId}",
+      "actionRequired": "{payload.support.actionRequired}",
+      "email": "{payload.support.email}",
+      "message": "{payload.support.message}",
+      "priority": "{payload.support.priority}",
+      "relatedOrderId": "{payload.support.relatedOrderId}",
+      "status": "open / new",
+      "subject": "{payload.support.subject}",
+      "type": "{payload.support.type}",
+      "uploads": "{payload.support.uploads}"
+    }
   },
   "payload": {
-    "required": [
-      "accountId",
-      "eventId",
-      "submittedAt",
-      "support"
-    ],
+    "additionalProperties": false,
     "properties": {
       "accountId": {
         "type": "string",
@@ -51,23 +104,11 @@
       },
       "support": {
         "type": "object",
-        "required": [
-          "actionRequired",
-          "email",
-          "message",
-          "priority",
-          "subject",
-          "type"
-        ],
+        "additionalProperties": false,
         "properties": {
           "actionRequired": {
             "type": "string",
-            "enum": [
-              "Acknowledge",
-              "Close",
-              "Resolve",
-              "Triage"
-            ]
+            "enum": ["Acknowledge", "Close", "Resolve", "Triage"]
           },
           "email": {
             "type": "string",
@@ -88,8 +129,8 @@
             ]
           },
           "relatedOrderId": {
-            "type": "string",
-            "minLength": 0
+            "type": ["string", "null"],
+            "minLength": 1
           },
           "subject": {
             "type": "string",
@@ -121,15 +162,11 @@
             "type": "array",
             "items": {
               "type": "object",
-              "required": [
-                "contentType",
-                "filename",
-                "r2Key",
-                "sizeBytes"
-              ],
+              "additionalProperties": false,
               "properties": {
                 "contentType": {
-                  "type": "string"
+                  "type": "string",
+                  "minLength": 1
                 },
                 "filename": {
                   "type": "string",
@@ -140,63 +177,26 @@
                   "minLength": 10
                 },
                 "sha256": {
-                  "type": "string",
+                  "type": ["string", "null"],
                   "minLength": 16
                 },
                 "sizeBytes": {
                   "type": "number",
                   "minimum": 1
                 }
-              }
+              },
+              "required": ["contentType", "filename", "r2Key", "sizeBytes"]
             }
           }
-        }
+        },
+        "required": ["actionRequired", "email", "message", "priority", "subject", "type"]
       }
-    }
+    },
+    "required": ["accountId", "eventId", "submittedAt", "support"],
+    "type": "object"
   },
-  "effects": {
-    "supportPatch": {
-      "accountId": "{payload.accountId}",
-      "actionRequired": "{payload.support.actionRequired}",
-      "email": "{payload.support.email}",
-      "message": "{payload.support.message}",
-      "priority": "{payload.support.priority}",
-      "relatedOrderId": "{payload.support.relatedOrderId}",
-      "status": "open / new",
-      "subject": "{payload.support.subject}",
-      "type": "{payload.support.type}",
-      "uploads": "{payload.support.uploads}"
-    }
-  },
-  "clickupProjection": [
-    {
-      "list": "Support",
-      "createTask": {
-        "name": "Support — {payload.support.subject}",
-        "status": "open / new"
-      },
-      "updates": [
-        {
-          "fieldName": "Support Action Required",
-          "from": "effects.supportPatch.actionRequired"
-        },
-        {
-          "fieldName": "Support Email",
-          "from": "effects.supportPatch.email"
-        },
-        {
-          "fieldName": "Support Priority",
-          "from": "effects.supportPatch.priority"
-        },
-        {
-          "fieldName": "Support Related Order ID",
-          "from": "effects.supportPatch.relatedOrderId"
-        },
-        {
-          "fieldName": "Support Type",
-          "from": "effects.supportPatch.type"
-        }
-      ]
-    }
-  ]
+  "schema": {
+    "name": "tm_form_support_ticket",
+    "version": 1
+  }
 }

@@ -1,73 +1,60 @@
 {
-  "clickup": {
-    "list": {
-      "id": "901710818340",
-      "name": "Orders"
+  "contract": {
+    "authority": ["R2 Canonical"],
+    "governs": "ClickUp Projection — Orders List",
+    "path": "/contracts/clickup/orders.list.contract.json",
+    "source": "Tax Monitor Pro",
+    "title": "Tax Monitor Pro — ClickUp Orders List Contract",
+    "validation": {
+      "enumStrict": true,
+      "normalizeCheckboxToBoolean": true,
+      "rejectUnknownValues": true
     },
-    "statuses": [
-      {
-        "color": "#5f55ee",
-        "id": "sc901710818340_spZYI3Oq",
-        "orderindex": 1,
-        "status": "blocked",
-        "type": "custom"
-      },
-      {
-        "color": "#008844",
-        "id": "sc901710818340_br3XTyBW",
-        "orderindex": 7,
-        "status": "Closed",
-        "type": "closed"
-      },
-      {
-        "color": "#a18072",
-        "id": "sc901710818340_SJVkqZtD",
-        "orderindex": 5,
-        "status": "complete",
-        "type": "done"
-      },
-      {
-        "color": "#87909e",
-        "id": "sc901710818340_uNG38R6b",
-        "orderindex": 0,
-        "status": "hold",
-        "type": "open"
-      },
-      {
-        "color": "#0091ff",
-        "id": "sc901710818340_9xB3Rwet",
-        "orderindex": 2,
-        "status": "in progress",
-        "type": "custom"
-      },
-      {
-        "color": "#1090e0",
-        "id": "sc901710818340_BNfUYlBk",
-        "orderindex": 3,
-        "status": "needs review",
-        "type": "custom"
-      },
-      {
-        "color": "#f76808",
-        "id": "sc901710818340_NRtM421G",
-        "orderindex": 6,
-        "status": "template",
-        "type": "done"
-      },
-      {
-        "color": "#008844",
-        "id": "sc901710818340_h9IawejR",
-        "orderindex": 4,
-        "status": "waiting on client",
-        "type": "custom"
-      }
-    ],
-    "fields": {
-      "Account_Form_s_Submitted": {
-        "clickupFieldId": "d12d0194-4c14-4486-9720-18efc2f0c061",
-        "clickupType": "labels",
-        "name": "Account Form(s) Submitted",
+    "version": 1
+  },
+  "customFields": [
+    {
+      "id": "d12d0194-4c14-4486-9720-18efc2f0c061",
+      "name": "Account Form(s) Submitted",
+      "type": "labels",
+      "type_config": {
         "options": [
+          {
+            "color": "#e50000",
+            "id": "26f0d89e-9d3e-4dd1-abf1-2e3d4d1fca34",
+            "label": "Intake Submitted (Form 1)",
+            "orderindex": 0
+          },
+          {
+            "color": "#FF7FAB",
+            "id": "a2325b22-c414-40da-89f0-5a9e5891f24f",
+            "label": "Offer Submitted (Form 2)",
+            "orderindex": 1
+          },
+          {
+            "color": "#667684",
+            "id": "2ac2badb-7993-4fb2-9a56-a6b727c76d75",
+            "label": "Agreement Submitted (Form 3)",
+            "orderindex": 2
+          },
+          {
+            "color": "#bf55ec",
+            "id": "f22d82e3-f1f7-47c8-a396-73547d88e6a5",
+            "label": "Payment Submitted (Form 4)",
+            "orderindex": 3
+          },
+          {
+            "color": "#667684",
+            "id": "a7384f13-ab52-4c6b-b600-e2a3a8cf814f",
+            "label": "Welcome Submitted (Form 5)",
+            "orderindex": 4
+          },
+          {
+            "color": "#7C4DFF",
+            "id": "cf6dde60-7566-462f-b298-1d44af637556",
+            "label": "Filing Status Submitted (Form 6)",
+            "orderindex": 5
+          },
           {
             "color": "#7C4DFF",
             "id": "b65c2c26-4d4f-402c-8764-b1cebbd5a302",
@@ -75,10 +62,16 @@
             "orderindex": 6
           },
           {
-            "color": "#667684",
-            "id": "2ac2badb-7993-4fb2-9a56-a6b727c76d75",
-            "label": "Agreement Submitted (Form 3)",
-            "orderindex": 2
+            "color": "#FF7FAB",
+            "id": "50551c8b-c64d-4a63-add3-dbab188e9c8b",
+            "label": "2848 Submitted (Form 8)",
+            "orderindex": 7
+          },
+          {
+            "color": "#fff",
+            "id": "eed5c567-9a2a-4286-bf17-e97be540fd03",
+            "label": "Wet Signed 2848 Submitted (Form 9)",
+            "orderindex": 8
           },
           {
             "color": "#f9d900",
@@ -99,85 +92,88 @@
             "orderindex": 11
           },
           {
-            "color": "#7C4DFF",
-            "id": "cf6dde60-7566-462f-b298-1d44af637556",
-            "label": "Filing Status Submitted (Form 6)",
-            "orderindex": 5
-          },
-          {
-            "color": "#e50000",
-            "id": "26f0d89e-9d3e-4dd1-abf1-2e3d4d1fca34",
-            "label": "Intake Submitted (Form 1)",
-            "orderindex": 0
-          },
-          {
-            "color": "#FF7FAB",
-            "id": "a2325b22-c414-40da-89f0-5a9e5891f24f",
-            "label": "Offer Submitted (Form 2)",
-            "orderindex": 1
-          },
-          {
-            "color": "#FF7FAB",
-            "id": "50551c8b-c64d-4a63-add3-dbab188e9c8b",
-            "label": "2848 Submitted (Form 8)",
-            "orderindex": 7
-          },
-          {
-            "color": "#bf55ec",
-            "id": "f22d82e3-f1f7-47c8-a396-73547d88e6a5",
-            "label": "Payment Submitted (Form 4)",
-            "orderindex": 3
-          },
-          {
             "color": "#fff",
             "id": "c1a20aff-44c4-40fc-8558-b74ceba621cc",
             "label": "Support Ticket (Form 13)",
             "orderindex": 12
-          },
-          {
-            "color": "#fff",
-            "id": "eed5c567-9a2a-4286-bf17-e97be540fd03",
-            "label": "Wet Signed 2848 Submitted (Form 9)",
-            "orderindex": 8
-          },
-          {
-            "color": "#667684",
-            "id": "a7384f13-ab52-4c6b-b600-e2a3a8cf814f",
-            "label": "Welcome Submitted (Form 5)",
-            "orderindex": 4
           }
-        ]
-      },
-      "Order_2848_Signed_PDF_URL": {
-        "clickupFieldId": "26206c04-13c0-4f4c-8628-ae023d97eb67",
-        "clickupType": "url",
-        "name": "Order 2848 Signed PDF URL"
-      },
-      "Order_2848_Unsigned_PDF_URL": {
-        "clickupFieldId": "0f5b0ff4-1637-4cd9-a522-560c9b24bcd8",
-        "clickupType": "url",
-        "name": "Order 2848 Unsigned PDF URL"
-      },
-      "Order_Agreement_Signed_PDF_URL": {
-        "clickupFieldId": "b156f6bd-9697-429f-a651-43e2ad12a87a",
-        "clickupType": "url",
-        "name": "Order Agreement Signed PDF URL"
-      },
-      "Order_Compliance_Report_PDF_URL": {
-        "clickupFieldId": "3c4c2986-c8df-47b7-a676-258333c71558",
-        "clickupType": "url",
-        "name": "Order Compliance Report PDF URL"
-      },
-      "Order_ID": {
-        "clickupFieldId": "32868356-2259-49a0-b311-c05b8aff8b5a",
-        "clickupType": "short_text",
-        "name": "Order ID"
-      },
-      "Order_Status": {
-        "clickupFieldId": "0455921e-2f37-4167-b7ce-50f34490c5cb",
-        "clickupType": "drop_down",
-        "name": "Order Status",
+        ],
+        "sorting": "manual"
+      }
+    },
+    {
+      "id": "b156f6bd-9697-429f-a651-43e2ad12a87a",
+      "name": "Order Agreement Signed PDF URL",
+      "type": "url",
+      "type_config": {}
+    },
+    {
+      "id": "26206c04-13c0-4f4c-8628-ae023d97eb67",
+      "name": "Order 2848 Signed PDF URL",
+      "type": "url",
+      "type_config": {}
+    },
+    {
+      "id": "0f5b0ff4-1637-4cd9-a522-560c9b24bcd8",
+      "name": "Order 2848 Unsigned PDF URL",
+      "type": "url",
+      "type_config": {}
+    },
+    {
+      "id": "3c4c2986-c8df-47b7-a676-258333c71558",
+      "name": "Order Compliance Report PDF URL",
+      "type": "url",
+      "type_config": {}
+    },
+    {
+      "id": "32868356-2259-49a0-b311-c05b8aff8b5a",
+      "name": "Order ID",
+      "type": "short_text",
+      "type_config": {}
+    },
+    {
+      "id": "0455921e-2f37-4167-b7ce-50f34490c5cb",
+      "name": "Order Status",
+      "type": "drop_down",
+      "type_config": {
+        "new_drop_down": true,
         "options": [
+          {
+            "color": "#AF7E2E",
+            "id": "f72a5aaf-84fb-46ee-937e-91650a87cea9",
+            "name": "Intake Submitted (Form 1)",
+            "orderindex": 0
+          },
+          {
+            "color": "#e50000",
+            "id": "cf8580d5-0d64-435a-8e85-c17ce220a672",
+            "name": "Offer Submitted (Form 2)",
+            "orderindex": 1
+          },
+          {
+            "color": "#3397dd",
+            "id": "f9acea68-ba1f-4313-8f01-7d5e9b723bea",
+            "name": "Agreement Submitted (Form 3)",
+            "orderindex": 2
+          },
+          {
+            "color": "#7C4DFF",
+            "id": "77f0a7d9-8536-4a8e-a3e4-d9cf0e1a8b98",
+            "name": "Payment Submitted (Form 4)",
+            "orderindex": 3
+          },
+          {
+            "color": "#AF7E2E",
+            "id": "2adcbda3-9a75-419f-a738-74afdeeb7c1f",
+            "name": "Welcome Submitted (Form 5)",
+            "orderindex": 4
+          },
+          {
+            "color": "#3082B7",
+            "id": "7061f7dd-9c80-4373-9555-d4f969aa5bc8",
+            "name": "Filing Status Submitted (Form 6)",
+            "orderindex": 5
+          },
           {
             "color": "#EA80FC",
             "id": "0d3f9e49-2932-4561-975e-d86b92454928",
@@ -186,9 +182,15 @@
           },
           {
             "color": "#3397dd",
-            "id": "f9acea68-ba1f-4313-8f01-7d5e9b723bea",
-            "name": "Agreement Submitted (Form 3)",
-            "orderindex": 2
+            "id": "a1a9f429-fdd4-4c6b-8ce7-c15314aae580",
+            "name": "2848 Submitted (Form 8)",
+            "orderindex": 7
+          },
+          {
+            "color": "#81B1FF",
+            "id": "8210bfbe-31c6-4001-b428-7d58696d5baa",
+            "name": "Wet Signed 2848 Submitted (Form 9)",
+            "orderindex": 8
           },
           {
             "color": "#04A9F4",
@@ -207,71 +209,89 @@
             "id": "edcb7355-4b03-41e1-b962-77a172f68c19",
             "name": "Client Exit Survey Submitted (Form 12)",
             "orderindex": 11
-          },
-          {
-            "color": "#3082B7",
-            "id": "7061f7dd-9c80-4373-9555-d4f969aa5bc8",
-            "name": "Filing Status Submitted (Form 6)",
-            "orderindex": 5
-          },
-          {
-            "color": "#AF7E2E",
-            "id": "f72a5aaf-84fb-46ee-937e-91650a87cea9",
-            "name": "Intake Submitted (Form 1)",
-            "orderindex": 0
-          },
-          {
-            "color": "#e50000",
-            "id": "cf8580d5-0d64-435a-8e85-c17ce220a672",
-            "name": "Offer Submitted (Form 2)",
-            "orderindex": 1
-          },
-          {
-            "color": "#3397dd",
-            "id": "a1a9f429-fdd4-4c6b-8ce7-c15314aae580",
-            "name": "2848 Submitted (Form 8)",
-            "orderindex": 7
-          },
-          {
-            "color": "#7C4DFF",
-            "id": "77f0a7d9-8536-4a8e-a3e4-d9cf0e1a8b98",
-            "name": "Payment Submitted (Form 4)",
-            "orderindex": 3
-          },
-          {
-            "color": "#81B1FF",
-            "id": "8210bfbe-31c6-4001-b428-7d58696d5baa",
-            "name": "Wet Signed 2848 Submitted (Form 9)",
-            "orderindex": 8
-          },
-          {
-            "color": "#AF7E2E",
-            "id": "2adcbda3-9a75-419f-a738-74afdeeb7c1f",
-            "name": "Welcome Submitted (Form 5)",
-            "orderindex": 4
           }
-        ]
-      },
-      "Stripe_Customer_ID": {
-        "clickupFieldId": "a5e09a6a-5c14-4efe-86a7-3f76fa7739e6",
-        "clickupType": "short_text",
-        "name": "Stripe Customer ID"
-      },
-      "Stripe_Payment_Status": {
-        "clickupFieldId": "1b9a762e-cf3e-47d7-8ae7-98efe9e11eab",
-        "clickupType": "short_text",
-        "name": "Stripe Payment Status"
-      },
-      "Stripe_Payment_URL": {
-        "clickupFieldId": "0609cd0b-dd5e-4523-a21f-c4df8e9da4db",
-        "clickupType": "url",
-        "name": "Stripe Payment URL"
-      },
-      "Stripe_Session_ID": {
-        "clickupFieldId": "57e6c42b-a471-4316-92dc-23ce0f59d8b4",
-        "clickupType": "short_text",
-        "name": "Stripe Session ID"
+        ],
+        "sorting": "manual"
       }
+    },
+    {
+      "id": "a5e09a6a-5c14-4efe-86a7-3f76fa7739e6",
+      "name": "Stripe Customer ID",
+      "type": "short_text",
+      "type_config": {}
+    },
+    {
+      "id": "1b9a762e-cf3e-47d7-8ae7-98efe9e11eab",
+      "name": "Stripe Payment Status",
+      "type": "short_text",
+      "type_config": {}
+    },
+    {
+      "id": "0609cd0b-dd5e-4523-a21f-c4df8e9da4db",
+      "name": "Stripe Payment URL",
+      "type": "url",
+      "type_config": {}
+    },
+    {
+      "id": "57e6c42b-a471-4316-92dc-23ce0f59d8b4",
+      "name": "Stripe Session ID",
+      "type": "short_text",
+      "type_config": {}
     }
-  }
+  ],
+  "listId": "901710818340",
+  "schema": {
+    "name": "tm_clickup_orders_list_contract",
+    "version": 1
+  },
+  "statuses": [
+    {
+      "id": "sc901710818340_spZYI3Oq",
+      "orderindex": 1,
+      "status": "blocked",
+      "type": "custom"
+    },
+    {
+      "id": "sc901710818340_br3XTyBW",
+      "orderindex": 7,
+      "status": "Closed",
+      "type": "closed"
+    },
+    {
+      "id": "sc901710818340_SJVkqZtD",
+      "orderindex": 5,
+      "status": "complete",
+      "type": "done"
+    },
+    {
+      "id": "sc901710818340_uNG38R6b",
+      "orderindex": 0,
+      "status": "hold",
+      "type": "open"
+    },
+    {
+      "id": "sc901710818340_9xB3Rwet",
+      "orderindex": 2,
+      "status": "in progress",
+      "type": "custom"
+    },
+    {
+      "id": "sc901710818340_BNfUYlBk",
+      "orderindex": 3,
+      "status": "needs review",
+      "type": "custom"
+    },
+    {
+      "id": "sc901710818340_NRtM421G",
+      "orderindex": 6,
+      "status": "template",
+      "type": "done"
+    },
+    {
+      "id": "sc901710818340_h9IawejR",
+      "orderindex": 4,
+      "status": "waiting on client",
+      "type": "custom"
+    }
+  ]
 }

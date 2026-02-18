@@ -1,53 +1,5 @@
 ﻿{
   "clickup": {
-    "list": {
-      "id": "901710909567",
-      "name": "Accounts"
-    },
-    "statuses": [
-      {
-        "color": "#30a46c",
-        "id": "sc901710909567_HQFUVvsP",
-        "orderindex": 2,
-        "status": "active client",
-        "type": "custom"
-      },
-      {
-        "color": "#5f55ee",
-        "id": "sc901710909567_28lOSeqB",
-        "orderindex": 1,
-        "status": "active prospect",
-        "type": "custom"
-      },
-      {
-        "color": "#008844",
-        "id": "sc901710909567_3L7zz4ba",
-        "orderindex": 5,
-        "status": "case closed",
-        "type": "closed"
-      },
-      {
-        "color": "#e5484d",
-        "id": "sc901710909567_xkb7cJgK",
-        "orderindex": 4,
-        "status": "inactive client",
-        "type": "done"
-      },
-      {
-        "color": "#f76808",
-        "id": "sc901710909567_FQloihMJ",
-        "orderindex": 3,
-        "status": "inactive prospect",
-        "type": "done"
-      },
-      {
-        "color": "#87909e",
-        "id": "sc901710909567_xIp7IGFz",
-        "orderindex": 0,
-        "status": "lead",
-        "type": "open"
-      }
-    ],
     "fields": {
       "Account_First_Name": {
         "clickupFieldId": "f5c9f6da-c994-4733-a15f-59188b37f531",
@@ -66,7 +18,7 @@
             "orderindex": 6
           },
           {
-            "color": "#2ac2badb-7993-4fb2-9a56-a6b727c76d75",
+            "color": "#667684",
             "id": "2ac2badb-7993-4fb2-9a56-a6b727c76d75",
             "label": "Agreement Submitted (Form 3)",
             "orderindex": 2
@@ -262,6 +214,54 @@
         "clickupType": "tasks",
         "name": "Account Support Task Link"
       }
-    }
+    },
+    "list": {
+      "id": "901710909567",
+      "name": "Accounts"
+    },
+    "statuses": [
+      {
+        "color": "#30a46c",
+        "id": "sc901710909567_HQFUVvsP",
+        "orderindex": 2,
+        "status": "active client",
+        "type": "custom"
+      },
+      {
+        "color": "#5f55ee",
+        "id": "sc901710909567_28lOSeqB",
+        "orderindex": 1,
+        "status": "active prospect",
+        "type": "custom"
+      },
+      {
+        "color": "#008844",
+        "id": "sc901710909567_3L7zz4ba",
+        "orderindex": 5,
+        "status": "case closed",
+        "type": "closed"
+      },
+      {
+        "color": "#e5484d",
+        "id": "sc901710909567_xkb7cJgK",
+        "orderindex": 4,
+        "status": "inactive client",
+        "type": "done"
+      },
+      {
+        "color": "#f76808",
+        "id": "sc901710909567_FQloihMJ",
+        "orderindex": 3,
+        "status": "inactive prospect",
+        "type": "done"
+      },
+      {
+        "color": "#87909e",
+        "id": "sc901710909567_xIp7IGFz",
+        "orderindex": 0,
+        "status": "lead",
+        "type": "open"
+      }
+    ]
   }
 }

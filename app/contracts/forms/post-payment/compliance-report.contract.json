@@ -1,12 +1,11 @@
 {
+  "clickupProjection": [],
   "contract": {
-    "authority": [
-      "R2 Canonical"
-    ],
+    "authority": ["R2 Canonical"],
     "governs": "Form — Post-payment — Compliance Report",
-    "path": "/contracts/contracts/forms/post-payment/compliance-report.contract.json",
+    "path": "app/contracts/forms/post-payment/compliance-report.contract.json",
     "source": "Tax Monitor Pro",
-    "title": "Form — Post-payment — Compliance Report Contract",
+    "title": "Tax Monitor Pro — Form Contract — Post-payment — Compliance Report",
     "validation": {
       "enumStrict": true,
       "normalizeCheckboxToBoolean": true,
@@ -14,48 +13,56 @@
     },
     "version": 1
   },
+  "delivery": {
+    "endpoint": "/forms/post-payment/compliance-report",
+    "method": "POST",
+    "receiptKeyPattern": "receipts/{source}/{eventId}.json",
+    "receiptSource": "form"
+  },
+  "effects": {
+    "dedupeKey": "payload.eventId",
+    "writes": ["orders"],
+    "writeOrder": ["receiptAppend", "canonicalUpsert", "clickupProjection"],
+    "receiptAppend": {
+      "to": "receipts/{source}/{eventId}.json"
+    },
+    "canonicalUpsert": {
+      "target": "orders/{orderId}.json",
+      "patch": {
+        "stepBooleans": {
+          "complianceSubmitted": true
+        }
+      }
+    }
+  },
+  "payload": {
+    "additionalProperties": false,
+    "properties": {
+      "accountId": {
+        "type": ["string", "null"]
+      },
+      "eventId": {
+        "type": "string",
+        "minLength": 1
+      },
+      "orderId": {
+        "type": "string",
+        "minLength": 1
+      },
+      "reportAction": {
+        "type": "string",
+        "enum": ["Generate", "Refresh"]
+      },
+      "sessionToken": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "required": ["eventId", "orderId", "reportAction", "sessionToken"],
+    "type": "object"
+  },
   "schema": {
     "name": "tm_form_post_payment_compliance_report",
     "version": 1
-  },
-  "fields": {
-    "accountId": {
-      "control": "text",
-      "storageType": "string",
-      "nullable": true
-    },
-    "eventId": {
-      "control": "text",
-      "storageType": "string",
-      "nullable": false,
-      "required": true
-    },
-    "orderId": {
-      "control": "text",
-      "storageType": "string",
-      "nullable": true
-    },
-    "reportAction": {
-      "control": "dropdown",
-      "storageType": "string",
-      "nullable": false,
-      "required": true,
-      "options": [
-        {
-          "label": "Generate",
-          "value": "Generate"
-        },
-        {
-          "label": "Refresh",
-          "value": "Refresh"
-        }
-      ]
-    },
-    "sessionToken": {
-      "control": "text",
-      "storageType": "string",
-      "nullable": false,
-      "required": true
-    }
   }
 }

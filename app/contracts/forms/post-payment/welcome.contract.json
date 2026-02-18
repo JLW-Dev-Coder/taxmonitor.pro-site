@@ -1,12 +1,11 @@
 {
+  "clickupProjection": [],
   "contract": {
-    "authority": [
-      "R2 Canonical"
-    ],
+    "authority": ["R2 Canonical"],
     "governs": "Form — Post-payment — Welcome",
-    "path": "/contracts/contracts/forms/post-payment/welcome.contract.json",
+    "path": "app/contracts/forms/post-payment/welcome.contract.json",
     "source": "Tax Monitor Pro",
-    "title": "Form — Post-payment — Welcome Contract",
+    "title": "Tax Monitor Pro — Form Contract — Post-payment — Welcome",
     "validation": {
       "enumStrict": true,
       "normalizeCheckboxToBoolean": true,
@@ -14,65 +13,62 @@
     },
     "version": 1
   },
+  "delivery": {
+    "endpoint": "/forms/post-payment/welcome",
+    "method": "POST",
+    "receiptKeyPattern": "receipts/{source}/{eventId}.json",
+    "receiptSource": "form"
+  },
+  "effects": {
+    "dedupeKey": "payload.eventId",
+    "writes": ["orders"],
+    "writeOrder": ["receiptAppend", "canonicalUpsert", "clickupProjection"],
+    "receiptAppend": {
+      "to": "receipts/{source}/{eventId}.json"
+    },
+    "canonicalUpsert": {
+      "target": "orders/{orderId}.json",
+      "patch": {
+        "stepBooleans": {
+          "welcomeConfirmed": "{payload.welcomeConfirmed}"
+        }
+      }
+    }
+  },
+  "payload": {
+    "additionalProperties": false,
+    "properties": {
+      "Tax_Monitoring_Service_Progress_Percent": {
+        "type": ["number", "null"]
+      },
+      "Tax_Monitoring_Service_Progress_Status": {
+        "type": ["string", "null"],
+        "maxLength": 5000
+      },
+      "accountId": {
+        "type": ["string", "null"]
+      },
+      "eventId": {
+        "type": "string",
+        "minLength": 1
+      },
+      "orderId": {
+        "type": "string",
+        "minLength": 1
+      },
+      "sessionToken": {
+        "type": "string",
+        "minLength": 1
+      },
+      "welcomeConfirmed": {
+        "type": "boolean"
+      }
+    },
+    "required": ["eventId", "orderId", "sessionToken", "welcomeConfirmed"],
+    "type": "object"
+  },
   "schema": {
     "name": "tm_form_post_payment_welcome",
     "version": 1
-  },
-  "fields": {
-    "accountId": {
-      "control": "text",
-      "storageType": "string",
-      "nullable": true
-    },
-    "eventId": {
-      "control": "text",
-      "storageType": "string",
-      "nullable": false,
-      "required": true
-    },
-    "orderId": {
-      "control": "text",
-      "storageType": "string",
-      "nullable": true
-    },
-    "sessionToken": {
-      "control": "text",
-      "storageType": "string",
-      "nullable": false,
-      "required": true
-    },
-    "Tax_Monitoring_Service_Progress_Percent": {
-      "control": "number",
-      "storageType": "number",
-      "nullable": true
-    },
-    "Tax_Monitoring_Service_Progress_Status": {
-      "control": "textarea",
-      "storageType": "string",
-      "nullable": true
-    },
-    "welcomeConfirmed": {
-      "control": "checkbox",
-      "storageType": "boolean",
-      "nullable": false,
-      "required": true,
-      "enumMapping": {
-        "trueValues": [
-          "Yes",
-          "true",
-          "on",
-          "1",
-          "checked"
-        ],
-        "falseValues": [
-          "No",
-          "false",
-          "off",
-          "0",
-          "unchecked",
-          ""
-        ]
-      }
-    }
   }
 }

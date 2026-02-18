@@ -1,112 +1,91 @@
 {
-  "webhookRegistryVersion": 1,
   "baseUrl": "https://api.taxmonitor.pro",
   "entries": [
     {
-      "id": "cal_booking_cancelled",
-      "version": 1,
-      "path": "app/contracts/webhooks/cal.booking_cancelled.contract.json",
-      "method": "POST",
-      "endpoint": "/cal/webhook",
-      "receiptSource": "cal",
+      "dedupeKey": "payload.payload.bookingId",
+      "endpoint": "https://api.taxmonitor.pro/cal/webhook",
       "eventType": "BOOKING_CANCELLED",
-      "dedupeKey": "event.id",
+      "id": "cal_booking_cancelled",
+      "method": "POST",
+      "path": "app/contracts/webhooks/cal.booking_cancelled.contract.json",
       "receiptKeyPattern": "receipts/{source}/{eventId}.json",
+      "receiptSource": "cal",
       "signature": {
         "header": "x-cal-signature-256",
-        "secretEnvVar": "CAL_WEBHOOK_SECRET",
-        "required": true
+        "required": true,
+        "secretEnvVar": "CAL_WEBHOOK_SECRET"
       },
-      "writes": ["support"],
-      "clickupProjection": [
-        {
-          "list": "Support"
-        }
-      ]
+      "version": 1,
+      "writes": ["support"]
     },
     {
-      "id": "cal_booking_created",
-      "version": 1,
-      "path": "app/contracts/webhooks/cal.booking_created.contract.json",
-      "method": "POST",
-      "endpoint": "/cal/webhook",
-      "receiptSource": "cal",
+      "dedupeKey": "payload.payload.bookingId",
+      "endpoint": "https://api.taxmonitor.pro/cal/webhook",
       "eventType": "BOOKING_CREATED",
-      "dedupeKey": "event.id",
-      "receiptKeyPattern": "receipts/{source}/{eventId}.json",
-      "signature": {
-        "header": "x-cal-signature-256",
-        "secretEnvVar": "CAL_WEBHOOK_SECRET",
-        "required": true
-      },
-      "writes": ["support"],
-      "clickupProjection": [
-        {
-          "list": "Support"
-        }
-      ]
-    },
-    {
-      "id": "cal_booking_rescheduled",
-      "version": 1,
-      "path": "app/contracts/webhooks/cal.booking_rescheduled.contract.json",
+      "id": "cal_booking_created",
       "method": "POST",
-      "endpoint": "/cal/webhook",
+      "path": "app/contracts/webhooks/cal.booking_created.contract.json",
+      "receiptKeyPattern": "receipts/{source}/{eventId}.json",
       "receiptSource": "cal",
-      "eventType": "BOOKING_RESCHEDULED",
-      "dedupeKey": "event.id",
-      "receiptKeyPattern": "receipts/{source}/{eventId}.json",
       "signature": {
         "header": "x-cal-signature-256",
-        "secretEnvVar": "CAL_WEBHOOK_SECRET",
-        "required": true
+        "required": true,
+        "secretEnvVar": "CAL_WEBHOOK_SECRET"
       },
-      "writes": ["support"],
-      "clickupProjection": [
-        {
-          "list": "Support"
-        }
-      ]
+      "version": 1,
+      "writes": ["support"]
     },
     {
-      "id": "stripe_checkout_session_completed",
-      "version": 1,
-      "path": "app/contracts/webhooks/stripe.checkout_session_completed.contract.json",
+      "dedupeKey": "payload.payload.bookingId",
+      "endpoint": "https://api.taxmonitor.pro/cal/webhook",
+      "eventType": "BOOKING_RESCHEDULED",
+      "id": "cal_booking_rescheduled",
       "method": "POST",
-      "endpoint": "/stripe/webhook",
-      "receiptSource": "stripe",
+      "path": "app/contracts/webhooks/cal.booking_rescheduled.contract.json",
+      "receiptKeyPattern": "receipts/{source}/{eventId}.json",
+      "receiptSource": "cal",
+      "signature": {
+        "header": "x-cal-signature-256",
+        "required": true,
+        "secretEnvVar": "CAL_WEBHOOK_SECRET"
+      },
+      "version": 1,
+      "writes": ["support"]
+    },
+    {
+      "dedupeKey": "payload.data.object.id",
+      "endpoint": "https://api.taxmonitor.pro/stripe/webhook",
       "eventType": "checkout.session.completed",
-      "dedupeKey": "event.id",
+      "id": "stripe_checkout_session_completed",
+      "method": "POST",
+      "path": "app/contracts/webhooks/stripe.checkout_session_completed.contract.json",
       "receiptKeyPattern": "receipts/{source}/{eventId}.json",
+      "receiptSource": "stripe",
       "signature": {
         "header": "Stripe-Signature",
-        "secretEnvVar": "STRIPE_WEBHOOK_SECRET",
-        "required": true
+        "required": true,
+        "secretEnvVar": "STRIPE_WEBHOOK_SECRET"
       },
-      "writes": ["orders"],
-      "clickupProjection": [
-        {
-          "list": "Orders"
-        }
-      ]
+      "version": 1,
+      "writes": ["orders"]
     },
     {
-      "id": "stripe_payment_intent_succeeded",
-      "version": 1,
-      "path": "app/contracts/webhooks/stripe.payment_intent_succeeded.contract.json",
-      "method": "POST",
-      "endpoint": "/stripe/webhook",
-      "receiptSource": "stripe",
+      "dedupeKey": "payload.data.object.id",
+      "endpoint": "https://api.taxmonitor.pro/stripe/webhook",
       "eventType": "payment_intent.succeeded",
-      "dedupeKey": "event.id",
+      "id": "stripe_payment_intent_succeeded",
+      "method": "POST",
+      "path": "app/contracts/webhooks/stripe.payment_intent_succeeded.contract.json",
       "receiptKeyPattern": "receipts/{source}/{eventId}.json",
+      "receiptSource": "stripe",
       "signature": {
         "header": "Stripe-Signature",
-        "secretEnvVar": "STRIPE_WEBHOOK_SECRET",
-        "required": true
+        "required": true,
+        "secretEnvVar": "STRIPE_WEBHOOK_SECRET"
       },
-      "writes": ["receipts"],
-      "clickupProjection": []
+      "version": 1,
+      "writes": []
     }
-  ]
+  ],
+  "webhookRegistryVersion": 1
 }

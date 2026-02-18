@@ -1,10 +1,44 @@
 {
+  "clickupProjection": [
+    {
+      "list": "Support",
+      "match": {
+        "byCustomField": {
+          "fieldId": "8e8b453e-01f3-40fe-8156-2e9d9633ebd6",
+          "valueFrom": "effects.supportPatch.supportId"
+        }
+      },
+      "createTask": {
+        "name": "Cal — Booking Created — {effects.supportPatch.supportId}",
+        "status": "open / new"
+      },
+      "setDueDate": {
+        "from": "effects.supportPatch.bookingEndTime",
+        "transform": "isoToMs"
+      },
+      "setStartDate": {
+        "from": "effects.supportPatch.bookingStartTime",
+        "transform": "isoToMs"
+      },
+      "setStatus": "open / new",
+      "updates": [
+        {
+          "fieldId": "8e8b453e-01f3-40fe-8156-2e9d9633ebd6",
+          "from": "effects.supportPatch.supportId"
+        },
+        {
+          "fieldId": "423fda3b-f7c0-471e-aaa2-464d78db0a31",
+          "from": "effects.supportPatch.relatedOrderId"
+        }
+      ]
+    }
+  ],
   "contract": {
     "authority": ["R2 Canonical"],
-    "governs": "Cal.com Webhook — BOOKING_CREATED",
+    "governs": "Webhook — Cal.com — BOOKING_CREATED",
     "path": "app/contracts/webhooks/cal.booking_created.contract.json",
     "source": "Tax Monitor Pro",
-    "title": "Tax Monitor Pro — Cal.com Webhook Contract — BOOKING_CREATED",
+    "title": "Tax Monitor Pro — Webhook Contract — Cal.com — BOOKING_CREATED",
     "validation": {
       "enumStrict": true,
       "normalizeCheckboxToBoolean": true,
@@ -12,16 +46,111 @@
     },
     "version": 1
   },
-  "event": {
-    "required": ["id", "type", "created"],
-    "properties": {
-      "id": { "type": "string" },
-      "type": { "type": "string", "enum": ["BOOKING_CREATED"] },
-      "created": { "type": "number" }
+  "delivery": {
+    "endpoint": "/cal/webhook",
+    "method": "POST",
+    "receiptKeyPattern": "receipts/{source}/{eventId}.json",
+    "receiptSource": "cal",
+    "signature": {
+      "header": "Cal-Signature",
+      "required": true,
+      "secretEnvVar": "CAL_WEBHOOK_SECRET"
     }
   },
-  "data": {
-    "type": "object",
-    "description": "Vendor payload pass-through. Worker must store receipt and map to support canonical."
+  "effects": {
+    "dedupeKey": "payload.payload.bookingId",
+    "eventIdFrom": "payload.payload.bookingId",
+    "writes": ["support"],
+    "writeOrder": ["receiptAppend", "canonicalUpsert", "clickupProjection"],
+    "receiptAppend": {
+      "to": "receipts/{source}/{eventId}.json"
+    },
+    "canonicalUpsert": {
+      "supportIdFrom": "payload.payload.bookingId",
+      "target": "support/{supportId}.json",
+      "patchFrom": "effects.supportPatch"
+    },
+    "supportPatch": {
+      "bookingEndTime": "{payload.payload.endTime}",
+      "bookingId": "{payload.payload.bookingId}",
+      "bookingStartTime": "{payload.payload.startTime}",
+      "bookingTimeZone": "{payload.payload.organizer.timeZone}",
+      "cal": {
+        "bookingId": "{payload.payload.bookingId}",
+        "createdAt": "{payload.createdAt}",
+        "eventTypeId": "{payload.payload.eventTypeId}",
+        "status": "{payload.payload.status}",
+        "triggerEvent": "{payload.triggerEvent}",
+        "uid": "{payload.payload.uid}"
+      },
+      "relatedOrderId": null,
+      "status": "booked",
+      "supportId": "{payload.payload.bookingId}",
+      "title": "{payload.payload.title}"
+    }
+  },
+  "payload": {
+    "additionalProperties": true,
+    "properties": {
+      "createdAt": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "payload": {
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+          "bookingId": {
+            "type": "number",
+            "minimum": 1
+          },
+          "endTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "eventTypeId": {
+            "type": "number"
+          },
+          "organizer": {
+            "type": "object",
+            "additionalProperties": true,
+            "properties": {
+              "timeZone": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": ["timeZone"]
+          },
+          "startTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["ACCEPTED"]
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uid": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": ["bookingId", "endTime", "startTime", "status", "title", "uid"]
+      },
+      "triggerEvent": {
+        "type": "string",
+        "enum": ["BOOKING_CREATED"]
+      }
+    },
+    "required": ["createdAt", "payload", "triggerEvent"],
+    "type": "object"
+  },
+  "schema": {
+    "name": "tm_webhook_cal_booking_created",
+    "version": 1
   }
 }

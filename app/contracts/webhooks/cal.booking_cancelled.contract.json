@@ -1,10 +1,44 @@
 {
+  "clickupProjection": [
+    {
+      "list": "Support",
+      "match": {
+        "byCustomField": {
+          "fieldId": "8e8b453e-01f3-40fe-8156-2e9d9633ebd6",
+          "valueFrom": "effects.supportPatch.supportId"
+        }
+      },
+      "createTask": {
+        "name": "Cal — Booking Cancelled — {effects.supportPatch.supportId}",
+        "status": "open / new"
+      },
+      "setDueDate": {
+        "from": "effects.supportPatch.bookingEndTime",
+        "transform": "isoToMs"
+      },
+      "setStartDate": {
+        "from": "effects.supportPatch.bookingStartTime",
+        "transform": "isoToMs"
+      },
+      "setStatus": "Closed",
+      "updates": [
+        {
+          "fieldId": "8e8b453e-01f3-40fe-8156-2e9d9633ebd6",
+          "from": "effects.supportPatch.supportId"
+        },
+        {
+          "fieldId": "423fda3b-f7c0-471e-aaa2-464d78db0a31",
+          "from": "effects.supportPatch.relatedOrderId"
+        }
+      ]
+    }
+  ],
   "contract": {
     "authority": ["R2 Canonical"],
-    "governs": "Cal.com Webhook — BOOKING_CANCELLED",
+    "governs": "Webhook — Cal.com — BOOKING_CANCELLED",
     "path": "app/contracts/webhooks/cal.booking_cancelled.contract.json",
     "source": "Tax Monitor Pro",
-    "title": "Tax Monitor Pro — Cal.com Webhook Contract — BOOKING_CANCELLED",
+    "title": "Tax Monitor Pro — Webhook Contract — Cal.com — BOOKING_CANCELLED",
     "validation": {
       "enumStrict": true,
       "normalizeCheckboxToBoolean": true,
@@ -12,16 +46,111 @@
     },
     "version": 1
   },
-  "event": {
-    "required": ["id", "type", "created"],
-    "properties": {
-      "id": { "type": "string" },
-      "type": { "type": "string", "enum": ["BOOKING_CANCELLED"] },
-      "created": { "type": "number" }
+  "delivery": {
+    "endpoint": "/cal/webhook",
+    "method": "POST",
+    "receiptKeyPattern": "receipts/{source}/{eventId}.json",
+    "receiptSource": "cal",
+    "signature": {
+      "header": "Cal-Signature",
+      "required": true,
+      "secretEnvVar": "CAL_WEBHOOK_SECRET"
     }
   },
-  "data": {
-    "type": "object",
-    "description": "Vendor payload pass-through. Worker must store receipt and update support canonical."
+  "effects": {
+    "dedupeKey": "payload.payload.bookingId",
+    "eventIdFrom": "payload.payload.bookingId",
+    "writes": ["support"],
+    "writeOrder": ["receiptAppend", "canonicalUpsert", "clickupProjection"],
+    "receiptAppend": {
+      "to": "receipts/{source}/{eventId}.json"
+    },
+    "canonicalUpsert": {
+      "supportIdFrom": "payload.payload.bookingId",
+      "target": "support/{supportId}.json",
+      "patchFrom": "effects.supportPatch"
+    },
+    "supportPatch": {
+      "bookingEndTime": "{payload.payload.endTime}",
+      "bookingId": "{payload.payload.bookingId}",
+      "bookingStartTime": "{payload.payload.startTime}",
+      "bookingTimeZone": "{payload.payload.organizer.timeZone}",
+      "cal": {
+        "bookingId": "{payload.payload.bookingId}",
+        "cancelledBy": "{payload.payload.cancelledBy}",
+        "cancellationReason": "{payload.payload.cancellationReason}",
+        "createdAt": "{payload.createdAt}",
+        "status": "{payload.payload.status}",
+        "triggerEvent": "{payload.triggerEvent}",
+        "uid": "{payload.payload.uid}"
+      },
+      "relatedOrderId": null,
+      "status": "cancelled",
+      "supportId": "{payload.payload.bookingId}"
+    }
+  },
+  "payload": {
+    "additionalProperties": true,
+    "properties": {
+      "createdAt": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "payload": {
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+          "bookingId": {
+            "type": "number",
+            "minimum": 1
+          },
+          "cancelledBy": {
+            "type": ["string", "null"]
+          },
+          "cancellationReason": {
+            "type": ["string", "null"],
+            "maxLength": 2000
+          },
+          "endTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "organizer": {
+            "type": "object",
+            "additionalProperties": true,
+            "properties": {
+              "timeZone": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": ["timeZone"]
+          },
+          "startTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["CANCELLED"]
+          },
+          "uid": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": ["bookingId", "endTime", "startTime", "status", "uid"]
+      },
+      "triggerEvent": {
+        "type": "string",
+        "enum": ["BOOKING_CANCELLED"]
+      }
+    },
+    "required": ["createdAt", "payload", "triggerEvent"],
+    "type": "object"
+  },
+  "schema": {
+    "name": "tm_webhook_cal_booking_cancelled",
+    "version": 1
   }
 }

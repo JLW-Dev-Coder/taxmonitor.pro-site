@@ -1,12 +1,16 @@
 {
+  "clickupProjection": [
+    {
+      "list": "Orders",
+      "updates": []
+    }
+  ],
   "contract": {
-    "authority": [
-      "R2 Canonical"
-    ],
-    "governs": "Form — Post-payment — Address Update",
-    "path": "/contracts/contracts/forms/post-payment/address-update.contract.json",
+    "authority": ["R2 Canonical"],
+    "governs": "Form Ingestion — Post-payment — Address Update Submitted → Orders Canonical → ClickUp Projection",
+    "path": "app/contracts/forms/post-payment/address-update.contract.json",
     "source": "Tax Monitor Pro",
-    "title": "Form — Post-payment — Address Update Contract",
+    "title": "Tax Monitor Pro — Post-payment — Address Update Submitted",
     "validation": {
       "enumStrict": true,
       "normalizeCheckboxToBoolean": true,
@@ -14,71 +18,51 @@
     },
     "version": 1
   },
-  "schema": {
-    "name": "tm_form_post_payment_address_update",
-    "version": 1
+  "delivery": {
+    "dedupeKey": "eventId",
+    "endpoint": "https://api.taxmonitor.pro/forms/post-payment/address-update",
+    "eventType": "ADDRESS_UPDATE_SUBMITTED",
+    "method": "POST",
+    "receiptKeyPattern": "receipts/{source}/{eventId}.json",
+    "receiptSource": "form",
+    "writes": ["orders"]
   },
-  "fields": {
-    "accountId": {
-      "control": "text",
-      "storageType": "string",
-      "nullable": true
-    },
-    "eventId": {
-      "control": "text",
-      "storageType": "string",
-      "nullable": false,
-      "required": true
-    },
-    "orderId": {
-      "control": "text",
-      "storageType": "string",
-      "nullable": true
-    },
-    "sessionToken": {
-      "control": "text",
-      "storageType": "string",
-      "nullable": false,
-      "required": true
-    },
-    "Tax_Monitoring_Service_Progress_Percent": {
-      "control": "number",
-      "storageType": "number",
-      "nullable": true
-    },
-    "Tax_Monitoring_Service_Progress_Status": {
-      "control": "textarea",
-      "storageType": "string",
-      "nullable": true
-    },
-    "Taxpayer_Address_City": {
-      "control": "text",
-      "storageType": "string",
-      "nullable": false,
-      "required": true
-    },
-    "Taxpayer_Address_Line_1": {
-      "control": "text",
-      "storageType": "string",
-      "nullable": false,
-      "required": true
-    },
-    "Taxpayer_Address_Line_2": {
-      "control": "text",
-      "storageType": "string",
-      "nullable": true
-    },
-    "Taxpayer_Address_State": {
-      "control": "text",
-      "storageType": "string",
-      "nullable": false,
-      "required": true
-    },
-    "Taxpayer_Address_Zip": {
-      "control": "text",
-      "storageType": "string",
-      "nullable": false,
-      "required": true
+  "effects": {
+    "ordersPatch": {
+      "addressUpdate": {
+        "city": "{payload.Taxpayer_Address_City}",
+        "line1": "{payload.Taxpayer_Address_Line_1}",
+        "line2": "{payload.Taxpayer_Address_Line_2}",
+        "state": "{payload.Taxpayer_Address_State}",
+        "zip": "{payload.Taxpayer_Address_Zip}"
+      },
+      "stepBooleans": {
+        "addressUpdateSubmitted": true
+      }
     }
-  }
+  },
+  "payload": {
+    "required": [
+      "Taxpayer_Address_City",
+      "Taxpayer_Address_Line_1",
+      "Taxpayer_Address_State",
+      "Taxpayer_Address_Zip",
+      "eventId",
+      "sessionToken"
+    ],
+    "properties": {
+      "Tax_Monitoring_Service_Progress_Percent": { "type": "number" },
+      "Tax_Monitoring_Service_Progress_Status": { "type": "string", "maxLength": 8000 },
+      "Taxpayer_Address_City": { "type": "string", "minLength": 1, "maxLength": 160 },
+      "Taxpayer_Address_Line_1": { "type": "string", "minLength": 1, "maxLength": 200 },
+      "Taxpayer_Address_Line_2": { "type": "string", "maxLength": 200 },
+      "Taxpayer_Address_State": { "type": "string", "minLength": 2, "maxLength": 2 },
+      "Taxpayer_Address_Zip": { "type": "string", "minLength": 5, "maxLength": 10 },
+      "accountId": { "type": "string" },
+      "eventId": { "type": "string", "minLength": 8 },
+      "orderId": { "type": "string" },
+      "sessionToken": { "type": "string", "minLength": 8 }
+    }
+  },
+  "schema": { "name": "tm_form_post_payment_address_update", "version": 1 }
 }

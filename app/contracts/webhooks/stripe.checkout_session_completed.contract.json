@@ -1,10 +1,11 @@
 {
+  "clickupProjection": [],
   "contract": {
     "authority": ["R2 Canonical"],
-    "governs": "Stripe Webhook — checkout.session.completed",
+    "governs": "Webhook — Stripe — checkout.session.completed",
     "path": "app/contracts/webhooks/stripe.checkout_session_completed.contract.json",
     "source": "Tax Monitor Pro",
-    "title": "Tax Monitor Pro — Stripe Webhook Contract — checkout.session.completed",
+    "title": "Tax Monitor Pro — Webhook Contract — Stripe — checkout.session.completed",
     "validation": {
       "enumStrict": true,
       "normalizeCheckboxToBoolean": true,
@@ -12,16 +13,115 @@
     },
     "version": 1
   },
-  "event": {
-    "required": ["id", "type", "created"],
-    "properties": {
-      "id": { "type": "string" },
-      "type": { "type": "string", "enum": ["checkout.session.completed"] },
-      "created": { "type": "number" }
+  "delivery": {
+    "dedupeKey": "payload.data.object.id",
+    "endpoint": "/stripe/webhook",
+    "eventType": "checkout.session.completed",
+    "method": "POST",
+    "receiptKeyPattern": "receipts/{source}/{eventId}.json",
+    "receiptSource": "stripe",
+    "signature": {
+      "header": "Stripe-Signature",
+      "required": true,
+      "secretEnvVar": "STRIPE_WEBHOOK_SECRET"
+    },
+    "writes": ["orders"]
+  },
+  "effects": {
+    "ordersPatch": {
+      "paymentCompletedAt": "{payload.created}",
+      "stripeSessionId": "{payload.data.object.id}",
+      "stepBooleans": {
+        "paymentCompleted": true
+      }
     }
   },
-  "data": {
-    "type": "object",
-    "description": "Vendor payload pass-through. Worker must store receipt, upsert orders canonical (paymentCompleted), then project Orders in ClickUp."
+  "payload": {
+    "additionalProperties": true,
+    "properties": {
+      "created": {
+        "type": "number"
+      },
+      "data": {
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+          "object": {
+            "type": "object",
+            "additionalProperties": true,
+            "properties": {
+              "amount_total": {
+                "type": ["number", "null"]
+              },
+              "created": {
+                "type": "number"
+              },
+              "currency": {
+                "type": "string",
+                "minLength": 3
+              },
+              "id": {
+                "type": "string",
+                "minLength": 8
+              },
+              "metadata": {
+                "type": "object",
+                "additionalProperties": true,
+                "properties": {
+                  "accountId": {
+                    "type": "string",
+                    "minLength": 6
+                  },
+                  "orderId": {
+                    "type": "string",
+                    "minLength": 6
+                  }
+                },
+                "required": ["orderId"]
+              },
+              "mode": {
+                "type": "string",
+                "enum": ["payment"]
+              },
+              "payment_intent": {
+                "type": ["string", "null"]
+              },
+              "payment_status": {
+                "type": "string",
+                "enum": ["paid"]
+              },
+              "status": {
+                "type": "string",
+                "enum": ["complete"]
+              }
+            },
+            "required": [
+              "created",
+              "currency",
+              "id",
+              "metadata",
+              "mode",
+              "payment_status",
+              "status"
+            ]
+          }
+        },
+        "required": ["object"]
+      },
+      "id": {
+        "type": "string",
+        "minLength": 8
+      },
+      "type": {
+        "type": "string",
+        "enum": ["checkout.session.completed"]
+      }
+    },
+    "required": ["created", "data", "id", "type"],
+    "type": "object"
+  },
+  "schema": {
+    "name": "tm_webhook_stripe_checkout_session_completed",
+    "version": 1
   }
 }

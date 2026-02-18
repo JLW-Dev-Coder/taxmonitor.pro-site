@@ -490,3 +490,181 @@ Value encrypted
 Secret
 STRIPE_WEBHOOK_SECRET
 Value encrypted
+
+Yes. You *can* make the **Agreement page** hand the Worker enough data to generate a “signed” agreement PDF (where “signed” = user explicitly acknowledged + identifying info + timestamp), **store it in R2**, and then **project the download URL into ClickUp CF** `Order Agreement Signed PDF URL` (`b156f6bd-9697-429f-a651-43e2ad12a87a`).
+
+Humans love pretending a checkbox is a signature. We can at least make it auditable.
+
+---
+
+## What to change on the Agreement page
+
+### 1) Add two hidden fields (and optionally two visible fields)
+
+Your page currently submits only:
+
+* `agreement_acknowledged` (`Yes|No`)
+* `code`
+* `eventId`
+* `item`
+* `sessionToken`
+
+To generate a defensible PDF, add:
+
+* `signer_name` (typed name)
+* `signed_at` (ISO timestamp)
+
+**HTML (inside the `<form id="tm-agreement">`)**
+
+```html
+<input id="signer_name" name="signer_name" type="hidden" value="">
+<input id="signed_at" name="signed_at" type="hidden" value="">
+```
+
+If you want it stronger, add a visible typed-name field (recommended):
+
+```html
+<label class="block text-sm text-slate-300 mt-4">
+  Type your full legal name
+  <input id="signer_name_input" type="text"
+    class="mt-2 w-full rounded-xl bg-slate-950/20 border border-slate-700/70 px-4 py-3 text-slate-100"
+    placeholder="Full legal name" autocomplete="name">
+</label>
+```
+
+### 2) Set them right before submit
+
+In your existing submit handler (right before `fetch`), add:
+
+```js
+var signerHidden = document.getElementById("signer_name");
+var signerInput = document.getElementById("signer_name_input");
+var signedAt = document.getElementById("signed_at");
+
+if (signerHidden) signerHidden.value = (signerInput && signerInput.value) ? signerInput.value.trim() : "";
+if (signedAt) signedAt.value = new Date().toISOString();
+```
+
+### 3) Accept Worker’s PDF response (without breaking your redirect)
+
+Have the Worker return:
+
+```json
+{
+  "ok": true,
+  "agreementPdfUrl": "https://api.taxmonitor.pro/download/....pdf"
+}
+```
+
+Then store it client-side for later (optional) and continue redirect:
+
+```js
+if (res.ok && data && data.ok) {
+  if (data.agreementPdfUrl) sessionStorage.setItem("tm:agreementPdfUrl", data.agreementPdfUrl);
+  window.location.href = "/app/payment.html" + (window.location.search || "");
+  return;
+}
+```
+
+---
+
+## What to change in the Agreement ingestion contract
+
+Your Agreement contract should include the new fields:
+
+* `signer_name`
+* `signed_at`
+
+And (important) keep `agreement_acknowledged` as `"Yes" | "No"` (your page sets it that way).
+
+Add to `payload.required` (alphabetical is cute, but correctness first):
+
+* `signed_at`
+* `signer_name`
+
+Add to `payload.properties`:
+
+```json
+"signed_at": { "type": "string", "format": "date-time" },
+"signer_name": { "type": "string", "minLength": 1, "maxLength": 160 }
+```
+
+And update effects so canonical captures it:
+
+```json
+"agreement": {
+  "acknowledged": "{payload.agreement_acknowledged}",
+  "code": "{payload.code}",
+  "item": "{payload.item}",
+  "signedAt": "{payload.signed_at}",
+  "signerName": "{payload.signer_name}"
+}
+```
+
+---
+
+## What the Worker must do
+
+### 1) Generate the PDF inside the Worker
+
+Cloudflare Workers can’t run headless Chrome, so “render this HTML to PDF” is not happening natively.
+
+Do this instead:
+
+* Use a pure-JS PDF generator library (common choice: `pdf-lib`)
+* Create a clean PDF layout (title + agreement text + signature block)
+* Embed:
+
+  * `signer_name`
+  * `signed_at`
+  * `sessionToken` (optional)
+  * `eventId` (audit trail)
+
+### 2) Store it in R2 and patch canonical
+
+Write the PDF bytes to R2, something like:
+
+* `artifacts/orders/{orderId}/agreement-signed.pdf`
+
+Then patch orders canonical:
+
+* `ordersPatch.artifacts.orderAgreementSignedPdfR2Key = <that r2Key>`
+* `ordersPatch.stepBooleans.agreementAccepted = true` (you already do)
+* (Optional) store signer metadata under `orders.agreement.*`
+
+### 3) Project to ClickUp using your CF
+
+After R2 update, set the ClickUp field:
+
+* CF: `b156f6bd-9697-429f-a651-43e2ad12a87a`
+* Value: Worker-generated **download URL** derived from R2 key
+
+Example projection rule (conceptually):
+
+* `from: effects.ordersPatch.artifacts.orderAgreementSignedPdfR2Key`
+* `transform: r2KeyToDownloadUrl`
+* `fieldId: b156f6bd-9697-429f-a651-43e2ad12a87a`
+
+### 4) Return JSON to the page
+
+Return:
+
+```json
+{ "ok": true, "agreementPdfUrl": "<download url>" }
+```
+
+So the page can optionally surface it.
+
+---
+
+## One dependency you must confirm (because it controls correctness)
+
+**Can you confirm whether `/forms/agreement` already knows the `orderId` at submit time?**
+
+Right now, the Agreement form submits `code`, `item`, `sessionToken`, `eventId`. I don’t see an `orderId` input in the page HTML you shared earlier, which means the Worker must derive `orderId` from `sessionToken` (or `code`, or something else). If the Worker can’t deterministically map to an order, the PDF can’t be attached to the right canonical order or ClickUp task.
+
+If your mapping is “sessionToken → orderId”, we’re good and this becomes straightforward.
+
+---
+
+If you upload `offer.html` and `payment.html`, I’ll line up Forms 2 and 4 the same way (and we’ll stop having three contract dialects arguing in your repo like it’s a family holiday).

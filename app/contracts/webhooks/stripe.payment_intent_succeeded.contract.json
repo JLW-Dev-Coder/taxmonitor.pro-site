@@ -1,10 +1,11 @@
 {
+  "clickupProjection": [],
   "contract": {
     "authority": ["R2 Canonical"],
-    "governs": "Stripe Webhook — payment_intent.succeeded",
+    "governs": "Webhook — Stripe — payment_intent.succeeded",
     "path": "app/contracts/webhooks/stripe.payment_intent_succeeded.contract.json",
     "source": "Tax Monitor Pro",
-    "title": "Tax Monitor Pro — Stripe Webhook Contract — payment_intent.succeeded",
+    "title": "Tax Monitor Pro — Webhook Contract — Stripe — payment_intent.succeeded",
     "validation": {
       "enumStrict": true,
       "normalizeCheckboxToBoolean": true,
@@ -12,16 +13,82 @@
     },
     "version": 1
   },
-  "event": {
-    "required": ["id", "type", "created"],
-    "properties": {
-      "id": { "type": "string" },
-      "type": { "type": "string", "enum": ["payment_intent.succeeded"] },
-      "created": { "type": "number" }
-    }
+  "delivery": {
+    "dedupeKey": "payload.data.object.id",
+    "endpoint": "/stripe/webhook",
+    "eventType": "payment_intent.succeeded",
+    "method": "POST",
+    "receiptKeyPattern": "receipts/{source}/{eventId}.json",
+    "receiptSource": "stripe",
+    "signature": {
+      "header": "Stripe-Signature",
+      "required": true,
+      "secretEnvVar": "STRIPE_WEBHOOK_SECRET"
+    },
+    "writes": []
   },
-  "data": {
-    "type": "object",
-    "description": "Vendor payload pass-through. Worker must store receipt. No lifecycle advancement required."
+  "effects": {
+    "note": "Receipt only. No lifecycle advancement required."
+  },
+  "payload": {
+    "additionalProperties": true,
+    "properties": {
+      "created": {
+        "type": "number"
+      },
+      "data": {
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+          "object": {
+            "type": "object",
+            "additionalProperties": true,
+            "properties": {
+              "amount": {
+                "type": "number"
+              },
+              "amount_received": {
+                "type": ["number", "null"]
+              },
+              "created": {
+                "type": "number"
+              },
+              "currency": {
+                "type": "string",
+                "minLength": 3
+              },
+              "id": {
+                "type": "string",
+                "minLength": 8
+              },
+              "metadata": {
+                "type": "object",
+                "additionalProperties": true
+              },
+              "status": {
+                "type": "string",
+                "enum": ["succeeded"]
+              }
+            },
+            "required": ["amount", "created", "currency", "id", "status"]
+          }
+        },
+        "required": ["object"]
+      },
+      "id": {
+        "type": "string",
+        "minLength": 8
+      },
+      "type": {
+        "type": "string",
+        "enum": ["payment_intent.succeeded"]
+      }
+    },
+    "required": ["created", "data", "id", "type"],
+    "type": "object"
+  },
+  "schema": {
+    "name": "tm_webhook_stripe_payment_intent_succeeded",
+    "version": 1
   }
 }

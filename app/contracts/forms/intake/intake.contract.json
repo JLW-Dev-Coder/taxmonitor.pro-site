@@ -1,0 +1,86 @@
+{
+  "clickupProjection": [
+    {
+      "list": "Orders",
+      "updates": [
+        { "fieldName": "Order Token", "from": "effects.ordersPatch.sessionToken" }
+      ]
+    }
+  ],
+  "contract": {
+    "authority": ["R2 Canonical"],
+    "governs": "Form Ingestion — Form 1 — Intake Submitted → Accounts/Orders Canonical → ClickUp Projection",
+    "path": "app/contracts/forms/intake/intake.contract.json",
+    "source": "Tax Monitor Pro",
+    "title": "Tax Monitor Pro — Form 1 — Intake Submitted",
+    "validation": {
+      "enumStrict": true,
+      "normalizeCheckboxToBoolean": true,
+      "rejectUnknownValues": true
+    },
+    "version": 1
+  },
+  "delivery": {
+    "dedupeKey": "eventId",
+    "endpoint": "https://api.taxmonitor.pro/forms/intake",
+    "eventType": "INTAKE_SUBMITTED",
+    "method": "POST",
+    "receiptKeyPattern": "receipts/{source}/{eventId}.json",
+    "receiptSource": "form",
+    "writes": ["accounts", "orders"]
+  },
+  "effects": {
+    "accountsPatch": {
+      "crm": {
+        "companyName": "{payload['CRM Company Name']}",
+        "firstName": "{payload['CRM First Name']}",
+        "lastName": "{payload['CRM Last Name']}",
+        "primaryEmail": "{payload['CRM Primary Email']}"
+      }
+    },
+    "ordersPatch": {
+      "intake": {
+        "estimatedBalanceDueRange": "{payload['Estimated Balance Due Range']}",
+        "irsMonitoringOnlyAcknowledged": "{payload['IRS Monitoring Only Acknowledged']}",
+        "irsNoticeDate": "{payload['IRS Notice Date']}",
+        "irsNoticeReceived": "{payload['IRS Notice Received']}",
+        "irsNoticeType": "{payload['IRS Notice Type']}",
+        "primaryConcern": "{payload['Primary Concern']}",
+        "unfiledReturnsIndicator": "{payload['Unfiled Returns Indicator']}",
+        "urgencyLevel": "{payload['Urgency Level']}"
+      },
+      "sessionToken": "{payload.sessionToken}",
+      "stepBooleans": {
+        "intakeComplete": true
+      }
+    }
+  },
+  "payload": {
+    "properties": {
+      "CRM Company Name": { "type": "string" },
+      "CRM First Name": { "maxLength": 160, "minLength": 1, "type": "string" },
+      "CRM Last Name": { "maxLength": 160, "minLength": 1, "type": "string" },
+      "CRM Primary Email": { "format": "email", "type": "string" },
+      "Estimated Balance Due Range": { "type": "string" },
+      "IRS Monitoring Only Acknowledged": { "type": "string" },
+      "IRS Notice Date": { "type": "string" },
+      "IRS Notice Received": { "type": "string" },
+      "IRS Notice Type": { "type": "string" },
+      "Primary Concern": { "maxLength": 8000, "minLength": 0, "type": "string" },
+      "Unfiled Returns Indicator": { "type": "string" },
+      "Urgency Level": { "type": "string" },
+      "eventId": { "minLength": 8, "type": "string" },
+      "sessionToken": { "minLength": 8, "type": "string" },
+      "viewport": { "type": "string" }
+    },
+    "required": [
+      "CRM First Name",
+      "CRM Last Name",
+      "CRM Primary Email",
+      "eventId",
+      "sessionToken"
+    ],
+    "type": "object"
+  },
+  "schema": { "name": "tm_form_intake", "version": 1 }
+}

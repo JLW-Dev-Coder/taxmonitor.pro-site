@@ -1,0 +1,20 @@
+{
+  "contract": {
+    "authority": ["R2 Canonical"],
+    "governs": "Stripe Webhook — Payment Confirmation → Orders Canonical → ClickUp Projection",
+    "path": "app/contracts/forms/intake/payment.contract.json",
+    "source": "Tax Monitor Pro",
+    "title": "Tax Monitor Pro — Payment (Delegated to Stripe Webhooks)",
+    "validation": {
+      "enumStrict": true,
+      "normalizeCheckboxToBoolean": true,
+      "rejectUnknownValues": true
+    },
+    "version": 1
+  },
+  "note": "Payment completion is NOT handled by this contract. Payment confirmation is governed exclusively by Stripe webhook contracts.",
+  "delegatesTo": [
+    "app/contracts/webhooks/stripe.checkout_session_completed.contract.json",
+    "app/contracts/webhooks/stripe.payment_intent_succeeded.contract.json"
+  ]
+}

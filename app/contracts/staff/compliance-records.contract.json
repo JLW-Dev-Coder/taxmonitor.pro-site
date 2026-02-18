@@ -1,12 +1,16 @@
 {
+  "clickupProjection": [
+    {
+      "list": "Orders",
+      "status": "10 Compliance Records"
+    }
+  ],
   "contract": {
-    "authority": [
-      "R2 Canonical"
-    ],
-    "governs": "Form 10 — Compliance Records",
-    "path": "/contracts/staff/compliance-records.contract.json",
+    "authority": ["R2 Canonical"],
+    "governs": "Form — Staff — Compliance Records",
+    "path": "app/contracts/staff/compliance-records.contract.json",
     "source": "Tax Monitor Pro",
-    "title": "Tax Monitor Pro — Staff Compliance Records Contract",
+    "title": "Tax Monitor Pro — Form Contract — Staff — Compliance Records",
     "validation": {
       "enumStrict": true,
       "normalizeCheckboxToBoolean": true,
@@ -14,49 +18,79 @@
     },
     "version": 1
   },
+  "delivery": {
+    "endpoint": "/forms/staff/compliance-records",
+    "method": "POST",
+    "receiptKeyPattern": "receipts/{source}/{eventId}.json",
+    "receiptSource": "form"
+  },
+  "effects": {
+    "dedupeKey": "payload.eventId",
+    "writes": ["orders"],
+    "writeOrder": ["receiptAppend", "canonicalUpsert", "clickupProjection"],
+    "receiptAppend": {
+      "to": "receipts/{source}/{eventId}.json"
+    },
+    "canonicalUpsert": {
+      "target": "orders/{orderId}.json",
+      "patch": {
+        "reportReady": true,
+        "stepBooleans": {
+          "complianceSubmitted": true
+        }
+      }
+    },
+    "ordersPatch": {
+      "reportReady": true,
+      "stepBooleans": {
+        "complianceSubmitted": true
+      }
+    }
+  },
+  "payload": {
+    "additionalProperties": false,
+    "properties": {
+      "Account_ID": {
+        "type": ["string", "null"],
+        "minLength": 1
+      },
+      "Call_Reference_Number": {
+        "type": ["string", "null"],
+        "maxLength": 200
+      },
+      "Compliance_Activity_Type": {
+        "type": "string",
+        "enum": [
+          "Filing compliance review",
+          "IRS account verification",
+          "IRS notice review",
+          "IRS transcript request",
+          "Status confirmation"
+        ]
+      },
+      "eventId": {
+        "type": "string",
+        "minLength": 1
+      },
+      "orderId": {
+        "type": "string",
+        "minLength": 1
+      },
+      "sessionToken": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "required": [
+      "Compliance_Activity_Type",
+      "eventId",
+      "orderId",
+      "sessionToken"
+    ],
+    "type": "object"
+  },
   "schema": {
     "name": "tm_staff_compliance_form_contract",
     "version": 1
-  },
-  "fields": {
-    "Account_ID": {
-      "control": "text",
-      "storageType": "string",
-      "nullable": false,
-      "required": true
-    },
-    "Call_Reference_Number": {
-      "control": "text",
-      "storageType": "string",
-      "nullable": true
-    },
-    "Compliance_Activity_Type": {
-      "control": "radio",
-      "storageType": "string",
-      "nullable": false,
-      "required": true,
-      "options": [
-        {
-          "label": "Filing compliance review",
-          "value": "Filing compliance review"
-        },
-        {
-          "label": "IRS account verification",
-          "value": "IRS account verification"
-        },
-        {
-          "label": "IRS notice review",
-          "value": "IRS notice review"
-        },
-        {
-          "label": "IRS transcript request",
-          "value": "IRS transcript request"
-        },
-        {
-          "label": "Status confirmation",
-          "value": "Status confirmation"
-        }
-      ]
-    }
   }
 }

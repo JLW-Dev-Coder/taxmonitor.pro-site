@@ -1,0 +1,55 @@
+{
+  "contract": {
+    "authority": ["R2 Canonical"],
+    "governs": "Form Ingestion — Form 2 — Offer Accepted → Orders Canonical → ClickUp Projection",
+    "path": "app/contracts/forms/intake/offer.contract.json",
+    "source": "Tax Monitor Pro",
+    "title": "Tax Monitor Pro — Form 2 — Offer Accepted",
+    "validation": {
+      "enumStrict": true,
+      "normalizeCheckboxToBoolean": true,
+      "rejectUnknownValues": true
+    },
+    "version": 1
+  },
+  "schema": { "name": "tm_form_offer", "version": 1 },
+  "delivery": {
+    "dedupeKey": "eventId",
+    "endpoint": "https://api.taxmonitor.pro/forms/offer",
+    "eventType": "OFFER_ACCEPTED",
+    "method": "POST",
+    "receiptKeyPattern": "receipts/{source}/{eventId}.json",
+    "receiptSource": "form",
+    "writes": ["orders"]
+  },
+  "payload": {
+    "type": "object",
+    "required": ["code", "eventId", "item", "sessionToken"],
+    "properties": {
+      "accountId": { "type": "string" },
+      "code": { "type": "string", "minLength": 1 },
+      "eventId": { "type": "string", "minLength": 8 },
+      "item": { "type": "string", "minLength": 1 },
+      "orderId": { "type": "string" },
+      "sessionToken": { "type": "string", "minLength": 8 },
+      "viewport": { "type": "string" }
+    }
+  },
+  "effects": {
+    "ordersPatch": {
+      "offer": {
+        "code": "{payload.code}",
+        "item": "{payload.item}"
+      },
+      "stepBooleans": {
+        "offerAccepted": true
+      }
+    }
+  },
+  "clickupProjection": [
+    {
+      "list": "Orders",
+      "updates": []
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "clickupProjection": [
+    {
+      "list": "Orders",
+      "updates": []
+    }
+  ],
+  "contract": {
+    "authority": ["R2 Canonical"],
+    "governs": "Form Ingestion — Form 3 — Agreement Submitted → Orders Canonical → ClickUp Projection",
+    "path": "app/contracts/forms/intake/agreement.contract.json",
+    "source": "Tax Monitor Pro",
+    "title": "Tax Monitor Pro — Form 3 — Agreement Submitted",
+    "validation": {
+      "enumStrict": true,
+      "normalizeCheckboxToBoolean": true,
+      "rejectUnknownValues": true
+    },
+    "version": 1
+  },
+  "delivery": {
+    "dedupeKey": "eventId",
+    "endpoint": "https://api.taxmonitor.pro/forms/agreement",
+    "eventType": "AGREEMENT_ACCEPTED",
+    "method": "POST",
+    "receiptKeyPattern": "receipts/{source}/{eventId}.json",
+    "receiptSource": "form",
+    "writes": ["orders"]
+  },
+  "effects": {
+    "ordersPatch": {
+      "agreement": {
+        "acknowledged": "{payload.agreement_acknowledged}",
+        "code": "{payload.code}",
+        "item": "{payload.item}"
+      },
+      "stepBooleans": {
+        "agreementAccepted": true
+      }
+    }
+  },
+  "payload": {
+    "properties": {
+      "accountId": { "type": "string" },
+      "agreement_acknowledged": { "enum": ["No", "Yes"], "type": "string" },
+      "code": { "minLength": 1, "type": "string" },
+      "eventId": { "minLength": 8, "type": "string" },
+      "item": { "minLength": 1, "type": "string" },
+      "orderId": { "type": "string" },
+      "sessionToken": { "minLength": 8, "type": "string" }
+    },
+    "required": ["agreement_acknowledged", "code", "eventId", "item", "sessionToken"],
+    "type": "object"
+  },
+  "schema": { "name": "tm_form_agreement", "version": 1 }
+}
