@@ -11,7 +11,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <link rel="icon" href="https://taxmonitor.pro/favicon.ico" sizes="any">
   <link rel="icon" href="https://taxmonitor.pro/assets/favicon.ico" sizes="any">
@@ -20,7 +20,7 @@
     tailwind.config = {
       theme: {
         extend: {
-          fontFamily: { sans: ['DM Sans', 'system-ui', 'sans-serif'] },
+          fontFamily: { jakarta: ['Plus Jakarta Sans', 'system-ui', 'sans-serif'] },
           colors: {
             slate: {
               850: '#1a1f2e',
@@ -28,9 +28,16 @@
               950: '#080a0f',
             },
             amber: {
+              50: '#fffbeb',
+              100: '#fef3c7',
+              200: '#fde68a',
+              300: '#fcd34d',
               400: '#fbbf24',
               500: '#f59e0b',
               600: '#d97706',
+              700: '#b45309',
+              800: '#92400e',
+              900: '#78350f'
             }
           }
         }
@@ -39,30 +46,194 @@
   </script>
 
   <style>
-      html, body { height: 100%; }
-      html { font-size: 100%; }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
 
-    .tm-dashboard-scale { font-size: 125%; }
-
-
-    *, *::before, *::after { box-sizing: border-box; }
-    body { box-sizing: border-box; }
-    * { font-family: 'DM Sans', system-ui, sans-serif; }
-
+    /* Animated gradient text */
     .gradient-text {
-      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+      background: linear-gradient(135deg, #f59e0b, #ef4444, #f59e0b, #fbbf24);
+      background-size: 300% 300%;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
+      animation: gradientShift 4s ease infinite;
     }
-    .gradient-bg {
-      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
-    }
-    .card-glow {
-      box-shadow: 0 0 40px rgba(251, 191, 36, 0.06), 0 0 90px rgba(251, 191, 36, 0.02);
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
     }
 
-    /* Sidebar nav states */
+    /* Glass cards */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+    .glass-card-light {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(245, 158, 11, 0.2);
+    }
+
+    /* Gradient border */
+    .gradient-border { position: relative; }
+    .gradient-border::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: inherit;
+      padding: 2px;
+      background: linear-gradient(135deg, #f59e0b, #ef4444, #fbbf24);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0.6;
+      animation: borderGlow 3s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes borderGlow {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 0.8; }
+    }
+
+    /* Aurora background */
+    .aurora {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .aurora-blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.4;
+      animation: float 20s ease-in-out infinite;
+    }
+    .aurora-blob-1 {
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, #f59e0b 0%, transparent 70%);
+      top: -200px;
+      right: -100px;
+      animation-delay: 0s;
+    }
+    .aurora-blob-2 {
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, #ef4444 0%, transparent 70%);
+      bottom: -150px;
+      left: -100px;
+      animation-delay: -7s;
+    }
+    .aurora-blob-3 {
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, #fbbf24 0%, transparent 70%);
+      top: 40%;
+      left: 30%;
+      animation-delay: -14s;
+    }
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      25% { transform: translate(30px, -30px) scale(1.05); }
+      50% { transform: translate(-20px, 20px) scale(0.95); }
+      75% { transform: translate(20px, 30px) scale(1.02); }
+    }
+
+    /* Noise overlay */
+    .noise-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    }
+
+    /* Action card hover */
+    .action-card {
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .action-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 25px 50px -12px rgba(245, 158, 11, 0.25);
+    }
+
+    /* Pulse */
+    .pulse-amber { animation: pulseAmber 2s ease-in-out infinite; }
+    @keyframes pulseAmber {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4); }
+      50% { box-shadow: 0 0 0 12px rgba(245, 158, 11, 0); }
+    }
+
+    /* Button glow */
+    .glow-button { position: relative; overflow: hidden; }
+    .glow-button::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      background: linear-gradient(135deg, #f59e0b, #ef4444, #fbbf24);
+      border-radius: inherit;
+      z-index: -1;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .glow-button:hover::before { opacity: 1; }
+    .glow-button::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.6s ease, height 0.6s ease;
+    }
+    .glow-button:active::after { width: 300px; height: 300px; }
+
+    /* Badge shine */
+    .badge-shine { position: relative; overflow: hidden; }
+    .badge-shine::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.4) 50%, transparent 60%);
+      transform: rotate(45deg);
+      animation: shine 3s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes shine {
+      0%, 100% { transform: translateX(-100%) rotate(45deg); }
+      50% { transform: translateX(100%) rotate(45deg); }
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.1); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb { background: linear-gradient(135deg, #f59e0b, #d97706); border-radius: 4px; }
+
+    /* Timeline connector */
+    .timeline-connector {
+      position: absolute;
+      left: 20px;
+      top: 40px;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, #f59e0b, #10b981, #64748b);
+      opacity: 0.9;
+    }
+
+    /* Old nav-item styling retained for any link grids */
     .nav-item { transition: all 0.2s ease; }
     .nav-item:hover { background: rgba(251, 191, 36, 0.08); }
     .nav-item.active {
@@ -70,231 +241,229 @@
       border-left: 2px solid #f59e0b;
       color: #fff;
     }
-
-    /* Noise texture overlay */
-    .noise-bg::before{
-      content:'';
-      position:fixed; inset:0;
-      opacity:.03;
-      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-      pointer-events:none;
-      z-index:1;
-    }
-
-    /* Aurora blobs */
-    .aurora-blob{ position:absolute; border-radius:50%; filter:blur(100px); opacity:.14; animation:float 20s ease-in-out infinite; }
-    .aurora-1{ width:650px; height:420px; background:linear-gradient(135deg,#F59E0B,#D97706); top:8%; right:-12%; }
-    .aurora-2{ width:520px; height:360px; background:linear-gradient(135deg,#2DD4BF,#14B8A6); top:42%; left:-16%; opacity:.08; animation-delay:-7s; }
-    .aurora-3{ width:480px; height:320px; background:linear-gradient(135deg,#F59E0B,#EA580C); bottom:4%; right:18%; animation-delay:-14s; }
-    @keyframes float{ 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(30px,-30px) scale(1.05)} 66%{transform:translate(-20px,20px) scale(.95)} }
   </style>
 </head>
 
-<body class="h-full bg-[#020617] text-slate-200 noise-bg overflow-hidden">
-  <!-- Aurora -->
-  <div class="aurora-blob aurora-1"></div>
-  <div class="aurora-blob aurora-2"></div>
-  <div class="aurora-blob aurora-3"></div>
+<body class="h-full font-jakarta bg-slate-900 text-white overflow-hidden">
+  <!-- Aurora Background -->
+  <div class="aurora" aria-hidden="true">
+    <div class="aurora-blob aurora-blob-1"></div>
+    <div class="aurora-blob aurora-blob-2"></div>
+    <div class="aurora-blob aurora-blob-3"></div>
+  </div>
+
+  <!-- Noise Overlay -->
+  <div class="noise-overlay" aria-hidden="true"></div>
 
   <div class="relative z-10 flex h-full">
-
     <!-- APP SIDEBAR PARTIAL -->
     <!-- APP_SIDEBAR -->
 
-    <!-- Main Content Area -->
     <div class="flex-1 flex flex-col min-w-0">
-
       <!-- APP TOPBAR PARTIAL -->
       <!-- APP_TOPBAR -->
 
-      <!-- Main Content -->
       <main class="flex-1 overflow-auto">
-        <div class="max-w-6xl mx-auto px-6 py-8">
+        <div class="max-w-7xl mx-auto p-4 md:p-8 space-y-6">
 
-          <!-- Trust / Headline -->
-          <div class="mb-8">
-            <div class="flex flex-col items-center text-center">
-              <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-800/50 border border-slate-700/50 mb-6">
-                <svg class="w-4 h-4 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                </svg>
-                <span id="trust-line" class="text-sm text-slate-300">
+          <!-- Hero -->
+          <section class="glass-card gradient-border rounded-3xl p-6 md:p-8">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              <div class="space-y-2">
+                <div class="flex items-center gap-3">
+                  <h1 class="text-2xl md:text-4xl font-bold">
+                    <span id="greeting-prefix">Welcome back, </span><span id="greeting-name" class="gradient-text">Jane</span>
+                  </h1>
+
+                  <div class="badge-shine bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-full p-2 shadow-lg shadow-emerald-500/30" title="Monitoring active">
+                    <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                      <path class="text-emerald-200" fill="currentColor" d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2" fill="none"/>
+                    </svg>
+                  </div>
+                </div>
+
+                <p id="trust-line" class="text-slate-400 text-sm md:text-base flex items-center gap-2">
+                  <svg class="w-4 h-4 text-amber-500" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                  </svg>
                   Proactive monitoring by licensed tax professionals — intake does not establish IRS representation.
-                </span>
+                </p>
+
+                <p id="subheadline" class="text-slate-300 text-sm md:text-base max-w-3xl">
+                  This is your command center — where monitoring stays visible.
+                </p>
+
+                <p id="helper-text" class="text-slate-500 text-xs md:text-sm max-w-3xl">
+                  Track onboarding, view activity, and access your portal files anytime.
+                </p>
               </div>
 
-              <h1 class="text-3xl md:text-4xl font-semibold tracking-tight mb-2">
-                <span id="greeting-prefix">Good evening, </span><span id="greeting-name" class="gradient-text">Jane</span>
-              </h1>
+              <div class="flex items-center gap-3">
+                <div class="text-right hidden md:block">
+                  <p class="text-xs text-slate-500">Account</p>
+                  <p id="account-label" class="text-lg font-bold text-amber-500">Account: Monitoring</p>
+                </div>
 
-              <p id="subheadline" class="text-slate-400 text-base md:text-lg max-w-2xl">
-                This is your command center — where monitoring stays visible.
-              </p>
-
-              <p id="helper-text" class="text-slate-500 text-sm mt-2 max-w-2xl">
-                Track onboarding, view activity, and access your portal files anytime.
-              </p>
-            </div>
-          </div>
-
-          <!-- Quick test links (for easy manual page testing) -->
-          <section class="bg-slate-900/60 rounded-2xl border border-slate-800/50 p-6 card-glow mb-6">
-            <h2 class="text-lg font-semibold text-slate-100">Your Monitoring Steps</h2>
-            <p class="text-sm text-slate-400 mt-1">
-              Access each step of your monitoring and compliance process below.
-            </p>
-
-            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 mt-5">
-              <a class="nav-item rounded-xl px-4 py-3 border border-slate-700/70 bg-slate-950/20 text-sm text-slate-100 hover:bg-slate-950/35 transition"
-                 href="/app/pages/flows/post-payment/address-update.html">Address Update</a>
-
-              <a class="nav-item rounded-xl px-4 py-3 border border-slate-700/70 bg-slate-950/20 text-sm text-slate-100 hover:bg-slate-950/35 transition"
-                 href="/app/pages/flows/intake/agreement.html">Agreement</a>
-
-              <a class="nav-item rounded-xl px-4 py-3 border border-slate-700/70 bg-slate-950/20 text-sm text-slate-100 hover:bg-slate-950/35 transition"
-                 href="/app/pages/flows/post-payment/compliance-report.html">Compliance Report</a>
-
-              <a class="nav-item rounded-xl px-4 py-3 border border-slate-700/70 bg-slate-950/20 text-sm text-slate-100 hover:bg-slate-950/35 transition"
-                 href="/app/pages/flows/post-payment/esign-2848.html">eSign 2848</a>
-
-              <a class="nav-item rounded-xl px-4 py-3 border border-slate-700/70 bg-slate-950/20 text-sm text-slate-100 hover:bg-slate-950/35 transition"
-                 href="/app/pages/flows/post-payment/filing-status.html">Filing Status</a>
-
-              <a class="nav-item rounded-xl px-4 py-3 border border-slate-700/70 bg-slate-950/20 text-sm text-slate-100 hover:bg-slate-950/35 transition"
-                 href="/app/pages/flows/intake/intake.html">Intake</a>
-
-              <a class="nav-item rounded-xl px-4 py-3 border border-slate-700/70 bg-slate-950/20 text-sm text-slate-100 hover:bg-slate-950/35 transition"
-                 href="/app/pages/flows/intake/offer.html">Offer</a>
-
-              <a class="nav-item rounded-xl px-4 py-3 border border-slate-700/70 bg-slate-950/20 text-sm text-slate-100 hover:bg-slate-950/35 transition"
-                 href="/app/pages/flows/intake/payment.html">Payment</a>
-
-              <a class="nav-item rounded-xl px-4 py-3 border border-slate-700/70 bg-slate-950/20 text-sm text-slate-100 hover:bg-slate-950/35 transition"
-                 href="/app/pages/flows/post-payment/welcome.html">Welcome</a>
+                <div class="w-12 h-12 rounded-full bg-gradient-to-br from-amber-400 to-orange-600 flex items-center justify-center text-xl font-bold shadow-lg shadow-amber-500/30 tm-user-initials">
+                  TM
+                </div>
+              </div>
             </div>
           </section>
 
-          <!-- Grid: Progress + Snapshot -->
-          <div class="grid lg:grid-cols-3 gap-6 mb-6">
-            <section class="lg:col-span-2 bg-slate-900/60 rounded-2xl border border-slate-800/50 p-6 card-glow">
-              <div class="flex items-center justify-between gap-4 mb-5">
-                <div>
-                  <h2 id="progress-title" class="text-lg font-semibold text-slate-100">Onboarding Progress</h2>
-                  <p id="progress-subtitle" class="text-sm text-slate-400">Clear steps. Fewer surprises.</p>
+          <!-- Monitoring Steps -->
+          <section class="space-y-4">
+            <div class="flex items-center justify-between">
+              <h2 class="text-lg md:text-xl font-semibold text-white">Your Monitoring Steps</h2>
+              <span id="steps-counter" class="text-xs text-slate-500 bg-slate-800/50 px-3 py-1 rounded-full">0 of 0 complete</span>
+            </div>
+
+            <div id="steps-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 overflow-x-auto pb-2">
+              <!-- JS renders cards -->
+            </div>
+          </section>
+
+          <!-- Progress & Snapshot -->
+          <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Progress -->
+            <div class="glass-card rounded-3xl p-6">
+              <div class="flex items-center justify-between mb-6">
+                <h2 id="progress-title" class="text-lg font-bold text-white">Onboarding Progress</h2>
+                <span id="progress-badge" class="text-xs bg-amber-500/20 text-amber-400 px-3 py-1 rounded-full font-medium">In progress</span>
+              </div>
+
+              <div class="flex items-center gap-6 mb-6">
+                <div class="relative w-28 h-28 flex-shrink-0">
+                  <svg class="w-28 h-28 transform -rotate-90" aria-hidden="true">
+                    <circle cx="56" cy="56" r="48" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="8"/>
+                    <circle id="progress-ring" cx="56" cy="56" r="48" fill="none" stroke="url(#progressGradient)" stroke-width="8" stroke-linecap="round" stroke-dasharray="301.59" stroke-dashoffset="301.59"/>
+                    <defs>
+                      <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#f59e0b"/>
+                        <stop offset="100%" style="stop-color:#ef4444"/>
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                  <div class="absolute inset-0 flex flex-col items-center justify-center">
+                    <span id="progress-percent" class="text-3xl font-bold gradient-text">0%</span>
+                    <span class="text-xs text-slate-500">Complete</span>
+                  </div>
                 </div>
-                <span id="progress-badge" class="px-3 py-1 rounded-full bg-amber-500/10 text-amber-300 text-sm border border-amber-500/20">
-                  In progress
+
+                <div class="flex-1">
+                  <div class="space-y-2">
+                    <div class="flex justify-between text-sm">
+                      <span class="text-slate-400">Steps Completed</span>
+                      <span id="progress-count" class="font-semibold text-white">0 of 0</span>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                      <span class="text-slate-400">Current Step</span>
+                      <span id="progress-current" class="font-semibold text-amber-400">Not started</span>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                      <span class="text-slate-400">Estimated</span>
+                      <span id="progress-estimate" class="font-semibold text-slate-200">Varies</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="relative space-y-3">
+                <div class="timeline-connector" aria-hidden="true"></div>
+                <div id="timeline">
+                  <!-- JS renders timeline rows -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Snapshot -->
+            <div class="glass-card rounded-3xl p-6">
+              <div class="flex items-center justify-between mb-6">
+                <h2 id="snapshot-title" class="text-lg font-bold text-white">Monitoring Snapshot</h2>
+                <span class="flex items-center gap-1 text-xs text-emerald-400">
+                  <span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
+                  Live Monitoring
                 </span>
               </div>
 
-              <div class="mb-5">
-                <div class="flex items-center justify-between text-xs text-slate-500 mb-2">
-                  <span id="progress-left">Step 2 of 9</span>
-                  <span id="progress-right">Estimated: 5 business days</span>
+              <div class="grid grid-cols-3 gap-4 mb-6">
+                <div class="text-center p-4 bg-white/5 rounded-2xl">
+                  <div class="flex items-center justify-center gap-2 mb-1">
+                    <span class="w-2 h-2 bg-emerald-400 rounded-full"></span>
+                    <span class="text-xs text-slate-400">Last Check</span>
+                  </div>
+                  <p id="metric-last-check" class="text-xl font-bold text-white">Not started</p>
+                  <p id="metric-last-check-sub" class="text-xs text-slate-500">Starts after payment + authorization</p>
                 </div>
-                <div class="h-2 rounded-full bg-slate-800 overflow-hidden">
-                  <div id="progress-bar" class="h-full w-[22%] gradient-bg rounded-full"></div>
+
+                <div class="text-center p-4 bg-white/5 rounded-2xl">
+                  <div class="flex items-center justify-center gap-2 mb-1">
+                    <span class="w-2 h-2 bg-emerald-400 rounded-full"></span>
+                    <span class="text-xs text-slate-400">Open Issues</span>
+                  </div>
+                  <p id="metric-issues" class="text-xl font-bold text-emerald-400">0</p>
+                  <p class="text-xs text-slate-500">Flagged items</p>
+                </div>
+
+                <div class="text-center p-4 bg-white/5 rounded-2xl">
+                  <div class="flex items-center justify-center gap-2 mb-1">
+                    <span class="w-2 h-2 bg-amber-400 rounded-full"></span>
+                    <span class="text-xs text-slate-400">Notices</span>
+                  </div>
+                  <p id="metric-notices" class="text-xl font-bold text-amber-400">0</p>
+                  <p class="text-xs text-slate-500">In archive</p>
                 </div>
               </div>
 
-              <ol class="space-y-3">
-                <li class="flex items-start gap-3">
-                  <div class="mt-1 w-6 h-6 rounded-full bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center">
-                    <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+              <div id="snapshot-status" class="bg-emerald-500/10 border border-emerald-500/20 rounded-2xl p-4 mb-6">
+                <div class="flex items-center gap-3">
+                  <div class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center">
+                    <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                     </svg>
                   </div>
-                  <div class="flex-1">
-                    <div class="text-sm font-medium text-slate-200">Intake submitted</div>
-                    <div class="text-xs text-slate-500">We received your details and created your monitoring record.</div>
+                  <div>
+                    <p id="snapshot-status-title" class="font-semibold text-emerald-400">Monitoring Ready</p>
+                    <p id="snapshot-status-sub" class="text-sm text-slate-400">Your dashboard will update as steps are completed.</p>
                   </div>
-                  <span class="text-xs text-slate-500">Done</span>
-                </li>
-
-                <li class="flex items-start gap-3">
-                  <div class="mt-1 w-6 h-6 rounded-full bg-amber-500/15 border border-amber-500/30 flex items-center justify-center">
-                    <span class="text-xs font-semibold text-amber-300">2</span>
-                  </div>
-                  <div class="flex-1">
-                    <div class="text-sm font-medium text-slate-200">Offer accepted</div>
-                    <div class="text-xs text-slate-500">Confirm service scope and your monitoring plan.</div>
-                  </div>
-                  <a id="cta-offer" href="/app/pages/flows/intake/offer.html" class="text-xs text-amber-400 hover:text-amber-300">Open</a>
-                </li>
-
-                <li class="flex items-start gap-3 opacity-90">
-                  <div class="mt-1 w-6 h-6 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center">
-                    <span class="text-xs font-semibold text-slate-400">3</span>
-                  </div>
-                  <div class="flex-1">
-                    <div class="text-sm font-medium text-slate-300">Agreement accepted</div>
-                    <div class="text-xs text-slate-500">Service terms and expectations.</div>
-                  </div>
-                  <a id="cta-agreement" href="/app/pages/flows/intake/agreement.html" class="text-xs text-slate-400 hover:text-white">Open</a>
-                </li>
-
-                <li class="flex items-start gap-3 opacity-90">
-                  <div class="mt-1 w-6 h-6 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center">
-                    <span class="text-xs font-semibold text-slate-400">4</span>
-                  </div>
-                  <div class="flex-1">
-                    <div class="text-sm font-medium text-slate-300">Payment completed</div>
-                    <div class="text-xs text-slate-500">Activates the monitoring cycle.</div>
-                  </div>
-                  <a id="cta-payment" href="/app/pages/flows/intake/payment.html" class="text-xs text-slate-400 hover:text-white">Open</a>
-                </li>
-              </ol>
-            </section>
-
-            <section class="bg-slate-900/60 rounded-2xl border border-slate-800/50 p-6 card-glow">
-              <div class="flex items-start justify-between gap-3 mb-5">
-                <div>
-                  <h2 id="snapshot-title" class="text-lg font-semibold text-slate-100">Monitoring Snapshot</h2>
-                  <p id="snapshot-subtitle" class="text-sm text-slate-400">Last check + quick signals.</p>
-                </div>
-                <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
-                  <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                  </svg>
                 </div>
               </div>
 
-              <div class="space-y-4">
-                <div class="p-4 rounded-xl bg-slate-800/40 border border-slate-700/50">
-                  <div class="text-xs text-slate-500 uppercase tracking-wider mb-1">Last transcript check</div>
-                  <div id="metric-last-check" class="text-lg font-semibold text-slate-200">Not started</div>
-                  <div id="metric-last-check-sub" class="text-xs text-slate-500 mt-1">Starts after payment + authorization steps.</div>
-                </div>
+              <a id="snapshot-cta" href="/app/files.html"
+                 class="w-full glow-button bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 text-white font-bold py-4 px-6 rounded-2xl text-base transition-all hover:shadow-xl hover:shadow-amber-500/30 mb-6 inline-flex items-center justify-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+                Open files &amp; reports
+              </a>
 
-                <div class="grid grid-cols-2 gap-3">
-                  <div class="p-4 rounded-xl bg-slate-800/40 border border-slate-700/50">
-                    <div class="text-xs text-slate-500 uppercase tracking-wider mb-1">Open issues</div>
-                    <div id="metric-issues" class="text-2xl font-semibold">0</div>
-                    <div class="text-xs text-slate-500 mt-1">Flagged items</div>
+              <div class="space-y-3">
+                <h3 class="text-sm font-semibold text-slate-400">Recent Activity</h3>
+
+                <div id="activity-list" class="space-y-3">
+                  <!-- Minimal placeholders (Worker can swap later) -->
+                  <div class="flex items-center gap-3 p-3 bg-white/5 rounded-xl">
+                    <div class="w-8 h-8 rounded-lg bg-amber-500/20 flex items-center justify-center">
+                      <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                      </svg>
+                    </div>
+                    <div class="flex-1">
+                      <p class="text-sm font-medium text-white">Dashboard loaded</p>
+                      <p class="text-xs text-slate-500">Updates appear as you complete steps</p>
+                    </div>
                   </div>
-
-                  <div class="p-4 rounded-xl bg-slate-800/40 border border-slate-700/50">
-                    <div class="text-xs text-slate-500 uppercase tracking-wider mb-1">Notices</div>
-                    <div id="metric-notices" class="text-2xl font-semibold">0</div>
-                    <div class="text-xs text-slate-500 mt-1">In archive</div>
-                  </div>
-                </div>
-
-                <div class="pt-1">
-                  <a id="snapshot-cta" href="/app/files.html" class="inline-flex w-full items-center justify-center gap-2 px-4 py-3 rounded-xl gradient-bg text-slate-900 font-semibold text-sm hover:opacity-90 transition-opacity">
-                    Open files &amp; reports
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                    </svg>
-                  </a>
                 </div>
               </div>
-            </section>
-          </div>
+            </div>
+          </section>
 
-          <p id="disclaimer" class="text-center text-slate-600 text-xs pb-6">
-            Monitoring does not create IRS representation. Representation, filing, and resolution are separate engagements.
-          </p>
+          <footer class="text-center py-6">
+            <p id="disclaimer" class="text-xs text-slate-600">
+              Monitoring does not create IRS representation. Representation, filing, and resolution are separate engagements.
+            </p>
+          </footer>
         </div>
       </main>
     </div>
@@ -303,15 +472,15 @@
   <script>
     const defaultConfig = {
       account_label: 'Account: Monitoring',
-      background_color: '#020617',
+      background_color: '#0f172a',
       disclaimer_text: 'Monitoring does not create IRS representation. Representation, filing, and resolution are separate engagements.',
-      greeting_prefix: 'Good evening, ',
+      greeting_prefix: 'Welcome back, ',
       greeting_subheadline: 'This is your command center — where monitoring stays visible.',
       helper_text: 'Track onboarding, view activity, and access your portal files anytime.',
-      text_color: '#e2e8f0',
+      text_color: '#ffffff',
       topbar_mode: 'Monitoring Portal',
       trust_line: 'Proactive monitoring by licensed tax professionals — intake does not establish IRS representation.',
-      user_name: 'Jane Doe',
+      user_name: 'Jane Doe'
     };
 
     function safeFirstName(fullName) {
@@ -350,15 +519,300 @@
     }
 
     function applyFlowPlaceholders(state) {
-      // Sidebar partial can optionally include:
-      // - #sidebar-flow-label (e.g., "Intake" or "My Case Status")
-      // - #sidebar-flow-subtitle (e.g., "Offer" or "Post-payment")
-      // This function updates them if present, otherwise does nothing.
       const flowLabel = document.getElementById('sidebar-flow-label');
       const flowSubtitle = document.getElementById('sidebar-flow-subtitle');
-
       if (flowLabel) flowLabel.textContent = state.sidebar_flow_label || 'Start Here';
       if (flowSubtitle) flowSubtitle.textContent = state.sidebar_flow_subtitle || '';
+    }
+
+    function getOrderStepBooleans() {
+      // Worker can inject canonical state. We support a few predictable shapes without pretending.
+      // Preferred: window.TM_ORDER.stepBooleans
+      // Alternate: window.TM_APP_STATE.stepBooleans
+      const sb =
+        (window.TM_ORDER && window.TM_ORDER.stepBooleans) ||
+        (window.TM_APP_STATE && window.TM_APP_STATE.stepBooleans) ||
+        null;
+
+      return Object.assign({
+        intakeComplete: false,
+        offerAccepted: false,
+        agreementAccepted: false,
+        paymentCompleted: false,
+        welcomeConfirmed: false,
+        filingStatusSubmitted: false,
+        addressUpdateSubmitted: false,
+        esign2848Submitted: false,
+        complianceSubmitted: false,
+        reportReady: false
+      }, sb || {});
+    }
+
+    function deriveSteps(sb) {
+      // Sequence matters. Humans love sequence until they don't.
+      return [
+        {
+          id: 'intake',
+          href: '/app/pages/flows/intake/intake.html',
+          key: 'intakeComplete',
+          title: 'Intake',
+          description: 'Submit your intake details'
+        },
+        {
+          id: 'offer',
+          href: '/app/pages/flows/intake/offer.html',
+          key: 'offerAccepted',
+          title: 'Offer',
+          description: 'Review and accept scope'
+        },
+        {
+          id: 'agreement',
+          href: '/app/pages/flows/intake/agreement.html',
+          key: 'agreementAccepted',
+          title: 'Agreement',
+          description: 'Accept service terms'
+        },
+        {
+          id: 'payment',
+          href: '/app/pages/flows/intake/payment.html',
+          key: 'paymentCompleted',
+          title: 'Payment',
+          description: 'Activate monitoring'
+        },
+        {
+          id: 'welcome',
+          href: '/app/pages/flows/post-payment/welcome.html',
+          key: 'welcomeConfirmed',
+          title: 'Welcome',
+          description: 'Confirm your start'
+        },
+        {
+          id: 'filing-status',
+          href: '/app/pages/flows/post-payment/filing-status.html',
+          key: 'filingStatusSubmitted',
+          title: 'Filing Status',
+          description: 'Tell us what is filed'
+        },
+        {
+          id: 'address-update',
+          href: '/app/pages/flows/post-payment/address-update.html',
+          key: 'addressUpdateSubmitted',
+          title: 'Address Update',
+          description: 'Keep IRS mail correct'
+        },
+        {
+          id: 'esign-2848',
+          href: '/app/pages/flows/post-payment/esign-2848.html',
+          key: 'esign2848Submitted',
+          title: 'eSign 2848',
+          description: 'Authorize transcript access'
+        },
+        {
+          id: 'compliance-report',
+          href: '/app/pages/flows/post-payment/compliance-report.html',
+          key: 'complianceSubmitted',
+          title: 'Compliance Report',
+          description: 'Submit compliance records'
+        }
+      ];
+    }
+
+    function computeStatus(steps, sb) {
+      const completed = steps.filter(s => !!sb[s.key]).length;
+      const total = steps.length;
+      const currentIndex = steps.findIndex(s => !sb[s.key]);
+      const currentStep = currentIndex === -1 ? null : steps[currentIndex];
+      const percent = total ? Math.round((completed / total) * 100) : 0;
+
+      return { completed, currentStep, percent, total };
+    }
+
+    function renderSteps(steps, sb) {
+      const grid = document.getElementById('steps-grid');
+      if (!grid) return;
+      grid.innerHTML = '';
+
+      const { completed, currentStep, total } = computeStatus(steps, sb);
+      setText('steps-counter', `${completed} of ${total} complete`);
+
+      steps.forEach((step, idx) => {
+        const done = !!sb[step.key];
+        const locked = !done && idx > 0 && !sb[steps[idx - 1].key];
+        const current = currentStep && currentStep.id === step.id;
+
+        const wrapper = document.createElement(locked ? 'div' : 'a');
+        if (!locked) wrapper.href = step.href;
+
+        wrapper.className =
+          'action-card glass-card-light rounded-2xl p-5 group ' +
+          (locked ? 'cursor-not-allowed opacity-60' : 'cursor-pointer') +
+          (current ? ' pulse-amber relative overflow-hidden' : '');
+
+        if (current) {
+          const bg = document.createElement('div');
+          bg.className = 'absolute inset-0 bg-gradient-to-br from-amber-500/10 to-orange-500/10';
+          wrapper.appendChild(bg);
+        }
+
+        const inner = document.createElement('div');
+        inner.className = current ? 'relative' : '';
+
+        const top = document.createElement('div');
+        top.className = 'flex items-start justify-between mb-4';
+
+        const iconWrap = document.createElement('div');
+        iconWrap.className =
+          'w-14 h-14 rounded-xl flex items-center justify-center shadow-lg transition-transform group-hover:scale-110 ' +
+          (done
+            ? 'bg-gradient-to-br from-emerald-400 to-emerald-600 shadow-emerald-500/30'
+            : current
+              ? 'bg-gradient-to-br from-amber-400 to-orange-500 shadow-amber-500/30'
+              : 'bg-slate-300');
+
+        iconWrap.innerHTML = done
+          ? `<svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+             </svg>`
+          : current
+            ? `<svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+               </svg>`
+            : `<svg class="w-7 h-7 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+               </svg>`;
+
+        const badge = document.createElement('div');
+        badge.className =
+          'flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ' +
+          (done
+            ? 'bg-emerald-100 text-emerald-700'
+            : current
+              ? 'bg-amber-100 text-amber-700 animate-pulse'
+              : 'bg-slate-200 text-slate-500');
+
+        badge.innerHTML = done
+          ? `<svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>Complete`
+          : current
+            ? `<span class="w-2 h-2 bg-amber-500 rounded-full"></span>In Progress`
+            : `<svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>Locked`;
+
+        top.appendChild(iconWrap);
+        top.appendChild(badge);
+
+        const h = document.createElement('h3');
+        h.className = 'font-bold text-slate-800 mb-1';
+        h.textContent = step.title;
+
+        const p = document.createElement('p');
+        p.className = 'text-sm text-slate-500 mb-4';
+        p.textContent = step.description;
+
+        const barWrap = document.createElement('div');
+        barWrap.className = 'w-full rounded-full h-1.5 ' + (done ? 'bg-emerald-100' : current ? 'bg-amber-100' : 'bg-slate-200');
+
+        const bar = document.createElement('div');
+        bar.className = 'h-1.5 rounded-full ' + (done ? 'bg-emerald-500' : current ? 'bg-gradient-to-r from-amber-400 to-orange-500' : 'bg-slate-300');
+        bar.style.width = done ? '100%' : current ? '60%' : '0%';
+
+        barWrap.appendChild(bar);
+
+        inner.appendChild(top);
+        inner.appendChild(h);
+        inner.appendChild(p);
+        inner.appendChild(barWrap);
+
+        if (current && !locked) {
+          const btn = document.createElement('div');
+          btn.className = 'mt-4 w-full glow-button bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold py-2 px-4 rounded-xl text-sm text-center transition-all hover:shadow-lg hover:shadow-amber-500/30';
+          btn.textContent = 'Continue';
+          inner.appendChild(btn);
+        }
+
+        wrapper.appendChild(inner);
+        grid.appendChild(wrapper);
+      });
+    }
+
+    function renderProgress(steps, sb) {
+      const { completed, currentStep, percent, total } = computeStatus(steps, sb);
+
+      setText('progress-count', `${completed} of ${total}`);
+      setText('progress-current', currentStep ? currentStep.title : 'Complete');
+      setText('progress-percent', `${percent}%`);
+
+      const badge = document.getElementById('progress-badge');
+      if (badge) badge.textContent = percent === 100 ? 'Complete' : 'In progress';
+
+      const ring = document.getElementById('progress-ring');
+      if (ring) {
+        const circumference = 2 * Math.PI * 48;
+        const offset = circumference - (percent / 100) * circumference;
+        ring.style.strokeDasharray = String(circumference);
+        ring.style.strokeDashoffset = String(circumference);
+        setTimeout(() => { ring.style.strokeDashoffset = String(offset); }, 300);
+      }
+
+      // Rough estimate: keep your existing tone, not fake precision.
+      const estimate = percent === 100 ? 'Done' : (percent >= 50 ? 'A few minutes' : 'Varies');
+      setText('progress-estimate', estimate);
+    }
+
+    function renderTimeline(steps, sb) {
+      const host = document.getElementById('timeline');
+      if (!host) return;
+      host.innerHTML = '';
+
+      const { currentStep } = computeStatus(steps, sb);
+
+      steps.forEach((step, idx) => {
+        const done = !!sb[step.key];
+        const current = currentStep && currentStep.id === step.id;
+        const locked = !done && idx > 0 && !sb[steps[idx - 1].key];
+
+        const row = document.createElement('div');
+        row.className = 'flex items-center gap-3 relative ' + (locked ? 'opacity-50' : '');
+
+        const dot = document.createElement('div');
+        dot.className =
+          'w-10 h-10 rounded-full flex items-center justify-center z-10 ' +
+          (done
+            ? 'bg-emerald-500 shadow-lg shadow-emerald-500/30'
+            : current
+              ? 'bg-gradient-to-br from-amber-400 to-orange-500 shadow-lg shadow-amber-500/30 pulse-amber'
+              : 'bg-slate-600');
+
+        dot.innerHTML = done
+          ? `<svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+               <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+             </svg>`
+          : current
+            ? `<span class="text-white font-bold text-sm">${idx + 1}</span>`
+            : `<svg class="w-5 h-5 text-slate-400" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                 <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+               </svg>`;
+
+        const box = document.createElement('div');
+        box.className =
+          'flex-1 rounded-xl px-4 py-2 border ' +
+          (done
+            ? 'bg-emerald-500/10 border-emerald-500/20'
+            : current
+              ? 'bg-amber-500/20 border-amber-500/30'
+              : 'bg-slate-700/30 border-slate-700/30');
+
+        const label = document.createElement('span');
+        label.className =
+          'text-sm font-medium ' +
+          (done ? 'text-emerald-400' : current ? 'text-amber-400' : 'text-slate-500');
+
+        label.textContent = step.title;
+
+        box.appendChild(label);
+        row.appendChild(dot);
+        row.appendChild(box);
+
+        host.appendChild(row);
+      });
     }
 
     async function onConfigChange(config) {
@@ -367,18 +821,12 @@
       const firstName = safeFirstName(fullName);
       const initials = initialsFromName(fullName);
 
-      // Unified "app state" placeholder (server/worker can inject real values later)
       window.TM_APP_STATE = window.TM_APP_STATE || {
         account_label: merged.account_label,
         phase: 'portal',
         step: 'dashboard',
         topbar_mode: merged.topbar_mode,
-        user_name: fullName,
-      };
-
-      window.TM_FLOW = window.TM_FLOW || {
-        phase: window.TM_APP_STATE.phase,
-        step: window.TM_APP_STATE.step,
+        user_name: fullName
       };
 
       setText('greeting-prefix', merged.greeting_prefix);
@@ -387,6 +835,7 @@
       setText('subheadline', merged.greeting_subheadline);
       setText('helper-text', merged.helper_text);
       setText('disclaimer', merged.disclaimer_text);
+      setText('account-label', merged.account_label);
 
       setText('sidebar-user-name', fullName);
       setText('topbar-user-name', fullName);
@@ -395,11 +844,19 @@
 
       document.querySelectorAll('.tm-user-initials').forEach((el) => { el.textContent = initials; });
 
-      // Placeholder sidebar flow grouping
+      document.body.style.backgroundColor = merged.background_color || defaultConfig.background_color;
+
       applyFlowPlaceholders({
         sidebar_flow_label: 'Start Here',
-        sidebar_flow_subtitle: 'Intake',
+        sidebar_flow_subtitle: 'Intake'
       });
+
+      const sb = getOrderStepBooleans();
+      const steps = deriveSteps(sb);
+
+      renderSteps(steps, sb);
+      renderProgress(steps, sb);
+      renderTimeline(steps, sb);
 
       applyNavActive();
     }
@@ -409,7 +866,7 @@
       return {
         borderables: [],
         fontEditable: {
-          get: () => merged.font_family || 'DM Sans',
+          get: () => merged.font_family || 'Plus Jakarta Sans',
           set: (value) => window.elementSdk.setConfig({ font_family: value })
         },
         fontSizeable: {
