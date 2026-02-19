@@ -1,0 +1,60 @@
+{
+  "clickupProjection": {
+    "action": "comment",
+    "listId": "901710909567",
+    "target": "Account Task",
+    "template": "System Action — Auth {{outcome}} ({{provider}}) — eventId={{eventId}} accountId={{accountId}}{{#errorCode}} error={{errorCode}}{{/errorCode}}"
+  },
+  "contract": {
+    "authority": ["R2 Canonical"],
+    "path": "/app/contracts/account/login.auth-result.contract.json",
+    "title": "Tax Monitor Pro — Account Login Auth Result Contract",
+    "validation": {
+      "enumStrict": true,
+      "normalizeCheckboxToBoolean": true,
+      "rejectUnknownValues": true
+    },
+    "version": 1
+  },
+  "delivery": {
+    "endpoint": "https://api.taxmonitor.pro/forms/auth-result",
+    "method": "POST",
+    "receiptSource": "auth"
+  },
+  "effects": {
+    "canonicalUpsert": {
+      "r2KeyTemplate": "accounts/{accountId}.json"
+    },
+    "clickupProjection": {
+      "listId": "901710909567",
+      "mode": "comment"
+    },
+    "dedupe": {
+      "key": "eventId+accountId"
+    },
+    "receiptAppend": {
+      "r2KeyTemplate": "receipts/auth/{eventId}.json"
+    }
+  },
+  "payload": {
+    "accountId": "{{accountId}}",
+    "eventId": "{{eventId}}",
+    "occurredAt": "{{occurredAt}}",
+    "outcome": "{{outcome}}",
+    "provider": "{{provider}}",
+    "errorCode": "{{errorCode}}"
+  },
+  "schema": {
+    "additionalProperties": false,
+    "properties": {
+      "accountId": { "type": "string", "minLength": 1 },
+      "errorCode": { "type": ["string", "null"], "maxLength": 200 },
+      "eventId": { "type": "string", "minLength": 1 },
+      "occurredAt": { "type": "string", "minLength": 1 },
+      "outcome": { "type": "string", "enum": ["failed", "success"] },
+      "provider": { "type": "string", "enum": ["google_oauth", "magic_link", "sso"] }
+    },
+    "required": ["accountId", "eventId", "occurredAt", "outcome", "provider"],
+    "type": "object"
+  }
+}

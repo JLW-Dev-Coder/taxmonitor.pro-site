@@ -1,0 +1,62 @@
+{
+  "clickupProjection": {
+    "action": "comment",
+    "listId": "901710909567",
+    "target": "Account Task",
+    "template": "System Action — Page Visited — page={{page}} path={{path}} — eventId={{eventId}} accountId={{accountId}}"
+  },
+  "contract": {
+    "authority": ["R2 Canonical"],
+    "path": "/app/contracts/account/login.visit.contract.json",
+    "title": "Tax Monitor Pro — Account Login Visit Contract",
+    "validation": {
+      "enumStrict": true,
+      "normalizeCheckboxToBoolean": true,
+      "rejectUnknownValues": true
+    },
+    "version": 1
+  },
+  "delivery": {
+    "endpoint": "https://api.taxmonitor.pro/forms/visit",
+    "method": "POST",
+    "receiptSource": "visit"
+  },
+  "effects": {
+    "canonicalUpsert": {
+      "r2KeyTemplate": "accounts/{accountId}.json"
+    },
+    "clickupProjection": {
+      "listId": "901710909567",
+      "mode": "comment"
+    },
+    "dedupe": {
+      "key": "eventId+accountId"
+    },
+    "receiptAppend": {
+      "r2KeyTemplate": "receipts/visit/{eventId}.json"
+    }
+  },
+  "payload": {
+    "accountId": "{{accountId}}",
+    "eventId": "{{eventId}}",
+    "occurredAt": "{{occurredAt}}",
+    "page": "{{page}}",
+    "path": "{{path}}",
+    "querystring": "{{querystring}}",
+    "referrer": "{{referrer}}"
+  },
+  "schema": {
+    "additionalProperties": false,
+    "properties": {
+      "accountId": { "type": "string", "minLength": 1 },
+      "eventId": { "type": "string", "minLength": 1 },
+      "occurredAt": { "type": "string", "minLength": 1 },
+      "page": { "type": "string", "enum": ["login", "app_index"] },
+      "path": { "type": "string", "minLength": 1 },
+      "querystring": { "type": "string" },
+      "referrer": { "type": ["string", "null"], "maxLength": 2048 }
+    },
+    "required": ["accountId", "eventId", "occurredAt", "page", "path", "querystring"],
+    "type": "object"
+  }
+}
