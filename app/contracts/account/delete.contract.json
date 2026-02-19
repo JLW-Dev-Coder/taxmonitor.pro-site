@@ -1,0 +1,52 @@
+﻿{
+  "clickupProjection": {
+    "enabled": true,
+    "note": "Create/update ClickUp task for operator delete workflow after R2 update."
+  },
+  "contract": {
+    "id": "form_account_delete",
+    "name": "Account Delete Request",
+    "validation": {
+      "enumStrict": true,
+      "normalizeCheckboxToBoolean": true,
+      "rejectUnknownValues": true
+    },
+    "version": 1
+  },
+  "delivery": {
+    "endpoint": "https://api.taxmonitor.pro/forms/account/delete",
+    "method": "POST",
+    "type": "forms"
+  },
+  "effects": {
+    "receiptSource": "form",
+    "writes": [
+      "accounts"
+    ],
+    "writeOrder": [
+      "receipt",
+      "r2",
+      "clickup"
+    ]
+  },
+  "payload": {
+    "example": {
+      "eventId": "evt_123",
+      "reason": "Optional",
+      "sessionToken": "st_123"
+    }
+  },
+  "schema": {
+    "additionalProperties": false,
+    "properties": {
+      "eventId": { "type": "string" },
+      "reason": { "type": "string" },
+      "sessionToken": { "type": "string" }
+    },
+    "required": [
+      "eventId",
+      "sessionToken"
+    ],
+    "type": "object"
+  }
+}

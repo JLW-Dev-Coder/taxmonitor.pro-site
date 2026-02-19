@@ -1,0 +1,53 @@
+﻿{
+  "clickupProjection": {
+    "enabled": true,
+    "note": "Persist avatarUrl to account canonical; then project to ClickUp if you store it there."
+  },
+  "contract": {
+    "id": "form_account_photo_upload_complete",
+    "name": "Account Photo Upload Complete",
+    "validation": {
+      "enumStrict": true,
+      "normalizeCheckboxToBoolean": true,
+      "rejectUnknownValues": true
+    },
+    "version": 1
+  },
+  "delivery": {
+    "endpoint": "https://api.taxmonitor.pro/forms/account/photo-upload-complete",
+    "method": "POST",
+    "type": "forms"
+  },
+  "effects": {
+    "receiptSource": "form",
+    "writes": [
+      "accounts"
+    ],
+    "writeOrder": [
+      "receipt",
+      "r2",
+      "clickup"
+    ]
+  },
+  "payload": {
+    "example": {
+      "avatarUrl": "https://.../accounts/abc/avatar.png",
+      "eventId": "evt_123",
+      "sessionToken": "st_123"
+    }
+  },
+  "schema": {
+    "additionalProperties": false,
+    "properties": {
+      "avatarUrl": { "type": "string" },
+      "eventId": { "type": "string" },
+      "sessionToken": { "type": "string" }
+    },
+    "required": [
+      "avatarUrl",
+      "eventId",
+      "sessionToken"
+    ],
+    "type": "object"
+  }
+}

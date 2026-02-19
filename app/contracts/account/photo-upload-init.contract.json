@@ -1,0 +1,58 @@
+﻿{
+  "clickupProjection": {
+    "enabled": false,
+    "note": "Init returns uploadUrl + avatarUrl. No ClickUp change on init."
+  },
+  "contract": {
+    "id": "form_account_photo_upload_init",
+    "name": "Account Photo Upload Init",
+    "validation": {
+      "enumStrict": true,
+      "normalizeCheckboxToBoolean": true,
+      "rejectUnknownValues": true
+    },
+    "version": 1
+  },
+  "delivery": {
+    "endpoint": "https://api.taxmonitor.pro/forms/account/photo-upload-init",
+    "method": "POST",
+    "type": "forms"
+  },
+  "effects": {
+    "receiptSource": "form",
+    "writes": [
+      "accounts"
+    ],
+    "writeOrder": [
+      "receipt",
+      "r2"
+    ]
+  },
+  "payload": {
+    "example": {
+      "eventId": "evt_123",
+      "fileName": "me.png",
+      "fileSize": 12345,
+      "fileType": "image/png",
+      "sessionToken": "st_123"
+    }
+  },
+  "schema": {
+    "additionalProperties": false,
+    "properties": {
+      "eventId": { "type": "string" },
+      "fileName": { "type": "string" },
+      "fileSize": { "type": "number" },
+      "fileType": { "type": "string" },
+      "sessionToken": { "type": "string" }
+    },
+    "required": [
+      "eventId",
+      "fileName",
+      "fileSize",
+      "fileType",
+      "sessionToken"
+    ],
+    "type": "object"
+  }
+}

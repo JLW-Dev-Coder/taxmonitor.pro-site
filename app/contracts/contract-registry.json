@@ -1,4 +1,4 @@
-{
+﻿{
     "baseUrl":  "https://api.taxmonitor.pro",
     "contractRegistryVersion":  1,
     "entries":  [
@@ -48,6 +48,91 @@
                                    ]
                     },
                     {
+                        "writes":  [
+                                       "accounts"
+                                   ],
+                        "id":  "form_account_delete",
+                        "method":  "POST",
+                        "version":  1,
+                        "receiptKeyPattern":  "receipts/{source}/{eventId}.json",
+                        "signatureRequired":  false,
+                        "receiptSource":  "form",
+                        "path":  "app/contracts/account/delete.contract.json",
+                        "dedupeKey":  "payload.eventId",
+                        "endpoint":  "https://api.taxmonitor.pro/forms/account/delete"
+                    },
+                    {
+                        "writes":  [
+                                       "accounts"
+                                   ],
+                        "id":  "form_account_photo_upload_complete",
+                        "method":  "POST",
+                        "version":  1,
+                        "receiptKeyPattern":  "receipts/{source}/{eventId}.json",
+                        "signatureRequired":  false,
+                        "receiptSource":  "form",
+                        "path":  "app/contracts/account/photo-upload-complete.contract.json",
+                        "dedupeKey":  "payload.eventId",
+                        "endpoint":  "https://api.taxmonitor.pro/forms/account/photo-upload-complete"
+                    },
+                    {
+                        "writes":  [
+                                       "accounts"
+                                   ],
+                        "id":  "form_account_photo_upload_init",
+                        "method":  "POST",
+                        "version":  1,
+                        "receiptKeyPattern":  "receipts/{source}/{eventId}.json",
+                        "signatureRequired":  false,
+                        "receiptSource":  "form",
+                        "path":  "app/contracts/account/photo-upload-init.contract.json",
+                        "dedupeKey":  "payload.eventId",
+                        "endpoint":  "https://api.taxmonitor.pro/forms/account/photo-upload-init"
+                    },
+                    {
+                        "writes":  [
+                                       "accounts"
+                                   ],
+                        "id":  "form_account_preferences",
+                        "method":  "POST",
+                        "version":  1,
+                        "receiptKeyPattern":  "receipts/{source}/{eventId}.json",
+                        "signatureRequired":  false,
+                        "receiptSource":  "form",
+                        "path":  "app/contracts/account/preferences.contract.json",
+                        "dedupeKey":  "payload.eventId",
+                        "endpoint":  "https://api.taxmonitor.pro/forms/account/preferences"
+                    },
+                    {
+                        "writes":  [
+                                       "accounts"
+                                   ],
+                        "id":  "form_account_security",
+                        "method":  "POST",
+                        "version":  1,
+                        "receiptKeyPattern":  "receipts/{source}/{eventId}.json",
+                        "signatureRequired":  false,
+                        "receiptSource":  "form",
+                        "path":  "app/contracts/account/security.contract.json",
+                        "dedupeKey":  "payload.eventId",
+                        "endpoint":  "https://api.taxmonitor.pro/forms/account/security"
+                    },
+                    {
+                        "dedupeKey":  "payload.eventId",
+                        "endpoint":  "https://api.taxmonitor.pro/forms/agreement",
+                        "id":  "form_agreement",
+                        "method":  "POST",
+                        "path":  "app/contracts/forms/intake/agreement.contract.json",
+                        "receiptKeyPattern":  "receipts/{source}/{eventId}.json",
+                        "receiptSource":  "form",
+                        "signatureRequired":  false,
+                        "version":  1,
+                        "writes":  [
+                                       "accounts",
+                                       "orders"
+                                   ]
+                    },
+                    {
                         "dedupeKey":  "payload.eventId",
                         "endpoint":  "https://api.taxmonitor.pro/forms/intake",
                         "id":  "form_intake",
@@ -63,6 +148,34 @@
                                    ]
                     },
                     {
+                        "writes":  [
+                                       "accounts"
+                                   ],
+                        "id":  "form_login_auth_result",
+                        "method":  "POST",
+                        "version":  1,
+                        "receiptKeyPattern":  "receipts/{source}/{eventId}.json",
+                        "signatureRequired":  false,
+                        "receiptSource":  "auth",
+                        "path":  "app/contracts/account/login.auth-result.contract.json",
+                        "dedupeKey":  "payload.eventId+payload.accountId",
+                        "endpoint":  "https://api.taxmonitor.pro/forms/auth-result"
+                    },
+                    {
+                        "writes":  [
+                                       "accounts"
+                                   ],
+                        "id":  "form_login_visit",
+                        "method":  "POST",
+                        "version":  1,
+                        "receiptKeyPattern":  "receipts/{source}/{eventId}.json",
+                        "signatureRequired":  false,
+                        "receiptSource":  "visit",
+                        "path":  "app/contracts/account/login.visit.contract.json",
+                        "dedupeKey":  "payload.eventId+payload.accountId",
+                        "endpoint":  "https://api.taxmonitor.pro/forms/visit"
+                    },
+                    {
                         "dedupeKey":  "payload.eventId",
                         "endpoint":  "https://api.taxmonitor.pro/forms/offer",
                         "id":  "form_offer",
@@ -73,21 +186,6 @@
                         "signatureRequired":  false,
                         "version":  1,
                         "writes":  [
-                                       "orders"
-                                   ]
-                    },
-                    {
-                        "dedupeKey":  "payload.eventId",
-                        "endpoint":  "https://api.taxmonitor.pro/forms/agreement",
-                        "id":  "form_agreement",
-                        "method":  "POST",
-                        "path":  "app/contracts/forms/intake/agreement.contract.json",
-                        "receiptKeyPattern":  "receipts/{source}/{eventId}.json",
-                        "receiptSource":  "form",
-                        "signatureRequired":  false,
-                        "version":  1,
-                        "writes":  [
-                                       "accounts",
                                        "orders"
                                    ]
                     },
@@ -218,21 +316,6 @@
                                    ]
                     },
                     {
-                        "dedupeKey":  "payload.eventId",
-                        "endpoint":  "https://api.taxmonitor.pro/forms/support/support-ticket",
-                        "eventType":  "SUPPORT_TICKET_SUBMITTED",
-                        "id":  "support_ticket_submitted",
-                        "method":  "POST",
-                        "path":  "app/contracts/forms/support/support-ticket.contract.json",
-                        "receiptKeyPattern":  "receipts/{source}/{eventId}.json",
-                        "receiptSource":  "form",
-                        "signatureRequired":  false,
-                        "version":  1,
-                        "writes":  [
-                                       "support"
-                                   ]
-                    },
-                    {
                         "dedupeKey":  "payload.data.object.id",
                         "endpoint":  "https://api.taxmonitor.pro/stripe/webhook",
                         "eventType":  "checkout.session.completed",
@@ -263,32 +346,19 @@
                                    ]
                     },
                     {
-                        "writes":  [
-                                       "accounts"
-                                   ],
-                        "id":  "form_login_auth_result",
+                        "dedupeKey":  "payload.eventId",
+                        "endpoint":  "https://api.taxmonitor.pro/forms/support/support-ticket",
+                        "eventType":  "SUPPORT_TICKET_SUBMITTED",
+                        "id":  "support_ticket_submitted",
                         "method":  "POST",
-                        "version":  1,
+                        "path":  "app/contracts/forms/support/support-ticket.contract.json",
                         "receiptKeyPattern":  "receipts/{source}/{eventId}.json",
+                        "receiptSource":  "form",
                         "signatureRequired":  false,
-                        "receiptSource":  "auth",
-                        "path":  "app/contracts/account/login.auth-result.contract.json",
-                        "dedupeKey":  "payload.eventId+payload.accountId",
-                        "endpoint":  "https://api.taxmonitor.pro/forms/auth-result"
-                    },
-                    {
+                        "version":  1,
                         "writes":  [
-                                       "accounts"
-                                   ],
-                        "id":  "form_login_visit",
-                        "method":  "POST",
-                        "version":  1,
-                        "receiptKeyPattern":  "receipts/{source}/{eventId}.json",
-                        "signatureRequired":  false,
-                        "receiptSource":  "visit",
-                        "path":  "app/contracts/account/login.visit.contract.json",
-                        "dedupeKey":  "payload.eventId+payload.accountId",
-                        "endpoint":  "https://api.taxmonitor.pro/forms/visit"
+                                       "support"
+                                   ]
                     }
                 ]
 }

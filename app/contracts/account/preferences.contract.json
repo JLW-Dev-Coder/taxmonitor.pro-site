@@ -1,0 +1,68 @@
+﻿{
+  "clickupProjection": {
+    "enabled": false,
+    "note": "Preferences are account-local. Only project to ClickUp if you explicitly want it."
+  },
+  "contract": {
+    "id": "form_account_preferences",
+    "name": "Account Preferences Update",
+    "validation": {
+      "enumStrict": true,
+      "normalizeCheckboxToBoolean": true,
+      "rejectUnknownValues": true
+    },
+    "version": 1
+  },
+  "delivery": {
+    "endpoint": "https://api.taxmonitor.pro/forms/account/preferences",
+    "method": "POST",
+    "type": "forms"
+  },
+  "effects": {
+    "receiptSource": "form",
+    "writes": [
+      "accounts"
+    ],
+    "writeOrder": [
+      "receipt",
+      "r2"
+    ]
+  },
+  "payload": {
+    "example": {
+      "eventId": "evt_123",
+      "notificationsEmail": true,
+      "notificationsInApp": true,
+      "notificationsSms": false,
+      "sessionToken": "st_123",
+      "theme": "dark"
+    }
+  },
+  "schema": {
+    "additionalProperties": false,
+    "properties": {
+      "eventId": { "type": "string" },
+      "notificationsEmail": { "type": "boolean" },
+      "notificationsInApp": { "type": "boolean" },
+      "notificationsSms": { "type": "boolean" },
+      "sessionToken": { "type": "string" },
+      "theme": {
+        "enum": [
+          "dark",
+          "light",
+          "system"
+        ],
+        "type": "string"
+      }
+    },
+    "required": [
+      "eventId",
+      "notificationsEmail",
+      "notificationsInApp",
+      "notificationsSms",
+      "sessionToken",
+      "theme"
+    ],
+    "type": "object"
+  }
+}

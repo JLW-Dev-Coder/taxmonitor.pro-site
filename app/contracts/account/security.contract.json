@@ -1,0 +1,61 @@
+﻿{
+  "clickupProjection": {
+    "enabled": true,
+    "note": "Security actions should create an operator task (or support record) after R2 update."
+  },
+  "contract": {
+    "id": "form_account_security",
+    "name": "Account Security Action",
+    "validation": {
+      "enumStrict": true,
+      "normalizeCheckboxToBoolean": true,
+      "rejectUnknownValues": true
+    },
+    "version": 1
+  },
+  "delivery": {
+    "endpoint": "https://api.taxmonitor.pro/forms/account/security",
+    "method": "POST",
+    "type": "forms"
+  },
+  "effects": {
+    "receiptSource": "form",
+    "writes": [
+      "accounts"
+    ],
+    "writeOrder": [
+      "receipt",
+      "r2",
+      "clickup"
+    ]
+  },
+  "payload": {
+    "example": {
+      "action": "logout_all_devices",
+      "eventId": "evt_123",
+      "sessionToken": "st_123"
+    }
+  },
+  "schema": {
+    "additionalProperties": false,
+    "properties": {
+      "action": {
+        "enum": [
+          "logout_all_devices",
+          "password_change_requested",
+          "two_factor_disable_requested",
+          "two_factor_enable_requested"
+        ],
+        "type": "string"
+      },
+      "eventId": { "type": "string" },
+      "sessionToken": { "type": "string" }
+    },
+    "required": [
+      "action",
+      "eventId",
+      "sessionToken"
+    ],
+    "type": "object"
+  }
+}
