@@ -48,6 +48,62 @@
                                    ]
                     },
                     {
+                        "dedupeKey":  "payload.eventId",
+                        "endpoint":  "https://api.taxmonitor.pro/forms/account/2fa/disable",
+                        "id":  "form_account_2fa_disable",
+                        "method":  "POST",
+                        "path":  "app/contracts/account/2fa-disable.contract.json",
+                        "receiptKeyPattern":  "receipts/{source}/{eventId}.json",
+                        "receiptSource":  "form",
+                        "signatureRequired":  false,
+                        "version":  1,
+                        "writes":  [
+                                       "accounts"
+                                   ]
+                    },
+                    {
+                        "dedupeKey":  "payload.eventId",
+                        "endpoint":  "https://api.taxmonitor.pro/forms/account/2fa/enroll-init",
+                        "id":  "form_account_2fa_enroll_init",
+                        "method":  "POST",
+                        "path":  "app/contracts/account/2fa-enroll-init.contract.json",
+                        "receiptKeyPattern":  "receipts/{source}/{eventId}.json",
+                        "receiptSource":  "form",
+                        "signatureRequired":  false,
+                        "version":  1,
+                        "writes":  [
+                                       "accounts"
+                                   ]
+                    },
+                    {
+                        "dedupeKey":  "payload.eventId",
+                        "endpoint":  "https://api.taxmonitor.pro/forms/account/2fa/enroll-verify",
+                        "id":  "form_account_2fa_enroll_verify",
+                        "method":  "POST",
+                        "path":  "app/contracts/account/2fa-enroll-verify.contract.json",
+                        "receiptKeyPattern":  "receipts/{source}/{eventId}.json",
+                        "receiptSource":  "form",
+                        "signatureRequired":  false,
+                        "version":  1,
+                        "writes":  [
+                                       "accounts"
+                                   ]
+                    },
+                    {
+                        "dedupeKey":  "payload.eventId",
+                        "endpoint":  "https://api.taxmonitor.pro/forms/account/2fa/recovery-codes/regenerate",
+                        "id":  "form_account_2fa_recovery_codes_regenerate",
+                        "method":  "POST",
+                        "path":  "app/contracts/account/2fa-recovery-codes-regenerate.contract.json",
+                        "receiptKeyPattern":  "receipts/{source}/{eventId}.json",
+                        "receiptSource":  "form",
+                        "signatureRequired":  false,
+                        "version":  1,
+                        "writes":  [
+                                       "accounts"
+                                   ]
+                    },
+                    {
                         "writes":  [
                                        "accounts"
                                    ],

@@ -1,0 +1,33 @@
+﻿{
+  "clickupProjection": { "enabled": true },
+  "contract": {
+    "id": "form_account_2fa_enroll_verify",
+    "name": "2FA Enroll Verify",
+    "validation": {
+      "enumStrict": true,
+      "normalizeCheckboxToBoolean": true,
+      "rejectUnknownValues": true
+    },
+    "version": 1
+  },
+  "delivery": {
+    "endpoint": "https://api.taxmonitor.pro/forms/account/2fa/enroll-verify",
+    "method": "POST",
+    "type": "forms"
+  },
+  "effects": {
+    "receiptSource": "form",
+    "writes": ["accounts"],
+    "writeOrder": ["receipt", "r2", "clickup"]
+  },
+  "schema": {
+    "additionalProperties": false,
+    "properties": {
+      "code": { "type": "string" },
+      "eventId": { "type": "string" },
+      "sessionToken": { "type": "string" }
+    },
+    "required": ["code", "eventId", "sessionToken"],
+    "type": "object"
+  }
+}

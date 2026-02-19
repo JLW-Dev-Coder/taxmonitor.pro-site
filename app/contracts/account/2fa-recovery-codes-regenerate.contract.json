@@ -1,0 +1,32 @@
+﻿{
+  "clickupProjection": { "enabled": false },
+  "contract": {
+    "id": "form_account_2fa_recovery_codes_regenerate",
+    "name": "2FA Recovery Codes Regenerate",
+    "validation": {
+      "enumStrict": true,
+      "normalizeCheckboxToBoolean": true,
+      "rejectUnknownValues": true
+    },
+    "version": 1
+  },
+  "delivery": {
+    "endpoint": "https://api.taxmonitor.pro/forms/account/2fa/recovery-codes/regenerate",
+    "method": "POST",
+    "type": "forms"
+  },
+  "effects": {
+    "receiptSource": "form",
+    "writes": ["accounts"],
+    "writeOrder": ["receipt", "r2"]
+  },
+  "schema": {
+    "additionalProperties": false,
+    "properties": {
+      "eventId": { "type": "string" },
+      "sessionToken": { "type": "string" }
+    },
+    "required": ["eventId", "sessionToken"],
+    "type": "object"
+  }
+}

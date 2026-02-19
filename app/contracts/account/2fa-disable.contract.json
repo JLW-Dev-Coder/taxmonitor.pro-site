@@ -1,0 +1,33 @@
+﻿{
+  "clickupProjection": { "enabled": true },
+  "contract": {
+    "id": "form_account_2fa_disable",
+    "name": "2FA Disable",
+    "validation": {
+      "enumStrict": true,
+      "normalizeCheckboxToBoolean": true,
+      "rejectUnknownValues": true
+    },
+    "version": 1
+  },
+  "delivery": {
+    "endpoint": "https://api.taxmonitor.pro/forms/account/2fa/disable",
+    "method": "POST",
+    "type": "forms"
+  },
+  "effects": {
+    "receiptSource": "form",
+    "writes": ["accounts"],
+    "writeOrder": ["receipt", "r2", "clickup"]
+  },
+  "schema": {
+    "additionalProperties": false,
+    "properties": {
+      "code": { "type": "string" },
+      "eventId": { "type": "string" },
+      "sessionToken": { "type": "string" }
+    },
+    "required": ["code", "eventId", "sessionToken"],
+    "type": "object"
+  }
+}
