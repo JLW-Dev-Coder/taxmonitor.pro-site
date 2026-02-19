@@ -1,0 +1,1008 @@
+<!--/app/pages/account/profile.html-->
+<!doctype html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tax Monitor Pro — Profile</title>
+
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet" />
+
+  <link rel="icon" href="https://taxmonitor.pro/favicon.ico" sizes="any" />
+  <link rel="icon" href="https://taxmonitor.pro/assets/favicon.ico" sizes="any" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['DM Sans', 'system-ui', 'sans-serif'] },
+          colors: {
+            slate: {
+              850: '#1a1f2e',
+              900: '#0f1219',
+              950: '#080a0f'
+            },
+            amber: {
+              50: '#fffbeb',
+              100: '#fef3c7',
+              200: '#fde68a',
+              300: '#fcd34d',
+              400: '#fbbf24',
+              500: '#f59e0b',
+              600: '#d97706',
+              700: '#b45309',
+              800: '#92400e',
+              900: '#78350f'
+            }
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    * { box-sizing: border-box; font-family: 'DM Sans', sans-serif; }
+    html, body { height: 100%; }
+
+    /* Glass cards */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    /* Gradient border */
+    .gradient-border { position: relative; }
+    .gradient-border::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: inherit;
+      padding: 2px;
+      background: linear-gradient(135deg, #f59e0b, #ef4444, #fbbf24);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0.6;
+      animation: borderGlow 3s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes borderGlow {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 0.8; }
+    }
+
+    /* Aurora background */
+    .aurora {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .aurora-blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.4;
+      animation: float 20s ease-in-out infinite;
+    }
+    .aurora-blob-1 {
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, #f59e0b 0%, transparent 70%);
+      top: -200px;
+      right: -100px;
+      animation-delay: 0s;
+    }
+    .aurora-blob-2 {
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, #ef4444 0%, transparent 70%);
+      bottom: -150px;
+      left: -100px;
+      animation-delay: -7s;
+    }
+    .aurora-blob-3 {
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, #fbbf24 0%, transparent 70%);
+      top: 40%;
+      left: 30%;
+      animation-delay: -14s;
+    }
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      25% { transform: translate(30px, -30px) scale(1.05); }
+      50% { transform: translate(-20px, 20px) scale(0.95); }
+      75% { transform: translate(20px, 30px) scale(1.02); }
+    }
+
+    /* Noise overlay */
+    .noise-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    }
+
+    /* Inputs */
+    .input-field {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.2s ease;
+    }
+    .input-field:focus {
+      border-color: rgba(245, 158, 11, 0.55);
+      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.12);
+      outline: none;
+    }
+
+    /* Toggle */
+    .toggle-switch {
+      width: 48px;
+      height: 26px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 13px;
+      position: relative;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .toggle-switch.active {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    }
+    .toggle-switch::after {
+      content: '';
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      background: white;
+      border-radius: 999px;
+      top: 2px;
+      left: 2px;
+      transition: all 0.2s ease;
+    }
+    .toggle-switch.active::after { left: 24px; }
+
+    /* Buttons */
+    .btn-primary {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      transition: all 0.2s ease;
+    }
+    .btn-primary:hover { filter: brightness(1.05); transform: translateY(-1px); }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      transition: all 0.2s ease;
+    }
+    .btn-secondary:hover { background: rgba(255, 255, 255, 0.09); border-color: rgba(255, 255, 255, 0.18); }
+
+    .btn-danger {
+      background: rgba(239, 68, 68, 0.12);
+      border: 1px solid rgba(239, 68, 68, 0.35);
+      color: #fecaca;
+      transition: all 0.2s ease;
+    }
+    .btn-danger:hover { background: rgba(239, 68, 68, 0.2); border-color: rgba(239, 68, 68, 0.5); }
+
+    /* Toast */
+    .notification-toast { animation: slideIn 0.25s ease forwards; }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.12); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb { background: linear-gradient(135deg, #f59e0b, #d97706); border-radius: 4px; }
+
+    /* Helpers */
+    .section-card { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.06); }
+  </style>
+</head>
+
+<body class="h-full bg-slate-900 text-white overflow-hidden">
+  <!-- Aurora Background -->
+  <div class="aurora" aria-hidden="true">
+    <div class="aurora-blob aurora-blob-1"></div>
+    <div class="aurora-blob aurora-blob-2"></div>
+    <div class="aurora-blob aurora-blob-3"></div>
+  </div>
+
+  <!-- Noise Overlay -->
+  <div class="noise-overlay" aria-hidden="true"></div>
+
+  <div class="relative z-10 flex h-full">
+    <!-- APP SIDEBAR PARTIAL -->
+    <!-- APP_SIDEBAR -->
+
+    <div class="flex-1 flex flex-col min-w-0">
+      <!-- APP TOPBAR PARTIAL -->
+      <!-- APP_TOPBAR -->
+
+      <main class="flex-1 overflow-auto">
+        <div class="max-w-5xl mx-auto p-4 md:p-8 space-y-6">
+          <!-- Hero -->
+          <section class="glass-card gradient-border rounded-3xl p-6 md:p-8">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              <div class="space-y-2">
+                <h1 class="text-2xl md:text-4xl font-bold">Account Profile</h1>
+                <p class="text-slate-300 text-sm md:text-base">Manage and maintain this account record</p>
+                <p class="text-slate-500 text-xs md:text-sm">Your changes are saved securely and reflected in your account.</p>
+              </div>
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-full bg-gradient-to-br from-amber-400 to-orange-600 flex items-center justify-center text-xl font-bold shadow-lg shadow-amber-500/30" id="avatar-chip">TM</div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Toast Notification -->
+          <div id="toast" class="fixed top-20 left-1/2 -translate-x-1/2 z-50 hidden">
+            <div class="notification-toast glass-card rounded-xl px-6 py-4 flex items-center gap-3">
+              <div id="toast-icon" class="w-8 h-8 rounded-full flex items-center justify-center"></div>
+              <span id="toast-message" class="text-sm font-medium"></span>
+            </div>
+          </div>
+
+          <!-- Profile -->
+          <section class="glass-card gradient-border rounded-3xl p-6 md:p-8">
+            <div class="flex flex-col sm:flex-row items-center gap-6 mb-8 pb-8 border-b border-white/10">
+              <div class="relative">
+                <div id="avatar-display" class="w-24 h-24 rounded-2xl bg-gradient-to-br from-amber-400 via-orange-600 to-emerald-500 flex items-center justify-center text-white text-3xl font-bold shadow-lg overflow-hidden">
+                  <img id="avatar-img" alt="Profile photo" class="hidden w-full h-full object-cover" />
+                  <span id="avatar-initials">TM</span>
+                </div>
+                <button id="change-photo-btn" type="button" class="absolute -bottom-2 -right-2 w-8 h-8 rounded-full bg-amber-500 hover:bg-amber-400 flex items-center justify-center transition-all shadow-lg" aria-label="Change photo">
+                  <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                </button>
+                <input id="photo-input" type="file" accept="image/*" class="hidden" />
+              </div>
+
+              <div class="text-center sm:text-left">
+                <h2 id="display-name" class="text-xl font-semibold">John Doe</h2>
+                <p class="text-slate-400 text-sm">Internal account record</p>
+                <div class="flex items-center gap-2 mt-2 justify-center sm:justify-start">
+                  <span class="px-2 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-medium">Verified</span>
+                  <span class="px-2 py-1 rounded-full bg-amber-500/20 text-amber-400 text-xs font-medium">In service</span>
+                </div>
+              </div>
+            </div>
+
+            <form id="profile-form" class="space-y-6" novalidate>
+              <h3 class="text-lg font-semibold flex items-center gap-2">
+                <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+                Personal Information
+              </h3>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-slate-300 mb-2">First Name <span class="text-amber-400">*</span></label>
+                  <input type="text" id="first-name" class="input-field w-full px-4 py-3 rounded-xl text-white placeholder-slate-500" autocomplete="given-name" />
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium text-slate-300 mb-2">Last Name <span class="text-amber-400">*</span></label>
+                  <input type="text" id="last-name" class="input-field w-full px-4 py-3 rounded-xl text-white placeholder-slate-500" autocomplete="family-name" />
+                </div>
+
+                <div class="sm:col-span-2">
+                  <label class="block text-sm font-medium text-slate-300 mb-2">Email Address <span class="text-amber-400">*</span></label>
+                  <div class="relative">
+                    <input type="email" id="email" class="input-field w-full px-4 py-3 rounded-xl text-white placeholder-slate-500 pr-20" autocomplete="email" />
+                    <span class="absolute right-3 top-1/2 -translate-y-1/2 px-2 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-medium">Verified</span>
+                  </div>
+                </div>
+
+                <!-- Presentational only until you add contract keys -->
+                <div>
+                  <label class="block text-sm font-medium text-slate-300 mb-2">Phone Number</label>
+                  <input type="tel" id="phone" class="input-field w-full px-4 py-3 rounded-xl text-white placeholder-slate-500" placeholder="Enter phone number" autocomplete="tel" />
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium text-slate-300 mb-2">Organization/Company</label>
+                  <input type="text" id="organization" class="input-field w-full px-4 py-3 rounded-xl text-white placeholder-slate-500" placeholder="Enter organization" autocomplete="organization" />
+                </div>
+              </div>
+
+              <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
+                <button id="delete-account-btn" type="button" class="btn-danger px-6 py-3 rounded-xl font-medium flex items-center gap-2 order-2 sm:order-1">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                  </svg>
+                  Delete Account
+                </button>
+
+                <button id="save-changes-btn" type="button" class="btn-primary px-8 py-3 rounded-xl text-slate-900 font-semibold flex items-center gap-2 order-1 sm:order-2">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                  </svg>
+                  Save Changes
+                </button>
+              </div>
+            </form>
+          </section>
+
+          <!-- Security Section -->
+          <section class="glass-card gradient-border rounded-3xl p-6 md:p-8">
+            <h3 class="text-lg font-semibold flex items-center gap-2 mb-6">
+              <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+              Account Security
+            </h3>
+
+            <div class="space-y-4">
+              <div class="section-card rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <h4 class="text-white font-medium">Password</h4>
+                  <p class="text-slate-400 text-sm">Request a password update</p>
+                </div>
+                <button id="change-password-btn" type="button" class="btn-secondary px-4 py-2 rounded-lg text-white text-sm font-medium">Change Password</button>
+              </div>
+
+              <div class="section-card rounded-xl p-4 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center">
+                    <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 class="text-white font-medium">Two-Factor Authentication</h4>
+                    <p id="2fa-status" class="text-slate-400 text-sm">Not enabled</p>
+                    <p class="text-slate-500 text-xs">Add an extra layer of protection to your account using an authenticator app.</p>
+                  </div>
+                </div>
+                <div id="2fa-toggle" class="toggle-switch" data-enabled="false" role="switch" aria-checked="false" tabindex="0"></div>
+              </div>
+
+              <div class="section-card rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <h4 class="text-white font-medium">Active Sessions</h4>
+                  <p class="text-slate-400 text-sm">Request logout across all devices</p>
+                </div>
+                <button id="logout-all-btn" type="button" class="btn-secondary px-4 py-2 rounded-lg text-white text-sm font-medium">Logout All Devices</button>
+              </div>
+            </div>
+          </section>
+
+          <!-- Preferences Section -->
+          <section class="glass-card gradient-border rounded-3xl p-6 md:p-8">
+            <h3 class="text-lg font-semibold flex items-center gap-2 mb-6">
+              <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              Preferences
+            </h3>
+
+            <div class="space-y-4">
+              <h4 class="text-white font-medium text-sm uppercase tracking-wider opacity-70">Notifications</h4>
+
+              <div class="section-card rounded-xl p-4 flex items-center justify-between">
+                <div>
+                  <h4 class="text-white font-medium">Email Notifications</h4>
+                  <p class="text-slate-400 text-sm">Receive updates via email</p>
+                </div>
+                <div id="email-notif-toggle" class="toggle-switch" data-enabled="false" role="switch" aria-checked="false" tabindex="0"></div>
+              </div>
+
+              <div class="section-card rounded-xl p-4 flex items-center justify-between">
+                <div>
+                  <h4 class="text-white font-medium">In-App Notifications</h4>
+                  <p class="text-slate-400 text-sm">Show notifications in dashboard</p>
+                </div>
+                <div id="inapp-notif-toggle" class="toggle-switch" data-enabled="false" role="switch" aria-checked="false" tabindex="0"></div>
+              </div>
+
+              <div class="section-card rounded-xl p-4 flex items-center justify-between">
+                <div>
+                  <h4 class="text-white font-medium">SMS Notifications</h4>
+                  <p class="text-slate-400 text-sm">Receive updates via text message</p>
+                </div>
+                <div id="sms-notif-toggle" class="toggle-switch" data-enabled="false" role="switch" aria-checked="false" tabindex="0"></div>
+              </div>
+
+              <h4 class="text-white font-medium text-sm uppercase tracking-wider opacity-70 mt-6">Appearance</h4>
+
+              <div class="section-card rounded-xl p-4">
+                <h4 class="text-white font-medium mb-3">Theme Preference</h4>
+                <div class="flex flex-wrap gap-3">
+                  <button type="button" class="theme-btn px-4 py-2 rounded-lg text-sm font-medium transition-all bg-white/5 border border-white/10 text-slate-300 hover:border-amber-500/50" data-theme="dark">Dark</button>
+                  <button type="button" class="theme-btn px-4 py-2 rounded-lg text-sm font-medium transition-all bg-white/5 border border-white/10 text-slate-300 hover:border-amber-500/50" data-theme="light">Light</button>
+                  <button type="button" class="theme-btn px-4 py-2 rounded-lg text-sm font-medium transition-all bg-white/5 border border-white/10 text-slate-300 hover:border-amber-500/50" data-theme="system">System</button>
+                </div>
+                <p id="prefs-save-note" class="text-slate-500 text-xs mt-3">Preferences save automatically.</p>
+              </div>
+            </div>
+          </section>
+
+          <footer class="text-center py-6">
+            <p class="text-xs text-slate-600">Your updates are securely stored and applied to your account record.</p>
+          </footer>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Delete Modal -->
+  <div id="delete-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" id="modal-backdrop"></div>
+    <div class="relative glass-card gradient-border rounded-2xl p-6 sm:p-8 max-w-md w-full">
+      <div class="text-center">
+        <div class="w-16 h-16 rounded-full bg-red-500/20 flex items-center justify-center mx-auto mb-4">
+          <svg class="w-8 h-8 text-red-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+        </div>
+        <h3 class="text-xl font-bold mb-2">Delete Account?</h3>
+        <p class="text-slate-300 mb-4">This submits a delete request. Final deletion is handled by the operator workflow.</p>
+
+        <div class="text-left mb-5">
+          <label class="block text-sm font-medium text-slate-300 mb-2">Reason (optional)</label>
+          <textarea id="delete-reason" rows="3" class="input-field w-full px-4 py-3 rounded-xl text-white placeholder-slate-500" placeholder="Tell us why you’re leaving"></textarea>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-3">
+          <button id="cancel-delete-btn" type="button" class="flex-1 btn-secondary px-4 py-3 rounded-xl text-white font-medium">Cancel</button>
+          <button id="confirm-delete-btn" type="button" class="flex-1 bg-red-500 hover:bg-red-400 px-4 py-3 rounded-xl text-white font-medium transition-all">Submit Delete Request</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Password Modal -->
+  <div id="password-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" id="password-modal-backdrop"></div>
+    <div class="relative glass-card gradient-border rounded-2xl p-6 sm:p-8 max-w-md w-full">
+      <h3 class="text-xl font-bold mb-2">Change Password</h3>
+      <p class="text-slate-400 text-sm mb-4">This submits a password change request to the operator workflow.</p>
+
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-slate-300 mb-2">Current Password</label>
+          <input type="password" id="current-password" class="input-field w-full px-4 py-3 rounded-xl text-white" placeholder="Enter current password" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-300 mb-2">New Password</label>
+          <input type="password" id="new-password" class="input-field w-full px-4 py-3 rounded-xl text-white" placeholder="Enter new password" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-300 mb-2">Confirm New Password</label>
+          <input type="password" id="confirm-password" class="input-field w-full px-4 py-3 rounded-xl text-white" placeholder="Confirm new password" />
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row gap-3 mt-6">
+        <button id="cancel-password-btn" type="button" class="flex-1 btn-secondary px-4 py-3 rounded-xl text-white font-medium">Cancel</button>
+        <button id="save-password-btn" type="button" class="flex-1 btn-primary px-4 py-3 rounded-xl text-slate-900 font-medium">Submit Request</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const ENDPOINTS = {
+      delete: "https://api.taxmonitor.pro/forms/account/delete",
+      photoUploadComplete: "https://api.taxmonitor.pro/forms/account/photo-upload-complete",
+      photoUploadInit: "https://api.taxmonitor.pro/forms/account/photo-upload-init",
+      preferences: "https://api.taxmonitor.pro/forms/account/preferences",
+      profile: "https://api.taxmonitor.pro/forms/account/profile",
+      security: "https://api.taxmonitor.pro/forms/account/security"
+    };
+
+    const PREFS_DEFAULTS = {
+      notificationsEmail: false,
+      notificationsInApp: false,
+      notificationsSms: false,
+      theme: "dark"
+    };
+
+    let prefsState = Object.assign({}, PREFS_DEFAULTS);
+    let prefsSaveTimer = null;
+
+    function showToast(message, type = "success") {
+      const toast = document.getElementById("toast");
+      const icon = document.getElementById("toast-icon");
+      const msg = document.getElementById("toast-message");
+
+      msg.textContent = message;
+
+      if (type === "success") {
+        icon.className = "w-8 h-8 rounded-full flex items-center justify-center bg-emerald-500/20";
+        icon.innerHTML = "<svg class='w-5 h-5 text-emerald-300' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 13l4 4L19 7'/></svg>";
+      } else if (type === "error") {
+        icon.className = "w-8 h-8 rounded-full flex items-center justify-center bg-red-500/20";
+        icon.innerHTML = "<svg class='w-5 h-5 text-red-300' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 18L18 6M6 6l12 12'/></svg>";
+      } else {
+        icon.className = "w-8 h-8 rounded-full flex items-center justify-center bg-amber-500/20";
+        icon.innerHTML = "<svg class='w-5 h-5 text-amber-300' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'/></svg>";
+      }
+
+      toast.classList.remove("hidden");
+      toast.classList.add("flex");
+
+      window.clearTimeout(showToast._t);
+      showToast._t = window.setTimeout(() => {
+        toast.classList.add("hidden");
+        toast.classList.remove("flex");
+      }, 3000);
+    }
+
+    function computeInitials(firstName, lastName) {
+      const a = String(firstName || "").trim();
+      const b = String(lastName || "").trim();
+      const i1 = a ? a[0] : "";
+      const i2 = b ? b[0] : (a.length > 1 ? a[1] : "");
+      return (i1 + i2).toUpperCase() || "TM";
+    }
+
+    function getEventId() {
+      if (window.tmCommon && typeof window.tmCommon.ensureEventId === "function") return window.tmCommon.ensureEventId();
+      if (window.crypto && typeof window.crypto.randomUUID === "function") return "evt_" + window.crypto.randomUUID();
+      return "evt_" + String(Date.now()) + "_" + Math.random().toString(16).slice(2);
+    }
+
+    function getSessionToken() {
+      const qs = new URLSearchParams(window.location.search);
+      if (qs.get("sessionToken")) return qs.get("sessionToken");
+      if (window.tmCommon && typeof window.tmCommon.syncSessionToken === "function") return window.tmCommon.syncSessionToken() || "";
+      return window.localStorage.getItem("sessionToken") || "";
+    }
+
+    function setSavingState(buttonId, isSaving) {
+      const btn = document.getElementById(buttonId);
+      if (!btn) return;
+      btn.disabled = !!isSaving;
+      btn.style.opacity = isSaving ? "0.7" : "1";
+      btn.style.cursor = isSaving ? "not-allowed" : "pointer";
+    }
+
+    function setAvatarUrl(url) {
+      const img = document.getElementById("avatar-img");
+      const initials = document.getElementById("avatar-initials");
+      if (!img || !initials) return;
+
+      if (!url) {
+        img.classList.add("hidden");
+        initials.classList.remove("hidden");
+        img.removeAttribute("src");
+        return;
+      }
+
+      img.src = url;
+      img.classList.remove("hidden");
+      initials.classList.add("hidden");
+    }
+
+    function syncAvatar(firstName, lastName) {
+      const initials = computeInitials(firstName, lastName);
+      const avatarChip = document.getElementById("avatar-chip");
+      const avatarInitials = document.getElementById("avatar-initials");
+      if (avatarChip) avatarChip.textContent = initials;
+      if (avatarInitials) avatarInitials.textContent = initials;
+
+      const displayName = document.getElementById("display-name");
+      if (displayName) displayName.textContent = `${String(firstName || '').trim()} ${String(lastName || '').trim()}`.trim() || "Tax Monitor Pro";
+    }
+
+    async function postJson(endpoint, payload) {
+      const res = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+
+      const json = await res.json().catch(() => null);
+      if (!res.ok) {
+        const msg = (json && (json.error || json.message)) ? String(json.error || json.message) : "Request failed";
+        throw new Error(msg);
+      }
+
+      return json;
+    }
+
+    function setupToggle(toggleId, onChange) {
+      const toggle = document.getElementById(toggleId);
+      if (!toggle) return;
+
+      function set(next) {
+        toggle.dataset.enabled = String(!!next);
+        toggle.classList.toggle("active", !!next);
+        toggle.setAttribute("aria-checked", String(!!next));
+      }
+
+      function flip() {
+        const isEnabled = toggle.dataset.enabled === "true";
+        const next = !isEnabled;
+        set(next);
+        if (onChange) onChange(next, set);
+      }
+
+      toggle.addEventListener("click", flip);
+      toggle.addEventListener("keydown", (e) => {
+        if (e.key === " " || e.key === "Enter") {
+          e.preventDefault();
+          flip();
+        }
+      });
+
+      return { set };
+    }
+
+    function applyThemeButtons(theme) {
+      document.querySelectorAll(".theme-btn").forEach((b) => {
+        const active = (b.dataset.theme === theme);
+        b.classList.toggle("bg-amber-500/20", active);
+        b.classList.toggle("border-amber-500/50", active);
+        b.classList.toggle("text-amber-200", active);
+
+        b.classList.toggle("bg-white/5", !active);
+        b.classList.toggle("border-white/10", !active);
+        b.classList.toggle("text-slate-300", !active);
+      });
+    }
+
+    function bootFromQuery() {
+      const qs = new URLSearchParams(window.location.search);
+
+      const fn = qs.get("accountFirstName") || "";
+      const ln = qs.get("accountLastName") || "";
+      const em = qs.get("accountPrimaryEmail") || "";
+      const avatarUrl = qs.get("accountAvatarUrl") || "";
+
+      if (fn) document.getElementById("first-name").value = fn;
+      if (ln) document.getElementById("last-name").value = ln;
+      if (em) document.getElementById("email").value = em;
+
+      prefsState.notificationsEmail = qs.get("notificationsEmail") === "true" ? true : prefsState.notificationsEmail;
+      prefsState.notificationsInApp = qs.get("notificationsInApp") === "true" ? true : prefsState.notificationsInApp;
+      prefsState.notificationsSms = qs.get("notificationsSms") === "true" ? true : prefsState.notificationsSms;
+      prefsState.theme = (qs.get("theme") || prefsState.theme);
+
+      syncAvatar(document.getElementById("first-name").value, document.getElementById("last-name").value);
+      if (avatarUrl) setAvatarUrl(avatarUrl);
+
+      applyThemeButtons(prefsState.theme);
+    }
+
+    async function saveProfile() {
+      const firstName = document.getElementById("first-name").value;
+      const lastName = document.getElementById("last-name").value;
+      const email = document.getElementById("email").value;
+
+      if (!String(firstName || "").trim()) return showToast("Please enter your first name", "error");
+      if (!String(lastName || "").trim()) return showToast("Please enter your last name", "error");
+      if (!String(email || "").trim() || String(email).indexOf("@") === -1) return showToast("Please enter a valid email address", "error");
+
+      const sessionToken = getSessionToken();
+      if (!sessionToken) return showToast("Missing sessionToken. Please log in again.", "error");
+
+      const payload = {
+        accountFirstName: String(firstName).trim(),
+        accountLastName: String(lastName).trim(),
+        accountPrimaryEmail: String(email).trim(),
+        eventId: getEventId(),
+        sessionToken
+      };
+
+      setSavingState("save-changes-btn", true);
+
+      try {
+        await postJson(ENDPOINTS.profile, payload);
+        syncAvatar(payload.accountFirstName, payload.accountLastName);
+        showToast("Profile saved", "success");
+      } catch (e) {
+        showToast(String(e.message || "Save failed"), "error");
+      } finally {
+        setSavingState("save-changes-btn", false);
+      }
+    }
+
+    function scheduleSavePreferences() {
+      window.clearTimeout(prefsSaveTimer);
+      prefsSaveTimer = window.setTimeout(savePreferences, 500);
+    }
+
+    async function savePreferences() {
+      const sessionToken = getSessionToken();
+      if (!sessionToken) return showToast("Missing sessionToken. Please log in again.", "error");
+
+      const payload = {
+        eventId: getEventId(),
+        notificationsEmail: !!prefsState.notificationsEmail,
+        notificationsInApp: !!prefsState.notificationsInApp,
+        notificationsSms: !!prefsState.notificationsSms,
+        sessionToken,
+        theme: String(prefsState.theme || "dark")
+      };
+
+      try {
+        await postJson(ENDPOINTS.preferences, payload);
+        showToast("Preferences saved", "success");
+      } catch (e) {
+        showToast(String(e.message || "Preferences save failed"), "error");
+      }
+    }
+
+    async function postSecurityAction(action, extra) {
+      const sessionToken = getSessionToken();
+      if (!sessionToken) return showToast("Missing sessionToken. Please log in again.", "error");
+
+      const payload = Object.assign({
+        action: String(action),
+        eventId: getEventId(),
+        sessionToken
+      }, extra || {});
+
+      try {
+        await postJson(ENDPOINTS.security, payload);
+        showToast("Security request submitted", "success");
+        return true;
+      } catch (e) {
+        showToast(String(e.message || "Security request failed"), "error");
+        return false;
+      }
+    }
+
+    async function requestDeleteAccount() {
+      const sessionToken = getSessionToken();
+      if (!sessionToken) return showToast("Missing sessionToken. Please log in again.", "error");
+
+      const reason = String(document.getElementById("delete-reason").value || "").trim();
+      const payload = {
+        eventId: getEventId(),
+        reason: reason || undefined,
+        sessionToken
+      };
+
+      setSavingState("confirm-delete-btn", true);
+
+      try {
+        await postJson(ENDPOINTS.delete, payload);
+        showToast("Delete request submitted", "success");
+        return true;
+      } catch (e) {
+        showToast(String(e.message || "Delete request failed"), "error");
+        return false;
+      } finally {
+        setSavingState("confirm-delete-btn", false);
+      }
+    }
+
+    async function uploadPhoto(file) {
+      const sessionToken = getSessionToken();
+      if (!sessionToken) return showToast("Missing sessionToken. Please log in again.", "error");
+      if (!file) return;
+
+      const initPayload = {
+        eventId: getEventId(),
+        fileName: String(file.name || "photo"),
+        fileSize: Number(file.size || 0),
+        fileType: String(file.type || "application/octet-stream"),
+        sessionToken
+      };
+
+      setSavingState("change-photo-btn", true);
+
+      try {
+        const initRes = await postJson(ENDPOINTS.photoUploadInit, initPayload);
+        const uploadUrl = initRes && initRes.uploadUrl ? String(initRes.uploadUrl) : "";
+        const avatarUrl = initRes && initRes.avatarUrl ? String(initRes.avatarUrl) : "";
+
+        if (!uploadUrl || !avatarUrl) throw new Error("Missing uploadUrl/avatarUrl from init");
+
+        const putRes = await fetch(uploadUrl, {
+          method: "PUT",
+          headers: { "Content-Type": String(file.type || "application/octet-stream") },
+          body: file
+        });
+
+        if (!putRes.ok) throw new Error("Upload failed");
+
+        const completePayload = {
+          avatarUrl,
+          eventId: getEventId(),
+          sessionToken
+        };
+
+        await postJson(ENDPOINTS.photoUploadComplete, completePayload);
+        setAvatarUrl(avatarUrl);
+        showToast("Photo updated", "success");
+      } catch (e) {
+        showToast(String(e.message || "Photo upload failed"), "error");
+      } finally {
+        setSavingState("change-photo-btn", false);
+      }
+    }
+
+    function openModal(id) {
+      const m = document.getElementById(id);
+      if (!m) return;
+      m.classList.remove("hidden");
+      m.classList.add("flex");
+    }
+
+    function closeModal(id) {
+      const m = document.getElementById(id);
+      if (!m) return;
+      m.classList.add("hidden");
+      m.classList.remove("flex");
+    }
+
+    // Boot
+    bootFromQuery();
+
+    // Profile
+    document.getElementById("save-changes-btn").addEventListener("click", saveProfile);
+
+    // Photo
+    document.getElementById("change-photo-btn").addEventListener("click", () => document.getElementById("photo-input").click());
+    document.getElementById("photo-input").addEventListener("change", (e) => {
+      const f = e.target.files && e.target.files[0];
+      e.target.value = "";
+      uploadPhoto(f);
+    });
+
+    // Delete
+    document.getElementById("delete-account-btn").addEventListener("click", () => openModal("delete-modal"));
+    document.getElementById("cancel-delete-btn").addEventListener("click", () => closeModal("delete-modal"));
+    document.getElementById("modal-backdrop").addEventListener("click", () => closeModal("delete-modal"));
+    document.getElementById("confirm-delete-btn").addEventListener("click", async () => {
+      const ok = await requestDeleteAccount();
+      if (ok) closeModal("delete-modal");
+    });
+
+    // Password
+    document.getElementById("change-password-btn").addEventListener("click", () => openModal("password-modal"));
+    document.getElementById("cancel-password-btn").addEventListener("click", () => closeModal("password-modal"));
+    document.getElementById("password-modal-backdrop").addEventListener("click", () => closeModal("password-modal"));
+    document.getElementById("save-password-btn").addEventListener("click", async () => {
+      const current = String(document.getElementById("current-password").value || "");
+      const next = String(document.getElementById("new-password").value || "");
+      const confirm = String(document.getElementById("confirm-password").value || "");
+
+      if (!current) return showToast("Enter your current password", "error");
+      if (!next || next.length < 8) return showToast("New password must be at least 8 characters", "error");
+      if (next !== confirm) return showToast("Passwords do not match", "error");
+
+      const ok = await postSecurityAction("password_change_requested");
+      if (ok) closeModal("password-modal");
+    });
+
+    // Logout all
+    document.getElementById("logout-all-btn").addEventListener("click", () => postSecurityAction("logout_all_devices"));
+
+    // 2FA
+    let twoFactorState = "not_enabled"; // not_enabled | pending | enabled
+
+    const tfa = setupToggle("2fa-toggle", async (enabled, set) => {
+      const sessionToken = getSessionToken();
+      if (!sessionToken) {
+        showToast("Missing sessionToken. Please log in again.", "error");
+        set(!enabled);
+        return;
+      }
+
+      try {
+        if (enabled) {
+          await postJson("https://api.taxmonitor.pro/forms/account/2fa/enroll-init", {
+            eventId: getEventId(),
+            sessionToken
+          });
+
+          twoFactorState = "pending";
+          showToast("2FA setup started. Complete verification to finish.", "info");
+        } else {
+          await postJson("https://api.taxmonitor.pro/forms/account/2fa/disable", {
+            eventId: getEventId(),
+            sessionToken
+          });
+
+          twoFactorState = "not_enabled";
+          showToast("2FA disabled", "success");
+        }
+      } catch (e) {
+        showToast(String(e.message || "2FA update failed"), "error");
+        set(!enabled);
+        return;
+      }
+
+      render2FAStatus();
+    });
+
+    function render2FAStatus() {
+      const el = document.getElementById("2fa-status");
+      const toggle = document.getElementById("2fa-toggle");
+      if (!el || !toggle) return;
+
+      if (twoFactorState === "enabled") {
+        el.textContent = "Enabled";
+        el.className = "text-emerald-400 text-sm";
+        toggle.dataset.enabled = "true";
+        toggle.classList.add("active");
+        toggle.setAttribute("aria-checked", "true");
+      } else if (twoFactorState === "pending") {
+        el.textContent = "Setup in progress";
+        el.className = "text-amber-300 text-sm";
+        toggle.dataset.enabled = "true";
+        toggle.classList.add("active");
+        toggle.setAttribute("aria-checked", "true");
+      } else {
+        el.textContent = "Not enabled";
+        el.className = "text-slate-400 text-sm";
+        toggle.dataset.enabled = "false";
+        toggle.classList.remove("active");
+        toggle.setAttribute("aria-checked", "false");
+      }
+    }
+
+    // Pref toggles
+    setupToggle("email-notif-toggle", (enabled) => { prefsState.notificationsEmail = enabled; scheduleSavePreferences(); });
+    setupToggle("inapp-notif-toggle", (enabled) => { prefsState.notificationsInApp = enabled; scheduleSavePreferences(); });
+    setupToggle("sms-notif-toggle", (enabled) => { prefsState.notificationsSms = enabled; scheduleSavePreferences(); });
+
+    // Theme
+    document.querySelectorAll(".theme-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        prefsState.theme = String(btn.dataset.theme || "dark");
+        applyThemeButtons(prefsState.theme);
+        scheduleSavePreferences();
+      });
+    });
+
+    // Apply prefs defaults to UI after boot
+    (function syncPrefsUi() {
+      const email = document.getElementById("email-notif-toggle");
+      const inapp = document.getElementById("inapp-notif-toggle");
+      const sms = document.getElementById("sms-notif-toggle");
+
+      if (email) {
+        email.dataset.enabled = String(!!prefsState.notificationsEmail);
+        email.classList.toggle("active", !!prefsState.notificationsEmail);
+        email.setAttribute("aria-checked", String(!!prefsState.notificationsEmail));
+      }
+
+      if (inapp) {
+        inapp.dataset.enabled = String(!!prefsState.notificationsInApp);
+        inapp.classList.toggle("active", !!prefsState.notificationsInApp);
+        inapp.setAttribute("aria-checked", String(!!prefsState.notificationsInApp));
+      }
+
+      if (sms) {
+        sms.dataset.enabled = String(!!prefsState.notificationsSms);
+        sms.classList.toggle("active", !!prefsState.notificationsSms);
+        sms.setAttribute("aria-checked", String(!!prefsState.notificationsSms));
+      }
+
+      applyThemeButtons(prefsState.theme);
+
+      const el = document.getElementById("2fa-status");
+      const enabled = document.getElementById("2fa-toggle")?.dataset.enabled === "true";
+      if (el) {
+        el.textContent = enabled ? "Enabled" : "Not enabled";
+        el.className = enabled ? "text-emerald-400 text-sm" : "text-slate-400 text-sm";
+      }
+
+      if (tfa && tfa.set) tfa.set(enabled);
+    })();
+  </script>
+</body>
+</html>
