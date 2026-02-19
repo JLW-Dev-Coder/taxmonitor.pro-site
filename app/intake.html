@@ -146,6 +146,7 @@
 </head>
 
 <body class="h-full bg-slate-950 text-slate-100">
+  <div class="min-h-full flex flex-col">
   <div class="aurora">
     <div class="aurora-blob aurora-blob-1"></div>
     <div class="aurora-blob aurora-blob-2"></div>
@@ -223,7 +224,7 @@
     </div>
   </header>
 
-<main class="max-w-2xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+<main class="flex-1 max-w-2xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
     <div class="relative z-10">
       <!-- Title / Hero (match offer.html title block styling) -->
       <div class="glass-card p-8 text-center fade-in-up delay-1 mb-10">
@@ -518,9 +519,9 @@
     <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
       <p class="text-slate-500 text-sm">© <span id="footer-year"></span> Tax Monitor Pro. All rights reserved.</p>
       <div class="flex items-center gap-6">
-        <a href="/site/contact.html" class="text-slate-400 hover:text-amber-400 text-sm transition-colors">Contact Support</a>
         <a href="/legal/privacy.html" class="text-slate-400 hover:text-amber-400 text-sm transition-colors">Privacy Policy</a>
         <a href="/legal/terms.html" class="text-slate-400 hover:text-amber-400 text-sm transition-colors">Terms of Service</a>
+        <a href="/site/contact.html" class="text-slate-400 hover:text-amber-400 text-sm transition-colors">Contact Support</a>
       </div>
     </div>
   </footer>
@@ -656,5 +657,6 @@
       });
     })();
   </script>
+  </div>
 </body>
 </html>
