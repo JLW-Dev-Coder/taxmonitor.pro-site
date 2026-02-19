@@ -1,4 +1,4 @@
-﻿{
+{
     "baseUrl":  "https://api.taxmonitor.pro",
     "contractRegistryVersion":  1,
     "entries":  [
@@ -292,3 +292,4 @@
                     }
                 ]
 }
+
