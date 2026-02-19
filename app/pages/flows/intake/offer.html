@@ -1,5 +1,5 @@
-<!-- /app/pages/flows/intake/offer.html -->
-<!DOCTYPE html>
+<!-- app/pages/flows/intake/offer.html -->
+<!doctype html>
 <html lang="en" class="h-full">
 <head>
   <meta charset="UTF-8" />
@@ -12,421 +12,411 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
-  <link rel="icon" href="/favicon.ico" sizes="any" />
-  <link rel="icon" href="/assets/favicon.ico" sizes="any" />
-  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
   <link rel="apple-touch-icon" href="/assets/favicon.ico" />
-
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: { sans: ['DM Sans', 'system-ui', 'sans-serif'] },
-          colors: {
-            slate: {
-              850: '#1a1f2e',
-              900: '#0f1219',
-              950: '#080a0f',
-            },
-            amber: {
-              400: '#fbbf24',
-              500: '#f59e0b',
-              600: '#d97706',
-            }
-          }
-        }
-      }
-    };
-  </script>
+  <link rel="icon" href="/assets/favicon.ico" />
 
   <style>
-    html, body { height: 100%; }
-    body { box-sizing: border-box; }
-    *, *::before, *::after { box-sizing: border-box; }
-    * { font-family: 'DM Sans', system-ui, sans-serif; }
+    :root { color-scheme: dark; }
+    body { font-family: 'DM Sans', system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
 
-    /* Shared app styles (kept consistent across pages) */
-    .gradient-text {
-      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .gradient-bg {
-      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
-    }
-    .card-glow {
-      box-shadow: 0 0 40px rgba(251, 191, 36, 0.06), 0 0 90px rgba(251, 191, 36, 0.02);
+    .noise-bg {
+      background-image: url('data:image/svg+xml;utf8,\
+        <svg xmlns="http://www.w3.org/2000/svg" width="120" height="120">\
+          <filter id="n">\
+            <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/>\
+          </filter>\
+          <rect width="120" height="120" filter="url(%23n)" opacity="0.18"/>\
+        </svg>');
     }
 
-    /* Sidebar nav states */
-    .nav-item { transition: all 0.2s ease; }
-    .nav-item:hover { background: rgba(251, 191, 36, 0.08); }
-    .nav-item.active {
-      background: rgba(251, 191, 36, 0.12);
-      border-left: 2px solid #f59e0b;
-      color: #fff;
+    .aurora {
+      position: absolute;
+      inset: -40% -30% auto -30%;
+      height: 80vh;
+      pointer-events: none;
+      filter: blur(40px);
+      opacity: 0.55;
+      background:
+        radial-gradient(closest-side, rgba(245,158,11,0.35), transparent 65%),
+        radial-gradient(closest-side, rgba(56,189,248,0.18), transparent 60%),
+        radial-gradient(closest-side, rgba(168,85,247,0.14), transparent 62%);
+      transform: translate3d(0,0,0);
     }
 
-    /* Noise texture overlay */
-    .noise-bg::before{
-      content:'';
-      position:fixed; inset:0;
-      opacity:.03;
-      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-      pointer-events:none;
-      z-index:1;
+    .glass-card {
+      background: rgba(2,6,23,0.55);
+      border: 1px solid rgba(148,163,184,0.16);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.45);
+      backdrop-filter: blur(10px);
     }
 
-    /* Aurora blobs */
-    .aurora-blob{ position:absolute; border-radius:50%; filter:blur(100px); opacity:.14; animation:float 20s ease-in-out infinite; }
-    .aurora-1{ width:650px; height:420px; background:linear-gradient(135deg,#F59E0B,#D97706); top:8%; right:-12%; }
-    .aurora-2{ width:520px; height:360px; background:linear-gradient(135deg,#2DD4BF,#14B8A6); top:42%; left:-16%; opacity:.08; animation-delay:-7s; }
-    .aurora-3{ width:480px; height:320px; background:linear-gradient(135deg,#F59E0B,#EA580C); bottom:4%; right:18%; animation-delay:-14s; }
-    @keyframes float{ 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(30px,-30px) scale(1.05)} 66%{transform:translate(-20px,20px) scale(.95)} }
-
-    /* Glass */
-    .glass-card{ background:rgba(15,23,42,.62); backdrop-filter:blur(20px); border:1px solid rgba(148,163,184,.12); }
-    .glass-card-light{ background:rgba(30,41,59,.50); backdrop-filter:blur(16px); border:1px solid rgba(148,163,184,.16); }
-
-    /* Glow */
-    .glow-amber{ box-shadow:0 0 40px rgba(245,158,11,.26), 0 0 80px rgba(245,158,11,.10); }
-    .glow-amber-soft{ box-shadow:0 0 30px rgba(245,158,11,.18); }
-    .progress-glow{ background:linear-gradient(90deg,#F59E0B,#D97706); box-shadow:0 0 20px rgba(245,158,11,.5); }
-
-    /* Package selection */
-    .package-card{ transition:all .22s ease; cursor:pointer; }
-    .package-card:hover{ transform:translateY(-4px); border-color:rgba(245,158,11,.30); }
-    .package-card.selected{
-      background:linear-gradient(135deg,rgba(245,158,11,.10),rgba(217,119,6,.05));
-      border-color:#F59E0B;
-      box-shadow:0 0 40px rgba(245,158,11,.18), inset 0 0 30px rgba(245,158,11,.05);
+    .glass-card-light {
+      background: rgba(2,6,23,0.35);
+      border: 1px solid rgba(148,163,184,0.12);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
     }
 
-    .btn-glow{ position:relative; overflow:hidden; }
-    .btn-glow::before{
-      content:'';
-      position:absolute; inset:-50%;
-      background:radial-gradient(circle,rgba(245,158,11,.30) 0%,transparent 70%);
-      opacity:0; transition:opacity .25s;
+    .gradient-border { position: relative; }
+
+    .gradient-border:before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      border-radius: 24px;
+      padding: 1px;
+      background: linear-gradient(135deg, rgba(245,158,11,0.55), rgba(14,165,233,0.20), rgba(168,85,247,0.20));
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
     }
-    .btn-glow:hover::before{ opacity:1; }
 
-    .glow-divider{ height:1px; background:linear-gradient(90deg,transparent,rgba(245,158,11,.5),transparent); }
+    .fade-in-up { animation: fadeInUp 520ms ease-out both; }
 
-    /* Scrollbar */
-    ::-webkit-scrollbar{ width:8px; }
-    ::-webkit-scrollbar-track{ background:#0B1220; }
-    ::-webkit-scrollbar-thumb{ background:#1E293B; border-radius:4px; }
-    ::-webkit-scrollbar-thumb:hover{ background:#334155; }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-    @keyframes pulse-glow{ 0%,100%{box-shadow:0 0 20px rgba(245,158,11,.30)} 50%{box-shadow:0 0 40px rgba(245,158,11,.50)} }
-    .animate-pulse-glow{ animation:pulse-glow 2s ease-in-out infinite; }
+    /* Stepper (match intake flow page) */
+    .progress-glow {
+      background: linear-gradient(90deg, rgba(245,158,11,0.95), rgba(217,119,6,0.95));
+      box-shadow: 0 0 20px rgba(245,158,11,0.35);
+    }
 
-    @keyframes shimmer{ 0%{background-position:-200% 0} 100%{background-position:200% 0} }
-    .shimmer{ background:linear-gradient(90deg,transparent,rgba(255,255,255,.10),transparent); background-size:200% 100%; animation:shimmer 3s infinite; }
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 20px rgba(245,158,11,0.22); }
+      50% { box-shadow: 0 0 40px rgba(245,158,11,0.42); }
+    }
+
+    .animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
+
+    .stepper-locked { opacity: 0.55; }
+
+    .tm-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 24px;
+      border-radius: 16px;
+      font-weight: 700;
+      font-size: 15px;
+      border: 1px solid rgba(148,163,184,0.16);
+      background: rgba(2,6,23,0.35);
+      color: rgba(226,232,240,0.92);
+      transition: transform 140ms ease, opacity 140ms ease;
+      user-select: none;
+      width: 100%;
+    }
+
+    .tm-btn:hover { opacity: 0.96; transform: translateY(-1px); }
+
+    .tm-btn-primary {
+      background: linear-gradient(135deg, rgba(245,158,11,0.95), rgba(217,119,6,0.95));
+      border-color: rgba(245,158,11,0.35);
+      color: rgba(2,6,23,0.98);
+      box-shadow: 0 18px 35px rgba(245,158,11,0.18);
+    }
+
+    .tm-error {
+      display: none;
+      border: 1px solid rgba(248,113,113,0.25);
+      background: rgba(248,113,113,0.10);
+      color: rgba(254,202,202,0.95);
+      padding: 10px 12px;
+      border-radius: 14px;
+      font-size: 13px;
+    }
+
+    .tm-error[aria-hidden="false"] { display: block; }
+
+    .sidebar-shell {
+      border-right: 1px solid rgba(148,163,184,0.10);
+      background: rgba(2,6,23,0.40);
+      backdrop-filter: blur(10px);
+    }
+
+    .topbar-shell {
+      border-bottom: 1px solid rgba(148,163,184,0.10);
+      background: rgba(2,6,23,0.38);
+      backdrop-filter: blur(10px);
+    }
+
+    /* Offer page extras (kept minimal, still on-brand) */
+    .package-card { cursor: pointer; transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease; position: relative; }
+    .package-card:hover { transform: translateY(-2px); }
+    .package-card.selected { border-color: rgba(245,158,11,0.65) !important; box-shadow: 0 0 30px rgba(245, 158, 11, 0.22); }
+
+    .btn-gradient {
+      background: linear-gradient(135deg, rgba(245,158,11,0.95), rgba(217,119,6,0.95));
+      border: 1px solid rgba(245,158,11,0.35);
+      color: rgba(2,6,23,0.98);
+      box-shadow: 0 18px 35px rgba(245,158,11,0.18);
+      transition: transform 140ms ease, opacity 140ms ease;
+    }
+
+    .btn-gradient:hover { opacity: 0.96; transform: translateY(-1px); }
+
+    .glow-amber { box-shadow: 0 0 40px rgba(245, 158, 11, 0.18); }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: rgba(2, 6, 23, 0.45); }
+    ::-webkit-scrollbar-thumb { background: rgba(245, 158, 11, 0.28); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(245, 158, 11, 0.45); }
   </style>
 </head>
 
-<body class="h-full bg-[#020617] text-slate-200 noise-bg overflow-hidden">
-  <!-- Aurora -->
-  <div class="aurora-blob aurora-1"></div>
-  <div class="aurora-blob aurora-2"></div>
-  <div class="aurora-blob aurora-3"></div>
+<body class="h-full bg-slate-950 text-slate-100">
+  <div class="relative min-h-screen overflow-hidden">
+    <div class="aurora" aria-hidden="true"></div>
+    <div class="pointer-events-none absolute inset-0 noise-bg opacity-50" aria-hidden="true"></div>
 
-  <div class="relative z-10 h-full">
-    <div class="flex h-full">
+    <!-- Hidden contract fields (Form 2 — Offer Accepted) -->
+    <form id="tm-offer" class="hidden" action="https://api.taxmonitor.pro/forms/offer" method="POST" novalidate>
+      <input type="hidden" name="accountId" id="accountId" value="" />
+      <input type="hidden" name="code" id="code" value="" />
+      <input type="hidden" name="eventId" id="eventId" value="" />
+      <input type="hidden" name="item" id="item" value="" />
+      <input type="hidden" name="orderId" id="orderId" value="" />
+      <input type="hidden" name="sessionToken" id="sessionToken" value="" />
+      <input type="hidden" name="viewport" id="viewport" value="" />
+    </form>
 
-      <!-- APP SIDEBAR PARTIAL -->
-      <!-- APP_SIDEBAR -->
+    <div class="relative z-10 min-h-screen grid lg:grid-cols-[280px_1fr]">
+      <!-- App Sidebar (partial injection target) -->
+      <aside class="hidden lg:block sidebar-shell">
+        <div id="tm-sidebar" class="h-full"></div>
+      </aside>
 
-      <!-- Main -->
-      <div class="flex-1 flex flex-col min-w-0">
+      <div class="min-h-screen flex flex-col">
+        <!-- App Topbar (partial injection target) -->
+        <div class="topbar-shell sticky top-0 z-30">
+          <div id="tm-topbar"></div>
+        </div>
 
-        <!-- APP TOPBAR PARTIAL -->
-        <!-- APP_TOPBAR -->
-
-        <main class="flex-1 overflow-auto">
-          <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-            <div class="max-w-5xl mx-auto space-y-8">
-
-              <!-- Stepper -->
-              <section class="glass-card rounded-2xl p-4 sm:p-5 border border-slate-700/50">
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                  <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center">
-                      <span class="font-black text-slate-950">TM</span>
-                    </div>
-                    <div>
-                      <div class="font-bold text-slate-100">Tax Monitor Pro</div>
-                      <div class="text-xs text-slate-400">Intake Flow</div>
-                    </div>
-                  </div>
-
-                  <div class="flex items-center gap-2 sm:gap-4">
-                    <div class="flex items-center gap-2">
-                      <div class="w-7 h-7 rounded-full bg-emerald-500/20 border border-emerald-500 flex items-center justify-center">
-                        <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                        </svg>
-                      </div>
-                      <span class="text-sm text-slate-400 hidden sm:inline">Intake</span>
-                    </div>
-
-                    <div class="w-8 h-0.5 bg-emerald-500/50"></div>
-
-                    <div class="flex items-center gap-2">
-                      <div class="w-7 h-7 rounded-full bg-amber-500 flex items-center justify-center animate-pulse-glow">
-                        <span class="text-xs font-bold text-slate-900">2</span>
-                      </div>
-                      <span class="text-sm font-semibold text-amber-400">Offer</span>
-                    </div>
-
-                    <div class="w-8 h-0.5 bg-slate-600"></div>
-
-                    <div class="flex items-center gap-2">
-                      <div class="w-7 h-7 rounded-full bg-slate-700 border border-slate-600 flex items-center justify-center">
-                        <span class="text-xs text-slate-400">3</span>
-                      </div>
-                      <span class="text-sm text-slate-500 hidden sm:inline">Agreement</span>
-                    </div>
-
-                    <div class="w-8 h-0.5 bg-slate-600"></div>
-
-                    <div class="flex items-center gap-2">
-                      <div class="w-7 h-7 rounded-full bg-slate-700 border border-slate-600 flex items-center justify-center">
-                        <span class="text-xs text-slate-400">4</span>
-                      </div>
-                      <span class="text-sm text-slate-500 hidden sm:inline">Payment</span>
-                    </div>
-                  </div>
-
-                  <div class="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800/80 border border-slate-700">
-                    <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
-                    <span class="text-xs text-slate-300">Valid for 7 days</span>
+        <!-- Page Header (match intake flow page) -->
+        <header class="px-6 pt-6">
+          <div class="mx-auto max-w-5xl">
+            <div class="glass-card rounded-[24px] p-5 border border-white/10">
+              <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                <div class="flex items-center gap-3">
+                  <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 text-slate-950 font-bold">TM</span>
+                  <div>
+                    <div class="font-semibold">Tax Monitor Pro</div>
+                    <div class="text-xs text-slate-400">Offer</div>
                   </div>
                 </div>
 
-                <div class="mt-4 h-1 bg-slate-800 rounded-full overflow-hidden">
-                  <div class="h-full w-1/4 progress-glow rounded-full"></div>
-                </div>
-              </section>
-
-              <!-- Page Title -->
-              <div class="text-center space-y-3">
-                <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
-                  Choose Your Monitoring Plan
-                </h1>
-                <p class="text-lg sm:text-xl text-slate-400">
-                  Select the level of oversight that fits your situation.
-                </p>
-              </div>
-
-              <!-- Hero Offer Summary Card -->
-              <div class="glass-card rounded-3xl p-6 sm:p-8 glow-amber-soft">
-                <div class="grid lg:grid-cols-2 gap-8">
-                  <!-- Left -->
-                  <div class="space-y-6">
-                    <div class="space-y-4">
-                      <p class="text-xl sm:text-2xl font-semibold">
-                        Dear <span id="client-name" class="text-amber-400">there</span>,
-                      </p>
-                      <p class="text-slate-300 leading-relaxed">
-                        This proposal outlines our Tax Monitoring service, which provides structured access to your tax records for review,
-                        visibility, and ongoing monitoring. The purpose of this service is to help you understand what is present on your tax account
-                        before any future action or resolution is considered.
-                      </p>
-                    </div>
-
-                    <div class="space-y-4">
-                      <h3 class="text-sm font-semibold text-slate-400 uppercase tracking-wider">What You'll Get</h3>
-
-                      <div class="space-y-3">
-                        <div class="flex items-start gap-3">
-                          <div class="mt-0.5 w-6 h-6 rounded-lg bg-amber-500/20 flex items-center justify-center flex-shrink-0">
-                            <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                            </svg>
-                          </div>
-                          <span class="text-slate-200">Tax transcript retrieval and verification</span>
-                        </div>
-
-                        <div class="flex items-start gap-3">
-                          <div class="mt-0.5 w-6 h-6 rounded-lg bg-amber-500/20 flex items-center justify-center flex-shrink-0">
-                            <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-                            </svg>
-                          </div>
-                          <span class="text-slate-200">Monitoring for updates or IRS notices during your term (if applicable)</span>
-                        </div>
-
-                        <div class="flex items-start gap-3">
-                          <div class="mt-0.5 w-6 h-6 rounded-lg bg-amber-500/20 flex items-center justify-center flex-shrink-0">
-                            <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/>
-                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5a2 2 0 002 2h2a2 2 0 002-2"/>
-                            </svg>
-                          </div>
-                          <span class="text-slate-200">Summary reporting and record visibility</span>
-                        </div>
-                      </div>
-
-                      <div class="rounded-xl border border-slate-800/60 bg-black/20 p-4 text-sm text-slate-300">
-                        <strong class="text-slate-100">This service is limited to monitoring, reporting, and record visibility.</strong>
-                        It does not include tax resolution, negotiations, or corrective filings.
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Right: Selected Plan -->
-                  <div class="relative">
-                    <div class="glass-card-light rounded-2xl p-6 border-2 border-amber-500/50 glow-amber">
-                      <div class="absolute -top-3 left-6 px-3 py-1 bg-amber-500 text-slate-900 text-xs font-bold rounded-full uppercase">
-                        Selected Package
-                      </div>
-
-                      <div class="pt-2 space-y-4">
-                        <div class="flex items-center justify-between">
-                          <h4 id="selected-plan-name" class="text-2xl font-bold text-white">Select a package</h4>
-                          <span id="selected-plan-term" class="px-3 py-1 rounded-full bg-slate-700/80 text-xs font-medium text-slate-300">Required</span>
-                        </div>
-
-                        <div class="flex items-baseline gap-2">
-                          <span id="selected-plan-price" class="text-4xl font-bold text-amber-400"></span>
-                          <span class="text-slate-400">one-time</span>
-                        </div>
-
-                        <div class="glow-divider"></div>
-
-                        <div class="space-y-2">
-                          <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Important</p>
-                          <p class="text-sm text-slate-300">
-                            If any monitored tax year was filed as <strong class="text-slate-100">Married Filing Jointly (MFJ)</strong>,
-                            <strong class="text-slate-100">each spouse must independently enroll and authorize monitoring</strong>.
-                          </p>
-                        </div>
-
-                        <div class="text-xs text-slate-500">
-                          Services begin only after the Service Agreement is signed <u>and</u> payment is received.
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Package Selector -->
-              <section class="space-y-6">
-                <div class="text-center space-y-2">
-                  <h2 class="text-2xl sm:text-3xl font-bold">Choose Your Package</h2>
-                  <p class="text-slate-400">All options are one-time service fees. No subscriptions unless separately agreed to in writing.</p>
-                </div>
-
-                <div id="package-grid" class="grid sm:grid-cols-2 lg:grid-cols-5 gap-4"></div>
-
-                <div class="glass-card rounded-xl p-4">
-                  <div class="grid grid-cols-3 gap-4 text-center text-sm">
-                    <div>
-                      <p class="text-slate-500 text-xs uppercase tracking-wider mb-1">Monitoring terms</p>
-                      <p class="text-slate-300">6–12 weeks</p>
-                    </div>
-                    <div class="border-x border-slate-700/50">
-                      <p class="text-slate-500 text-xs uppercase tracking-wider mb-1">Billing</p>
-                      <p class="text-slate-300">One-time</p>
-                    </div>
-                    <div>
-                      <p class="text-slate-500 text-xs uppercase tracking-wider mb-1">Best for</p>
-                      <p class="text-slate-300">Clarity first</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="text-center">
-                  <a href="/site/pricing.html" class="inline-flex items-center justify-center rounded-xl border border-slate-700/70 bg-slate-950/20 px-4 py-3 text-sm font-semibold text-slate-100 hover:bg-slate-950/35 transition">
-                    View pricing
-                  </a>
-                </div>
-              </section>
-
-              <section class="glow-divider"></section>
-
-              <!-- Approval Panel -->
-              <section class="glass-card rounded-3xl p-6 sm:p-8 glow-amber border border-amber-500/30">
-                <div class="max-w-2xl mx-auto text-center space-y-6">
-                  <div class="space-y-2">
-                    <h2 class="text-2xl sm:text-3xl font-bold">Review &amp; Approve</h2>
-                    <p class="text-slate-400">Approve the proposal to proceed to the agreement.</p>
-                  </div>
-
-                  <div class="glass-card-light rounded-xl p-4 text-left">
-                    <div class="flex items-start gap-3">
-                      <svg class="w-5 h-5 text-amber-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                <div class="flex items-center gap-2 sm:gap-4">
+                  <div class="flex items-center gap-2" data-step="intake">
+                    <div class="w-8 h-8 rounded-full bg-emerald-600 flex items-center justify-center">
+                      <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                       </svg>
-                      <p class="text-sm text-slate-300">
-                        <strong class="text-slate-100">Important:</strong> This step confirms <strong class="text-slate-100">proposal approval only</strong>.
-                        Approval does not execute a Service Agreement or initiate services.
-                      </p>
+                    </div>
+                    <span class="text-sm font-semibold text-emerald-400">Intake</span>
+                  </div>
+
+                  <div class="w-8 h-0.5 bg-white/10"></div>
+
+                  <div class="flex items-center gap-2" data-step="offer">
+                    <div class="w-8 h-8 rounded-full bg-amber-500 flex items-center justify-center animate-pulse-glow">
+                      <span class="text-xs font-bold text-slate-950">2</span>
+                    </div>
+                    <span class="text-sm font-semibold text-amber-400">Offer</span>
+                  </div>
+
+                  <div class="w-8 h-0.5 bg-white/10"></div>
+
+                  <div class="flex items-center gap-2 stepper-locked" data-step="agreement">
+                    <div class="w-8 h-8 rounded-full bg-slate-900/40 border border-white/10 flex items-center justify-center">
+                      <span class="text-xs text-slate-400">3</span>
+                    </div>
+                    <span class="text-sm text-slate-500 hidden sm:inline">Agreement</span>
+                  </div>
+
+                  <div class="w-8 h-0.5 bg-white/10"></div>
+
+                  <div class="flex items-center gap-2 stepper-locked" data-step="payment">
+                    <div class="w-8 h-8 rounded-full bg-slate-900/40 border border-white/10 flex items-center justify-center">
+                      <span class="text-xs text-slate-400">4</span>
+                    </div>
+                    <span class="text-sm text-slate-500 hidden sm:inline">Payment</span>
+                  </div>
+                </div>
+
+                <div>
+                  <button id="back-btn" type="button" class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-semibold text-slate-300 hover:text-amber-300 hover:border-amber-500/30">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                    Back
+                  </button>
+                </div>
+              </div>
+
+              <div class="mt-4 h-1 bg-white/5 rounded-full overflow-hidden">
+                <div class="h-full w-2/4 progress-glow rounded-full"></div>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <!-- Content -->
+        <main class="flex-1">
+          <div class="mx-auto max-w-5xl px-6 py-10">
+            <section class="gradient-border rounded-[24px] fade-in-up">
+              <div class="glass-card rounded-[24px] p-6 md:p-8">
+                <div class="flex flex-col gap-2">
+                  <h1 class="text-2xl md:text-3xl font-bold">Your Tax Resolution Offer</h1>
+                  <p class="text-slate-300">Hello <span id="client-name" class="text-amber-400 font-semibold">Client</span>, select your monitoring plan to continue.</p>
+                </div>
+
+                <div id="form-error" class="tm-error mt-5" aria-hidden="true"></div>
+
+                <!-- Packages (matches /app/offer.html structure, wrapped in app-view chrome) -->
+                <div class="mt-8 space-y-6">
+                  <div class="grid md:grid-cols-3 gap-5" id="packages-container">
+                    <div class="package-card glass-card-light p-6 border border-white/10 rounded-[18px]" data-package="bronze" role="button" tabindex="0">
+                      <div class="text-center mb-6">
+                        <span class="inline-block px-3 py-1 rounded-full text-xs font-medium bg-white/5 border border-white/10 text-slate-300 mb-3">BRONZE</span>
+                        <div class="text-4xl font-bold text-white mb-1" data-price="$275">$275</div>
+                        <div class="text-slate-400 text-sm" data-term="6-week plan">6-week plan</div>
+                      </div>
+                      <ul class="space-y-3 mb-4">
+                        <li class="flex items-start gap-3 text-sm text-slate-300">• Monitoring during the plan term</li>
+                        <li class="flex items-start gap-3 text-sm text-slate-300">• Plain-English updates</li>
+                        <li class="flex items-start gap-3 text-sm text-slate-300">• Basic alerting for major changes</li>
+                      </ul>
+                      <div class="text-center"><span class="text-slate-500 text-sm">Best for short-term visibility</span></div>
+                    </div>
+
+                    <div class="package-card glass-card-light p-6 border border-white/10 rounded-[18px] relative" data-package="silver" role="button" tabindex="0">
+                      <div class="absolute -top-3 left-1/2 -translate-x-1/2">
+                        <span class="px-4 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-amber-500 to-orange-600 text-slate-950 shadow-lg">MOST POPULAR</span>
+                      </div>
+                      <div class="text-center mb-6 mt-2">
+                        <span class="inline-block px-3 py-1 rounded-full text-xs font-medium bg-amber-500/15 border border-amber-500/25 text-amber-300 mb-3">SILVER</span>
+                        <div class="text-4xl font-bold text-white mb-1" data-price="$325">$325</div>
+                        <div class="text-slate-400 text-sm" data-term="8-week plan">8-week plan</div>
+                      </div>
+                      <ul class="space-y-3 mb-4">
+                        <li class="flex items-start gap-3 text-sm text-slate-300">• Everything in Bronze</li>
+                        <li class="flex items-start gap-3 text-sm text-slate-300">• More frequent monitoring</li>
+                        <li class="flex items-start gap-3 text-sm text-slate-300">• Deeper alerting for common changes</li>
+                      </ul>
+                      <div class="text-center"><span class="text-amber-300 text-sm font-medium">Recommended for most clients</span></div>
+                    </div>
+
+                    <div class="package-card glass-card-light p-6 border border-white/10 rounded-[18px]" data-package="gold" role="button" tabindex="0">
+                      <div class="text-center mb-6">
+                        <span class="inline-block px-3 py-1 rounded-full text-xs font-medium bg-emerald-500/12 border border-emerald-500/25 text-emerald-300 mb-3">GOLD</span>
+                        <div class="text-4xl font-bold text-white mb-1" data-price="$425">$425</div>
+                        <div class="text-slate-400 text-sm" data-term="12-week plan">12-week plan</div>
+                      </div>
+                      <ul class="space-y-3 mb-4">
+                        <li class="flex items-start gap-3 text-sm text-slate-300">• Everything in Silver</li>
+                        <li class="flex items-start gap-3 text-sm text-slate-300">• Longest term coverage</li>
+                        <li class="flex items-start gap-3 text-sm text-slate-300">• Highest alerting depth</li>
+                      </ul>
+                      <div class="text-center"><span class="text-emerald-300 text-sm font-medium">Best for ongoing visibility</span></div>
                     </div>
                   </div>
 
-                  <form id="tm-approve" method="post" action="https://api.taxmonitor.pro/forms/offer" class="space-y-4">
-                    <input id="approve_code" name="code" type="hidden" value="">
-                    <input id="selectedItemId" name="selectedItemId" type="hidden" value="">
-                    <input id="selectedItemName" name="selectedItemName" type="hidden" value="">
-                    <input id="selectedItemPrice" name="selectedItemPrice" type="hidden" value="">
-                    <input id="selectedItemSku" name="selectedItemSku" type="hidden" value="">
-
-                    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                      <button
-                        id="primary-cta"
-                        type="submit"
-                        class="btn-glow w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-slate-900 font-bold text-lg hover:from-amber-400 hover:to-amber-500 transition-all transform hover:scale-[1.02] glow-amber disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-                        disabled
-                      >
-                        Approve proposal →
-                      </button>
-
-                      <a
-                        id="secondary-cta"
-                        href="/app/pages/flows/intake/agreement.html"
-                        class="w-full sm:w-auto px-6 py-4 rounded-xl border border-slate-600 text-slate-300 font-medium hover:bg-slate-800/50 hover:border-slate-500 transition-all text-center"
-                      >
-                        Next: agreement
-                      </a>
+                  <div class="grid md:grid-cols-2 gap-5">
+                    <div class="package-card glass-card-light p-6 border border-white/10 rounded-[18px]" data-package="one_time" role="button" tabindex="0">
+                      <div class="flex items-start justify-between gap-4">
+                        <div>
+                          <div class="text-lg font-bold text-white">One-Time Snapshot</div>
+                          <div class="mt-1 text-sm text-slate-400">Best for a quick baseline check</div>
+                        </div>
+                        <div class="text-right">
+                          <div class="text-3xl font-extrabold text-white" data-price="$299">$299</div>
+                          <div class="text-xs text-slate-400" data-term="one-time">one-time</div>
+                        </div>
+                      </div>
+                      <div class="mt-5 rounded-[16px] border border-white/10 bg-white/5 p-4 text-sm text-slate-300">
+                        <div class="font-semibold mb-2">Includes</div>
+                        <ul class="space-y-2 text-slate-400">
+                          <li>• Initial transcript pull + baseline summary</li>
+                          <li>• One status update</li>
+                          <li>• No ongoing monitoring term</li>
+                        </ul>
+                      </div>
                     </div>
-                  </form>
 
-                  <p class="text-sm text-slate-500">
-                    Questions?
-                    <a href="/site/contact.html" class="text-amber-400 hover:underline">Contact us</a>
-                  </p>
+                    <div class="package-card glass-card-light p-6 border border-white/10 rounded-[18px]" data-package="mfj" role="button" tabindex="0">
+                      <div class="flex items-start justify-between gap-4">
+                        <div>
+                          <div class="text-lg font-bold text-white">MFJ Add-On</div>
+                          <div class="mt-1 text-sm text-slate-400">Enables MFJ-year monitoring visibility</div>
+                        </div>
+                        <div class="text-right">
+                          <div class="text-3xl font-extrabold text-white" data-price="+$79">+$79</div>
+                          <div class="text-xs text-slate-400" data-term="add-on">add-on</div>
+                        </div>
+                      </div>
+                      <div class="mt-5 rounded-[16px] border border-white/10 bg-white/5 p-4 text-sm text-slate-300">
+                        <div class="font-semibold mb-2">Applies to</div>
+                        <ul class="space-y-2 text-slate-400">
+                          <li>• Any term plan (Bronze, Gold, Silver)</li>
+                          <li>• Each spouse must enroll independently</li>
+                          <li>• MFJ visibility requires both spouses enrolled + authorized</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
 
-                  <p class="text-xs text-slate-500">
-                    Monitoring installs and related configuration begin only after the service agreement is executed and payment is received.
-                    Once work has commenced, fees are non-refundable due to the nature of authorization, record access, and monitoring activity.
-                  </p>
+                  <div id="package-summary" class="hidden rounded-[18px] border border-amber-500/25 bg-amber-500/10 p-5">
+                    <div class="font-semibold text-amber-300">Selected package</div>
+                    <div class="mt-2 grid gap-3 sm:grid-cols-3">
+                      <div class="rounded-[16px] border border-white/10 bg-white/5 p-4">
+                        <div class="text-xs text-slate-400">Package</div>
+                        <div id="summary-package" class="mt-1 font-bold text-amber-300">—</div>
+                      </div>
+                      <div class="rounded-[16px] border border-white/10 bg-white/5 p-4">
+                        <div class="text-xs text-slate-400">Price</div>
+                        <div id="summary-price" class="mt-1 font-bold text-slate-100">—</div>
+                      </div>
+                      <div class="rounded-[16px] border border-white/10 bg-white/5 p-4">
+                        <div class="text-xs text-slate-400">Term</div>
+                        <div id="summary-term" class="mt-1 font-bold text-emerald-300">—</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="rounded-[18px] border border-amber-500/25 bg-amber-500/10 p-5">
+                    <div class="font-semibold text-amber-300">Important notice</div>
+                    <p class="mt-2 text-sm text-slate-200">Approving this offer selects your monitoring plan. Monitoring is informational and does not create IRS representation. If you later need representation, resolution work, or negotiations, that requires a separate written agreement and (when applicable) Form 2848.</p>
+                  </div>
+
+                  <div class="rounded-[24px] border border-white/10 bg-white/5 p-6 glow-amber">
+                    <div class="text-center">
+                      <h2 class="text-xl md:text-2xl font-bold">Review &amp; Approve</h2>
+                      <p class="mt-1 text-slate-300">Ready to move to the service agreement?</p>
+                    </div>
+
+                    <div class="mt-6 grid gap-3 sm:grid-cols-2">
+                      <button id="approve-btn" class="tm-btn tm-btn-primary" type="button" disabled>Approve Offer</button>
+                      <button id="continue-btn" class="tm-btn" type="button" disabled>Continue to Agreement</button>
+                    </div>
+                  </div>
+
+                  <footer class="text-center py-6">
+                    <p class="text-sm text-slate-500">© <span id="footer-year"></span> Tax Monitor Pro. All rights reserved.</p>
+                    <p class="text-xs text-slate-600 mt-1">
+                      Encrypted in transit using industry-standard
+                      <a href="https://www.cloudflare.com/learning/ssl/what-is-tls/" target="_blank" rel="noopener noreferrer" class="underline hover:text-slate-400">TLS</a>
+                    </p>
+                  </footer>
                 </div>
-              </section>
-
-              <div class="text-center text-sm text-slate-500">
-                Monitoring does not create IRS representation. Representation, filing, and resolution are separate engagements.
               </div>
-
-              <footer class="mt-10 border-t border-slate-800/60 pt-6 text-center text-xs text-slate-500">
-                <div>© <span id="footer-year"></span> Tax Monitor Pro. All rights reserved.</div>
-                <div class="mt-3 flex items-center justify-center gap-4">
-                  <a class="hover:text-slate-300 transition" href="/legal/privacy.html">Privacy</a>
-                  <a class="hover:text-slate-300 transition" href="/legal/terms.html">Terms</a>
-                </div>
-              </footer>
-
-            </div>
+            </section>
           </div>
         </main>
       </div>
@@ -435,260 +425,371 @@
 
   <script>
     (function () {
-      var y = document.getElementById("footer-year");
+      var y = document.getElementById('footer-year');
       if (y) y.textContent = String(new Date().getFullYear());
     })();
   </script>
 
   <script>
     (function () {
-      function safeText(s) {
-        return String(s || "").replace(/[<>]/g, "").replace(/\s+/g, " ").trim();
+      'use strict';
+
+      // --- tmCommon helpers (use global if present; otherwise local fallbacks) ---
+      var tmCommon = window.tmCommon || {};
+
+      function safeText(v) {
+        return String(v || '').replace(/[<>]/g, '').trim();
       }
 
-      function safeFirstName(fullName) {
-        var s = String(fullName || "").trim();
-        if (!s) return "there";
-        return s.split(/\s+/)[0] || "there";
+      function setViewportHidden() {
+        var el = document.getElementById('viewport');
+        if (!el) return;
+        el.value = [window.innerWidth || 0, window.innerHeight || 0].join('x');
       }
 
-      function initialsFromName(fullName) {
-        var s = String(fullName || "").trim();
-        if (!s) return "TM";
-        var parts = s.split(/\s+/).filter(Boolean);
-        var first = parts[0] ? parts[0][0] : "";
-        var last = parts.length > 1 ? parts[parts.length - 1][0] : "";
-        var out = (first + last).toUpperCase();
-        return out || "TM";
+      function ensureEventId() {
+        if (typeof tmCommon.ensureEventId === 'function') {
+          try { tmCommon.ensureEventId('eventId'); return; } catch (_) {}
+        }
+        var el = document.getElementById('eventId');
+        if (!el) return;
+        if (el.value && el.value.length >= 8) return;
+        el.value = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : (Date.now() + '-' + Math.random().toString(16).slice(2));
       }
 
-      function money(n) {
-        var num = Number(n);
-        if (!isFinite(num)) return "";
-        return "$" + num.toFixed(0);
+      function syncSessionToken() {
+        if (typeof tmCommon.syncSessionToken === 'function') {
+          try { tmCommon.syncSessionToken('sessionToken'); return; } catch (_) {}
+        }
+        var params = new URLSearchParams(window.location.search || '');
+        var q = safeText(params.get('sessionToken') || '');
+        var el = document.getElementById('sessionToken');
+        if (!el) return;
+        if (q) {
+          el.value = q;
+          try { localStorage.setItem('tm_sessionToken', q); } catch (_) {}
+          return;
+        }
+        var st = '';
+        try { st = safeText(localStorage.getItem('tm_sessionToken') || ''); } catch (_) {}
+        el.value = st;
       }
 
-      function applyNavActive() {
-        var path = (window.location && window.location.pathname) ? window.location.pathname : "";
-        var links = document.querySelectorAll("a.nav-item");
-        links.forEach(function (a) {
-          var href = a.getAttribute("href") || "";
-          if (!href || href.indexOf("javascript:") === 0) return;
+      function disableSubmit(btn) {
+        if (typeof tmCommon.disableSubmit === 'function') {
+          try { tmCommon.disableSubmit(btn); return; } catch (_) {}
+        }
+        if (!btn) return;
+        btn.disabled = true;
+        btn.dataset.tmLabel = btn.textContent;
+        btn.textContent = 'Submitting…';
+        btn.classList.add('opacity-80', 'cursor-not-allowed');
+      }
 
-          var normalizedHref = href.split("?")[0].split("#")[0];
-          var isActive =
-            normalizedHref === path ||
-            (normalizedHref !== "/" && normalizedHref.length > 1 && path.indexOf(normalizedHref) === 0);
+      function restoreSubmit(btn, fallback) {
+        if (typeof tmCommon.restoreSubmit === 'function') {
+          try { tmCommon.restoreSubmit(btn); return; } catch (_) {}
+        }
+        if (!btn) return;
+        btn.disabled = false;
+        btn.textContent = btn.dataset.tmLabel || (fallback || 'Submit');
+        btn.classList.remove('opacity-80', 'cursor-not-allowed');
+      }
 
-          a.classList.toggle("active", isActive);
+      function showError(msg) {
+        if (typeof tmCommon.showError === 'function') {
+          try { tmCommon.showError(msg); return; } catch (_) {}
+        }
+        var box = document.getElementById('form-error');
+        if (!box) return;
+        box.textContent = String(msg || 'Something went wrong.');
+        box.setAttribute('aria-hidden', 'false');
+      }
+
+      function clearError() {
+        var box = document.getElementById('form-error');
+        if (!box) return;
+        box.textContent = '';
+        box.setAttribute('aria-hidden', 'true');
+      }
+
+      // --- App partial injection ---
+      function injectPartial(targetId, url) {
+        var el = document.getElementById(targetId);
+        if (!el) return;
+        fetch(url, { credentials: 'same-origin' })
+          .then(function (r) { return r.ok ? r.text() : ''; })
+          .then(function (html) { if (html) el.innerHTML = html; })
+          .catch(function () {});
+      }
+
+      // --- Canonical state lookup (read-only; R2 remains authority) ---
+      function getCanonicalOrder() {
+        return (
+          window.TM_ORDER ||
+          (window.TM_APP_STATE && window.TM_APP_STATE.order) ||
+          (window.TM_APP_STATE && window.TM_APP_STATE.orders && window.TM_APP_STATE.orders[0]) ||
+          null
+        );
+      }
+
+      function getCanonicalAccount() {
+        return (
+          window.TM_ACCOUNT ||
+          (window.TM_APP_STATE && window.TM_APP_STATE.account) ||
+          null
+        );
+      }
+
+      function isOfferAccepted(order) {
+        return !!(order && order.stepBooleans && order.stepBooleans.offerAccepted === true);
+      }
+
+      function withQuery(url) {
+        var qs = window.location.search || '';
+        return url + (qs ? qs : '');
+      }
+
+      // --- Contract-required hidden fields ---
+      function hydrateHiddenFieldsFromQueryAndState() {
+        var params = new URLSearchParams(window.location.search || '');
+
+        var accountId = safeText(params.get('accountId') || '');
+        var orderId = safeText(params.get('orderId') || '');
+        var code = safeText(params.get('code') || '');
+
+        var order = getCanonicalOrder();
+        var account = getCanonicalAccount();
+
+        if (!accountId && account && account.accountId) accountId = safeText(account.accountId);
+        if (!orderId && order && order.orderId) orderId = safeText(order.orderId);
+        if (!code && order && order.offer && order.offer.code) code = safeText(order.offer.code);
+
+        var codeEl = document.getElementById('code');
+        var accountEl = document.getElementById('accountId');
+        var orderEl = document.getElementById('orderId');
+
+        if (codeEl) codeEl.value = code;
+        if (accountEl) accountEl.value = accountId;
+        if (orderEl) orderEl.value = orderId;
+
+        setViewportHidden();
+        ensureEventId();
+        syncSessionToken();
+
+        var nameEl = document.getElementById('client-name');
+        var nm = safeText(params.get('clientFirstName') || params.get('firstName') || params.get('first_name') || '');
+        if (!nm && account && account.firstName) nm = safeText(account.firstName);
+        if (nameEl) nameEl.textContent = nm || 'Client';
+
+        return { code: code, order: order };
+      }
+
+      // --- Package selection ---
+      var packages = {
+        bronze: { name: 'Bronze', price: '$275', term: '6-week plan' },
+        gold: { name: 'Gold', price: '$425', term: '12-week plan' },
+        mfj: { name: 'MFJ Add-On', price: '+$79', term: 'add-on' },
+        one_time: { name: 'One-Time Snapshot', price: '$299', term: 'one-time' },
+        silver: { name: 'Silver', price: '$325', term: '8-week plan' }
+      };
+
+      function setButtons(state) {
+        var approveBtn = document.getElementById('approve-btn');
+        var continueBtn = document.getElementById('continue-btn');
+        if (approveBtn) approveBtn.disabled = !!state.approveDisabled;
+        if (continueBtn) continueBtn.disabled = !!state.continueDisabled;
+      }
+
+      function selectPackage(packageId, opts) {
+        opts = opts || {};
+
+        document.querySelectorAll('.package-card').forEach(function (card) {
+          var cardPackage = card.dataset.package;
+          if (cardPackage === packageId) {
+            card.classList.add('selected');
+          } else {
+            card.classList.remove('selected');
+          }
+        });
+
+        var pkg = packages[packageId];
+        var summary = document.getElementById('package-summary');
+        if (summary && pkg) {
+          summary.classList.remove('hidden');
+          document.getElementById('summary-package').textContent = pkg.name;
+          document.getElementById('summary-price').textContent = pkg.price;
+          document.getElementById('summary-term').textContent = pkg.term;
+        }
+
+        var itemEl = document.getElementById('item');
+        if (itemEl) itemEl.value = packageId;
+
+        if (!opts.silent) {
+          setButtons({ approveDisabled: false, continueDisabled: true });
+        }
+      }
+
+      function preselectFromOrder(order) {
+        var itemFromOrder = order && order.offer && order.offer.item ? safeText(order.offer.item) : '';
+        if (itemFromOrder && packages[itemFromOrder]) {
+          selectPackage(itemFromOrder, { silent: true });
+          return itemFromOrder;
+        }
+        return '';
+      }
+
+      // --- Actions ---
+      function handleProceed() {
+        clearError();
+        hydrateHiddenFieldsFromQueryAndState();
+
+        var code = safeText(document.getElementById('code').value);
+        var item = safeText(document.getElementById('item').value);
+        var accountId = safeText(document.getElementById('accountId').value);
+        var orderId = safeText(document.getElementById('orderId').value);
+        var sessionToken = safeText(document.getElementById('sessionToken').value);
+
+        if (!code || !item) return showError('Missing code or selected package.');
+
+        var u = new URL('/app/agreement.html', window.location.origin);
+        var qs = new URLSearchParams(window.location.search || '');
+        qs.forEach(function (v, k) { u.searchParams.set(k, v); });
+
+        u.searchParams.set('code', code);
+        u.searchParams.set('item', item);
+        if (accountId) u.searchParams.set('accountId', accountId);
+        if (orderId) u.searchParams.set('orderId', orderId);
+        if (sessionToken) u.searchParams.set('sessionToken', sessionToken);
+
+        window.location.href = u.toString();
+      }
+
+      function handleApprove() {
+        clearError();
+
+        var approveBtn = document.getElementById('approve-btn');
+        var continueBtn = document.getElementById('continue-btn');
+
+        var state = hydrateHiddenFieldsFromQueryAndState();
+        var code = safeText(state.code);
+        var sessionToken = safeText(document.getElementById('sessionToken').value);
+        var item = safeText(document.getElementById('item').value);
+
+        if (!item) return showError('Select a package to continue.');
+        if (!code) return showError('Missing code. Return to the start and retry.');
+        if (!sessionToken) return showError('Missing sessionToken. Return to the start and retry.');
+
+        disableSubmit(approveBtn);
+        if (continueBtn) continueBtn.disabled = true;
+
+        var form = document.getElementById('tm-offer');
+        if (!form) {
+          restoreSubmit(approveBtn, 'Approve Offer');
+          return showError('Offer form missing.');
+        }
+
+        setViewportHidden();
+        ensureEventId();
+        syncSessionToken();
+
+        fetch(form.action, { method: 'POST', body: new FormData(form), credentials: 'include' })
+          .then(function (r) {
+            return r.json().catch(function () { return {}; }).then(function (data) {
+              return { ok: r.ok, data: data, status: r.status };
+            });
+          })
+          .then(function (res) {
+            if (!res.ok || (res.data && res.data.ok === false)) {
+              var msg = (res.data && (res.data.error || res.data.details)) ? (res.data.error || res.data.details) : ('Offer submission failed (HTTP ' + res.status + ').');
+              throw new Error(String(msg).slice(0, 240));
+            }
+
+            if (approveBtn) {
+              approveBtn.textContent = 'Approved';
+              approveBtn.disabled = true;
+              approveBtn.classList.remove('tm-btn-primary');
+              approveBtn.classList.add('bg-emerald-600', 'text-white');
+            }
+
+            if (continueBtn) continueBtn.disabled = false;
+          })
+          .catch(function (err) {
+            restoreSubmit(approveBtn, 'Approve Offer');
+            if (continueBtn) continueBtn.disabled = true;
+            showError((err && err.message) ? err.message : 'Offer submission failed.');
+          });
+      }
+
+      function wireCards() {
+        document.querySelectorAll('.package-card').forEach(function (card) {
+          card.addEventListener('click', function () { selectPackage(card.dataset.package); });
+          card.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              selectPackage(card.dataset.package);
+            }
+          });
         });
       }
 
-      function applyFlowPlaceholders(state) {
-        // Sidebar partial can optionally include:
-        // - #sidebar-flow-label (e.g., "Intake" or "My Case Status")
-        // - #sidebar-flow-subtitle (e.g., "Offer" or "Post-payment")
-        // - #sidebar-start-label (e.g., "Start Here")
-        // This function updates them if present, otherwise does nothing.
-        var flowLabel = document.getElementById("sidebar-flow-label");
-        var flowSubtitle = document.getElementById("sidebar-flow-subtitle");
-
-        if (flowLabel) flowLabel.textContent = state.sidebar_flow_label || "Start Here";
-        if (flowSubtitle) flowSubtitle.textContent = state.sidebar_flow_subtitle || "";
-      }
-
-      var params = new URLSearchParams(window.location.search || "");
-      var code = safeText(params.get("code") || "");
-      var itemFromUrl = safeText(params.get("item") || "");
-
-      // Unified "app state" placeholder (server/worker can inject real values later)
-      window.TM_APP_STATE = window.TM_APP_STATE || {
-        account_label: "Account: Monitoring",
-        phase: "intake",
-        step: "offer",
-        topbar_mode: "Monitoring Portal",
-        user_name: safeText(params.get("userName") || params.get("user_name") || "Jane Doe"),
-      };
-
-      // Unified flow placeholder (used for future nav grouping logic)
-      window.TM_FLOW = window.TM_FLOW || {
-        phase: window.TM_APP_STATE.phase,
-        step: window.TM_APP_STATE.step,
-      };
-
-      // Fix: user initials on Offer page (this was missing before)
-      (function applyUserIdentity() {
-        var fullName = window.TM_APP_STATE.user_name || "Jane Doe";
-        var initials = initialsFromName(fullName);
-
-        var initialsEls = document.querySelectorAll(".tm-user-initials");
-        initialsEls.forEach(function (el) { el.textContent = initials; });
-
-        var sidebarName = document.getElementById("sidebar-user-name");
-        if (sidebarName) sidebarName.textContent = fullName;
-
-        var topbarName = document.getElementById("topbar-user-name");
-        if (topbarName) topbarName.textContent = fullName;
-
-        // Client greeting (Offer content)
-        var nameEl = document.getElementById("client-name");
-        var fromQuery = safeText(params.get("clientFirstName") || params.get("first_name") || params.get("firstName") || "");
-        if (nameEl) nameEl.textContent = fromQuery || safeFirstName(fullName);
-      })();
-
-      // Sidebar flow labels placeholder
-      applyFlowPlaceholders({
-        sidebar_flow_label: "Start Here",
-        sidebar_flow_subtitle: "Intake",
-      });
-
-      // Set hidden approve code
-      var approveCode = document.getElementById("approve_code");
-      if (approveCode) approveCode.value = code;
-
-      var ITEMS = [
-        { id: "bronze", name: "Bronze", meta: "6-Week Term", price: 275, sku: "TM-BRONZE", blurb: "Stabilization monitoring during your term." },
-        { id: "silver", name: "Silver", meta: "8-Week Term", price: 325, sku: "TM-SILVER", blurb: "Balanced monitoring with steady coverage." },
-        { id: "gold", name: "Gold", meta: "12-Week Term", price: 425, sku: "TM-GOLD", blurb: "Extended monitoring with deeper oversight." },
-        { id: "mfj", name: "MFJ", meta: "8-Week Term", price: 325, sku: "TM-MFJ", blurb: "Linked monitoring for both spouses." },
-        { id: "one_time", name: "Snapshot", meta: "Snapshot", price: 299, sku: "TM-ONE", blurb: "Single transcript review with summary." }
-      ];
-
-      var grid = document.getElementById("package-grid");
-      var selectedId = itemFromUrl || "";
-
-      function render() {
-        if (!grid) return;
-
-        var html = "";
-        for (var i = 0; i < ITEMS.length; i++) {
-          var it = ITEMS[i];
-          var popular = it.id === "silver";
-          var selected = it.id === selectedId;
-
-          html += ''
-            + '<div class="package-card glass-card-light rounded-2xl p-5 border border-slate-700/50 relative ' + (selected ? 'selected' : '') + '"'
-            + ' data-id="' + it.id + '" data-price="' + it.price + '" data-name="' + it.name + '" data-sku="' + it.sku + '" data-meta="' + it.meta + '">'
-            + (popular ? '<div class="absolute -top-2 right-2 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950">Most Popular</div>' : '')
-            + (selected ? '<div class="absolute inset-0 rounded-2xl shimmer pointer-events-none"></div>' : '')
-            + '<div class="space-y-4 relative">'
-            + '  <div class="space-y-2">'
-            + '    <span class="px-2 py-0.5 rounded bg-amber-900/30 text-amber-400 text-xs font-medium">' + it.meta + '</span>'
-            + '    <h3 class="text-lg font-bold text-slate-100">' + it.name.replace("Tax Monitoring — ", "") + '</h3>'
-            + '  </div>'
-            + '  <div class="flex items-baseline gap-2">'
-            + '    <span class="text-3xl font-bold ' + (selected ? 'text-amber-400' : 'text-slate-100') + '">' + money(it.price) + '</span>'
-            + '    <span class="text-xs text-slate-400">one-time</span>'
-            + '  </div>'
-            + '  <p class="text-xs text-slate-400">' + it.blurb + '</p>'
-            + '  <div class="pt-2 border-t border-slate-700/50 text-xs text-slate-500">' + it.sku + '</div>'
-            + '</div>'
-            + '</div>';
-        }
-
-        grid.innerHTML = html;
-
-        var cards = grid.querySelectorAll(".package-card");
-        for (var c = 0; c < cards.length; c++) {
-          cards[c].addEventListener("click", function (e) {
-            selectedId = e.currentTarget.getAttribute("data-id") || "";
-            applySelection(true);
+      function wireNav() {
+        var backBtn = document.getElementById('back-btn');
+        if (backBtn) {
+          backBtn.addEventListener('click', function () {
+            var u = new URL('/app/pages/flows/intake/intake.html', window.location.origin);
+            var qs = new URLSearchParams(window.location.search || '');
+            qs.forEach(function (v, k) { u.searchParams.set(k, v); });
+            window.location.href = u.toString();
           });
         }
+
+        var approveBtn = document.getElementById('approve-btn');
+        if (approveBtn) approveBtn.addEventListener('click', handleApprove);
+
+        var continueBtn = document.getElementById('continue-btn');
+        if (continueBtn) continueBtn.addEventListener('click', handleProceed);
       }
 
-      function applySelection(updateUrl) {
-        var picked = null;
-        for (var i = 0; i < ITEMS.length; i++) if (ITEMS[i].id === selectedId) picked = ITEMS[i];
+      function init() {
+        injectPartial('tm-sidebar', '/app/partials/sidebar.html');
+        injectPartial('tm-topbar', '/app/partials/topbar.html');
 
-        var cards = grid ? grid.querySelectorAll(".package-card") : [];
-        for (var c = 0; c < cards.length; c++) {
-          var cid = cards[c].getAttribute("data-id");
-          cards[c].classList.toggle("selected", cid === selectedId);
+        wireCards();
+        wireNav();
 
-          var shimmer = cards[c].querySelector(".shimmer");
-          if (shimmer) shimmer.remove();
-          if (cid === selectedId) {
-            var sh = document.createElement("div");
-            sh.className = "absolute inset-0 rounded-2xl shimmer pointer-events-none";
-            cards[c].appendChild(sh);
+        var state = hydrateHiddenFieldsFromQueryAndState();
+        var order = state.order;
+
+        // If canonical order already shows accepted, lock approve + enable continue.
+        if (isOfferAccepted(order)) {
+          preselectFromOrder(order);
+          setButtons({ approveDisabled: true, continueDisabled: false });
+          var approveBtn = document.getElementById('approve-btn');
+          if (approveBtn) {
+            approveBtn.textContent = 'Approved';
+            approveBtn.disabled = true;
+            approveBtn.classList.remove('tm-btn-primary');
+            approveBtn.classList.add('bg-emerald-600', 'text-white');
           }
-        }
-
-        var approveBtn = document.getElementById("primary-cta");
-        var nextLink = document.getElementById("secondary-cta");
-
-        var selName = document.getElementById("selected-plan-name");
-        var selPrice = document.getElementById("selected-plan-price");
-        var selTerm = document.getElementById("selected-plan-term");
-
-        var hidId = document.getElementById("selectedItemId");
-        var hidName = document.getElementById("selectedItemName");
-        var hidPrice = document.getElementById("selectedItemPrice");
-        var hidSku = document.getElementById("selectedItemSku");
-
-        if (!picked) {
-          if (approveBtn) approveBtn.disabled = true;
-          if (selName) selName.textContent = "Select a package";
-          if (selPrice) selPrice.textContent = "";
-          if (selTerm) selTerm.textContent = "Required";
-          if (hidId) hidId.value = "";
-          if (hidName) hidName.value = "";
-          if (hidPrice) hidPrice.value = "";
-          if (hidSku) hidSku.value = "";
           return;
         }
 
-        if (approveBtn) approveBtn.disabled = false;
-        if (selName) selName.textContent = picked.name.replace("Tax Monitoring — ", "");
-        if (selPrice) selPrice.textContent = money(picked.price);
-        if (selTerm) selTerm.textContent = picked.meta;
-
-        if (hidId) hidId.value = picked.id;
-        if (hidName) hidName.value = picked.name;
-        if (hidPrice) hidPrice.value = String(picked.price);
-        if (hidSku) hidSku.value = picked.sku;
-
-        if (updateUrl) {
-          try {
-            var u = new URL(window.location.href);
-            u.searchParams.set("item", picked.id);
-            if (code) u.searchParams.set("code", code);
-            window.history.replaceState({}, "", u.toString());
-          } catch (e) {}
+        // Otherwise require URL identifiers.
+        var code = safeText(state.code);
+        var st = safeText(document.getElementById('sessionToken').value);
+        if (!code || !st) {
+          setButtons({ approveDisabled: true, continueDisabled: true });
+          showError('Missing required code/sessionToken in the URL.');
+          return;
         }
 
-        if (nextLink) {
-          var href = "/app/pages/flows/intake/agreement.html";
-          var qp = [];
-          if (code) qp.push("code=" + encodeURIComponent(code));
-          if (picked.id) qp.push("item=" + encodeURIComponent(picked.id));
-          nextLink.setAttribute("href", href + (qp.length ? "?" + qp.join("&") : ""));
-        }
+        // If state has an offer item, preselect it and allow approval.
+        var pre = preselectFromOrder(order);
+        if (pre) setButtons({ approveDisabled: false, continueDisabled: true });
       }
 
-      var form = document.getElementById("tm-approve");
-      if (form) {
-        form.addEventListener("submit", function () {
-          var btn = document.getElementById("primary-cta");
-          if (!btn) return;
-          btn.disabled = true;
-          btn.innerHTML = '<span class="flex items-center gap-2 justify-center">'
-            + '<svg class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">'
-            + '<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>'
-            + '<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>'
-            + '</svg>Processing...'
-            + '</span>';
-        });
-      }
-
-      render();
-      applySelection(false);
-      if (selectedId) applySelection(true);
-
-      // Apply nav active styling after partials exist in DOM
-      applyNavActive();
-      window.addEventListener("popstate", applyNavActive);
+      init();
     })();
   </script>
 </body>
