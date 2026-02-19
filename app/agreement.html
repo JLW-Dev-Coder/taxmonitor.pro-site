@@ -42,8 +42,8 @@
     @keyframes float{ 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(30px,-30px) scale(1.05)} 66%{transform:translate(-20px,20px) scale(.95)} }
 
     /* Glass (match offer.html) */
-    .glass-card{ background:rgba(15,23,42,.62); backdrop-filter:blur(20px); border:1px solid rgba(148,163,184,.12); }
-    .glass-card-light{ background:rgba(30,41,59,.50); backdrop-filter:blur(16px); border:1px solid rgba(148,163,184,.16); }
+    .glass-card{ background:rgba(15,23,42,.62); backdrop-filter:blur(20px); border:1px solid rgba(148,163,184,.12); border-radius:16px; }
+    .glass-card-light{ background:rgba(30,41,59,.50); backdrop-filter:blur(16px); border:1px solid rgba(148,163,184,.16); border-radius:12px; }
 
     /* Glow (match offer.html) */
     .glow-amber{ box-shadow:0 0 40px rgba(245,158,11,.26), 0 0 80px rgba(245,158,11,.10); }
@@ -115,100 +115,102 @@
   <div class="aurora-blob aurora-2"></div>
   <div class="aurora-blob aurora-3"></div>
 
-  <div class="relative z-10 min-h-full w-full">
-    <!-- Sticky Header (match offer.html structure) -->
-    <header class="sticky top-0 z-50 glass-card border-b border-slate-700/50">
-      <div class="max-w-6xl mx-auto px-4 py-4">
-        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <!-- Logo -->
-          <a href="/site/index.html" class="flex items-center gap-3">
+  <div class="min-h-full flex flex-col relative z-10 w-full">
+    <!-- Header (match intake.html header) -->
+    <header class="sticky top-0 z-50 glass-card border-b border-slate-800/60">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4">
+        <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+          <!-- Brand -->
+          <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center">
               <span class="font-black text-slate-950">TM</span>
             </div>
-            <span class="font-bold text-lg text-slate-100">Tax Monitor Pro</span>
-          </a>
+            <div>
+              <div class="font-bold text-slate-100">Tax Monitor Pro</div>
+              <div class="text-xs text-slate-400">Agreement</div>
+            </div>
+          </div>
 
           <!-- Stepper -->
           <div class="flex items-center gap-2 sm:gap-4">
             <div class="flex items-center gap-2">
-              <div class="w-7 h-7 rounded-full bg-emerald-500/20 border border-emerald-500 flex items-center justify-center">
-                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+              <div class="w-8 h-8 rounded-full bg-emerald-600 flex items-center justify-center">
+                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <span class="text-sm text-slate-400 hidden sm:inline">Intake</span>
+              <span class="text-sm font-semibold text-emerald-400">Intake</span>
             </div>
 
-            <div class="w-8 h-0.5 bg-emerald-500/50"></div>
+            <div class="w-8 h-0.5 bg-slate-700"></div>
 
             <div class="flex items-center gap-2">
-              <div class="w-7 h-7 rounded-full bg-emerald-500/20 border border-emerald-500 flex items-center justify-center">
-                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+              <div class="w-8 h-8 rounded-full bg-emerald-600 flex items-center justify-center">
+                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <span class="text-sm text-slate-400 hidden sm:inline">Offer</span>
+              <span class="text-sm font-semibold text-emerald-400">Offer</span>
             </div>
 
-            <div class="w-8 h-0.5 bg-emerald-500/50"></div>
+            <div class="w-8 h-0.5 bg-slate-700"></div>
 
             <div class="flex items-center gap-2">
-              <div class="w-7 h-7 rounded-full bg-amber-500 flex items-center justify-center animate-pulse-glow">
-                <span class="text-xs font-bold text-slate-900">3</span>
+              <div class="w-8 h-8 rounded-full bg-amber-500 flex items-center justify-center shadow-lg shadow-amber-500/30">
+                <span class="text-xs font-bold text-slate-950">3</span>
               </div>
               <span class="text-sm font-semibold text-amber-400">Agreement</span>
             </div>
 
-            <div class="w-8 h-0.5 bg-slate-600"></div>
+            <div class="w-8 h-0.5 bg-slate-700"></div>
 
             <div class="flex items-center gap-2">
-              <div class="w-7 h-7 rounded-full bg-slate-700 border border-slate-600 flex items-center justify-center">
+              <div class="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center">
                 <span class="text-xs text-slate-400">4</span>
               </div>
               <span class="text-sm text-slate-500 hidden sm:inline">Payment</span>
             </div>
           </div>
 
-          <!-- Validity chip -->
-          <div class="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800/80 border border-slate-700">
-            <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          <!-- Back -->
+          <a
+            href="/app/index.html"
+            class="inline-flex items-center gap-2 rounded-full border border-slate-800/70 bg-black/20 px-3 py-1.5 text-xs font-semibold text-slate-300 hover:text-amber-300 hover:border-amber-500/30"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
             </svg>
-            <span class="text-xs text-slate-300">Valid for 7 days</span>
-          </div>
+            Back
+          </a>
         </div>
 
-        <!-- Progress bar (Agreement = 75%) -->
-        <div class="mt-4 h-1 bg-slate-800 rounded-full overflow-hidden">
-          <div class="h-full w-3/4 progress-glow rounded-full"></div>
+        <!-- Progress bar (step 3 of 4) -->
+        <div class="mt-4 h-1 bg-slate-900/60 rounded-full overflow-hidden">
+          <div class="h-full w-3/4 rounded-full" style="background: linear-gradient(90deg, #f59e0b, #d97706); box-shadow: 0 0 20px rgba(245,158,11,0.45);"></div>
         </div>
       </div>
     </header>
 
     <!-- Spacing updated to match payment.html (sm:px-6 + sm:py-12 + inner max-w-5 wrapper) -->
-    <main class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-      <div class="max-w-5xl mx-auto space-y-8">
-        <!-- Page Title -->
-        <div class="text-center space-y-3">
-          <h1 id="page-headline" class="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
-            Accept the Service Agreement
-          </h1>
-          <p id="page-subhead" class="text-lg sm:text-xl text-slate-400">
-            Confirm the terms to unlock payment and start monitoring.
-          </p>
-        </div>
+    <main class="flex-1 overflow-auto">
+      <div class="max-w-3xl mx-auto p-4 md:p-8 space-y-6 pb-12">
+        <div class="glass-card rounded-3xl p-8 md:p-10 relative border border-white/10 bg-white/5 backdrop-blur-xl">
+          <div class="mb-8 text-center">
+            <h1 class="text-3xl md:text-4xl font-bold text-white mb-3">Service Agreement</h1>
+            <p class="text-base text-slate-400">Please review and accept the terms below</p>
+          </div>
 
-        <!-- Agreement container -->
-        <section class="glass-card rounded-3xl p-6 sm:p-8">
-          <div class="agreement-prose prose prose-invert max-w-none">
+          <div class="h-1 bg-gradient-to-r from-transparent via-amber-500/30 to-transparent rounded-full my-8"></div>
 
-            <!-- Header -->
-            <div class="flex items-center justify-center gap-3" style="margin-bottom:16px;">
-              <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center">
-                <span class="font-black text-slate-950">TM</span>
-              </div>
-              <span class="font-bold text-lg text-slate-100">Tax Monitor Pro</span>
-            </div>
+          <div class="agreement-prose space-y-6">
+
+            <p style="text-align:center; margin-bottom:16px;">
+              <span class="inline-flex items-center justify-center">
+                <span class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center">
+                  <span class="font-black text-slate-950">TM</span>
+                </span>
+              </span>
+            </p>
 
             <h1 style="text-align:center; margin:0 0 10px; font-size:2em; font-weight:700; letter-spacing:0.08em; text-transform:uppercase;">
               Service Agreement and Contract
@@ -219,7 +221,7 @@
               Provided by <strong>Tax Monitor Pro</strong>
             </p>
 
-            <hr class="border-slate-800/60 my-6">
+            <hr>
 
             <p>
               This Service Agreement (“Agreement”) governs the Tax Monitor Service provided by
@@ -233,268 +235,79 @@
               intervention unless expressly agreed to in a separate written contract.
             </p>
 
-            <hr class="border-slate-800/60 my-6">
+            <hr>
 
             <h3>Client Responsibilities</h3>
-
             <ol>
-              <li>
-                The Client agrees to provide complete, accurate, and timely information
-                requested for monitoring purposes within forty-eight (48) hours unless
-                otherwise agreed.
-              </li>
-              <li>
-                The Client acknowledges responsibility for the accuracy of all information
-                provided, including income, assets, liabilities, filing history, and IRS
-                correspondence.
-              </li>
-              <li>
-                Failure to respond after three (3) documented contact attempts may result in
-                suspension or termination of monitoring services without refund.
-              </li>
-              <li>
-                The Client agrees not to alter or submit any documents prepared by the Company
-                without written authorization.
-              </li>
-              <li>
-                Cancellation is available within forty-eight (48) hours of payment by contacting
-                <a class="text-amber-300 hover:text-amber-200 underline" href="mailto:support@taxmonitor.pro">support@taxmonitor.pro</a>.
-                Cancellation stops future billing.
-                <strong>
-                  All service fees are non-refundable once services begin, including any work
-                  performed, records accessed, or insights delivered.
-                </strong>
-              </li>
+              <li>The Client agrees to provide complete, accurate, and timely information requested for monitoring purposes within forty-eight (48) hours unless otherwise agreed.</li>
+              <li>The Client acknowledges responsibility for the accuracy of all information provided, including income, assets, liabilities, filing history, and IRS correspondence.</li>
+              <li>Failure to respond after three (3) documented contact attempts may result in suspension or termination of monitoring services without refund.</li>
+              <li>The Client agrees not to alter or submit any documents prepared by the Company without written authorization.</li>
+              <li>Cancellation is available within forty-eight (48) hours of payment by contacting <a class="text-amber-400 underline" href="mailto:support@taxmonitor.pro">support@taxmonitor.pro</a>. Cancellation stops future billing. <strong>All service fees are non-refundable once services begin, including any work performed, records accessed, or insights delivered.</strong></li>
             </ol>
 
-            <hr class="border-slate-800/60 my-6">
+            <hr>
 
             <h3>Married Filing Jointly (MFJ) Years</h3>
+            <p>For tax years filed as <strong>Married Filing Jointly (MFJ)</strong>, separate enrollment and authorization from each spouse is required to access jointly filed records.</p>
+            <p>Each spouse must independently enroll and execute required authorization forms. Enrollment by one spouse does not grant access to the other spouse’s records.</p>
+            <p>Until both spouses complete enrollment and authorization, access to MFJ-related records and materials will be limited to the enrolled spouse only.</p>
+            <p>Such limitation does not entitle the Client to refunds, credits, service extensions, or modified service terms.</p>
 
-            <p>
-              For tax years filed as <strong>Married Filing Jointly (MFJ)</strong>, the Client
-              acknowledges that the Internal Revenue Service requires
-              <strong>separate enrollment and authorization from each spouse</strong>
-              in order to access jointly filed tax records.
-            </p>
-
-            <p>
-              To enable monitoring of MFJ years, <strong>each spouse must independently enroll
-              in the Tax Monitor Service</strong>, select the MFJ option if applicable, and
-              execute their own required authorization forms. Enrollment or authorization by
-              one spouse does not grant access to jointly filed tax records for the other spouse.
-            </p>
-
-            <p>
-              Until both spouses complete enrollment and authorization, access to MFJ-related
-              tax records, monitoring results, compliance reports, and project materials
-              will be limited to the enrolled and authorized spouse only.
-            </p>
-
-            <p>
-              Jointly filed tax years will not be reviewed, linked, monitored, displayed,
-              or reported within the client portal unless both spouses complete enrollment
-              and authorization.
-            </p>
-
-            <p>
-              The Client acknowledges that a spouse’s failure to enroll or authorize services
-              may limit portal visibility, shared project access, and availability of MFJ
-              monitoring data, and does not constitute a breach by the Company.
-            </p>
-
-            <p>
-              Such limitation does not entitle the Client to refunds, credits, service
-              extensions, or modified service terms.
-            </p>
-
-            <hr class="border-slate-800/60 my-6">
+            <hr>
 
             <h3>Company Responsibilities</h3>
-
             <ol start="6">
-              <li>
-                Tax Monitor Pro will monitor authorized tax account data and provide
-                informational updates based on available records during the applicable
-                monitoring period.
-              </li>
-              <li>
-                Any original documents provided by the Client will be returned upon conclusion
-                of the engagement. Copies retained are for documentation purposes only.
-              </li>
-              <li>
-                The Company maintains reasonable administrative, technical, and physical
-                safeguards to protect nonpublic personal information.
-              </li>
-              <li>
-                Electronic data transmission and storage may involve secure third-party systems
-                necessary to deliver services efficiently.
-              </li>
+              <li>Tax Monitor Pro will monitor authorized tax account data and provide informational updates during the monitoring period.</li>
+              <li>Original documents provided by the Client will be returned upon conclusion of the engagement. Copies retained are for documentation purposes only.</li>
+              <li>The Company maintains reasonable administrative, technical, and physical safeguards to protect nonpublic personal information.</li>
+              <li>Electronic data transmission and storage may involve secure third-party systems necessary to deliver services efficiently.</li>
             </ol>
 
-            <hr class="border-slate-800/60 my-6">
+            <hr>
 
             <h3>Scope Limitation</h3>
+            <p>This Agreement does not include IRS representation, negotiations, payment arrangements, offers in compromise, appeals, or enforcement resolution unless authorized in writing through a separate Representation Agreement and Power of Attorney.</p>
 
-            <p>
-              This Agreement does not include IRS representation, negotiations, payment
-              arrangements, offers in compromise, appeals, or enforcement resolution
-              unless expressly authorized in writing through a separate executed
-              Representation Agreement and Power of Attorney.
-            </p>
-
-            <hr class="border-slate-800/60 my-6">
-
-            <h3>Right to Representation &amp; Power of Attorney Authorization</h3>
-
-            <p>
-              The Client is advised that the right to be represented before the Internal Revenue
-              Service is a statutory right under Section 7521 of Title 26 of the United States Code
-              (Internal Revenue Code). The Client may appoint only individuals authorized to
-              practice before the Internal Revenue Service, including Enrolled Agents, Certified
-              Public Accountants, and Attorneys, as legal representatives.
-            </p>
-
-            <p>
-              Practice before the Internal Revenue Service is governed by federal regulations
-              contained in Circular 230 (31 CFR Part 10). The Client has the right to submit a
-              complaint to the Internal Revenue Service Office of Professional Responsibility if
-              the Client believes those regulations have been violated.
-            </p>
-
-            <p>
-              If the Client engages the Company for services that require IRS representation,
-              the Client will be provided access to a limited Power of Attorney (IRS Form 2848)
-              and a separate Representation Agreement within the Client portal.
-            </p>
-
-            <p>
-              The Client acknowledges and agrees that execution of Form 2848 may occur prior to
-              final completion of representative details. By signing the Form 2848, the Client
-              grants conditional authorization for the Company’s designated Enrolled Agent to
-              complete the representative section of the form after review.
-            </p>
-
-            <p>
-              The Client understands that a Form 2848 signed in this manner is not valid, active,
-              or submitted to the Internal Revenue Service until all required sections are fully
-              completed and reviewed by the Company. The Company will not submit any Power of
-              Attorney to the Internal Revenue Service until the form is complete and compliant.
-            </p>
-
-            <p>
-              Once the Internal Revenue Service processes the completed Power of Attorney, the
-              designated representative will be recognized as the Client’s authorized
-              representative for the matters specified. Thereafter, IRS personnel are required
-              to communicate through the authorized representative, and any direct contact
-              attempts should be reported immediately.
-            </p>
-
-            <hr class="border-slate-800/60 my-6">
-
-            <h3>Governing Law</h3>
-
-            <p>
-              This Agreement shall be governed by and construed in accordance with the laws of
-              the Client’s state of residence unless otherwise required by applicable law.
-            </p>
-
-            <hr class="border-slate-800/60 my-6">
+            <hr>
 
             <h3>Acceptance</h3>
+            <p>By signing electronically, the Client acknowledges that this Agreement is legally binding and enforceable to the same extent as a handwritten signature.</p>
+          </div>
 
-            <p>
-              This Agreement is provided for review purposes only and is not binding until
-              executed by both parties.
-            </p>
+          <div class="h-1 bg-gradient-to-r from-transparent via-amber-500/30 to-transparent rounded-full my-8"></div>
 
-            <p>
-              <strong>Accepted by Client:</strong><br>
-              Signature: ___________________________<br>
-              Printed Name: ___________________________<br>
-              Date Signed: ___________________________
-            </p>
+          <form id="tm-agreement" method="post" action="https://api.taxmonitor.pro/forms/agreement" accept-charset="UTF-8" class="space-y-4">
+            <input id="tm_event_id" name="eventId" type="hidden" value="">
+            <input id="tm_session_token" name="sessionToken" type="hidden" value="">
+            <input id="sign_code" name="code" type="hidden" value="">
+            <input id="sign_item" name="item" type="hidden" value="">
+            <input id="sign_ack" name="agreement_acknowledged" type="hidden" value="No">
 
-            <p>
-              <strong>Accepted on behalf of the Company:</strong><br>
-              Tax Monitor Pro
-            </p>
+            <label class="flex items-start gap-3 p-4 bg-white/5 rounded-xl border border-white/10">
+              <input id="agree_ack" type="checkbox" class="w-5 h-5 mt-1 accent-amber-500">
+              <span class="text-sm text-slate-200">I have read and accept this Service Agreement.</span>
+            </label>
 
-            <hr class="border-slate-800/60 my-6">
-
-            <p style="font-size:0.8em; text-align:center; margin:0;">
-              © Tax Monitor Pro. All rights reserved.
-            </p>
-
-            <div class="mt-8 rounded-2xl border border-slate-800/60 bg-black/20 p-6">
-              <label class="flex items-start gap-3 text-sm text-slate-300">
-                <input id="agree_ack" type="checkbox" class="mt-1 h-4 w-4 accent-amber-500">
-                <span>
-                  I have reviewed this Service Agreement and Contract and I agree to proceed to payment.
-                </span>
-              </label>
+            <div class="flex items-center gap-4 pt-4">
+              <a id="btn-back-offer" href="/app/offer.html" class="flex-1 px-6 py-3 rounded-xl font-semibold text-center text-slate-300 bg-white/5 hover:bg-white/10 transition-colors">Back to Offer</a>
+              <button id="btn-continue" type="submit" class="flex-1 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold py-3 px-6 rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed" disabled>Accept & Continue</button>
             </div>
-          </div>
-        </section>
-
-        <!-- Actions (match offer-style cards) -->
-        <section class="glass-card rounded-3xl p-6 sm:p-8">
-          <div class="grid gap-3 md:grid-cols-2">
-            <a
-              id="btn-back-offer"
-              href="/app/offer.html"
-              class="inline-flex w-full items-center justify-center rounded-xl border border-slate-700/70 bg-slate-950/20 px-4 py-3 text-sm font-semibold text-slate-100 hover:bg-slate-950/35 transition"
-            >← Back to offer</a>
-
-            <!-- Keep form working: absolute Worker URL + fetch submit -->
-            <form
-              id="tm-agreement"
-              method="post"
-              action="https://api.taxmonitor.pro/forms/agreement"
-              accept-charset="UTF-8"
-            >
-              <input id="tm_event_id" name="eventId" type="hidden" value="">
-              <input id="tm_session_token" name="sessionToken" type="hidden" value="">
-
-              <input id="sign_code" name="code" type="hidden" value="">
-              <input id="sign_item" name="item" type="hidden" value="">
-              <input id="sign_ack" name="agreement_acknowledged" type="hidden" value="No">
-
-              <button
-                id="btn-continue"
-                type="submit"
-                class="inline-flex w-full items-center justify-center rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 px-4 py-3 text-sm font-semibold text-slate-950 hover:from-amber-400 hover:to-amber-500 transition disabled:opacity-50 disabled:cursor-not-allowed"
-                disabled
-              >Accept &amp; continue →</button>
-            </form>
-          </div>
+          </form>
 
           <div id="tm-error" class="hidden mt-4 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-200"></div>
-
-          <div class="mt-6 border-t border-slate-800/60 pt-6 text-center text-xs text-slate-500">
-            Services do not begin until the agreement is signed and payment is received.
-          </div>
-
-          <div class="mt-6 text-center text-xs text-slate-500">
-            <a class="text-amber-300 hover:text-amber-200 underline" href="/legal/privacy.html">Privacy</a>
-            <span class="text-slate-600">•</span>
-            <a class="text-amber-300 hover:text-amber-200 underline" href="/legal/terms.html">Terms</a>
-          </div>
-        </section>
-
-        <div class="text-center text-sm text-slate-500">
-          Monitoring does not create IRS representation. Representation, filing, and resolution are separate engagements.
         </div>
       </div>
     </main>
 
-    <!-- Footer (match offer.html) -->
-    <footer class="border-t border-slate-800/60 mt-12 bg-slate-950/40">
-      <div class="max-w-6xl mx-auto px-4 py-8 text-center text-xs text-slate-500">
-        <div>© <span id="footer-year"></span> Tax Monitor Pro. All rights reserved.</div>
-        <div class="mt-3 flex items-center justify-center gap-4">
-          <a class="hover:text-slate-300 transition" href="/legal/privacy.html">Privacy</a>
-          <a class="hover:text-slate-300 transition" href="/legal/terms.html">Terms</a>
+    <!-- Footer -->
+    <footer class="glass-card mx-4 mb-4 px-6 py-4">
+      <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+        <p class="text-slate-500 text-sm">© <span id="footer-year"></span> Tax Monitor Pro. All rights reserved.</p>
+        <div class="flex items-center gap-6">
+          <a href="/legal/privacy.html" class="text-slate-400 hover:text-amber-400 text-sm transition-colors">Privacy Policy</a>
+          <a href="/legal/terms.html" class="text-slate-400 hover:text-amber-400 text-sm transition-colors">Terms of Service</a>
+          <a href="/site/contact.html" class="text-slate-400 hover:text-amber-400 text-sm transition-colors">Contact Support</a>
         </div>
       </div>
     </footer>
@@ -507,7 +320,7 @@
     })();
   </script>
 
-  <!-- Common helpers (same pattern as intake.html) -->
+<!-- Common helpers (same pattern as intake.html) -->
   <script>
     (function () {
       function getEndpointSlug(formEl) {
