@@ -1,0 +1,819 @@
+<!--app/pages/flows/intake/intake.html-->
+<!doctype html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tax Monitor Pro — Intake</title>
+
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Flatpickr (calendar) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+  <link rel="apple-touch-icon" href="/assets/favicon.ico" />
+  <link rel="icon" href="/assets/favicon.ico" />
+
+  <style>
+    :root { color-scheme: dark; }
+    body { font-family: 'DM Sans', system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+
+    .noise-bg {
+      background-image: url('data:image/svg+xml;utf8,\
+        <svg xmlns="http://www.w3.org/2000/svg" width="120" height="120">\
+          <filter id="n">\
+            <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/>\
+          </filter>\
+          <rect width="120" height="120" filter="url(%23n)" opacity="0.18"/>\
+        </svg>');
+    }
+
+    .aurora {
+      position: absolute;
+      inset: -40% -30% auto -30%;
+      height: 80vh;
+      pointer-events: none;
+      filter: blur(40px);
+      opacity: 0.55;
+      background:
+        radial-gradient(closest-side, rgba(245,158,11,0.35), transparent 65%),
+        radial-gradient(closest-side, rgba(56,189,248,0.18), transparent 60%),
+        radial-gradient(closest-side, rgba(168,85,247,0.14), transparent 62%);
+      transform: translate3d(0,0,0);
+    }
+
+    .glass-card {
+      background: rgba(2,6,23,0.55);
+      border: 1px solid rgba(148,163,184,0.16);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.45);
+      backdrop-filter: blur(10px);
+    }
+
+    .gradient-border {
+      position: relative;
+    }
+
+    .gradient-border:before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      border-radius: 24px;
+      padding: 1px;
+      background: linear-gradient(135deg, rgba(245,158,11,0.55), rgba(14,165,233,0.20), rgba(168,85,247,0.20));
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    .fade-in-up {
+      animation: fadeInUp 520ms ease-out both;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Stepper (match /app/intake.html look) */
+    .progress-glow {
+      background: linear-gradient(90deg, rgba(245,158,11,0.95), rgba(217,119,6,0.95));
+      box-shadow: 0 0 20px rgba(245,158,11,0.35);
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 20px rgba(245,158,11,0.22); }
+      50% { box-shadow: 0 0 40px rgba(245,158,11,0.42); }
+    }
+
+    .animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
+
+    .stepper-locked { opacity: 0.55; }
+
+    .tm-input {
+      width: 100%;
+      border-radius: 14px;
+      border: 1px solid rgba(148,163,184,0.16);
+      background: rgba(2,6,23,0.35);
+      padding: 12px 12px;
+      outline: none;
+      color: rgba(226,232,240,0.95);
+    }
+
+    .tm-input:focus {
+      border-color: rgba(245,158,11,0.45);
+      box-shadow: 0 0 0 4px rgba(245,158,11,0.12);
+    }
+
+    .tm-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(148,163,184,0.95);
+      margin-bottom: 6px;
+    }
+
+    .tm-help {
+      font-size: 12px;
+      color: rgba(148,163,184,0.85);
+      margin-top: 6px;
+    }
+
+    .tm-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 24px;
+      border-radius: 16px;
+      font-weight: 700;
+      font-size: 15px;
+      border: 1px solid rgba(148,163,184,0.16);
+      background: rgba(2,6,23,0.35);
+      color: rgba(226,232,240,0.92);
+      transition: transform 140ms ease, opacity 140ms ease;
+      user-select: none;
+      width: 100%;
+    }
+
+    .tm-btn:hover { opacity: 0.96; transform: translateY(-1px); }
+
+    .tm-btn-primary {
+      background: linear-gradient(135deg, rgba(245,158,11,0.95), rgba(217,119,6,0.95));
+      border-color: rgba(245,158,11,0.35);
+      color: rgba(2,6,23,0.98);
+      box-shadow: 0 18px 35px rgba(245,158,11,0.18);
+    }
+
+    .tm-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(34,197,94,0.28);
+      background: rgba(34,197,94,0.10);
+      color: rgba(134,239,172,0.95);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .tm-error {
+      display: none;
+      border: 1px solid rgba(248,113,113,0.25);
+      background: rgba(248,113,113,0.10);
+      color: rgba(254,202,202,0.95);
+      padding: 10px 12px;
+      border-radius: 14px;
+      font-size: 13px;
+    }
+
+    .tm-error[aria-hidden="false"] { display: block; }
+
+    .sidebar-shell {
+      border-right: 1px solid rgba(148,163,184,0.10);
+      background: rgba(2,6,23,0.40);
+      backdrop-filter: blur(10px);
+    }
+
+    .topbar-shell {
+      border-bottom: 1px solid rgba(148,163,184,0.10);
+      background: rgba(2,6,23,0.38);
+      backdrop-filter: blur(10px);
+    }
+
+    /* Flatpickr theme (match /app/intake.html vibe) */
+    .flatpickr-calendar {
+      background: rgba(2,6,23,0.92);
+      border: 1px solid rgba(148,163,184,0.16);
+      box-shadow: 0 30px 70px rgba(0,0,0,0.55);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .flatpickr-months {
+      background: rgba(255,255,255,0.04);
+      border-bottom: 1px solid rgba(148,163,184,0.12);
+      padding: 8px 10px;
+    }
+
+    .flatpickr-current-month,
+    .flatpickr-monthDropdown-months,
+    .flatpickr-weekdays,
+    .flatpickr-weekday {
+      color: rgba(226,232,240,0.92) !important;
+    }
+
+    .flatpickr-weekday {
+      font-weight: 700;
+      font-size: 11px;
+      color: rgba(148,163,184,0.95) !important;
+    }
+
+    .flatpickr-day {
+      border-radius: 12px;
+      color: rgba(226,232,240,0.92);
+    }
+
+    .flatpickr-day:hover {
+      background: rgba(255,255,255,0.06);
+      border-color: transparent;
+    }
+
+    .flatpickr-day.selected,
+    .flatpickr-day.startRange,
+    .flatpickr-day.endRange {
+      background: rgba(245,158,11,0.92) !important;
+      border-color: rgba(245,158,11,0.92) !important;
+      color: rgba(2,6,23,0.98) !important;
+      box-shadow: 0 10px 22px rgba(245,158,11,0.18);
+    }
+
+    .flatpickr-day.today {
+      border-color: rgba(245,158,11,0.45);
+    }
+
+    .flatpickr-time input,
+    .flatpickr-time .flatpickr-time-separator,
+    .flatpickr-time .flatpickr-am-pm {
+      color: rgba(226,232,240,0.92) !important;
+    }
+
+    .flatpickr-calendar.arrowTop:before,
+    .flatpickr-calendar.arrowTop:after,
+    .flatpickr-calendar.arrowBottom:before,
+    .flatpickr-calendar.arrowBottom:after {
+      display: none;
+    }
+  </style>
+</head>
+
+<body class="h-full bg-slate-950 text-slate-100">
+  <div class="relative min-h-screen overflow-hidden">
+    <div class="aurora" aria-hidden="true"></div>
+    <div class="pointer-events-none absolute inset-0 noise-bg opacity-50" aria-hidden="true"></div>
+
+    <div class="relative z-10 min-h-screen grid lg:grid-cols-[280px_1fr]">
+      <!-- App Sidebar (partial injection target) -->
+      <aside class="hidden lg:block sidebar-shell">
+        <div id="tm-sidebar" class="h-full"></div>
+      </aside>
+
+      <div class="min-h-screen flex flex-col">
+        <!-- App Topbar (partial injection target) -->
+        <div class="topbar-shell sticky top-0 z-30">
+          <div id="tm-topbar"></div>
+        </div>
+
+        <!-- Page Header (Flow vibe, not sticky) -->
+        <header class="px-6 pt-6">
+          <div class="mx-auto max-w-5xl">
+            <div class="glass-card rounded-[24px] p-5 border border-white/10">
+              <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                <div class="flex items-center gap-3">
+                  <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 text-slate-950 font-bold">TM</span>
+                  <div>
+                    <div class="font-semibold">Tax Monitor Pro</div>
+                    <div class="text-xs text-slate-400">Intake</div>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-2 sm:gap-4">
+                  <div class="flex items-center gap-2" data-step="intake">
+                    <div class="w-8 h-8 rounded-full bg-amber-500 flex items-center justify-center animate-pulse-glow">
+                      <span class="text-xs font-bold text-slate-950">1</span>
+                    </div>
+                    <span class="text-sm font-semibold text-amber-400">Intake</span>
+                  </div>
+
+                  <div class="w-8 h-0.5 bg-white/10"></div>
+
+                  <div class="flex items-center gap-2 stepper-locked" data-step="offer">
+                    <div class="w-8 h-8 rounded-full bg-slate-900/40 border border-white/10 flex items-center justify-center">
+                      <span class="text-xs text-slate-400">2</span>
+                    </div>
+                    <span class="text-sm text-slate-500 hidden sm:inline">Offer</span>
+                  </div>
+
+                  <div class="w-8 h-0.5 bg-white/10"></div>
+
+                  <div class="flex items-center gap-2 stepper-locked" data-step="agreement">
+                    <div class="w-8 h-8 rounded-full bg-slate-900/40 border border-white/10 flex items-center justify-center">
+                      <span class="text-xs text-slate-400">3</span>
+                    </div>
+                    <span class="text-sm text-slate-500 hidden sm:inline">Agreement</span>
+                  </div>
+
+                  <div class="w-8 h-0.5 bg-white/10"></div>
+
+                  <div class="flex items-center gap-2 stepper-locked" data-step="payment">
+                    <div class="w-8 h-8 rounded-full bg-slate-900/40 border border-white/10 flex items-center justify-center">
+                      <span class="text-xs text-slate-400">4</span>
+                    </div>
+                    <span class="text-sm text-slate-500 hidden sm:inline">Payment</span>
+                  </div>
+                </div>
+
+                <div id="tm-complete-badge" class="hidden">
+                  <span class="tm-badge">
+                    <span aria-hidden="true">✓</span>
+                    <span>Completed</span>
+                  </span>
+                </div>
+              </div>
+
+              <div class="mt-4 h-1 bg-white/5 rounded-full overflow-hidden">
+                <div class="h-full w-1/4 progress-glow rounded-full"></div>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <!-- Content -->
+        <main class="flex-1">
+          <div class="mx-auto max-w-5xl px-6 py-10">
+            <section class="gradient-border rounded-[24px] fade-in-up">
+              <div class="glass-card rounded-[24px] p-6 md:p-8">
+                <div class="flex flex-col gap-2">
+                  <h1 class="text-2xl md:text-3xl font-bold">Tell us what’s going on</h1>
+                  <p class="text-slate-300">This helps us set up your monitoring correctly. We’ll keep it practical.</p>
+                </div>
+
+                <div id="tm-error" class="tm-error mt-5" aria-hidden="true"></div>
+
+                <form id="tm-intake" class="mt-6" action="https://api.taxmonitor.pro/forms/intake" method="POST" novalidate>
+                  <!-- Required identifiers -->
+                  <input type="hidden" id="tm_event_id" name="eventId" value="" />
+                  <input type="hidden" id="tm_session_token" name="sessionToken" value="" />
+                  <input type="hidden" id="tm_viewport" name="viewport" value="" />
+
+                  <div class="grid gap-5 md:grid-cols-2">
+                    <div>
+                      <label class="tm-label" for="crm_first">First name</label>
+                      <input class="tm-input" id="crm_first" name="CRM First Name" autocomplete="given-name" required />
+                    </div>
+
+                    <div>
+                      <label class="tm-label" for="crm_last">Last name</label>
+                      <input class="tm-input" id="crm_last" name="CRM Last Name" autocomplete="family-name" required />
+                    </div>
+
+                    <div class="md:col-span-2">
+                      <label class="tm-label" for="crm_email">Email</label>
+                      <input class="tm-input" id="crm_email" name="CRM Primary Email" type="email" autocomplete="email" required />
+                    </div>
+
+                    <div class="md:col-span-2">
+                      <label class="tm-label" for="crm_company">Company (optional)</label>
+                      <input class="tm-input" id="crm_company" name="CRM Company Name" autocomplete="organization" />
+                    </div>
+
+                    <div>
+                      <label class="tm-label" for="notice_received">Did you receive an IRS notice?</label>
+                      <select class="tm-input" id="notice_received" name="IRS Notice Received">
+                        <option value="">Select…</option>
+                        <option value="No">No</option>
+                        <option value="Yes">Yes</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label class="tm-label" for="notice_date">IRS notice date (optional)</label>
+                      <input class="tm-input" id="notice_date" name="IRS Notice Date" type="text" inputmode="numeric" autocomplete="off" placeholder="YYYY-MM-DD" />
+                    </div>
+
+                    <div class="md:col-span-2">
+                      <label class="tm-label" for="notice_type_select">IRS notice type (optional)</label>
+                      <select class="tm-input" id="notice_type_select" aria-describedby="notice_type_details">
+                        <option value="">Select…</option>
+                        <option value="CP14">CP14</option>
+                        <option value="CP2000">CP2000</option>
+                        <option value="CP501">CP501</option>
+                        <option value="CP503">CP503</option>
+                        <option value="CP504">CP504</option>
+                        <option value="LT11">LT11</option>
+                        <option value="Other">Other</option>
+                      </select>
+
+                      <!-- Contract field (do not rename) -->
+                      <input type="hidden" id="notice_type_hidden" name="IRS Notice Type" value="" />
+
+                      <div id="notice_type_other_wrap" class="mt-3 hidden">
+                        <label class="tm-label" for="notice_type_other">Enter the notice number (letters + digits)</label>
+                        <input class="tm-input" id="notice_type_other" inputmode="text" autocomplete="off" placeholder="Example: CP3219A" />
+                        <div class="tm-help">Type the notice ID exactly as shown on the letter.</div>
+                      </div>
+
+                      <div id="notice_type_details" class="mt-3 rounded-[16px] border border-white/10 bg-white/5 p-4 text-sm text-slate-200">
+                        <div class="font-semibold">Notice details</div>
+                        <div id="notice_type_details_body" class="mt-1 text-slate-300">Pick a notice type to see what it usually means.</div>
+                      </div>
+
+                      <div class="tm-help">If you’re not sure, choose Other and enter the notice ID from the letter.</div>
+                    </div>
+
+                    <div>
+                      <label class="tm-label" for="balance_range">Estimated balance due range (optional)</label>
+                      <select class="tm-input" id="balance_range" name="Estimated Balance Due Range">
+                        <option value="">Select…</option>
+                        <option value="$0-$999">$0-$999</option>
+                        <option value="$1,000-$9,999">$1,000-$9,999</option>
+                        <option value="$10,000-$24,999">$10,000-$24,999</option>
+                        <option value="$25,000-$99,999">$25,000-$99,999</option>
+                        <option value="$100,000+">$100,000+</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label class="tm-label" for="urgency">Urgency level (optional)</label>
+                      <select class="tm-input" id="urgency" name="Urgency Level">
+                        <option value="">Select…</option>
+                        <option value="Low">Low</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                        <option value="Critical">Critical</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label class="tm-label" for="unfiled">Any unfiled returns? (optional)</label>
+                      <select class="tm-input" id="unfiled" name="Unfiled Returns Indicator">
+                        <option value="">Select…</option>
+                        <option value="No">No</option>
+                        <option value="Yes">Yes</option>
+                        <option value="Not sure">Not sure</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label class="tm-label" for="monitor_ack">IRS monitoring only acknowledged</label>
+                      <div class="flex items-start gap-3 rounded-[16px] border border-white/10 bg-white/5 p-4">
+                        <input id="monitor_ack" type="checkbox" class="mt-1 h-5 w-5 rounded border-white/20 bg-white/10" />
+                        <div>
+                          <div class="font-semibold">I understand this service is monitoring-first.</div>
+                          <div class="tm-help">We track your IRS situation and flag changes. Resolution work is separate.</div>
+                        </div>
+                      </div>
+                      <input type="hidden" id="irs_monitoring_only_ack" name="IRS Monitoring Only Acknowledged" value="false" />
+                    </div>
+
+                    <div class="md:col-span-2">
+                      <label class="tm-label">Primary concern (pick one)</label>
+                      <div class="grid gap-3 md:grid-cols-2">
+                        <label class="flex items-center gap-3 rounded-[16px] border border-white/10 bg-white/5 p-4 cursor-pointer">
+                          <input type="checkbox" class="tm-concern h-5 w-5 rounded border-white/20 bg-white/10" value="Notices" />
+                          <span>Notices</span>
+                        </label>
+                        <label class="flex items-center gap-3 rounded-[16px] border border-white/10 bg-white/5 p-4 cursor-pointer">
+                          <input type="checkbox" class="tm-concern h-5 w-5 rounded border-white/20 bg-white/10" value="Balance due" />
+                          <span>Balance due</span>
+                        </label>
+                        <label class="flex items-center gap-3 rounded-[16px] border border-white/10 bg-white/5 p-4 cursor-pointer">
+                          <input type="checkbox" class="tm-concern h-5 w-5 rounded border-white/20 bg-white/10" value="Unfiled returns" />
+                          <span>Unfiled returns</span>
+                        </label>
+                        <label class="flex items-center gap-3 rounded-[16px] border border-white/10 bg-white/5 p-4 cursor-pointer">
+                          <input type="checkbox" class="tm-concern h-5 w-5 rounded border-white/20 bg-white/10" value="Enforcement risk" />
+                          <span>Enforcement risk</span>
+                        </label>
+                      </div>
+                      <input type="hidden" id="primary_concern_value" name="Primary Concern" value="" />
+                      <div class="tm-help">Don’t overthink it. We just need the main theme.</div>
+                    </div>
+                  </div>
+
+                  <div class="mt-7 grid gap-3 sm:grid-cols-2">
+                    <a id="tm-back" class="tm-btn" href="/app/index.html">Back</a>
+
+                    <button type="submit" class="tm-btn tm-btn-primary" data-tm-submit>Submit Intake & Continue</button>
+                  </div>
+                </form>
+              </div>
+            </section>
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      // Minimal shared helpers with safe fallbacks
+      window.tmCommon = window.tmCommon || {
+        ensureEventId: function () {
+          var el = document.getElementById('tm_event_id');
+          if (!el || el.value) return;
+          var id = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : (Date.now() + '-' + Math.random().toString(16).slice(2));
+          el.value = id;
+        },
+        syncSessionToken: function () {
+          var qs = new URLSearchParams(window.location.search || '');
+          var token = qs.get('sessionToken') || '';
+          var el = document.getElementById('tm_session_token');
+          if (el) el.value = token;
+        },
+        disableSubmit: function (form) {
+          var btn = form.querySelector('[data-tm-submit]');
+          if (!btn) return;
+          btn.disabled = true;
+          btn.dataset.tmLabel = btn.textContent;
+          btn.textContent = 'Submitting…';
+          btn.classList.add('opacity-80', 'cursor-not-allowed');
+        },
+        restoreSubmit: function (form) {
+          var btn = form.querySelector('[data-tm-submit]');
+          if (!btn) return;
+          btn.disabled = false;
+          btn.textContent = btn.dataset.tmLabel || 'Submit';
+          btn.classList.remove('opacity-80', 'cursor-not-allowed');
+        },
+        showError: function (msg) {
+          var box = document.getElementById('tm-error');
+          if (!box) return;
+          box.textContent = msg || 'Something went wrong. Please try again.';
+          box.setAttribute('aria-hidden', 'false');
+        },
+        clearError: function () {
+          var box = document.getElementById('tm-error');
+          if (!box) return;
+          box.textContent = '';
+          box.setAttribute('aria-hidden', 'true');
+        }
+      };
+
+      function withQuery(url) {
+        var qs = window.location.search || '';
+        return url + (qs ? qs : '');
+      }
+
+      function setViewportHidden() {
+        var el = document.getElementById('tm_viewport');
+        if (!el) return;
+        el.value = [window.innerWidth || 0, window.innerHeight || 0].join('x');
+      }
+
+      function readCanonicalState() {
+        return (window.TM_APP_STATE || window.TM_ORDER || window.TM_STATE || null);
+      }
+
+      function intakeIsComplete(state) {
+        try {
+          var order = state && (state.order || state.orders || state.TM_ORDER || state);
+          var step = order && order.stepBooleans;
+          return !!(step && step.intakeComplete);
+        } catch (e) {
+          return false;
+        }
+      }
+
+      function lockForm(lock) {
+        var form = document.getElementById('tm-intake');
+        if (!form) return;
+        var inputs = form.querySelectorAll('input, select, textarea, button[type="submit"]');
+        for (var i = 0; i < inputs.length; i++) {
+          if (inputs[i].id === 'tm-continue') continue;
+          inputs[i].disabled = !!lock;
+        }
+      }
+
+      function setStepperComplete() {
+        var badge = document.getElementById('tm-complete-badge');
+        if (badge) badge.classList.remove('hidden');
+      }
+
+      
+      function hydrateFromState(state) {
+        if (!state) return;
+        var order = state.order || state.orders || state;
+        var acct = state.account || state.accounts || state;
+
+        function setVal(id, v) {
+          var el = document.getElementById(id);
+          if (!el || el.value) return;
+          if (typeof v === 'string' || typeof v === 'number') el.value = String(v);
+        }
+
+        try {
+          setVal('crm_first', acct && acct.crm && acct.crm.firstName);
+          setVal('crm_last', acct && acct.crm && acct.crm.lastName);
+          setVal('crm_email', acct && acct.crm && acct.crm.primaryEmail);
+          setVal('crm_company', acct && acct.crm && acct.crm.companyName);
+
+          if (order && order.intake) {
+            setVal('notice_received', order.intake.irsNoticeReceived);
+            setVal('notice_date', order.intake.irsNoticeDate);
+            // IRS Notice Type (dropdown + other)
+            (function () {
+              var v = order.intake.irsNoticeType;
+              if (!v) return;
+              var s = String(v).trim();
+              var known = { CP14: true, CP2000: true, CP501: true, CP503: true, CP504: true, LT11: true };
+              if (noticeSelect) {
+                noticeSelect.value = known[s] ? s : 'Other';
+              }
+              if (!known[s] && noticeOther) {
+                noticeOther.value = s;
+              }
+              if (noticeHidden) noticeHidden.value = s;
+              syncNoticeType();
+            })();
+            setVal('balance_range', order.intake.estimatedBalanceDueRange);
+            setVal('urgency', order.intake.urgencyLevel);
+            setVal('unfiled', order.intake.unfiledReturnsIndicator);
+
+            // Primary Concern (single)
+            var pc = order.intake.primaryConcern;
+            if (pc) {
+              var concerns = document.querySelectorAll('.tm-concern');
+              for (var i = 0; i < concerns.length; i++) {
+                concerns[i].checked = (String(concerns[i].value).toLowerCase() === String(pc).toLowerCase());
+              }
+              var out = document.getElementById('primary_concern_value');
+              if (out && !out.value) out.value = String(pc);
+            }
+
+            // Ack
+            var ackBox = document.getElementById('monitor_ack');
+            var ackHidden = document.getElementById('irs_monitoring_only_ack');
+            var ack = order.intake.irsMonitoringOnlyAcknowledged;
+            if (ackBox && (ack === true || ack === 'true')) ackBox.checked = true;
+            if (ackHidden && (ackHidden.value === '' || ackHidden.value === 'false') && (ack === true || ack === 'true')) ackHidden.value = 'true';
+          }
+        } catch (e) {}
+      }
+
+      // Partial injection (best-effort, no hard dependency)
+      function injectPartial(targetId, url) {
+        var host = document.getElementById(targetId);
+        if (!host) return;
+        fetch(url, { credentials: 'same-origin' })
+          .then(function (r) { return r.ok ? r.text() : ''; })
+          .then(function (html) { if (html) host.innerHTML = html; })
+          .catch(function () {});
+      }
+
+      // Wiring
+      var form = document.getElementById('tm-intake');
+      var back = document.getElementById('tm-back');
+            var ack = document.getElementById('monitor_ack');
+      var noticeSelect = document.getElementById('notice_type_select');
+      var noticeHidden = document.getElementById('notice_type_hidden');
+      var noticeOtherWrap = document.getElementById('notice_type_other_wrap');
+      var noticeOther = document.getElementById('notice_type_other');
+      var noticeDetailsBody = document.getElementById('notice_type_details_body');
+      var concerns = document.querySelectorAll('.tm-concern');
+
+      if (back) back.setAttribute('href', withQuery('/app/index.html'));
+
+      
+      function syncAck() {
+        var hidden = document.getElementById('irs_monitoring_only_ack');
+        if (!ack || !hidden) return;
+        hidden.value = ack.checked ? 'true' : 'false';
+      }
+
+      function noticeDetailsText(code) {
+        var map = {
+          CP14: 'Balance due notice. Usually sent after a return is processed and a balance is assessed. It explains the amount due and payment options.',
+          CP2000: 'Proposed changes notice. The IRS is suggesting an adjustment based on third-party information (W-2, 1099). It is not a bill yet, but it can become one if not handled.',
+          CP501: 'Reminder notice. A follow-up that a balance is still due. Typically early in the notice sequence.',
+          CP503: 'Second reminder notice. More urgent follow-up that a balance remains unpaid.',
+          CP504: 'Final notice before levy intent (often state refund). Indicates the IRS may levy certain assets if the balance is not resolved. Take seriously.',
+          LT11: 'Final Notice of Intent to Levy and Notice of Your Right to a Hearing. This is a higher-stakes letter with appeal rights and deadlines.'
+        };
+        return map[code] || 'Pick a notice type to see what it usually means.';
+      }
+
+      function syncNoticeType() {
+        if (!noticeHidden) return;
+        var sel = noticeSelect ? noticeSelect.value : '';
+        var isOther = sel === 'Other';
+
+        if (noticeOtherWrap) noticeOtherWrap.classList.toggle('hidden', !isOther);
+
+        var value = '';
+        if (isOther) {
+          value = String((noticeOther && noticeOther.value) || '').trim();
+        } else {
+          value = sel;
+        }
+        noticeHidden.value = value;
+
+        if (noticeDetailsBody) {
+          noticeDetailsBody.textContent = isOther
+            ? 'Enter the notice ID above. Different notice IDs mean different things, so we’ll review it.'
+            : noticeDetailsText(sel);
+        }
+      }
+
+      function syncConcerns() {
+        var out = document.getElementById('primary_concern_value');
+        if (!out) return;
+        var picked = [];
+        for (var i = 0; i < concerns.length; i++) {
+          if (concerns[i].checked) picked.push(concerns[i].value);
+        }
+        if (picked.length > 1) {
+          for (var j = 1; j < concerns.length; j++) concerns[j].checked = false;
+          picked = picked.slice(0, 1);
+        }
+        out.value = picked.map(Boolean).join(',');
+      }
+
+      if (ack) ack.addEventListener('change', syncAck);
+      if (noticeSelect) noticeSelect.addEventListener('change', syncNoticeType);
+      if (noticeOther) noticeOther.addEventListener('input', syncNoticeType);
+      for (var i = 0; i < concerns.length; i++) concerns[i].addEventListener('change', syncConcerns);
+
+      // Init
+      setViewportHidden();
+      window.tmCommon.ensureEventId();
+      window.tmCommon.syncSessionToken();
+      syncAck();
+      syncConcerns();
+      syncNoticeType();
+
+      // App chrome partials
+      injectPartial('tm-sidebar', '/app/partials/sidebar.html');
+      injectPartial('tm-topbar', '/app/partials/topbar.html');
+
+      // State-driven behavior
+      var state = readCanonicalState();
+      hydrateFromState(state);
+      if (intakeIsComplete(state)) {
+        setStepperComplete();
+        lockForm(true);
+      }
+
+      // Submit
+      if (form) {
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+          window.tmCommon.clearError();
+          setViewportHidden();
+          window.tmCommon.ensureEventId();
+          window.tmCommon.syncSessionToken();
+          syncAck();
+          syncConcerns();
+          syncNoticeType();
+
+          var email = document.getElementById('crm_email');
+          var first = document.getElementById('crm_first');
+          var last = document.getElementById('crm_last');
+          if (!first.value || !last.value || !email.value) {
+            window.tmCommon.showError('Please enter your first name, last name, and email.');
+            return;
+          }
+
+          window.tmCommon.disableSubmit(form);
+
+          var action = form.getAttribute('action');
+          var fd = new FormData(form);
+
+          fetch(action, {
+            method: 'POST',
+            body: fd,
+            credentials: 'include'
+          })
+            .then(function (r) {
+              if (!r.ok) throw new Error('HTTP ' + r.status);
+              return r.json().catch(function () { return {}; });
+            })
+            .then(function () {
+                            setStepperComplete();
+              lockForm(true);
+              window.location.href = withQuery('/app/offer.html');
+            })
+            .catch(function () {
+              window.tmCommon.showError('We could not submit your intake. Please try again.');
+            })
+            .finally(function () {
+              window.tmCommon.restoreSubmit(form);
+            });
+        });
+      }
+    })();
+  </script>
+
+  <!-- Flatpickr -->
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script>
+    (function () {
+      var el = document.getElementById('notice_date');
+      if (!el || !window.flatpickr) return;
+
+      window.flatpickr(el, {
+        allowInput: true,
+        dateFormat: 'Y-m-d',
+        disableMobile: true
+      });
+    })();
+  </script>
+</body>
+</html>
