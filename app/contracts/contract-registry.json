@@ -1,4 +1,4 @@
-﻿{
+{
     "baseUrl":  "https://api.taxmonitor.pro",
     "contractRegistryVersion":  1,
     "entries":  [
@@ -415,7 +415,20 @@
                         "writes":  [
                                        "support"
                                    ]
+                    },
+                    {
+                        "writes":  [
+                                       "orders"
+                                   ],
+                        "id":  "form_post_payment_welcome",
+                        "method":  "POST",
+                        "version":  2,
+                        "receiptKeyPattern":  "receipts/{source}/{eventId}.json",
+                        "signatureRequired":  false,
+                        "receiptSource":  "form",
+                        "path":  "app/contracts/forms/post-payment/welcome.contract.json",
+                        "dedupeKey":  "payload.eventId",
+                        "endpoint":  "https://api.taxmonitor.pro/forms/post-payment/welcome"
                     }
                 ]
 }
-

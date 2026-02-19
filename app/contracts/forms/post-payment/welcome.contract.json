@@ -1,74 +1,121 @@
 {
-  "clickupProjection": [],
+  "clickupProjection": [
+    {
+      "list": "Orders",
+      "updates": [
+        { "fieldName": "Order Token", "from": "effects.ordersPatch.sessionToken" }
+      ]
+    }
+  ],
   "contract": {
     "authority": ["R2 Canonical"],
-    "governs": "Form — Post-payment — Welcome",
+    "governs": "Form Ingestion — Post-Payment — Welcome Submitted → Orders Canonical → ClickUp Projection",
     "path": "app/contracts/forms/post-payment/welcome.contract.json",
     "source": "Tax Monitor Pro",
-    "title": "Tax Monitor Pro — Form Contract — Post-payment — Welcome",
+    "title": "Tax Monitor Pro — Post-Payment — Welcome Submitted",
     "validation": {
       "enumStrict": true,
       "normalizeCheckboxToBoolean": true,
       "rejectUnknownValues": true
     },
-    "version": 1
+    "version": 2
   },
   "delivery": {
-    "endpoint": "/forms/post-payment/welcome",
+    "dedupeKey": "eventId",
+    "endpoint": "https://api.taxmonitor.pro/forms/post-payment/welcome",
+    "eventType": "WELCOME_SUBMITTED",
     "method": "POST",
     "receiptKeyPattern": "receipts/{source}/{eventId}.json",
-    "receiptSource": "form"
+    "receiptSource": "form",
+    "writes": ["orders"]
   },
   "effects": {
-    "dedupeKey": "payload.eventId",
-    "writes": ["orders"],
-    "writeOrder": ["receiptAppend", "canonicalUpsert", "clickupProjection"],
-    "receiptAppend": {
-      "to": "receipts/{source}/{eventId}.json"
-    },
-    "canonicalUpsert": {
-      "target": "orders/{orderId}.json",
-      "patch": {
-        "stepBooleans": {
-          "welcomeConfirmed": "{payload.welcomeConfirmed}"
-        }
+    "ordersPatch": {
+      "postPayment": {
+        "additionalInfo": "{payload.additionalInfo}",
+        "availableDays": "{payload.availableDays}",
+        "confirmationMethod": "{payload.confirmationMethod}",
+        "minimumNotice": "{payload.minimumNotice}",
+        "phoneNumber": "{payload.phoneNumber}",
+        "preferredContactMethod": "{payload.preferredContactMethod}",
+        "timeWindow": "{payload.timeWindow}",
+        "timezone": "{payload.timezone}"
+      },
+      "sessionToken": "{payload.sessionToken}",
+      "stepBooleans": {
+        "welcomeConfirmed": true
       }
     }
   },
   "payload": {
-    "additionalProperties": false,
+    "type": "object",
     "properties": {
-      "Tax_Monitoring_Service_Progress_Percent": {
-        "type": ["number", "null"]
+      "additionalInfo": { "type": "string", "maxLength": 8000 },
+      "availableDays": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": ["fri", "mon", "thu", "tue", "wed"]
+        }
       },
-      "Tax_Monitoring_Service_Progress_Status": {
-        "type": ["string", "null"],
-        "maxLength": 5000
-      },
-      "accountId": {
-        "type": ["string", "null"]
+      "confirmationMethod": {
+        "type": "string",
+        "enum": ["email", "phone", "portal"]
       },
       "eventId": {
         "type": "string",
-        "minLength": 1
+        "minLength": 8
+      },
+      "minimumNotice": {
+        "type": "string",
+        "enum": ["24h", "48h", "72h_plus", "same_day"]
       },
       "orderId": {
         "type": "string",
-        "minLength": 1
+        "minLength": 8
+      },
+      "phoneNumber": {
+        "type": "string",
+        "minLength": 10
+      },
+      "preferredContactMethod": {
+        "type": "string",
+        "enum": ["email", "phone", "portal"]
       },
       "sessionToken": {
         "type": "string",
-        "minLength": 1
+        "minLength": 8
       },
-      "welcomeConfirmed": {
-        "type": "boolean"
+      "timeWindow": {
+        "type": "string",
+        "enum": ["afternoon", "evening", "midday", "morning"]
+      },
+      "timezone": {
+        "type": "string",
+        "enum": ["CT", "ET", "MT", "PT"]
       }
     },
-    "required": ["eventId", "orderId", "sessionToken", "welcomeConfirmed"],
-    "type": "object"
+    "required": [
+      "eventId",
+      "orderId",
+      "preferredContactMethod",
+      "sessionToken"
+    ],
+    "allOf": [
+      {
+        "if": {
+          "properties": {
+            "preferredContactMethod": { "const": "phone" }
+          }
+        },
+        "then": {
+          "required": ["phoneNumber"]
+        }
+      }
+    ]
   },
   "schema": {
     "name": "tm_form_post_payment_welcome",
-    "version": 1
+    "version": 2
   }
 }
