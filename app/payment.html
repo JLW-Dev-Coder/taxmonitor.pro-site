@@ -36,17 +36,18 @@
     }
 
     .glass-card {
-      background: linear-gradient(135deg, rgba(30, 41, 59, 0.6) 0%, rgba(15, 23, 42, 0.8) 100%);
+      background: rgba(15, 23, 42, 0.6);
       backdrop-filter: blur(20px);
-      border: 1px solid rgba(148, 163, 184, 0.1);
+      border: 1px solid rgba(248, 250, 252, 0.1);
+      border-radius: 16px;
     }
 
     .glass-card-light {
-      background: linear-gradient(135deg, rgba(51, 65, 85, 0.4) 0%, rgba(30, 41, 59, 0.6) 100%);
+      background: rgba(30, 41, 59, 0.5);
       backdrop-filter: blur(16px);
-      border: 1px solid rgba(148, 163, 184, 0.15);
+      border: 1px solid rgba(248, 250, 252, 0.08);
+      border-radius: 12px;
     }
-
     .amber-gradient {
       background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
       -webkit-background-clip: text;
@@ -66,30 +67,26 @@
       box-shadow: 0 0 40px rgba(245, 158, 11, 0.4), 0 0 80px rgba(245, 158, 11, 0.2);
     }
 
-    /* Match agreement header progress bar look */
     .progress-glow{
       background: linear-gradient(90deg,#F59E0B,#D97706);
       box-shadow: 0 0 20px rgba(245,158,11,.5);
     }
 
-    /* Match agreement header step pulse */
     @keyframes pulse-glow{ 0%,100%{box-shadow:0 0 20px rgba(245,158,11,.30)} 50%{box-shadow:0 0 40px rgba(245,158,11,.50)} }
     .animate-pulse-glow{ animation:pulse-glow 2s ease-in-out infinite; }
-
-    .step-done {
-      background: linear-gradient(135deg, rgba(20, 184, 166, 0.2) 0%, rgba(13, 148, 136, 0.3) 100%);
-      border-color: rgba(20, 184, 166, 0.4);
-    }
-
-    .step-active {
-      background: linear-gradient(135deg, rgba(245, 158, 11, 0.2) 0%, rgba(217, 119, 6, 0.3) 100%);
-      border-color: rgba(245, 158, 11, 0.5);
-    }
 
     .error-banner {
       background: linear-gradient(135deg, rgba(244, 63, 94, 0.15) 0%, rgba(225, 29, 72, 0.2) 100%);
       border: 1px solid rgba(244, 63, 94, 0.3);
     }
+
+    .notice-banner {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.10) 0%, rgba(217, 119, 6, 0.12) 100%);
+      border: 1px solid rgba(245, 158, 11, 0.25);
+    }
+
+    .fade-in-up { animation: fadeInUp 520ms ease both; }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
   </style>
 
   <script>
@@ -106,16 +103,13 @@
 </head>
 
 <body class="h-full bg-slate-950 text-slate-100 overflow-auto">
-  <!-- Aurora Background -->
   <div class="fixed inset-0 aurora-bg pointer-events-none"></div>
   <div class="fixed inset-0 noise-overlay pointer-events-none"></div>
 
   <div class="relative min-h-full flex flex-col">
-    <!-- Sticky Header (match agreement.html structure) -->
-    <header class="sticky top-0 z-50 glass-card border-b border-slate-700/50">
-      <div class="max-w-6xl mx-auto px-4 py-4">
+    <header class="sticky top-0 z-50 glass-card mx-4 mt-4 px-6 py-4">
+      <div class="max-w-6xl mx-auto">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <!-- Logo -->
           <a href="/site/index.html" class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center">
               <span class="font-black text-slate-950">TM</span>
@@ -123,7 +117,6 @@
             <span class="font-bold text-lg text-slate-100">Tax Monitor Pro</span>
           </a>
 
-          <!-- Stepper -->
           <div class="flex items-center gap-2 sm:gap-4">
             <div class="flex items-center gap-2">
               <div class="w-7 h-7 rounded-full bg-emerald-500/20 border border-emerald-500 flex items-center justify-center">
@@ -166,7 +159,6 @@
             </div>
           </div>
 
-          <!-- Validity chip -->
           <div class="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800/80 border border-slate-700">
             <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -175,29 +167,31 @@
           </div>
         </div>
 
-        <!-- Progress bar (Payment = 100%) -->
         <div class="mt-4 h-1 bg-slate-800 rounded-full overflow-hidden">
           <div class="h-full w-full progress-glow rounded-full"></div>
         </div>
       </div>
     </header>
 
-    <!-- Main Content -->
     <main class="flex-1 py-8 sm:py-12 px-4 sm:px-6">
-      <div class="max-w-5xl mx-auto space-y-8">
-        <!-- Page Title (match intake/offer: 2 lines only) -->
-        <div class="text-center space-y-3">
+      <div class="max-w-5xl mx-auto space-y-8 fade-in-up">
+        <div class="glass-card rounded-2xl p-6 sm:p-8 text-center">
+          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/20 mb-6">
+            <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+            </svg>
+            <span class="text-amber-400 font-medium text-sm">Final Step</span>
+          </div>
+
           <h1 id="page-headline" class="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
             Secure Payment
           </h1>
-          <p id="page-subhead" class="text-lg sm:text-xl text-slate-400">
+          <p id="page-subhead" class="mt-3 text-lg sm:text-xl text-slate-400 max-w-2xl mx-auto">
             Complete checkout to activate your Tax Monitor service.
           </p>
         </div>
 
-        <!-- Main Content Split -->
         <div class="grid lg:grid-cols-5 gap-6">
-          <!-- Left Column -->
           <div class="lg:col-span-3 space-y-6">
             <div class="glass-card rounded-2xl p-6 sm:p-8">
               <h2 class="text-xl font-semibold text-slate-100 mb-6 flex items-center gap-3">
@@ -258,9 +252,22 @@
                 </div>
               </div>
             </div>
+
+            <div class="notice-banner rounded-2xl p-6">
+              <div class="flex items-start gap-4">
+                <div class="w-12 h-12 rounded-xl bg-amber-500/20 flex items-center justify-center flex-shrink-0">
+                  <svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="text-lg font-bold text-amber-300 mb-2">Important notice</h3>
+                  <p class="text-slate-300 leading-relaxed">Tax Monitor Pro is a monitoring and reporting service. It does not create IRS representation. Representation, filing, and resolution are separate engagements.</p>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <!-- Right Column -->
           <div class="lg:col-span-2">
             <div class="glass-card rounded-2xl p-6 sm:p-8 sticky top-32">
               <div class="flex items-center justify-between mb-6 pb-4 border-b border-slate-700/50">
@@ -337,20 +344,14 @@
       </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="border-t border-slate-800/50 py-8 px-4 sm:px-6">
-      <div class="max-w-5xl mx-auto">
-        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-4">
-          <div class="flex items-center gap-6">
-            <a href="/legal/privacy.html" class="text-sm text-slate-500 hover:text-slate-300 transition-colors">Privacy</a>
-            <a href="/legal/terms.html" class="text-sm text-slate-500 hover:text-slate-300 transition-colors">Terms</a>
-          </div>
-          <p class="text-sm text-slate-600">© <span id="footer-year"></span> Tax Monitor Pro. All rights reserved.</p>
+    <footer class="glass-card mx-4 mb-4 px-6 py-4">
+      <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+        <p class="text-slate-500 text-sm">© <span id="footer-year"></span> Tax Monitor Pro. All rights reserved.</p>
+        <div class="flex items-center gap-6">
+          <a href="/legal/privacy.html" class="text-slate-400 hover:text-amber-400 text-sm transition-colors">Privacy Policy</a>
+          <a href="/legal/terms.html" class="text-slate-400 hover:text-amber-400 text-sm transition-colors">Terms of Service</a>
+          <a href="/site/contact.html" class="text-slate-400 hover:text-amber-400 text-sm transition-colors">Contact Support</a>
         </div>
-
-        <p class="text-xs text-slate-600 text-center leading-relaxed">
-          Monitoring does not create IRS representation. Representation, filing, and resolution are separate engagements.
-        </p>
       </div>
     </footer>
   </div>
@@ -482,7 +483,6 @@
     })();
   </script>
 
-  <!-- Optional: keep Element SDK live-edit support for Canva if you still use it -->
   <script>
     (function () {
       var defaultConfig = {
