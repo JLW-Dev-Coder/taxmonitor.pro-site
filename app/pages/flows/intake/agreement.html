@@ -1,0 +1,582 @@
+<!--/app/pages/flows/intake/agreement.html -->
+<!doctype html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tax Monitor Pro — Agreement</title>
+
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Match offer.html exactly (avoid missing blobs like /favicon.ico or /assets/favicon.svg) -->
+  <link rel="apple-touch-icon" href="/assets/favicon.ico" />
+  <link rel="icon" href="/assets/favicon.ico" />
+
+  <style>
+    :root { color-scheme: dark; }
+    body { font-family: 'DM Sans', system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+
+    .noise-bg {
+      background-image: url('data:image/svg+xml;utf8,\
+        <svg xmlns="http://www.w3.org/2000/svg" width="120" height="120">\
+          <filter id="n">\
+            <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch"/>\
+          </filter>\
+          <rect width="120" height="120" filter="url(%23n)" opacity="0.18"/>\
+        </svg>');
+    }
+
+    .aurora {
+      position: absolute;
+      inset: -40% -30% auto -30%;
+      height: 80vh;
+      pointer-events: none;
+      filter: blur(40px);
+      opacity: 0.55;
+      background:
+        radial-gradient(closest-side, rgba(245,158,11,0.35), transparent 65%),
+        radial-gradient(closest-side, rgba(56,189,248,0.18), transparent 60%),
+        radial-gradient(closest-side, rgba(168,85,247,0.14), transparent 62%);
+      transform: translate3d(0,0,0);
+    }
+
+    .glass-card {
+      background: rgba(2,6,23,0.55);
+      border: 1px solid rgba(148,163,184,0.16);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.45);
+      backdrop-filter: blur(10px);
+    }
+
+    .glass-card-light {
+      background: rgba(2,6,23,0.35);
+      border: 1px solid rgba(148,163,184,0.12);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+    }
+
+    .gradient-border { position: relative; }
+
+    .gradient-border:before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      border-radius: 24px;
+      padding: 1px;
+      background: linear-gradient(135deg, rgba(245,158,11,0.55), rgba(14,165,233,0.20), rgba(168,85,247,0.20));
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    .fade-in-up { animation: fadeInUp 520ms ease-out both; }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .progress-glow {
+      background: linear-gradient(90deg, rgba(245,158,11,0.95), rgba(217,119,6,0.95));
+      box-shadow: 0 0 20px rgba(245,158,11,0.35);
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 20px rgba(245,158,11,0.22); }
+      50% { box-shadow: 0 0 40px rgba(245,158,11,0.42); }
+    }
+
+    .animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
+
+    .stepper-locked { opacity: 0.55; }
+
+    .tm-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 24px;
+      border-radius: 16px;
+      font-weight: 700;
+      font-size: 15px;
+      border: 1px solid rgba(148,163,184,0.16);
+      background: rgba(2,6,23,0.35);
+      color: rgba(226,232,240,0.92);
+      transition: transform 140ms ease, opacity 140ms ease;
+      user-select: none;
+      width: 100%;
+    }
+
+    .tm-btn:hover { opacity: 0.96; transform: translateY(-1px); }
+
+    .tm-btn-primary {
+      background: linear-gradient(135deg, rgba(245,158,11,0.95), rgba(217,119,6,0.95));
+      border-color: rgba(245,158,11,0.35);
+      color: rgba(2,6,23,0.98);
+      box-shadow: 0 18px 35px rgba(245,158,11,0.18);
+    }
+
+    .tm-error {
+      display: none;
+      border: 1px solid rgba(248,113,113,0.25);
+      background: rgba(248,113,113,0.10);
+      color: rgba(254,202,202,0.95);
+      padding: 10px 12px;
+      border-radius: 14px;
+      font-size: 13px;
+    }
+
+    .tm-error[aria-hidden="false"] { display: block; }
+
+    .sidebar-shell {
+      border-right: 1px solid rgba(148,163,184,0.10);
+      background: rgba(2,6,23,0.40);
+      backdrop-filter: blur(10px);
+    }
+
+    .topbar-shell {
+      border-bottom: 1px solid rgba(148,163,184,0.10);
+      background: rgba(2,6,23,0.38);
+      backdrop-filter: blur(10px);
+    }
+
+    /* Agreement readability (kept, but aligned to offer styling) */
+    .agreement-prose { font-size: 16px; line-height: 1.8; color: rgba(226,232,240,0.92); }
+    .agreement-prose a { text-decoration: underline; }
+    .agreement-prose h1, .agreement-prose h2, .agreement-prose h3 { scroll-margin-top: 110px; }
+    .agreement-prose h3 { font-weight: 800; letter-spacing: 0.01em; margin-top: 2rem; margin-bottom: 0.75rem; }
+    .agreement-prose p { margin-top: 1rem; margin-bottom: 1rem; }
+    .agreement-prose ol, .agreement-prose ul { margin-top: 0.75rem; margin-bottom: 1rem; padding-left: 1.25rem; }
+    .agreement-prose li { margin-top: 0.5rem; margin-bottom: 0.5rem; }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: rgba(2, 6, 23, 0.45); }
+    ::-webkit-scrollbar-thumb { background: rgba(245, 158, 11, 0.28); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(245, 158, 11, 0.45); }
+  </style>
+
+  <style>@view-transition { navigation: auto; }</style>
+</head>
+
+<body class="h-full bg-slate-950 text-slate-100">
+  <div class="relative min-h-screen overflow-hidden">
+    <div class="aurora" aria-hidden="true"></div>
+    <div class="pointer-events-none absolute inset-0 noise-bg opacity-50" aria-hidden="true"></div>
+
+    <div class="relative z-10 min-h-screen grid lg:grid-cols-[280px_1fr]">
+      <!-- App Sidebar (partial injection target) -->
+      <aside class="hidden lg:block sidebar-shell">
+        <div id="tm-sidebar" class="h-full"></div>
+      </aside>
+
+      <div class="min-h-screen flex flex-col">
+        <!-- App Topbar (partial injection target) -->
+        <div class="topbar-shell sticky top-0 z-30">
+          <div id="tm-topbar"></div>
+        </div>
+
+        <!-- Page Header (match intake flow page / offer.html) -->
+        <header class="px-6 pt-6">
+          <div class="mx-auto max-w-5xl">
+            <div class="glass-card rounded-[24px] p-5 border border-white/10">
+              <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                <div class="flex items-center gap-3">
+                  <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 text-slate-950 font-bold">TM</span>
+                  <div>
+                    <div class="font-semibold">Tax Monitor Pro</div>
+                    <div class="text-xs text-slate-400">Agreement</div>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-2 sm:gap-4">
+                  <div class="flex items-center gap-2" data-step="intake">
+                    <div class="w-8 h-8 rounded-full bg-emerald-600 flex items-center justify-center">
+                      <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+                    <span class="text-sm font-semibold text-emerald-400">Intake</span>
+                  </div>
+
+                  <div class="w-8 h-0.5 bg-white/10"></div>
+
+                  <div class="flex items-center gap-2" data-step="offer">
+                    <div class="w-8 h-8 rounded-full bg-emerald-600 flex items-center justify-center">
+                      <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+                    <span class="text-sm font-semibold text-emerald-400">Offer</span>
+                  </div>
+
+                  <div class="w-8 h-0.5 bg-white/10"></div>
+
+                  <div class="flex items-center gap-2" data-step="agreement">
+                    <div class="w-8 h-8 rounded-full bg-amber-500 flex items-center justify-center animate-pulse-glow">
+                      <span class="text-xs font-bold text-slate-950">3</span>
+                    </div>
+                    <span class="text-sm font-semibold text-amber-400">Agreement</span>
+                  </div>
+
+                  <div class="w-8 h-0.5 bg-white/10"></div>
+
+                  <div class="flex items-center gap-2 stepper-locked" data-step="payment">
+                    <div class="w-8 h-8 rounded-full bg-slate-900/40 border border-white/10 flex items-center justify-center">
+                      <span class="text-xs text-slate-400">4</span>
+                    </div>
+                    <span class="text-sm text-slate-500 hidden sm:inline">Payment</span>
+                  </div>
+                </div>
+
+                <div>
+                  <button id="back-btn" type="button" class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-semibold text-slate-300 hover:text-amber-300 hover:border-amber-500/30">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                    Back
+                  </button>
+                </div>
+              </div>
+
+              <div class="mt-4 h-1 bg-white/5 rounded-full overflow-hidden">
+                <div class="h-full w-3/4 progress-glow rounded-full"></div>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <!-- Content -->
+        <main class="flex-1">
+          <div class="mx-auto max-w-5xl px-6 py-10">
+            <section class="gradient-border rounded-[24px] fade-in-up">
+              <div class="glass-card rounded-[24px] p-6 md:p-8">
+                <div class="flex flex-col gap-2">
+                  <h1 class="text-2xl md:text-3xl font-bold">Service Agreement</h1>
+                  <p class="text-slate-300">Review and accept the terms to continue.</p>
+                </div>
+
+                <div id="form-error" class="tm-error mt-5" aria-hidden="true"></div>
+
+                <div class="mt-8 glass-card-light rounded-[18px] p-6 border border-white/10">
+                  <div id="tm-agreement-content" class="agreement-prose">
+                    <p style="text-align:center; margin-bottom:16px;">
+                      <span class="inline-flex items-center justify-center">
+                        <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 text-slate-950 font-bold">TM</span>
+                      </span>
+                    </p>
+
+                    <h2 style="text-align:center; margin:0 0 10px; font-size:1.6em; font-weight:800; letter-spacing:0.08em; text-transform:uppercase;">Service Agreement and Contract</h2>
+
+                    <p style="text-align:center; margin-bottom:20px;" class="text-slate-300">
+                      Tax Monitor Service<br>
+                      Provided by <strong id="tm-org-name">Tax Monitor Pro</strong>
+                    </p>
+
+                    <hr class="border-white/10" />
+
+                    <p>
+                      This Service Agreement (“Agreement”) governs the Tax Monitor Service provided by
+                      <span class="font-semibold" id="tm-org-name-2">Tax Monitor Pro</span> (“Company”). By submitting payment or otherwise enrolling
+                      in this service, the Client agrees to the terms outlined below.
+                    </p>
+
+                    <p>
+                      This service is limited to monitoring and reporting activities only and does not
+                      include tax resolution, negotiation, filing, representation, or enforcement
+                      intervention unless expressly agreed to in a separate written contract.
+                    </p>
+
+                    <hr class="border-white/10" />
+
+                    <h3>Client Responsibilities</h3>
+                    <ol>
+                      <li>The Client agrees to provide complete, accurate, and timely information requested for monitoring purposes within forty-eight (48) hours unless otherwise agreed.</li>
+                      <li>The Client acknowledges responsibility for the accuracy of all information provided, including income, assets, liabilities, filing history, and IRS correspondence.</li>
+                      <li>Failure to respond after three (3) documented contact attempts may result in suspension or termination of monitoring services without refund.</li>
+                      <li>The Client agrees not to alter or submit any documents prepared by the Company without written authorization.</li>
+                      <li>Cancellation is available within forty-eight (48) hours of payment by contacting <a class="text-amber-300" href="mailto:support@taxmonitor.pro">support@taxmonitor.pro</a>. Cancellation stops future billing. <strong>All service fees are non-refundable once services begin, including any work performed, records accessed, or insights delivered.</strong></li>
+                    </ol>
+
+                    <hr class="border-white/10" />
+
+                    <h3>Married Filing Jointly (MFJ) Years</h3>
+                    <p>For tax years filed as <strong>Married Filing Jointly (MFJ)</strong>, separate enrollment and authorization from each spouse is required to access jointly filed records.</p>
+                    <p>Each spouse must independently enroll and execute required authorization forms. Enrollment by one spouse does not grant access to the other spouse’s records.</p>
+                    <p>Until both spouses complete enrollment and authorization, access to MFJ-related records and materials will be limited to the enrolled spouse only.</p>
+                    <p>Such limitation does not entitle the Client to refunds, credits, service extensions, or modified service terms.</p>
+
+                    <hr class="border-white/10" />
+
+                    <h3>Company Responsibilities</h3>
+                    <ol start="6">
+                      <li><span class="font-semibold" id="tm-org-name-3">Tax Monitor Pro</span> will monitor authorized tax account data and provide informational updates during the monitoring period.</li>
+                      <li>Original documents provided by the Client will be returned upon conclusion of the engagement. Copies retained are for documentation purposes only.</li>
+                      <li>The Company maintains reasonable administrative, technical, and physical safeguards to protect nonpublic personal information.</li>
+                      <li>Electronic data transmission and storage may involve secure third-party systems necessary to deliver services efficiently.</li>
+                    </ol>
+
+                    <hr class="border-white/10" />
+
+                    <h3>Scope Limitation</h3>
+                    <p>This Agreement does not include IRS representation, negotiations, payment arrangements, offers in compromise, appeals, or enforcement resolution unless authorized in writing through a separate Representation Agreement and Power of Attorney.</p>
+
+                    <hr class="border-white/10" />
+
+                    <h3>Acceptance</h3>
+                    <p>By signing electronically, the Client acknowledges that this Agreement is legally binding and enforceable to the same extent as a handwritten signature.</p>
+                  </div>
+                </div>
+
+                <!-- Contract-driven submit (payload fields must match agreement.contract.json) -->
+                <form id="tm-agreement" class="mt-6" action="https://api.taxmonitor.pro/forms/agreement" method="POST" novalidate>
+                  <input id="tm_event_id" name="eventId" type="hidden" value="" />
+                  <input id="tm_session_token" name="sessionToken" type="hidden" value="" />
+                  <input id="sign_code" name="code" type="hidden" value="" />
+                  <input id="sign_item" name="item" type="hidden" value="" />
+                  <input id="sign_ack" name="agreement_acknowledged" type="hidden" value="No" />
+
+                  <label class="mt-4 flex items-start gap-3 rounded-[16px] border border-white/10 bg-white/5 p-4">
+                    <input id="agree_ack" type="checkbox" class="w-5 h-5 mt-1 accent-amber-500" />
+                    <span class="text-sm text-slate-200">I have read and accept this Service Agreement.</span>
+                  </label>
+
+                  <div class="mt-5 grid gap-3 sm:grid-cols-2">
+                    <button id="btn-back-offer" type="button" class="tm-btn">Back to Offer</button>
+                    <button id="btn-continue" type="submit" class="tm-btn tm-btn-primary" disabled>Accept &amp; Continue</button>
+                  </div>
+
+                  <div class="mt-5 rounded-[18px] border border-amber-500/25 bg-amber-500/10 p-5">
+                    <div class="font-semibold text-amber-300">Boundary notice</div>
+                    <p class="mt-2 text-sm text-slate-200">Monitoring is informational. IRS representation or resolution work requires a separate written agreement and, when applicable, Form 2848.</p>
+                    <p class="mt-2 text-xs text-slate-400">
+                      By continuing, you also agree to our <a class="underline hover:text-slate-200" href="/legal/terms.html">Terms</a> and <a class="underline hover:text-slate-200" href="/legal/privacy.html">Privacy Policy</a>.
+                    </p>
+                  </div>
+                </form>
+
+                <footer class="text-center py-6">
+                  <p class="text-sm text-slate-500">© <span id="footer-year"></span> Tax Monitor Pro. All rights reserved.</p>
+                  <p class="text-xs text-slate-600 mt-1">
+                    Encrypted in transit using industry-standard
+                    <a href="https://www.cloudflare.com/learning/ssl/what-is-tls/" target="_blank" rel="noopener noreferrer" class="underline hover:text-slate-400">TLS</a>
+                  </p>
+                </footer>
+              </div>
+            </section>
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var y = document.getElementById('footer-year');
+      if (y) y.textContent = String(new Date().getFullYear());
+    })();
+  </script>
+
+  <script>
+    (function () {
+      'use strict';
+
+      function injectPartial(targetId, url) {
+        var el = document.getElementById(targetId);
+        if (!el) return;
+        fetch(url, { credentials: 'same-origin' })
+          .then(function (r) { return r.ok ? r.text() : ''; })
+          .then(function (html) { if (html) el.innerHTML = html; })
+          .catch(function () {});
+      }
+
+      function safeText(v) {
+        return String(v || '').replace(/[<>]/g, '').trim();
+      }
+
+      function clearError() {
+        var box = document.getElementById('form-error');
+        if (!box) return;
+        box.textContent = '';
+        box.setAttribute('aria-hidden', 'true');
+      }
+
+      function showError(msg) {
+        var box = document.getElementById('form-error');
+        if (!box) return;
+        box.textContent = String(msg || 'Something went wrong.');
+        box.setAttribute('aria-hidden', 'false');
+      }
+
+      function getEndpointSlug(formEl) {
+        try {
+          var action = String(formEl.getAttribute('action') || '');
+          var u = new URL(action, window.location.origin);
+          var parts = (u.pathname || '').split('/').filter(Boolean);
+          return String(parts[parts.length - 1] || 'form').trim() || 'form';
+        } catch (e) {
+          return 'form';
+        }
+      }
+
+      function ensureEventId(formEl) {
+        var el = document.getElementById('tm_event_id');
+        if (!el) return;
+
+        var endpoint = getEndpointSlug(formEl || document.querySelector('form'));
+        var key = 'tm:' + endpoint + ':eventId';
+
+        var existing = sessionStorage.getItem(key);
+        if (!existing) {
+          existing = (crypto && crypto.randomUUID) ? crypto.randomUUID() : (Date.now() + '-' + Math.random().toString(16).slice(2));
+          sessionStorage.setItem(key, existing);
+        }
+        el.value = existing;
+      }
+
+      function syncSessionToken() {
+        var el = document.getElementById('tm_session_token');
+        if (!el) return;
+        var params = new URLSearchParams(window.location.search || '');
+        var t = safeText(params.get('sessionToken') || '');
+        el.value = t;
+      }
+
+      function disableSubmit(btn) {
+        if (!btn) return;
+        btn.disabled = true;
+        btn.dataset.tmLabel = btn.textContent || '';
+        btn.textContent = 'Submitting…';
+        btn.classList.add('opacity-80', 'cursor-not-allowed');
+      }
+
+      function restoreSubmit(btn, fallback) {
+        if (!btn) return;
+        btn.disabled = false;
+        btn.textContent = btn.dataset.tmLabel || (fallback || 'Submit');
+        btn.classList.remove('opacity-80', 'cursor-not-allowed');
+      }
+
+      function withQuery(urlPath) {
+        var u = new URL(urlPath, window.location.origin);
+        var qs = new URLSearchParams(window.location.search || '');
+        qs.forEach(function (v, k) { u.searchParams.set(k, v); });
+        return u.toString();
+      }
+
+      // Inject app chrome
+      injectPartial('tm-sidebar', '/app/partials/sidebar.html');
+      injectPartial('tm-topbar', '/app/partials/topbar.html');
+
+      // Wire navigation
+      var backBtn = document.getElementById('back-btn');
+      if (backBtn) backBtn.addEventListener('click', function () {
+        window.location.href = withQuery('/app/pages/flows/intake/offer.html');
+      });
+
+      var backOffer = document.getElementById('btn-back-offer');
+      if (backOffer) backOffer.addEventListener('click', function () {
+        window.location.href = withQuery('/app/pages/flows/intake/offer.html');
+      });
+
+      // Apply org name from any injected render state (safe placeholders if missing)
+      (function applyOrgName() {
+        function safeJsonParse(text) { try { return JSON.parse(String(text || '')); } catch (_) { return null; } }
+        function getCanonicalState() {
+          if (window.tmRenderState && typeof window.tmRenderState === 'object') return window.tmRenderState;
+          if (window.__TM_STATE__ && typeof window.__TM_STATE__ === 'object') return window.__TM_STATE__;
+          var el = document.getElementById('tm-render-state');
+          if (el) {
+            var parsed = safeJsonParse(el.textContent || el.innerText || '');
+            if (parsed && typeof parsed === 'object') return parsed;
+          }
+          return {};
+        }
+
+        var state = getCanonicalState();
+        var name = '';
+        if (state && state.myOrganizationName) name = String(state.myOrganizationName);
+        if (!name && state && state.organization && state.organization.name) name = String(state.organization.name);
+        name = safeText(name);
+        if (!name) return;
+
+        var a = document.getElementById('tm-org-name');
+        var b = document.getElementById('tm-org-name-2');
+        var c = document.getElementById('tm-org-name-3');
+        if (a) a.textContent = name;
+        if (b) b.textContent = name;
+        if (c) c.textContent = name;
+      })();
+
+      // Populate contract fields from URL
+      (function hydrateContractFields() {
+        var params = new URLSearchParams(window.location.search || '');
+        var code = safeText(params.get('code') || '');
+        var item = safeText(params.get('item') || '');
+
+        var signCode = document.getElementById('sign_code');
+        var signItem = document.getElementById('sign_item');
+        if (signCode) signCode.value = code;
+        if (signItem) signItem.value = item;
+      })();
+
+      // Ack gating
+      var ack = document.getElementById('agree_ack');
+      var signAck = document.getElementById('sign_ack');
+      var btn = document.getElementById('btn-continue');
+
+      function syncAck() {
+        var yes = !!(ack && ack.checked);
+        if (signAck) signAck.value = yes ? 'Yes' : 'No';
+        if (btn) btn.disabled = !yes;
+      }
+
+      if (ack) ack.addEventListener('change', syncAck);
+      syncAck();
+
+      // Submit
+      var form = document.getElementById('tm-agreement');
+      if (form) {
+        ensureEventId(form);
+        syncSessionToken();
+
+        form.addEventListener('submit', async function (e) {
+          e.preventDefault();
+          clearError();
+
+          syncAck();
+          if (btn && btn.disabled) return;
+
+          ensureEventId(form);
+          syncSessionToken();
+          disableSubmit(btn);
+
+          try {
+            var res = await fetch(form.action, { method: 'POST', body: new FormData(form), credentials: 'include' });
+            var data = {};
+            try { data = await res.json(); } catch (_) {}
+
+            if (res.ok && data && data.ok) {
+              window.location.href = withQuery('/app/payment.html');
+              return;
+            }
+
+            var msg = (data && (data.error || data.details)) ? (data.error || data.details) : ('Agreement submission failed (HTTP ' + res.status + ').');
+            restoreSubmit(btn, 'Accept & Continue');
+            showError(String(msg).slice(0, 240));
+          } catch (err) {
+            restoreSubmit(btn, 'Accept & Continue');
+            showError(String(err && err.message ? err.message : err).slice(0, 240));
+          }
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
