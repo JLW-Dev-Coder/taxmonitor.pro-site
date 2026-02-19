@@ -1,32 +1,30 @@
-<!-- /app/index.html -->
-<!DOCTYPE html>
+<!--/app/index.html-->
+<!doctype html>
 <html lang="en" class="h-full">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tax Monitor Pro - Dashboard</title>
+  <title>Tax Monitor Pro Dashboard</title>
 
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
-  <link rel="icon" href="https://taxmonitor.pro/favicon.ico" sizes="any">
-  <link rel="icon" href="https://taxmonitor.pro/assets/favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="/assets/favicon.ico" />
+  <link rel="icon" href="/assets/favicon.ico" />
 
   <script>
     tailwind.config = {
       theme: {
         extend: {
-          fontFamily: { jakarta: ['Plus Jakarta Sans', 'system-ui', 'sans-serif'] },
+          fontFamily: {
+            jakarta: ['Plus Jakarta Sans', 'sans-serif']
+          },
           colors: {
-            slate: {
-              850: '#1a1f2e',
-              900: '#0f1219',
-              950: '#080a0f',
-            },
             amber: {
               50: '#fffbeb',
               100: '#fef3c7',
@@ -47,7 +45,6 @@
 
   <style>
     * { box-sizing: border-box; }
-    html, body { height: 100%; }
 
     /* Animated gradient text */
     .gradient-text {
@@ -58,27 +55,25 @@
       background-clip: text;
       animation: gradientShift 4s ease infinite;
     }
+
     @keyframes gradientShift {
       0%, 100% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
     }
 
-    /* Glass cards */
+    /* Glassmorphism card */
     .glass-card {
       background: rgba(255, 255, 255, 0.08);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border: 1px solid rgba(255, 255, 255, 0.12);
     }
-    .glass-card-light {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(245, 158, 11, 0.2);
-    }
 
     /* Gradient border */
-    .gradient-border { position: relative; }
+    .gradient-border {
+      position: relative;
+    }
+
     .gradient-border::before {
       content: '';
       position: absolute;
@@ -92,8 +87,8 @@
       mask-composite: exclude;
       opacity: 0.6;
       animation: borderGlow 3s ease-in-out infinite;
-      pointer-events: none;
     }
+
     @keyframes borderGlow {
       0%, 100% { opacity: 0.4; }
       50% { opacity: 0.8; }
@@ -102,11 +97,15 @@
     /* Aurora background */
     .aurora {
       position: fixed;
-      inset: 0;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
       overflow: hidden;
       z-index: 0;
       pointer-events: none;
     }
+
     .aurora-blob {
       position: absolute;
       border-radius: 50%;
@@ -114,6 +113,7 @@
       opacity: 0.4;
       animation: float 20s ease-in-out infinite;
     }
+
     .aurora-blob-1 {
       width: 600px;
       height: 600px;
@@ -122,6 +122,7 @@
       right: -100px;
       animation-delay: 0s;
     }
+
     .aurora-blob-2 {
       width: 500px;
       height: 500px;
@@ -130,6 +131,7 @@
       left: -100px;
       animation-delay: -7s;
     }
+
     .aurora-blob-3 {
       width: 400px;
       height: 400px;
@@ -138,6 +140,7 @@
       left: 30%;
       animation-delay: -14s;
     }
+
     @keyframes float {
       0%, 100% { transform: translate(0, 0) scale(1); }
       25% { transform: translate(30px, -30px) scale(1.05); }
@@ -148,31 +151,43 @@
     /* Noise overlay */
     .noise-overlay {
       position: fixed;
-      inset: 0;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       pointer-events: none;
       z-index: 1;
       opacity: 0.03;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
     }
 
-    /* Action card hover */
-    .action-card {
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-    .action-card:hover {
-      transform: translateY(-8px) scale(1.02);
-      box-shadow: 0 25px 50px -12px rgba(245, 158, 11, 0.25);
+    * { outline-color: transparent !important; }
+    *:focus { outline: none !important; }
+    *:focus-visible { outline: none !important; }
+
+    /* Progress ring */
+    .progress-ring-circle {
+      transition: stroke-dashoffset 1s ease-in-out;
+      transform: rotate(-90deg);
+      transform-origin: 50% 50%;
     }
 
-    /* Pulse */
-    .pulse-amber { animation: pulseAmber 2s ease-in-out infinite; }
+    /* Pulse animation */
+    .pulse-amber {
+      animation: pulseAmber 2s ease-in-out infinite;
+    }
+
     @keyframes pulseAmber {
       0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4); }
       50% { box-shadow: 0 0 0 12px rgba(245, 158, 11, 0); }
     }
 
     /* Button glow */
-    .glow-button { position: relative; overflow: hidden; }
+    .glow-button {
+      position: relative;
+      overflow: hidden;
+    }
+
     .glow-button::before {
       content: '';
       position: absolute;
@@ -183,7 +198,11 @@
       opacity: 0;
       transition: opacity 0.3s ease;
     }
-    .glow-button:hover::before { opacity: 1; }
+
+    .glow-button:hover::before {
+      opacity: 1;
+    }
+
     .glow-button::after {
       content: '';
       position: absolute;
@@ -196,10 +215,18 @@
       transform: translate(-50%, -50%);
       transition: width 0.6s ease, height 0.6s ease;
     }
-    .glow-button:active::after { width: 300px; height: 300px; }
+
+    .glow-button:active::after {
+      width: 300px;
+      height: 300px;
+    }
 
     /* Badge shine */
-    .badge-shine { position: relative; overflow: hidden; }
+    .badge-shine {
+      position: relative;
+      overflow: hidden;
+    }
+
     .badge-shine::after {
       content: '';
       position: absolute;
@@ -210,17 +237,12 @@
       background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.4) 50%, transparent 60%);
       transform: rotate(45deg);
       animation: shine 3s ease-in-out infinite;
-      pointer-events: none;
     }
+
     @keyframes shine {
       0%, 100% { transform: translateX(-100%) rotate(45deg); }
       50% { transform: translateX(100%) rotate(45deg); }
     }
-
-    /* Scrollbar */
-    ::-webkit-scrollbar { width: 8px; height: 8px; }
-    ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.1); border-radius: 4px; }
-    ::-webkit-scrollbar-thumb { background: linear-gradient(135deg, #f59e0b, #d97706); border-radius: 4px; }
 
     /* Timeline connector */
     .timeline-connector {
@@ -230,21 +252,18 @@
       bottom: 0;
       width: 2px;
       background: linear-gradient(to bottom, #f59e0b, #10b981, #64748b);
-      opacity: 0.9;
     }
 
-    /* Old nav-item styling retained for any link grids */
-    .nav-item { transition: all 0.2s ease; }
-    .nav-item:hover { background: rgba(251, 191, 36, 0.08); }
-    .nav-item.active {
-      background: rgba(251, 191, 36, 0.12);
-      border-left: 2px solid #f59e0b;
-      color: #fff;
-    }
+    /* Keep app frame from squishing the Canva layout */
+    .tm-shell { min-height: 100%; }
+    .tm-main { min-width: 0; }
   </style>
 </head>
 
-<body class="h-full font-jakarta bg-slate-900 text-white overflow-hidden">
+<body class="h-full font-jakarta bg-slate-900 text-white overflow-auto">
+  <!-- APP_SIDEBAR -->
+  <!-- APP_TOPBAR -->
+
   <!-- Aurora Background -->
   <div class="aurora" aria-hidden="true">
     <div class="aurora-blob aurora-blob-1"></div>
@@ -255,657 +274,705 @@
   <!-- Noise Overlay -->
   <div class="noise-overlay" aria-hidden="true"></div>
 
-  <div class="relative z-10 flex h-full">
-    <!-- APP SIDEBAR PARTIAL -->
-    <!-- APP_SIDEBAR -->
+  <!-- Main Container -->
+  <div class="relative z-10 tm-shell w-full p-4 md:p-8">
+    <div class="max-w-7xl mx-auto space-y-6">
+      <!-- Hero Section -->
+      <section class="glass-card gradient-border rounded-3xl p-6 md:p-8">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div class="space-y-2">
+            <div class="flex items-center gap-3">
+              <h1 class="text-2xl md:text-4xl font-bold">Welcome back, <span id="user-name" class="gradient-text">Sarah</span></h1>
 
-    <div class="flex-1 flex flex-col min-w-0">
-      <!-- APP TOPBAR PARTIAL -->
-      <!-- APP_TOPBAR -->
-
-      <main class="flex-1 overflow-auto">
-        <div class="max-w-7xl mx-auto p-4 md:p-8 space-y-6">
-
-          <!-- Hero -->
-          <section class="glass-card gradient-border rounded-3xl p-6 md:p-8">
-            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-              <div class="space-y-2">
-                <div class="flex items-center gap-3">
-                  <h1 class="text-2xl md:text-4xl font-bold">
-                    <span id="greeting-prefix">Welcome back, </span><span id="greeting-name" class="gradient-text">Jane</span>
-                  </h1>
-
-                  <div class="badge-shine bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-full p-2 shadow-lg shadow-emerald-500/30" title="Monitoring active">
-                    <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                      <path class="text-emerald-200" fill="currentColor" d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2" fill="none"/>
-                    </svg>
-                  </div>
-                </div>
-
-                <p id="trust-line" class="text-slate-400 text-sm md:text-base flex items-center gap-2">
-                  <svg class="w-4 h-4 text-amber-500" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                  </svg>
-                  Proactive monitoring by licensed tax professionals — intake does not establish IRS representation.
-                </p>
-
-                <p id="subheadline" class="text-slate-300 text-sm md:text-base max-w-3xl">
-                  This is your command center — where monitoring stays visible.
-                </p>
-
-                <p id="helper-text" class="text-slate-500 text-xs md:text-sm max-w-3xl">
-                  Track onboarding, view activity, and access your portal files anytime.
-                </p>
-              </div>
-
-              <div class="flex items-center gap-3">
-                <div class="text-right hidden md:block">
-                  <p class="text-xs text-slate-500">Account</p>
-                  <p id="account-label" class="text-lg font-bold text-amber-500">Account: Monitoring</p>
-                </div>
-
-                <div class="w-12 h-12 rounded-full bg-gradient-to-br from-amber-400 to-orange-600 flex items-center justify-center text-xl font-bold shadow-lg shadow-amber-500/30 tm-user-initials">
-                  TM
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <!-- Monitoring Steps -->
-          <section class="space-y-4">
-            <div class="flex items-center justify-between">
-              <h2 class="text-lg md:text-xl font-semibold text-white">Your Monitoring Steps</h2>
-              <span id="steps-counter" class="text-xs text-slate-500 bg-slate-800/50 px-3 py-1 rounded-full">0 of 0 complete</span>
-            </div>
-
-            <div id="steps-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 overflow-x-auto pb-2">
-              <!-- JS renders cards -->
-            </div>
-          </section>
-
-          <!-- Progress & Snapshot -->
-          <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <!-- Progress -->
-            <div class="glass-card rounded-3xl p-6">
-              <div class="flex items-center justify-between mb-6">
-                <h2 id="progress-title" class="text-lg font-bold text-white">Onboarding Progress</h2>
-                <span id="progress-badge" class="text-xs bg-amber-500/20 text-amber-400 px-3 py-1 rounded-full font-medium">In progress</span>
-              </div>
-
-              <div class="flex items-center gap-6 mb-6">
-                <div class="relative w-28 h-28 flex-shrink-0">
-                  <svg class="w-28 h-28 transform -rotate-90" aria-hidden="true">
-                    <circle cx="56" cy="56" r="48" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="8"/>
-                    <circle id="progress-ring" cx="56" cy="56" r="48" fill="none" stroke="url(#progressGradient)" stroke-width="8" stroke-linecap="round" stroke-dasharray="301.59" stroke-dashoffset="301.59"/>
-                    <defs>
-                      <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" style="stop-color:#f59e0b"/>
-                        <stop offset="100%" style="stop-color:#ef4444"/>
-                      </linearGradient>
-                    </defs>
-                  </svg>
-                  <div class="absolute inset-0 flex flex-col items-center justify-center">
-                    <span id="progress-percent" class="text-3xl font-bold gradient-text">0%</span>
-                    <span class="text-xs text-slate-500">Complete</span>
-                  </div>
-                </div>
-
-                <div class="flex-1">
-                  <div class="space-y-2">
-                    <div class="flex justify-between text-sm">
-                      <span class="text-slate-400">Steps Completed</span>
-                      <span id="progress-count" class="font-semibold text-white">0 of 0</span>
-                    </div>
-                    <div class="flex justify-between text-sm">
-                      <span class="text-slate-400">Current Step</span>
-                      <span id="progress-current" class="font-semibold text-amber-400">Not started</span>
-                    </div>
-                    <div class="flex justify-between text-sm">
-                      <span class="text-slate-400">Estimated</span>
-                      <span id="progress-estimate" class="font-semibold text-slate-200">Varies</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="relative space-y-3">
-                <div class="timeline-connector" aria-hidden="true"></div>
-                <div id="timeline">
-                  <!-- JS renders timeline rows -->
-                </div>
-              </div>
-            </div>
-
-            <!-- Snapshot -->
-            <div class="glass-card rounded-3xl p-6">
-              <div class="flex items-center justify-between mb-6">
-                <h2 id="snapshot-title" class="text-lg font-bold text-white">Monitoring Snapshot</h2>
-                <span class="flex items-center gap-1 text-xs text-emerald-400">
-                  <span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
-                  Live Monitoring
-                </span>
-              </div>
-
-              <div class="grid grid-cols-3 gap-4 mb-6">
-                <div class="text-center p-4 bg-white/5 rounded-2xl">
-                  <div class="flex items-center justify-center gap-2 mb-1">
-                    <span class="w-2 h-2 bg-emerald-400 rounded-full"></span>
-                    <span class="text-xs text-slate-400">Last Check</span>
-                  </div>
-                  <p id="metric-last-check" class="text-xl font-bold text-white">Not started</p>
-                  <p id="metric-last-check-sub" class="text-xs text-slate-500">Starts after payment + authorization</p>
-                </div>
-
-                <div class="text-center p-4 bg-white/5 rounded-2xl">
-                  <div class="flex items-center justify-center gap-2 mb-1">
-                    <span class="w-2 h-2 bg-emerald-400 rounded-full"></span>
-                    <span class="text-xs text-slate-400">Open Issues</span>
-                  </div>
-                  <p id="metric-issues" class="text-xl font-bold text-emerald-400">0</p>
-                  <p class="text-xs text-slate-500">Flagged items</p>
-                </div>
-
-                <div class="text-center p-4 bg-white/5 rounded-2xl">
-                  <div class="flex items-center justify-center gap-2 mb-1">
-                    <span class="w-2 h-2 bg-amber-400 rounded-full"></span>
-                    <span class="text-xs text-slate-400">Notices</span>
-                  </div>
-                  <p id="metric-notices" class="text-xl font-bold text-amber-400">0</p>
-                  <p class="text-xs text-slate-500">In archive</p>
-                </div>
-              </div>
-
-              <div id="snapshot-status" class="bg-emerald-500/10 border border-emerald-500/20 rounded-2xl p-4 mb-6">
-                <div class="flex items-center gap-3">
-                  <div class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center">
-                    <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
-                  </div>
-                  <div>
-                    <p id="snapshot-status-title" class="font-semibold text-emerald-400">Monitoring Ready</p>
-                    <p id="snapshot-status-sub" class="text-sm text-slate-400">Your dashboard will update as steps are completed.</p>
-                  </div>
-                </div>
-              </div>
-
-              <a id="snapshot-cta" href="/app/files.html"
-                 class="w-full glow-button bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 text-white font-bold py-4 px-6 rounded-2xl text-base transition-all hover:shadow-xl hover:shadow-amber-500/30 mb-6 inline-flex items-center justify-center gap-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              <!-- Animated Shield Badge -->
+              <div class="badge-shine bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-full p-2 shadow-lg shadow-emerald-500/30" aria-label="Monitoring badge">
+                <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                  <path class="text-emerald-200" fill="currentColor" d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2" />
                 </svg>
-                Open files &amp; reports
-              </a>
+              </div>
+            </div>
 
-              <div class="space-y-3">
-                <h3 class="text-sm font-semibold text-slate-400">Recent Activity</h3>
+            <p id="trust-line" class="text-slate-400 text-sm md:text-base flex items-center gap-2">
+              <svg class="w-4 h-4 text-amber-500" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+              </svg>
+              Your IRS monitoring command center — built for clarity and control
+            </p>
+          </div>
 
-                <div id="activity-list" class="space-y-3">
-                  <!-- Minimal placeholders (Worker can swap later) -->
-                  <div class="flex items-center gap-3 p-3 bg-white/5 rounded-xl">
-                    <div class="w-8 h-8 rounded-lg bg-amber-500/20 flex items-center justify-center">
-                      <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
-                      </svg>
-                    </div>
-                    <div class="flex-1">
-                      <p class="text-sm font-medium text-white">Dashboard loaded</p>
-                      <p class="text-xs text-slate-500">Updates appear as you complete steps</p>
-                    </div>
+          <div class="flex items-center gap-3">
+            <div class="text-right hidden md:block">
+              <p class="text-xs text-slate-500">Tax Years Covered</p>
+              <p class="text-lg font-bold text-amber-300"><span id="tax-years-covered">2016 - 2025</span></p>
+            </div>
+            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-amber-400 to-orange-600 flex items-center justify-center text-xl font-bold shadow-lg shadow-amber-500/30">
+              S
+            </div>
+          </div>
+        </div>
+
+        <!-- Progress & Snapshot Grid -->
+        <section class="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- Onboarding Progress Card -->
+          <div class="glass-card rounded-3xl p-6">
+            <div class="flex items-center justify-between mb-6">
+              <h2 class="text-lg font-bold text-white">Onboarding Progress</h2>
+              <span class="text-xs bg-amber-500/20 text-amber-400 px-3 py-1 rounded-full font-medium">~5 min left</span>
+            </div>
+
+            <div class="flex items-center gap-6 mb-6">
+              <!-- Circular Progress -->
+              <div class="relative flex-shrink-0" style="width: 160px; height: 160px;">
+                <svg class="absolute inset-0 w-full h-full transform -rotate-90" viewBox="0 0 160 160" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+                  <circle cx="80" cy="80" r="70" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="10" />
+                  <circle cx="80" cy="80" r="70" fill="none" stroke="url(#progressGradient)" stroke-width="10" stroke-linecap="round" stroke-dasharray="439.82" stroke-dashoffset="131.95" class="progress-ring-circle" />
+                  <defs>
+                    <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" style="stop-color:#f59e0b" />
+                      <stop offset="100%" style="stop-color:#ef4444" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+                <div class="absolute inset-0 flex flex-col items-center justify-center gap-1">
+                  <span id="progress-percent" class="text-4xl font-bold gradient-text">0%</span>
+                  <span class="text-sm text-slate-500">Complete</span>
+                </div>
+              </div>
+
+              <div class="flex-1">
+                <div class="space-y-2">
+                  <div class="flex justify-between text-sm">
+                    <span class="text-slate-400">Steps Completed</span>
+                    <span id="steps-completed-label" class="font-semibold text-white">0 of 0</span>
+                  </div>
+                  <div class="flex justify-between text-sm">
+                    <span class="text-slate-400">Current Step</span>
+                    <span class="font-semibold text-amber-400" id="current-step-label">Intake Process</span>
+                  </div>
+                  <div class="flex justify-between text-sm">
+                    <span class="text-slate-400">Protection Level</span>
+                    <span class="font-semibold text-yellow-400">Gold</span>
                   </div>
                 </div>
               </div>
             </div>
-          </section>
 
-          <footer class="text-center py-6">
-            <p id="disclaimer" class="text-xs text-slate-600">
-              Monitoring does not create IRS representation. Representation, filing, and resolution are separate engagements.
-            </p>
-          </footer>
-        </div>
-      </main>
+            <!-- Timeline Steps -->
+            <div class="relative space-y-3" id="timeline-steps">
+              <div class="timeline-connector"></div>
+
+              <!-- Step 1 (default/current) -->
+              <button class="w-full flex items-center gap-3 relative text-left hover:opacity-80 transition-opacity step-button" data-step="1" data-step-key="intakeComplete" data-href="/app/pages/flows/intake/intake.html" type="button">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center z-10 shadow-lg shadow-amber-500/30 pulse-amber flex-shrink-0">
+                  <span class="text-white font-bold text-sm">1</span>
+                </div>
+                <div class="flex-1 bg-amber-500/20 rounded-xl px-4 py-2 border border-amber-500/30">
+                  <span class="text-sm font-medium text-amber-400">Intake Process</span>
+                </div>
+              </button>
+
+              <!-- Step 2 -->
+              <button class="w-full flex items-center gap-3 relative text-left hover:opacity-80 transition-opacity step-button" data-step="2" data-step-key="offerAccepted" data-href="/app/offer.html" type="button" disabled>
+                <div class="w-10 h-10 rounded-full bg-slate-600 flex items-center justify-center z-10 flex-shrink-0">
+                  <svg class="w-5 h-5 text-slate-400" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                </div>
+                <div class="flex-1 bg-slate-700/30 rounded-xl px-4 py-2">
+                  <span class="text-sm font-medium text-slate-500">Offer Reviewed</span>
+                </div>
+              </button>
+
+              <!-- Step 3 -->
+              <button class="w-full flex items-center gap-3 relative text-left hover:opacity-80 transition-opacity step-button" data-step="3" data-step-key="agreementAccepted" data-href="/app/agreement.html" type="button" disabled>
+                <div class="w-10 h-10 rounded-full bg-slate-600 flex items-center justify-center z-10 flex-shrink-0">
+                  <svg class="w-5 h-5 text-slate-400" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                </div>
+                <div class="flex-1 bg-slate-700/30 rounded-xl px-4 py-2">
+                  <span class="text-sm font-medium text-slate-500">Agreement Signed</span>
+                </div>
+              </button>
+
+              <!-- Step 4 -->
+              <button class="w-full flex items-center gap-3 relative text-left hover:opacity-80 transition-opacity step-button" data-step="4" data-step-key="paymentCompleted" data-href="/app/payment.html" type="button" disabled>
+                <div class="w-10 h-10 rounded-full bg-slate-600 flex items-center justify-center z-10 flex-shrink-0">
+                  <svg class="w-5 h-5 text-slate-400" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                </div>
+                <div class="flex-1 bg-slate-700/30 rounded-xl px-4 py-2">
+                  <span class="text-sm font-medium text-slate-500">Payment Processed</span>
+                </div>
+              </button>
+
+              <!-- Step 5 -->
+              <button class="w-full flex items-center gap-3 relative text-left hover:opacity-80 transition-opacity step-button" data-step="5" data-step-key="welcomeConfirmed" data-href="/app/pages/flows/post-payment/welcome.html" type="button" disabled>
+                <div class="w-10 h-10 rounded-full bg-slate-600 flex items-center justify-center z-10 flex-shrink-0">
+                  <svg class="w-5 h-5 text-slate-400" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                </div>
+                <div class="flex-1 bg-slate-700/30 rounded-xl px-4 py-2">
+                  <span class="text-sm font-medium text-slate-500">Welcome Package Sent</span>
+                </div>
+              </button>
+
+              <!-- Step 6 -->
+              <button class="w-full flex items-center gap-3 relative text-left hover:opacity-80 transition-opacity step-button" data-step="6" data-step-key="filingStatusSubmitted" data-href="/app/pages/flows/post-payment/filing-status.html" type="button" disabled>
+                <div class="w-10 h-10 rounded-full bg-slate-600 flex items-center justify-center z-10 flex-shrink-0">
+                  <svg class="w-5 h-5 text-slate-400" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                </div>
+                <div class="flex-1 bg-slate-700/30 rounded-xl px-4 py-2">
+                  <span class="text-sm font-medium text-slate-500">Filing Status Review</span>
+                </div>
+              </button>
+
+              <!-- Step 7 -->
+              <button class="w-full flex items-center gap-3 relative text-left hover:opacity-80 transition-opacity step-button" data-step="7" data-step-key="addressUpdateSubmitted" data-href="/app/pages/flows/post-payment/address-update.html" type="button" disabled>
+                <div class="w-10 h-10 rounded-full bg-slate-600 flex items-center justify-center z-10 flex-shrink-0">
+                  <svg class="w-5 h-5 text-slate-400" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                </div>
+                <div class="flex-1 bg-slate-700/30 rounded-xl px-4 py-2">
+                  <span class="text-sm font-medium text-slate-500">Address Updated</span>
+                </div>
+              </button>
+
+              <!-- Step 8 -->
+              <button class="w-full flex items-center gap-3 relative text-left hover:opacity-80 transition-opacity step-button" data-step="8" data-step-key="esign2848Submitted" data-href="/app/pages/flows/post-payment/esign-2848.html" type="button" disabled>
+                <div class="w-10 h-10 rounded-full bg-slate-600 flex items-center justify-center z-10 flex-shrink-0">
+                  <svg class="w-5 h-5 text-slate-400" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                </div>
+                <div class="flex-1 bg-slate-700/30 rounded-xl px-4 py-2">
+                  <span class="text-sm font-medium text-slate-500">Form 2848 Signed</span>
+                </div>
+              </button>
+
+              <!-- Step 9 -->
+              <button class="w-full flex items-center gap-3 relative text-left hover:opacity-80 transition-opacity step-button" data-step="9" data-step-key="complianceSubmitted" data-href="/app/pages/flows/post-payment/compliance.html" type="button" disabled>
+                <div class="w-10 h-10 rounded-full bg-slate-600 flex items-center justify-center z-10 flex-shrink-0">
+                  <svg class="w-5 h-5 text-slate-400" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                </div>
+                <div class="flex-1 bg-slate-700/30 rounded-xl px-4 py-2">
+                  <span class="text-sm font-medium text-slate-500">Compliance Records Submitted</span>
+                </div>
+              </button>
+
+              <!-- Step 10 -->
+              <button class="w-full flex items-center gap-3 relative text-left hover:opacity-80 transition-opacity step-button" data-step="10" data-step-key="reportReady" data-href="/app/pages/flows/post-payment/compliance-report.html" type="button" disabled>
+                <div class="w-10 h-10 rounded-full bg-slate-600 flex items-center justify-center z-10 flex-shrink-0">
+                  <svg class="w-5 h-5 text-slate-400" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                </div>
+                <div class="flex-1 bg-slate-700/30 rounded-xl px-4 py-2">
+                  <span class="text-sm font-medium text-slate-500">Compliance Report Ready</span>
+                </div>
+              </button>
+            </div>
+          </div>
+
+          <!-- Monitoring Snapshot Card -->
+          <div class="glass-card rounded-3xl p-6">
+            <div class="flex items-center justify-between mb-6">
+              <h2 class="text-lg font-bold text-white">Monitoring Snapshot</h2>
+              <span class="flex items-center gap-1 text-xs text-emerald-400">
+                <span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" id="snapshot-live-dot"></span>
+                <span id="snapshot-live-label">Live Monitoring</span>
+              </span>
+            </div>
+
+            <!-- Key Metrics -->
+            <div class="grid grid-cols-3 gap-4 mb-6">
+              <div class="text-center p-4 bg-white/5 rounded-2xl">
+                <div class="flex items-center justify-center gap-2 mb-1">
+                  <span class="w-2 h-2 bg-emerald-400 rounded-full"></span>
+                  <span class="text-xs text-slate-400">Agreement Status</span>
+                </div>
+                <p class="text-xl font-bold text-emerald-400" id="metric-agreement-status">Signed</p>
+                <p class="text-xs text-slate-500" id="metric-agreement-sub">Ready for Payment</p>
+              </div>
+
+              <div class="text-center p-4 bg-white/5 rounded-2xl">
+                <div class="flex items-center justify-center gap-2 mb-1">
+                  <span class="w-2 h-2 bg-blue-400 rounded-full"></span>
+                  <span class="text-xs text-slate-400">Account Status</span>
+                </div>
+                <p class="text-xl font-bold text-blue-300" id="metric-account-status">Active</p>
+                <p class="text-xs text-slate-500" id="metric-account-sub">Awaiting Next Step</p>
+              </div>
+
+              <div class="text-center p-4 bg-white/5 rounded-2xl">
+                <div class="flex items-center justify-center gap-2 mb-1">
+                  <span class="w-2 h-2 bg-emerald-400 rounded-full"></span>
+                  <span class="text-xs text-slate-400">Monitoring</span>
+                </div>
+                <p class="text-xl font-bold text-emerald-300" id="metric-monitoring-status">Active</p>
+                <p class="text-xs text-slate-500" id="metric-monitoring-sub">Full Coverage</p>
+              </div>
+            </div>
+
+            <!-- Status Summary -->
+            <div class="bg-emerald-500/10 border border-emerald-500/20 rounded-2xl p-4 mb-6">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center">
+                  <svg class="w-6 h-6 text-emerald-400" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" />
+                  </svg>
+                </div>
+                <div>
+                  <p class="font-semibold text-emerald-400" id="snapshot-headline">Agreement Signed - Ready for Payment</p>
+                  <p class="text-sm text-slate-400" id="snapshot-subhead">Complete payment to proceed to the next step</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- CTA Button -->
+            <button class="w-full glow-button bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 text-white font-bold py-4 px-6 rounded-2xl text-base transition-all hover:shadow-xl hover:shadow-amber-500/30 mb-6" type="button">
+              <span class="flex items-center justify-center gap-2">
+                <!-- Map icon (clean outline) -->
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l5.553 2.776A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                </svg>
+                View Project Progress &amp; Map
+              </span>
+            </button>
+
+            <!-- Recent Activity -->
+            <div class="space-y-3">
+              <h3 class="text-sm font-semibold text-slate-400">Recent Activity</h3>
+              <div id="recent-activity-list" class="space-y-3"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="text-center py-6">
+          <p class="text-sm text-slate-500">© 2025 Tax Monitor Pro. All rights reserved.</p>
+          <p class="text-xs text-slate-600 mt-1">
+            Encrypted in transit using industry-standard 
+            <a href="https://www.cloudflare.com/learning/ssl/what-is-tls/" target="_blank" rel="noopener noreferrer" class="underline hover:text-slate-400">
+              TLS
+            </a>
+          </p>
+        </footer>
+      </section>
     </div>
   </div>
 
   <script>
+    // Default configuration (Element SDK)
     const defaultConfig = {
-      account_label: 'Account: Monitoring',
+      user_name: 'Sarah',
+      trust_line: 'Your IRS monitoring command center — built for clarity and control',
+      last_check_date: 'Jan 15',
       background_color: '#0f172a',
-      disclaimer_text: 'Monitoring does not create IRS representation. Representation, filing, and resolution are separate engagements.',
-      greeting_prefix: 'Welcome back, ',
-      greeting_subheadline: 'This is your command center — where monitoring stays visible.',
-      helper_text: 'Track onboarding, view activity, and access your portal files anytime.',
+      accent_color: '#f59e0b',
       text_color: '#ffffff',
-      topbar_mode: 'Monitoring Portal',
-      trust_line: 'Proactive monitoring by licensed tax professionals — intake does not establish IRS representation.',
-      user_name: 'Jane Doe'
+      secondary_color: '#10b981',
+      muted_color: '#64748b',
+      font_family: 'Plus Jakarta Sans'
     };
-
-    function safeFirstName(fullName) {
-      const s = String(fullName || '').trim();
-      if (!s) return 'there';
-      return s.split(/\s+/)[0] || 'there';
-    }
-
-    function initialsFromName(fullName) {
-      const s = String(fullName || '').trim();
-      if (!s) return 'TM';
-      const parts = s.split(/\s+/).filter(Boolean);
-      const first = parts[0] ? parts[0][0] : '';
-      const last = parts.length > 1 ? parts[parts.length - 1][0] : '';
-      const out = (first + last).toUpperCase();
-      return out || 'TM';
-    }
-
-    function setText(id, value) {
-      const el = document.getElementById(id);
-      if (el) el.textContent = String(value ?? '');
-    }
-
-    function applyNavActive() {
-      const path = window.location.pathname || '';
-      const links = document.querySelectorAll('a.nav-item');
-      links.forEach((a) => {
-        const href = (a.getAttribute('href') || '');
-        if (!href || href.startsWith('javascript:')) return;
-        const normalizedHref = href.split('?')[0].split('#')[0];
-        const isActive =
-          normalizedHref === path ||
-          (normalizedHref !== '/' && normalizedHref.length > 1 && path.startsWith(normalizedHref));
-        a.classList.toggle('active', isActive);
-      });
-    }
-
-    function applyFlowPlaceholders(state) {
-      const flowLabel = document.getElementById('sidebar-flow-label');
-      const flowSubtitle = document.getElementById('sidebar-flow-subtitle');
-      if (flowLabel) flowLabel.textContent = state.sidebar_flow_label || 'Start Here';
-      if (flowSubtitle) flowSubtitle.textContent = state.sidebar_flow_subtitle || '';
-    }
-
-    function getOrderStepBooleans() {
-      // Worker can inject canonical state. We support a few predictable shapes without pretending.
-      // Preferred: window.TM_ORDER.stepBooleans
-      // Alternate: window.TM_APP_STATE.stepBooleans
-      const sb =
-        (window.TM_ORDER && window.TM_ORDER.stepBooleans) ||
-        (window.TM_APP_STATE && window.TM_APP_STATE.stepBooleans) ||
-        null;
-
-      return Object.assign({
-        intakeComplete: false,
-        offerAccepted: false,
-        agreementAccepted: false,
-        paymentCompleted: false,
-        welcomeConfirmed: false,
-        filingStatusSubmitted: false,
-        addressUpdateSubmitted: false,
-        esign2848Submitted: false,
-        complianceSubmitted: false,
-        reportReady: false
-      }, sb || {});
-    }
-
-    function deriveSteps(sb) {
-      // Sequence matters. Humans love sequence until they don't.
-      return [
-        {
-          id: 'intake',
-          href: '/app/pages/flows/intake/intake.html',
-          key: 'intakeComplete',
-          title: 'Intake',
-          description: 'Submit your intake details'
-        },
-        {
-          id: 'offer',
-          href: '/app/pages/flows/intake/offer.html',
-          key: 'offerAccepted',
-          title: 'Offer',
-          description: 'Review and accept scope'
-        },
-        {
-          id: 'agreement',
-          href: '/app/pages/flows/intake/agreement.html',
-          key: 'agreementAccepted',
-          title: 'Agreement',
-          description: 'Accept service terms'
-        },
-        {
-          id: 'payment',
-          href: '/app/pages/flows/intake/payment.html',
-          key: 'paymentCompleted',
-          title: 'Payment',
-          description: 'Activate monitoring'
-        },
-        {
-          id: 'welcome',
-          href: '/app/pages/flows/post-payment/welcome.html',
-          key: 'welcomeConfirmed',
-          title: 'Welcome',
-          description: 'Confirm your start'
-        },
-        {
-          id: 'filing-status',
-          href: '/app/pages/flows/post-payment/filing-status.html',
-          key: 'filingStatusSubmitted',
-          title: 'Filing Status',
-          description: 'Tell us what is filed'
-        },
-        {
-          id: 'address-update',
-          href: '/app/pages/flows/post-payment/address-update.html',
-          key: 'addressUpdateSubmitted',
-          title: 'Address Update',
-          description: 'Keep IRS mail correct'
-        },
-        {
-          id: 'esign-2848',
-          href: '/app/pages/flows/post-payment/esign-2848.html',
-          key: 'esign2848Submitted',
-          title: 'eSign 2848',
-          description: 'Authorize transcript access'
-        },
-        {
-          id: 'compliance-report',
-          href: '/app/pages/flows/post-payment/compliance-report.html',
-          key: 'complianceSubmitted',
-          title: 'Compliance Report',
-          description: 'Submit compliance records'
-        }
-      ];
-    }
-
-    function computeStatus(steps, sb) {
-      const completed = steps.filter(s => !!sb[s.key]).length;
-      const total = steps.length;
-      const currentIndex = steps.findIndex(s => !sb[s.key]);
-      const currentStep = currentIndex === -1 ? null : steps[currentIndex];
-      const percent = total ? Math.round((completed / total) * 100) : 0;
-
-      return { completed, currentStep, percent, total };
-    }
-
-    function renderSteps(steps, sb) {
-      const grid = document.getElementById('steps-grid');
-      if (!grid) return;
-      grid.innerHTML = '';
-
-      const { completed, currentStep, total } = computeStatus(steps, sb);
-      setText('steps-counter', `${completed} of ${total} complete`);
-
-      steps.forEach((step, idx) => {
-        const done = !!sb[step.key];
-        const locked = !done && idx > 0 && !sb[steps[idx - 1].key];
-        const current = currentStep && currentStep.id === step.id;
-
-        const wrapper = document.createElement(locked ? 'div' : 'a');
-        if (!locked) wrapper.href = step.href;
-
-        wrapper.className =
-          'action-card glass-card-light rounded-2xl p-5 group ' +
-          (locked ? 'cursor-not-allowed opacity-60' : 'cursor-pointer') +
-          (current ? ' pulse-amber relative overflow-hidden' : '');
-
-        if (current) {
-          const bg = document.createElement('div');
-          bg.className = 'absolute inset-0 bg-gradient-to-br from-amber-500/10 to-orange-500/10';
-          wrapper.appendChild(bg);
-        }
-
-        const inner = document.createElement('div');
-        inner.className = current ? 'relative' : '';
-
-        const top = document.createElement('div');
-        top.className = 'flex items-start justify-between mb-4';
-
-        const iconWrap = document.createElement('div');
-        iconWrap.className =
-          'w-14 h-14 rounded-xl flex items-center justify-center shadow-lg transition-transform group-hover:scale-110 ' +
-          (done
-            ? 'bg-gradient-to-br from-emerald-400 to-emerald-600 shadow-emerald-500/30'
-            : current
-              ? 'bg-gradient-to-br from-amber-400 to-orange-500 shadow-amber-500/30'
-              : 'bg-slate-300');
-
-        iconWrap.innerHTML = done
-          ? `<svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-             </svg>`
-          : current
-            ? `<svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
-               </svg>`
-            : `<svg class="w-7 h-7 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-               </svg>`;
-
-        const badge = document.createElement('div');
-        badge.className =
-          'flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ' +
-          (done
-            ? 'bg-emerald-100 text-emerald-700'
-            : current
-              ? 'bg-amber-100 text-amber-700 animate-pulse'
-              : 'bg-slate-200 text-slate-500');
-
-        badge.innerHTML = done
-          ? `<svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>Complete`
-          : current
-            ? `<span class="w-2 h-2 bg-amber-500 rounded-full"></span>In Progress`
-            : `<svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>Locked`;
-
-        top.appendChild(iconWrap);
-        top.appendChild(badge);
-
-        const h = document.createElement('h3');
-        h.className = 'font-bold text-slate-800 mb-1';
-        h.textContent = step.title;
-
-        const p = document.createElement('p');
-        p.className = 'text-sm text-slate-500 mb-4';
-        p.textContent = step.description;
-
-        const barWrap = document.createElement('div');
-        barWrap.className = 'w-full rounded-full h-1.5 ' + (done ? 'bg-emerald-100' : current ? 'bg-amber-100' : 'bg-slate-200');
-
-        const bar = document.createElement('div');
-        bar.className = 'h-1.5 rounded-full ' + (done ? 'bg-emerald-500' : current ? 'bg-gradient-to-r from-amber-400 to-orange-500' : 'bg-slate-300');
-        bar.style.width = done ? '100%' : current ? '60%' : '0%';
-
-        barWrap.appendChild(bar);
-
-        inner.appendChild(top);
-        inner.appendChild(h);
-        inner.appendChild(p);
-        inner.appendChild(barWrap);
-
-        if (current && !locked) {
-          const btn = document.createElement('div');
-          btn.className = 'mt-4 w-full glow-button bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold py-2 px-4 rounded-xl text-sm text-center transition-all hover:shadow-lg hover:shadow-amber-500/30';
-          btn.textContent = 'Continue';
-          inner.appendChild(btn);
-        }
-
-        wrapper.appendChild(inner);
-        grid.appendChild(wrapper);
-      });
-    }
-
-    function renderProgress(steps, sb) {
-      const { completed, currentStep, percent, total } = computeStatus(steps, sb);
-
-      setText('progress-count', `${completed} of ${total}`);
-      setText('progress-current', currentStep ? currentStep.title : 'Complete');
-      setText('progress-percent', `${percent}%`);
-
-      const badge = document.getElementById('progress-badge');
-      if (badge) badge.textContent = percent === 100 ? 'Complete' : 'In progress';
-
-      const ring = document.getElementById('progress-ring');
-      if (ring) {
-        const circumference = 2 * Math.PI * 48;
-        const offset = circumference - (percent / 100) * circumference;
-        ring.style.strokeDasharray = String(circumference);
-        ring.style.strokeDashoffset = String(circumference);
-        setTimeout(() => { ring.style.strokeDashoffset = String(offset); }, 300);
-      }
-
-      // Rough estimate: keep your existing tone, not fake precision.
-      const estimate = percent === 100 ? 'Done' : (percent >= 50 ? 'A few minutes' : 'Varies');
-      setText('progress-estimate', estimate);
-    }
-
-    function renderTimeline(steps, sb) {
-      const host = document.getElementById('timeline');
-      if (!host) return;
-      host.innerHTML = '';
-
-      const { currentStep } = computeStatus(steps, sb);
-
-      steps.forEach((step, idx) => {
-        const done = !!sb[step.key];
-        const current = currentStep && currentStep.id === step.id;
-        const locked = !done && idx > 0 && !sb[steps[idx - 1].key];
-
-        const row = document.createElement('div');
-        row.className = 'flex items-center gap-3 relative ' + (locked ? 'opacity-50' : '');
-
-        const dot = document.createElement('div');
-        dot.className =
-          'w-10 h-10 rounded-full flex items-center justify-center z-10 ' +
-          (done
-            ? 'bg-emerald-500 shadow-lg shadow-emerald-500/30'
-            : current
-              ? 'bg-gradient-to-br from-amber-400 to-orange-500 shadow-lg shadow-amber-500/30 pulse-amber'
-              : 'bg-slate-600');
-
-        dot.innerHTML = done
-          ? `<svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-               <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
-             </svg>`
-          : current
-            ? `<span class="text-white font-bold text-sm">${idx + 1}</span>`
-            : `<svg class="w-5 h-5 text-slate-400" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                 <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-               </svg>`;
-
-        const box = document.createElement('div');
-        box.className =
-          'flex-1 rounded-xl px-4 py-2 border ' +
-          (done
-            ? 'bg-emerald-500/10 border-emerald-500/20'
-            : current
-              ? 'bg-amber-500/20 border-amber-500/30'
-              : 'bg-slate-700/30 border-slate-700/30');
-
-        const label = document.createElement('span');
-        label.className =
-          'text-sm font-medium ' +
-          (done ? 'text-emerald-400' : current ? 'text-amber-400' : 'text-slate-500');
-
-        label.textContent = step.title;
-
-        box.appendChild(label);
-        row.appendChild(dot);
-        row.appendChild(box);
-
-        host.appendChild(row);
-      });
-    }
-
-    async function onConfigChange(config) {
-      const merged = Object.assign({}, defaultConfig, config || {});
-      const fullName = merged.user_name || defaultConfig.user_name;
-      const firstName = safeFirstName(fullName);
-      const initials = initialsFromName(fullName);
-
-      window.TM_APP_STATE = window.TM_APP_STATE || {
-        account_label: merged.account_label,
-        phase: 'portal',
-        step: 'dashboard',
-        topbar_mode: merged.topbar_mode,
-        user_name: fullName
-      };
-
-      setText('greeting-prefix', merged.greeting_prefix);
-      setText('greeting-name', firstName);
-      setText('trust-line', merged.trust_line);
-      setText('subheadline', merged.greeting_subheadline);
-      setText('helper-text', merged.helper_text);
-      setText('disclaimer', merged.disclaimer_text);
-      setText('account-label', merged.account_label);
-
-      setText('sidebar-user-name', fullName);
-      setText('topbar-user-name', fullName);
-      setText('sidebar-account-label', merged.account_label);
-      setText('topbar-mode', merged.topbar_mode);
-
-      document.querySelectorAll('.tm-user-initials').forEach((el) => { el.textContent = initials; });
-
-      document.body.style.backgroundColor = merged.background_color || defaultConfig.background_color;
-
-      applyFlowPlaceholders({
-        sidebar_flow_label: 'Start Here',
-        sidebar_flow_subtitle: 'Intake'
-      });
-
-      const sb = getOrderStepBooleans();
-      const steps = deriveSteps(sb);
-
-      renderSteps(steps, sb);
-      renderProgress(steps, sb);
-      renderTimeline(steps, sb);
-
-      applyNavActive();
-    }
-
-    function mapToCapabilities(config) {
-      const merged = Object.assign({}, defaultConfig, config || {});
-      return {
-        borderables: [],
-        fontEditable: {
-          get: () => merged.font_family || 'Plus Jakarta Sans',
-          set: (value) => window.elementSdk.setConfig({ font_family: value })
-        },
-        fontSizeable: {
-          get: () => merged.font_size || 16,
-          set: (value) => window.elementSdk.setConfig({ font_size: value })
-        },
-        recolorables: [
-          { get: () => merged.background_color || defaultConfig.background_color, set: (value) => window.elementSdk.setConfig({ background_color: value }) },
-          { get: () => merged.text_color || defaultConfig.text_color, set: (value) => window.elementSdk.setConfig({ text_color: value }) }
-        ]
-      };
-    }
-
-    function mapToEditPanelValues(config) {
-      const merged = Object.assign({}, defaultConfig, config || {});
-      return new Map([
-        ['account_label', merged.account_label],
-        ['disclaimer_text', merged.disclaimer_text],
-        ['greeting_prefix', merged.greeting_prefix],
-        ['greeting_subheadline', merged.greeting_subheadline],
-        ['helper_text', merged.helper_text],
-        ['topbar_mode', merged.topbar_mode],
-        ['trust_line', merged.trust_line],
-        ['user_name', merged.user_name]
-      ]);
-    }
 
     if (window.elementSdk) {
       window.elementSdk.init({
         defaultConfig,
-        onConfigChange,
-        mapToCapabilities,
-        mapToEditPanelValues
+        onConfigChange: async (config) => {
+          const userNameEl = document.getElementById('user-name');
+          if (userNameEl) userNameEl.textContent = config.user_name || defaultConfig.user_name;
+
+          const trustLineEl = document.getElementById('trust-line');
+          if (trustLineEl) {
+            const starSvg = trustLineEl.querySelector('svg');
+            trustLineEl.innerHTML = '';
+            if (starSvg) trustLineEl.appendChild(starSvg);
+            trustLineEl.appendChild(document.createTextNode(' ' + (config.trust_line || defaultConfig.trust_line)));
+          }
+
+          document.body.style.backgroundColor = config.background_color || defaultConfig.background_color;
+          const fontFamily = config.font_family || defaultConfig.font_family;
+          document.body.style.fontFamily = `${fontFamily}, sans-serif`;
+        },
+        mapToCapabilities: (config) => ({
+          recolorables: [
+            { get: () => config.background_color || defaultConfig.background_color, set: (value) => window.elementSdk.setConfig({ background_color: value }) },
+            { get: () => config.accent_color || defaultConfig.accent_color, set: (value) => window.elementSdk.setConfig({ accent_color: value }) },
+            { get: () => config.text_color || defaultConfig.text_color, set: (value) => window.elementSdk.setConfig({ text_color: value }) },
+            { get: () => config.secondary_color || defaultConfig.secondary_color, set: (value) => window.elementSdk.setConfig({ secondary_color: value }) },
+            { get: () => config.muted_color || defaultConfig.muted_color, set: (value) => window.elementSdk.setConfig({ muted_color: value }) }
+          ],
+          borderables: [],
+          fontEditable: {
+            get: () => config.font_family || defaultConfig.font_family,
+            set: (value) => window.elementSdk.setConfig({ font_family: value })
+          },
+          fontSizeable: undefined
+        }),
+        mapToEditPanelValues: (config) => new Map([
+          ['user_name', config.user_name || defaultConfig.user_name],
+          ['trust_line', config.trust_line || defaultConfig.trust_line],
+          ['last_check_date', config.last_check_date || defaultConfig.last_check_date]
+        ])
       });
-    } else {
-      onConfigChange(defaultConfig);
     }
 
-    window.addEventListener('popstate', applyNavActive);
+    document.addEventListener('DOMContentLoaded', () => {
+      // Monitoring Snapshot (state-driven)
+      (function setMonitoringSnapshot() {
+        const stepBooleans = (window.TM_ORDER && window.TM_ORDER.stepBooleans) ? window.TM_ORDER.stepBooleans : {};
+
+        const steps = [
+          { key: 'intakeComplete', label: 'Intake Process', step: 1 },
+          { key: 'offerAccepted', label: 'Offer Reviewed', step: 2 },
+          { key: 'agreementAccepted', label: 'Agreement Signed', step: 3 },
+          { key: 'paymentCompleted', label: 'Payment Processed', step: 4 },
+          { key: 'welcomeConfirmed', label: 'Welcome Package Sent', step: 5 },
+          { key: 'filingStatusSubmitted', label: 'Filing Status Review', step: 6 },
+          { key: 'addressUpdateSubmitted', label: 'Address Updated', step: 7 },
+          { key: 'esign2848Submitted', label: 'Form 2848 Signed', step: 8 },
+          { key: 'complianceSubmitted', label: 'Compliance Records Submitted', step: 9 },
+          { key: 'reportReady', label: 'Compliance Report Ready', step: 10 }
+        ];
+
+        const totalSteps = 8;
+        // Client progress is the main 8-step journey (not the internal reportReady flag).
+        const clientStepKeys = [
+          'addressUpdateSubmitted',
+          'agreementAccepted',
+          'esign2848Submitted',
+          'filingStatusSubmitted',
+          'intakeComplete',
+          'offerAccepted',
+          'paymentCompleted',
+          'welcomeConfirmed'
+        ];
+        const completedSteps = clientStepKeys.filter((k) => !!stepBooleans[k]).length;
+
+        const percent = totalSteps === 0 ? 0 : Math.round((completedSteps / totalSteps) * 100);
+
+        const percentEl = document.getElementById('progress-percent');
+        const stepsLabelEl = document.getElementById('steps-completed-label');
+        if (percentEl) percentEl.textContent = `${percent}%`;
+        if (stepsLabelEl) stepsLabelEl.textContent = `${completedSteps} of ${totalSteps}`;
+
+        let firstIncompleteIdx = 0;
+        for (let i = 0; i < steps.length; i++) {
+          if (!stepBooleans[steps[i].key]) { firstIncompleteIdx = i; break; }
+          firstIncompleteIdx = i + 1;
+        }
+        const currentStep = (function pickCurrentStep() {
+          // Default behavior: Step 1, unless earlier steps are complete.
+          const order = [
+            { key: 'intakeComplete', label: 'Intake Process', step: 1 },
+            { key: 'offerAccepted', label: 'Offer Reviewed', step: 2 },
+            { key: 'agreementAccepted', label: 'Agreement Signed', step: 3 },
+            { key: 'paymentCompleted', label: 'Payment Processed', step: 4 },
+            { key: 'welcomeConfirmed', label: 'Welcome Package Sent', step: 5 },
+            { key: 'filingStatusSubmitted', label: 'Filing Status Review', step: 6 },
+            { key: 'addressUpdateSubmitted', label: 'Address Updated', step: 7 },
+            { key: 'esign2848Submitted', label: 'Form 2848 Signed', step: 8 }
+          ];
+
+          for (let i = 0; i < order.length; i++) {
+            if (!stepBooleans[order[i].key]) return order[i];
+          }
+
+          return order[order.length - 1] || { key: 'intakeComplete', label: 'Intake Process', step: 1 };
+        })();
+
+        // Agreement Status tile
+        const agreementAccepted = !!stepBooleans.agreementAccepted;
+        const offerAccepted = !!stepBooleans.offerAccepted;
+        const paymentCompleted = !!stepBooleans.paymentCompleted;
+
+        const agreementStatusEl = document.getElementById('metric-agreement-status');
+        const agreementSubEl = document.getElementById('metric-agreement-sub');
+
+        if (agreementStatusEl && agreementSubEl) {
+          if (agreementAccepted) {
+            agreementStatusEl.textContent = 'Signed';
+            agreementSubEl.textContent = paymentCompleted ? 'Payment Complete' : 'Ready for Payment';
+          } else if (offerAccepted) {
+            agreementStatusEl.textContent = 'Pending';
+            agreementSubEl.textContent = 'Review & Sign Agreement';
+          } else {
+            agreementStatusEl.textContent = 'Not Started';
+            agreementSubEl.textContent = 'Complete Intake First';
+          }
+        }
+
+        // Account Status tile
+        const accountStatusEl = document.getElementById('metric-account-status');
+        const accountSubEl = document.getElementById('metric-account-sub');
+        const accountLabel = String(window.TM_APP_STATE?.accountLabel || '').trim();
+
+        if (accountStatusEl && accountSubEl) {
+          const baseStatus = accountLabel || (paymentCompleted ? 'Active' : 'Setup');
+          accountStatusEl.textContent = baseStatus;
+          accountSubEl.textContent = `Next step: ${currentStep.label}`;
+        }
+
+        // Monitoring tile + badge
+        const monitoringStatusEl = document.getElementById('metric-monitoring-status');
+        const monitoringSubEl = document.getElementById('metric-monitoring-sub');
+        const liveLabelEl = document.getElementById('snapshot-live-label');
+        const liveDotEl = document.getElementById('snapshot-live-dot');
+
+        const monitoringActive = typeof window.TM_APP_STATE?.monitoringActive === 'boolean'
+          ? window.TM_APP_STATE.monitoringActive
+          : !!stepBooleans.reportReady;
+
+        if (monitoringStatusEl && monitoringSubEl) {
+          if (monitoringActive) {
+            monitoringStatusEl.textContent = 'Active';
+            monitoringSubEl.textContent = 'Full Coverage';
+          } else if (paymentCompleted) {
+            monitoringStatusEl.textContent = 'Initializing';
+            monitoringSubEl.textContent = 'Setup In Progress';
+          } else {
+            monitoringStatusEl.textContent = 'Inactive';
+            monitoringSubEl.textContent = 'Not Yet Started';
+          }
+        }
+
+        if (liveLabelEl && liveDotEl) {
+          if (monitoringActive) {
+            liveLabelEl.textContent = 'Live Monitoring';
+            liveDotEl.className = 'w-2 h-2 bg-emerald-400 rounded-full animate-pulse';
+          } else {
+            liveLabelEl.textContent = 'Setup Mode';
+            liveDotEl.className = 'w-2 h-2 bg-slate-500 rounded-full';
+          }
+        }
+
+        // Snapshot headline + subhead
+        const headlineEl = document.getElementById('snapshot-headline');
+        const subheadEl = document.getElementById('snapshot-subhead');
+        if (headlineEl && subheadEl) {
+          headlineEl.textContent = `${currentStep.label}`;
+          subheadEl.textContent = paymentCompleted ? 'Monitoring will reflect new IRS activity here as it happens.' : 'Complete the next step to activate monitoring.';
+
+        // Timeline enable/disable + current highlight + click routing
+        const currentStepLabelEl = document.getElementById('current-step-label');
+        if (currentStepLabelEl) currentStepLabelEl.textContent = currentStep.label;
+
+        const qs = window.location.search || '';
+        const buttons = Array.from(document.querySelectorAll('.step-button'));
+
+        buttons.forEach((btn) => {
+          const key = btn.getAttribute('data-step-key') || '';
+          const href = btn.getAttribute('data-href') || '';
+          const isDone = !!stepBooleans[key];
+
+          // Enable step if it's done OR it's the current step.
+          const isCurrent = key === currentStep.key;
+          const shouldEnable = isDone || isCurrent;
+
+          btn.disabled = !shouldEnable;
+          btn.classList.toggle('opacity-50', !shouldEnable);
+          btn.classList.toggle('cursor-not-allowed', !shouldEnable);
+
+          // Visual state
+          const ring = btn.querySelector('div.w-10.h-10');
+          const pill = btn.querySelector('div.flex-1');
+          const label = btn.querySelector('span.text-sm');
+
+          if (isDone) {
+            if (ring) {
+              ring.className = 'w-10 h-10 rounded-full bg-emerald-500 flex items-center justify-center z-10 shadow-lg shadow-emerald-500/30 flex-shrink-0';
+              ring.innerHTML = '<svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" /></svg>';
+            }
+            if (pill) pill.className = 'flex-1 bg-emerald-500/10 rounded-xl px-4 py-2';
+            if (label) label.className = 'text-sm font-medium text-emerald-400';
+          } else if (isCurrent) {
+            if (ring) {
+              ring.className = 'w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center z-10 shadow-lg shadow-amber-500/30 pulse-amber flex-shrink-0';
+            }
+            if (pill) pill.className = 'flex-1 bg-amber-500/20 rounded-xl px-4 py-2 border border-amber-500/30';
+            if (label) label.className = 'text-sm font-medium text-amber-400';
+          }
+
+          // Routing (preserve querystring)
+          btn.addEventListener('click', () => {
+            if (btn.disabled) return;
+            if (!href) return;
+            const target = href.indexOf('?') !== -1 ? href : (href + qs);
+            window.location.href = target;
+          });
+        });
+        }
+      })();
+      // Tax Years Covered (dynamic)
+      (function setTaxYearsCovered() {
+        const el = document.getElementById('tax-years-covered');
+        if (!el) return;
+
+        const startYear = Number(window.TM_APP_STATE?.taxYearsStartYear || 2016);
+        const now = new Date();
+        const year = now.getFullYear();
+
+        function dateUTC(y, m, d) {
+          return new Date(Date.UTC(y, m, d));
+        }
+
+        function addDaysUTC(dt, days) {
+          const out = new Date(dt.getTime());
+          out.setUTCDate(out.getUTCDate() + days);
+          return out;
+        }
+
+        function addMonthsUTC(dt, months) {
+          const out = new Date(dt.getTime());
+          const day = out.getUTCDate();
+          out.setUTCDate(1);
+          out.setUTCMonth(out.getUTCMonth() + months);
+          const lastDay = new Date(Date.UTC(out.getUTCFullYear(), out.getUTCMonth() + 1, 0)).getUTCDate();
+          out.setUTCDate(Math.min(day, lastDay));
+          return out;
+        }
+
+        // Observed DC Emancipation Day (can affect tax day).
+        function observedEmancipationDayUTC(y) {
+          const d = dateUTC(y, 3, 16); // April 16
+          const dow = d.getUTCDay();
+          if (dow === 6) return dateUTC(y, 3, 15); // Sat -> Fri 15
+          if (dow === 0) return dateUTC(y, 3, 17); // Sun -> Mon 17
+          return d; // otherwise Apr 16
+        }
+
+        // Compute IRS filing due date (approx): Apr 15 adjusted for weekend/Emancipation Day.
+        function taxDayUTC(y) {
+          let d = dateUTC(y, 3, 15); // April 15
+          const emanc = observedEmancipationDayUTC(y);
+
+          if (d.getTime() === emanc.getTime()) d = addDaysUTC(d, 1);
+          while (d.getUTCDay() === 6 || d.getUTCDay() === 0) d = addDaysUTC(d, 1);
+          if (d.getTime() === emanc.getTime()) d = addDaysUTC(d, 1);
+          while (d.getUTCDay() === 6 || d.getUTCDay() === 0) d = addDaysUTC(d, 1);
+
+          return d;
+        }
+
+        // Transcript availability rule of thumb: ~3 months after tax day.
+        const availableDate = addMonthsUTC(taxDayUTC(year), 3);
+        const latestTranscriptYear = now.getTime() >= availableDate.getTime() ? year : year - 1;
+
+        el.textContent = `${startYear} - ${latestTranscriptYear}`;
+      })();
+
+      // Recent Activity (state-driven, client-visible only)
+      (function renderRecentActivity() {
+        const container = document.getElementById('recent-activity-list');
+        if (!container) return;
+
+        const raw = Array.isArray(window.TM_APP_STATE?.recentActivity)
+          ? window.TM_APP_STATE.recentActivity
+          : [];
+
+        // Backend logs EVERYTHING, UI only shows client-visible events.
+        // Default rules:
+        // - Hide visits (kind/type === 'visit')
+        // - Hide anything explicitly marked visibleToClient:false
+        const items = raw
+          .filter((x) => x && typeof x === 'object')
+          .filter((x) => (x.visibleToClient !== false))
+          .filter((x) => String(x.kind || x.type || '').toLowerCase() !== 'visit')
+          .slice(0, 6);
+
+        if (!items.length) {
+          container.innerHTML = '<p class="text-xs text-slate-500">No visible activity yet.</p>';
+          return;
+        }
+
+        function escapeHtml(s) {
+          return String(s)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+        }
+
+        function iconFor(x) {
+          const t = String(x.kind || x.type || '').toLowerCase();
+          const k = String(x.code || '').toLowerCase();
+
+          if (t.includes('payment') || k.includes('stripe')) {
+            return {
+              bg: 'bg-emerald-500/20',
+              svg: '<svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a5 5 0 00-10 0v2m-2 0h14a2 2 0 012 2v7a2 2 0 01-2 2H5a2 2 0 01-2-2v-7a2 2 0 012-2z"/></svg>'
+            };
+          }
+
+          if (t.includes('webhook') || k.includes('webhook')) {
+            return {
+              bg: 'bg-blue-500/20',
+              svg: '<svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>'
+            };
+          }
+
+          if (t.includes('form') || k.includes('form')) {
+            return {
+              bg: 'bg-amber-500/20',
+              svg: '<svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>'
+            };
+          }
+
+          return {
+            bg: 'bg-emerald-500/20',
+            svg: '<svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" /></svg>'
+          };
+        }
+
+        function timeLabel(x) {
+          const ts = x.occurredAt || x.at || x.timestamp;
+          if (!ts) return '';
+          const d = new Date(ts);
+          if (Number.isNaN(d.getTime())) return '';
+          return d.toLocaleString(undefined, { day: 'numeric', hour: 'numeric', minute: '2-digit', month: 'short', year: 'numeric' });
+        }
+
+        container.innerHTML = items.map((x, idx) => {
+          const title = String(x.title || x.label || x.message || `Activity ${idx + 1}`);
+          const when = timeLabel(x);
+          const meta = when ? when : 'Just now';
+          const icon = iconFor(x);
+
+          return `
+            <button class="w-full flex items-center gap-3 p-3 bg-white/5 rounded-xl hover:bg-white/10 transition-colors cursor-pointer activity-button" type="button">
+              <div class="w-8 h-8 rounded-lg ${icon.bg} flex items-center justify-center flex-shrink-0">${icon.svg}</div>
+              <div class="flex-1 text-left">
+                <p class="text-sm font-medium text-white">${escapeHtml(title)}</p>
+                <p class="text-xs text-slate-500">${escapeHtml(meta)}</p>
+              </div>
+            </button>
+          `;
+        }).join('');
+      })();
+
+      const progressCircle = document.querySelector('.progress-ring-circle');
+      if (!progressCircle) return;
+
+      const circumference = 2 * Math.PI * 70;
+      const totalSteps = (window.TM_ORDER && window.TM_ORDER.stepBooleans) ? Object.keys(window.TM_ORDER.stepBooleans).length : 0;
+      const completedSteps = (window.TM_ORDER && window.TM_ORDER.stepBooleans) ? Object.values(window.TM_ORDER.stepBooleans).filter(Boolean).length : 0;
+      const progress = totalSteps === 0 ? 0 : (completedSteps / totalSteps) * 100;
+      const offset = circumference - (progress / 100) * circumference;
+
+      setTimeout(() => {
+        progressCircle.style.strokeDashoffset = offset;
+      }, 500);
+    });
   </script>
 </body>
 </html>
