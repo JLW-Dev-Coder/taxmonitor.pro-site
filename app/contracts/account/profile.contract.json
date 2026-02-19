@@ -1,0 +1,107 @@
+{
+  "clickupProjection": {
+    "enabled": true,
+    "listId": "901710909567",
+    "mappings": [
+      {
+        "clickupCustomFieldId": "f5c9f6da-c994-4733-a15f-59188b37f531",
+        "note": "Account First Name",
+        "sourcePath": "accountFirstName"
+      },
+      {
+        "clickupCustomFieldId": "a348d629-fa05-45d8-a2dd-b909f78ddf49",
+        "note": "Account Last Name",
+        "sourcePath": "accountLastName"
+      },
+      {
+        "clickupCustomFieldId": "a105f99e-b33d-4d12-bb24-f7c827ec761a",
+        "note": "Account Primary Email",
+        "sourcePath": "accountPrimaryEmail"
+      }
+    ],
+    "mode": "update"
+  },
+  "contract": {
+    "id": "account.profile.update.v1",
+    "note": "Profile update from /app/pages/account/profile.html",
+    "version": "1.0.0"
+  },
+  "delivery": {
+    "method": "POST",
+    "receiptSource": "form",
+    "route": "/forms/account/profile",
+    "url": "https://api.taxmonitor.pro/forms/account/profile"
+  },
+  "effects": {
+    "canonicalUpserts": [
+      {
+        "note": "Upsert profile fields into canonical account object",
+        "r2KeyPattern": "accounts/{accountId}.json",
+        "source": "sessionToken"
+      }
+    ],
+    "receipts": [
+      {
+        "note": "Append receipt before mutation",
+        "r2KeyPattern": "receipts/form/{eventId}.json"
+      }
+    ],
+    "writeOrder": [
+      "receiptAppend",
+      "canonicalUpsert",
+      "clickupProjection"
+    ]
+  },
+  "payload": {
+    "required": [
+      "accountFirstName",
+      "accountLastName",
+      "accountPrimaryEmail",
+      "eventId",
+      "sessionToken"
+    ]
+  },
+  "schema": {
+    "properties": {
+      "accountFirstName": {
+        "maxLength": 80,
+        "minLength": 1,
+        "type": "string"
+      },
+      "accountLastName": {
+        "maxLength": 80,
+        "minLength": 1,
+        "type": "string"
+      },
+      "accountPrimaryEmail": {
+        "format": "email",
+        "maxLength": 254,
+        "minLength": 3,
+        "type": "string"
+      },
+      "eventId": {
+        "maxLength": 128,
+        "minLength": 8,
+        "type": "string"
+      },
+      "sessionToken": {
+        "maxLength": 256,
+        "minLength": 16,
+        "type": "string"
+      }
+    },
+    "required": [
+      "accountFirstName",
+      "accountLastName",
+      "accountPrimaryEmail",
+      "eventId",
+      "sessionToken"
+    ],
+    "type": "object",
+    "validation": {
+      "enumStrict": true,
+      "normalizeCheckboxToBoolean": true,
+      "rejectUnknownValues": true
+    }
+  }
+}
