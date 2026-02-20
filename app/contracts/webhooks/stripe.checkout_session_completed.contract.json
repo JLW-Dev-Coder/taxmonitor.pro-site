@@ -1,127 +1,268 @@
 {
-  "clickupProjection": [],
+  "clickupProjection": {
+    "note": "Projection occurs only after receipt append and canonical upsert. Stripe webhooks should primarily update Orders (paymentCompleted + payment metadata)."
+  },
   "contract": {
-    "authority": ["R2 Canonical"],
-    "governs": "Webhook — Stripe — checkout.session.completed",
-    "path": "app/contracts/webhooks/stripe.checkout_session_completed.contract.json",
-    "source": "Tax Monitor Pro",
-    "title": "Tax Monitor Pro — Webhook Contract — Stripe — checkout.session.completed",
-    "validation": {
-      "enumStrict": true,
-      "normalizeCheckboxToBoolean": true,
-      "rejectUnknownValues": true
-    },
-    "version": 1
+    "name": "tm_webhook_stripe_checkout_session_completed",
+    "version": 2
   },
   "delivery": {
-    "dedupeKey": "payload.data.object.id",
-    "endpoint": "/stripe/webhook",
-    "eventType": "checkout.session.completed",
     "method": "POST",
-    "receiptKeyPattern": "receipts/{source}/{eventId}.json",
     "receiptSource": "stripe",
-    "signature": {
-      "header": "Stripe-Signature",
-      "required": true,
-      "secretEnvVar": "STRIPE_WEBHOOK_SECRET"
-    },
-    "writes": ["orders"]
+    "requiresSignature": true,
+    "type": "webhook"
   },
   "effects": {
-    "ordersPatch": {
-      "paymentCompletedAt": "{payload.created}",
-      "stripeSessionId": "{payload.data.object.id}",
-      "stepBooleans": {
-        "paymentCompleted": true
-      }
+    "dedupe": {
+      "key": "stripeSessionId",
+      "path": "data.object.id"
+    },
+    "r2Authority": {
+      "appendReceiptFirst": true,
+      "canonicalUpsertSecond": true
     }
   },
+  "note": "Stripe's checkout.session.completed webhook does not include line item price/product metadata by default. To detect add-ons like MFJ, the Worker MUST fetch the Checkout Session from Stripe by id with expand=['line_items.data.price.product'] (or equivalent) and append that enriched data into the R2 receipt (receipts/stripe/{eventId}.json) before canonical upsert/projection.",
   "payload": {
     "additionalProperties": true,
     "properties": {
+      "api_version": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
       "created": {
-        "type": "number"
+        "type": "integer"
       },
       "data": {
-        "type": "object",
         "additionalProperties": true,
         "properties": {
           "object": {
-            "type": "object",
             "additionalProperties": true,
             "properties": {
               "amount_total": {
-                "type": ["number", "null"]
-              },
-              "created": {
-                "type": "number"
+                "type": [
+                  "integer",
+                  "null"
+                ]
               },
               "currency": {
-                "type": "string",
-                "minLength": 3
+                "type": [
+                  "string",
+                  "null"
+                ]
               },
-              "id": {
-                "type": "string",
-                "minLength": 8
-              },
-              "metadata": {
-                "type": "object",
+              "customer_details": {
                 "additionalProperties": true,
                 "properties": {
-                  "accountId": {
-                    "type": "string",
-                    "minLength": 6
+                  "address": {
+                    "additionalProperties": true,
+                    "properties": {
+                      "city": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "country": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "line1": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "line2": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "postal_code": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "state": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      }
+                    },
+                    "type": [
+                      "object",
+                      "null"
+                    ]
                   },
-                  "orderId": {
-                    "type": "string",
-                    "minLength": 6
+                  "email": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "name": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
                   }
                 },
-                "required": ["orderId"]
+                "type": [
+                  "object",
+                  "null"
+                ]
+              },
+              "id": {
+                "type": "string"
+              },
+              "line_items": {
+                "additionalProperties": true,
+                "properties": {
+                  "data": {
+                    "items": {
+                      "additionalProperties": true,
+                      "properties": {
+                        "price": {
+                          "additionalProperties": true,
+                          "properties": {
+                            "id": {
+                              "type": [
+                                "string",
+                                "null"
+                              ]
+                            },
+                            "metadata": {
+                              "additionalProperties": true,
+                              "type": [
+                                "object",
+                                "null"
+                              ]
+                            },
+                            "product": {
+                              "additionalProperties": true,
+                              "type": [
+                                "object",
+                                "null"
+                              ]
+                            }
+                          },
+                          "type": [
+                            "object",
+                            "null"
+                          ]
+                        },
+                        "quantity": {
+                          "type": [
+                            "integer",
+                            "null"
+                          ]
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "type": "array"
+                  }
+                },
+                "type": [
+                  "object",
+                  "null"
+                ]
+              },
+              "metadata": {
+                "additionalProperties": true,
+                "type": [
+                  "object",
+                  "null"
+                ]
               },
               "mode": {
-                "type": "string",
-                "enum": ["payment"]
+                "type": [
+                  "string",
+                  "null"
+                ]
               },
               "payment_intent": {
-                "type": ["string", "null"]
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "payment_method_types": {
+                "items": {
+                  "type": "string"
+                },
+                "type": [
+                  "array",
+                  "null"
+                ]
               },
               "payment_status": {
-                "type": "string",
-                "enum": ["paid"]
+                "type": [
+                  "string",
+                  "null"
+                ]
               },
               "status": {
-                "type": "string",
-                "enum": ["complete"]
+                "type": [
+                  "string",
+                  "null"
+                ]
               }
             },
             "required": [
-              "created",
-              "currency",
-              "id",
-              "metadata",
-              "mode",
-              "payment_status",
-              "status"
-            ]
+              "id"
+            ],
+            "type": "object"
           }
         },
-        "required": ["object"]
+        "required": [
+          "object"
+        ],
+        "type": "object"
       },
       "id": {
-        "type": "string",
-        "minLength": 8
+        "type": "string"
+      },
+      "livemode": {
+        "type": [
+          "boolean",
+          "null"
+        ]
+      },
+      "pending_webhooks": {
+        "type": [
+          "integer",
+          "null"
+        ]
+      },
+      "request": {
+        "additionalProperties": true,
+        "type": [
+          "object",
+          "null"
+        ]
       },
       "type": {
-        "type": "string",
-        "enum": ["checkout.session.completed"]
+        "type": "string"
       }
     },
-    "required": ["created", "data", "id", "type"],
+    "required": [
+      "created",
+      "data",
+      "id",
+      "type"
+    ],
     "type": "object"
   },
   "schema": {
-    "name": "tm_webhook_stripe_checkout_session_completed",
+    "name": "stripe_event_checkout_session_completed",
     "version": 1
   }
 }
