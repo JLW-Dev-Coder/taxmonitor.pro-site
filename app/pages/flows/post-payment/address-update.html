@@ -1,0 +1,1298 @@
+<!--/app/pages/flows/post-payment/address-update.html-->
+<!doctype html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tax Monitor Pro — Address Update</title>
+
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="apple-touch-icon" href="/assets/favicon.ico" />
+  <link rel="icon" href="/assets/favicon.ico" />
+
+  <style>
+    * { font-family: 'DM Sans', sans-serif; }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .icon-float { animation: float 3s ease-in-out infinite; }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #f59e0b, #f97316, #ef4444);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .gradient-border {
+      background: linear-gradient(135deg, #f59e0b, #f97316, #ef4444);
+    }
+
+    .glass-card {
+      background: rgba(30, 41, 59, 0.7);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .gradient-btn {
+      background: linear-gradient(135deg, #f59e0b, #f97316, #ef4444);
+    }
+
+    .gradient-btn:hover {
+      background: linear-gradient(135deg, #d97706, #ea580c, #dc2626);
+    }
+
+    .form-input {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .form-input:focus {
+      border-color: #f59e0b;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2);
+    }
+
+    /* Custom select styling */
+    .select-wrapper { position: relative; }
+    .select-wrapper select {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      padding-right: 3rem;
+    }
+    .select-arrow {
+      position: absolute;
+      top: 50%;
+      right: 1rem;
+      transform: translateY(-50%);
+      pointer-events: none;
+      width: 22px;
+      height: 22px;
+      color: #f59e0b;
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
+    .select-wrapper:focus-within .select-arrow {
+      transform: translateY(-50%) rotate(180deg);
+      color: #fbbf24;
+    }
+
+    .blob-1 {
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(245, 158, 11, 0.15) 0%, transparent 70%);
+      border-radius: 50%;
+      top: -100px;
+      right: -100px;
+      pointer-events: none;
+    }
+
+    .blob-2 {
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(239, 68, 68, 0.1) 0%, transparent 70%);
+      border-radius: 50%;
+      bottom: 100px;
+      left: -50px;
+      pointer-events: none;
+    }
+
+    /* Toasts */
+    .toast {
+      transform: translateY(20px);
+      opacity: 0;
+      transition: transform 220ms ease, opacity 220ms ease;
+    }
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  </style>
+
+  <style>body { box-sizing: border-box; }</style>
+</head>
+
+<body class="h-full bg-slate-900 text-white overflow-auto">
+  <div id="app-wrapper" class="min-h-full w-full relative">
+    <div class="blob-1"></div>
+    <div class="blob-2"></div>
+
+    <div class="relative z-10 max-w-4xl mx-auto px-4 py-8">
+      <header class="text-center mb-10">
+        <div class="mb-6 text-left">
+          <a href="/app/index.html" class="inline-flex items-center gap-2 text-sm font-medium text-amber-400 hover:text-amber-300 transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+            Back to Dashboard
+          </a>
+        </div>
+
+        <!-- Match /app/pages/flows/post-payment/welcome.html icon exactly -->
+        <div class="inline-flex items-center justify-center mb-6">
+          <div class="icon-float">
+            <svg class="w-16 h-16" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <defs>
+                <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" style="stop-color:#f59e0b" />
+                  <stop offset="50%" style="stop-color:#ef4444" />
+                  <stop offset="100%" style="stop-color:#fbbf24" />
+                </linearGradient>
+              </defs>
+              <path d="M32 4L8 14v18c0 14 10 22 24 28 14-6 24-14 24-28V14L32 4z" stroke="url(#shieldGrad)" stroke-width="2" fill="rgba(245,158,11,0.10)" />
+              <path d="M24 32l6 6 12-14" stroke="url(#shieldGrad)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+            </svg>
+          </div>
+        </div>
+
+        <p class="text-amber-400 font-semibold tracking-wider uppercase text-sm mb-2">Tax Monitor Pro</p>
+        <h1 id="page-title" class="text-3xl sm:text-4xl lg:text-5xl font-bold gradient-text mb-4">Address Update</h1>
+        <p class="text-slate-400 text-lg">Confirm your current mailing address for monitoring and authorization records.</p>
+      </header>
+
+      <!-- Info Cards (must be 3) -->
+      <div class="grid md:grid-cols-3 gap-4 mb-10">
+        <div class="glass-card rounded-xl p-5">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="gradient-border p-0.5 rounded-lg">
+              <div class="bg-slate-800 p-2 rounded-lg">
+                <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M12 18a6 6 0 110-12 6 6 0 010 12z" />
+                </svg>
+              </div>
+            </div>
+            <h3 class="font-semibold text-white">What This Step Does</h3>
+          </div>
+          <p class="text-slate-400 text-sm">Confirms the mailing address we should use for monitoring records and authorization documents.</p>
+        </div>
+
+        <div class="glass-card rounded-xl p-5">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="gradient-border p-0.5 rounded-lg">
+              <div class="bg-slate-800 p-2 rounded-lg">
+                <svg class="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+            </div>
+            <h3 class="font-semibold text-white">What We Do</h3>
+          </div>
+          <p class="text-slate-400 text-sm">We store your confirmed address in your client record and use it when preparing monitoring and authorization paperwork.</p>
+        </div>
+
+        <div class="glass-card rounded-xl p-5">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="gradient-border p-0.5 rounded-lg">
+              <div class="bg-slate-800 p-2 rounded-lg">
+                <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h10a2 2 0 012 2v14a2 2 0 01-2 2z" />
+                </svg>
+              </div>
+            </div>
+            <h3 class="font-semibold text-white">What We Need From You</h3>
+          </div>
+          <p class="text-slate-400 text-sm">Your current address exactly as you want it to appear on records. This does not automatically update the IRS.</p>
+        </div>
+      </div>
+
+      <!-- Form Section -->
+      <div class="glass-card rounded-2xl p-6 md:p-8 mb-8">
+        <div class="mb-4">
+          <h2 class="text-2xl font-bold text-white mb-2 flex items-center gap-3">
+            <svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <span class="text-white">Address Information</span>
+          </h2>
+          <p id="intro-text" class="text-slate-400">Enter your address exactly as it should appear on monitoring and authorization records.</p>
+        </div>
+
+        <form id="address-form" class="space-y-6" novalidate>
+          <div>
+            <label for="address1" class="block text-sm font-semibold text-amber-400 mb-2">Address Line 1 <span class="text-red-400">*</span></label>
+            <input type="text" id="address1" name="address1" required placeholder="Street address, P.O. Box, etc." class="form-input w-full px-4 py-3 rounded-lg text-white placeholder-slate-500 transition-all" />
+          </div>
+
+          <div>
+            <label for="address2" class="block text-sm font-semibold text-amber-400 mb-2">Address Line 2 <span class="text-slate-400">(Optional)</span></label>
+            <input type="text" id="address2" name="address2" placeholder="Apartment, suite, unit, building, floor, etc." class="form-input w-full px-4 py-3 rounded-lg text-white placeholder-slate-500 transition-all" />
+          </div>
+
+          <div>
+            <label for="country" class="block text-sm font-semibold text-amber-400 mb-2">Country <span class="text-red-400">*</span></label>
+            <div class="select-wrapper">
+              <select id="country" name="country" required class="form-input w-full px-4 py-3 rounded-lg text-white transition-all cursor-pointer">
+                <option value="" class="bg-slate-800">Select a country</option>
+              </select>
+              <svg class="select-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+          </div>
+
+          <div>
+            <label for="state" class="block text-sm font-semibold text-amber-400 mb-2">State / Province <span class="text-red-400">*</span></label>
+            <div class="select-wrapper">
+              <select id="state" name="state" required class="form-input w-full px-4 py-3 rounded-lg text-white transition-all cursor-pointer">
+                <option value="" class="bg-slate-800">Select country first</option>
+              </select>
+              <svg class="select-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+          </div>
+
+          <div>
+            <label for="city" class="block text-sm font-semibold text-amber-400 mb-2">City <span class="text-red-400">*</span></label>
+            <div class="select-wrapper">
+              <select id="city" name="city" required class="form-input w-full px-4 py-3 rounded-lg text-white transition-all cursor-pointer">
+                <option value="" class="bg-slate-800">Select state first</option>
+              </select>
+              <svg class="select-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+
+            <!-- Make “Other” obvious as a normal field instead of a cryptic dropdown label -->
+            <div id="cityOtherWrap" class="mt-4 hidden">
+              <label for="cityOther" class="block text-sm font-semibold text-amber-400 mb-2">Other City <span class="text-red-400">*</span></label>
+              <input type="text" id="cityOther" name="cityOther" placeholder="Type your city" class="form-input w-full px-4 py-3 rounded-lg text-white placeholder-slate-500 transition-all" />
+              <p class="mt-2 text-xs text-slate-400">This is required when you select <span class="text-amber-300 font-semibold">Other</span> from the City dropdown.</p>
+            </div>
+          </div>
+
+          <div>
+            <label for="zipcode" class="block text-sm font-semibold text-amber-400 mb-2">ZIP / Postal Code <span class="text-red-400">*</span></label>
+            <input type="text" id="zipcode" name="zipcode" required placeholder="Enter ZIP or postal code" class="form-input w-full px-4 py-3 rounded-lg text-white placeholder-slate-500 transition-all" />
+            <p id="zip-hint" class="mt-2 text-xs text-slate-400">US: 5 digits (e.g., 90210) | International: varies by country</p>
+          </div>
+
+          <!-- Previous Address (only if moved within last year) -->
+          <div class="rounded-xl border border-amber-500/15 bg-slate-900/40 p-4">
+            <div class="flex items-start justify-between gap-4">
+              <div>
+                <h3 class="text-sm font-semibold text-amber-400">Previous Address</h3>
+                <p class="text-xs text-slate-400 mt-1">Only if you moved within the last year and the IRS may have a different address.</p>
+              </div>
+              <label class="inline-flex items-center gap-2 text-sm text-slate-200 select-none">
+                <input type="checkbox" id="hasPreviousAddress" class="h-4 w-4" />
+                I moved within the last year
+              </label>
+            </div>
+
+            <div id="previousAddressFields" class="mt-4 space-y-5 hidden">
+              <div>
+                <label for="prev_address1" class="block text-sm font-semibold text-amber-400 mb-2">Previous Address Line 1 <span class="text-red-400">*</span></label>
+                <input type="text" id="prev_address1" name="prev_address1" placeholder="Street address, P.O. Box, etc." class="form-input w-full px-4 py-3 rounded-lg text-white placeholder-slate-500 transition-all" />
+              </div>
+
+              <div>
+                <label for="prev_address2" class="block text-sm font-semibold text-amber-400 mb-2">Previous Address Line 2 <span class="text-slate-400">(Optional)</span></label>
+                <input type="text" id="prev_address2" name="prev_address2" placeholder="Apartment, suite, unit, building, floor, etc." class="form-input w-full px-4 py-3 rounded-lg text-white placeholder-slate-500 transition-all" />
+              </div>
+
+              <div>
+                <label for="prev_country" class="block text-sm font-semibold text-amber-400 mb-2">Previous Country <span class="text-red-400">*</span></label>
+                <div class="select-wrapper">
+                  <select id="prev_country" name="prev_country" class="form-input w-full px-4 py-3 rounded-lg text-white transition-all cursor-pointer">
+                    <option value="" class="bg-slate-800">Select a country</option>
+                  </select>
+                  <svg class="select-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </div>
+
+              <div>
+                <label for="prev_state" class="block text-sm font-semibold text-amber-400 mb-2">Previous State / Province <span class="text-red-400">*</span></label>
+                <div class="select-wrapper">
+                  <select id="prev_state" name="prev_state" class="form-input w-full px-4 py-3 rounded-lg text-white transition-all cursor-pointer">
+                    <option value="" class="bg-slate-800">Select country first</option>
+                  </select>
+                  <svg class="select-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </div>
+
+              <div>
+                <label for="prev_city" class="block text-sm font-semibold text-amber-400 mb-2">Previous City <span class="text-red-400">*</span></label>
+                <div class="select-wrapper">
+                  <select id="prev_city" name="prev_city" class="form-input w-full px-4 py-3 rounded-lg text-white transition-all cursor-pointer">
+                    <option value="" class="bg-slate-800">Select state first</option>
+                  </select>
+                  <svg class="select-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+
+                <div id="prevCityOtherWrap" class="mt-4 hidden">
+                  <label for="prevCityOther" class="block text-sm font-semibold text-amber-400 mb-2">Other Previous City <span class="text-red-400">*</span></label>
+                  <input type="text" id="prevCityOther" name="prevCityOther" placeholder="Type your previous city" class="form-input w-full px-4 py-3 rounded-lg text-white placeholder-slate-500 transition-all" />
+                  <p class="mt-2 text-xs text-slate-400">This is required when you select <span class="text-amber-300 font-semibold">Other</span> from the Previous City dropdown.</p>
+                </div>
+              </div>
+
+              <div>
+                <label for="prev_zipcode" class="block text-sm font-semibold text-amber-400 mb-2">Previous ZIP / Postal Code <span class="text-red-400">*</span></label>
+                <input type="text" id="prev_zipcode" name="prev_zipcode" placeholder="Enter ZIP or postal code" class="form-input w-full px-4 py-3 rounded-lg text-white placeholder-slate-500 transition-all" />
+                <p id="prev-zip-hint" class="mt-2 text-xs text-slate-400">US: 5 digits (e.g., 90210) | International: varies by country</p>
+              </div>
+            </div>
+          </div>
+
+          <div id="inlineError" class="hidden rounded-xl p-4 border border-red-500/30 bg-red-500/10">
+            <div class="font-semibold text-red-200 mb-1">We couldn’t submit that.</div>
+            <div id="inlineErrorText" class="text-slate-100 text-sm"></div>
+          </div>
+
+          <div class="pt-2">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <button type="submit" id="submitBtn" class="gradient-btn w-full py-4 px-6 rounded-xl font-semibold text-white text-lg transition-all transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50">
+                Submit Address Update
+              </button>
+              <button type="button" id="resetBtn" class="w-full py-4 px-6 rounded-xl font-semibold text-slate-200 text-lg border border-amber-500/30 bg-slate-900/60 hover:bg-slate-900/80 transition">
+                Reset Form
+              </button>
+            </div>
+          </div>
+        </form>
+
+        <div id="successBox" class="hidden mt-6 rounded-xl p-6 text-center border border-green-500/25 bg-green-500/10">
+          <h3 class="text-xl font-bold text-green-300 mb-2">Address submitted</h3>
+          <p class="text-slate-300">Saved successfully.</p>
+        </div>
+      </div>
+
+      <!-- Previous Address / Submission History -->
+      <div id="submissions-section" class="glass-card rounded-2xl p-6 md:p-8 mb-8">
+        <div class="flex items-start justify-between gap-4 mb-4">
+          <h2 class="text-2xl font-bold text-white flex items-center gap-3">
+            <svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span>Previous Address</span>
+          </h2>
+          <p class="text-slate-400 text-sm mt-1">Most recent address on file, plus submission history.</p>
+        </div>
+
+        <!-- Most Recent -->
+        <div id="previous-address-card" class="rounded-xl p-4 border border-white/10 bg-slate-900/50 mb-5 hidden">
+          <div class="flex items-start justify-between gap-3">
+            <div class="flex-1">
+              <div class="flex items-center gap-2 mb-3">
+                <span class="inline-flex items-center gap-1 text-xs font-semibold px-2 py-1 rounded-lg border border-amber-500/25 bg-amber-500/10 text-amber-300">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3" />
+                  </svg>
+                  Most recent
+                </span>
+                <span id="previous-address-date" class="text-xs text-slate-500"></span>
+              </div>
+
+              <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3">
+                <div>
+                  <dt class="text-xs font-semibold text-amber-400">Address Line 1</dt>
+                  <dd id="previous-address-line1" class="text-white font-medium"></dd>
+                </div>
+                <div>
+                  <dt class="text-xs font-semibold text-amber-400">Address Line 2</dt>
+                  <dd id="previous-address-line2" class="text-slate-300 hidden"></dd>
+                  <dd id="previous-address-line2-empty" class="text-slate-500 text-sm">(None)</dd>
+                </div>
+                <div>
+                  <dt class="text-xs font-semibold text-amber-400">City</dt>
+                  <dd id="previous-address-city" class="text-slate-300"></dd>
+                </div>
+                <div>
+                  <dt class="text-xs font-semibold text-amber-400">State / Province</dt>
+                  <dd id="previous-address-state" class="text-slate-300"></dd>
+                </div>
+                <div>
+                  <dt class="text-xs font-semibold text-amber-400">ZIP / Postal Code</dt>
+                  <dd id="previous-address-zip" class="text-slate-300"></dd>
+                </div>
+                <div>
+                  <dt class="text-xs font-semibold text-amber-400">Country</dt>
+                  <dd id="previous-address-country" class="text-slate-300"></dd>
+                </div>
+              </dl>
+            </div>
+
+            <button type="button" id="previous-address-delete" class="text-red-300 hover:text-red-200 p-2 rounded-lg hover:bg-red-500/10 transition" title="Delete most recent" aria-label="Delete most recent">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- History -->
+        <div class="flex items-center justify-between gap-3 mb-3">
+          <h3 class="text-sm font-semibold text-amber-400">Submission History</h3>
+          <span id="history-count" class="text-xs text-slate-500"></span>
+        </div>
+        <div id="submissions-list" class="space-y-3"></div>
+        <div id="history-empty" class="text-slate-400 text-sm rounded-xl p-4 border border-white/10 bg-slate-900/40">No addresses saved yet.</div>
+      </div>
+
+      <footer class="text-center text-slate-500 text-sm">
+        <div class="flex items-center justify-center gap-4">
+          <span class="flex items-center gap-1">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+            Secure
+          </span>
+          <span>•</span>
+          <span>Confidential</span>
+          <span>•</span>
+          <span>Professional</span>
+        </div>
+      </footer>
+
+      <!-- Success Toast -->
+      <div id="successToast" class="toast fixed bottom-6 right-6 bg-green-600 text-white px-6 py-4 rounded-xl shadow-lg z-50 flex items-center gap-3" aria-live="polite">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
+        <span>Saved successfully!</span>
+      </div>
+
+      <!-- Error Toast -->
+      <div id="errorToast" class="toast fixed bottom-6 right-6 bg-red-600 text-white px-6 py-4 rounded-xl shadow-lg z-50 flex items-center gap-3" aria-live="polite">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+        <span id="errorToastText">An error occurred</span>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    'use strict';
+
+    // Quick behavior confirmation (don’t let me “creative write” your UX):
+    // When City = Other, should we REQUIRE the Other City field? (Current behavior: yes.)
+
+    const countries = [
+      'Argentina',
+      'Australia',
+      'Austria',
+      'Belgium',
+      'Brazil',
+      'Canada',
+      'Chile',
+      'China',
+      'Colombia',
+      'Czech Republic',
+      'Denmark',
+      'Egypt',
+      'Finland',
+      'France',
+      'Germany',
+      'Greece',
+      'Hong Kong',
+      'India',
+      'Indonesia',
+      'Ireland',
+      'Israel',
+      'Italy',
+      'Japan',
+      'Malaysia',
+      'Mexico',
+      'Netherlands',
+      'New Zealand',
+      'Nigeria',
+      'Norway',
+      'Peru',
+      'Philippines',
+      'Poland',
+      'Portugal',
+      'Russia',
+      'Saudi Arabia',
+      'Singapore',
+      'South Africa',
+      'South Korea',
+      'Spain',
+      'Sweden',
+      'Switzerland',
+      'Taiwan',
+      'Thailand',
+      'Ukraine',
+      'United Arab Emirates',
+      'United Kingdom',
+      'United States',
+      'Vietnam'
+    ].sort();
+
+    const australiaStates = [
+      'Australian Capital Territory',
+      'New South Wales',
+      'Northern Territory',
+      'Queensland',
+      'South Australia',
+      'Tasmania',
+      'Victoria',
+      'Western Australia'
+    ];
+
+    const canadaProvinces = [
+      'Alberta',
+      'British Columbia',
+      'Manitoba',
+      'New Brunswick',
+      'Newfoundland and Labrador',
+      'Northwest Territories',
+      'Nova Scotia',
+      'Nunavut',
+      'Ontario',
+      'Prince Edward Island',
+      'Quebec',
+      'Saskatchewan',
+      'Yukon'
+    ];
+
+    const ukCountries = ['England', 'Northern Ireland', 'Scotland', 'Wales'];
+
+    const usStates = [
+      'Alabama',
+      'Alaska',
+      'American Samoa',
+      'Arizona',
+      'Arkansas',
+      'California',
+      'Colorado',
+      'Connecticut',
+      'Delaware',
+      'District of Columbia',
+      'Florida',
+      'Georgia',
+      'Guam',
+      'Hawaii',
+      'Idaho',
+      'Illinois',
+      'Indiana',
+      'Iowa',
+      'Kansas',
+      'Kentucky',
+      'Louisiana',
+      'Maine',
+      'Maryland',
+      'Massachusetts',
+      'Michigan',
+      'Minnesota',
+      'Mississippi',
+      'Missouri',
+      'Montana',
+      'Nebraska',
+      'Nevada',
+      'New Hampshire',
+      'New Jersey',
+      'New Mexico',
+      'New York',
+      'North Carolina',
+      'North Dakota',
+      'Northern Mariana Islands',
+      'Ohio',
+      'Oklahoma',
+      'Oregon',
+      'Pennsylvania',
+      'Puerto Rico',
+      'Rhode Island',
+      'South Carolina',
+      'South Dakota',
+      'Tennessee',
+      'Texas',
+      'U.S. Virgin Islands',
+      'Utah',
+      'Vermont',
+      'Virginia',
+      'Washington',
+      'West Virginia',
+      'Wisconsin',
+      'Wyoming'
+    ];
+
+    const citiesByState = {
+      California: ['Fresno', 'Long Beach', 'Los Angeles', 'Oakland', 'Sacramento', 'San Diego', 'San Francisco', 'San Jose'],
+      Florida: ['Fort Lauderdale', 'Jacksonville', 'Miami', 'Orlando', 'St. Petersburg', 'Tampa'],
+      Georgia: ['Atlanta', 'Augusta', 'Columbus', 'Macon', 'Savannah'],
+      Illinois: ['Aurora', 'Chicago', 'Naperville', 'Rockford', 'Springfield'],
+      Michigan: ['Ann Arbor', 'Detroit', 'Grand Rapids', 'Lansing', 'Warren'],
+      'New York': ['Albany', 'Buffalo', 'New York City', 'Rochester', 'Syracuse', 'Yonkers'],
+      'North Carolina': ['Charlotte', 'Durham', 'Greensboro', 'Raleigh', 'Winston-Salem'],
+      Ohio: ['Akron', 'Cincinnati', 'Cleveland', 'Columbus', 'Toledo'],
+      Pennsylvania: ['Allentown', 'Erie', 'Philadelphia', 'Pittsburgh', 'Reading'],
+      Texas: ['Arlington', 'Austin', 'Dallas', 'El Paso', 'Fort Worth', 'Houston', 'San Antonio'],
+      default: ['Capital City', 'Major City', 'Regional City']
+    };
+
+    const internationalCities = {
+      'British Columbia': ['Burnaby', 'Richmond', 'Surrey', 'Vancouver', 'Victoria'],
+      England: ['Birmingham', 'Leeds', 'Liverpool', 'London', 'Manchester'],
+      Ontario: ['Hamilton', 'London', 'Mississauga', 'Ottawa', 'Toronto'],
+      Quebec: ['Gatineau', 'Laval', 'Montreal', 'Quebec City'],
+      Scotland: ['Aberdeen', 'Dundee', 'Edinburgh', 'Glasgow'],
+      default: ['Capital', 'Major City', 'Regional City']
+    };
+
+    let submissions = [];
+
+    const els = {
+      address1: document.getElementById('address1'),
+      address2: document.getElementById('address2'),
+      city: document.getElementById('city'),
+      cityOther: document.getElementById('cityOther'),
+      cityOtherWrap: document.getElementById('cityOtherWrap'),
+      country: document.getElementById('country'),
+      errorToast: document.getElementById('errorToast'),
+      errorToastText: document.getElementById('errorToastText'),
+      form: document.getElementById('address-form'),
+      hasPreviousAddress: document.getElementById('hasPreviousAddress'),
+      historyCount: document.getElementById('history-count'),
+      historyEmpty: document.getElementById('history-empty'),
+      inlineError: document.getElementById('inlineError'),
+      inlineErrorText: document.getElementById('inlineErrorText'),
+      previousAddressCard: document.getElementById('previous-address-card'),
+      previousAddressCity: document.getElementById('previous-address-city'),
+      previousAddressCountry: document.getElementById('previous-address-country'),
+      previousAddressDate: document.getElementById('previous-address-date'),
+      previousAddressDelete: document.getElementById('previous-address-delete'),
+      previousAddressFields: document.getElementById('previousAddressFields'),
+      previousAddressLine1: document.getElementById('previous-address-line1'),
+      previousAddressLine2: document.getElementById('previous-address-line2'),
+      previousAddressLine2Empty: document.getElementById('previous-address-line2-empty'),
+      previousAddressState: document.getElementById('previous-address-state'),
+      previousAddressZip: document.getElementById('previous-address-zip'),
+      prevAddress1: document.getElementById('prev_address1'),
+      prevAddress2: document.getElementById('prev_address2'),
+      prevCity: document.getElementById('prev_city'),
+      prevCityOther: document.getElementById('prevCityOther'),
+      prevCityOtherWrap: document.getElementById('prevCityOtherWrap'),
+      prevCountry: document.getElementById('prev_country'),
+      prevState: document.getElementById('prev_state'),
+      prevZipcode: document.getElementById('prev_zipcode'),
+      resetBtn: document.getElementById('resetBtn'),
+      state: document.getElementById('state'),
+      submissionsList: document.getElementById('submissions-list'),
+      submissionsSection: document.getElementById('submissions-section'),
+      submitBtn: document.getElementById('submitBtn'),
+      successBox: document.getElementById('successBox'),
+      successToast: document.getElementById('successToast'),
+      zipcode: document.getElementById('zipcode')
+    };
+
+    function toast(el, show) {
+      if (!el) return;
+      if (show) el.classList.add('show');
+      else el.classList.remove('show');
+    }
+
+    function showInlineError(message) {
+      if (!els.inlineError || !els.inlineErrorText) return;
+      els.inlineErrorText.textContent = message || 'Unknown error';
+      els.inlineError.classList.remove('hidden');
+    }
+
+    function clearInlineError() {
+      if (!els.inlineError) return;
+      els.inlineError.classList.add('hidden');
+    }
+
+    function showErrorToast(message) {
+      if (els.errorToastText) els.errorToastText.textContent = message || 'An error occurred';
+      toast(els.errorToast, true);
+      setTimeout(() => toast(els.errorToast, false), 2200);
+    }
+
+    function showSuccessToast() {
+      toast(els.successToast, true);
+      setTimeout(() => toast(els.successToast, false), 1600);
+    }
+
+    function validateZip(zip, country) {
+      const z = String(zip || '').trim();
+      if (country === 'Canada') return /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/.test(z);
+      if (country === 'United Kingdom') return /^[A-Za-z]{1,2}\d[A-Za-z\d]? ?\d[A-Za-z]{2}$/.test(z);
+      if (country === 'United States') return /^\d{5}(-\d{4})?$/.test(z);
+      return z.length >= 3;
+    }
+
+    function shouldShowOtherCity(selectValue) {
+      return String(selectValue || '').trim() === '__other__';
+    }
+
+    function populateCountriesInto(selectEl) {
+      if (!selectEl) return;
+      selectEl.innerHTML = '<option value="" class="bg-slate-800">Select a country</option>';
+      countries.forEach((country) => {
+        const opt = document.createElement('option');
+        opt.value = country;
+        opt.textContent = country;
+        opt.className = 'bg-slate-800';
+        selectEl.appendChild(opt);
+      });
+    }
+
+    function populateStatesInto(stateSelect, citySelect, country) {
+      if (!stateSelect) return;
+      stateSelect.innerHTML = '<option value="" class="bg-slate-800">Select state/province</option>';
+
+      let states = [];
+      switch (country) {
+        case 'Australia':
+          states = australiaStates;
+          break;
+        case 'Canada':
+          states = canadaProvinces;
+          break;
+        case 'United Kingdom':
+          states = ukCountries;
+          break;
+        case 'United States':
+          states = usStates;
+          break;
+        default:
+          states = ['Other', 'Region 1', 'Region 2', 'Region 3'];
+          break;
+      }
+
+      states.forEach((state) => {
+        const opt = document.createElement('option');
+        opt.value = state;
+        opt.textContent = state;
+        opt.className = 'bg-slate-800';
+        stateSelect.appendChild(opt);
+      });
+
+      if (citySelect) citySelect.innerHTML = '<option value="" class="bg-slate-800">Select state first</option>';
+    }
+
+    function populateCitiesInto(citySelect, state, country) {
+      if (!citySelect) return;
+      citySelect.innerHTML = '<option value="" class="bg-slate-800">Select a city</option>';
+
+      const list = (country === 'United States')
+        ? (citiesByState[state] || citiesByState.default)
+        : (internationalCities[state] || internationalCities.default);
+
+      list.forEach((city) => {
+        const opt = document.createElement('option');
+        opt.value = city;
+        opt.textContent = city;
+        opt.className = 'bg-slate-800';
+        citySelect.appendChild(opt);
+      });
+
+      // Explicit Other option (paired with the free-text field)
+      const otherOpt = document.createElement('option');
+      otherOpt.value = '__other__';
+      otherOpt.textContent = 'Other';
+      otherOpt.className = 'bg-slate-800';
+      citySelect.appendChild(otherOpt);
+    }
+
+    function resolveCityValue(selectEl, otherEl) {
+      const selected = selectEl ? String(selectEl.value || '').trim() : '';
+      const other = otherEl ? String(otherEl.value || '').trim() : '';
+      if (selected === '__other__') return other;
+      return selected;
+    }
+
+    function syncOtherCityUI(selectEl, otherWrapEl, otherInputEl) {
+      if (!selectEl || !otherWrapEl || !otherInputEl) return;
+      const show = shouldShowOtherCity(selectEl.value);
+      otherWrapEl.classList.toggle('hidden', !show);
+      if (!show) otherInputEl.value = '';
+    }
+
+    function renderSubmissions() {
+      if (!els.submissionsSection || !els.submissionsList) return;
+
+      els.submissionsSection.classList.remove('hidden');
+
+      if (!submissions.length) {
+        if (els.previousAddressCard) els.previousAddressCard.classList.add('hidden');
+        if (els.historyCount) els.historyCount.textContent = '0 prior';
+        els.submissionsList.innerHTML = '';
+        if (els.historyEmpty) {
+          els.historyEmpty.textContent = 'No addresses saved yet.';
+          els.historyEmpty.classList.remove('hidden');
+        }
+        return;
+      }
+
+      const sorted = [...submissions].sort((a, b) => new Date(b.submitted_at) - new Date(a.submitted_at));
+      const mostRecent = sorted[0];
+      const history = sorted.slice(1);
+
+      if (els.previousAddressCard && mostRecent) {
+        const line1 = String(mostRecent.address_line_1 || '');
+        const line2 = String(mostRecent.address_line_2 || '');
+        const city = String(mostRecent.city || '');
+        const state = String(mostRecent.state || '');
+        const zip = String(mostRecent.zip_code || '');
+        const country = String(mostRecent.country || '');
+        const submittedAt = mostRecent.submitted_at ? new Date(mostRecent.submitted_at).toLocaleString() : '';
+
+        if (els.previousAddressLine1) els.previousAddressLine1.textContent = line1;
+
+        if (els.previousAddressLine2 && els.previousAddressLine2Empty) {
+          if (line2) {
+            els.previousAddressLine2.textContent = line2;
+            els.previousAddressLine2.classList.remove('hidden');
+            els.previousAddressLine2Empty.classList.add('hidden');
+          } else {
+            els.previousAddressLine2.textContent = '';
+            els.previousAddressLine2.classList.add('hidden');
+            els.previousAddressLine2Empty.classList.remove('hidden');
+          }
+        }
+
+        if (els.previousAddressCity) els.previousAddressCity.textContent = city;
+        if (els.previousAddressCountry) els.previousAddressCountry.textContent = country;
+        if (els.previousAddressDate) els.previousAddressDate.textContent = submittedAt;
+        if (els.previousAddressState) els.previousAddressState.textContent = state;
+        if (els.previousAddressZip) els.previousAddressZip.textContent = zip;
+
+        if (els.previousAddressDelete) {
+          const id = String(mostRecent.__backendId || '');
+          els.previousAddressDelete.onclick = () => deleteSubmission(id);
+        }
+
+        els.previousAddressCard.classList.remove('hidden');
+      }
+
+      if (els.historyCount) {
+        els.historyCount.textContent = history.length ? `${history.length} prior` : 'None';
+      }
+
+      els.submissionsList.innerHTML = '';
+
+      if (!history.length) {
+        if (els.historyEmpty) {
+          els.historyEmpty.textContent = 'No additional history yet.';
+          els.historyEmpty.classList.remove('hidden');
+        }
+        return;
+      }
+
+      if (els.historyEmpty) els.historyEmpty.classList.add('hidden');
+
+      history.forEach((sub) => {
+        const id = String(sub.__backendId || '');
+        const line1 = String(sub.address_line_1 || '');
+        const line2 = String(sub.address_line_2 || '');
+        const city = String(sub.city || '');
+        const state = String(sub.state || '');
+        const zip = String(sub.zip_code || '');
+        const country = String(sub.country || '');
+        const submittedAt = sub.submitted_at ? new Date(sub.submitted_at).toLocaleString() : '';
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'rounded-xl p-4 border border-white/10 bg-slate-900/50';
+
+        const row = document.createElement('div');
+        row.className = 'flex justify-between items-start gap-3';
+
+        const left = document.createElement('div');
+        left.className = 'flex-1';
+
+        const dl = document.createElement('dl');
+        dl.className = 'grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3';
+
+        const mk = (label, value, strong) => {
+          const wrap = document.createElement('div');
+          const dt = document.createElement('dt');
+          dt.className = 'text-xs font-semibold text-amber-400';
+          dt.textContent = label;
+          const dd = document.createElement('dd');
+          dd.className = strong ? 'text-white font-medium' : 'text-slate-300';
+          dd.textContent = value || '';
+          wrap.appendChild(dt);
+          wrap.appendChild(dd);
+          return wrap;
+        };
+
+        dl.appendChild(mk('Address Line 1', line1, true));
+        dl.appendChild(mk('Address Line 2', line2 || '(None)', false));
+        dl.appendChild(mk('City', city, false));
+        dl.appendChild(mk('Country', country, false));
+        dl.appendChild(mk('State / Province', state, false));
+        dl.appendChild(mk('ZIP / Postal Code', zip, false));
+
+        const meta = document.createElement('p');
+        meta.className = 'text-slate-500 text-xs mt-3';
+        meta.textContent = submittedAt;
+
+        left.appendChild(dl);
+        left.appendChild(meta);
+
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'text-red-300 hover:text-red-200 p-2 rounded-lg hover:bg-red-500/10 transition';
+        btn.title = 'Delete';
+        btn.setAttribute('aria-label', 'Delete');
+        btn.addEventListener('click', () => deleteSubmission(id));
+        btn.innerHTML = '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>';
+
+        row.appendChild(left);
+        row.appendChild(btn);
+        wrapper.appendChild(row);
+
+        els.submissionsList.appendChild(wrapper);
+      });
+    }
+
+    async function deleteSubmission(id) {
+      const sub = submissions.find((s) => s && s.__backendId === id);
+      if (!sub || !window.dataSdk) return;
+
+      const result = await window.dataSdk.delete(sub);
+      if (result && result.isOk) {
+        showSuccessToast();
+      } else {
+        showErrorToast('Failed to delete record');
+      }
+    }
+
+    function runSelfTests() {
+      try {
+        // Existing tests (kept, just made them pass again)
+        console.assert(validateZip('90210', 'United States') === true, 'US ZIP should validate');
+        console.assert(validateZip('90210-1234', 'United States') === true, 'US ZIP+4 should validate');
+        console.assert(validateZip('9021', 'United States') === false, 'Short US ZIP should fail');
+
+        console.assert(validateZip('K1A 0B1', 'Canada') === true, 'CA postal should validate');
+        console.assert(validateZip('K1A0B1', 'Canada') === true, 'CA postal no-space should validate');
+
+        const tmp = document.createElement('select');
+        populateCitiesInto(tmp, 'California', 'United States');
+        console.assert(Array.from(tmp.querySelectorAll('option')).some(o => o.value === '__other__'), 'populateCitiesInto should add an explicit Other option');
+        const values = Array.from(tmp.querySelectorAll('option')).map(o => o.value);
+        const uniqueCount = new Set(values).size;
+        console.assert(uniqueCount === values.length, 'populateCitiesInto should not duplicate option values');
+
+        const c = resolveCityValue({ value: 'Los Angeles' }, { value: 'My City' });
+        console.assert(c === 'Los Angeles', 'resolveCityValue should use selected when not Other');
+
+        const c2 = resolveCityValue({ value: '__other__' }, { value: 'My City' });
+        console.assert(c2 === 'My City', 'resolveCityValue should use typed city when Other selected');
+
+        const c3 = resolveCityValue({ value: '__other__' }, { value: '' });
+        console.assert(c3 === '', 'resolveCityValue should be empty when Other selected but no typed value');
+
+        // New tests
+        console.assert(shouldShowOtherCity('__other__') === true, 'shouldShowOtherCity should be true for __other__');
+        console.assert(shouldShowOtherCity('Los Angeles') === false, 'shouldShowOtherCity should be false for normal city');
+
+        const wrap = document.createElement('div');
+        wrap.className = 'hidden';
+        const input = document.createElement('input');
+        input.value = 'abc';
+        const sel = document.createElement('select');
+        sel.innerHTML = '<option value="Los Angeles">LA</option><option value="__other__">Other</option>';
+
+        sel.value = '__other__';
+        syncOtherCityUI(sel, wrap, input);
+        console.assert(wrap.classList.contains('hidden') === false, 'syncOtherCityUI should show wrap when __other__ selected');
+
+        sel.value = 'Los Angeles';
+        syncOtherCityUI(sel, wrap, input);
+        console.assert(wrap.classList.contains('hidden') === true, 'syncOtherCityUI should hide wrap when not __other__');
+        console.assert(input.value === '', 'syncOtherCityUI should clear input when hiding');
+      } catch (e) {
+        console.warn('Self-tests failed:', e);
+      }
+    }
+
+    // Data SDK handler
+    const dataHandler = {
+      onDataChanged(data) {
+        submissions = Array.isArray(data) ? data : [];
+        renderSubmissions();
+      }
+    };
+
+    if (window.dataSdk) window.dataSdk.init(dataHandler);
+
+    // Ensure section renders even if no dataSdk or no data yet
+    renderSubmissions();
+
+    // Element SDK init
+    const defaultConfig = {
+      intro_text: 'Enter your address exactly as it should appear on monitoring and authorization records.',
+      page_title: 'Address Update'
+    };
+
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        mapToEditPanelValues: (config) => new Map([
+          ['intro_text', config.intro_text || defaultConfig.intro_text],
+          ['page_title', config.page_title || defaultConfig.page_title]
+        ]),
+        onConfigChange: async (config) => {
+          const title = document.getElementById('page-title');
+          const intro = document.getElementById('intro-text');
+          if (title) title.textContent = config.page_title || defaultConfig.page_title;
+          if (intro) intro.textContent = config.intro_text || defaultConfig.intro_text;
+        }
+      });
+    }
+
+    // Init selects
+    populateCountriesInto(els.country);
+    populateCountriesInto(els.prevCountry);
+
+    // Initial “Other” visibility
+    syncOtherCityUI(els.city, els.cityOtherWrap, els.cityOther);
+    syncOtherCityUI(els.prevCity, els.prevCityOtherWrap, els.prevCityOther);
+
+    if (els.country) {
+      els.country.addEventListener('change', (e) => {
+        const value = e.target.value;
+        populateStatesInto(els.state, els.city, value);
+        syncOtherCityUI(els.city, els.cityOtherWrap, els.cityOther);
+
+        const hint = document.getElementById('zip-hint');
+        if (!hint) return;
+
+        switch (value) {
+          case 'Canada':
+            hint.textContent = 'Canada: Letter-Number-Letter Number-Letter-Number (e.g., K1A 0B1)';
+            break;
+          case 'United Kingdom':
+            hint.textContent = 'UK: Standard UK postcode format (e.g., SW1A 1AA)';
+            break;
+          case 'United States':
+            hint.textContent = 'US: 5 digits (e.g., 90210) or 5+4 format (e.g., 90210-1234)';
+            break;
+          default:
+            hint.textContent = 'Enter the postal code format used in your country';
+            break;
+        }
+      });
+    }
+
+    if (els.prevCountry) {
+      els.prevCountry.addEventListener('change', (e) => {
+        const value = e.target.value;
+        populateStatesInto(els.prevState, els.prevCity, value);
+        syncOtherCityUI(els.prevCity, els.prevCityOtherWrap, els.prevCityOther);
+
+        const hint = document.getElementById('prev-zip-hint');
+        if (!hint) return;
+
+        switch (value) {
+          case 'Canada':
+            hint.textContent = 'Canada: Letter-Number-Letter Number-Letter-Number (e.g., K1A 0B1)';
+            break;
+          case 'United Kingdom':
+            hint.textContent = 'UK: Standard UK postcode format (e.g., SW1A 1AA)';
+            break;
+          case 'United States':
+            hint.textContent = 'US: 5 digits (e.g., 90210) or 5+4 format (e.g., 90210-1234)';
+            break;
+          default:
+            hint.textContent = 'Enter the postal code format used in your country';
+            break;
+        }
+      });
+    }
+
+    if (els.state) {
+      els.state.addEventListener('change', (e) => {
+        const country = els.country ? els.country.value : '';
+        populateCitiesInto(els.city, e.target.value, country);
+        syncOtherCityUI(els.city, els.cityOtherWrap, els.cityOther);
+      });
+    }
+
+    if (els.city) {
+      els.city.addEventListener('change', () => {
+        syncOtherCityUI(els.city, els.cityOtherWrap, els.cityOther);
+      });
+    }
+
+    if (els.prevState) {
+      els.prevState.addEventListener('change', (e) => {
+        const country = els.prevCountry ? els.prevCountry.value : '';
+        populateCitiesInto(els.prevCity, e.target.value, country);
+        syncOtherCityUI(els.prevCity, els.prevCityOtherWrap, els.prevCityOther);
+      });
+    }
+
+    if (els.prevCity) {
+      els.prevCity.addEventListener('change', () => {
+        syncOtherCityUI(els.prevCity, els.prevCityOtherWrap, els.prevCityOther);
+      });
+    }
+
+    if (els.hasPreviousAddress && els.previousAddressFields) {
+      els.hasPreviousAddress.addEventListener('change', (e) => {
+        const on = !!e.target.checked;
+        els.previousAddressFields.classList.toggle('hidden', !on);
+        if (on) {
+          if (els.prevCountry) els.prevCountry.focus();
+        } else {
+          // Clear previous "Other" fields when collapsing
+          syncOtherCityUI(els.prevCity, els.prevCityOtherWrap, els.prevCityOther);
+        }
+      });
+    }
+
+    if (els.resetBtn) {
+      els.resetBtn.addEventListener('click', () => {
+        clearInlineError();
+        toast(els.errorToast, false);
+        toast(els.successToast, false);
+        if (els.successBox) els.successBox.classList.add('hidden');
+
+        if (els.form) els.form.reset();
+
+        if (els.cityOtherWrap) els.cityOtherWrap.classList.add('hidden');
+        if (els.prevCityOtherWrap) els.prevCityOtherWrap.classList.add('hidden');
+
+        if (els.state) els.state.innerHTML = '<option value="" class="bg-slate-800">Select country first</option>';
+        if (els.city) els.city.innerHTML = '<option value="" class="bg-slate-800">Select state first</option>';
+        if (els.prevState) els.prevState.innerHTML = '<option value="" class="bg-slate-800">Select country first</option>';
+        if (els.prevCity) els.prevCity.innerHTML = '<option value="" class="bg-slate-800">Select state first</option>';
+
+        if (els.previousAddressFields) els.previousAddressFields.classList.add('hidden');
+
+        if (els.country) els.country.focus();
+      });
+    }
+
+    if (els.form) {
+      els.form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        clearInlineError();
+        toast(els.errorToast, false);
+        toast(els.successToast, false);
+        if (els.successBox) els.successBox.classList.add('hidden');
+
+        const country = els.country ? String(els.country.value || '') : '';
+        const zip = els.zipcode ? String(els.zipcode.value || '') : '';
+        const hasPrev = !!(els.hasPreviousAddress && els.hasPreviousAddress.checked);
+
+        const resolvedCity = resolveCityValue(els.city, els.cityOther);
+
+        if (!country || !els.state?.value || !resolvedCity || !els.address1?.value || !zip) {
+          showInlineError('Please complete all required fields.');
+          showErrorToast('Missing required information');
+          return;
+        }
+
+        if (shouldShowOtherCity(els.city?.value) && !String(els.cityOther?.value || '').trim()) {
+          showInlineError('Please enter your city in the Other City field.');
+          showErrorToast('Missing city');
+          return;
+        }
+
+        if (!validateZip(zip, country)) {
+          showInlineError('Please enter a valid ZIP/postal code for ' + country + '.');
+          showErrorToast('Invalid postal code');
+          return;
+        }
+
+        let prevResolvedCity = '';
+        let prevCountry = '';
+        let prevZip = '';
+
+        if (hasPrev) {
+          prevCountry = els.prevCountry ? String(els.prevCountry.value || '') : '';
+          prevZip = els.prevZipcode ? String(els.prevZipcode.value || '') : '';
+          prevResolvedCity = resolveCityValue(els.prevCity, els.prevCityOther);
+
+          if (!prevCountry || !els.prevState?.value || !prevResolvedCity || !els.prevAddress1?.value || !prevZip) {
+            showInlineError('Please complete all required previous address fields.');
+            showErrorToast('Missing previous address');
+            return;
+          }
+
+          if (shouldShowOtherCity(els.prevCity?.value) && !String(els.prevCityOther?.value || '').trim()) {
+            showInlineError('Please enter your previous city in the Other Previous City field.');
+            showErrorToast('Missing previous city');
+            return;
+          }
+
+          if (!validateZip(prevZip, prevCountry)) {
+            showInlineError('Please enter a valid previous ZIP/postal code for ' + prevCountry + '.');
+            showErrorToast('Invalid previous postal code');
+            return;
+          }
+        }
+
+        if (!window.dataSdk) {
+          showInlineError('Data SDK is not available.');
+          showErrorToast('Unable to save');
+          return;
+        }
+
+        const payload = {
+          address_line_1: els.address1.value,
+          address_line_2: els.address2 ? (els.address2.value || '') : '',
+          city: resolvedCity,
+          country: country,
+          has_previous_address: hasPrev,
+          previous_address_line_1: hasPrev && els.prevAddress1 ? els.prevAddress1.value : '',
+          previous_address_line_2: hasPrev && els.prevAddress2 ? (els.prevAddress2.value || '') : '',
+          previous_city: hasPrev ? prevResolvedCity : '',
+          previous_country: hasPrev ? prevCountry : '',
+          previous_state: hasPrev && els.prevState ? els.prevState.value : '',
+          previous_zip_code: hasPrev ? prevZip : '',
+          state: els.state.value,
+          submitted_at: new Date().toISOString(),
+          zip_code: zip
+        };
+
+        try {
+          if (els.submitBtn) els.submitBtn.disabled = true;
+          const result = await window.dataSdk.create(payload);
+
+          if (result && result.isOk) {
+            showSuccessToast();
+            if (els.successBox) els.successBox.classList.remove('hidden');
+            if (els.form) els.form.reset();
+
+            if (els.cityOtherWrap) els.cityOtherWrap.classList.add('hidden');
+            if (els.prevCityOtherWrap) els.prevCityOtherWrap.classList.add('hidden');
+            if (els.previousAddressFields) els.previousAddressFields.classList.add('hidden');
+
+            if (els.state) els.state.innerHTML = '<option value="" class="bg-slate-800">Select country first</option>';
+            if (els.city) els.city.innerHTML = '<option value="" class="bg-slate-800">Select state first</option>';
+            if (els.prevState) els.prevState.innerHTML = '<option value="" class="bg-slate-800">Select country first</option>';
+            if (els.prevCity) els.prevCity.innerHTML = '<option value="" class="bg-slate-800">Select state first</option>';
+          } else {
+            showInlineError('Failed to submit address.');
+            showErrorToast('Unable to save');
+          }
+        } catch (err) {
+          showInlineError(String(err?.message || err || 'An error occurred'));
+          showErrorToast('Unable to save');
+        } finally {
+          if (els.submitBtn) els.submitBtn.disabled = false;
+        }
+      });
+    }
+
+    runSelfTests();
+  </script>
+</body>
+</html>
