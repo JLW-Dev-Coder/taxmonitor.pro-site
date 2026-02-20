@@ -950,11 +950,10 @@
             <button type="button"
               class="flex-1 min-w-[200px] px-6 py-3 rounded-lg font-semibold transition-colors flex items-center justify-center gap-2"
               style="background: rgba(226,232,240,.12); color: rgba(226,232,240,.9); border: 1px solid var(--tm-border);"
-              onclick="printForm()">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/>
+              onclick="resetForm()"><svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" vector-effect="non-scaling-stroke" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.5 12a7.5 7.5 0 0112.9-5.303L19.5 9M19.5 9V4.5M19.5 9H15M19.5 12a7.5 7.5 0 01-12.9 5.303L4.5 15m0 0v4.5m0-4.5H9" />
               </svg>
-              Print Form
+              Reset Form
             </button>
           </div>
 
@@ -1305,8 +1304,41 @@
       URL.revokeObjectURL(url);
     }
 
-    function printForm() {
-      window.print();
+    function resetForm() {
+      const scope = document.getElementById('app-wrapper') || document;
+
+      scope.querySelectorAll('input, select, textarea').forEach((el) => {
+        const tag = (el.tagName || '').toLowerCase();
+        if (tag === 'select') {
+          el.selectedIndex = 0;
+          return;
+        }
+
+        if (tag === 'textarea') {
+          el.value = '';
+          return;
+        }
+
+        const type = (el.getAttribute('type') || '').toLowerCase();
+        if (type === 'checkbox' || type === 'radio') {
+          el.checked = false;
+          return;
+        }
+
+        el.value = '';
+      });
+
+      // Clear any certification highlight
+      const cert = document.getElementById('certification');
+      const certSection = cert?.closest('div');
+      if (certSection) certSection.classList.remove('ring-2');
+
+      calculateTotals();
+      updateSummary();
+      goToSection(1);
+
+      const wrapper = document.getElementById('app-wrapper');
+      if (wrapper) wrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
     // Add listeners to all financial fields
