@@ -1,0 +1,1467 @@
+<!doctype html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tax Monitor Pro — Wet-Signed 2848</title>
+
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+
+  <style>
+    * { font-family: 'DM Sans', sans-serif; }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+    .icon-float { animation: float 3s ease-in-out infinite; }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #f59e0b, #f97316, #ef4444);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .gradient-border { background: linear-gradient(135deg, #f59e0b, #f97316, #ef4444); }
+    .glass-card {
+      background: rgba(30, 41, 59, 0.7);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .gradient-btn {
+      background: linear-gradient(135deg, #f59e0b, #f97316, #ef4444);
+    }
+    .gradient-btn:hover {
+      background: linear-gradient(135deg, #d97706, #ea580c, #dc2626);
+    }
+
+    .blob-1 {
+      position: absolute;
+      width: 420px;
+      height: 420px;
+      background: radial-gradient(circle, rgba(245, 158, 11, 0.15) 0%, transparent 70%);
+      border-radius: 50%;
+      top: -110px;
+      right: -120px;
+      pointer-events: none;
+    }
+    .blob-2 {
+      position: absolute;
+      width: 320px;
+      height: 320px;
+      background: radial-gradient(circle, rgba(239, 68, 68, 0.1) 0%, transparent 70%);
+      border-radius: 50%;
+      bottom: 90px;
+      left: -60px;
+      pointer-events: none;
+    }
+
+    /* Content typography */
+    .tm-prose h2 { font-size: 1.15rem; font-weight: 800; margin-top: 1.25rem; margin-bottom: .4rem; color: #fff; }
+    .tm-prose h3 { font-size: 1rem; font-weight: 800; margin-top: 1rem; margin-bottom: .25rem; color: #e2e8f0; }
+    .tm-prose p { color: rgba(148,163,184,1); line-height: 1.65; }
+    .tm-prose ul { margin-top: .25rem; margin-bottom: .75rem; padding-left: 1.2rem; color: rgba(148,163,184,1); }
+    .tm-prose li { margin: .25rem 0; }
+    .tm-prose hr { border: 0; border-top: 1px solid rgba(255,255,255,0.10); margin: 1.1rem 0; }
+
+    /* Inline preview table */
+    .tm-kv {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: .6rem;
+    }
+    @media (min-width: 640px) {
+      .tm-kv { grid-template-columns: 1fr 1fr; }
+    }
+    .tm-kv-item {
+      background: rgba(15, 23, 42, 0.55);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 14px;
+      padding: 12px 14px;
+    }
+    .tm-kv-k { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: rgba(251,191,36,0.85); }
+    .tm-kv-v { margin-top: 6px; font-weight: 700; color: #fff; }
+    .tm-muted { font-weight: 600; color: rgba(148,163,184,1); }
+
+    /* Draft bar */
+    .tm-draft {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(245, 158, 11, 0.18);
+      backdrop-filter: blur(18px);
+    }
+
+    /* Toast */
+    .tm-toast {
+      transform: translateY(20px);
+      opacity: 0;
+      transition: transform .25s ease, opacity .25s ease;
+    }
+    .tm-toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Status indicator */
+    .status-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 6px;
+    }
+    .status-dot.ready { background-color: #94a3b8; }
+    .status-dot.working { background-color: #f59e0b; animation: pulse 1.5s ease-in-out infinite; }
+    .status-dot.success { background-color: #10b981; }
+    .status-dot.error { background-color: #ef4444; }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    /* Flip card styles */
+    .flip-card-container {
+      perspective: 1000px;
+      height: 100%;
+      min-height: 500px;
+      position: relative;
+    }
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      transform-style: preserve-3d;
+    }
+    .flip-card-inner.flipped {
+      transform: rotateY(180deg);
+    }
+    .flip-card-front,
+    .flip-card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      display: flex;
+      flex-direction: column;
+      padding: 1rem;
+      box-sizing: border-box;
+    }
+    .flip-card-back {
+      transform: rotateY(180deg);
+    }
+    .flip-card-label {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: rgba(251, 191, 36, 0.85);
+      z-index: 10;
+    }
+    .flip-card-controls {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .flip-toggle-btn {
+      flex: 1;
+      padding: 0.65rem 1rem;
+      border-radius: 0.75rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(15, 23, 42, 0.6);
+      color: rgba(148, 163, 184, 1);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .flip-toggle-btn:hover {
+      border-color: rgba(245, 158, 11, 0.3);
+      background: rgba(15, 23, 42, 0.8);
+    }
+    .flip-toggle-btn.active {
+      background: linear-gradient(135deg, #f59e0b, #f97316, #ef4444);
+      color: white;
+      border-color: transparent;
+    }
+    .flip-toggle-btn:focus {
+      outline: none;
+      border-color: rgba(245, 158, 11, 0.5);
+      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+    }
+
+    .flip-card-svg {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    /* Form input styling (unified) */
+    input[type="text"],
+    input[type="tel"],
+    input[type="email"],
+    input[type="date"],
+    input[type="file"],
+    textarea {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #fff;
+      padding: 0.65rem 1rem;
+      border-radius: 0.75rem;
+      font-size: 0.95rem;
+    }
+
+    input[type="text"]::placeholder,
+    input[type="tel"]::placeholder,
+    input[type="email"]::placeholder,
+    input[type="date"]::placeholder,
+    textarea::placeholder { color: rgba(148, 163, 184, 0.6); }
+
+    input[type="text"]:focus,
+    input[type="tel"]:focus,
+    input[type="email"]:focus,
+    input[type="date"]:focus,
+    input[type="file"]:focus,
+    textarea:focus {
+      outline: none;
+      border-color: rgba(245, 158, 11, 0.5);
+      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+    }
+
+    /* Textarea normalization (match inputs) */
+    textarea {
+      line-height: 1.4;
+      padding: 0.65rem 1rem !important;
+      resize: vertical;
+    }
+
+    $1
+    input[readonly],
+    textarea[readonly] {
+      background: rgba(15, 23, 42, 0.45);
+      border-color: rgba(255, 255, 255, 0.10);
+      color: rgba(226, 232, 240, 0.85);
+      cursor: not-allowed;
+    }
+    input:disabled,
+    textarea:disabled {
+      opacity: 0.75;
+      cursor: not-allowed;
+    }
+
+    /* Better file input theming */
+    input[type="file"]::file-selector-button {
+      margin-right: 12px;
+      border: 0;
+      border-radius: 10px;
+      padding: 10px 12px;
+      background: rgba(148, 163, 184, 0.18);
+      color: rgba(226, 232, 240, 0.95);
+      font-weight: 700;
+      cursor: pointer;
+      transition: background .15s ease;
+    }
+    input[type="file"]::file-selector-button:hover {
+      background: rgba(148, 163, 184, 0.26);
+    }
+
+    input[type="checkbox"],
+    input[type="radio"] {
+      width: 1.25rem;
+      height: 1.25rem;
+      accent-color: #f59e0b;
+      cursor: pointer;
+    }
+
+    /* Ensure password fields match unified theme */
+    input[type="password"] {
+      width: 100%;
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #fff;
+      padding: 0.65rem 1rem;
+      border-radius: 0.75rem;
+      font-size: 0.95rem;
+      transition: border-color .15s ease, box-shadow .15s ease, background-color .15s ease;
+    }
+    input[type="password"]::placeholder {
+      color: rgba(148, 163, 184, 0.6);
+    }
+    input[type="password"]:focus {
+      outline: none;
+      border-color: rgba(245, 158, 11, 0.5);
+      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+    }
+
+    input[type="checkbox"]:disabled,
+    input[type="radio"]:disabled {
+      width: 1.25rem;
+      height: 1.25rem;
+      accent-color: #f59e0b;
+      cursor: pointer;
+    }
+
+    /* Section divider styling */
+    .form-section-divider {
+      border-top: 2px solid rgba(255,255,255,0.08);
+      padding-top: 2rem;
+      margin-top: 2rem;
+    }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+</head>
+
+<body class="h-full bg-slate-900 text-white overflow-auto">
+  <div id="app-wrapper" class="min-h-full w-full relative">
+    <div class="blob-1"></div>
+    <div class="blob-2"></div>
+
+    <div class="relative z-10 max-w-4xl mx-auto px-4 py-8">
+      <!-- Header -->
+      <header class="text-center mb-10">
+        <div class="mb-6 text-left">
+          <a href="/app/index.html" class="inline-flex items-center gap-2 text-sm font-medium text-amber-400 hover:text-amber-300 transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+            Back to Dashboard
+          </a>
+        </div>
+
+        <div class="inline-flex items-center justify-center mb-6">
+          <div class="icon-float">
+            <svg class="w-16 h-16" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <defs>
+                <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" style="stop-color:#f59e0b" />
+                  <stop offset="50%" style="stop-color:#ef4444" />
+                  <stop offset="100%" style="stop-color:#fbbf24" />
+                </linearGradient>
+              </defs>
+              <path d="M32 4L8 14v18c0 14 24 22 24 22s24-8 24-22V14L32 4z" stroke="url(#shieldGrad)" stroke-width="2" fill="rgba(245,158,11,0.10)" />
+              <path d="M24 32l6 6 12-14" stroke="url(#shieldGrad)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+            </svg>
+          </div>
+        </div>
+
+        <p class="text-amber-400 font-semibold tracking-wider uppercase text-sm mb-2">Tax Monitor Pro</p>
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold gradient-text mb-4">IRS Authorization (2848)</h1>
+        <p class="text-slate-400 text-lg">Generate Form 2848, wet-sign it, then upload the signed PDF.</p>
+      </header>
+
+      <!-- Map cards -->
+      <div class="grid md:grid-cols-3 gap-4 mb-10">
+        <div class="glass-card rounded-xl p-5">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="gradient-border p-0.5 rounded-lg">
+              <div class="bg-slate-800 p-2 rounded-lg">
+                <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12a8 8 0 11-16 0 8 8 0 0116 0z" />
+                </svg>
+              </div>
+            </div>
+            <h3 class="font-semibold text-white">Action Required From You</h3>
+          </div>
+          <p class="text-slate-400 text-sm">Print, wet-sign, and upload the signed PDF.</p>
+        </div>
+
+        <div class="glass-card rounded-xl p-5">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="gradient-border p-0.5 rounded-lg">
+              <div class="bg-slate-800 p-2 rounded-lg">
+                <svg class="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              </div>
+            </div>
+            <h3 class="font-semibold text-white">What This Step Does</h3>
+          </div>
+          <p class="text-slate-400 text-sm">Generates a pre-filled 2848 PDF for your signature.</p>
+        </div>
+
+        <div class="glass-card rounded-xl p-5">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="gradient-border p-0.5 rounded-lg">
+              <div class="bg-slate-800 p-2 rounded-lg">
+                <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M12 18a. 18z" />
+                </svg>
+              </div>
+            </div>
+            <h3 class="font-semibold text-white">What We Do</h3>
+          </div>
+          <p class="text-slate-400 text-sm">Review, file with IRS, obtain CAF number, begin representation.</p>
+        </div>
+      </div>
+
+      <!-- Main unified content -->
+      <section class="glass-card rounded-2xl px-6 pb-6 pt-4 md:px-8 md:pb-8 md:pt-5 lg:px-10 lg:pb-10 lg:pt-6 w-full">
+        <form id="wet-sign-form" class="space-y-8">
+          <!-- Required hidden fields -->
+          <input type="hidden" id="eventId" name="eventId">
+          <input type="hidden" id="orderId" name="orderId">
+          <input type="hidden" id="sessionToken" name="sessionToken">
+          <input type="hidden" id="signedUploadComplete" name="signedUploadComplete" value="false">
+
+          <!-- Form Introduction -->
+          <div class="tm-prose">
+            <h1 class="text-xl font-semibold text-white mt-0 mb-3">IRS Form 2848 — Power of Attorney</h1>
+            <p class="tm-hero-lead text-slate-300 mt-2">This step authorizes us to access IRS records for monitoring. We will generate a pre-filled Form 2848 for you. You will print it, sign it by hand, and upload the signed PDF.</p>
+          </div>
+
+          <p class="text-slate-300">If you are married and filed jointly, <strong class="text-white">each spouse must complete and sign a separate Form 2848</strong>. If you indicated you are married, your spouse will receive a separate invitation to complete their own authorization.</p>
+
+          <div class="p-4 rounded-lg bg-slate-900/40 border border-white/5">
+            <p class="text-sm text-slate-400">
+              <span class="text-amber-300 font-semibold">(Rev. January 2021)</span><br>
+              IRS Form 2848 — Power of Attorney and Declaration of Representative<br>
+              ▶ Go to <a class="text-amber-400 hover:text-amber-300 underline" href="http://www.irs.gov/Form2848" target="_blank" rel="noopener">www.irs.gov/Form2848</a> for instructions and the latest information.
+            </p>
+          </div>
+
+          <!-- Draft & Preview Bar -->
+          <div class="tm-draft rounded-xl p-4">
+            <div class="flex items-start gap-3 mb-4">
+              <div class="mt-0.5">
+                <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div class="flex-1">
+                <div class="text-sm font-semibold text-amber-200">Draft saving is enabled</div>
+                <div class="text-xs text-slate-300 mt-1">Save your progress and return later. Your response stays on this device.</div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-3">
+              <button type="button" id="draft-save" class="w-full py-2.5 px-4 rounded-lg font-semibold text-white gradient-btn">Save Draft</button>
+              <button type="button" id="draft-clear" class="w-full py-2.5 px-4 rounded-lg font-semibold text-slate-200 border border-amber-500/30 bg-slate-900/60 hover:bg-slate-900/80 transition">Clear Draft</button>
+            </div>
+
+            <div class="text-[11px] text-slate-400" id="draft-status">Draft not saved.</div>
+          </div>
+
+          <!-- Form Preview -->
+          <div>
+            <h3 class="text-lg font-extrabold text-white mb-3">Form Preview</h3>
+            <p class="text-slate-400 text-sm mb-4">Here's what will be used to generate your Form 2848:</p>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+              <!-- Flip Card Preview -->
+              <div class="lg:col-span-1">
+                <div class="flip-card-controls">
+                  <button type="button" id="page-1-btn" class="flip-toggle-btn active" aria-pressed="true" aria-label="Show page 1 preview">Page 1</button>
+                  <button type="button" id="page-2-btn" class="flip-toggle-btn" aria-pressed="false" aria-label="Show page 2 preview">Page 2</button>
+                </div>
+
+                <div class="flip-card-container rounded-lg shadow-lg overflow-hidden" aria-label="Form 2848 preview card, currently showing page 1">
+                  <div class="flip-card-inner" id="flip-card">
+                    <!-- Page 1 (Front) -->
+                    <div class="flip-card-front">
+                      <span class="flip-card-label">Preview: Page 1</span>
+                      <svg class="flip-card-svg" viewBox="0 0 210 280" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="210" height="280" fill="#0f172a" stroke="#64748b" stroke-width="0.5" />
+                        <rect width="210" height="16" fill="#1e293b" />
+                        <text x="105" y="12" font-size="8" font-weight="bold" fill="#f59e0b" text-anchor="middle" font-family="Arial">DEPARTMENT OF THE TREASURY</text>
+                        <text x="105" y="28" font-size="10" font-weight="bold" fill="#f97316" text-anchor="middle" font-family="Arial">Form 2848</text>
+                        <text x="105" y="38" font-size="6" fill="#cbd5e1" text-anchor="middle" font-family="Arial">Power of Attorney and Declaration of Representative</text>
+
+                        <rect x="5" y="46" width="200" height="6" fill="#1e293b" />
+                        <text x="7" y="50" font-size="5" font-weight="bold" fill="#f59e0b" font-family="Arial">SECTION 1 — TAXPAYER INFORMATION</text>
+                        <text x="7" y="60" font-size="4.5" fill="#cbd5e1" font-family="Arial">Name: _________________ | SSN: ___-__-____</text>
+                        <text x="7" y="68" font-size="4.5" fill="#cbd5e1" font-family="Arial">Address: ________________________________________________</text>
+                        <text x="7" y="76" font-size="4.5" fill="#cbd5e1" font-family="Arial">City, State, ZIP: ____________________________________________</text>
+
+                        <rect x="5" y="84" width="200" height="6" fill="#1e293b" />
+                        <text x="7" y="88" font-size="5" font-weight="bold" fill="#f59e0b" font-family="Arial">SECTION 2 — REPRESENTATIVE INFORMATION</text>
+                        <text x="7" y="98" font-size="4.5" fill="#cbd5e1" font-family="Arial">Name: _________________ | PTIN: __________</text>
+                        <text x="7" y="106" font-size="4.5" fill="#cbd5e1" font-family="Arial">Address: ________________________________________________</text>
+                        <text x="7" y="114" font-size="4.5" fill="#cbd5e1" font-family="Arial">Phone: ________________________ Fax: _____________________</text>
+
+                        <rect x="5" y="122" width="200" height="6" fill="#1e293b" />
+                        <text x="7" y="126" font-size="5" font-weight="bold" fill="#f59e0b" font-family="Arial">SECTION 3 — TAX MATTERS</text>
+                        <text x="7" y="136" font-size="4.5" fill="#cbd5e1" font-family="Arial">Tax Type: _______________ Form(s): __________</text>
+                        <text x="7" y="144" font-size="4.5" fill="#cbd5e1" font-family="Arial">Years: ________________________________________________</text>
+
+                        <rect x="5" y="152" width="200" height="6" fill="#1e293b" />
+                        <text x="7" y="156" font-size="5" font-weight="bold" fill="#f59e0b" font-family="Arial">SECTION 5 — ADDITIONAL ACTS</text>
+                        <rect x="7" y="162" width="3" height="3" fill="none" stroke="#94a3b8" />
+                        <text x="12" y="165" font-size="4" fill="#cbd5e1" font-family="Arial">Sign and file returns</text>
+                        <rect x="7" y="172" width="3" height="3" fill="none" stroke="#94a3b8" />
+                        <text x="12" y="175" font-size="4" fill="#cbd5e1" font-family="Arial">Represent at appeals</text>
+                        <rect x="7" y="182" width="3" height="3" fill="none" stroke="#94a3b8" />
+                        <text x="12" y="185" font-size="4" fill="#cbd5e1" font-family="Arial">Obtain records and documents</text>
+
+                        <rect x="5" y="194" width="200" height="6" fill="#1e293b" />
+                        <text x="7" y="198" font-size="5" font-weight="bold" fill="#f59e0b" font-family="Arial">SECTION 7 — SIGNATURE</text>
+                        <line x1="7" y1="220" x2="90" y2="220" stroke="#94a3b8" stroke-width="0.5" />
+                        <text x="8" y="226" font-size="4" fill="#64748b" font-family="Arial">Taxpayer Signature (wet)</text>
+                        <line x1="120" y1="220" x2="203" y2="220" stroke="#94a3b8" stroke-width="0.5" />
+                        <text x="121" y="226" font-size="4" fill="#64748b" font-family="Arial">Date</text>
+
+                        <text x="105" y="270" font-size="4" fill="#64748b" text-anchor="middle" font-family="Arial">(Rev. January 2021)</text>
+                      </svg>
+                    </div>
+
+                    <!-- Page 2 (Back) -->
+                    <div class="flip-card-back">
+                      <span class="flip-card-label">Preview: Page 2</span>
+                      <svg class="flip-card-svg" viewBox="0 0 210 280" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="210" height="280" fill="#0f172a" stroke="#64748b" stroke-width="0.5" />
+                        <rect width="210" height="16" fill="#1e293b" />
+                        <text x="105" y="12" font-size="8" font-weight="bold" fill="#f59e0b" text-anchor="middle" font-family="Arial">FORM 2848 — PAGE 2</text>
+
+                        <rect x="5" y="24" width="200" height="6" fill="#1e293b" />
+                        <text x="7" y="28" font-size="5" font-weight="bold" fill="#f59e0b" font-family="Arial">PART II — REPRESENTATIVE DECLARATION</text>
+                        <text x="7" y="38" font-size="4.5" fill="#cbd5e1" font-family="Arial">Representative signature will be completed by Tax Monitor Pro.</text>
+
+                        <rect x="5" y="56" width="200" height="6" fill="#1e293b" />
+                        <text x="7" y="60" font-size="5" font-weight="bold" fill="#f59e0b" font-family="Arial">REPRESENTATIVE SIGNATURE & DATE</text>
+                        <line x1="7" y1="75" x2="100" y2="75" stroke="#94a3b8" stroke-width="0.5" />
+                        <text x="8" y="81" font-size="4" fill="#64748b" font-family="Arial">Representative Signature</text>
+                        <line x1="110" y1="75" x2="203" y2="75" stroke="#94a3b8" stroke-width="0.5" />
+                        <text x="111" y="81" font-size="4" fill="#64748b" font-family="Arial">Date</text>
+
+                        <rect x="5" y="94" width="200" height="6" fill="#1e293b" />
+                        <text x="7" y="98" font-size="5" font-weight="bold" fill="#f59e0b" font-family="Arial">PART III — CENTRALIZED AUTHORIZATION FILE (CAF)</text>
+                        <text x="7" y="108" font-size="4.5" fill="#cbd5e1" font-family="Arial">CAF Number: ________________________</text>
+                        <text x="7" y="116" font-size="4.5" fill="#cbd5e1" font-family="Arial">(Assigned by IRS; leave blank if unknown)</text>
+
+                        <rect x="5" y="130" width="200" height="60" fill="rgba(30, 41, 59, 0.4)" stroke="#64748b" stroke-width="0.5" />
+                        <text x="8" y="140" font-size="4.5" font-weight="bold" fill="#f59e0b" font-family="Arial">INSTRUCTIONS:</text>
+                        <text x="8" y="148" font-size="4" fill="#cbd5e1" font-family="Arial">1. Print and sign in ink</text>
+                        <text x="8" y="154" font-size="4" fill="#cbd5e1" font-family="Arial">2. Scan to PDF (photo ok if legible)</text>
+                        <text x="8" y="160" font-size="4" fill="#cbd5e1" font-family="Arial">3. Upload the signed PDF here</text>
+                        <text x="8" y="166" font-size="4" fill="#cbd5e1" font-family="Arial">4. Keep a copy for your records</text>
+                        <text x="8" y="184" font-size="3.5" fill="#94a3b8" font-family="Arial">For more information, visit www.irs.gov/Form2848</text>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Info Grid -->
+              <div class="lg:col-span-2 tm-kv grid-cols-1">
+                <div class="tm-kv-item">
+                  <div class="tm-kv-k">Date</div>
+                  <div class="tm-kv-v" id="pv-date"><span class="tm-muted">Auto</span></div>
+                </div>
+                <div class="tm-kv-item">
+                  <div class="tm-kv-k">Signature</div>
+                  <div class="tm-kv-v" id="pv-signature"><span class="tm-muted">Wet-sign required</span></div>
+                </div>
+                <div class="tm-kv-item">
+                  <div class="tm-kv-k">Taxpayer Info</div>
+                  <div class="tm-kv-v" id="pv-taxpayer"><span class="tm-muted">From your account</span></div>
+                </div>
+                <div class="tm-kv-item">
+                  <div class="tm-kv-k">Representative Info</div>
+                  <div class="tm-kv-v" id="pv-rep"><span class="tm-muted">From Tax Monitor Pro</span></div>
+                </div>
+                <div class="tm-kv-item">
+                  <div class="tm-kv-k">Tax Matters</div>
+                  <div class="tm-kv-v" id="pv-matters"><span class="tm-muted">Income tax monitoring years</span></div>
+                </div>
+                <div class="tm-kv-item">
+                  <div class="tm-kv-k">Upload</div>
+                  <div class="tm-kv-v" id="pv-upload"><span class="tm-muted">Pending</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 1 — Taxpayer Information (EDITABLE FORM) -->
+          <div class="form-section-divider">
+            <div class="tm-prose mb-6">
+              <h3>Section 1 — Taxpayer Information</h3>
+              <p>
+                This section includes your name, address, and taxpayer identification number. Your wet signature and date appear on the signature lines.
+                <span class="text-slate-300">This information must match IRS records, so verify each field carefully before proceeding.</span>
+              </p>
+            </div>
+
+            <h4 class="text-base font-bold text-white mb-4 uppercase tracking-wide">Edit Your Information</h4>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-2"><span class="text-amber-400">1a.</span> Last Name</label>
+                <input type="text" id="form-taxpayer-lastname" placeholder="Last name" class="w-full">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-2"><span class="text-amber-400">1b.</span> First Name</label>
+                <input type="text" id="form-taxpayer-firstname" placeholder="First name" class="w-full">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-2"><span class="text-amber-400">1c.</span> Middle Initial (optional)</label>
+                <input type="text" id="form-taxpayer-middleinitial" placeholder="M.I." maxlength="1" class="w-full">
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <label class="block text-xs font-semibold text-slate-300 mb-2"><span class="text-amber-400">2.</span> Address (number, street, and apt. or suite number)</label>
+              <input type="text" id="form-taxpayer-address" placeholder="123 Main Street, Apt 4B" class="w-full">
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-4">
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-2">City</label>
+                <input type="text" id="form-taxpayer-city" placeholder="City" class="w-full">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-2">State</label>
+                <input type="text" id="form-taxpayer-state" placeholder="CA" maxlength="2" class="w-full">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-2">ZIP</label>
+                <input type="text" id="form-taxpayer-zip" placeholder="12345" class="w-full">
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <label class="block text-xs font-semibold text-slate-300 mb-2">
+                <span class="text-amber-400">4.</span> Taxpayer Identification Number (SSN or ITIN)
+                <button type="button" id="toggle-ssn" class="inline-flex items-center text-amber-400 hover:text-amber-300 text-[10px] ml-2 underline decoration-amber-500/40">Show</button>
+              </label>
+              <input type="password" id="form-taxpayer-id" placeholder="•••-••-1234" class="w-full" autocomplete="off" inputmode="numeric">
+              <p class="text-[10px] text-slate-500 mt-1">Format: XXX-XX-XXXX</p>
+            </div>
+
+            <div class="mb-4">
+              <label class="block text-xs font-semibold text-slate-300 mb-2"><span class="text-amber-400">5.</span> Daytime Telephone Number</label>
+              <input type="tel" id="form-taxpayer-phone" placeholder="(555) 123-4567" class="w-full">
+              <p class="text-[10px] text-slate-500 mt-1">Optional: Email address can be provided below</p>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-2"><span class="text-amber-400">6.</span> Email Address (optional)</label>
+              <input type="email" id="form-taxpayer-email" placeholder="you@example.com" class="w-full" autocomplete="email">
+            </div>
+          </div>
+
+          <!-- Section 2 — Representative Information (READ-ONLY) -->
+          <div class="form-section-divider">
+            <div class="tm-prose mb-6">
+              <h3>Section 2 — Representative Information</h3>
+              <p>This section appoints your representative(s). Our team will sign and date the representative portion on page 2, Part II.</p>
+            </div>
+
+            <h4 class="text-base font-bold text-white mb-4 uppercase tracking-wide">Representative Information (Provided by Tax Monitor Pro)</h4>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div class="tm-kv-item">
+                <div class="tm-kv-k">Representative Name and Address</div>
+                <div class="tm-kv-v" id="rep-ro-nameAddress"><span class="tm-muted">Provided by Tax Monitor Pro</span></div>
+              </div>
+
+              <div class="tm-kv-item">
+                <div class="tm-kv-k">Representative ID</div>
+                <div class="tm-kv-v" id="rep-ro-id"><span class="tm-muted">Provided by Tax Monitor Pro</span></div>
+              </div>
+
+              <div class="tm-kv-item">
+                <div class="tm-kv-k">Daytime Phone</div>
+                <div class="tm-kv-v" id="rep-ro-phone"><span class="tm-muted">Provided by Tax Monitor Pro</span></div>
+              </div>
+
+              <div class="tm-kv-item">
+                <div class="tm-kv-k">Email</div>
+                <div class="tm-kv-v" id="rep-ro-email"><span class="tm-muted">Optional</span></div>
+              </div>
+
+              <div class="tm-kv-item sm:col-span-2">
+                <div class="tm-kv-k">Fax</div>
+                <div class="tm-kv-v" id="rep-ro-fax"><span class="tm-muted">Optional</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 3 — Tax Matters and Years (LOCKED) -->
+          <div class="form-section-divider">
+            <div class="tm-prose mb-6">
+              <h3>Section 3 — Tax Matters and Years</h3>
+              <p>This section defines what the authorization covers, including tax type, form number, and tax years or periods. For Tax Monitoring, we request access aligned to the income tax years required to produce your monitoring report.</p>
+            </div>
+
+            <h4 class="text-base font-bold text-white mb-4 uppercase tracking-wide">Tax Matters (Read-Only)</h4>
+
+            <div class="mb-4">
+              <label class="block text-xs font-semibold text-slate-300 mb-2"><span class="text-amber-400">3a.</span> Tax Type</label>
+              <input type="text" id="form-tax-type" class="w-full" readonly>
+            </div>
+
+            <div class="mb-4">
+              <label class="block text-xs font-semibold text-slate-300 mb-2"><span class="text-amber-400">3b.</span> Form Number(s)</label>
+              <input type="text" id="form-tax-form" class="w-full" readonly>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-2"><span class="text-amber-400">3c.</span> Tax Years or Periods</label>
+              <input type="text" id="form-tax-years" class="w-full" readonly>
+            </div>
+          </div>
+
+          <!-- Section 4 — Specific Use Not Recorded on CAF -->
+          <div class="form-section-divider">
+            <div class="tm-prose mb-6">
+              <h3>Section 4 — Specific Use Not Recorded on CAF</h3>
+              <p>This section is used only when the authorization is for a purpose <span class="text-slate-300">not recorded</span> on the Centralized Authorization File (CAF). For Tax Monitor Pro monitoring, this section is not used and will remain blank.</p>
+            </div>
+
+            <h4 class="text-base font-bold text-white mb-4 uppercase tracking-wide">Specific Use (Not Applicable)</h4>
+
+            <div class="mt-3 p-3 rounded-lg bg-slate-900/40 border border-white/5">
+              <p class="text-sm text-slate-300">This section is not used for your monitoring authorization and will remain blank.</p>
+            </div>
+
+            <div class="mt-4">
+              <label class="block text-xs font-semibold text-slate-300 mb-2"><span class="text-amber-400">4.</span> Specific Use</label>
+              <textarea id="form-specific-use" class="w-full min-h-[96px]" placeholder="(Not applicable for monitoring)" readonly></textarea>
+            </div>
+          </div>
+
+          <!-- Section 5 — Additional Acts Authorized (READ-ONLY) -->
+          <div class="form-section-divider">
+            <div class="tm-prose mb-6">
+              <h3>Section 5 — Additional Acts Authorized</h3>
+              <p>This section lists permissions beyond standard representation. For monitoring delivery, we include only the limited permissions necessary to obtain and access IRS records and coordinate processing. For monitoring services, only record retrieval authority is authorized, and signing returns or appeals representation is not included.</p>
+            </div>
+
+            <h4 class="text-base font-bold text-white mb-4 uppercase tracking-wide">Additional Acts Authorized (Read-Only)</h4>
+
+            <div class="grid grid-cols-1 gap-3">
+              <label class="flex items-start gap-3 p-3 rounded-xl border border-white/10 bg-slate-900/40">
+                <input type="checkbox" id="form-acts-sign" disabled class="mt-1" />
+                <span>
+                  <span class="font-medium text-slate-200">Sign and file returns</span>
+                  <span class="block text-sm text-slate-400 mt-1">Authority to sign and file tax returns on your behalf.</span>
+                </span>
+              </label>
+
+              <label class="flex items-start gap-3 p-3 rounded-xl border border-white/10 bg-slate-900/40">
+                <input type="checkbox" id="form-acts-appeal" disabled class="mt-1" />
+                <span>
+                  <span class="font-medium text-slate-200">Represent at appeals</span>
+                  <span class="block text-sm text-slate-400 mt-1">Authority to represent you in appeals before the IRS.</span>
+                </span>
+              </label>
+
+              <label class="flex items-start gap-3 p-3 rounded-xl border border-white/10 bg-slate-900/40">
+                <input type="checkbox" id="form-acts-records" checked disabled class="mt-1" />
+                <span>
+                  <span class="font-medium text-slate-200">Obtain records and documents</span>
+                  <span class="block text-sm text-slate-400 mt-1">Authority to obtain and access IRS records and documents.</span>
+                </span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Section 6 — Retention/Revocation (READ-ONLY) -->
+          <div class="form-section-divider">
+            <div class="tm-prose mb-6">
+              <h3>Section 6 — Retention/Revocation of Prior Power of Attorney</h3>
+              <p>This section determines how prior authorizations are treated. For Tax Monitor Pro monitoring, existing representatives remain in place and this authorization is added.</p>
+            </div>
+
+            <h4 class="text-base font-bold text-white mb-4 uppercase tracking-wide">Prior Power of Attorney Handling (Read-Only)</h4>
+
+            <div class="grid grid-cols-1 gap-3">
+              <label class="flex items-start gap-3 p-3 rounded-xl border border-white/10 bg-slate-900/40">
+                <input type="radio" name="priorPoaHandling" value="revoke" id="prior-poa-revoke" disabled class="mt-1" />
+                <span>
+                  <span class="font-medium text-slate-200">Revoke all prior representations</span>
+                  <span class="block text-sm text-slate-400 mt-1">This new authorization replaces all prior POAs for these matters and years.</span>
+                </span>
+              </label>
+
+              <label class="flex items-start gap-3 p-3 rounded-xl border border-white/10 bg-slate-900/40">
+                <input type="radio" name="priorPoaHandling" value="retain" id="prior-poa-retain" checked disabled class="mt-1" />
+                <span>
+                  <span class="font-medium text-slate-200">Retain prior representations</span>
+                  <span class="block text-sm text-slate-400 mt-1">Keep existing representatives and add this new authorization.</span>
+                </span>
+              </label>
+            </div>
+
+            <div class="mt-4">
+              <label class="block text-xs font-semibold text-slate-300 mb-2"><span class="text-amber-400">6.</span> List any prior representatives you want to retain</label>
+              <textarea id="form-prior-reps" class="w-full min-h-[96px]" placeholder="Optional" readonly></textarea>
+              <p class="text-[11px] text-slate-500 mt-1">This monitoring authorization is added without revoking prior representatives.</p>
+            </div>
+
+            <div class="mt-4 p-3 rounded-lg bg-slate-900/40 border border-white/5">
+              <p class="text-[11px] text-slate-400">Existing authorizations remain active. This monitoring authorization is added without revoking prior representatives.</p>
+            </div>
+          </div>
+
+          <!-- Section 7 — Signature (Wet) -->
+          <div class="form-section-divider">
+            <div class="tm-prose">
+              <h3>Section 7 — Signature (Wet)</h3>
+              <p>Print the generated PDF and sign in ink. Then scan or photograph clearly and upload the signed form below.</p>
+            </div>
+          </div>
+
+          <!-- Generate PDF Panel -->
+          <div class="glass-card rounded-xl p-4 border-l-4 border-amber-500/50">
+            <h3 class="text-sm font-bold text-white uppercase tracking-wide mb-2">Step 1: Generate Form 2848 PDF</h3>
+            <p class="text-xs text-slate-400 mb-4">Downloads a pre-filled PDF using your saved details.</p>
+
+            <button type="button" id="generate-pdf-btn" class="w-full py-3 px-4 rounded-lg font-semibold text-white bg-amber-600 hover:bg-amber-700 transition flex items-center justify-center gap-2 mb-3">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 16v-4m0 0V8m0 4H8m4 0h4" /></svg>
+              <span id="pdf-btn-text">Generate PDF</span>
+            </button>
+
+            <div class="text-xs text-slate-400"><span class="status-dot ready" id="pdf-status-dot"></span> <span id="pdf-status-text">Ready</span></div>
+          </div>
+
+          <!-- Upload Signed PDF Panel -->
+          <div class="glass-card rounded-xl p-4 border-l-4 border-amber-500/50">
+            <h3 class="text-sm font-bold text-white uppercase tracking-wide mb-2">Step 2: Upload Signed Form 2848</h3>
+            <p class="text-xs text-slate-400 mb-4">Upload the signed PDF after you print and sign it. Make sure all pages are included and readable.</p>
+
+            <div class="space-y-3">
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-2">Signed PDF (required)</label>
+                <input type="file" id="signed-file" accept="application/pdf" class="w-full" />
+                <p class="text-[11px] text-slate-500 mt-1">PDF only. Keep it legible. No artistic signatures, please.</p>
+              </div>
+
+              <button type="button" id="upload-btn" class="w-full py-3 px-4 rounded-lg font-semibold text-white bg-slate-800 hover:bg-slate-700 transition flex items-center justify-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 10l5-5 5 5" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v11" /></svg>
+                <span id="upload-btn-text">Upload Signed PDF</span>
+              </button>
+
+              <div class="text-xs text-slate-400"><span class="status-dot ready" id="upload-status-dot"></span> <span id="upload-status-text">Ready</span></div>
+            </div>
+          </div>
+
+          <!-- Ready to Submit Radio -->
+          <div>
+            <label class="block text-sm font-bold text-white uppercase tracking-wide mb-3">Confirm Next Step (required)</label>
+            <div class="space-y-2">
+              <label class="flex items-start gap-3 p-3 rounded-xl border border-white/10 bg-slate-900/40 hover:bg-slate-900/55 transition cursor-pointer">
+                <input type="radio" name="wetSignedAuthorizationStatus" value="uploaded" class="mt-1" required>
+                <span>
+                  <span class="font-semibold text-white">I uploaded my signed Form 2848</span>
+                  <span class="block text-xs text-slate-400 mt-1">Submission records this step after a successful upload.</span>
+                </span>
+              </label>
+
+              <label class="flex items-start gap-3 p-3 rounded-xl border border-white/10 bg-slate-900/40 hover:bg-slate-900/55 transition cursor-pointer">
+                <input type="radio" name="wetSignedAuthorizationStatus" value="will_upload" class="mt-1" required>
+                <span>
+                  <span class="font-semibold text-white">Not yet</span>
+                  <span class="block text-xs text-slate-400 mt-1">Save a draft and come back when your signed PDF is ready.</span>
+                </span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-4 border-t border-white/10">
+            <button id="submit-btn" type="submit" class="w-full py-4 px-6 rounded-xl font-semibold text-white text-lg bg-gradient-to-r from-amber-500 to-amber-600 hover:opacity-90 transition flex items-center justify-center gap-2" disabled aria-disabled="true">
+              Complete & Await Processing
+            </button>
+            <button type="button" id="reset-form-btn" class="w-full py-4 px-6 rounded-xl font-semibold text-slate-200 text-lg border border-amber-500/30 bg-slate-900/60 hover:bg-slate-900/80 transition flex items-center justify-center">
+              Reset Form
+            </button>
+          </div>
+
+          <!-- Status messages -->
+          <div id="success" class="hidden mt-3 rounded-xl border border-green-500/25 bg-green-500/10 p-4 text-center">
+            <h4 class="font-extrabold text-white">Submission Received</h4>
+            <p class="text-slate-200 text-sm mt-1">Thank you. Your wet-signed authorization step has been recorded.</p>
+            <p class="text-slate-200 text-sm mt-2">Please hold while we take you back to Projects.</p>
+          </div>
+
+          <div id="error" class="hidden mt-3 rounded-xl border border-red-500/25 bg-red-500/10 p-4">
+            <div class="font-bold">Couldn't save your authorization.</div>
+            <div class="text-sm text-slate-200 mt-1" id="error-msg">Please try again.</div>
+          </div>
+        </form>
+      </section>
+
+      <!-- Footer -->
+      <footer class="text-center text-slate-500 text-sm mt-10 pb-8">
+        <div class="flex items-center justify-center gap-4">
+          <span class="flex items-center gap-1">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+            Secure
+          </span>
+          <span>•</span>
+          <span>Confidential</span>
+          <span>•</span>
+          <span>Professional</span>
+        </div>
+      </footer>
+
+      <!-- Toasts -->
+      <div id="toast" class="fixed bottom-6 right-6 z-50 tm-toast rounded-xl px-5 py-4 shadow-lg border border-white/10 bg-slate-950/80 backdrop-blur">
+        <div class="flex items-start gap-3">
+          <div class="mt-0.5" id="toast-icon"></div>
+          <div>
+            <div class="font-bold" id="toast-title">Saved</div>
+            <div class="text-sm text-slate-300" id="toast-body">Draft saved.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Flip card functionality
+    const flipCard = document.getElementById('flip-card');
+    const page1Btn = document.getElementById('page-1-btn');
+    const page2Btn = document.getElementById('page-2-btn');
+
+    let isFlipped = false;
+
+    function toggleFlip() {
+      isFlipped = !isFlipped;
+      flipCard.classList.toggle('flipped', isFlipped);
+
+      page1Btn.classList.toggle('active', !isFlipped);
+      page1Btn.setAttribute('aria-pressed', String(!isFlipped));
+      page2Btn.classList.toggle('active', isFlipped);
+      page2Btn.setAttribute('aria-pressed', String(isFlipped));
+    }
+
+    page1Btn.addEventListener('click', () => { if (isFlipped) toggleFlip(); });
+    page2Btn.addEventListener('click', () => { if (!isFlipped) toggleFlip(); });
+
+    page1Btn.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        if (isFlipped) toggleFlip();
+      }
+    });
+
+    page2Btn.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        if (!isFlipped) toggleFlip();
+      }
+    });
+
+    const API_BASE = 'https://api.taxmonitor.pro';
+    const WET_SIGNED_2848_ENDPOINT = `${API_BASE}/forms/post-payment/wet-signed-2848`;
+    const TEMPLATE_PDF_PATH = '/assets/forms/f2848.pdf';
+
+    // State from R2 render
+    const renderState = window.TM_RENDER_STATE || window.__TM_RENDER_STATE__ || window.tmRenderState || {
+      taxpayerFirstName: 'Jane',
+      taxpayerLastName: 'Smith',
+      taxpayerAddress: '123 Main Street',
+      taxpayerCityStateZip: 'Anytown, CA 12345',
+      taxpayerSSN: '123-45-6789',
+      taxpayerPhone: '(555) 123-4567',
+      repName: 'Tax Monitor Pro, Inc.'
+    };
+
+    // Prefer SDK helpers when present (element_sdk.js), fall back to local minimal helpers.
+    const tmCommon = window.tmCommon || {
+      disableSubmit: (btn, label) => {
+        if (!btn) return;
+        btn.disabled = true;
+        btn.setAttribute('aria-disabled', 'true');
+        btn.dataset.tmOldText = btn.textContent;
+        if (label) btn.textContent = label;
+      },
+      ensureEventId: () => (crypto && crypto.randomUUID) ? crypto.randomUUID() : String(Date.now()),
+      getQuery: (k) => {
+        const v = new URLSearchParams(location.search).get(k);
+        return v ? String(v).trim() : '';
+      },
+      restoreSubmit: (btn) => {
+        if (!btn) return;
+        btn.disabled = false;
+        btn.setAttribute('aria-disabled', 'false');
+        if (btn.dataset.tmOldText) btn.textContent = btn.dataset.tmOldText;
+      },
+      showError: (msg) => {
+        const err = document.getElementById('error');
+        const errMsg = document.getElementById('error-msg');
+        if (errMsg) errMsg.textContent = msg || 'Please try again.';
+        if (err) err.classList.remove('hidden');
+      },
+      syncSessionToken: () => {
+        const q = tmCommon.getQuery('sessionToken');
+        if (q) {
+          try { sessionStorage.setItem('tm_sessionToken', q); } catch (_) {}
+          return q;
+        }
+        try { return sessionStorage.getItem('tm_sessionToken') || ''; } catch (_) { return ''; }
+      }
+    };
+
+    function qsKeep() { return location.search || ''; }
+
+    function toast(type, title, body) {
+      const el = document.getElementById('toast');
+      const icon = document.getElementById('toast-icon');
+      const t = document.getElementById('toast-title');
+      const b = document.getElementById('toast-body');
+
+      const okSvg = '<svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>';
+      const warnSvg = '<svg class="w-6 h-6 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4v2m-6-4v6a2 2 0 002 2h8a2 2 0 002-2v-6m-12 0V5a2 2 0 012-2h8a2 2 0 012 2v6"/></svg>';
+      const errSvg = '<svg class="w-6 h-6 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>';
+
+      icon.innerHTML = type === 'error' ? errSvg : (type === 'warn' ? warnSvg : okSvg);
+      t.textContent = title || '';
+      b.textContent = body || '';
+
+      el.classList.add('show');
+      window.clearTimeout(window.__tmToastTimer);
+      window.__tmToastTimer = window.setTimeout(() => el.classList.remove('show'), 2600);
+    }
+
+    function draftKey(orderId) {
+      const k = String(orderId || '').trim();
+      return `tm_draft_wet_signed_2848_${k || 'no_order'}`;
+    }
+
+    function setDraftStatus(msg) {
+      const el = document.getElementById('draft-status');
+      if (el) el.textContent = msg;
+    }
+
+    function setPdfStatus(state) {
+      const dot = document.getElementById('pdf-status-dot');
+      const text = document.getElementById('pdf-status-text');
+      const btn = document.getElementById('generate-pdf-btn');
+
+      dot.className = 'status-dot ' + state;
+      btn.disabled = state !== 'ready';
+
+      if (state === 'ready') {
+        text.textContent = 'Ready';
+        document.getElementById('pdf-btn-text').textContent = 'Generate PDF';
+      } else if (state === 'working') {
+        text.textContent = 'Generating…';
+        document.getElementById('pdf-btn-text').textContent = 'Generating…';
+      } else if (state === 'success') {
+        text.textContent = 'PDF generated';
+        document.getElementById('pdf-btn-text').textContent = 'Download PDF';
+      } else if (state === 'error') {
+        text.textContent = 'Error generating PDF';
+        document.getElementById('pdf-btn-text').textContent = 'Try again';
+      }
+    }
+
+    function setUploadStatus(state, msg) {
+      const dot = document.getElementById('upload-status-dot');
+      const text = document.getElementById('upload-status-text');
+      const pv = document.getElementById('pv-upload');
+
+      dot.className = 'status-dot ' + state;
+      text.textContent = msg || (state === 'ready' ? 'Ready' : state);
+
+      if (pv) {
+        if (state === 'success') pv.textContent = 'Uploaded';
+        if (state === 'error') pv.textContent = 'Upload failed';
+        if (state === 'ready') pv.innerHTML = '<span class="tm-muted">Pending</span>';
+        if (state === 'working') pv.textContent = 'Uploading…';
+      }
+    }
+
+    function setSubmitEnabled(enabled) {
+      const btn = document.getElementById('submit-btn');
+      if (!btn) return;
+      btn.disabled = !enabled;
+      btn.setAttribute('aria-disabled', enabled ? 'false' : 'true');
+      btn.classList.toggle('opacity-50', !enabled);
+      btn.classList.toggle('cursor-not-allowed', !enabled);
+    }
+
+    function getTaxpayerDisplay() {
+      const first = (document.getElementById('form-taxpayer-firstname')?.value || renderState.taxpayerFirstName || '').trim();
+      const last = (document.getElementById('form-taxpayer-lastname')?.value || renderState.taxpayerLastName || '').trim();
+      const full = `${first} ${last}`.trim();
+      const addr = (document.getElementById('form-taxpayer-address')?.value || renderState.taxpayerAddress || '').trim();
+
+      const city = (document.getElementById('form-taxpayer-city')?.value || '').trim();
+      const st = (document.getElementById('form-taxpayer-state')?.value || '').trim();
+      const zip = (document.getElementById('form-taxpayer-zip')?.value || '').trim();
+
+      const cityStateZip = `${city}${city && st ? ', ' : ''}${st}${(city || st) && zip ? ' ' : ''}${zip}`.trim() || (renderState.taxpayerCityStateZip || '').trim();
+      const line2 = [addr, cityStateZip].filter(Boolean).join(' • ');
+
+      return [full || 'From your account', line2].filter(Boolean).join(' • ');
+    }
+
+    function hydratePreview() {
+      const pvTaxpayer = document.getElementById('pv-taxpayer');
+      const pvRep = document.getElementById('pv-rep');
+      const repRoNameAddress = document.getElementById('rep-ro-nameAddress');
+
+      if (pvTaxpayer) pvTaxpayer.textContent = getTaxpayerDisplay();
+
+      const repName = (renderState.repName || 'Tax Monitor Pro').trim();
+      if (pvRep) pvRep.textContent = repName;
+      if (repRoNameAddress) repRoNameAddress.textContent = repName;
+    }
+
+    async function generatePDF() {
+      setPdfStatus('working');
+
+      try {
+        const response = await fetch(TEMPLATE_PDF_PATH);
+        if (!response.ok) throw new Error('Failed to load PDF template.');
+
+        const arrayBuffer = await response.arrayBuffer();
+        const pdfDoc = await PDFLib.PDFDocument.load(arrayBuffer);
+        const page = pdfDoc.getPage(0);
+        const { height } = page.getSize();
+
+        // Prefer the editable inputs if present; fall back to renderState.
+        const firstName = (document.getElementById('form-taxpayer-firstname')?.value || renderState.taxpayerFirstName || '').trim();
+        const lastName = (document.getElementById('form-taxpayer-lastname')?.value || renderState.taxpayerLastName || '').trim();
+        const address = (document.getElementById('form-taxpayer-address')?.value || renderState.taxpayerAddress || '').trim();
+        const city = (document.getElementById('form-taxpayer-city')?.value || '').trim();
+        const st = (document.getElementById('form-taxpayer-state')?.value || '').trim();
+        const zip = (document.getElementById('form-taxpayer-zip')?.value || '').trim();
+        const cityStateZip = `${city}${city && st ? ', ' : ''}${st}${(city || st) && zip ? ' ' : ''}${zip}`.trim() || (renderState.taxpayerCityStateZip || '').trim();
+        const repName = (renderState.repName || 'Tax Monitor Pro, Inc.').trim();
+
+        // Minimal fill for demo. Final field mapping can be tightened once the template coordinates are finalized.
+        page.drawText(lastName || ' ', { x: 50, y: height - 150, size: 12, color: PDFLib.rgb(0, 0, 0) });
+        page.drawText(firstName || ' ', { x: 150, y: height - 150, size: 12, color: PDFLib.rgb(0, 0, 0) });
+        page.drawText(address || ' ', { x: 50, y: height - 180, size: 12, color: PDFLib.rgb(0, 0, 0) });
+        page.drawText(cityStateZip || ' ', { x: 50, y: height - 210, size: 12, color: PDFLib.rgb(0, 0, 0) });
+        page.drawText(repName || ' ', { x: 50, y: height - 280, size: 12, color: PDFLib.rgb(0, 0, 0) });
+
+        const pdfBytes = await pdfDoc.save();
+        const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'Form_2848_Wet_Sign.pdf';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        setPdfStatus('success');
+        toast('ok', 'PDF Generated', 'Print and wet-sign your Form 2848.');
+        setTimeout(() => setPdfStatus('ready'), 3000);
+      } catch (err) {
+        console.error('PDF generation error:', err);
+        setPdfStatus('error');
+        toast('error', 'Generation Failed', 'Could not generate PDF. Please try again.');
+        setTimeout(() => setPdfStatus('ready'), 3000);
+      }
+    }
+
+    async function uploadSignedPDF() {
+      const fileInput = document.getElementById('signed-file');
+      const file = fileInput?.files?.[0];
+
+      if (!file) {
+        toast('warn', 'File Required', 'Please choose a signed PDF to upload.');
+        return;
+      }
+
+      if (file.type !== 'application/pdf') {
+        toast('warn', 'PDF Only', 'Please upload a PDF file.');
+        return;
+      }
+
+      const uploadBtn = document.getElementById('upload-btn');
+      const uploadBtnText = document.getElementById('upload-btn-text');
+
+      setUploadStatus('working', 'Uploading…');
+      uploadBtn.disabled = true;
+      uploadBtnText.textContent = 'Uploading…';
+
+      try {
+        const eventIdEl = document.getElementById('eventId');
+        const orderIdEl = document.getElementById('orderId');
+        const sessionTokenEl = document.getElementById('sessionToken');
+
+        const eventId = (eventIdEl.value || tmCommon.ensureEventId()).trim();
+        eventIdEl.value = eventId;
+
+        const orderId = (orderIdEl.value || tmCommon.getQuery('orderId') || '').trim();
+        const sessionToken = (sessionTokenEl.value || tmCommon.syncSessionToken() || '').trim();
+
+        const fd = new FormData();
+        fd.append('eventId', eventId);
+        fd.append('orderId', orderId);
+        fd.append('sessionToken', sessionToken);
+        fd.append('signed2848', file, file.name);
+
+        const res = await fetch(WET_SIGNED_2848_ENDPOINT, { method: 'POST', body: fd });
+        if (!res.ok) {
+          const errorText = await res.text().catch(() => '');
+          throw new Error(errorText || `Server error: ${res.status}`);
+        }
+
+        document.getElementById('signedUploadComplete').value = 'true';
+        setUploadStatus('success', 'Uploaded');
+
+        // Set the confirmation radio automatically (still visible for clarity).
+        const uploadedRadio = document.querySelector('input[name="wetSignedAuthorizationStatus"][value="uploaded"]');
+        if (uploadedRadio) uploadedRadio.checked = true;
+
+        setSubmitEnabled(true);
+        toast('ok', 'Upload Complete', 'Your signed Form 2848 was uploaded.');
+      } catch (err) {
+        console.error('Upload error:', err);
+        document.getElementById('signedUploadComplete').value = 'false';
+        setUploadStatus('error', 'Upload failed');
+        setSubmitEnabled(false);
+        toast('error', 'Upload Failed', err.message || 'Could not upload your signed PDF.');
+      } finally {
+        uploadBtn.disabled = false;
+        uploadBtnText.textContent = 'Upload Signed PDF';
+      }
+    }
+
+    function lockSection3() {
+      const taxType = 'Income, Employment, Payroll, Excise, Estate, Gift, Civil Penalty, Sec. 4980H Shared Responsibility Payment';
+      const forms = '940, 941, 720, 1040, 1120, 1120S';
+      const years = '2016 - 2025';
+
+      const taxTypeInput = document.getElementById('form-tax-type');
+      const formsTaxInput = document.getElementById('form-tax-form');
+      const taxYearsInput = document.getElementById('form-tax-years');
+
+      if (taxTypeInput) taxTypeInput.value = taxType;
+      if (formsTaxInput) formsTaxInput.value = forms;
+      if (taxYearsInput) taxYearsInput.value = years;
+
+      const pvMatters = document.getElementById('pv-matters');
+      if (pvMatters) pvMatters.textContent = `${taxType} • Forms: ${forms} • Years: ${years}`;
+    }
+
+    function loadDraft() {
+      const orderId = tmCommon.getQuery('orderId') || 'default';
+      const dk = draftKey(orderId);
+
+      try {
+        const draft = JSON.parse(localStorage.getItem(dk) || '{}');
+        if (!draft || Object.keys(draft).length === 0) return;
+
+        // Restore plain inputs
+        Object.keys(draft).forEach((key) => {
+          if (key === 'wetSignedAuthorizationStatus') return;
+          const el = document.getElementById(key);
+          if (!el) return;
+          if (el.type === 'checkbox') el.checked = !!draft[key];
+          else el.value = draft[key];
+        });
+
+        // Restore radio group
+        if (draft.wetSignedAuthorizationStatus) {
+          const r = document.querySelector(`input[name="wetSignedAuthorizationStatus"][value="${draft.wetSignedAuthorizationStatus}"]`);
+          if (r) r.checked = true;
+        }
+
+        setDraftStatus('Draft loaded from your device.');
+      } catch (_) {}
+
+      lockSection3();
+    }
+
+    function initForm() {
+      // Wire hidden fields
+      document.getElementById('orderId').value = tmCommon.getQuery('orderId') || '';
+      document.getElementById('sessionToken').value = tmCommon.syncSessionToken();
+      document.getElementById('eventId').value = tmCommon.ensureEventId();
+
+      // Preview labels
+      document.getElementById('pv-date').textContent = new Date().toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+      document.getElementById('pv-signature').textContent = 'Wet-sign required';
+
+      // Defaults
+      setPdfStatus('ready');
+      setUploadStatus('ready', 'Ready');
+      setSubmitEnabled(false);
+
+      // Load draft then re-lock Section 3
+      loadDraft();
+      lockSection3();
+
+      // Seed editable inputs with renderState (nice UX, no new contract fields)
+      const setIfEmpty = (id, val) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        if (!String(el.value || '').trim() && String(val || '').trim()) el.value = String(val).trim();
+      };
+
+      setIfEmpty('form-taxpayer-firstname', renderState.taxpayerFirstName);
+      setIfEmpty('form-taxpayer-lastname', renderState.taxpayerLastName);
+      setIfEmpty('form-taxpayer-address', renderState.taxpayerAddress);
+      setIfEmpty('form-taxpayer-phone', renderState.taxpayerPhone);
+      setIfEmpty('form-taxpayer-id', renderState.taxpayerSSN);
+
+      hydratePreview();
+    }
+
+    // Draft save/clear
+    document.getElementById('draft-save').addEventListener('click', () => {
+      const orderId = tmCommon.getQuery('orderId') || 'default';
+      const dk = draftKey(orderId);
+
+      const fieldIds = [
+        'form-taxpayer-address',
+        'form-taxpayer-city',
+        'form-taxpayer-email',
+        'form-taxpayer-firstname',
+        'form-taxpayer-id',
+        'form-taxpayer-lastname',
+        'form-taxpayer-middleinitial',
+        'form-taxpayer-phone',
+        'form-taxpayer-state',
+        'form-taxpayer-zip',
+        'signedUploadComplete'
+      ];
+
+      const draft = {};
+      fieldIds.forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) draft[id] = el.value;
+      });
+
+      const r = document.querySelector('input[name="wetSignedAuthorizationStatus"]:checked');
+      draft.wetSignedAuthorizationStatus = r ? r.value : '';
+
+      try {
+        localStorage.setItem(dk, JSON.stringify(draft));
+        setDraftStatus(`Draft saved at ${new Date().toLocaleTimeString()}.`);
+        toast('ok', 'Draft Saved', 'Your progress has been saved to this device.');
+      } catch (_) {
+        setDraftStatus('Error saving draft.');
+        toast('error', 'Save Failed', 'Could not save draft to this device.');
+      }
+    });
+
+    document.getElementById('draft-clear').addEventListener('click', () => {
+      if (!confirm('Clear your draft? This cannot be undone.')) return;
+      const orderId = tmCommon.getQuery('orderId') || 'default';
+      const dk = draftKey(orderId);
+      try {
+        localStorage.removeItem(dk);
+        setDraftStatus('Draft cleared.');
+        location.reload();
+      } catch (_) {
+        setDraftStatus('Error clearing draft.');
+      }
+    });
+
+    // Reset form button
+    (function bindResetForm() {
+      const btn = document.getElementById('reset-form-btn');
+      if (!btn) return;
+
+      btn.addEventListener('click', () => {
+        if (!confirm('Reset this form? This will clear your entries on this page and remove any saved draft on this device.')) return;
+
+        const form = document.getElementById('wet-sign-form');
+        if (form) form.reset();
+
+        const orderId = tmCommon.getQuery('orderId') || 'default';
+        const dk = draftKey(orderId);
+        try { localStorage.removeItem(dk); } catch (_) {}
+
+        // Clear file input manually (form.reset is inconsistent with file inputs across browsers)
+        const fileInput = document.getElementById('signed-file');
+        if (fileInput) fileInput.value = '';
+
+        document.getElementById('signedUploadComplete').value = 'false';
+        setUploadStatus('ready', 'Ready');
+        setSubmitEnabled(false);
+        setDraftStatus('Draft cleared.');
+
+        lockSection3();
+        hydratePreview();
+
+        toast('ok', 'Reset Complete', 'Your form entries and saved draft were cleared.');
+      });
+    })();
+
+    // SSN toggle
+    document.getElementById('toggle-ssn').addEventListener('click', (e) => {
+      e.preventDefault();
+      const input = document.getElementById('form-taxpayer-id');
+      const btn = e.currentTarget;
+      if (input.type === 'password') {
+        input.type = 'text';
+        btn.textContent = 'Hide';
+      } else {
+        input.type = 'password';
+        btn.textContent = 'Show';
+      }
+    });
+
+    // Live preview refresh
+    ['form-taxpayer-firstname','form-taxpayer-lastname','form-taxpayer-address','form-taxpayer-city','form-taxpayer-state','form-taxpayer-zip'].forEach((id) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.addEventListener('input', hydratePreview);
+    });
+
+    // Buttons
+    document.getElementById('generate-pdf-btn').addEventListener('click', generatePDF);
+    document.getElementById('upload-btn').addEventListener('click', uploadSignedPDF);
+
+    // Submit
+    document.getElementById('wet-sign-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const choice = document.querySelector('input[name="wetSignedAuthorizationStatus"]:checked');
+      if (!choice) {
+        toast('warn', 'Confirmation Required', 'Please select an option to continue.');
+        return;
+      }
+
+      if (choice.value === 'will_upload') {
+        toast('warn', 'Not Submitted', 'Save a draft and come back after you upload your signed PDF.');
+        return;
+      }
+
+      const uploadComplete = document.getElementById('signedUploadComplete').value === 'true';
+      if (!uploadComplete) {
+        toast('warn', 'Upload Required', 'Please upload your signed PDF before completing this step.');
+        return;
+      }
+
+      // At this point, the authoritative Worker receipt already exists (created by upload).
+      document.getElementById('success').classList.remove('hidden');
+      document.getElementById('error').classList.add('hidden');
+
+      const dk = draftKey(tmCommon.getQuery('orderId') || 'default');
+      try { localStorage.removeItem(dk); } catch (_) {}
+
+      setTimeout(() => {
+        window.location.href = `/app/pages/projects.html${qsKeep()}`;
+      }, 1200);
+    });
+
+    // Enforce submit enabled only after upload success
+    document.querySelectorAll('input[name="wetSignedAuthorizationStatus"]').forEach((r) => {
+      r.addEventListener('change', () => {
+        const uploadComplete = document.getElementById('signedUploadComplete').value === 'true';
+        const choice = document.querySelector('input[name="wetSignedAuthorizationStatus"]:checked');
+        setSubmitEnabled(!!choice && choice.value === 'uploaded' && uploadComplete);
+      });
+    });
+
+    // Init
+    initForm();
+  </script>
+</body>
+</html>

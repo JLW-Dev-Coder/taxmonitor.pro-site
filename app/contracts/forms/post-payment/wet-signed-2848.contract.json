@@ -1,18 +1,20 @@
 {
   "clickupProjection": [
     {
-      "list": "Orders",
+      "list": "orders",
       "updates": [
         {
           "fieldName": "Order 2848 Signed PDF URL",
-          "from": "effects.ordersPatch.artifacts.order2848SignedPdfR2Key",
+          "from": "effects.canonicalUpsert.patch.artifacts.order2848SignedPdfR2Key",
           "transform": "r2KeyToDownloadUrl"
         }
       ]
     }
   ],
   "contract": {
-    "authority": ["R2 Canonical"],
+    "authority": [
+      "R2 Canonical"
+    ],
     "governs": "Form — Post-payment — Wet Signed 2848",
     "path": "app/contracts/forms/post-payment/wet-signed-2848.contract.json",
     "source": "Tax Monitor Pro",
@@ -22,7 +24,7 @@
       "normalizeCheckboxToBoolean": true,
       "rejectUnknownValues": true
     },
-    "version": 1
+    "version": 2
   },
   "delivery": {
     "endpoint": "/forms/post-payment/wet-signed-2848",
@@ -31,47 +33,70 @@
     "receiptSource": "form"
   },
   "effects": {
+    "canonicalUpsert": {
+      "patch": {
+        "artifacts": {
+          "order2848SignedPdfR2Key": "{payload.wetSigned2848.r2Key}"
+        },
+        "stepBooleans": {
+          "wetSig2848Submitted": true
+        }
+      },
+      "target": "orders/{orderId}.json"
+    },
     "dedupeKey": "payload.eventId",
-    "writes": ["orders"],
-    "writeOrder": ["receiptAppend", "canonicalUpsert", "clickupProjection"],
     "receiptAppend": {
       "to": "receipts/{source}/{eventId}.json"
     },
-    "canonicalUpsert": {
-      "target": "orders/{orderId}.json",
-      "patchFrom": "effects.ordersPatch"
-    },
-    "ordersPatch": {
-      "artifacts": {
-        "order2848SignedPdfR2Key": "{payload.wetSigned2848.r2Key}"
-      },
-      "stepBooleans": {
-        "wetSig2848Submitted": true
-      }
-    }
+    "writeOrder": [
+      "receiptAppend",
+      "canonicalUpsert",
+      "clickupProjection"
+    ],
+    "writes": [
+      "orders"
+    ]
   },
+  "note": "This endpoint records receipt + canonical order artifact key for a wet-signed (uploaded) Form 2848 PDF. The Worker is responsible for storing the PDF in R2 and populating payload.wetSigned2848.r2Key (and optional metadata) before canonical upsert + ClickUp projection.",
   "payload": {
     "additionalProperties": false,
     "properties": {
       "accountId": {
-        "type": "string",
-        "minLength": 6
+        "type": [
+          "string",
+          "null"
+        ],
+        "maxLength": 200
       },
       "eventId": {
         "type": "string",
-        "minLength": 8
+        "minLength": 1
       },
       "orderId": {
         "type": "string",
-        "minLength": 6
+        "minLength": 1
+      },
+      "sessionToken": {
+        "type": "string",
+        "minLength": 1
       },
       "submittedAt": {
-        "type": "string",
+        "type": [
+          "string",
+          "null"
+        ],
         "format": "date-time"
       },
       "submitterRole": {
-        "type": "string",
-        "enum": ["client", "staff"]
+        "type": [
+          "string",
+          "null"
+        ],
+        "enum": [
+          "client",
+          "staff",
+          null
+        ]
       },
       "wetSigned2848": {
         "type": "object",
@@ -79,33 +104,51 @@
         "properties": {
           "contentType": {
             "type": "string",
-            "enum": ["application/pdf"]
+            "enum": [
+              "application/pdf"
+            ]
           },
           "filename": {
             "type": "string",
-            "minLength": 4
+            "minLength": 4,
+            "maxLength": 300
           },
           "r2Key": {
             "type": "string",
-            "minLength": 10
+            "minLength": 10,
+            "maxLength": 500
           },
           "sha256": {
-            "type": ["string", "null"],
-            "minLength": 16
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 16,
+            "maxLength": 128
           },
           "sizeBytes": {
             "type": "number",
             "minimum": 1
           }
         },
-        "required": ["contentType", "filename", "r2Key", "sizeBytes"]
+        "required": [
+          "contentType",
+          "filename",
+          "r2Key",
+          "sizeBytes"
+        ]
       }
     },
-    "required": ["accountId", "eventId", "orderId", "submittedAt", "submitterRole", "wetSigned2848"],
+    "required": [
+      "eventId",
+      "orderId",
+      "sessionToken",
+      "wetSigned2848"
+    ],
     "type": "object"
   },
   "schema": {
-    "name": "tm_form_wet_signed_2848",
-    "version": 1
+    "name": "tm_form_post_payment_wet_signed_2848",
+    "version": 2
   }
 }
