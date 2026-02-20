@@ -111,7 +111,9 @@
 
       <!-- Mobile Resources -->
       <button id="mobile-resources-toggle"
-              class="flex items-center justify-between rounded-lg border border-slate-800 px-4 py-3 text-left text-slate-200 hover:bg-slate-900 transition">
+              class="flex items-center justify-between rounded-lg border border-slate-800 px-4 py-3 text-left text-slate-200 hover:bg-slate-900 transition"
+              aria-expanded="false"
+              type="button">
         <span>Resources</span>
         <svg class="h-4 w-4 opacity-80" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round"
@@ -155,3 +157,52 @@
     </div>
   </div>
 </header>
+
+<script>
+  const toggle = document.getElementById('menu-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+
+  const resourcesToggle = document.getElementById('resources-toggle');
+  const resourcesMenu = document.getElementById('resources-menu');
+
+  const mobileResourcesToggle = document.getElementById('mobile-resources-toggle');
+  const mobileResourcesMenu = document.getElementById('mobile-resources-menu');
+
+  toggle?.addEventListener('click', () => {
+    const isHidden = mobileMenu.classList.toggle('hidden');
+    toggle.setAttribute('aria-expanded', String(!isHidden));
+  });
+
+  resourcesToggle?.addEventListener('click', (e) => {
+    e.preventDefault();
+    const isHidden = resourcesMenu.classList.toggle('hidden');
+    resourcesToggle.setAttribute('aria-expanded', String(!isHidden));
+  });
+
+  mobileResourcesToggle?.addEventListener('click', () => {
+    const isHidden = mobileResourcesMenu.classList.toggle('hidden');
+    mobileResourcesToggle.setAttribute('aria-expanded', String(!isHidden));
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!resourcesMenu || !resourcesToggle) return;
+    const clickedInside =
+      resourcesMenu.contains(e.target) ||
+      resourcesToggle.contains(e.target);
+
+    if (!clickedInside) {
+      resourcesMenu.classList.add('hidden');
+      resourcesToggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    resourcesMenu?.classList.add('hidden');
+    resourcesToggle?.setAttribute('aria-expanded', 'false');
+    mobileResourcesMenu?.classList.add('hidden');
+    mobileResourcesToggle?.setAttribute('aria-expanded', 'false');
+    mobileMenu?.classList.add('hidden');
+    toggle?.setAttribute('aria-expanded', 'false');
+  });
+</script>
