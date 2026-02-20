@@ -1,7 +1,16 @@
 {
-  "clickupProjection": [],
+  "clickupProjection": [
+    {
+      "action": "createTask",
+      "list": "orders",
+      "note": "Create a Phase 2 task to complete representative (staff) e-signature and finalize IRS submission.",
+      "taskTitleTemplate": "Form 2848 Submitted (Client eSigned) — Next: Phase 2 Staff eSign"
+    }
+  ],
   "contract": {
-    "authority": ["R2 Canonical"],
+    "authority": [
+      "R2 Canonical"
+    ],
     "governs": "Form — Post-payment — eSign 2848",
     "path": "app/contracts/forms/post-payment/esign-2848.contract.json",
     "source": "Tax Monitor Pro",
@@ -11,7 +20,7 @@
       "normalizeCheckboxToBoolean": true,
       "rejectUnknownValues": true
     },
-    "version": 1
+    "version": 2
   },
   "delivery": {
     "endpoint": "/forms/post-payment/esign-2848",
@@ -21,8 +30,14 @@
   },
   "effects": {
     "dedupeKey": "payload.eventId",
-    "writes": ["orders"],
-    "writeOrder": ["receiptAppend", "canonicalUpsert", "clickupProjection"],
+    "writes": [
+      "orders"
+    ],
+    "writeOrder": [
+      "receiptAppend",
+      "canonicalUpsert",
+      "clickupProjection"
+    ],
     "receiptAppend": {
       "to": "receipts/{source}/{eventId}.json"
     },
@@ -35,119 +50,19 @@
       }
     }
   },
+  "note": "Representative (rep) values are not submitted by the client on this page. Rep details and staff e-signature are generated/completed in Phase 2, after the client submission is recorded.",
   "payload": {
     "additionalProperties": false,
     "properties": {
-      "2848_Acts_Auth_Additional": {
-        "type": ["string", "null"],
-        "maxLength": 20000
-      },
-      "2848_Acts_Auth_Descr_of_Matter": {
-        "type": ["string", "null"],
-        "maxLength": 20000
-      },
-      "2848_Acts_Auth_Tax_Form_Number": {
-        "type": ["string", "null"],
-        "maxLength": 200
-      },
-      "2848_Rep_1_Address_City": {
-        "type": ["string", "null"],
-        "maxLength": 200
-      },
-      "2848_Rep_1_Address_Line_1": {
-        "type": ["string", "null"],
-        "maxLength": 200
-      },
-      "2848_Rep_1_Address_Line_2": {
-        "type": ["string", "null"],
-        "maxLength": 200
-      },
-      "2848_Rep_1_Address_State": {
-        "type": ["string", "null"],
-        "maxLength": 50
-      },
-      "2848_Rep_1_Address_Zip": {
-        "type": ["number", "null"]
-      },
-      "2848_Rep_1_CAF": {
-        "type": ["string", "null"],
-        "maxLength": 100
-      },
-      "2848_Rep_1_Declar_of_Repr_Auth_Date": {
-        "type": ["string", "null"],
-        "format": "date"
-      },
-      "2848_Rep_1_Declar_of_Repr_Auth_Number": {
-        "type": ["string", "null"],
-        "maxLength": 200
-      },
-      "2848_Rep_1_Declar_of_Repr_Designation_Letter": {
-        "type": ["string", "null"],
-        "maxLength": 10
-      },
-      "2848_Rep_1_Declar_of_Repr_Licensing_Juris_State": {
-        "type": ["string", "null"],
-        "maxLength": 50
-      },
-      "2848_Rep_1_Fax": {
-        "type": ["string", "null"],
-        "maxLength": 50
-      },
-      "2848_Rep_1_First_Name": {
-        "type": "string",
-        "minLength": 1,
-        "maxLength": 200
-      },
-      "2848_Rep_1_Last_Name": {
-        "type": "string",
-        "minLength": 1,
-        "maxLength": 200
-      },
-      "2848_Rep_1_PTIN": {
-        "type": ["string", "null"],
-        "maxLength": 50
-      },
-      "2848_Rep_1_Telephone": {
-        "type": ["string", "null"],
-        "maxLength": 50
-      },
-      "Esigned_2848_Upload": {
-        "type": ["string", "null"],
-        "maxLength": 2048
-      },
-      "IRS_Compliance_Section_Focus": {
-        "type": "string",
-        "minLength": 1,
-        "maxLength": 500
-      },
-      "Monitoring_Authorization_Status": {
-        "type": ["string", "null"],
-        "maxLength": 500
-      },
-      "Tax_Monitoring_Service_Progress_Percent": {
-        "type": ["number", "null"]
-      },
-      "Tax_Monitoring_Service_Progress_Status": {
-        "type": ["string", "null"],
-        "maxLength": 5000
-      },
-      "Taxpayer_Separate_Wet_Sig_2848_Required": {
-        "type": ["string", "null"],
-        "enum": ["No", "Yes"]
-      },
-      "Wet_Sig_2848_Confirmed": {
-        "type": ["boolean", "null"]
-      },
-      "Wet_Sig_2848_Notes": {
-        "type": ["string", "null"],
-        "maxLength": 5000
-      },
-      "Wet_Sig_2848_Upload": {
-        "type": ["string", "null"],
-        "maxLength": 2048
-      },
       "accountId": {
-        "type": ["string", "null"]
+        "type": [
+          "string",
+          "null"
+        ],
+        "maxLength": 200
+      },
+      "consentElectronicSignature": {
+        "type": "boolean"
       },
       "eventId": {
         "type": "string",
@@ -160,20 +75,57 @@
       "sessionToken": {
         "type": "string",
         "minLength": 1
+      },
+      "signatureDate": {
+        "type": "string",
+        "format": "date"
+      },
+      "signatureName": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      },
+      "taxpayerAddress": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "maxLength": 500
+      },
+      "taxpayerId": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "maxLength": 50
+      },
+      "taxpayerName": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "maxLength": 300
+      },
+      "taxpayerPhone": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "maxLength": 50
       }
     },
     "required": [
-      "2848_Rep_1_First_Name",
-      "2848_Rep_1_Last_Name",
-      "IRS_Compliance_Section_Focus",
+      "consentElectronicSignature",
       "eventId",
       "orderId",
-      "sessionToken"
+      "sessionToken",
+      "signatureDate",
+      "signatureName"
     ],
     "type": "object"
   },
   "schema": {
     "name": "tm_form_post_payment_esign_2848",
-    "version": 1
+    "version": 2
   }
 }
