@@ -333,7 +333,9 @@
       <div class="tm-draft rounded-xl p-4">
        <div class="flex items-start gap-3 mb-4">
         <div class="mt-0.5">
-         <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewbox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a. 0z" />
+         <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
          </svg>
         </div>
         <div class="flex-1">
@@ -722,13 +724,7 @@
        <div class="space-y-2"><label class="flex items-start gap-3 p-3 rounded-xl border border-white/10 bg-slate-900/40 hover:bg-slate-900/55 transition cursor-pointer"> <input type="radio" name="monitoringAuthorizationStatus" value="ready" class="mt-1" required> <span> <span class="font-semibold text-white">Yes, I'm ready to eSign</span> <span class="block text-xs text-slate-400 mt-1">Submitting will generate your Form 2848 and start the e-sign step.</span> </span> </label> <label class="flex items-start gap-3 p-3 rounded-xl border border-white/10 bg-slate-900/40 hover:bg-slate-900/55 transition cursor-pointer"> <input type="radio" name="monitoringAuthorizationStatus" value="not_ready" class="mt-1" required> <span> <span class="font-semibold text-white">Not yet</span> <span class="block text-xs text-slate-400 mt-1">Save a draft now and come back when you're ready.</span> </span> </label>
        </div>
       </div><!-- Action Buttons -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-4 border-t border-white/10"><button type="submit" id="submit-btn" class="gradient-btn w-full py-4 px-6 rounded-xl font-semibold text-white text-lg transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2"> <span id="submit-text">Complete eSign 2848</span>
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-        </svg></button> <a href="/app/pages/projects.html" class="w-full py-4 px-6 rounded-xl font-semibold text-slate-200 text-lg border border-amber-500/30 bg-slate-900/60 hover:bg-slate-900/80 transition flex items-center justify-center gap-2"> View Timeline 
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a. 0z" />
-        </svg></a> <a href="/app/pages/files.html" class="sm:col-span-2 w-full py-3 px-6 rounded-xl font-semibold text-slate-200 border border-white/10 bg-slate-900/35 hover:bg-slate-900/50 transition flex items-center justify-center gap-2"> View Files 
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" />
-        </svg></a>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-4 border-t border-white/10"><button type="submit" class="w-full py-4 px-6 rounded-xl font-semibold text-white text-lg bg-gradient-to-r from-amber-500 to-amber-600 hover:opacity-90 transition flex items-center justify-center gap-2">Complete & Await Processing</button></button> <button type="button" id="reset-form-btn" class="w-full py-4 px-6 rounded-xl font-semibold text-slate-200 text-lg border border-amber-500/30 bg-slate-900/60 hover:bg-slate-900/80 transition flex items-center justify-center">Reset Form</button> 
       </div><!-- Status messages -->
       <div id="success" class="hidden mt-3 rounded-xl border border-green-500/25 bg-green-500/10 p-4 text-center">
        <h4 class="font-extrabold text-white">Submission Received</h4>
@@ -1136,6 +1132,56 @@
         btn.textContent = originalText;
       }
     });
+
+    // Reset form button
+    (function bindResetForm() {
+      const btn = document.getElementById('reset-form-btn');
+      if (!btn) return;
+
+      btn.addEventListener('click', () => {
+        if (!confirm('Reset this form? This will clear your entries on this page and remove any saved draft on this device.')) return;
+
+        const form = document.getElementById('esign-form');
+        if (form) form.reset();
+
+        // Clear any saved draft for this order
+        const orderId = tmCommon.getQuery('orderId') || 'default';
+        const dk = draftKey(orderId);
+        try { localStorage.removeItem(dk); } catch (_) {}
+
+        // Re-apply locked values and defaults
+        try { document.getElementById('signature-date').valueAsDate = new Date(); } catch (_) {}
+        setDraftStatus('Draft cleared.');
+        toast('ok', 'Reset Complete', 'Your form entries and saved draft were cleared.');
+
+        // Force-lock Section 3 values again (in case reset touched them)
+        (function lockSection3Again() {
+          const taxType = 'Income, Employment, Payroll, Excise, Estate, Gift, Civil Penalty, Sec. 4980H Shared Responsibility Payment';
+          const forms = '940, 941, 720, 1040, 1120, 1120S';
+          const years = '2016 - 2025';
+
+          const taxTypeInput = document.getElementById('form-tax-type');
+          const formsTaxInput = document.getElementById('form-tax-form');
+          const taxYearsInput = document.getElementById('form-tax-years');
+
+          if (taxTypeInput) {
+            taxTypeInput.value = taxType;
+            taxTypeInput.readOnly = true;
+          }
+          if (formsTaxInput) {
+            formsTaxInput.value = forms;
+            formsTaxInput.readOnly = true;
+          }
+          if (taxYearsInput) {
+            taxYearsInput.value = years;
+            taxYearsInput.readOnly = true;
+          }
+
+          const pvMatters = document.getElementById('pv-matters');
+          if (pvMatters) pvMatters.textContent = `${taxType} • Forms: ${forms} • Years: ${years}`;
+        })();
+      });
+    })();
 
     // SSN toggle
     document.getElementById('toggle-ssn').addEventListener('click', (e) => {
