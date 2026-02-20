@@ -44,7 +44,7 @@
             <div class="p-2">
 
               <!-- Alphabetical -->
-              <a href="/case-studies.html"
+              <a href="/resources/case-studies.html"
                  class="block rounded-lg px-3 py-2 text-sm text-slate-200 hover:bg-slate-900 transition">
                 Case Studies
               </a>
@@ -120,7 +120,7 @@
       </button>
 
       <div id="mobile-resources-menu" class="hidden pl-2 flex flex-col gap-2">
-        <a href="/case-studies.html"
+        <a href="/resources/case-studies.html"
            class="rounded-lg px-4 py-2 text-slate-300 hover:text-white hover:bg-slate-900 transition">
           Case Studies
         </a>
@@ -155,41 +155,3 @@
     </div>
   </div>
 </header>
-
-<script>
-  const toggle = document.getElementById('menu-toggle');
-  const mobileMenu = document.getElementById('mobile-menu');
-
-  const resourcesToggle = document.getElementById('resources-toggle');
-  const resourcesMenu = document.getElementById('resources-menu');
-
-  const mobileResourcesToggle = document.getElementById('mobile-resources-toggle');
-  const mobileResourcesMenu = document.getElementById('mobile-resources-menu');
-
-  toggle?.addEventListener('click', () => {
-    const isHidden = mobileMenu.classList.toggle('hidden');
-    toggle.setAttribute('aria-expanded', String(!isHidden));
-  });
-
-  resourcesToggle?.addEventListener('click', (e) => {
-    e.preventDefault();
-    const isHidden = resourcesMenu.classList.toggle('hidden');
-    resourcesToggle.setAttribute('aria-expanded', String(!isHidden));
-  });
-
-  mobileResourcesToggle?.addEventListener('click', () => {
-    mobileResourcesMenu.classList.toggle('hidden');
-  });
-
-  document.addEventListener('click', (e) => {
-    if (!resourcesMenu || !resourcesToggle) return;
-    const clickedInside =
-      resourcesMenu.contains(e.target) ||
-      resourcesToggle.contains(e.target);
-
-    if (!clickedInside) {
-      resourcesMenu.classList.add('hidden');
-      resourcesToggle.setAttribute('aria-expanded', 'false');
-    }
-  });
-</script>
