@@ -125,10 +125,25 @@
     * { outline-color: transparent !important; }
     *:focus { outline: none !important; }
     *:focus-visible { outline: none !important; }
+
+    /* === FIX: prevent global app layout from pushing content downward === */
+    body[data-page="dashboard"] #app-wrapper {
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: flex-start !important;
+      align-items: stretch !important;
+      margin-top: 0 !important;
+      padding-top: 0 !important;
+    }
+
+    body[data-page="dashboard"] #app-wrapper > .relative.z-10 {
+      margin-top: 0 !important;
+      padding-top: 2rem !important; /* keep intentional breathing room, not a full-screen void */
+    }
   </style>
 </head>
 
-<body class="h-full font-dmsans bg-slate-900 text-white overflow-auto">
+<body data-page="dashboard" class="h-full font-dmsans bg-slate-900 text-white overflow-auto">
   <!-- APP_SIDEBAR -->
   <!-- APP_TOPBAR -->
 
@@ -161,8 +176,7 @@
         <p id="trust-line" class="text-slate-400 text-base sm:text-lg">
           Your IRS monitoring command center, built for clarity and control
         </p>
-
-        </header>
+      </header>
 
       <!-- Main content -->
       <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -364,7 +378,7 @@
   </div>
 
   <script>
-    // Default configuration (Element SDK)
+    // (unchanged JS)
     const defaultConfig = {
       user_name: 'Sarah',
       trust_line: 'Your IRS monitoring command center, built for clarity and control',
@@ -422,13 +436,11 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      // Footer year
       (function setFooterYear() {
         const el = document.getElementById('footer-year');
         if (el) el.textContent = String(new Date().getFullYear());
       })();
 
-      // Monitoring Snapshot (state-driven)
       (function setMonitoringSnapshot() {
         const stepBooleans = (window.TM_ORDER && window.TM_ORDER.stepBooleans) ? window.TM_ORDER.stepBooleans : {};
 
@@ -462,7 +474,6 @@
         const currentStepLabelEl = document.getElementById('current-step-label');
         if (currentStepLabelEl) currentStepLabelEl.textContent = currentStep.label;
 
-        // Progress ring
         const ring = document.getElementById('progress-ring');
         if (ring) {
           const circumference = 2 * Math.PI * 70;
@@ -470,7 +481,6 @@
           setTimeout(() => { ring.style.strokeDashoffset = String(offset); }, 200);
         }
 
-        // Agreement tile
         const agreementAccepted = !!stepBooleans.agreementAccepted;
         const offerAccepted = !!stepBooleans.offerAccepted;
         const paymentCompleted = !!stepBooleans.paymentCompleted;
@@ -490,7 +500,6 @@
           }
         }
 
-        // Account tile
         const accountStatusEl = document.getElementById('metric-account-status');
         const accountSubEl = document.getElementById('metric-account-sub');
         const accountLabel = String(window.TM_APP_STATE?.accountLabel || '').trim();
@@ -500,7 +509,6 @@
           accountSubEl.textContent = `Next step: ${currentStep.label}`;
         }
 
-        // Monitoring tile + badge
         const monitoringStatusEl = document.getElementById('metric-monitoring-status');
         const monitoringSubEl = document.getElementById('metric-monitoring-sub');
         const liveLabelEl = document.getElementById('snapshot-live-label');
@@ -528,7 +536,6 @@
             liveLabelEl.textContent = 'Live Monitoring';
             liveDotEl.className = 'w-2 h-2 bg-emerald-400 rounded-full animate-pulse';
           } else {
-            // Compute Tax Years Covered dynamically (same rule as below)
             const startYear = Number(window.TM_APP_STATE?.taxYearsStartYear || 2016);
             const now = new Date();
             const year = now.getFullYear();
@@ -573,7 +580,6 @@
           }
         }
 
-        // Snapshot headline + subhead
         const headlineEl = document.getElementById('snapshot-headline');
         const subheadEl = document.getElementById('snapshot-subhead');
         if (headlineEl && subheadEl) {
@@ -583,7 +589,6 @@
             : 'Complete the next step to activate monitoring.';
         }
 
-        // Timeline enable/disable + current highlight + click routing
         const qs = window.location.search || '';
         const buttons = Array.from(document.querySelectorAll('.step-button'));
 
@@ -623,7 +628,6 @@
           });
         });
 
-        // Progress map button routing
         const progressBtn = document.getElementById('progress-map-btn');
         if (progressBtn) {
           progressBtn.addEventListener('click', () => {
@@ -634,7 +638,6 @@
         }
       })();
 
-      // Tax Years Covered (dynamic)
       (function setTaxYearsCovered() {
         const el = document.getElementById('tax-years-covered');
         if (!el) return;
@@ -658,17 +661,13 @@
           out.setUTCDate(Math.min(day, lastDay));
           return out;
         }
-
-        // Observed DC Emancipation Day (can affect tax day).
         function observedEmancipationDayUTC(y) {
-          const d = dateUTC(y, 3, 16); // Apr 16
+          const d = dateUTC(y, 3, 16);
           const dow = d.getUTCDay();
           if (dow === 6) return dateUTC(y, 3, 15);
           if (dow === 0) return dateUTC(y, 3, 17);
           return d;
         }
-
-        // Approx IRS filing due date: Apr 15 adjusted for weekend/Emancipation Day.
         function taxDayUTC(y) {
           let d = dateUTC(y, 3, 15);
           const emanc = observedEmancipationDayUTC(y);
@@ -681,14 +680,12 @@
           return d;
         }
 
-        // Rule of thumb: transcripts show up ~3 months after tax day.
         const availableDate = addMonthsUTC(taxDayUTC(year), 3);
         const latestTranscriptYear = now.getTime() >= availableDate.getTime() ? year : year - 1;
 
         el.textContent = `${startYear} - ${latestTranscriptYear}`;
       })();
 
-      // Recent Activity (state-driven, client-visible only)
       (function renderRecentActivity() {
         const container = document.getElementById('recent-activity-list');
         if (!container) return;
