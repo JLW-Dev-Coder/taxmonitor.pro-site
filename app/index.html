@@ -34,8 +34,8 @@
     };
   </script>
   <style>
-      html, body { height: 100%; }
-      html { font-size: 100%; }
+    html, body { height: 100%; }
+    html { font-size: 100%; }
 
     .tm-dashboard-scale { font-size: 125%; }
 
@@ -49,12 +49,10 @@
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
-    .gradient-bg {
-      background: linear-gradient(135deg, #F59E0B, #D97706);
-    }
+    .gradient-bg { background: linear-gradient(135deg, #F59E0B, #D97706); }
     .card-glow { box-shadow: none; }
 
-    /* Dashboard surfaces (match /app/index.html look) */
+    /* Dashboard surfaces */
     .glass-card {
       background: rgba(30, 41, 59, 0.7);
       backdrop-filter: blur(12px);
@@ -64,11 +62,9 @@
     .gradient-btn { background: linear-gradient(135deg, #F59E0B, #D97706); }
     .gradient-btn:hover { filter: brightness(1.05); }
 
-
     /* Sidebar nav states */
     .nav-item { transition: all 0.2s ease; }
     .nav-item:hover { background: rgba(148, 163, 184, 0.08); }
-
     .nav-item.active {
       background: rgba(148, 163, 184, 0.12);
       border-left: 2px solid rgba(148, 163, 184, 0.45);
@@ -110,21 +106,17 @@
       70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
       100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
     }
-      50% { box-shadow: 0 0 0 12px rgba(245, 158, 11, 0); }
-    }
-
-
 
     /* Noise texture overlay */
-    .noise-bg::before{
-      content:'';
-      position:fixed; inset:0;
-      opacity:.03;
-      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-      pointer-events:none;
-      z-index:1;
+    .noise-bg::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      opacity: .03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1;
     }
-33%{transform:translate(30px,-30px) scale(1.05)} 66%{transform:translate(-20px,20px) scale(.95)} }
   </style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
  </head>
@@ -141,7 +133,7 @@
         
         <h1 class="text-3xl md:text-4xl font-semibold tracking-tight mb-2"><span id="greeting-prefix">Good evening, </span><span id="greeting-name" class="gradient-text">Jane</span></h1>
         <p id="subheadline" class="text-slate-400 text-base md:text-lg max-w-2xl">This is your command center — where monitoring stays visible.</p>
-        <p id="helper-text" class="text-slate-500 text-sm mt-2 max-w-2xl">Track onboarding, view activity, and access your portal files anytime.</p>
+        <p id="helper-text" class="text-slate-500 text-sm mt-2 max-w-2xl">Track onboarding, view activity, and access your files anytime.</p>
        </div>
       </div><!-- Grid: Progress + Snapshot -->
       <div class="grid lg:grid-cols-2 gap-6 mb-6">
@@ -152,7 +144,7 @@
         </div>
 
         <div class="flex flex-col sm:flex-row sm:items-center gap-6 mb-6">
-          <div class="relative flex-shrink-0 mx-auto sm:mx-0" style="width: 160px; height: 160px;">
+          <div class="relative flex-shrink-0 mx-auto sm:mx-0 sm:w-1/2" style="width: 160px; height: 160px;">
             <svg class="absolute inset-0 w-full h-full transform -rotate-90" viewBox="0 0 160 160" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
               <circle cx="80" cy="80" r="70" fill="none" stroke="rgba(255,255,255,0.10)" stroke-width="10" />
               <circle id="progress-ring" cx="80" cy="80" r="70" fill="none" stroke="url(#progressGradient)" stroke-width="10" stroke-linecap="round" stroke-dasharray="439.82" stroke-dashoffset="439.82" class="progress-ring-circle" />
@@ -169,7 +161,7 @@
             </div>
           </div>
 
-          <div class="flex-1">
+          <div class="flex-1 sm:w-1/2">
             <div class="space-y-2">
               <div class="flex justify-between text-sm">
                 <span class="text-slate-400">Steps Completed</span>
@@ -349,7 +341,7 @@
         <div class="space-y-3">
          <h3 class="text-sm font-semibold text-slate-300">Recent Activity</h3>
          <div id="recent-activity-list" class="space-y-3">
-          <p class="text-xs text-slate-500">No client-visible activity yet.</p>
+          <p class="text-xs text-slate-500">No visible activity yet.</p>
          </div>
         </div>
        </section>
@@ -366,7 +358,7 @@
       disclaimer_text: 'Monitoring does not create IRS representation. Representation, filing, and resolution are separate engagements.',
       greeting_prefix: 'Good evening, ',
       greeting_subheadline: 'This is your command center — where monitoring stays visible.',
-      helper_text: 'Track onboarding, view activity, and access your portal files anytime.',
+      helper_text: 'Track onboarding, view activity, and access your files anytime.',
       text_color: '#f1f5f9',
       topbar_mode: 'Monitoring Portal',
       user_name: 'Jane Doe',
@@ -503,15 +495,64 @@
 
     function setDashboardProgress() {
       const stepBooleans = (window.TM_ORDER && window.TM_ORDER.stepBooleans) ? window.TM_ORDER.stepBooleans : {};
+
       const journey = [
-        { href: '/pages/flows/intake/intake.html', key: 'intakeComplete', label: 'Intake Process', step: 1 },
-        { href: '/pages/flows/intake/offer.html', key: 'offerAccepted', label: 'Offer Reviewed', step: 2 },
-        { href: '/pages/flows/intake/agreement.html', key: 'agreementAccepted', label: 'Agreement Signed', step: 3 },
-        { href: '/pages/flows/intake/payment.html', key: 'paymentCompleted', label: 'Payment Processed', step: 4 },
-        { href: '/pages/flows/post-payment/welcome.html', key: 'welcomeConfirmed', label: 'Welcome Package Sent', step: 5 },
-        { href: '/pages/flows/post-payment/filing-status.html', key: 'filingStatusSubmitted', label: 'Filing Status Review', step: 6 },
-        { href: '/pages/flows/post-payment/address-update.html', key: 'addressUpdateSubmitted', label: 'Address Updated', step: 7 },
-        { href: '/pages/flows/post-payment/esign-2848.html', key: 'esign2848Submitted', label: 'Form 2848 Signed', step: 8 },
+        {
+          desc: 'Initial information submitted and monitoring record created.',
+          href: '/pages/flows/intake/intake.html',
+          key: 'intakeComplete',
+          label: 'Intake Process',
+          step: 1,
+        },
+        {
+          desc: 'Service scope and pricing confirmed.',
+          href: '/pages/flows/intake/offer.html',
+          key: 'offerAccepted',
+          label: 'Offer Reviewed',
+          step: 2,
+        },
+        {
+          desc: 'Terms accepted and engagement activated.',
+          href: '/pages/flows/intake/agreement.html',
+          key: 'agreementAccepted',
+          label: 'Agreement Signed',
+          step: 3,
+        },
+        {
+          desc: 'Monitoring cycle officially begins.',
+          href: '/pages/flows/intake/payment.html',
+          key: 'paymentCompleted',
+          label: 'Payment Processed',
+          step: 4,
+        },
+        {
+          desc: 'Onboarding details and next steps delivered.',
+          href: '/pages/flows/post-payment/welcome.html',
+          key: 'welcomeConfirmed',
+          label: 'Welcome Package Sent',
+          step: 5,
+        },
+        {
+          desc: 'Tax filing position confirmed for monitoring accuracy.',
+          href: '/pages/flows/post-payment/filing-status.html',
+          key: 'filingStatusSubmitted',
+          label: 'Filing Status Review',
+          step: 6,
+        },
+        {
+          desc: 'IRS correspondence address verified.',
+          href: '/pages/flows/post-payment/address-update.html',
+          key: 'addressUpdateSubmitted',
+          label: 'Address Updated',
+          step: 7,
+        },
+        {
+          desc: 'Authorization secured for transcript access.',
+          href: '/pages/flows/post-payment/esign-2848.html',
+          key: 'esign2848Submitted',
+          label: 'Form 2848 Signed',
+          step: 8,
+        },
       ];
 
       const totalSteps = journey.length;
@@ -540,36 +581,73 @@
         setTimeout(() => { ring.style.strokeDashoffset = String(offset); }, 200);
       }
 
+      // Update step buttons (uses existing markup)
       const qs = window.location.search || '';
       const buttons = Array.from(document.querySelectorAll('.step-button'));
+
+      function renderStep(btn, meta, state) {
+        const ringEl = btn.querySelector('div.w-10.h-10');
+        const pill = btn.querySelector('div.flex-1');
+
+        if (!ringEl || !pill) return;
+
+        if (state === 'done') {
+          ringEl.className = 'w-10 h-10 rounded-full bg-emerald-500 flex items-center justify-center z-10 shadow-lg shadow-emerald-500/25 flex-shrink-0';
+          ringEl.innerHTML = '<svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" /></svg>';
+          pill.className = 'flex-1 bg-emerald-500/10 rounded-xl px-4 py-3';
+          pill.innerHTML = `
+            <div class="flex justify-between items-start">
+              <div>
+                <div class="text-sm font-medium text-emerald-300">${meta.label}</div>
+                <div class="text-xs text-slate-400 mt-1">${meta.desc}</div>
+              </div>
+              <span class="text-xs text-emerald-400 font-medium">✓ Done</span>
+            </div>
+          `;
+          return;
+        }
+
+        if (state === 'current') {
+          ringEl.className = 'w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center z-10 shadow-lg shadow-amber-500/25 pulse-amber flex-shrink-0';
+          ringEl.innerHTML = `<span class="text-white font-bold text-sm">${meta.step}</span>`;
+          pill.className = 'flex-1 bg-amber-500/15 rounded-xl px-4 py-3 border border-amber-500/25';
+          pill.innerHTML = `
+            <div class="flex justify-between items-start">
+              <div>
+                <div class="text-sm font-medium text-amber-300">${meta.label}</div>
+                <div class="text-xs text-slate-400 mt-1">${meta.desc}</div>
+              </div>
+              <span class="text-xs text-amber-400 font-medium">Current</span>
+            </div>
+          `;
+          return;
+        }
+
+        // upcoming
+        ringEl.className = 'w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center z-10 flex-shrink-0';
+        ringEl.innerHTML = `<span class="text-slate-300 font-semibold text-sm">${meta.step}</span>`;
+        pill.className = 'flex-1 bg-slate-800/30 rounded-xl px-4 py-3';
+        pill.innerHTML = `
+          <div class="text-sm font-medium text-slate-300">${meta.label}</div>
+          <div class="text-xs text-slate-500 mt-1">${meta.desc}</div>
+        `;
+      }
 
       buttons.forEach((btn) => {
         const key = btn.getAttribute('data-step-key') || '';
         const href = btn.getAttribute('data-href') || '';
+        const meta = journey.find((j) => j.key === key) || null;
+        if (!meta) return;
+
         const isDone = !!stepBooleans[key];
         const isCurrent = key === currentStep.key;
         const shouldEnable = isDone || isCurrent;
 
         btn.disabled = !shouldEnable;
-        btn.classList.toggle('opacity-50', !shouldEnable);
+        btn.classList.toggle('opacity-60', !shouldEnable);
         btn.classList.toggle('cursor-not-allowed', !shouldEnable);
 
-        const ringEl = btn.querySelector('div.w-10.h-10');
-        const pill = btn.querySelector('div.flex-1');
-        const label = btn.querySelector('span.text-sm');
-
-        if (isDone) {
-          if (ringEl) {
-            ringEl.className = 'w-10 h-10 rounded-full bg-emerald-500 flex items-center justify-center z-10 shadow-lg shadow-emerald-500/25 flex-shrink-0';
-            ringEl.innerHTML = '<svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" /></svg>';
-          }
-          if (pill) pill.className = 'flex-1 bg-emerald-500/10 rounded-xl px-4 py-2';
-          if (label) label.className = 'text-sm font-medium text-emerald-300';
-        } else if (isCurrent) {
-          if (ringEl) ringEl.className = 'w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center z-10 shadow-lg shadow-amber-500/25 pulse-amber flex-shrink-0';
-          if (pill) pill.className = 'flex-1 bg-amber-500/15 rounded-xl px-4 py-2 border border-amber-500/25';
-          if (label) label.className = 'text-sm font-medium text-amber-300';
-        }
+        renderStep(btn, meta, isDone ? 'done' : (isCurrent ? 'current' : 'upcoming'));
 
         btn.addEventListener('click', () => {
           if (btn.disabled) return;
@@ -578,6 +656,31 @@
           window.location.href = target;
         });
       });
+
+      // Monitoring snapshot defaults
+      const agreementAccepted = !!stepBooleans.agreementAccepted;
+      const paymentCompleted = !!stepBooleans.paymentCompleted;
+      const monitoringActive = typeof window.TM_APP_STATE?.monitoringActive === 'boolean'
+        ? window.TM_APP_STATE.monitoringActive
+        : !!stepBooleans.reportReady;
+
+      const agreementStatusEl = document.getElementById('metric-agreement-status');
+      const agreementSubEl = document.getElementById('metric-agreement-sub');
+      if (agreementStatusEl) agreementStatusEl.textContent = agreementAccepted ? 'Signed' : 'Unsigned';
+      if (agreementSubEl) agreementSubEl.textContent = agreementAccepted ? (paymentCompleted ? 'Payment Complete' : 'Ready for Payment') : 'Sign agreement to continue';
+
+      const accountStatusEl = document.getElementById('metric-account-status');
+      const accountSubEl = document.getElementById('metric-account-sub');
+      if (accountStatusEl) accountStatusEl.textContent = paymentCompleted ? 'Active' : 'Intake';
+      if (accountSubEl) accountSubEl.textContent = `Next step: ${currentStep.label}`;
+
+      const monitoringStatusEl = document.getElementById('metric-monitoring-status');
+      const monitoringSubEl = document.getElementById('metric-monitoring-sub');
+      if (monitoringStatusEl) monitoringStatusEl.textContent = monitoringActive ? 'Active' : 'Pending';
+      if (monitoringSubEl) monitoringSubEl.textContent = monitoringActive ? 'Full Coverage' : 'Not Yet Started';
+
+      const liveLabelEl = document.getElementById('snapshot-live-label');
+      if (liveLabelEl) liveLabelEl.textContent = monitoringActive ? 'Live Monitoring' : 'Monitoring Pending';
 
       const headlineEl = document.getElementById('snapshot-headline');
       const subheadEl = document.getElementById('snapshot-subhead');
