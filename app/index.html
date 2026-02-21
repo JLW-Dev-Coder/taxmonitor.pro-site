@@ -44,23 +44,23 @@
     * { font-family: 'DM Sans', system-ui, sans-serif; }
 
     .gradient-text {
-      background: linear-gradient(135deg, #F59E0B, #D97706);
+      background: linear-gradient(135deg, #F59E0B, #FB923C);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
-    .gradient-bg { background: linear-gradient(135deg, #F59E0B, #D97706); }
+    .gradient-bg { background: linear-gradient(135deg, #F59E0B, #FB923C); }
     .card-glow { box-shadow: none; }
 
     /* Dashboard surfaces */
     .glass-card {
-      background: rgba(30, 41, 59, 0.7);
+      background: rgba(10, 10, 10, 0.6);
       backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
-    .gradient-border { background: linear-gradient(135deg, #F59E0B, #D97706); }
-    .gradient-btn { background: linear-gradient(135deg, #F59E0B, #D97706); }
-    .gradient-btn:hover { filter: brightness(1.05); }
+    .gradient-border { background: linear-gradient(135deg, #F59E0B, #FB923C); }
+    .gradient-btn { background: linear-gradient(135deg, #F59E0B, #FB923C); }
+    .gradient-btn:hover { filter: brightness(0.95); }
 
     /* Sidebar nav states */
     .nav-item { transition: all 0.2s ease; }
@@ -176,10 +176,13 @@
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
  </head>
  <body class="h-full bg-slate-950 text-slate-100 noise-bg overflow-hidden">
-  <div class="relative z-10 flex h-full"><!-- APP SIDEBAR PARTIAL --> <!-- APP_SIDEBAR --> <!-- Main Content Area -->
-   <div class="flex-1 flex flex-col min-w-0"><!-- APP TOPBAR PARTIAL --> <!-- APP_TOPBAR --> <!-- Main Content -->
+  <div class="relative z-10 flex h-full">
+   <!-- APP SIDEBAR PARTIAL --> <!-- APP_SIDEBAR --> <!-- Main Content Area -->
+   <div class="flex-1 flex flex-col min-w-0">
+    <!-- APP TOPBAR PARTIAL --> <!-- APP_TOPBAR --> <!-- Main Content -->
     <main class="flex-1 overflow-auto">
-     <div class="max-w-6xl mx-auto px-6 py-8"><!-- Trust / Headline -->
+     <div class="max-w-6xl mx-auto px-6 py-8">
+      <!-- Trust / Headline -->
       <div class="mb-8 content-section">
        <div class="flex flex-col items-center text-center">
         <h1 class="text-3xl md:text-4xl font-semibold tracking-tight mb-2"><span id="greeting-prefix">Good evening, </span><span id="greeting-name" class="gradient-text">Jane</span></h1>
@@ -190,65 +193,71 @@
       <div class="grid lg:grid-cols-2 gap-6 mb-6">
        <section class="glass-card rounded-2xl p-6 md:p-8 content-section">
         <div class="flex items-center justify-between mb-6">
-         <h2 class="text-lg font-bold text-white">Onboarding Progress</h2><span class="text-xs bg-amber-500/15 text-amber-300 px-3 py-1 rounded-full font-medium">~5 min left</span>
+         <h2 class="text-lg font-bold text-white">Onboarding Progress</h2><span class="text-xs bg-orange-500/20 text-orange-300 px-3 py-1 rounded-full font-medium">~5 min left</span>
         </div>
         <div class="flex flex-col sm:flex-row sm:items-center gap-6 mb-6">
          <div class="relative flex-shrink-0 mx-auto sm:mx-0 sm:w-1/2" style="width: 160px; height: 160px;">
-          <svg class="absolute inset-0 w-full h-full transform -rotate-90" viewbox="0 0 160 160" preserveaspectratio="xMidYMid meet" aria-hidden="true"><circle cx="80" cy="80" r="70" fill="none" stroke="rgba(255,255,255,0.10)" stroke-width="10" /> <circle id="progress-ring" cx="80" cy="80" r="70" fill="none" stroke="url(#progressGradient)" stroke-width="10" stroke-linecap="round" stroke-dasharray="439.82" stroke-dashoffset="439.82" class="progress-ring-circle" /> <defs>
+          <svg class="absolute inset-0 w-full h-full transform -rotate-90" viewbox="0 0 160 160" preserveaspectratio="xMidYMid meet" aria-hidden="true">
+           <circle cx="80" cy="80" r="70" fill="none" stroke="rgba(255,255,255,0.10)" stroke-width="10" /> <circle id="progress-ring" cx="80" cy="80" r="70" fill="none" stroke="url(#progressGradient)" stroke-width="10" stroke-linecap="round" stroke-dasharray="439.82" stroke-dashoffset="439.82" class="progress-ring-circle" /> <defs>
             <lineargradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
              <stop offset="0%" style="stop-color:#f59e0b" />
              <stop offset="100%" style="stop-color:#ef4444" />
             </lineargradient>
            </defs>
           </svg>
-          <div class="absolute inset-0 flex flex-col items-center justify-center gap-1"><span id="progress-percent" class="text-4xl font-bold gradient-text">0%</span> <span class="text-sm text-slate-500">Complete</span>
+          <div class="absolute inset-0 flex flex-col items-center justify-center gap-1">
+           <span id="progress-percent" class="text-4xl font-bold gradient-text">0%</span> <span class="text-sm text-slate-500">Complete</span>
           </div>
          </div>
          <div class="flex-1 sm:w-1/2">
           <div class="space-y-2">
-           <div class="flex justify-between text-sm"><span class="text-slate-400">Steps Completed</span> <span id="steps-completed-label" class="font-semibold text-white">0 of 8</span>
+           <div class="flex justify-between text-sm">
+            <span class="text-slate-400">Steps Completed</span> <span id="steps-completed-label" class="font-semibold text-white">0 of 8</span>
            </div>
-           <div class="flex justify-between text-sm"><span class="text-slate-400">Current Step</span> <span class="font-semibold text-amber-300" id="current-step-label">Offer Reviewed</span>
+           <div class="flex justify-between text-sm">
+            <span class="text-slate-400">Current Step</span> <span class="font-semibold text-amber-300" id="current-step-label">Offer Reviewed</span>
            </div>
-           <div class="flex justify-between text-sm"><span class="text-slate-400">Protection Level</span> <span class="font-semibold text-slate-400">Not Selected</span>
+           <div class="flex justify-between text-sm">
+            <span class="text-slate-400">Protection Level</span> <span class="font-semibold text-slate-400">Not Selected</span>
            </div>
           </div>
          </div>
         </div>
         <div class="relative space-y-4" id="timeline-steps">
          <div class="timeline-connector" aria-hidden="true"></div><!-- Step 1 --> <button class="w-full flex items-start gap-3 relative text-left transition-opacity step-button" data-step="1" data-step-key="intakeComplete" data-href="/pages/flows/intake/intake.html" type="button">
-          <div class="w-10 h-10 rounded-full bg-emerald-500 flex items-center justify-center z-10 shadow-lg shadow-emerald-500/25 flex-shrink-0">
-           <svg class="w-5 h-5 text-white" fill="currentColor" viewbox="0 0 24 24">
-            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" />
+          <div class="w-10 h-10 rounded-full bg-orange-400 flex items-center justify-center z-10 shadow-lg shadow-orange-400/25 flex-shrink-0">
+           <svg class="w-5 h-5 text-white" fill="currentColor" viewbox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" />
            </svg>
           </div>
-          <div class="flex-1 bg-emerald-500/10 rounded-xl px-4 py-3">
+          <div class="flex-1 bg-orange-500/10 rounded-xl px-4 py-3">
            <div class="flex justify-between items-start">
             <div>
-             <div class="text-sm font-medium text-emerald-300">
+             <div class="text-sm font-medium text-orange-200">
               Intake Process
              </div>
              <div class="text-xs text-slate-400 mt-1">
               Initial information submitted and monitoring record created.
              </div>
-            </div><span class="text-xs text-emerald-400 font-medium">✓ Done</span>
+            </div><span class="text-xs text-orange-300 font-medium">✓ Done</span>
            </div>
           </div></button> <!-- Step 2 --> <button class="w-full flex items-start gap-3 relative text-left transition-opacity step-button" data-step="2" data-step-key="offerAccepted" data-href="/pages/flows/intake/offer.html" type="button">
-          <div class="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center z-10 shadow-lg shadow-amber-500/25 pulse-amber flex-shrink-0"><span class="text-white font-bold text-sm">2</span>
+          <div class="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center z-10 shadow-lg shadow-amber-500/25 pulse-amber flex-shrink-0">
+           <span class="text-white font-bold text-sm">2</span>
           </div>
           <div class="flex-1 bg-amber-500/15 rounded-xl px-4 py-3 border border-amber-500/25">
            <div class="flex justify-between items-start">
             <div>
-             <div class="text-sm font-medium text-amber-300">
+             <div class="text-sm font-medium text-orange-300">
               Offer Reviewed
              </div>
              <div class="text-xs text-slate-400 mt-1">
               Service scope and pricing confirmed.
              </div>
-            </div><span class="text-xs text-amber-400 font-medium">Current</span>
+            </div><span class="text-xs text-orange-300 font-medium">In Progress</span>
            </div>
           </div></button> <!-- Step 3 --> <button class="w-full flex items-start gap-3 relative text-left opacity-60 step-button" data-step="3" data-step-key="agreementAccepted" data-href="/pages/flows/intake/agreement.html" type="button" disabled>
-          <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center z-10 flex-shrink-0"><span class="text-slate-300 font-semibold text-sm">3</span>
+          <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center z-10 flex-shrink-0">
+           <span class="text-slate-300 font-semibold text-sm">3</span>
           </div>
           <div class="flex-1 bg-slate-800/30 rounded-xl px-4 py-3">
            <div class="text-sm font-medium text-slate-300">
@@ -258,7 +267,8 @@
             Terms accepted and engagement activated.
            </div>
           </div></button> <!-- Step 4 --> <button class="w-full flex items-start gap-3 relative text-left opacity-60 step-button" data-step="4" data-step-key="paymentCompleted" data-href="/pages/flows/intake/payment.html" type="button" disabled>
-          <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center z-10 flex-shrink-0"><span class="text-slate-300 font-semibold text-sm">4</span>
+          <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center z-10 flex-shrink-0">
+           <span class="text-slate-300 font-semibold text-sm">4</span>
           </div>
           <div class="flex-1 bg-slate-800/30 rounded-xl px-4 py-3">
            <div class="text-sm font-medium text-slate-300">
@@ -268,7 +278,8 @@
             Monitoring cycle officially begins.
            </div>
           </div></button> <!-- Step 5 --> <button class="w-full flex items-start gap-3 relative text-left opacity-60 step-button" data-step="5" data-step-key="welcomeConfirmed" data-href="/pages/flows/post-payment/welcome.html" type="button" disabled>
-          <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center z-10 flex-shrink-0"><span class="text-slate-300 font-semibold text-sm">5</span>
+          <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center z-10 flex-shrink-0">
+           <span class="text-slate-300 font-semibold text-sm">5</span>
           </div>
           <div class="flex-1 bg-slate-800/30 rounded-xl px-4 py-3">
            <div class="text-sm font-medium text-slate-300">
@@ -278,7 +289,8 @@
             Onboarding details and next steps delivered.
            </div>
           </div></button> <!-- Step 6 --> <button class="w-full flex items-start gap-3 relative text-left opacity-60 step-button" data-step="6" data-step-key="filingStatusSubmitted" data-href="/pages/flows/post-payment/filing-status.html" type="button" disabled>
-          <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center z-10 flex-shrink-0"><span class="text-slate-300 font-semibold text-sm">6</span>
+          <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center z-10 flex-shrink-0">
+           <span class="text-slate-300 font-semibold text-sm">6</span>
           </div>
           <div class="flex-1 bg-slate-800/30 rounded-xl px-4 py-3">
            <div class="text-sm font-medium text-slate-300">
@@ -288,7 +300,8 @@
             Tax filing position confirmed for monitoring accuracy.
            </div>
           </div></button> <!-- Step 7 --> <button class="w-full flex items-start gap-3 relative text-left opacity-60 step-button" data-step="7" data-step-key="addressUpdateSubmitted" data-href="/pages/flows/post-payment/address-update.html" type="button" disabled>
-          <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center z-10 flex-shrink-0"><span class="text-slate-300 font-semibold text-sm">7</span>
+          <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center z-10 flex-shrink-0">
+           <span class="text-slate-300 font-semibold text-sm">7</span>
           </div>
           <div class="flex-1 bg-slate-800/30 rounded-xl px-4 py-3">
            <div class="text-sm font-medium text-slate-300">
@@ -298,7 +311,8 @@
             IRS correspondence address verified.
            </div>
           </div></button> <!-- Step 8 --> <button class="w-full flex items-start gap-3 relative text-left opacity-60 step-button" data-step="8" data-step-key="esign2848Submitted" data-href="/pages/flows/post-payment/esign-2848.html" type="button" disabled>
-          <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center z-10 flex-shrink-0"><span class="text-slate-300 font-semibold text-sm">8</span>
+          <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center z-10 flex-shrink-0">
+           <span class="text-slate-300 font-semibold text-sm">8</span>
           </div>
           <div class="flex-1 bg-slate-800/30 rounded-xl px-4 py-3">
            <div class="text-sm font-medium text-slate-300">
@@ -317,41 +331,43 @@
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-5">
          <div class="text-center p-4 bg-slate-950/30 rounded-2xl border border-white/5">
           <div class="text-xs text-slate-400">
-           Agreement Status
-          </div>
-          <p class="text-xl font-semibold text-amber-300 mt-2" id="metric-agreement-status">Unsigned</p>
-          <p class="text-xs text-slate-500 mt-1" id="metric-agreement-sub">Ready for Payment</p>
-         </div>
-         <div class="text-center p-4 bg-slate-950/30 rounded-2xl border border-white/5">
-          <div class="text-xs text-slate-400">
            Account Status
           </div>
-          <p class="text-xl font-semibold text-sky-300 mt-2" id="metric-account-status">Intake</p>
+          <p class="text-xl font-semibold text-white mt-2" id="metric-account-status">Intake</p>
           <p class="text-xs text-slate-500 mt-1" id="metric-account-sub">Awaiting Next Step</p>
          </div>
          <div class="text-center p-4 bg-slate-950/30 rounded-2xl border border-white/5">
           <div class="text-xs text-slate-400">
-           Monitoring
+           Monitoring Status
           </div>
-          <p class="text-xl font-semibold text-emerald-200 mt-2" id="metric-monitoring-status">Inactive</p>
-          <p class="text-xs text-slate-500 mt-1" id="metric-monitoring-sub">Not Yet Started</p>
+          <p class="text-xl font-semibold text-white mt-2" id="metric-monitoring-status">Inactive</p>
+          <p class="text-xs text-slate-500 mt-1" id="metric-monitoring-sub">In Progress</p>
+         </div>
+         <div class="text-center p-4 bg-slate-950/30 rounded-2xl border border-white/5">
+          <div class="text-xs text-slate-400">
+           Agreement Status
+          </div>
+          <p class="text-xl font-semibold text-orange-300 mt-2" id="metric-agreement-status">Unsigned</p>
+          <p class="text-xs text-slate-500 mt-1" id="metric-agreement-sub">Ready for Payment</p>
          </div>
         </div>
-        <div class="bg-emerald-500/10 border border-emerald-500/20 rounded-2xl p-4 mb-5">
+        <div class="bg-orange-500/10 border border-orange-500/20 rounded-2xl p-4 mb-5">
          <div class="flex items-center gap-3">
           <div class="gradient-border p-0.5 rounded-xl">
            <div class="bg-slate-900/70 p-2 rounded-xl">
-            <svg class="w-6 h-6 text-emerald-300" fill="none" stroke="currentColor" viewbox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4" /> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a. 0z" />
+            <svg class="w-6 h-6 text-orange-300" fill="none" stroke="currentColor" viewbox="0 0 24 24" aria-hidden="true">
+             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4" /> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a. 0z" />
             </svg>
            </div>
           </div>
           <div>
-           <p class="font-semibold text-emerald-200" id="snapshot-headline">Offer Reviewed</p>
+           <p class="font-semibold text-orange-100" id="snapshot-headline">Offer Reviewed</p>
            <p class="text-sm text-slate-400" id="snapshot-subhead">Continue to the next step to keep onboarding moving.</p>
           </div>
          </div>
         </div><a id="snapshot-cta" href="/pages/project.html" class="gradient-btn w-full py-3.5 px-5 rounded-xl font-semibold text-slate-900 text-sm transition-all transform hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center gap-2 mb-5">
-         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l5.553 2.776A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l5.553 2.776A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
          </svg> View project map &amp; status </a>
         <div class="space-y-3">
          <h3 class="text-sm font-semibold text-slate-300">Recent Activity</h3>
@@ -607,32 +623,32 @@
         if (!ringEl || !pill) return;
 
         if (state === 'done') {
-          ringEl.className = 'w-10 h-10 rounded-full bg-emerald-500 flex items-center justify-center z-10 shadow-lg shadow-emerald-500/25 flex-shrink-0';
+          ringEl.className = 'w-10 h-10 rounded-full bg-orange-400 flex items-center justify-center z-10 shadow-lg shadow-orange-400/25 flex-shrink-0';
           ringEl.innerHTML = '<svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" /></svg>';
-          pill.className = 'flex-1 bg-emerald-500/10 rounded-xl px-4 py-3';
+          pill.className = 'flex-1 bg-orange-500/10 rounded-xl px-4 py-3';
           pill.innerHTML = `
             <div class="flex justify-between items-start">
               <div>
-                <div class="text-sm font-medium text-emerald-300">${meta.label}</div>
+                <div class="text-sm font-medium text-orange-200">${meta.label}</div>
                 <div class="text-xs text-slate-400 mt-1">${meta.desc}</div>
               </div>
-              <span class="text-xs text-emerald-400 font-medium">✓ Done</span>
+              <span class="text-xs text-orange-300 font-medium">✓ Done</span>
             </div>
           `;
           return;
         }
 
         if (state === 'current') {
-          ringEl.className = 'w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center z-10 shadow-lg shadow-amber-500/25 pulse-amber flex-shrink-0';
+          ringEl.className = 'w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center z-10 shadow-lg shadow-orange-500/25 pulse-amber flex-shrink-0';
           ringEl.innerHTML = `<span class="text-white font-bold text-sm">${meta.step}</span>`;
-          pill.className = 'flex-1 bg-amber-500/15 rounded-xl px-4 py-3 border border-amber-500/25';
+          pill.className = 'flex-1 bg-orange-500/15 rounded-xl px-4 py-3 border border-orange-500/25';
           pill.innerHTML = `
             <div class="flex justify-between items-start">
               <div>
-                <div class="text-sm font-medium text-amber-300">${meta.label}</div>
+                <div class="text-sm font-medium text-orange-300">${meta.label}</div>
                 <div class="text-xs text-slate-400 mt-1">${meta.desc}</div>
               </div>
-              <span class="text-xs text-amber-400 font-medium">Current</span>
+              <span class="text-xs text-orange-300 font-medium">Current</span>
             </div>
           `;
           return;
@@ -682,17 +698,17 @@
       const agreementStatusEl = document.getElementById('metric-agreement-status');
       const agreementSubEl = document.getElementById('metric-agreement-sub');
       if (agreementStatusEl) agreementStatusEl.textContent = agreementAccepted ? 'Signed' : 'Unsigned';
-      if (agreementSubEl) agreementSubEl.textContent = agreementAccepted ? (paymentCompleted ? 'Payment Complete' : 'Ready for Payment') : 'Sign agreement to continue';
+      if (agreementSubEl) agreementSubEl.textContent = agreementAccepted ? (paymentCompleted ? 'Payment Complete' : 'Ready for Payment') : 'Upcoming';
 
       const accountStatusEl = document.getElementById('metric-account-status');
       const accountSubEl = document.getElementById('metric-account-sub');
       if (accountStatusEl) accountStatusEl.textContent = paymentCompleted ? 'Active' : 'Intake';
-      if (accountSubEl) accountSubEl.textContent = `Next step: ${currentStep.label}`;
+      if (accountSubEl) accountSubEl.textContent = 'In Progress';
 
       const monitoringStatusEl = document.getElementById('metric-monitoring-status');
       const monitoringSubEl = document.getElementById('metric-monitoring-sub');
       if (monitoringStatusEl) monitoringStatusEl.textContent = monitoringActive ? 'Active' : 'Pending';
-      if (monitoringSubEl) monitoringSubEl.textContent = monitoringActive ? 'Full Coverage' : 'Not Yet Started';
+      if (monitoringSubEl) monitoringSubEl.textContent = monitoringActive ? 'Full Coverage' : 'Onboarding';
 
       const liveLabelEl = document.getElementById('snapshot-live-label');
       if (liveLabelEl) liveLabelEl.textContent = monitoringActive ? 'Live Monitoring' : 'Monitoring Pending';
@@ -707,5 +723,5 @@
 
   </script>
   <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9d17afa9003527d2',t:'MTc3MTY5MjAzMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9d1820d7a2e027d2',t:'MTc3MTY5NjY2OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9d1848ac05c027d2',t:'MTc3MTY5ODMwMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
