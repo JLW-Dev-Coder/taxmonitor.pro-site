@@ -1,37 +1,32 @@
-<!--/app/index.html-->
+<!-- /app/index.html -->
 <!doctype html>
-<html lang="en">
+<html lang="en" class="h-full">
  <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tax Monitor Pro Dashboard</title>
+  <title>Tax Monitor Pro - Dashboard</title>
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <script src="/_sdk/element_sdk.js"></script>
-  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&amp;display=swap" rel="stylesheet">
-  <link rel="apple-touch-icon" href="/assets/favicon.ico">
-  <link rel="icon" href="/assets/favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  <link rel="icon" href="https://taxmonitor.pro/favicon.ico" sizes="any">
+  <link rel="icon" href="https://taxmonitor.pro/assets/favicon.ico" sizes="any">
   <script>
     tailwind.config = {
       theme: {
         extend: {
-          fontFamily: {
-            dmsans: ['DM Sans', 'sans-serif']
-          },
+          fontFamily: { sans: ['DM Sans', 'system-ui', 'sans-serif'] },
           colors: {
+            slate: {
+              850: '#1a1f2e',
+              900: '#0f1219',
+              950: '#080a0f',
+            },
             amber: {
-              50: '#fffbeb',
-              100: '#fef3c7',
-              200: '#fde68a',
-              300: '#fcd34d',
               400: '#fbbf24',
               500: '#f59e0b',
               600: '#d97706',
-              700: '#b45309',
-              800: '#92400e',
-              900: '#78350f'
             }
           }
         }
@@ -39,77 +34,50 @@
     };
   </script>
   <style>
-    * { box-sizing: border-box; font-family: 'DM Sans', sans-serif; }
-    html, body { margin: 0; padding: 0; }
+      html, body { height: 100%; }
+      html { font-size: 100%; }
 
-    /* Smooth page load animations */
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    .tm-dashboard-scale { font-size: 125%; }
 
-    section { animation: fadeInUp 0.8s ease-out both; }
-
-    section:nth-of-type(1) { animation-delay: 0.10s; }
-    section:nth-of-type(2) { animation-delay: 0.20s; }
-    section:nth-of-type(3) { animation-delay: 0.30s; }
-    section:nth-of-type(4) { animation-delay: 0.40s; }
-    section:nth-of-type(5) { animation-delay: 0.50s; }
-    section:nth-of-type(6) { animation-delay: 0.60s; }
-    section:nth-of-type(7) { animation-delay: 0.70s; }
-    section:nth-of-type(8) { animation-delay: 0.80s; }
-    section:nth-of-type(9) { animation-delay: 0.90s; }
-    section:nth-of-type(10) { animation-delay: 1.00s; }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-10px); }
-    }
-    .icon-float { animation: float 3s ease-in-out infinite; }
+    *, *::before, *::after { box-sizing: border-box; }
+    body { box-sizing: border-box; }
+    * { font-family: 'DM Sans', system-ui, sans-serif; }
 
     .gradient-text {
-      background: linear-gradient(135deg, #f59e0b, #f97316, #ef4444);
+      background: linear-gradient(135deg, #F59E0B, #D97706);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
+    .gradient-bg {
+      background: linear-gradient(135deg, #F59E0B, #D97706);
+    }
+    .card-glow { box-shadow: none; }
 
+    /* Dashboard surfaces (match /app/index.html look) */
     .glass-card {
       background: rgba(30, 41, 59, 0.7);
       backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .gradient-border { background: linear-gradient(135deg, #F59E0B, #D97706); }
+    .gradient-btn { background: linear-gradient(135deg, #F59E0B, #D97706); }
+    .gradient-btn:hover { filter: brightness(1.05); }
+
+
+    /* Sidebar nav states */
+    .nav-item { transition: all 0.2s ease; }
+    .nav-item:hover { background: rgba(148, 163, 184, 0.08); }
+
+    .nav-item.active {
+      background: rgba(148, 163, 184, 0.12);
+      border-left: 2px solid rgba(148, 163, 184, 0.45);
+      color: #fff;
     }
 
-    .gradient-border { background: linear-gradient(135deg, #f59e0b, #f97316, #ef4444); }
-
-    .gradient-btn {
-      background: linear-gradient(135deg, #f59e0b, #f97316, #ef4444);
-    }
-    .gradient-btn:hover {
-      background: linear-gradient(135deg, #d97706, #ea580c, #dc2626);
-    }
-
-    /* Background blobs (match flow pages) */
-    .blob-1 {
-      position: absolute;
-      width: 420px;
-      height: 420px;
-      background: radial-gradient(circle, rgba(245, 158, 11, 0.15) 0%, transparent 70%);
-      border-radius: 50%;
-      top: -110px;
-      right: -120px;
-      pointer-events: none;
-    }
-    .blob-2 {
-      position: absolute;
-      width: 320px;
-      height: 320px;
-      background: radial-gradient(circle, rgba(239, 68, 68, 0.1) 0%, transparent 70%);
-      border-radius: 50%;
-      bottom: 140px;
-      left: -70px;
-      pointer-events: none;
-    }
+    /* Onboarding step links */
+    .tm-step-link { text-decoration: none; }
+    .tm-step-link:hover { text-decoration: underline; text-underline-offset: 4px; }
 
     /* Progress ring */
     .progress-ring-circle {
@@ -129,590 +97,496 @@
     }
 
     /* Pulse for current step */
-    .pulse-amber {
-      animation: pulseAmber 2s ease-in-out infinite;
-    }
+    .pulse-amber { animation: pulseAmber 2s ease-in-out infinite; }
     @keyframes pulseAmber {
       0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.35); }
       50% { box-shadow: 0 0 0 12px rgba(245, 158, 11, 0); }
     }
 
-    * { outline-color: transparent !important; }
-    *:focus { outline: none !important; }
-    *:focus-visible { outline: none !important; }
+    /* Pulse for monitoring pending (red) */
+    .pulse-red { animation: pulseRed 1.8s ease-in-out infinite; }
+    @keyframes pulseRed {
+      0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.6); }
+      70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+    }
+      50% { box-shadow: 0 0 0 12px rgba(245, 158, 11, 0); }
+    }
+
+
+
+    /* Noise texture overlay */
+    .noise-bg::before{
+      content:'';
+      position:fixed; inset:0;
+      opacity:.03;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      pointer-events:none;
+      z-index:1;
+    }
+33%{transform:translate(30px,-30px) scale(1.05)} 66%{transform:translate(-20px,20px) scale(.95)} }
   </style>
-  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
  </head>
- <body data-page="dashboard" class="font-dmsans bg-slate-900 text-white" style="display: flex; height: 100vh; margin: 0; overflow: hidden;">
-  <div style="display: flex; width: 100%; height: 100%;">
-   <!-- APP_SIDEBAR -->
-   <div style="display: flex; flex-direction: column; flex: 1; min-height: 0;">
-    <!-- APP_TOPBAR -->
-    <div id="app-wrapper" class="flex-1 min-h-0 w-full relative overflow-y-auto overscroll-contain">
-     <div class="blob-1" aria-hidden="true"></div>
-     <div class="blob-2" aria-hidden="true"></div>
-     <div class="relative z-10 max-w-6xl mx-auto px-4 py-8">
-      <!-- Header (match flow pages) -->
-      <header class="text-center mb-10">
-       <div class="inline-flex items-center justify-center mb-6">
-        <div class="icon-float" aria-hidden="true">
-         <svg class="w-16 h-16" viewbox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><defs>
-           <lineargradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" style="stop-color:#f59e0b" />
-            <stop offset="50%" style="stop-color:#ef4444" />
-            <stop offset="100%" style="stop-color:#fbbf24" />
-           </lineargradient>
-          </defs> <path d="M32 6L10 16V32C10 46 32 56 32 56C32 56 54 46 54 32V16L32 6Z" stroke="url(#shieldGrad)" stroke-width="2" fill="rgba(245,158,11,0.10)" /> <path d="M24 32L30 38L42 26" stroke="url(#shieldGrad)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" />
-         </svg>
-        </div>
+ <body class="h-full bg-slate-950 text-slate-100 noise-bg overflow-hidden">
+  <div class="relative z-10 flex h-full">
+   <!-- APP SIDEBAR PARTIAL --> <!-- APP_SIDEBAR --> <!-- Main Content Area -->
+   <div class="flex-1 flex flex-col min-w-0">
+    <!-- APP TOPBAR PARTIAL --> <!-- APP_TOPBAR --> <!-- Main Content -->
+    <main class="flex-1 overflow-auto">
+     <div class="max-w-6xl mx-auto px-6 py-8">
+      <!-- Trust / Headline -->
+      <div class="mb-8">
+       <div class="flex flex-col items-center text-center">
+        
+        <h1 class="text-3xl md:text-4xl font-semibold tracking-tight mb-2"><span id="greeting-prefix">Good evening, </span><span id="greeting-name" class="gradient-text">Jane</span></h1>
+        <p id="subheadline" class="text-slate-400 text-base md:text-lg max-w-2xl">This is your command center — where monitoring stays visible.</p>
+        <p id="helper-text" class="text-slate-500 text-sm mt-2 max-w-2xl">Track onboarding, view activity, and access your portal files anytime.</p>
        </div>
-       <p class="text-amber-400 font-semibold tracking-wider uppercase text-sm mb-2">Tax Monitor Pro</p>
-       <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold gradient-text mb-3">Dashboard</h1>
-       <p id="trust-line" class="text-slate-400 text-base sm:text-lg">Your IRS monitoring command center, built for clarity and control</p>
-      </header><!-- Main content -->
-      <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-       <!-- Onboarding Progress -->
-       <div class="glass-card rounded-2xl p-6 md:p-8">
+      </div><!-- Grid: Progress + Snapshot -->
+      <div class="grid lg:grid-cols-2 gap-6 mb-6">
+       <section class="glass-card rounded-2xl p-6 md:p-8">
         <div class="flex items-center justify-between mb-6">
-         <h2 class="text-lg font-bold text-white">Onboarding Progress</h2><span class="text-xs bg-amber-500/15 text-amber-300 px-3 py-1 rounded-full font-medium">~5 min left</span>
+          <h2 class="text-lg font-bold text-white">Onboarding Progress</h2>
+          <span class="text-xs bg-amber-500/15 text-amber-300 px-3 py-1 rounded-full font-medium">~5 min left</span>
         </div>
+
         <div class="flex flex-col sm:flex-row sm:items-center gap-6 mb-6">
-         <div class="relative flex-shrink-0 mx-auto sm:mx-0" style="width: 160px; height: 160px;">
-          <svg class="absolute inset-0 w-full h-full transform -rotate-90" viewbox="0 0 160 160" preserveaspectratio="xMidYMid meet" aria-hidden="true">
-           <circle cx="80" cy="80" r="70" fill="none" stroke="rgba(255,255,255,0.10)" stroke-width="10" /> <circle id="progress-ring" cx="80" cy="80" r="70" fill="none" stroke="url(#progressGradient)" stroke-width="10" stroke-linecap="round" stroke-dasharray="439.82" stroke-dashoffset="439.82" class="progress-ring-circle" /> <defs>
-            <lineargradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-             <stop offset="0%" style="stop-color:#f59e0b" />
-             <stop offset="100%" style="stop-color:#ef4444" />
-            </lineargradient>
-           </defs>
-          </svg>
-          <div class="absolute inset-0 flex flex-col items-center justify-center gap-1">
-           <span id="progress-percent" class="text-4xl font-bold gradient-text">0%</span> <span class="text-sm text-slate-500">Complete</span>
+          <div class="relative flex-shrink-0 mx-auto sm:mx-0" style="width: 160px; height: 160px;">
+            <svg class="absolute inset-0 w-full h-full transform -rotate-90" viewBox="0 0 160 160" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+              <circle cx="80" cy="80" r="70" fill="none" stroke="rgba(255,255,255,0.10)" stroke-width="10" />
+              <circle id="progress-ring" cx="80" cy="80" r="70" fill="none" stroke="url(#progressGradient)" stroke-width="10" stroke-linecap="round" stroke-dasharray="439.82" stroke-dashoffset="439.82" class="progress-ring-circle" />
+              <defs>
+                <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" style="stop-color:#f59e0b" />
+                  <stop offset="100%" style="stop-color:#ef4444" />
+                </linearGradient>
+              </defs>
+            </svg>
+            <div class="absolute inset-0 flex flex-col items-center justify-center gap-1">
+              <span id="progress-percent" class="text-4xl font-bold gradient-text">0%</span>
+              <span class="text-sm text-slate-500">Complete</span>
+            </div>
           </div>
-         </div>
-         <div class="flex-1">
-          <div class="space-y-2">
-           <div class="flex justify-between text-sm">
-            <span class="text-slate-400">Steps Completed</span> <span id="steps-completed-label" class="font-semibold text-white">0 of 8</span>
-           </div>
-           <div class="flex justify-between text-sm">
-            <span class="text-slate-400">Current Step</span> <span class="font-semibold text-amber-300" id="current-step-label">Intake Process</span>
-           </div>
-           <div class="flex justify-between text-sm">
-            <span class="text-slate-400">Protection Level</span> <span class="font-semibold text-yellow-300">Gold</span>
-           </div>
+
+          <div class="flex-1">
+            <div class="space-y-2">
+              <div class="flex justify-between text-sm">
+                <span class="text-slate-400">Steps Completed</span>
+                <span id="steps-completed-label" class="font-semibold text-white">0 of 8</span>
+              </div>
+              <div class="flex justify-between text-sm">
+                <span class="text-slate-400">Current Step</span>
+                <span class="font-semibold text-amber-300" id="current-step-label">Offer Reviewed</span>
+              </div>
+              <div class="flex justify-between text-sm">
+                <span class="text-slate-400">Protection Level</span>
+                <span class="font-semibold text-slate-400">Not Selected</span>
+              </div>
+            </div>
           </div>
-         </div>
         </div>
-        <div class="relative space-y-3" id="timeline-steps">
-         <div class="timeline-connector" aria-hidden="true"></div><button class="w-full flex items-center gap-3 relative text-left hover:opacity-90 transition-opacity step-button" data-step="1" data-step-key="intakeComplete" data-href="/app/pages/flows/intake/intake.html" type="button">
-          <div class="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center z-10 shadow-lg shadow-amber-500/25 pulse-amber flex-shrink-0">
-           <span class="text-white font-bold text-sm">1</span>
-          </div>
-          <div class="flex-1 bg-amber-500/15 rounded-xl px-4 py-2 border border-amber-500/25">
-           <span class="text-sm font-medium text-amber-300">Intake Process</span>
-          </div></button> <button class="w-full flex items-center gap-3 relative text-left hover:opacity-90 transition-opacity step-button" data-step="2" data-step-key="offerAccepted" data-href="/app/offer.html" type="button" disabled>
-          <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center z-10 flex-shrink-0">
-           <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewbox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-           </svg>
-          </div>
-          <div class="flex-1 bg-slate-800/30 rounded-xl px-4 py-2">
-           <span class="text-sm font-medium text-slate-500">Offer Reviewed</span>
-          </div></button> <button class="w-full flex items-center gap-3 relative text-left hover:opacity-90 transition-opacity step-button" data-step="3" data-step-key="agreementAccepted" data-href="/app/agreement.html" type="button" disabled>
-          <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center z-10 flex-shrink-0">
-           <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewbox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-           </svg>
-          </div>
-          <div class="flex-1 bg-slate-800/30 rounded-xl px-4 py-2">
-           <span class="text-sm font-medium text-slate-500">Agreement Signed</span>
-          </div></button> <button class="w-full flex items-center gap-3 relative text-left hover:opacity-90 transition-opacity step-button" data-step="4" data-step-key="paymentCompleted" data-href="/app/payment.html" type="button" disabled>
-          <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center z-10 flex-shrink-0">
-           <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewbox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-           </svg>
-          </div>
-          <div class="flex-1 bg-slate-800/30 rounded-xl px-4 py-2">
-           <span class="text-sm font-medium text-slate-500">Payment Processed</span>
-          </div></button> <button class="w-full flex items-center gap-3 relative text-left hover:opacity-90 transition-opacity step-button" data-step="5" data-step-key="welcomeConfirmed" data-href="/app/pages/flows/post-payment/welcome.html" type="button" disabled>
-          <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center z-10 flex-shrink-0">
-           <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewbox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-           </svg>
-          </div>
-          <div class="flex-1 bg-slate-800/30 rounded-xl px-4 py-2">
-           <span class="text-sm font-medium text-slate-500">Welcome Package Sent</span>
-          </div></button> <button class="w-full flex items-center gap-3 relative text-left hover:opacity-90 transition-opacity step-button" data-step="6" data-step-key="filingStatusSubmitted" data-href="/app/pages/flows/post-payment/filing-status.html" type="button" disabled>
-          <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center z-10 flex-shrink-0">
-           <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewbox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-           </svg>
-          </div>
-          <div class="flex-1 bg-slate-800/30 rounded-xl px-4 py-2">
-           <span class="text-sm font-medium text-slate-500">Filing Status Review</span>
-          </div></button> <button class="w-full flex items-center gap-3 relative text-left hover:opacity-90 transition-opacity step-button" data-step="7" data-step-key="addressUpdateSubmitted" data-href="/app/pages/flows/post-payment/address-update.html" type="button" disabled>
-          <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center z-10 flex-shrink-0">
-           <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewbox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-           </svg>
-          </div>
-          <div class="flex-1 bg-slate-800/30 rounded-xl px-4 py-2">
-           <span class="text-sm font-medium text-slate-500">Address Updated</span>
-          </div></button> <button class="w-full flex items-center gap-3 relative text-left hover:opacity-90 transition-opacity step-button" data-step="8" data-step-key="esign2848Submitted" data-href="/app/pages/flows/post-payment/esign-2848.html" type="button" disabled>
-          <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center z-10 flex-shrink-0">
-           <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewbox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-           </svg>
-          </div>
-          <div class="flex-1 bg-slate-800/30 rounded-xl px-4 py-2">
-           <span class="text-sm font-medium text-slate-500">Form 2848 Signed</span>
-          </div></button>
+
+        <div class="relative space-y-4" id="timeline-steps">
+          <div class="timeline-connector" aria-hidden="true"></div>
+
+          <!-- Step 1 -->
+          <button class="w-full flex items-start gap-3 relative text-left transition-opacity step-button" data-step="1" data-step-key="intakeComplete" data-href="/pages/flows/intake/intake.html" type="button">
+            <div class="w-10 h-10 rounded-full bg-emerald-500 flex items-center justify-center z-10 shadow-lg shadow-emerald-500/25 flex-shrink-0">
+              <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" /></svg>
+            </div>
+            <div class="flex-1 bg-emerald-500/10 rounded-xl px-4 py-3">
+              <div class="flex justify-between items-start">
+                <div>
+                  <div class="text-sm font-medium text-emerald-300">Intake Process</div>
+                  <div class="text-xs text-slate-400 mt-1">Initial information submitted and monitoring record created.</div>
+                </div>
+                <span class="text-xs text-emerald-400 font-medium">✓ Done</span>
+              </div>
+            </div>
+          </button>
+
+          <!-- Step 2 -->
+          <button class="w-full flex items-start gap-3 relative text-left transition-opacity step-button" data-step="2" data-step-key="offerAccepted" data-href="/pages/flows/intake/offer.html" type="button">
+            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center z-10 shadow-lg shadow-amber-500/25 pulse-amber flex-shrink-0">
+              <span class="text-white font-bold text-sm">2</span>
+            </div>
+            <div class="flex-1 bg-amber-500/15 rounded-xl px-4 py-3 border border-amber-500/25">
+              <div class="flex justify-between items-start">
+                <div>
+                  <div class="text-sm font-medium text-amber-300">Offer Reviewed</div>
+                  <div class="text-xs text-slate-400 mt-1">Service scope and pricing confirmed.</div>
+                </div>
+                <span class="text-xs text-amber-400 font-medium">Current</span>
+              </div>
+            </div>
+          </button>
+
+          <!-- Step 3 -->
+          <button class="w-full flex items-start gap-3 relative text-left opacity-60 step-button" data-step="3" data-step-key="agreementAccepted" data-href="/pages/flows/intake/agreement.html" type="button" disabled>
+            <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center z-10 flex-shrink-0">
+              <span class="text-slate-300 font-semibold text-sm">3</span>
+            </div>
+            <div class="flex-1 bg-slate-800/30 rounded-xl px-4 py-3">
+              <div class="text-sm font-medium text-slate-300">Agreement Signed</div>
+              <div class="text-xs text-slate-500 mt-1">Terms accepted and engagement activated.</div>
+            </div>
+          </button>
+
+          <!-- Step 4 -->
+          <button class="w-full flex items-start gap-3 relative text-left opacity-60 step-button" data-step="4" data-step-key="paymentCompleted" data-href="/pages/flows/intake/payment.html" type="button" disabled>
+            <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center z-10 flex-shrink-0">
+              <span class="text-slate-300 font-semibold text-sm">4</span>
+            </div>
+            <div class="flex-1 bg-slate-800/30 rounded-xl px-4 py-3">
+              <div class="text-sm font-medium text-slate-300">Payment Processed</div>
+              <div class="text-xs text-slate-500 mt-1">Monitoring cycle officially begins.</div>
+            </div>
+          </button>
+
+          <!-- Step 5 -->
+          <button class="w-full flex items-start gap-3 relative text-left opacity-60 step-button" data-step="5" data-step-key="welcomeConfirmed" data-href="/pages/flows/post-payment/welcome.html" type="button" disabled>
+            <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center z-10 flex-shrink-0">
+              <span class="text-slate-300 font-semibold text-sm">5</span>
+            </div>
+            <div class="flex-1 bg-slate-800/30 rounded-xl px-4 py-3">
+              <div class="text-sm font-medium text-slate-300">Welcome Package Sent</div>
+              <div class="text-xs text-slate-500 mt-1">Onboarding details and next steps delivered.</div>
+            </div>
+          </button>
+
+          <!-- Step 6 -->
+          <button class="w-full flex items-start gap-3 relative text-left opacity-60 step-button" data-step="6" data-step-key="filingStatusSubmitted" data-href="/pages/flows/post-payment/filing-status.html" type="button" disabled>
+            <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center z-10 flex-shrink-0">
+              <span class="text-slate-300 font-semibold text-sm">6</span>
+            </div>
+            <div class="flex-1 bg-slate-800/30 rounded-xl px-4 py-3">
+              <div class="text-sm font-medium text-slate-300">Filing Status Review</div>
+              <div class="text-xs text-slate-500 mt-1">Tax filing position confirmed for monitoring accuracy.</div>
+            </div>
+          </button>
+
+          <!-- Step 7 -->
+          <button class="w-full flex items-start gap-3 relative text-left opacity-60 step-button" data-step="7" data-step-key="addressUpdateSubmitted" data-href="/pages/flows/post-payment/address-update.html" type="button" disabled>
+            <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center z-10 flex-shrink-0">
+              <span class="text-slate-300 font-semibold text-sm">7</span>
+            </div>
+            <div class="flex-1 bg-slate-800/30 rounded-xl px-4 py-3">
+              <div class="text-sm font-medium text-slate-300">Address Updated</div>
+              <div class="text-xs text-slate-500 mt-1">IRS correspondence address verified.</div>
+            </div>
+          </button>
+
+          <!-- Step 8 -->
+          <button class="w-full flex items-start gap-3 relative text-left opacity-60 step-button" data-step="8" data-step-key="esign2848Submitted" data-href="/pages/flows/post-payment/esign-2848.html" type="button" disabled>
+            <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center z-10 flex-shrink-0">
+              <span class="text-slate-300 font-semibold text-sm">8</span>
+            </div>
+            <div class="flex-1 bg-slate-800/30 rounded-xl px-4 py-3">
+              <div class="text-sm font-medium text-slate-300">Form 2848 Signed</div>
+              <div class="text-xs text-slate-500 mt-1">Authorization secured for transcript access.</div>
+            </div>
+          </button>
         </div>
-       </div><!-- Monitoring Snapshot -->
-       <div class="glass-card rounded-2xl p-6 md:p-8">
-        <div class="flex items-center justify-between mb-6">
-         <h2 class="text-lg font-bold text-white">Monitoring Snapshot</h2><span class="flex items-center gap-2 text-xs text-emerald-300"> <span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" id="snapshot-live-dot"></span> <span id="snapshot-live-label">Live Monitoring</span> </span>
+       </section>
+       <section class="glass-card rounded-2xl p-6">
+        <div class="flex items-center justify-between mb-5">
+         <h2 id="snapshot-title" class="text-lg font-semibold text-slate-100">Monitoring Snapshot</h2>
+         <span class="flex items-center gap-2 text-xs text-slate-400">
+          <span class="w-2 h-2 bg-red-500 rounded-full shadow-lg shadow-red-500/50 pulse-red" id="snapshot-live-dot"></span>
+          <span id="snapshot-live-label">Monitoring Pending</span>
+         </span>
         </div>
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-         <div class="text-center p-4 bg-slate-900/40 rounded-2xl border border-white/5">
-          <div class="text-xs text-slate-400">
-           Agreement Status
-          </div>
-          <p class="text-xl font-bold text-emerald-300 mt-2" id="metric-agreement-status">Signed</p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-5">
+         <div class="text-center p-4 bg-slate-950/30 rounded-2xl border border-white/5">
+          <div class="text-xs text-slate-400">Agreement Status</div>
+          <p class="text-xl font-semibold text-amber-300 mt-2" id="metric-agreement-status">Unsigned</p>
           <p class="text-xs text-slate-500 mt-1" id="metric-agreement-sub">Ready for Payment</p>
          </div>
-         <div class="text-center p-4 bg-slate-900/40 rounded-2xl border border-white/5">
-          <div class="text-xs text-slate-400">
-           Account Status
-          </div>
-          <p class="text-xl font-bold text-blue-300 mt-2" id="metric-account-status">Active</p>
+
+         <div class="text-center p-4 bg-slate-950/30 rounded-2xl border border-white/5">
+          <div class="text-xs text-slate-400">Account Status</div>
+          <p class="text-xl font-semibold text-sky-300 mt-2" id="metric-account-status">Intake</p>
           <p class="text-xs text-slate-500 mt-1" id="metric-account-sub">Awaiting Next Step</p>
          </div>
-         <div class="text-center p-4 bg-slate-900/40 rounded-2xl border border-white/5">
-          <div class="text-xs text-slate-400">
-           Monitoring
-          </div>
-          <p class="text-xl font-bold text-emerald-200 mt-2" id="metric-monitoring-status">Active</p>
-          <p class="text-xs text-slate-500 mt-1" id="metric-monitoring-sub">Full Coverage</p>
+
+         <div class="text-center p-4 bg-slate-950/30 rounded-2xl border border-white/5">
+          <div class="text-xs text-slate-400">Monitoring</div>
+          <p class="text-xl font-semibold text-emerald-200 mt-2" id="metric-monitoring-status">Inactive</p>
+          <p class="text-xs text-slate-500 mt-1" id="metric-monitoring-sub">Not Yet Started</p>
          </div>
         </div>
-        <div class="bg-emerald-500/10 border border-emerald-500/20 rounded-2xl p-4 mb-6">
+
+        <div class="bg-emerald-500/10 border border-emerald-500/20 rounded-2xl p-4 mb-5">
          <div class="flex items-center gap-3">
           <div class="gradient-border p-0.5 rounded-xl">
-           <div class="bg-slate-800 p-2 rounded-xl">
-            <svg class="w-6 h-6 text-emerald-300" fill="none" stroke="currentColor" viewbox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a. 0z" />
+           <div class="bg-slate-900/70 p-2 rounded-xl">
+            <svg class="w-6 h-6 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4" />
+             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
            </div>
           </div>
           <div>
-           <p class="font-semibold text-emerald-200" id="snapshot-headline">Agreement Signed - Ready for Payment</p>
-           <p class="text-sm text-slate-400" id="snapshot-subhead">Complete payment to proceed to the next step</p>
+           <p class="font-semibold text-emerald-200" id="snapshot-headline">Offer Reviewed</p>
+           <p class="text-sm text-slate-400" id="snapshot-subhead">Continue to the next step to keep onboarding moving.</p>
           </div>
          </div>
-        </div><button class="gradient-btn w-full py-4 px-6 rounded-xl font-semibold text-white text-base transition-all transform hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center gap-2 mb-6" type="button" id="progress-map-btn">
-         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24" aria-hidden="true">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l5.553 2.776A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
-         </svg> View Project Progress &amp; Map </button>
+        </div>
+
+        <a
+          id="snapshot-cta"
+          href="/pages/project.html"
+          class="gradient-btn w-full py-3.5 px-5 rounded-xl font-semibold text-slate-900 text-sm transition-all transform hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center gap-2 mb-5"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l5.553 2.776A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+          </svg>
+          View project map &amp; status
+        </a>
+
         <div class="space-y-3">
          <h3 class="text-sm font-semibold text-slate-300">Recent Activity</h3>
-         <div id="recent-activity-list" class="space-y-3"></div>
+         <div id="recent-activity-list" class="space-y-3">
+          <p class="text-xs text-slate-500">No client-visible activity yet.</p>
+         </div>
         </div>
-       </div>
-      </section>
-      <footer class="text-center text-slate-500 text-sm mt-10">
-       <div class="flex items-center justify-center gap-4">
-        <span class="flex items-center gap-1">
-         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-         </svg> Secure </span> <span>•</span> <span>Confidential</span> <span>•</span> <span>Professional</span>
-       </div>
-       <div class="text-xs text-slate-600 mt-2">
-        © <span id="footer-year">2025</span> Tax Monitor Pro. Encrypted in transit using industry-standard <a href="https://www.cloudflare.com/learning/ssl/what-is-tls/" target="_blank" rel="noopener noreferrer" class="underline hover:text-slate-400">TLS</a>
-       </div>
-      </footer>
+       </section>
+      </div>
+      <p id="disclaimer" class="text-center text-slate-600 text-xs pb-6">Monitoring does not create IRS representation. Representation, filing, and resolution are separate engagements.</p>
      </div>
-    </div>
+    </main>
    </div>
   </div>
   <script>
     const defaultConfig = {
-      user_name: 'Sarah',
-      trust_line: 'Your IRS monitoring command center, built for clarity and control',
-      last_check_date: 'Jan 15',
-      background_color: '#0f172a',
-      accent_color: '#f59e0b',
-      text_color: '#ffffff',
-      secondary_color: '#10b981',
-      muted_color: '#64748b',
-      font_family: 'DM Sans'
+      account_label: 'Account: Monitoring',
+      background_color: '#020617',
+      disclaimer_text: 'Monitoring does not create IRS representation. Representation, filing, and resolution are separate engagements.',
+      greeting_prefix: 'Good evening, ',
+      greeting_subheadline: 'This is your command center — where monitoring stays visible.',
+      helper_text: 'Track onboarding, view activity, and access your portal files anytime.',
+      text_color: '#f1f5f9',
+      topbar_mode: 'Monitoring Portal',
+      user_name: 'Jane Doe',
     };
+
+    function safeFirstName(fullName) {
+      const s = String(fullName || '').trim();
+      if (!s) return 'there';
+      return s.split(/\s+/)[0] || 'there';
+    }
+
+    function initialsFromName(fullName) {
+      const s = String(fullName || '').trim();
+      if (!s) return 'TM';
+      const parts = s.split(/\s+/).filter(Boolean);
+      const first = parts[0] ? parts[0][0] : '';
+      const last = parts.length > 1 ? parts[parts.length - 1][0] : '';
+      const out = (first + last).toUpperCase();
+      return out || 'TM';
+    }
+
+    function setText(id, value) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = String(value ?? '');
+    }
+
+    function applyNavActive() {
+      const path = window.location.pathname || '';
+      const links = document.querySelectorAll('a.nav-item');
+      links.forEach((a) => {
+        const href = (a.getAttribute('href') || '');
+        if (!href || href.startsWith('javascript:')) return;
+        const normalizedHref = href.split('?')[0].split('#')[0];
+        const isActive =
+          normalizedHref === path ||
+          (normalizedHref !== '/' && normalizedHref.length > 1 && path.startsWith(normalizedHref));
+        a.classList.toggle('active', isActive);
+      });
+    }
+
+    function applyFlowPlaceholders(state) {
+      const flowLabel = document.getElementById('sidebar-flow-label');
+      const flowSubtitle = document.getElementById('sidebar-flow-subtitle');
+
+      if (flowLabel) flowLabel.textContent = state.sidebar_flow_label || 'Start Here';
+      if (flowSubtitle) flowSubtitle.textContent = state.sidebar_flow_subtitle || '';
+    }
+
+    async function onConfigChange(config) {
+      const merged = Object.assign({}, defaultConfig, config || {});
+      const fullName = merged.user_name || defaultConfig.user_name;
+      const firstName = safeFirstName(fullName);
+      const initials = initialsFromName(fullName);
+
+      window.TM_APP_STATE = window.TM_APP_STATE || {
+        account_label: merged.account_label,
+        phase: 'portal',
+        step: 'dashboard',
+        topbar_mode: merged.topbar_mode,
+        user_name: fullName,
+      };
+
+      window.TM_FLOW = window.TM_FLOW || {
+        phase: window.TM_APP_STATE.phase,
+        step: window.TM_APP_STATE.step,
+      };
+
+      setText('greeting-prefix', merged.greeting_prefix);
+      setText('greeting-name', firstName);
+      setText('subheadline', merged.greeting_subheadline);
+      setText('helper-text', merged.helper_text);
+      setText('disclaimer', merged.disclaimer_text);
+
+      setText('sidebar-user-name', fullName);
+      setText('topbar-user-name', fullName);
+      setText('sidebar-account-label', merged.account_label);
+      setText('topbar-mode', merged.topbar_mode);
+
+      document.querySelectorAll('.tm-user-initials').forEach((el) => { el.textContent = initials; });
+
+      applyFlowPlaceholders({
+        sidebar_flow_label: 'Start Here',
+        sidebar_flow_subtitle: 'Intake',
+      });
+
+      applyNavActive();
+    }
+
+    function mapToCapabilities(config) {
+      const merged = Object.assign({}, defaultConfig, config || {});
+      return {
+        borderables: [],
+        fontEditable: {
+          get: () => merged.font_family || 'DM Sans',
+          set: (value) => window.elementSdk.setConfig({ font_family: value })
+        },
+        fontSizeable: {
+          get: () => merged.font_size || 16,
+          set: (value) => window.elementSdk.setConfig({ font_size: value })
+        },
+        recolorables: [
+          { get: () => merged.background_color || defaultConfig.background_color, set: (value) => window.elementSdk.setConfig({ background_color: value }) },
+          { get: () => merged.text_color || defaultConfig.text_color, set: (value) => window.elementSdk.setConfig({ text_color: value }) }
+        ]
+      };
+    }
+
+    function mapToEditPanelValues(config) {
+      const merged = Object.assign({}, defaultConfig, config || {});
+      return new Map([
+        ['account_label', merged.account_label],
+        ['disclaimer_text', merged.disclaimer_text],
+        ['greeting_prefix', merged.greeting_prefix],
+        ['greeting_subheadline', merged.greeting_subheadline],
+        ['helper_text', merged.helper_text],
+        ['topbar_mode', merged.topbar_mode],
+        
+        ['user_name', merged.user_name]
+      ]);
+    }
 
     if (window.elementSdk) {
       window.elementSdk.init({
         defaultConfig,
-        onConfigChange: async (config) => {
-          const userNameEl = document.getElementById('user-name');
-          if (userNameEl) userNameEl.textContent = config.user_name || defaultConfig.user_name;
-
-          const trustLineEl = document.getElementById('trust-line');
-          if (trustLineEl) trustLineEl.textContent = config.trust_line || defaultConfig.trust_line;
-
-          document.body.style.backgroundColor = config.background_color || defaultConfig.background_color;
-        },
-        mapToCapabilities: (config) => ({
-          recolorables: [
-            { get: () => config.background_color || defaultConfig.background_color, set: (value) => window.elementSdk.setConfig({ background_color: value }) },
-            { get: () => config.accent_color || defaultConfig.accent_color, set: (value) => window.elementSdk.setConfig({ accent_color: value }) },
-            { get: () => config.text_color || defaultConfig.text_color, set: (value) => window.elementSdk.setConfig({ text_color: value }) },
-            { get: () => config.secondary_color || defaultConfig.secondary_color, set: (value) => window.elementSdk.setConfig({ secondary_color: value }) },
-            { get: () => config.muted_color || defaultConfig.muted_color, set: (value) => window.elementSdk.setConfig({ muted_color: value }) }
-          ],
-          borderables: [],
-          fontEditable: {
-            get: () => config.font_family || defaultConfig.font_family,
-            set: (value) => window.elementSdk.setConfig({ font_family: value })
-          },
-          fontSizeable: undefined
-        }),
-        mapToEditPanelValues: (config) => new Map([
-          ['user_name', config.user_name || defaultConfig.user_name],
-          ['trust_line', config.trust_line || defaultConfig.trust_line],
-          ['last_check_date', config.last_check_date || defaultConfig.last_check_date]
-        ])
+        onConfigChange,
+        mapToCapabilities,
+        mapToEditPanelValues
       });
+    } else {
+      onConfigChange(defaultConfig);
     }
 
-    function escapeHtml(s) {
-      return String(s)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
-    }
+    window.addEventListener('popstate', applyNavActive);
 
-    document.addEventListener('DOMContentLoaded', () => {
-      (function setFooterYear() {
-        const el = document.getElementById('footer-year');
-        if (el) el.textContent = String(new Date().getFullYear());
+    function setDashboardProgress() {
+      const stepBooleans = (window.TM_ORDER && window.TM_ORDER.stepBooleans) ? window.TM_ORDER.stepBooleans : {};
+      const journey = [
+        { href: '/pages/flows/intake/intake.html', key: 'intakeComplete', label: 'Intake Process', step: 1 },
+        { href: '/pages/flows/intake/offer.html', key: 'offerAccepted', label: 'Offer Reviewed', step: 2 },
+        { href: '/pages/flows/intake/agreement.html', key: 'agreementAccepted', label: 'Agreement Signed', step: 3 },
+        { href: '/pages/flows/intake/payment.html', key: 'paymentCompleted', label: 'Payment Processed', step: 4 },
+        { href: '/pages/flows/post-payment/welcome.html', key: 'welcomeConfirmed', label: 'Welcome Package Sent', step: 5 },
+        { href: '/pages/flows/post-payment/filing-status.html', key: 'filingStatusSubmitted', label: 'Filing Status Review', step: 6 },
+        { href: '/pages/flows/post-payment/address-update.html', key: 'addressUpdateSubmitted', label: 'Address Updated', step: 7 },
+        { href: '/pages/flows/post-payment/esign-2848.html', key: 'esign2848Submitted', label: 'Form 2848 Signed', step: 8 },
+      ];
+
+      const totalSteps = journey.length;
+      const completedSteps = journey.filter((s) => !!stepBooleans[s.key]).length;
+      const percent = totalSteps === 0 ? 0 : Math.round((completedSteps / totalSteps) * 100);
+
+      const percentEl = document.getElementById('progress-percent');
+      const stepsLabelEl = document.getElementById('steps-completed-label');
+      if (percentEl) percentEl.textContent = `${percent}%`;
+      if (stepsLabelEl) stepsLabelEl.textContent = `${completedSteps} of ${totalSteps}`;
+
+      const currentStep = (function pickCurrentStep() {
+        for (let i = 0; i < journey.length; i++) {
+          if (!stepBooleans[journey[i].key]) return journey[i];
+        }
+        return journey[journey.length - 1] || journey[0];
       })();
 
-      (function setMonitoringSnapshot() {
-        const stepBooleans = (window.TM_ORDER && window.TM_ORDER.stepBooleans) ? window.TM_ORDER.stepBooleans : {};
+      const currentStepLabelEl = document.getElementById('current-step-label');
+      if (currentStepLabelEl) currentStepLabelEl.textContent = currentStep.label;
 
-        const journey = [
-          { key: 'intakeComplete', label: 'Intake Process', step: 1 },
-          { key: 'offerAccepted', label: 'Offer Reviewed', step: 2 },
-          { key: 'agreementAccepted', label: 'Agreement Signed', step: 3 },
-          { key: 'paymentCompleted', label: 'Payment Processed', step: 4 },
-          { key: 'welcomeConfirmed', label: 'Welcome Package Sent', step: 5 },
-          { key: 'filingStatusSubmitted', label: 'Filing Status Review', step: 6 },
-          { key: 'addressUpdateSubmitted', label: 'Address Updated', step: 7 },
-          { key: 'esign2848Submitted', label: 'Form 2848 Signed', step: 8 }
-        ];
+      const ring = document.getElementById('progress-ring');
+      if (ring) {
+        const circumference = 2 * Math.PI * 70;
+        const offset = circumference - (percent / 100) * circumference;
+        setTimeout(() => { ring.style.strokeDashoffset = String(offset); }, 200);
+      }
 
-        const totalSteps = journey.length;
-        const completedSteps = journey.filter((s) => !!stepBooleans[s.key]).length;
-        const percent = totalSteps === 0 ? 0 : Math.round((completedSteps / totalSteps) * 100);
+      const qs = window.location.search || '';
+      const buttons = Array.from(document.querySelectorAll('.step-button'));
 
-        const percentEl = document.getElementById('progress-percent');
-        const stepsLabelEl = document.getElementById('steps-completed-label');
-        if (percentEl) percentEl.textContent = `${percent}%`;
-        if (stepsLabelEl) stepsLabelEl.textContent = `${completedSteps} of ${totalSteps}`;
+      buttons.forEach((btn) => {
+        const key = btn.getAttribute('data-step-key') || '';
+        const href = btn.getAttribute('data-href') || '';
+        const isDone = !!stepBooleans[key];
+        const isCurrent = key === currentStep.key;
+        const shouldEnable = isDone || isCurrent;
 
-        const currentStep = (function pickCurrentStep() {
-          for (let i = 0; i < journey.length; i++) {
-            if (!stepBooleans[journey[i].key]) return journey[i];
+        btn.disabled = !shouldEnable;
+        btn.classList.toggle('opacity-50', !shouldEnable);
+        btn.classList.toggle('cursor-not-allowed', !shouldEnable);
+
+        const ringEl = btn.querySelector('div.w-10.h-10');
+        const pill = btn.querySelector('div.flex-1');
+        const label = btn.querySelector('span.text-sm');
+
+        if (isDone) {
+          if (ringEl) {
+            ringEl.className = 'w-10 h-10 rounded-full bg-emerald-500 flex items-center justify-center z-10 shadow-lg shadow-emerald-500/25 flex-shrink-0';
+            ringEl.innerHTML = '<svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" /></svg>';
           }
-          return journey[journey.length - 1] || { key: 'intakeComplete', label: 'Intake Process', step: 1 };
-        })();
-
-        const currentStepLabelEl = document.getElementById('current-step-label');
-        if (currentStepLabelEl) currentStepLabelEl.textContent = currentStep.label;
-
-        const ring = document.getElementById('progress-ring');
-        if (ring) {
-          const circumference = 2 * Math.PI * 70;
-          const offset = circumference - (percent / 100) * circumference;
-          setTimeout(() => { ring.style.strokeDashoffset = String(offset); }, 200);
+          if (pill) pill.className = 'flex-1 bg-emerald-500/10 rounded-xl px-4 py-2';
+          if (label) label.className = 'text-sm font-medium text-emerald-300';
+        } else if (isCurrent) {
+          if (ringEl) ringEl.className = 'w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center z-10 shadow-lg shadow-amber-500/25 pulse-amber flex-shrink-0';
+          if (pill) pill.className = 'flex-1 bg-amber-500/15 rounded-xl px-4 py-2 border border-amber-500/25';
+          if (label) label.className = 'text-sm font-medium text-amber-300';
         }
 
-        const agreementAccepted = !!stepBooleans.agreementAccepted;
-        const offerAccepted = !!stepBooleans.offerAccepted;
-        const paymentCompleted = !!stepBooleans.paymentCompleted;
-
-        const agreementStatusEl = document.getElementById('metric-agreement-status');
-        const agreementSubEl = document.getElementById('metric-agreement-sub');
-        if (agreementStatusEl && agreementSubEl) {
-          if (agreementAccepted) {
-            agreementStatusEl.textContent = 'Signed';
-            agreementSubEl.textContent = paymentCompleted ? 'Payment Complete' : 'Ready for Payment';
-          } else if (offerAccepted) {
-            agreementStatusEl.textContent = 'Pending';
-            agreementSubEl.textContent = 'Review & Sign Agreement';
-          } else {
-            agreementStatusEl.textContent = 'Not Started';
-            agreementSubEl.textContent = 'Complete Intake First';
-          }
-        }
-
-        const accountStatusEl = document.getElementById('metric-account-status');
-        const accountSubEl = document.getElementById('metric-account-sub');
-        const accountLabel = String(window.TM_APP_STATE?.accountLabel || '').trim();
-        if (accountStatusEl && accountSubEl) {
-          const baseStatus = accountLabel || (paymentCompleted ? 'Active' : 'Setup');
-          accountStatusEl.textContent = baseStatus;
-          accountSubEl.textContent = `Next step: ${currentStep.label}`;
-        }
-
-        const monitoringStatusEl = document.getElementById('metric-monitoring-status');
-        const monitoringSubEl = document.getElementById('metric-monitoring-sub');
-        const liveLabelEl = document.getElementById('snapshot-live-label');
-        const liveDotEl = document.getElementById('snapshot-live-dot');
-
-        const monitoringActive = typeof window.TM_APP_STATE?.monitoringActive === 'boolean'
-          ? window.TM_APP_STATE.monitoringActive
-          : !!stepBooleans.reportReady;
-
-        if (monitoringStatusEl && monitoringSubEl) {
-          if (monitoringActive) {
-            monitoringStatusEl.textContent = 'Active';
-            monitoringSubEl.textContent = 'Full Coverage';
-          } else if (paymentCompleted) {
-            monitoringStatusEl.textContent = 'Initializing';
-            monitoringSubEl.textContent = 'Setup In Progress';
-          } else {
-            monitoringStatusEl.textContent = 'Inactive';
-            monitoringSubEl.textContent = 'Not Yet Started';
-          }
-        }
-
-        if (liveLabelEl && liveDotEl) {
-          if (monitoringActive) {
-            liveLabelEl.textContent = 'Live Monitoring';
-            liveDotEl.className = 'w-2 h-2 bg-emerald-400 rounded-full animate-pulse';
-          } else {
-            const startYear = Number(window.TM_APP_STATE?.taxYearsStartYear || 2016);
-            const now = new Date();
-            const year = now.getFullYear();
-
-            function dateUTC(y, m, d) { return new Date(Date.UTC(y, m, d)); }
-            function addDaysUTC(dt, days) {
-              const out = new Date(dt.getTime());
-              out.setUTCDate(out.getUTCDate() + days);
-              return out;
-            }
-            function addMonthsUTC(dt, months) {
-              const out = new Date(dt.getTime());
-              const day = out.getUTCDate();
-              out.setUTCDate(1);
-              out.setUTCMonth(out.getUTCMonth() + months);
-              const lastDay = new Date(Date.UTC(out.getUTCFullYear(), out.getUTCMonth() + 1, 0)).getUTCDate();
-              out.setUTCDate(Math.min(day, lastDay));
-              return out;
-            }
-            function observedEmancipationDayUTC(y) {
-              const d = dateUTC(y, 3, 16);
-              const dow = d.getUTCDay();
-              if (dow === 6) return dateUTC(y, 3, 15);
-              if (dow === 0) return dateUTC(y, 3, 17);
-              return d;
-            }
-            function taxDayUTC(y) {
-              let d = dateUTC(y, 3, 15);
-              const emanc = observedEmancipationDayUTC(y);
-
-              if (d.getTime() === emanc.getTime()) d = addDaysUTC(d, 1);
-              while (d.getUTCDay() === 6 || d.getUTCDay() === 0) d = addDaysUTC(d, 1);
-              if (d.getTime() === emanc.getTime()) d = addDaysUTC(d, 1);
-              while (d.getUTCDay() === 6 || d.getUTCDay() === 0) d = addDaysUTC(d, 1);
-
-              return d;
-            }
-
-            const availableDate = addMonthsUTC(taxDayUTC(year), 3);
-            const latestTranscriptYear = now.getTime() >= availableDate.getTime() ? year : year - 1;
-
-            liveLabelEl.textContent = `Tax Years Covered ${startYear} - ${latestTranscriptYear}`;
-            liveDotEl.className = 'w-2 h-2 bg-slate-500 rounded-full';
-          }
-        }
-
-        const headlineEl = document.getElementById('snapshot-headline');
-        const subheadEl = document.getElementById('snapshot-subhead');
-        if (headlineEl && subheadEl) {
-          headlineEl.textContent = `${currentStep.label}`;
-          subheadEl.textContent = paymentCompleted
-            ? 'Monitoring will reflect new IRS activity here as it happens.'
-            : 'Complete the next step to activate monitoring.';
-        }
-
-        const qs = window.location.search || '';
-        const buttons = Array.from(document.querySelectorAll('.step-button'));
-
-        buttons.forEach((btn) => {
-          const key = btn.getAttribute('data-step-key') || '';
-          const href = btn.getAttribute('data-href') || '';
-          const isDone = !!stepBooleans[key];
-          const isCurrent = key === currentStep.key;
-          const shouldEnable = isDone || isCurrent;
-
-          btn.disabled = !shouldEnable;
-          btn.classList.toggle('opacity-50', !shouldEnable);
-          btn.classList.toggle('cursor-not-allowed', !shouldEnable);
-
-          const ringEl = btn.querySelector('div.w-10.h-10');
-          const pill = btn.querySelector('div.flex-1');
-          const label = btn.querySelector('span.text-sm');
-
-          if (isDone) {
-            if (ringEl) {
-              ringEl.className = 'w-10 h-10 rounded-full bg-emerald-500 flex items-center justify-center z-10 shadow-lg shadow-emerald-500/25 flex-shrink-0';
-              ringEl.innerHTML = '<svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" /></svg>';
-            }
-            if (pill) pill.className = 'flex-1 bg-emerald-500/10 rounded-xl px-4 py-2';
-            if (label) label.className = 'text-sm font-medium text-emerald-300';
-          } else if (isCurrent) {
-            if (ringEl) ringEl.className = 'w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center z-10 shadow-lg shadow-amber-500/25 pulse-amber flex-shrink-0';
-            if (pill) pill.className = 'flex-1 bg-amber-500/15 rounded-xl px-4 py-2 border border-amber-500/25';
-            if (label) label.className = 'text-sm font-medium text-amber-300';
-          }
-
-          btn.addEventListener('click', () => {
-            if (btn.disabled) return;
-            if (!href) return;
-            const target = href.indexOf('?') !== -1 ? href : (href + qs);
-            window.location.href = target;
-          });
+        btn.addEventListener('click', () => {
+          if (btn.disabled) return;
+          if (!href) return;
+          const target = href.indexOf('?') !== -1 ? href : (href + qs);
+          window.location.href = target;
         });
+      });
 
-        const progressBtn = document.getElementById('progress-map-btn');
-        if (progressBtn) {
-          progressBtn.addEventListener('click', () => {
-            const base = '/app/pages/projects.html';
-            const target = qs ? base + qs : base;
-            window.location.href = target;
-          });
-        }
-      })();
+      const headlineEl = document.getElementById('snapshot-headline');
+      const subheadEl = document.getElementById('snapshot-subhead');
+      if (headlineEl) headlineEl.textContent = currentStep.label;
+      if (subheadEl) subheadEl.textContent = 'Continue to the next step to keep onboarding moving.';
+    }
 
-      (function setTaxYearsCovered() {
-        const el = document.getElementById('tax-years-covered');
-        if (!el) return;
+    document.addEventListener('DOMContentLoaded', setDashboardProgress);
 
-        const startYear = Number(window.TM_APP_STATE?.taxYearsStartYear || 2016);
-        const now = new Date();
-        const year = now.getFullYear();
-
-        function dateUTC(y, m, d) { return new Date(Date.UTC(y, m, d)); }
-        function addDaysUTC(dt, days) {
-          const out = new Date(dt.getTime());
-          out.setUTCDate(out.getUTCDate() + days);
-          return out;
-        }
-        function addMonthsUTC(dt, months) {
-          const out = new Date(dt.getTime());
-          const day = out.getUTCDate();
-          out.setUTCDate(1);
-          out.setUTCMonth(out.getUTCMonth() + months);
-          const lastDay = new Date(Date.UTC(out.getUTCFullYear(), out.getUTCMonth() + 1, 0)).getUTCDate();
-          out.setUTCDate(Math.min(day, lastDay));
-          return out;
-        }
-        function observedEmancipationDayUTC(y) {
-          const d = dateUTC(y, 3, 16);
-          const dow = d.getUTCDay();
-          if (dow === 6) return dateUTC(y, 3, 15);
-          if (dow === 0) return dateUTC(y, 3, 17);
-          return d;
-        }
-        function taxDayUTC(y) {
-          let d = dateUTC(y, 3, 15);
-          const emanc = observedEmancipationDayUTC(y);
-
-          if (d.getTime() === emanc.getTime()) d = addDaysUTC(d, 1);
-          while (d.getUTCDay() === 6 || d.getUTCDay() === 0) d = addDaysUTC(d, 1);
-          if (d.getTime() === emanc.getTime()) d = addDaysUTC(d, 1);
-          while (d.getUTCDay() === 6 || d.getUTCDay() === 0) d = addDaysUTC(d, 1);
-
-          return d;
-        }
-
-        const availableDate = addMonthsUTC(taxDayUTC(year), 3);
-        const latestTranscriptYear = now.getTime() >= availableDate.getTime() ? year : year - 1;
-
-        el.textContent = `${startYear} - ${latestTranscriptYear}`;
-      })();
-
-      (function renderRecentActivity() {
-        const container = document.getElementById('recent-activity-list');
-        if (!container) return;
-
-        const raw = Array.isArray(window.TM_APP_STATE?.recentActivity)
-          ? window.TM_APP_STATE.recentActivity
-          : [];
-
-        const items = raw
-          .filter((x) => x && typeof x === 'object')
-          .filter((x) => (x.visibleToClient !== false))
-          .filter((x) => String(x.kind || x.type || '').toLowerCase() !== 'visit')
-          .slice(0, 6);
-
-        if (!items.length) {
-          container.innerHTML = '<p class="text-xs text-slate-500">No client-visible activity yet.</p>';
-          return;
-        }
-
-        function iconFor(x) {
-          const k = String(x.code || '').toLowerCase();
-          const t = String(x.kind || x.type || '').toLowerCase();
-
-          if (k.includes('stripe') || t.includes('payment')) {
-            return {
-              bg: 'bg-emerald-500/20',
-              svg: '<svg class="w-4 h-4 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a5 5 0 00-10 0v2m-2 0h14a2 2 0 012 2v7a2 2 0 01-2 2H5a2 2 0 01-2-2v-7a2 2 0 012-2z"/></svg>'
-            };
-          }
-
-          if (k.includes('webhook') || t.includes('webhook')) {
-            return {
-              bg: 'bg-blue-500/20',
-              svg: '<svg class="w-4 h-4 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>'
-            };
-          }
-
-          if (k.includes('form') || t.includes('form')) {
-            return {
-              bg: 'bg-amber-500/20',
-              svg: '<svg class="w-4 h-4 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>'
-            };
-          }
-
-          return {
-            bg: 'bg-slate-700/40',
-            svg: '<svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M12 18a. 12z"/></svg>'
-          };
-        }
-
-        function timeLabel(x) {
-          const ts = x.occurredAt || x.at || x.timestamp;
-          if (!ts) return '';
-          const d = new Date(ts);
-          if (Number.isNaN(d.getTime())) return '';
-          return d.toLocaleString(undefined, { day: 'numeric', hour: 'numeric', minute: '2-digit', month: 'short', year: 'numeric' });
-        }
-
-        container.innerHTML = items.map((x, idx) => {
-          const title = String(x.title || x.label || x.message || `Activity ${idx + 1}`);
-          const when = timeLabel(x);
-          const meta = when ? when : 'Just now';
-          const icon = iconFor(x);
-
-          return `
-            <div class="flex items-center gap-3 p-3 bg-slate-900/40 rounded-xl border border-white/5">
-              <div class="w-8 h-8 rounded-lg ${icon.bg} flex items-center justify-center flex-shrink-0">${icon.svg}</div>
-              <div class="flex-1">
-                <p class="text-sm font-medium text-white">${escapeHtml(title)}</p>
-                <p class="text-xs text-slate-500">${escapeHtml(meta)}</p>
-              </div>
-            </div>
-          `;
-        }).join('');
-      })();
-    });
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9d140846f20a27d2',t:'MTc3MTY1MzcyMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9d17afa9003527d2',t:'MTc3MTY5MjAzMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
