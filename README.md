@@ -365,22 +365,3 @@ Canonical fields:
 * Contracts versioned and enforced
 * Login writes receipt
 * 2848 state machine enforced
-
----
-
-# Repository Structure (Exact Tree)
-
-**This structure is authoritative and must not be modified without updating this file.**
-
-(Keep your full tree block exactly as you had it — it’s correct and canonical.)
-
----
-
-## What Changed
-
-* Removed duplicated architectural statements
-* Consolidated processing flow into one authoritative section
-* Moved environment variables into their own clean block
-* Removed narrative drift
-
-* Eliminated layered repetition
