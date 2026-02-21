@@ -1,6 +1,6 @@
 <!--/app/index.html-->
 <!doctype html>
-<html lang="en" class="h-full">
+<html lang="en" class="h-screen">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -125,29 +125,19 @@
     * { outline-color: transparent !important; }
     *:focus { outline: none !important; }
     *:focus-visible { outline: none !important; }
-
-    /* === FIX: stop vertical centering + remove fake top void on Dashboard === */
-    body[data-page="dashboard"] #app-wrapper{
-      align-items: stretch !important;
-      display: block !important;
-      justify-content: flex-start !important;
-      margin-top: 0 !important;
-      min-height: calc(100vh - 64px) !important; /* topbar is h-16 */
-      padding-top: 0 !important;
-    }
-
-    body[data-page="dashboard"] #app-wrapper > .relative.z-10{
-      margin-top: 0 !important;
-      padding-top: 2rem !important;
-    }
   </style>
 </head>
 
-<body data-page="dashboard" class="h-full font-dmsans bg-slate-900 text-white overflow-auto">
+<body data-page="dashboard" class="h-screen font-dmsans bg-slate-900 text-white overflow-hidden">
   <!-- APP_SIDEBAR -->
   <!-- APP_TOPBAR -->
 
-  <div id="app-wrapper" class="min-h-full w-full relative">
+  <!--
+    Layout fix (match Projects):
+    - Body owns the viewport (h-screen, overflow-hidden).
+    - app-wrapper becomes the scroll container (min-h-0 + overflow-y-auto).
+  -->
+  <div id="app-wrapper" class="flex-1 min-h-0 w-full relative overflow-y-auto overscroll-contain">
     <div class="blob-1" aria-hidden="true"></div>
     <div class="blob-2" aria-hidden="true"></div>
 
