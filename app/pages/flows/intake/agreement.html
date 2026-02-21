@@ -165,18 +165,18 @@
   <style>@view-transition { navigation: auto; }</style>
 </head>
 
-<body class="h-full bg-slate-950 text-slate-100">
-  <div class="relative min-h-screen overflow-hidden">
+<body class="h-full bg-slate-950 text-slate-100 noise-bg overflow-hidden">
+  <div class="relative h-full overflow-hidden">
     <div class="aurora" aria-hidden="true"></div>
     <div class="pointer-events-none absolute inset-0 noise-bg opacity-50" aria-hidden="true"></div>
 
-    <div class="relative z-10 min-h-screen grid lg:grid-cols-[280px_1fr]">
+    <div class="relative z-10 flex h-full">
       <!-- App Sidebar (partial injection target) -->
-      <aside class="hidden lg:block sidebar-shell">
+      <aside class="hidden lg:block w-[280px] shrink-0 sidebar-shell">
         <div id="tm-sidebar" class="h-full"></div>
       </aside>
 
-      <div class="min-h-screen flex flex-col">
+      <div class="flex-1 flex flex-col min-w-0">
         <!-- App Topbar (partial injection target) -->
         <div class="topbar-shell sticky top-0 z-30">
           <div id="tm-topbar"></div>
@@ -253,7 +253,7 @@
         </header>
 
         <!-- Content -->
-        <main class="flex-1">
+        <main class="flex-1 overflow-auto">
           <div class="mx-auto max-w-5xl px-6 py-10">
             <section class="gradient-border rounded-[24px] fade-in-up">
               <div class="glass-card rounded-[24px] p-6 md:p-8">
@@ -408,6 +408,10 @@
     (function () {
       'use strict';
 
+      // --- Overlay mode detection ---
+      var qs = new URLSearchParams(window.location.search || '');
+      var isOverlay = qs.get('overlay') === '1';
+
       function injectPartial(targetId, url) {
         var el = document.getElementById(targetId);
         if (!el) return;
@@ -491,18 +495,34 @@
         return u.toString();
       }
 
-      // Inject app chrome
-      injectPartial('tm-sidebar', '/app/partials/sidebar.html');
-      injectPartial('tm-topbar', '/app/partials/topbar.html');
+      // Inject app chrome (standalone only)
+      if (!isOverlay) {
+        injectPartial('tm-sidebar', '/app/partials/sidebar.html');
+        injectPartial('tm-topbar', '/app/partials/topbar.html');
+      } else {
+        // Hide chrome in overlay mode
+        var sidebarShell = document.querySelector('.sidebar-shell');
+        var topbarShell = document.querySelector('.topbar-shell');
+        if (sidebarShell) sidebarShell.style.display = 'none';
+        if (topbarShell) topbarShell.style.display = 'none';
+      }
 
       // Wire navigation
       var backBtn = document.getElementById('back-btn');
       if (backBtn) backBtn.addEventListener('click', function () {
+        if (isOverlay) {
+          if (window.parent) window.parent.postMessage({ type: 'TM_OVERLAY_CLOSE' }, '*');
+          return;
+        }
         window.location.href = withQuery('/app/pages/flows/intake/offer.html');
       });
 
       var backOffer = document.getElementById('btn-back-offer');
       if (backOffer) backOffer.addEventListener('click', function () {
+        if (isOverlay) {
+          if (window.parent) window.parent.postMessage({ type: 'TM_OVERLAY_CLOSE' }, '*');
+          return;
+        }
         window.location.href = withQuery('/app/pages/flows/intake/offer.html');
       });
 
