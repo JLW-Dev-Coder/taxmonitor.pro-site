@@ -126,19 +126,19 @@
     *:focus { outline: none !important; }
     *:focus-visible { outline: none !important; }
 
-    /* === FIX: prevent global app layout from pushing content downward === */
-    body[data-page="dashboard"] #app-wrapper {
-      display: flex !important;
-      flex-direction: column !important;
-      justify-content: flex-start !important;
+    /* === FIX: stop vertical centering + remove fake top void on Dashboard === */
+    body[data-page="dashboard"] #app-wrapper{
       align-items: stretch !important;
+      display: block !important;
+      justify-content: flex-start !important;
       margin-top: 0 !important;
+      min-height: calc(100vh - 64px) !important; /* topbar is h-16 */
       padding-top: 0 !important;
     }
 
-    body[data-page="dashboard"] #app-wrapper > .relative.z-10 {
+    body[data-page="dashboard"] #app-wrapper > .relative.z-10{
       margin-top: 0 !important;
-      padding-top: 2rem !important; /* keep intentional breathing room, not a full-screen void */
+      padding-top: 2rem !important;
     }
   </style>
 </head>
@@ -706,36 +706,32 @@
         }
 
         function iconFor(x) {
-          const t = String(x.kind || x.type || '').toLowerCase();
           const k = String(x.code || '').toLowerCase();
+          const t = String(x.kind || x.type || '').toLowerCase();
 
-          if (t.includes('payment') || k.includes('stripe')) {
+          if (k.includes('stripe') || t.includes('payment')) {
             return {
               bg: 'bg-emerald-500/20',
-              fg: 'text-emerald-300',
               svg: '<svg class="w-4 h-4 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a5 5 0 00-10 0v2m-2 0h14a2 2 0 012 2v7a2 2 0 01-2 2H5a2 2 0 01-2-2v-7a2 2 0 012-2z"/></svg>'
             };
           }
 
-          if (t.includes('webhook') || k.includes('webhook')) {
+          if (k.includes('webhook') || t.includes('webhook')) {
             return {
               bg: 'bg-blue-500/20',
-              fg: 'text-blue-300',
               svg: '<svg class="w-4 h-4 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>'
             };
           }
 
-          if (t.includes('form') || k.includes('form')) {
+          if (k.includes('form') || t.includes('form')) {
             return {
               bg: 'bg-amber-500/20',
-              fg: 'text-amber-300',
               svg: '<svg class="w-4 h-4 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>'
             };
           }
 
           return {
             bg: 'bg-slate-700/40',
-            fg: 'text-slate-300',
             svg: '<svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M12 18a6 6 0 110-12 6 6 0 010 12z"/></svg>'
           };
         }
