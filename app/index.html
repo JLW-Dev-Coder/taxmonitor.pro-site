@@ -48,21 +48,18 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    header { animation: fadeInUp 0.8s ease-out both; animation-delay: 0.10s; }
     section { animation: fadeInUp 0.8s ease-out both; }
 
-    section:nth-of-type(1) { animation-delay: 0.20s; }
-    section:nth-of-type(2) { animation-delay: 0.30s; }
-    section:nth-of-type(3) { animation-delay: 0.40s; }
-    section:nth-of-type(4) { animation-delay: 0.50s; }
-    section:nth-of-type(5) { animation-delay: 0.60s; }
-    section:nth-of-type(6) { animation-delay: 0.70s; }
-    section:nth-of-type(7) { animation-delay: 0.80s; }
-    section:nth-of-type(8) { animation-delay: 0.90s; }
-    section:nth-of-type(9) { animation-delay: 1.00s; }
-    section:nth-of-type(10) { animation-delay: 1.10s; }
-
-    footer { animation: fadeInUp 0.8s ease-out both; animation-delay: 1.20s; }
+    section:nth-of-type(1) { animation-delay: 0.10s; }
+    section:nth-of-type(2) { animation-delay: 0.20s; }
+    section:nth-of-type(3) { animation-delay: 0.30s; }
+    section:nth-of-type(4) { animation-delay: 0.40s; }
+    section:nth-of-type(5) { animation-delay: 0.50s; }
+    section:nth-of-type(6) { animation-delay: 0.60s; }
+    section:nth-of-type(7) { animation-delay: 0.70s; }
+    section:nth-of-type(8) { animation-delay: 0.80s; }
+    section:nth-of-type(9) { animation-delay: 0.90s; }
+    section:nth-of-type(10) { animation-delay: 1.00s; }
 
     @keyframes float {
       0%, 100% { transform: translateY(0px); }
@@ -147,17 +144,19 @@
   <style>body { box-sizing: border-box; }</style>
  </head>
  <body data-page="dashboard" class="font-dmsans bg-slate-900 text-white" style="display: flex; height: 100vh; margin: 0; overflow: hidden;">
-  <div style="display: flex; width: 100%; height: 100%;"><!-- APP_SIDEBAR -->
-   <div style="display: flex; flex-direction: column; flex: 1; min-height: 0;"><!-- APP_TOPBAR -->
+  <div style="display: flex; width: 100%; height: 100%;">
+   <!-- APP_SIDEBAR -->
+   <div style="display: flex; flex-direction: column; flex: 1; min-height: 0;">
+    <!-- APP_TOPBAR -->
     <div id="app-wrapper" class="flex-1 min-h-0 w-full relative overflow-y-auto overscroll-contain">
      <div class="blob-1" aria-hidden="true"></div>
      <div class="blob-2" aria-hidden="true"></div>
-     <div class="relative z-10 max-w-6xl mx-auto px-4 py-8"><!-- Header (match flow pages) -->
+     <div class="relative z-10 max-w-6xl mx-auto px-4 py-8">
+      <!-- Header (match flow pages) -->
       <header class="text-center mb-10">
        <div class="inline-flex items-center justify-center mb-6">
         <div class="icon-float" aria-hidden="true">
-         <svg class="w-16 h-16" viewbox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <defs>
+         <svg class="w-16 h-16" viewbox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><defs>
            <lineargradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" style="stop-color:#f59e0b" />
             <stop offset="50%" style="stop-color:#ef4444" />
@@ -171,88 +170,96 @@
        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold gradient-text mb-3">Dashboard</h1>
        <p id="trust-line" class="text-slate-400 text-base sm:text-lg">Your IRS monitoring command center, built for clarity and control</p>
       </header><!-- Main content -->
-      <section class="grid grid-cols-1 lg:grid-cols-2 gap-6"><!-- Onboarding Progress -->
+      <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+       <!-- Onboarding Progress -->
        <div class="glass-card rounded-2xl p-6 md:p-8">
         <div class="flex items-center justify-between mb-6">
          <h2 class="text-lg font-bold text-white">Onboarding Progress</h2><span class="text-xs bg-amber-500/15 text-amber-300 px-3 py-1 rounded-full font-medium">~5 min left</span>
         </div>
         <div class="flex flex-col sm:flex-row sm:items-center gap-6 mb-6">
          <div class="relative flex-shrink-0 mx-auto sm:mx-0" style="width: 160px; height: 160px;">
-          <svg class="absolute inset-0 w-full h-full transform -rotate-90" viewbox="0 0 160 160" preserveaspectratio="xMidYMid meet" aria-hidden="true"><circle cx="80" cy="80" r="70" fill="none" stroke="rgba(255,255,255,0.10)" stroke-width="10" /> <circle id="progress-ring" cx="80" cy="80" r="70" fill="none" stroke="url(#progressGradient)" stroke-width="10" stroke-linecap="round" stroke-dasharray="439.82" stroke-dashoffset="439.82" class="progress-ring-circle" /> <defs>
+          <svg class="absolute inset-0 w-full h-full transform -rotate-90" viewbox="0 0 160 160" preserveaspectratio="xMidYMid meet" aria-hidden="true">
+           <circle cx="80" cy="80" r="70" fill="none" stroke="rgba(255,255,255,0.10)" stroke-width="10" /> <circle id="progress-ring" cx="80" cy="80" r="70" fill="none" stroke="url(#progressGradient)" stroke-width="10" stroke-linecap="round" stroke-dasharray="439.82" stroke-dashoffset="439.82" class="progress-ring-circle" /> <defs>
             <lineargradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
              <stop offset="0%" style="stop-color:#f59e0b" />
              <stop offset="100%" style="stop-color:#ef4444" />
             </lineargradient>
            </defs>
           </svg>
-          <div class="absolute inset-0 flex flex-col items-center justify-center gap-1"><span id="progress-percent" class="text-4xl font-bold gradient-text">0%</span> <span class="text-sm text-slate-500">Complete</span>
+          <div class="absolute inset-0 flex flex-col items-center justify-center gap-1">
+           <span id="progress-percent" class="text-4xl font-bold gradient-text">0%</span> <span class="text-sm text-slate-500">Complete</span>
           </div>
          </div>
          <div class="flex-1">
           <div class="space-y-2">
-           <div class="flex justify-between text-sm"><span class="text-slate-400">Steps Completed</span> <span id="steps-completed-label" class="font-semibold text-white">0 of 8</span>
+           <div class="flex justify-between text-sm">
+            <span class="text-slate-400">Steps Completed</span> <span id="steps-completed-label" class="font-semibold text-white">0 of 8</span>
            </div>
-           <div class="flex justify-between text-sm"><span class="text-slate-400">Current Step</span> <span class="font-semibold text-amber-300" id="current-step-label">Intake Process</span>
+           <div class="flex justify-between text-sm">
+            <span class="text-slate-400">Current Step</span> <span class="font-semibold text-amber-300" id="current-step-label">Intake Process</span>
            </div>
-           <div class="flex justify-between text-sm"><span class="text-slate-400">Protection Level</span> <span class="font-semibold text-yellow-300">Gold</span>
+           <div class="flex justify-between text-sm">
+            <span class="text-slate-400">Protection Level</span> <span class="font-semibold text-yellow-300">Gold</span>
            </div>
           </div>
          </div>
         </div>
         <div class="relative space-y-3" id="timeline-steps">
          <div class="timeline-connector" aria-hidden="true"></div><button class="w-full flex items-center gap-3 relative text-left hover:opacity-90 transition-opacity step-button" data-step="1" data-step-key="intakeComplete" data-href="/app/pages/flows/intake/intake.html" type="button">
-          <div class="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center z-10 shadow-lg shadow-amber-500/25 pulse-amber flex-shrink-0"><span class="text-white font-bold text-sm">1</span>
+          <div class="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center z-10 shadow-lg shadow-amber-500/25 pulse-amber flex-shrink-0">
+           <span class="text-white font-bold text-sm">1</span>
           </div>
-          <div class="flex-1 bg-amber-500/15 rounded-xl px-4 py-2 border border-amber-500/25"><span class="text-sm font-medium text-amber-300">Intake Process</span>
+          <div class="flex-1 bg-amber-500/15 rounded-xl px-4 py-2 border border-amber-500/25">
+           <span class="text-sm font-medium text-amber-300">Intake Process</span>
           </div></button> <button class="w-full flex items-center gap-3 relative text-left hover:opacity-90 transition-opacity step-button" data-step="2" data-step-key="offerAccepted" data-href="/app/offer.html" type="button" disabled>
           <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center z-10 flex-shrink-0">
-           <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewbox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+           <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewbox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
            </svg>
           </div>
-          <div class="flex-1 bg-slate-800/30 rounded-xl px-4 py-2"><span class="text-sm font-medium text-slate-500">Offer Reviewed</span>
+          <div class="flex-1 bg-slate-800/30 rounded-xl px-4 py-2">
+           <span class="text-sm font-medium text-slate-500">Offer Reviewed</span>
           </div></button> <button class="w-full flex items-center gap-3 relative text-left hover:opacity-90 transition-opacity step-button" data-step="3" data-step-key="agreementAccepted" data-href="/app/agreement.html" type="button" disabled>
           <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center z-10 flex-shrink-0">
-           <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewbox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+           <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewbox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
            </svg>
           </div>
-          <div class="flex-1 bg-slate-800/30 rounded-xl px-4 py-2"><span class="text-sm font-medium text-slate-500">Agreement Signed</span>
+          <div class="flex-1 bg-slate-800/30 rounded-xl px-4 py-2">
+           <span class="text-sm font-medium text-slate-500">Agreement Signed</span>
           </div></button> <button class="w-full flex items-center gap-3 relative text-left hover:opacity-90 transition-opacity step-button" data-step="4" data-step-key="paymentCompleted" data-href="/app/payment.html" type="button" disabled>
           <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center z-10 flex-shrink-0">
-           <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewbox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+           <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewbox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
            </svg>
           </div>
-          <div class="flex-1 bg-slate-800/30 rounded-xl px-4 py-2"><span class="text-sm font-medium text-slate-500">Payment Processed</span>
+          <div class="flex-1 bg-slate-800/30 rounded-xl px-4 py-2">
+           <span class="text-sm font-medium text-slate-500">Payment Processed</span>
           </div></button> <button class="w-full flex items-center gap-3 relative text-left hover:opacity-90 transition-opacity step-button" data-step="5" data-step-key="welcomeConfirmed" data-href="/app/pages/flows/post-payment/welcome.html" type="button" disabled>
           <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center z-10 flex-shrink-0">
-           <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewbox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+           <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewbox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
            </svg>
           </div>
-          <div class="flex-1 bg-slate-800/30 rounded-xl px-4 py-2"><span class="text-sm font-medium text-slate-500">Welcome Package Sent</span>
+          <div class="flex-1 bg-slate-800/30 rounded-xl px-4 py-2">
+           <span class="text-sm font-medium text-slate-500">Welcome Package Sent</span>
           </div></button> <button class="w-full flex items-center gap-3 relative text-left hover:opacity-90 transition-opacity step-button" data-step="6" data-step-key="filingStatusSubmitted" data-href="/app/pages/flows/post-payment/filing-status.html" type="button" disabled>
           <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center z-10 flex-shrink-0">
-           <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewbox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+           <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewbox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
            </svg>
           </div>
-          <div class="flex-1 bg-slate-800/30 rounded-xl px-4 py-2"><span class="text-sm font-medium text-slate-500">Filing Status Review</span>
+          <div class="flex-1 bg-slate-800/30 rounded-xl px-4 py-2">
+           <span class="text-sm font-medium text-slate-500">Filing Status Review</span>
           </div></button> <button class="w-full flex items-center gap-3 relative text-left hover:opacity-90 transition-opacity step-button" data-step="7" data-step-key="addressUpdateSubmitted" data-href="/app/pages/flows/post-payment/address-update.html" type="button" disabled>
           <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center z-10 flex-shrink-0">
-           <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewbox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+           <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewbox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
            </svg>
           </div>
-          <div class="flex-1 bg-slate-800/30 rounded-xl px-4 py-2"><span class="text-sm font-medium text-slate-500">Address Updated</span>
+          <div class="flex-1 bg-slate-800/30 rounded-xl px-4 py-2">
+           <span class="text-sm font-medium text-slate-500">Address Updated</span>
           </div></button> <button class="w-full flex items-center gap-3 relative text-left hover:opacity-90 transition-opacity step-button" data-step="8" data-step-key="esign2848Submitted" data-href="/app/pages/flows/post-payment/esign-2848.html" type="button" disabled>
           <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center z-10 flex-shrink-0">
-           <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewbox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+           <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewbox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
            </svg>
           </div>
-          <div class="flex-1 bg-slate-800/30 rounded-xl px-4 py-2"><span class="text-sm font-medium text-slate-500">Form 2848 Signed</span>
+          <div class="flex-1 bg-slate-800/30 rounded-xl px-4 py-2">
+           <span class="text-sm font-medium text-slate-500">Form 2848 Signed</span>
           </div></button>
         </div>
        </div><!-- Monitoring Snapshot -->
@@ -287,8 +294,7 @@
          <div class="flex items-center gap-3">
           <div class="gradient-border p-0.5 rounded-xl">
            <div class="bg-slate-800 p-2 rounded-xl">
-            <svg class="w-6 h-6 text-emerald-300" fill="none" stroke="currentColor" viewbox="0 0 24 24" aria-hidden="true">
-             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a. 0z" />
+            <svg class="w-6 h-6 text-emerald-300" fill="none" stroke="currentColor" viewbox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a. 0z" />
             </svg>
            </div>
           </div>
@@ -298,7 +304,8 @@
           </div>
          </div>
         </div><button class="gradient-btn w-full py-4 px-6 rounded-xl font-semibold text-white text-base transition-all transform hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center gap-2 mb-6" type="button" id="progress-map-btn">
-         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l5.553 2.776A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l5.553 2.776A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
          </svg> View Project Progress &amp; Map </button>
         <div class="space-y-3">
          <h3 class="text-sm font-semibold text-slate-300">Recent Activity</h3>
@@ -307,9 +314,9 @@
        </div>
       </section>
       <footer class="text-center text-slate-500 text-sm mt-10">
-       <div class="flex items-center justify-center gap-4"><span class="flex items-center gap-1">
-         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24" aria-hidden="true">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+       <div class="flex items-center justify-center gap-4">
+        <span class="flex items-center gap-1">
+         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
          </svg> Secure </span> <span>•</span> <span>Confidential</span> <span>•</span> <span>Professional</span>
        </div>
        <div class="text-xs text-slate-600 mt-2">
@@ -707,5 +714,5 @@
       })();
     });
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9d1404b4167127d2',t:'MTc3MTY1MzU3My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9d140846f20a27d2',t:'MTc3MTY1MzcyMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
