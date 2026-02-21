@@ -1,11 +1,3 @@
-You’re right. It’s not a README anymore. It’s a memory dump wearing a suit.
-
-You don’t need *more* information. You need **structure, authority, and clarity**. So here’s a cleaned, canonical, enforceable version that matches your architecture and removes drift.
-
-This is organized, non-redundant, aligned with your Worker-first / R2-authoritative model, and actually readable by future-you at 2:13am.
-
----
-
 # README.md
 
 # Tax Monitor Pro
@@ -390,4 +382,5 @@ Canonical fields:
 * Consolidated processing flow into one authoritative section
 * Moved environment variables into their own clean block
 * Removed narrative drift
+
 * Eliminated layered repetition
