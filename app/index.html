@@ -117,206 +117,231 @@
       pointer-events: none;
       z-index: 1;
     }
+
+    /* Loading animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes shimmer {
+      0% {
+        background-position: -1000px 0;
+      }
+      100% {
+        background-position: 1000px 0;
+      }
+    }
+
+    .content-loading {
+      animation: fadeIn 0.5s ease-out forwards;
+    }
+
+    .content-section {
+      animation: fadeInUp 0.6s ease-out forwards;
+      opacity: 0;
+    }
+
+    .content-section:nth-child(1) { animation-delay: 0.05s; }
+    .content-section:nth-child(2) { animation-delay: 0.15s; }
+    .content-section:nth-child(3) { animation-delay: 0.25s; }
+
+    .skeleton-loading {
+      background: linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0.05) 75%);
+      background-size: 1000px 100%;
+      animation: shimmer 2s infinite;
+    }
+
+    .skeleton-text {
+      height: 1rem;
+      border-radius: 0.375rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .skeleton-line-short {
+      width: 60%;
+    }
   </style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
  </head>
  <body class="h-full bg-slate-950 text-slate-100 noise-bg overflow-hidden">
-  <div class="relative z-10 flex h-full">
-   <!-- APP SIDEBAR PARTIAL --> <!-- APP_SIDEBAR --> <!-- Main Content Area -->
-   <div class="flex-1 flex flex-col min-w-0">
-    <!-- APP TOPBAR PARTIAL --> <!-- APP_TOPBAR --> <!-- Main Content -->
+  <div class="relative z-10 flex h-full"><!-- APP SIDEBAR PARTIAL --> <!-- APP_SIDEBAR --> <!-- Main Content Area -->
+   <div class="flex-1 flex flex-col min-w-0"><!-- APP TOPBAR PARTIAL --> <!-- APP_TOPBAR --> <!-- Main Content -->
     <main class="flex-1 overflow-auto">
-     <div class="max-w-6xl mx-auto px-6 py-8">
-      <!-- Trust / Headline -->
-      <div class="mb-8">
+     <div class="max-w-6xl mx-auto px-6 py-8"><!-- Trust / Headline -->
+      <div class="mb-8 content-section">
        <div class="flex flex-col items-center text-center">
-        
         <h1 class="text-3xl md:text-4xl font-semibold tracking-tight mb-2"><span id="greeting-prefix">Good evening, </span><span id="greeting-name" class="gradient-text">Jane</span></h1>
         <p id="subheadline" class="text-slate-400 text-base md:text-lg max-w-2xl">This is your command center — where monitoring stays visible.</p>
         <p id="helper-text" class="text-slate-500 text-sm mt-2 max-w-2xl">Track onboarding, view activity, and access your files anytime.</p>
        </div>
       </div><!-- Grid: Progress + Snapshot -->
       <div class="grid lg:grid-cols-2 gap-6 mb-6">
-       <section class="glass-card rounded-2xl p-6 md:p-8">
+       <section class="glass-card rounded-2xl p-6 md:p-8 content-section">
         <div class="flex items-center justify-between mb-6">
-          <h2 class="text-lg font-bold text-white">Onboarding Progress</h2>
-          <span class="text-xs bg-amber-500/15 text-amber-300 px-3 py-1 rounded-full font-medium">~5 min left</span>
+         <h2 class="text-lg font-bold text-white">Onboarding Progress</h2><span class="text-xs bg-amber-500/15 text-amber-300 px-3 py-1 rounded-full font-medium">~5 min left</span>
         </div>
-
         <div class="flex flex-col sm:flex-row sm:items-center gap-6 mb-6">
-          <div class="relative flex-shrink-0 mx-auto sm:mx-0 sm:w-1/2" style="width: 160px; height: 160px;">
-            <svg class="absolute inset-0 w-full h-full transform -rotate-90" viewBox="0 0 160 160" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-              <circle cx="80" cy="80" r="70" fill="none" stroke="rgba(255,255,255,0.10)" stroke-width="10" />
-              <circle id="progress-ring" cx="80" cy="80" r="70" fill="none" stroke="url(#progressGradient)" stroke-width="10" stroke-linecap="round" stroke-dasharray="439.82" stroke-dashoffset="439.82" class="progress-ring-circle" />
-              <defs>
-                <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" style="stop-color:#f59e0b" />
-                  <stop offset="100%" style="stop-color:#ef4444" />
-                </linearGradient>
-              </defs>
-            </svg>
-            <div class="absolute inset-0 flex flex-col items-center justify-center gap-1">
-              <span id="progress-percent" class="text-4xl font-bold gradient-text">0%</span>
-              <span class="text-sm text-slate-500">Complete</span>
-            </div>
+         <div class="relative flex-shrink-0 mx-auto sm:mx-0 sm:w-1/2" style="width: 160px; height: 160px;">
+          <svg class="absolute inset-0 w-full h-full transform -rotate-90" viewbox="0 0 160 160" preserveaspectratio="xMidYMid meet" aria-hidden="true"><circle cx="80" cy="80" r="70" fill="none" stroke="rgba(255,255,255,0.10)" stroke-width="10" /> <circle id="progress-ring" cx="80" cy="80" r="70" fill="none" stroke="url(#progressGradient)" stroke-width="10" stroke-linecap="round" stroke-dasharray="439.82" stroke-dashoffset="439.82" class="progress-ring-circle" /> <defs>
+            <lineargradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+             <stop offset="0%" style="stop-color:#f59e0b" />
+             <stop offset="100%" style="stop-color:#ef4444" />
+            </lineargradient>
+           </defs>
+          </svg>
+          <div class="absolute inset-0 flex flex-col items-center justify-center gap-1"><span id="progress-percent" class="text-4xl font-bold gradient-text">0%</span> <span class="text-sm text-slate-500">Complete</span>
           </div>
-
-          <div class="flex-1 sm:w-1/2">
-            <div class="space-y-2">
-              <div class="flex justify-between text-sm">
-                <span class="text-slate-400">Steps Completed</span>
-                <span id="steps-completed-label" class="font-semibold text-white">0 of 8</span>
-              </div>
-              <div class="flex justify-between text-sm">
-                <span class="text-slate-400">Current Step</span>
-                <span class="font-semibold text-amber-300" id="current-step-label">Offer Reviewed</span>
-              </div>
-              <div class="flex justify-between text-sm">
-                <span class="text-slate-400">Protection Level</span>
-                <span class="font-semibold text-slate-400">Not Selected</span>
-              </div>
-            </div>
+         </div>
+         <div class="flex-1 sm:w-1/2">
+          <div class="space-y-2">
+           <div class="flex justify-between text-sm"><span class="text-slate-400">Steps Completed</span> <span id="steps-completed-label" class="font-semibold text-white">0 of 8</span>
+           </div>
+           <div class="flex justify-between text-sm"><span class="text-slate-400">Current Step</span> <span class="font-semibold text-amber-300" id="current-step-label">Offer Reviewed</span>
+           </div>
+           <div class="flex justify-between text-sm"><span class="text-slate-400">Protection Level</span> <span class="font-semibold text-slate-400">Not Selected</span>
+           </div>
           </div>
+         </div>
         </div>
-
         <div class="relative space-y-4" id="timeline-steps">
-          <div class="timeline-connector" aria-hidden="true"></div>
-
-          <!-- Step 1 -->
-          <button class="w-full flex items-start gap-3 relative text-left transition-opacity step-button" data-step="1" data-step-key="intakeComplete" data-href="/pages/flows/intake/intake.html" type="button">
-            <div class="w-10 h-10 rounded-full bg-emerald-500 flex items-center justify-center z-10 shadow-lg shadow-emerald-500/25 flex-shrink-0">
-              <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" /></svg>
-            </div>
-            <div class="flex-1 bg-emerald-500/10 rounded-xl px-4 py-3">
-              <div class="flex justify-between items-start">
-                <div>
-                  <div class="text-sm font-medium text-emerald-300">Intake Process</div>
-                  <div class="text-xs text-slate-400 mt-1">Initial information submitted and monitoring record created.</div>
-                </div>
-                <span class="text-xs text-emerald-400 font-medium">✓ Done</span>
-              </div>
-            </div>
-          </button>
-
-          <!-- Step 2 -->
-          <button class="w-full flex items-start gap-3 relative text-left transition-opacity step-button" data-step="2" data-step-key="offerAccepted" data-href="/pages/flows/intake/offer.html" type="button">
-            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center z-10 shadow-lg shadow-amber-500/25 pulse-amber flex-shrink-0">
-              <span class="text-white font-bold text-sm">2</span>
-            </div>
-            <div class="flex-1 bg-amber-500/15 rounded-xl px-4 py-3 border border-amber-500/25">
-              <div class="flex justify-between items-start">
-                <div>
-                  <div class="text-sm font-medium text-amber-300">Offer Reviewed</div>
-                  <div class="text-xs text-slate-400 mt-1">Service scope and pricing confirmed.</div>
-                </div>
-                <span class="text-xs text-amber-400 font-medium">Current</span>
-              </div>
-            </div>
-          </button>
-
-          <!-- Step 3 -->
-          <button class="w-full flex items-start gap-3 relative text-left opacity-60 step-button" data-step="3" data-step-key="agreementAccepted" data-href="/pages/flows/intake/agreement.html" type="button" disabled>
-            <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center z-10 flex-shrink-0">
-              <span class="text-slate-300 font-semibold text-sm">3</span>
-            </div>
-            <div class="flex-1 bg-slate-800/30 rounded-xl px-4 py-3">
-              <div class="text-sm font-medium text-slate-300">Agreement Signed</div>
-              <div class="text-xs text-slate-500 mt-1">Terms accepted and engagement activated.</div>
-            </div>
-          </button>
-
-          <!-- Step 4 -->
-          <button class="w-full flex items-start gap-3 relative text-left opacity-60 step-button" data-step="4" data-step-key="paymentCompleted" data-href="/pages/flows/intake/payment.html" type="button" disabled>
-            <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center z-10 flex-shrink-0">
-              <span class="text-slate-300 font-semibold text-sm">4</span>
-            </div>
-            <div class="flex-1 bg-slate-800/30 rounded-xl px-4 py-3">
-              <div class="text-sm font-medium text-slate-300">Payment Processed</div>
-              <div class="text-xs text-slate-500 mt-1">Monitoring cycle officially begins.</div>
-            </div>
-          </button>
-
-          <!-- Step 5 -->
-          <button class="w-full flex items-start gap-3 relative text-left opacity-60 step-button" data-step="5" data-step-key="welcomeConfirmed" data-href="/pages/flows/post-payment/welcome.html" type="button" disabled>
-            <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center z-10 flex-shrink-0">
-              <span class="text-slate-300 font-semibold text-sm">5</span>
-            </div>
-            <div class="flex-1 bg-slate-800/30 rounded-xl px-4 py-3">
-              <div class="text-sm font-medium text-slate-300">Welcome Package Sent</div>
-              <div class="text-xs text-slate-500 mt-1">Onboarding details and next steps delivered.</div>
-            </div>
-          </button>
-
-          <!-- Step 6 -->
-          <button class="w-full flex items-start gap-3 relative text-left opacity-60 step-button" data-step="6" data-step-key="filingStatusSubmitted" data-href="/pages/flows/post-payment/filing-status.html" type="button" disabled>
-            <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center z-10 flex-shrink-0">
-              <span class="text-slate-300 font-semibold text-sm">6</span>
-            </div>
-            <div class="flex-1 bg-slate-800/30 rounded-xl px-4 py-3">
-              <div class="text-sm font-medium text-slate-300">Filing Status Review</div>
-              <div class="text-xs text-slate-500 mt-1">Tax filing position confirmed for monitoring accuracy.</div>
-            </div>
-          </button>
-
-          <!-- Step 7 -->
-          <button class="w-full flex items-start gap-3 relative text-left opacity-60 step-button" data-step="7" data-step-key="addressUpdateSubmitted" data-href="/pages/flows/post-payment/address-update.html" type="button" disabled>
-            <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center z-10 flex-shrink-0">
-              <span class="text-slate-300 font-semibold text-sm">7</span>
-            </div>
-            <div class="flex-1 bg-slate-800/30 rounded-xl px-4 py-3">
-              <div class="text-sm font-medium text-slate-300">Address Updated</div>
-              <div class="text-xs text-slate-500 mt-1">IRS correspondence address verified.</div>
-            </div>
-          </button>
-
-          <!-- Step 8 -->
-          <button class="w-full flex items-start gap-3 relative text-left opacity-60 step-button" data-step="8" data-step-key="esign2848Submitted" data-href="/pages/flows/post-payment/esign-2848.html" type="button" disabled>
-            <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center z-10 flex-shrink-0">
-              <span class="text-slate-300 font-semibold text-sm">8</span>
-            </div>
-            <div class="flex-1 bg-slate-800/30 rounded-xl px-4 py-3">
-              <div class="text-sm font-medium text-slate-300">Form 2848 Signed</div>
-              <div class="text-xs text-slate-500 mt-1">Authorization secured for transcript access.</div>
-            </div>
-          </button>
+         <div class="timeline-connector" aria-hidden="true"></div><!-- Step 1 --> <button class="w-full flex items-start gap-3 relative text-left transition-opacity step-button" data-step="1" data-step-key="intakeComplete" data-href="/pages/flows/intake/intake.html" type="button">
+          <div class="w-10 h-10 rounded-full bg-emerald-500 flex items-center justify-center z-10 shadow-lg shadow-emerald-500/25 flex-shrink-0">
+           <svg class="w-5 h-5 text-white" fill="currentColor" viewbox="0 0 24 24">
+            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" />
+           </svg>
+          </div>
+          <div class="flex-1 bg-emerald-500/10 rounded-xl px-4 py-3">
+           <div class="flex justify-between items-start">
+            <div>
+             <div class="text-sm font-medium text-emerald-300">
+              Intake Process
+             </div>
+             <div class="text-xs text-slate-400 mt-1">
+              Initial information submitted and monitoring record created.
+             </div>
+            </div><span class="text-xs text-emerald-400 font-medium">✓ Done</span>
+           </div>
+          </div></button> <!-- Step 2 --> <button class="w-full flex items-start gap-3 relative text-left transition-opacity step-button" data-step="2" data-step-key="offerAccepted" data-href="/pages/flows/intake/offer.html" type="button">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center z-10 shadow-lg shadow-amber-500/25 pulse-amber flex-shrink-0"><span class="text-white font-bold text-sm">2</span>
+          </div>
+          <div class="flex-1 bg-amber-500/15 rounded-xl px-4 py-3 border border-amber-500/25">
+           <div class="flex justify-between items-start">
+            <div>
+             <div class="text-sm font-medium text-amber-300">
+              Offer Reviewed
+             </div>
+             <div class="text-xs text-slate-400 mt-1">
+              Service scope and pricing confirmed.
+             </div>
+            </div><span class="text-xs text-amber-400 font-medium">Current</span>
+           </div>
+          </div></button> <!-- Step 3 --> <button class="w-full flex items-start gap-3 relative text-left opacity-60 step-button" data-step="3" data-step-key="agreementAccepted" data-href="/pages/flows/intake/agreement.html" type="button" disabled>
+          <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center z-10 flex-shrink-0"><span class="text-slate-300 font-semibold text-sm">3</span>
+          </div>
+          <div class="flex-1 bg-slate-800/30 rounded-xl px-4 py-3">
+           <div class="text-sm font-medium text-slate-300">
+            Agreement Signed
+           </div>
+           <div class="text-xs text-slate-500 mt-1">
+            Terms accepted and engagement activated.
+           </div>
+          </div></button> <!-- Step 4 --> <button class="w-full flex items-start gap-3 relative text-left opacity-60 step-button" data-step="4" data-step-key="paymentCompleted" data-href="/pages/flows/intake/payment.html" type="button" disabled>
+          <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center z-10 flex-shrink-0"><span class="text-slate-300 font-semibold text-sm">4</span>
+          </div>
+          <div class="flex-1 bg-slate-800/30 rounded-xl px-4 py-3">
+           <div class="text-sm font-medium text-slate-300">
+            Payment Processed
+           </div>
+           <div class="text-xs text-slate-500 mt-1">
+            Monitoring cycle officially begins.
+           </div>
+          </div></button> <!-- Step 5 --> <button class="w-full flex items-start gap-3 relative text-left opacity-60 step-button" data-step="5" data-step-key="welcomeConfirmed" data-href="/pages/flows/post-payment/welcome.html" type="button" disabled>
+          <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center z-10 flex-shrink-0"><span class="text-slate-300 font-semibold text-sm">5</span>
+          </div>
+          <div class="flex-1 bg-slate-800/30 rounded-xl px-4 py-3">
+           <div class="text-sm font-medium text-slate-300">
+            Welcome Package Sent
+           </div>
+           <div class="text-xs text-slate-500 mt-1">
+            Onboarding details and next steps delivered.
+           </div>
+          </div></button> <!-- Step 6 --> <button class="w-full flex items-start gap-3 relative text-left opacity-60 step-button" data-step="6" data-step-key="filingStatusSubmitted" data-href="/pages/flows/post-payment/filing-status.html" type="button" disabled>
+          <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center z-10 flex-shrink-0"><span class="text-slate-300 font-semibold text-sm">6</span>
+          </div>
+          <div class="flex-1 bg-slate-800/30 rounded-xl px-4 py-3">
+           <div class="text-sm font-medium text-slate-300">
+            Filing Status Review
+           </div>
+           <div class="text-xs text-slate-500 mt-1">
+            Tax filing position confirmed for monitoring accuracy.
+           </div>
+          </div></button> <!-- Step 7 --> <button class="w-full flex items-start gap-3 relative text-left opacity-60 step-button" data-step="7" data-step-key="addressUpdateSubmitted" data-href="/pages/flows/post-payment/address-update.html" type="button" disabled>
+          <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center z-10 flex-shrink-0"><span class="text-slate-300 font-semibold text-sm">7</span>
+          </div>
+          <div class="flex-1 bg-slate-800/30 rounded-xl px-4 py-3">
+           <div class="text-sm font-medium text-slate-300">
+            Address Updated
+           </div>
+           <div class="text-xs text-slate-500 mt-1">
+            IRS correspondence address verified.
+           </div>
+          </div></button> <!-- Step 8 --> <button class="w-full flex items-start gap-3 relative text-left opacity-60 step-button" data-step="8" data-step-key="esign2848Submitted" data-href="/pages/flows/post-payment/esign-2848.html" type="button" disabled>
+          <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center z-10 flex-shrink-0"><span class="text-slate-300 font-semibold text-sm">8</span>
+          </div>
+          <div class="flex-1 bg-slate-800/30 rounded-xl px-4 py-3">
+           <div class="text-sm font-medium text-slate-300">
+            Form 2848 Signed
+           </div>
+           <div class="text-xs text-slate-500 mt-1">
+            Authorization secured for transcript access.
+           </div>
+          </div></button>
         </div>
        </section>
-       <section class="glass-card rounded-2xl p-6">
+       <section class="glass-card rounded-2xl p-6 content-section">
         <div class="flex items-center justify-between mb-5">
-         <h2 id="snapshot-title" class="text-lg font-semibold text-slate-100">Monitoring Snapshot</h2>
-         <span class="flex items-center gap-2 text-xs text-slate-400">
-          <span class="w-2 h-2 bg-red-500 rounded-full shadow-lg shadow-red-500/50 pulse-red" id="snapshot-live-dot"></span>
-          <span id="snapshot-live-label">Monitoring Pending</span>
-         </span>
+         <h2 id="snapshot-title" class="text-lg font-semibold text-slate-100">Monitoring Snapshot</h2><span class="flex items-center gap-2 text-xs text-slate-400"> <span class="w-2 h-2 bg-red-500 rounded-full shadow-lg shadow-red-500/50 pulse-red" id="snapshot-live-dot"></span> <span id="snapshot-live-label">Monitoring Pending</span> </span>
         </div>
-
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-5">
          <div class="text-center p-4 bg-slate-950/30 rounded-2xl border border-white/5">
-          <div class="text-xs text-slate-400">Agreement Status</div>
+          <div class="text-xs text-slate-400">
+           Agreement Status
+          </div>
           <p class="text-xl font-semibold text-amber-300 mt-2" id="metric-agreement-status">Unsigned</p>
           <p class="text-xs text-slate-500 mt-1" id="metric-agreement-sub">Ready for Payment</p>
          </div>
-
          <div class="text-center p-4 bg-slate-950/30 rounded-2xl border border-white/5">
-          <div class="text-xs text-slate-400">Account Status</div>
+          <div class="text-xs text-slate-400">
+           Account Status
+          </div>
           <p class="text-xl font-semibold text-sky-300 mt-2" id="metric-account-status">Intake</p>
           <p class="text-xs text-slate-500 mt-1" id="metric-account-sub">Awaiting Next Step</p>
          </div>
-
          <div class="text-center p-4 bg-slate-950/30 rounded-2xl border border-white/5">
-          <div class="text-xs text-slate-400">Monitoring</div>
+          <div class="text-xs text-slate-400">
+           Monitoring
+          </div>
           <p class="text-xl font-semibold text-emerald-200 mt-2" id="metric-monitoring-status">Inactive</p>
           <p class="text-xs text-slate-500 mt-1" id="metric-monitoring-sub">Not Yet Started</p>
          </div>
         </div>
-
         <div class="bg-emerald-500/10 border border-emerald-500/20 rounded-2xl p-4 mb-5">
          <div class="flex items-center gap-3">
           <div class="gradient-border p-0.5 rounded-xl">
            <div class="bg-slate-900/70 p-2 rounded-xl">
-            <svg class="w-6 h-6 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4" />
-             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            <svg class="w-6 h-6 text-emerald-300" fill="none" stroke="currentColor" viewbox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4" /> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a. 0z" />
             </svg>
            </div>
           </div>
@@ -325,19 +350,9 @@
            <p class="text-sm text-slate-400" id="snapshot-subhead">Continue to the next step to keep onboarding moving.</p>
           </div>
          </div>
-        </div>
-
-        <a
-          id="snapshot-cta"
-          href="/pages/project.html"
-          class="gradient-btn w-full py-3.5 px-5 rounded-xl font-semibold text-slate-900 text-sm transition-all transform hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center gap-2 mb-5"
-        >
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l5.553 2.776A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
-          </svg>
-          View project map &amp; status
-        </a>
-
+        </div><a id="snapshot-cta" href="/pages/project.html" class="gradient-btn w-full py-3.5 px-5 rounded-xl font-semibold text-slate-900 text-sm transition-all transform hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center gap-2 mb-5">
+         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l5.553 2.776A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+         </svg> View project map &amp; status </a>
         <div class="space-y-3">
          <h3 class="text-sm font-semibold text-slate-300">Recent Activity</h3>
          <div id="recent-activity-list" class="space-y-3">
@@ -346,7 +361,7 @@
         </div>
        </section>
       </div>
-      <p id="disclaimer" class="text-center text-slate-600 text-xs pb-6">Monitoring does not create IRS representation. Representation, filing, and resolution are separate engagements.</p>
+      <p id="disclaimer" class="text-center text-slate-600 text-xs pb-6 content-section">Monitoring does not create IRS representation. Representation, filing, and resolution are separate engagements.</p>
      </div>
     </main>
    </div>
@@ -691,5 +706,6 @@
     document.addEventListener('DOMContentLoaded', setDashboardProgress);
 
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9d17afa9003527d2',t:'MTc3MTY5MjAzMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+  <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9d17afa9003527d2',t:'MTc3MTY5MjAzMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9d1820d7a2e027d2',t:'MTc3MTY5NjY2OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
