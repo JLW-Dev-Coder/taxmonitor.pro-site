@@ -236,7 +236,7 @@
               Intake Process
              </div>
              <div class="text-xs text-slate-400 mt-1">
-              Initial information submitted and monitoring record created.
+              Share your details to set up your project file.
              </div>
             </div><span class="text-xs text-orange-300 font-medium">✓ Done</span>
            </div>
@@ -251,7 +251,7 @@
               Offer Reviewed
              </div>
              <div class="text-xs text-slate-400 mt-1">
-              Service scope and pricing confirmed.
+              Select your service plan and pricing that fits.
              </div>
             </div><span class="text-xs text-orange-300 font-medium">In Progress</span>
            </div>
@@ -264,7 +264,7 @@
             Agreement Signed
            </div>
            <div class="text-xs text-slate-500 mt-1">
-            Terms accepted and engagement activated.
+            Sign your agreement to activate your service.
            </div>
           </div></button> <!-- Step 4 --> <button class="w-full flex items-start gap-3 relative text-left opacity-60 step-button" data-step="4" data-step-key="paymentCompleted" data-href="/pages/flows/intake/payment.html" type="button" disabled>
           <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center z-10 flex-shrink-0">
@@ -275,7 +275,7 @@
             Payment Processed
            </div>
            <div class="text-xs text-slate-500 mt-1">
-            Monitoring cycle officially begins.
+            Complete payment to begin your coverage.
            </div>
           </div></button> <!-- Step 5 --> <button class="w-full flex items-start gap-3 relative text-left opacity-60 step-button" data-step="5" data-step-key="welcomeConfirmed" data-href="/pages/flows/post-payment/welcome.html" type="button" disabled>
           <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center z-10 flex-shrink-0">
@@ -286,7 +286,7 @@
             Welcome Package Sent
            </div>
            <div class="text-xs text-slate-500 mt-1">
-            Onboarding details and next steps delivered.
+            Receive your onboarding details and review the next steps.
            </div>
           </div></button> <!-- Step 6 --> <button class="w-full flex items-start gap-3 relative text-left opacity-60 step-button" data-step="6" data-step-key="filingStatusSubmitted" data-href="/pages/flows/post-payment/filing-status.html" type="button" disabled>
           <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center z-10 flex-shrink-0">
@@ -297,7 +297,7 @@
             Filing Status Review
            </div>
            <div class="text-xs text-slate-500 mt-1">
-            Tax filing position confirmed for monitoring accuracy.
+            Confirm your filing status to ensure accuracy.
            </div>
           </div></button> <!-- Step 7 --> <button class="w-full flex items-start gap-3 relative text-left opacity-60 step-button" data-step="7" data-step-key="addressUpdateSubmitted" data-href="/pages/flows/post-payment/address-update.html" type="button" disabled>
           <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center z-10 flex-shrink-0">
@@ -308,7 +308,7 @@
             Address Updated
            </div>
            <div class="text-xs text-slate-500 mt-1">
-            IRS correspondence address verified.
+            Verify your IRS correspondence address for accurate records.
            </div>
           </div></button> <!-- Step 8 --> <button class="w-full flex items-start gap-3 relative text-left opacity-60 step-button" data-step="8" data-step-key="esign2848Submitted" data-href="/pages/flows/post-payment/esign-2848.html" type="button" disabled>
           <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center z-10 flex-shrink-0">
@@ -319,14 +319,15 @@
             Form 2848 Signed
            </div>
            <div class="text-xs text-slate-500 mt-1">
-            Authorization secured for transcript access.
+            Authorize transcript access so we can act when needed.
            </div>
           </div></button>
         </div>
        </section>
        <section class="glass-card rounded-2xl p-6 content-section">
         <div class="flex items-center justify-between mb-5">
-         <h2 id="snapshot-title" class="text-lg font-semibold text-slate-100">Monitoring Snapshot</h2><span class="flex items-center gap-2 text-xs text-slate-400"> <span class="w-2 h-2 bg-red-500 rounded-full shadow-lg shadow-red-500/50 pulse-red" id="snapshot-live-dot"></span> <span id="snapshot-live-label">Monitoring Pending</span> </span>
+         <h2 id="snapshot-title" class="text-lg font-semibold text-slate-100">Monitoring Snapshot</h2>
+         <span id="snapshot-live-label" class="text-xs bg-orange-500/20 text-orange-300 px-3 py-1 rounded-full font-medium">Pending</span>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-5">
          <div class="text-center p-4 bg-slate-950/30 rounded-2xl border border-white/5">
@@ -380,6 +381,14 @@
       <p id="disclaimer" class="text-center text-slate-600 text-xs pb-6 content-section">Monitoring does not create IRS representation. Representation, filing, and resolution are separate engagements.</p>
      </div>
     </main>
+
+    <!-- Overlay Container -->
+    <div id="tm-overlay" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center z-50">
+      <div class="absolute inset-0" id="tm-overlay-backdrop"></div>
+      <div class="relative w-full h-full max-w-6xl mx-auto bg-slate-900 rounded-none md:rounded-2xl overflow-hidden shadow-2xl">
+        <iframe id="tm-overlay-iframe" class="w-full h-full border-0" src="about:blank"></iframe>
+      </div>
+    </div>
    </div>
   </div>
   <script>
@@ -387,7 +396,7 @@
       account_label: 'Account: Monitoring',
       background_color: '#020617',
       disclaimer_text: 'Monitoring does not create IRS representation. Representation, filing, and resolution are separate engagements.',
-      greeting_prefix: 'Good evening, ',
+      greeting_prefix: '',
       greeting_subheadline: 'This is your command center — where monitoring stays visible.',
       helper_text: 'Track onboarding, view activity, and access your files anytime.',
       text_color: '#f1f5f9',
@@ -457,7 +466,15 @@
         step: window.TM_APP_STATE.step,
       };
 
-      setText('greeting-prefix', merged.greeting_prefix);
+      // Set greeting based on America/Los_Angeles time
+      const laNow = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }));
+      const hour = laNow.getHours();
+      let timeGreeting = 'Hello';
+      if (hour >= 5 && hour < 12) timeGreeting = 'Good morning';
+      else if (hour >= 12 && hour < 17) timeGreeting = 'Good afternoon';
+      else timeGreeting = 'Good evening';
+
+      setText('greeting-prefix', timeGreeting + ', ');
       setText('greeting-name', firstName);
       setText('subheadline', merged.greeting_subheadline);
       setText('helper-text', merged.helper_text);
@@ -529,56 +546,56 @@
 
       const journey = [
         {
-          desc: 'Initial information submitted and monitoring record created.',
+          desc: 'Share your details to set up your project file.',
           href: '/pages/flows/intake/intake.html',
           key: 'intakeComplete',
           label: 'Intake Process',
           step: 1,
         },
         {
-          desc: 'Service scope and pricing confirmed.',
+          desc: 'Select your service plan and pricing that fits.',
           href: '/pages/flows/intake/offer.html',
           key: 'offerAccepted',
           label: 'Offer Reviewed',
           step: 2,
         },
         {
-          desc: 'Terms accepted and engagement activated.',
+          desc: 'Sign your agreement to activate your service.',
           href: '/pages/flows/intake/agreement.html',
           key: 'agreementAccepted',
           label: 'Agreement Signed',
           step: 3,
         },
         {
-          desc: 'Monitoring cycle officially begins.',
+          desc: 'Complete payment to begin your coverage.',
           href: '/pages/flows/intake/payment.html',
           key: 'paymentCompleted',
           label: 'Payment Processed',
           step: 4,
         },
         {
-          desc: 'Onboarding details and next steps delivered.',
+          desc: 'Receive your onboarding details and review the next steps.',
           href: '/pages/flows/post-payment/welcome.html',
           key: 'welcomeConfirmed',
           label: 'Welcome Package Sent',
           step: 5,
         },
         {
-          desc: 'Tax filing position confirmed for monitoring accuracy.',
+          desc: 'Confirm your filing status to ensure accuracy.',
           href: '/pages/flows/post-payment/filing-status.html',
           key: 'filingStatusSubmitted',
           label: 'Filing Status Review',
           step: 6,
         },
         {
-          desc: 'IRS correspondence address verified.',
+          desc: 'Verify your IRS correspondence address for accurate records.',
           href: '/pages/flows/post-payment/address-update.html',
           key: 'addressUpdateSubmitted',
           label: 'Address Updated',
           step: 7,
         },
         {
-          desc: 'Authorization secured for transcript access.',
+          desc: 'Authorize transcript access so we can act when needed.',
           href: '/pages/flows/post-payment/esign-2848.html',
           key: 'esign2848Submitted',
           label: 'Form 2848 Signed',
@@ -683,8 +700,18 @@
         btn.addEventListener('click', () => {
           if (btn.disabled) return;
           if (!href) return;
-          const target = href.indexOf('?') !== -1 ? href : (href + qs);
-          window.location.href = target;
+
+          const overlay = document.getElementById('tm-overlay');
+          const iframe = document.getElementById('tm-overlay-iframe');
+          if (!overlay || !iframe) return;
+
+          const target = href.includes('?') ? href + '&overlay=1' : href + '?overlay=1';
+          iframe.src = target;
+          overlay.classList.remove('hidden');
+          overlay.classList.add('flex');
+
+          const stepParam = encodeURIComponent(href);
+          history.pushState({ overlay: true, href }, '', '?step=' + stepParam);
         });
       });
 
@@ -711,7 +738,7 @@
       if (monitoringSubEl) monitoringSubEl.textContent = monitoringActive ? 'Full Coverage' : 'Onboarding';
 
       const liveLabelEl = document.getElementById('snapshot-live-label');
-      if (liveLabelEl) liveLabelEl.textContent = monitoringActive ? 'Live Monitoring' : 'Monitoring Pending';
+      if (liveLabelEl) liveLabelEl.textContent = monitoringActive ? 'Live Monitoring' : 'Pending';
 
       const headlineEl = document.getElementById('snapshot-headline');
       const subheadEl = document.getElementById('snapshot-subhead');
@@ -719,7 +746,38 @@
       if (subheadEl) subheadEl.textContent = 'Continue to the next step to keep onboarding moving.';
     }
 
-    document.addEventListener('DOMContentLoaded', setDashboardProgress);
+    document.addEventListener('DOMContentLoaded', () => {
+      setDashboardProgress();
+
+      const overlay = document.getElementById('tm-overlay');
+      const iframe = document.getElementById('tm-overlay-iframe');
+      const backdrop = document.getElementById('tm-overlay-backdrop');
+
+      function closeOverlay() {
+        if (!overlay || !iframe) return;
+        overlay.classList.add('hidden');
+        overlay.classList.remove('flex');
+        iframe.src = 'about:blank';
+        history.pushState({}, '', window.location.pathname);
+      }
+
+      window.addEventListener('message', (e) => {
+        if (e.data && e.data.type === 'TM_OVERLAY_CLOSE') {
+          closeOverlay();
+        }
+      });
+
+      if (backdrop) backdrop.addEventListener('click', closeOverlay);
+
+      const params = new URLSearchParams(window.location.search);
+      const step = params.get('step');
+      if (step && overlay && iframe) {
+        const decoded = decodeURIComponent(step);
+        iframe.src = decoded.includes('?') ? decoded + '&overlay=1' : decoded + '?overlay=1';
+        overlay.classList.remove('hidden');
+        overlay.classList.add('flex');
+      }
+    });
 
   </script>
   <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9d17afa9003527d2',t:'MTc3MTY5MjAzMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
