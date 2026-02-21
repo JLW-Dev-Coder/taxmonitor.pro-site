@@ -1,1010 +1,474 @@
-<!--/site/resources/transcript-central.html-->
 <!doctype html>
-<html lang="en" class="h-full">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tax Monitor Pro — Transcript Central</title>
-
-  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<html lang="en" class="h-full scroll-smooth">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transcript Central | IRS Transcript Guide</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <script src="/_sdk/element_sdk.js"></script>
-  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet" />
-
-  <link rel="apple-touch-icon" href="/assets/favicon.ico" />
-  <link rel="icon" href="/assets/favicon.ico" />
-
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            dmsans: ['DM Sans', 'sans-serif']
-          },
-          colors: {
-            amber: {
-              50: '#fffbeb',
-              100: '#fef3c7',
-              200: '#fde68a',
-              300: '#fcd34d',
-              400: '#fbbf24',
-              500: '#f59e0b',
-              600: '#d97706',
-              700: '#b45309',
-              800: '#92400e',
-              900: '#78350f'
-            }
-          }
-        }
-      }
-    };
-  </script>
-
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
   <style>
-    * { box-sizing: border-box; font-family: 'DM Sans', sans-serif; }
-
     :root {
-      --bg-primary: #0f172a;      /* slate-900 */
-      --bg-surface: rgba(30, 41, 59, 0.70);
+      --bg-primary: #0f172a;
+      --accent-1: #f59e0b;
       --text-primary: #ffffff;
-      --text-muted: rgba(148, 163, 184, 1); /* slate-400 */
-      --accent-1: #f59e0b;       /* amber-500 */
-      --accent-2: #f97316;       /* orange-500 */
-      --accent-3: #ef4444;       /* red-500 */
-      --success: #10b981;        /* emerald-500 */
-      --muted: #64748b;          /* slate-500 */
     }
 
-    html, body { height: 100%; margin: 0; padding: 0; }
-
-    body {
+    html, body {
+      height: 100%;
       background: var(--bg-primary);
       color: var(--text-primary);
+      font-family: 'DM Sans', system-ui, sans-serif;
     }
 
-    /* Background blobs (match app/index.html + flow pages) */
-    .blob-1 {
-      position: absolute;
-      width: 420px;
-      height: 420px;
-      background: radial-gradient(circle, rgba(245, 158, 11, 0.15) 0%, transparent 70%);
-      border-radius: 50%;
-      top: -110px;
-      right: -120px;
-      pointer-events: none;
-    }
-
-    .blob-2 {
-      position: absolute;
-      width: 320px;
-      height: 320px;
-      background: radial-gradient(circle, rgba(239, 68, 68, 0.10) 0%, transparent 70%);
-      border-radius: 50%;
-      bottom: 140px;
-      left: -70px;
-      pointer-events: none;
-    }
-
-    .noise-bg {
-      background-image:
-        radial-gradient(circle at 10% 10%, rgba(245, 158, 11, 0.10), transparent 40%),
-        radial-gradient(circle at 90% 20%, rgba(239, 68, 68, 0.08), transparent 45%),
-        radial-gradient(circle at 30% 90%, rgba(249, 115, 22, 0.08), transparent 45%);
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-10px); }
-    }
-
-    .icon-float { animation: float 3s ease-in-out infinite; }
-
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(18px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .fade-in-up { animation: slideUp 0.65s ease-out forwards; }
-    .stagger-1 { animation-delay: 0.05s; }
-    .stagger-2 { animation-delay: 0.10s; }
-    .stagger-3 { animation-delay: 0.15s; }
-    .stagger-4 { animation-delay: 0.20s; }
-
-    .gradient-text {
-      background: linear-gradient(135deg, var(--accent-1), var(--accent-2), var(--accent-3));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .glass-card {
-      background: var(--bg-surface);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.10);
-    }
-
-    .gradient-btn {
-      background: linear-gradient(135deg, var(--accent-1), var(--accent-2), var(--accent-3));
-      transition: transform 160ms ease, filter 160ms ease;
-    }
-
-    .gradient-btn:hover { filter: brightness(1.05); transform: translateY(-1px); }
-    .gradient-btn:active { transform: scale(0.99); }
-
-    .card-hover {
-      transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
-    }
-
-    .card-hover:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 18px 40px -18px rgba(245, 158, 11, 0.25);
-      border-color: rgba(245, 158, 11, 0.25);
-    }
-
-    .toc-item { cursor: pointer; transition: transform 180ms ease, background 180ms ease, border-color 180ms ease; }
-    .toc-item:hover { background: rgba(245, 158, 11, 0.12); transform: translateX(8px); border-left-color: rgba(245, 158, 11, 0.85); }
-
-    .transcript-tab { transition: background 180ms ease, transform 180ms ease, color 180ms ease; }
-    .transcript-tab.active {
-      background: linear-gradient(135deg, var(--accent-1), var(--accent-2), var(--accent-3));
-      color: white;
-      transform: scale(1.03);
-    }
-
-    .transcript-tab:not(.active):hover { background: rgba(255, 255, 255, 0.08); }
-
-    .tooltip-trigger {
-      position: relative;
-      cursor: help;
-      border-bottom: 2px dotted rgba(245, 158, 11, 0.75);
-    }
-
-    .tooltip-content {
-      position: absolute;
-      bottom: 100%;
-      left: 50%;
-      transform: translateX(-50%) translateY(-10px);
-      background: rgba(15, 23, 42, 0.95);
-      border: 1px solid rgba(245, 158, 11, 0.35);
-      padding: 12px 14px;
-      border-radius: 14px;
-      width: 260px;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 180ms ease;
-      z-index: 50;
-      font-size: 14px;
-    }
-
-    .tooltip-trigger:hover .tooltip-content {
-      opacity: 1;
-      visibility: visible;
-      transform: translateX(-50%) translateY(0);
-    }
-
-    .section-reveal { opacity: 0; transform: translateY(20px); transition: all 520ms ease; }
-    .section-reveal.visible { opacity: 1; transform: translateY(0); }
-
-    /* Scroll container (keeps background fixed like app pages) */
-    .main-wrapper {
-      min-height: 100%;
+    #app {
+      height: 100%;
       width: 100%;
-      overflow-x: hidden;
       overflow-y: auto;
     }
 
-    /* Custom scrollbar */
-    .main-wrapper::-webkit-scrollbar { width: 8px; }
-    .main-wrapper::-webkit-scrollbar-track { background: rgba(15, 23, 42, 1); }
-    .main-wrapper::-webkit-scrollbar-thumb { background: rgba(245, 158, 11, 0.65); border-radius: 4px; }
+    .divider-line {
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.10), transparent);
+      height: 1px;
+      width: 100%;
+    }
 
-    * { outline-color: transparent !important; }
-    *:focus { outline: none !important; }
-    *:focus-visible { outline: none !important; }
+    .tm-btn-primary {
+      background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%);
+      transition: all 0.2s ease;
+    }
+    .tm-btn-primary:hover {
+      box-shadow: 0 10px 30px rgba(245, 158, 11, 0.18);
+      transform: translateY(-2px);
+    }
+
+    .tm-btn-secondary {
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      transition: all 0.2s ease;
+    }
+    .tm-btn-secondary:hover {
+      background: rgba(245, 158, 11, 0.10);
+      border-color: rgba(245, 158, 11, 0.55);
+    }
+
+    .tm-card-hover {
+      transition: all 0.25s ease;
+    }
+    .tm-card-hover:hover {
+      border-color: rgba(245, 158, 11, 0.35);
+      transform: translateY(-4px);
+    }
+
+    .tm-icon-accent {
+      color: #f59e0b;
+    }
+
+    .section-reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .section-reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .tooltip-trigger {
+      position: relative;
+    }
+    .tooltip-content {
+      display: none;
+      position: absolute;
+      bottom: 125%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 12px 16px;
+      width: 220px;
+      z-index: 50;
+      font-size: 13px;
+      font-weight: 400;
+      pointer-events: none;
+    }
+    .tooltip-trigger:hover .tooltip-content {
+      display: block;
+    }
   </style>
-</head>
-
-<body class="h-full font-dmsans bg-slate-900 text-white overflow-auto">
-  <!-- PARTIAL:header -->
-
-  <div class="main-wrapper relative noise-bg">
-    <div class="blob-1" aria-hidden="true"></div>
-    <div class="blob-2" aria-hidden="true"></div>
-
-    <!-- Hero -->
-    <header class="relative px-6 py-20">
-      <div class="max-w-5xl mx-auto text-center relative z-10">
-        <div class="fade-in-up mb-8">
-          <div class="inline-flex items-center justify-center">
-            <div class="icon-float" aria-hidden="true">
-              <svg class="w-16 h-16" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                  <linearGradient id="shieldGradWelcomeLike" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" style="stop-color:#f59e0b" />
-                    <stop offset="50%" style="stop-color:#ef4444" />
-                    <stop offset="100%" style="stop-color:#fbbf24" />
-                  </linearGradient>
-                </defs>
-                <path d="M32 4L8 14v18c0 14 10 22 24 28 14-6 24-14 24-28V14L32 4z" stroke="url(#shieldGradWelcomeLike)" stroke-width="2" fill="rgba(245,158,11,0.1)" />
-                <path d="M24 32l6 6 12-14" stroke="url(#shieldGradWelcomeLike)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" />
-              </svg>
-            </div>
-          </div>
-        </div>
-
-        <h1 id="main-title" class="fade-in-up stagger-1 text-5xl md:text-7xl font-extrabold mb-6 leading-tight">
-          <span class="gradient-text">Transcript Central</span>
-        </h1>
-
-        <h2 id="subtitle" class="fade-in-up stagger-2 text-xl md:text-2xl font-light text-white/80 mb-6 max-w-3xl mx-auto">
-          Understand and Master How To Read An IRS Transcript
-        </h2>
-
-        <p class="fade-in-up stagger-3 text-base md:text-lg text-slate-300 mb-10 max-w-2xl mx-auto">
-          Your guide to decoding IRS transcripts, understanding tax codes, and taking control with clarity and control.
-        </p>
-
-        <div class="fade-in-up stagger-4 flex flex-col sm:flex-row gap-4 justify-center">
-          <button id="cta-button" class="gradient-btn px-8 py-4 rounded-xl font-semibold text-white flex items-center justify-center gap-2" type="button">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M4 6h11a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V8a2 2 0 012-2z" />
-            </svg>
-            <span id="cta-button-label">Watch Video Series</span>
-          </button>
-
-          <button type="button" data-scroll-to="toc" class="px-8 py-4 rounded-xl font-semibold text-white/80 border border-white/20 hover:bg-white/10 transition-all flex items-center justify-center gap-2">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h10M7 11h10M7 15h6M14 3H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V9l-6-6z" />
-            </svg>
-            <span>Explore Guide</span>
-          </button>
-        </div>
-
-        <div class="fade-in-up stagger-4 mt-14">
-          <button type="button" data-scroll-to="toc" class="text-white/40 hover:text-white/70 transition-colors" aria-label="Scroll to guide">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="animate-bounce" aria-hidden="true">
-              <path d="M12 5v14M5 12l7 7 7-7" />
-            </svg>
-          </button>
-        </div>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="https://cdn.tailwindcss.com/3.4.17" type="text/javascript"></script>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="bg-slate-950 text-slate-100">
+  <div id="app" class="min-h-screen flex flex-col">
+   <main class="flex-1"><!-- Hero -->
+    <section class="w-full px-6 pt-20 pb-16 md:pt-28 md:pb-24">
+     <div class="max-w-3xl mx-auto text-center">
+      <h1 id="main-title" class="text-4xl md:text-6xl font-bold tracking-tight mb-6 leading-tight">Understand and Master IRS Transcripts</h1>
+      <p id="subtitle" class="text-lg md:text-xl text-slate-400 mb-10 max-w-2xl mx-auto leading-relaxed">Learn how to read, obtain, and interpret your IRS transcript in minutes.</p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center mb-8"><button id="cta-button" class="tm-btn-primary px-8 py-4 rounded-full text-lg font-semibold text-slate-950 inline-flex items-center justify-center"> <span id="cta-button-label">Watch Video Series</span> </button> <button id="ebook-cta" class="tm-btn-secondary px-8 py-4 rounded-full text-lg font-semibold text-white bg-transparent inline-flex items-center justify-center"> Get Free Ebook </button>
       </div>
-    </header>
-
-    <!-- Video Series -->
-    <section id="video-series" class="relative py-20 px-6">
-      <div class="max-w-6xl mx-auto">
-        <div class="text-center mb-16 section-reveal">
-          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/15 text-amber-300 text-sm mb-6">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M4 6h11a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V8a2 2 0 012-2z" />
-            </svg>
-            <span>5-Part Series</span>
-          </div>
-          <h2 class="text-3xl md:text-4xl font-bold mb-4">What Is An <span class="gradient-text">IRS Transcript</span> And Why Should I Care?</h2>
-          <p class="text-slate-300 max-w-3xl mx-auto">
-            If you are a taxpayer and are confused about how to understand IRS transcripts and relate them to your tax return, this video series is for you.
-            Understand how and when to order transcripts, and how to read the numbers.
-          </p>
-        </div>
-
-        <div class="grid lg:grid-cols-3 gap-8 items-start section-reveal">
-          <div class="lg:col-span-2 glass-card rounded-2xl p-4 md:p-6 border border-white/10">
-            <div class="aspect-video w-full overflow-hidden rounded-xl border border-white/10 bg-black/20">
-              <iframe
-                id="yt-player"
-                class="w-full h-full"
-                src="https://www.youtube-nocookie.com/embed/ahvwuWvR3gM?rel=0&modestbranding=1"
-                title="What Is An IRS Transcript And Why Should I Care? (1 of 5)"
-                frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowfullscreen
-              ></iframe>
-            </div>
-
-            <div class="mt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-              <div>
-                <div class="text-sm text-slate-400">Now playing</div>
-                <div id="yt-now-playing" class="text-lg font-semibold text-white">What Is An IRS Transcript And Why Should I Care? (1 of 5)</div>
-              </div>
-              <button id="ebook-cta-inline" class="gradient-btn px-5 py-3 rounded-xl font-semibold text-white flex items-center justify-center gap-2" type="button">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                </svg>
-                <span>Download the free ebook</span>
-              </button>
-            </div>
-          </div>
-
-          <div class="glass-card rounded-2xl p-6 border border-white/10">
-            <div class="flex items-center justify-between mb-4">
-              <h3 class="text-lg font-bold text-white">Playlist</h3>
-              <span class="text-xs text-slate-400">5 videos</span>
-            </div>
-
-            <div id="yt-playlist" class="space-y-3"></div>
-
-            <div class="mt-6 p-4 rounded-xl bg-white/5 border border-white/10">
-              <div class="text-sm font-semibold text-amber-300">Free ebook companion</div>
-              <p class="text-sm text-slate-300 mt-1">Enter your email and we’ll send the ebook download link.</p>
-              <button id="ebook-cta-card" class="mt-4 w-full px-4 py-3 rounded-xl font-semibold border border-white/20 hover:bg-white/10 transition-all" type="button">
-                Get the ebook
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+      <p class="text-sm text-slate-500 max-w-lg mx-auto">5-part video series + downloadable guide.</p>
+     </div>
     </section>
-
-    <!-- Table of Contents -->
-    <section id="toc" class="relative py-20 px-6">
-      <div class="max-w-4xl mx-auto">
-        <div class="text-center mb-12 section-reveal">
-          <h2 class="text-3xl md:text-4xl font-bold mb-4"><span class="gradient-text">Quick Navigation</span></h2>
-          <p class="text-slate-300">Jump to any section of this transcript guide</p>
+    <div class="divider-line"></div><!-- Video Series -->
+    <section id="video-series" class="w-full px-6 py-20 md:py-28 bg-slate-900/40">
+     <div class="max-w-5xl mx-auto">
+      <div class="grid md:grid-cols-3 gap-8">
+       <div class="md:col-span-2"><iframe id="yt-player" class="w-full aspect-video rounded-2xl border border-white/10" src="https://www.youtube-nocookie.com/embed/ahvwuWvR3gM?rel=0&amp;modestbranding=1" title="IRS Transcript Video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <div class="mt-6">
+         <div class="text-sm text-slate-400 mb-2">
+          Now Playing
+         </div>
+         <div id="yt-now-playing" class="text-xl font-semibold text-white">
+          Video Title
+         </div>
         </div>
-
-        <div class="glass-card rounded-2xl p-8 section-reveal">
-          <div class="grid md:grid-cols-2 gap-4">
-            <div data-scroll-to="help" class="toc-item flex items-center gap-4 p-4 rounded-xl border-l-4 border-amber-500/50">
-              <div class="w-12 h-12 rounded-lg bg-amber-500/15 flex items-center justify-center">
-                <svg class="w-6 h-6 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16h6M21 12c0 4.418-4.03 8-9 8a10.99 10.99 0 01-5.657-1.52L3 20l1.52-3.343A7.98 7.98 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                </svg>
-              </div>
-              <div>
-                <h3 class="font-semibold text-white">How We Can Help</h3>
-                <p class="text-sm text-slate-400">Professional assistance</p>
-              </div>
-            </div>
-
-            <div data-scroll-to="how-to" class="toc-item flex items-center gap-4 p-4 rounded-xl border-l-4 border-orange-500/50">
-              <div class="w-12 h-12 rounded-lg bg-orange-500/15 flex items-center justify-center">
-                <svg class="w-6 h-6 text-orange-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z" />
-                </svg>
-              </div>
-              <div>
-                <h3 class="font-semibold text-white">How to Obtain Transcripts</h3>
-                <p class="text-sm text-slate-400">Online, phone, and mail</p>
-              </div>
-            </div>
-
-            <div data-scroll-to="timeframes" class="toc-item flex items-center gap-4 p-4 rounded-xl border-l-4 border-red-500/50">
-              <div class="w-12 h-12 rounded-lg bg-red-500/15 flex items-center justify-center">
-                <svg class="w-6 h-6 text-red-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <div>
-                <h3 class="font-semibold text-white">Availability &amp; Timeframes</h3>
-                <p class="text-sm text-slate-400">When transcripts are available</p>
-              </div>
-            </div>
-
-            <div data-scroll-to="types" class="toc-item flex items-center gap-4 p-4 rounded-xl border-l-4 border-emerald-500/50">
-              <div class="w-12 h-12 rounded-lg bg-emerald-500/15 flex items-center justify-center">
-                <svg class="w-6 h-6 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-              </div>
-              <div>
-                <h3 class="font-semibold text-white">Types of Transcripts</h3>
-                <p class="text-sm text-slate-400">Five transcript types</p>
-              </div>
-            </div>
-
-            <div data-scroll-to="understanding" class="toc-item flex items-center gap-4 p-4 rounded-xl border-l-4 border-amber-500/50">
-              <div class="w-12 h-12 rounded-lg bg-amber-500/15 flex items-center justify-center">
-                <svg class="w-6 h-6 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.5 8.5a3.5 3.5 0 00-7 0v7a3.5 3.5 0 007 0v-7z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 10H7a3 3 0 000 6h2m6-6h2a3 3 0 010 6h-2" />
-                </svg>
-              </div>
-              <div>
-                <h3 class="font-semibold text-white">Understanding Your Transcript</h3>
-                <p class="text-sm text-slate-400">Decode codes and terms</p>
-              </div>
-            </div>
-
-            <div data-scroll-to="what-is" class="toc-item flex items-center gap-4 p-4 rounded-xl border-l-4 border-slate-400/50">
-              <div class="w-12 h-12 rounded-lg bg-white/5 flex items-center justify-center">
-                <svg class="w-6 h-6 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h10M7 11h10M7 15h6M14 3H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V9l-6-6z" />
-                </svg>
-              </div>
-              <div>
-                <h3 class="font-semibold text-white">What is an IRS Transcript?</h3>
-                <p class="text-sm text-slate-400">Start with the basics</p>
-              </div>
-            </div>
-          </div>
+       </div>
+       <div class="space-y-3 section-reveal">
+        <div class="text-lg font-semibold mb-6">
+         5-Part Series
         </div>
+        <div id="yt-playlist" class="space-y-3"></div>
+       </div>
       </div>
+     </div>
     </section>
-
-    <!-- What is -->
-    <section id="what-is" class="relative py-20 px-6">
-      <div class="max-w-5xl mx-auto">
-        <div class="grid md:grid-cols-2 gap-12 items-center section-reveal">
+    <div class="divider-line"></div><!-- Methods -->
+    <section id="methods" class="w-full px-6 py-20 md:py-28">
+     <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-16 section-reveal">
+       <h2 id="methods-title" class="text-3xl md:text-4xl font-bold mb-4">How to Obtain Transcripts</h2>
+       <p class="text-slate-300 max-w-2xl mx-auto">Pick the method that fits your situation and urgency.</p>
+      </div>
+      <div class="grid md:grid-cols-3 gap-6 section-reveal">
+       <div class="rounded-2xl p-6 tm-card-hover border border-white/10 bg-slate-900/40">
+        <div class="w-14 h-14 rounded-xl bg-amber-500/15 flex items-center justify-center mb-4">
+         <svg class="w-7 h-7 tm-icon-accent" fill="none" stroke="currentColor" viewbox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21a9.004 9.004 0 008.716-6.747M12 21c-4.393 0-8-3.582-8-8 0-1.202.248-2.345.682-3.376m16.318 0a9 9 0 00-9-8 9.004 9.004 0 00-5.422 1.694M5 13a3 3 0 11-6 0 3 3 0 016 0z" />
+         </svg>
+        </div>
+        <div class="text-amber-300 text-sm font-medium">
+         Fastest
+        </div>
+        <h3 class="text-xl font-bold text-white mt-1 mb-3">Online via IRS.gov</h3>
+        <p class="text-slate-300 mb-4 text-sm">Create an IRS account and complete identity verification for immediate access.</p>
+        <ul class="space-y-2 text-sm text-slate-400">
+         <li>✓ Download and print instantly</li>
+         <li>✓ Access most transcript types</li>
+         <li>✓ Best for speed</li>
+        </ul>
+       </div>
+       <div class="rounded-2xl p-6 tm-card-hover border border-white/10 bg-slate-900/40">
+        <div class="w-14 h-14 rounded-xl bg-emerald-500/15 flex items-center justify-center mb-4">
+         <svg class="w-7 h-7 text-emerald-300" fill="none" stroke="currentColor" viewbox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3l2 5-2 1a16 16 0 007 7l1-2 5 2v3a2 2 0 01-2 2h-1C9.82 21 3 14.18 3 6V5z" />
+         </svg>
+        </div>
+        <div class="text-emerald-300 text-sm font-medium">
+         No Internet
+        </div>
+        <h3 class="text-xl font-bold text-white mt-1 mb-3">Phone Request</h3>
+        <p class="text-slate-300 mb-4 text-sm">Use the IRS automated line to request transcripts mailed to your address on file.</p>
+        <ul class="space-y-2 text-sm text-slate-400">
+         <li>✓ Automated service</li>
+         <li>✓ Arrives by mail</li>
+         <li>✓ Useful for basic needs</li>
+        </ul>
+       </div>
+       <div class="rounded-2xl p-6 tm-card-hover border border-white/10 bg-slate-900/40">
+        <div class="w-14 h-14 rounded-xl bg-red-500/15 flex items-center justify-center mb-4">
+         <svg class="w-7 h-7 text-red-300" fill="none" stroke="currentColor" viewbox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8m-18 9a2 2 0 002 2h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10z" />
+         </svg>
+        </div>
+        <div class="text-red-300 text-sm font-medium">
+         Traditional
+        </div>
+        <h3 class="text-xl font-bold text-white mt-1 mb-3">Mail via Form 4506-T</h3>
+        <p class="text-slate-300 mb-4 text-sm">Submit a transcript request by mail, including third-party recipient options.</p>
+        <ul class="space-y-2 text-sm text-slate-400">
+         <li>✓ Works for special cases</li>
+         <li>✓ Slower processing</li>
+         <li>✓ Paper trail</li>
+        </ul>
+       </div>
+      </div>
+     </div>
+    </section>
+    <div class="divider-line"></div><!-- Timeframes -->
+    <section id="timeframes" class="w-full px-6 py-20 md:py-28">
+     <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-16 section-reveal">
+       <h2 class="text-3xl md:text-4xl font-bold mb-4">Availability &amp; Timeframes</h2>
+       <p class="text-slate-300 max-w-2xl mx-auto">Availability varies by transcript type and IRS processing timelines.</p>
+      </div>
+      <div class="grid md:grid-cols-2 gap-8 section-reveal">
+       <div class="rounded-2xl p-8 tm-card-hover border border-white/10 bg-slate-900/40">
+        <h3 class="text-xl font-bold text-white mb-6">Years Available</h3>
+        <div class="space-y-4">
+         <div class="flex justify-between items-center p-3 rounded-lg bg-white/5 border border-white/10"><span class="text-slate-300">Tax Return Transcript</span> <span class="text-amber-300 font-medium">Current + 3 years</span>
+         </div>
+         <div class="flex justify-between items-center p-3 rounded-lg bg-white/5 border border-white/10"><span class="text-slate-300">Tax Account Transcript</span> <span class="text-emerald-300 font-medium">Current + 10 years</span>
+         </div>
+         <div class="flex justify-between items-center p-3 rounded-lg bg-white/5 border border-white/10"><span class="text-slate-300">Record of Account</span> <span class="text-orange-300 font-medium">Current + 3 years</span>
+         </div>
+         <div class="flex justify-between items-center p-3 rounded-lg bg-white/5 border border-white/10"><span class="text-slate-300">Wage &amp; Income</span> <span class="text-emerald-300 font-medium">Current + 10 years</span>
+         </div>
+        </div>
+       </div>
+       <div class="rounded-2xl p-8 tm-card-hover border border-white/10 bg-slate-900/40">
+        <h3 class="text-xl font-bold text-white mb-6">When Available</h3>
+        <div class="space-y-4 text-slate-300">
+         <div class="p-4 rounded-lg bg-emerald-500/10 border-l-4 border-emerald-500">
+          <h4 class="font-semibold text-emerald-300 mb-1">E-Filed Returns</h4>
+          <p class="text-sm text-slate-300">Often available within 2–3 weeks after filing.</p>
+         </div>
+         <div class="p-4 rounded-lg bg-amber-500/10 border-l-4 border-amber-500">
+          <h4 class="font-semibold text-amber-300 mb-1">Paper Returns</h4>
+          <p class="text-sm text-slate-300">Can take 6–8 weeks (or longer) after filing.</p>
+         </div>
+         <div class="p-4 rounded-lg bg-orange-500/10 border-l-4 border-orange-500">
+          <h4 class="font-semibold text-orange-300 mb-1">Wage &amp; Income Data</h4>
+          <p class="text-sm text-slate-300">Commonly available by mid-March for the prior year.</p>
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="mt-8 rounded-2xl p-6 section-reveal border-l-4 border-amber-500 bg-slate-900/40 border border-white/10">
+       <div class="flex items-start gap-4">
+        <svg class="w-8 h-8 text-amber-300" fill="none" stroke="currentColor" viewbox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2a7 7 0 00-4 12.74V17a2 2 0 002 2h4a2 2 0 002-2v-2.26A7 7 0 0012 2z" /> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 21h6" />
+        </svg>
+        <div>
+         <h4 class="font-semibold text-amber-300 mb-2">Pro Tip</h4>
+         <p class="text-slate-300 text-sm">If you need a prior-year AGI to e-file and your transcript isn't available yet, you may be able to use $0 AGI in certain cases. Confirm the rule for your filing situation before submitting.</p>
+        </div>
+       </div>
+      </div>
+     </div>
+    </section>
+    <div class="divider-line"></div><!-- Understanding -->
+    <section id="understanding" class="w-full px-6 py-20 md:py-28 bg-slate-900/40">
+     <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-16 section-reveal">
+       <h2 class="text-3xl md:text-4xl font-bold mb-4">Understanding Your Transcript</h2>
+       <p class="text-slate-300 max-w-2xl mx-auto">Common terms and transaction codes you'll see.</p>
+      </div>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12 section-reveal">
+       <div class="rounded-xl p-6 tm-card-hover border border-white/10 bg-slate-950/40">
+        <div class="tooltip-trigger inline-block mb-3"><span class="text-lg font-semibold text-amber-300">AGI</span>
+         <div class="tooltip-content"><strong class="text-white">Adjusted Gross Income</strong>
+          <p class="text-slate-300 mt-1 text-xs">Total income minus certain adjustments. Used widely across IRS computations and e-filing validation.</p>
+         </div>
+        </div>
+        <p class="text-slate-300 text-sm">Adjusted Gross Income. Often requested for verification.</p>
+       </div>
+       <div class="rounded-xl p-6 tm-card-hover border border-white/10 bg-slate-950/40">
+        <div class="tooltip-trigger inline-block mb-3"><span class="text-lg font-semibold text-orange-300">Code 150</span>
+         <div class="tooltip-content"><strong class="text-white">Return Filed &amp; Tax Assessed</strong>
+          <p class="text-slate-300 mt-1 text-xs">Shows the IRS processed the return and established tax on the account.</p>
+         </div>
+        </div>
+        <p class="text-slate-300 text-sm">Return processed and tax assessed.</p>
+       </div>
+       <div class="rounded-xl p-6 tm-card-hover border border-white/10 bg-slate-950/40">
+        <div class="tooltip-trigger inline-block mb-3"><span class="text-lg font-semibold text-emerald-300">Code 806</span>
+         <div class="tooltip-content"><strong class="text-white">Withholding Credit</strong>
+          <p class="text-slate-300 mt-1 text-xs">Federal income tax withheld from wages. A common credit line item.</p>
+         </div>
+        </div>
+        <p class="text-slate-300 text-sm">Federal withholding credit.</p>
+       </div>
+       <div class="rounded-xl p-6 tm-card-hover border border-white/10 bg-slate-950/40">
+        <div class="tooltip-trigger inline-block mb-3"><span class="text-lg font-semibold text-amber-300">Code 846</span>
+         <div class="tooltip-content"><strong class="text-white">Refund Issued</strong>
+          <p class="text-slate-300 mt-1 text-xs">Refund released/issued. The date can reflect the scheduled release.</p>
+         </div>
+        </div>
+        <p class="text-slate-300 text-sm">Refund issued or scheduled.</p>
+       </div>
+       <div class="rounded-xl p-6 tm-card-hover border border-white/10 bg-slate-950/40">
+        <div class="tooltip-trigger inline-block mb-3"><span class="text-lg font-semibold text-red-300">Code 570</span>
+         <div class="tooltip-content"><strong class="text-white">Additional Account Action Pending</strong>
+          <p class="text-slate-300 mt-1 text-xs">A hold is present. Often resolves with a follow-up action or internal review completion.</p>
+         </div>
+        </div>
+        <p class="text-slate-300 text-sm">Hold or pending action.</p>
+       </div>
+       <div class="rounded-xl p-6 tm-card-hover border border-white/10 bg-slate-950/40">
+        <div class="tooltip-trigger inline-block mb-3"><span class="text-lg font-semibold text-orange-300">Code 971</span>
+         <div class="tooltip-content"><strong class="text-white">Notice Issued</strong>
+          <p class="text-slate-300 mt-1 text-xs">A notice was generated. Watch your mail and IRS online account messages.</p>
+         </div>
+        </div>
+        <p class="text-slate-300 text-sm">Notice/letter issued.</p>
+       </div>
+      </div>
+      <div class="rounded-2xl p-8 section-reveal border border-white/10 bg-slate-950/40">
+       <h3 class="text-xl font-bold text-white mb-6">Key Tips for Reading Your Transcript</h3>
+       <div class="grid md:grid-cols-2 gap-6">
+        <div class="space-y-4">
+         <div class="flex items-start gap-3"><span class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-sm font-bold text-white flex-shrink-0">1</span>
           <div>
-            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/15 text-amber-300 text-sm mb-6">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h10M7 11h10M7 15h6M14 3H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V9l-6-6z" />
-              </svg>
-              <span>The Basics</span>
-            </div>
-            <h2 class="text-3xl md:text-4xl font-bold mb-6">What is an <span class="gradient-text">IRS Transcript?</span></h2>
-            <p class="text-slate-300 text-lg mb-6">
-              An IRS transcript is a summary of your tax return and account data on file with the IRS. It’s the IRS’s standardized “receipt” of what they processed, plus any adjustments.
-            </p>
-            <p class="text-slate-400 mb-8">
-              It is not a photocopy of your return. It’s a line-by-line summary that’s commonly used for verification, underwriting, and resolving tax issues.
-            </p>
-            <div class="flex flex-wrap gap-3">
-              <span class="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-sm text-slate-300">Free to obtain</span>
-              <span class="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-sm text-slate-300">Multiple years available</span>
-              <span class="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-sm text-slate-300">Official IRS record</span>
-            </div>
+           <h4 class="font-semibold text-white mb-1">Check the Cycle Code</h4>
+           <p class="text-slate-300 text-sm">It can indicate when processing occurred (year/week/day pattern).</p>
           </div>
-
-          <div class="relative">
-            <div class="glass-card rounded-2xl p-8 card-hover">
-              <svg viewBox="0 0 300 350" class="w-full max-w-sm mx-auto" aria-hidden="true">
-                <defs>
-                  <linearGradient id="docGradTC" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#f59e0b" />
-                    <stop offset="50%" stop-color="#f97316" />
-                    <stop offset="100%" stop-color="#ef4444" />
-                  </linearGradient>
-                </defs>
-                <rect x="40" y="20" width="220" height="310" rx="10" fill="#111827" stroke="url(#docGradTC)" stroke-width="2" />
-                <rect x="60" y="40" width="180" height="30" rx="6" fill="#f59e0b" opacity="0.22" />
-                <text x="150" y="60" text-anchor="middle" fill="#fff" font-size="12" font-weight="bold">IRS TRANSCRIPT</text>
-
-                <rect x="60" y="90" width="140" height="8" rx="2" fill="#fff" opacity="0.18" />
-                <rect x="60" y="110" width="160" height="6" rx="2" fill="#fff" opacity="0.12" />
-                <rect x="60" y="130" width="120" height="6" rx="2" fill="#fff" opacity="0.12" />
-                <rect x="60" y="150" width="150" height="6" rx="2" fill="#fff" opacity="0.12" />
-
-                <rect x="60" y="180" width="100" height="8" rx="2" fill="#10b981" opacity="0.30" />
-                <rect x="60" y="200" width="170" height="6" rx="2" fill="#fff" opacity="0.12" />
-                <rect x="60" y="220" width="130" height="6" rx="2" fill="#fff" opacity="0.12" />
-                <rect x="60" y="240" width="155" height="6" rx="2" fill="#fff" opacity="0.12" />
-
-                <rect x="60" y="280" width="80" height="6" rx="2" fill="#ef4444" opacity="0.28" />
-                <rect x="160" y="280" width="60" height="6" rx="2" fill="#fff" opacity="0.16" />
-
-                <circle cx="250" cy="50" r="20" fill="#f59e0b" opacity="0.14" />
-                <path d="M240 50 L248 58 L262 42" stroke="#f59e0b" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
-            </div>
-
-            <div class="absolute -top-4 -right-4 glass-card px-4 py-2 rounded-full border border-white/10">
-              <div class="inline-flex items-center gap-2 text-sm font-medium text-amber-300">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3v18h18" />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 13v5" />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v9" />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 6v12" />
-                </svg>
-                <span>Official Record</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Types -->
-    <section id="types" class="relative py-20 px-6">
-      <div class="max-w-6xl mx-auto">
-        <div class="text-center mb-16 section-reveal">
-          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/15 text-emerald-300 text-sm mb-6">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-            <span>Five Types Available</span>
-          </div>
-          <h2 class="text-3xl md:text-4xl font-bold mb-4">Types of <span class="gradient-text">IRS Transcripts</span></h2>
-          <p class="text-slate-300 max-w-2xl mx-auto">Click each type to see a sample and when you’d use it.</p>
-        </div>
-
-        <div class="section-reveal">
-          <div class="flex flex-wrap justify-center gap-3 mb-8" id="transcript-tabs">
-            <button type="button" data-tab="tax-return" class="transcript-tab active px-5 py-3 rounded-xl font-medium text-sm">
-              <span class="inline-flex items-center gap-2">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h10M7 11h10M7 15h6M14 3H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V9l-6-6z" /></svg>
-                <span>Tax Return</span>
-              </span>
-            </button>
-            <button type="button" data-tab="tax-account" class="transcript-tab px-5 py-3 rounded-xl font-medium text-sm bg-white/5">
-              <span class="inline-flex items-center gap-2">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3v18h18M7 13v5M12 9v9M17 6v12" /></svg>
-                <span>Tax Account</span>
-              </span>
-            </button>
-            <button type="button" data-tab="record-account" class="transcript-tab px-5 py-3 rounded-xl font-medium text-sm bg-white/5">
-              <span class="inline-flex items-center gap-2">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
-                <span>Record of Account</span>
-              </span>
-            </button>
-            <button type="button" data-tab="wage-income" class="transcript-tab px-5 py-3 rounded-xl font-medium text-sm bg-white/5">
-              <span class="inline-flex items-center gap-2">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-10V6m0 12v2" /></svg>
-                <span>Wage &amp; Income</span>
-              </span>
-            </button>
-            <button type="button" data-tab="non-filing" class="transcript-tab px-5 py-3 rounded-xl font-medium text-sm bg-white/5">
-              <span class="inline-flex items-center gap-2">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8m-18 9a2 2 0 002 2h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10z" /></svg>
-                <span>Non-Filing Letter</span>
-              </span>
-            </button>
-          </div>
-
-          <div class="grid lg:grid-cols-3 gap-8 items-start">
-            <div class="lg:col-span-2 glass-card rounded-2xl p-8 max-h-96 overflow-y-auto border border-white/10">
-              <div id="transcript-preview" class="font-mono text-sm bg-white/5 p-6 rounded-lg border border-white/10 leading-relaxed"></div>
-            </div>
-
-            <div class="glass-card rounded-2xl p-8 border border-white/10">
-              <div id="transcript-content"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- How to -->
-    <section id="how-to" class="relative py-20 px-6">
-      <div class="max-w-5xl mx-auto">
-        <div class="text-center mb-16 section-reveal">
-          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-500/15 text-orange-300 text-sm mb-6">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z" />
-            </svg>
-            <span>Three Methods</span>
-          </div>
-          <h2 class="text-3xl md:text-4xl font-bold mb-4">How to <span class="gradient-text">Obtain Transcripts</span></h2>
-          <p class="text-slate-300 max-w-2xl mx-auto">Pick the method that fits your situation and urgency.</p>
-        </div>
-
-        <div class="grid md:grid-cols-3 gap-6 section-reveal">
-          <div class="glass-card rounded-2xl p-6 card-hover border border-white/10">
-            <div class="w-14 h-14 rounded-xl bg-amber-500/15 flex items-center justify-center mb-4">
-              <svg class="w-7 h-7 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21a9 9 0 100-18 9 9 0 000 18z" />
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.6 9h16.8" />
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.6 15h16.8" />
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3c2.5 2.4 4 5.6 4 9s-1.5 6.6-4 9c-2.5-2.4-4-5.6-4-9s1.5-6.6 4-9z" />
-              </svg>
-            </div>
-            <div class="text-amber-300 text-sm font-medium">Fastest</div>
-            <h3 class="text-xl font-bold text-white mt-1 mb-3">Online via IRS.gov</h3>
-            <p class="text-slate-300 mb-4">Create an IRS account and complete identity verification for immediate access.</p>
-            <ul class="space-y-2 text-sm text-slate-400">
-              <li>Download and print instantly</li>
-              <li>Access most transcript types</li>
-              <li>Best for speed</li>
-            </ul>
-          </div>
-
-          <div class="glass-card rounded-2xl p-6 card-hover border border-white/10">
-            <div class="w-14 h-14 rounded-xl bg-emerald-500/15 flex items-center justify-center mb-4">
-              <svg class="w-7 h-7 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3l2 5-2 1a16 16 0 007 7l1-2 5 2v3a2 2 0 01-2 2h-1C9.82 21 3 14.18 3 6V5z" />
-              </svg>
-            </div>
-            <div class="text-emerald-300 text-sm font-medium">No Internet</div>
-            <h3 class="text-xl font-bold text-white mt-1 mb-3">Phone Request</h3>
-            <p class="text-slate-300 mb-4">Use the IRS automated line to request transcripts mailed to your address on file.</p>
-            <ul class="space-y-2 text-sm text-slate-400">
-              <li>Automated service</li>
-              <li>Arrives by mail</li>
-              <li>Useful for basic needs</li>
-            </ul>
-          </div>
-
-          <div class="glass-card rounded-2xl p-6 card-hover border border-white/10">
-            <div class="w-14 h-14 rounded-xl bg-red-500/15 flex items-center justify-center mb-4">
-              <svg class="w-7 h-7 text-red-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8m-18 9a2 2 0 002 2h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10z" />
-              </svg>
-            </div>
-            <div class="text-red-300 text-sm font-medium">Traditional</div>
-            <h3 class="text-xl font-bold text-white mt-1 mb-3">Mail via Form 4506-T</h3>
-            <p class="text-slate-300 mb-4">Submit a transcript request by mail, including third-party recipient options.</p>
-            <ul class="space-y-2 text-sm text-slate-400">
-              <li>Works for special cases</li>
-              <li>Slower processing</li>
-              <li>Paper trail</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Timeframes -->
-    <section id="timeframes" class="relative py-20 px-6">
-      <div class="max-w-5xl mx-auto">
-        <div class="text-center mb-16 section-reveal">
-          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-500/15 text-red-300 text-sm mb-6">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <span>Important Timing</span>
-          </div>
-          <h2 class="text-3xl md:text-4xl font-bold mb-4">Availability &amp; <span class="gradient-text">Timeframes</span></h2>
-          <p class="text-slate-300 max-w-2xl mx-auto">Availability varies by transcript type and IRS processing timelines.</p>
-        </div>
-
-        <div class="grid md:grid-cols-2 gap-8 section-reveal">
-          <div class="glass-card rounded-2xl p-8 card-hover border border-white/10">
-            <h3 class="text-xl font-bold text-white mb-6">Years Available</h3>
-            <div class="space-y-4">
-              <div class="flex justify-between items-center p-3 rounded-lg bg-white/5 border border-white/10">
-                <span class="text-slate-300">Tax Return Transcript</span>
-                <span class="text-amber-300 font-medium">Current + 3 years</span>
-              </div>
-              <div class="flex justify-between items-center p-3 rounded-lg bg-white/5 border border-white/10">
-                <span class="text-slate-300">Tax Account Transcript</span>
-                <span class="text-emerald-300 font-medium">Current + 10 years</span>
-              </div>
-              <div class="flex justify-between items-center p-3 rounded-lg bg-white/5 border border-white/10">
-                <span class="text-slate-300">Record of Account</span>
-                <span class="text-orange-300 font-medium">Current + 3 years</span>
-              </div>
-              <div class="flex justify-between items-center p-3 rounded-lg bg-white/5 border border-white/10">
-                <span class="text-slate-300">Wage &amp; Income</span>
-                <span class="text-emerald-300 font-medium">Current + 10 years</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="glass-card rounded-2xl p-8 card-hover border border-white/10">
-            <h3 class="text-xl font-bold text-white mb-6">When Available</h3>
-            <div class="space-y-4 text-slate-300">
-              <div class="p-4 rounded-lg bg-emerald-500/10 border-l-4 border-emerald-500">
-                <h4 class="font-semibold text-emerald-300 mb-1">E-Filed Returns</h4>
-                <p class="text-sm text-slate-300">Often available within 2–3 weeks after filing.</p>
-              </div>
-              <div class="p-4 rounded-lg bg-amber-500/10 border-l-4 border-amber-500">
-                <h4 class="font-semibold text-amber-300 mb-1">Paper Returns</h4>
-                <p class="text-sm text-slate-300">Can take 6–8 weeks (or longer) after filing.</p>
-              </div>
-              <div class="p-4 rounded-lg bg-orange-500/10 border-l-4 border-orange-500">
-                <h4 class="font-semibold text-orange-300 mb-1">Wage &amp; Income Data</h4>
-                <p class="text-sm text-slate-300">Commonly available by mid-March for the prior year.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="mt-8 glass-card rounded-2xl p-6 border-l-4 border-amber-500 section-reveal border border-white/10">
-          <div class="flex items-start gap-4">
-            <svg class="w-8 h-8 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2a7 7 0 00-4 12.74V17a2 2 0 002 2h4a2 2 0 002-2v-2.26A7 7 0 0012 2z" />
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 21h6" />
-            </svg>
-            <div>
-              <h4 class="font-semibold text-amber-300 mb-2">Pro Tip</h4>
-              <p class="text-slate-300">If you need a prior-year AGI to e-file and your transcript isn’t available yet, you may be able to use $0 AGI in certain cases. Confirm the rule for your filing situation before submitting.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Understanding -->
-    <section id="understanding" class="relative py-20 px-6">
-      <div class="max-w-5xl mx-auto">
-        <div class="text-center mb-16 section-reveal">
-          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/15 text-emerald-300 text-sm mb-6">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.5 8.5a3.5 3.5 0 00-7 0v7a3.5 3.5 0 007 0v-7z" />
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 10H7a3 3 0 000 6h2m6-6h2a3 3 0 010 6h-2" />
-            </svg>
-            <span>Decode the Codes</span>
-          </div>
-          <h2 class="text-3xl md:text-4xl font-bold mb-4">Understanding <span class="gradient-text">Your Transcript</span></h2>
-          <p class="text-slate-300 max-w-2xl mx-auto">Common terms and transaction codes you’ll see.</p>
-        </div>
-
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12 section-reveal">
-          <div class="glass-card rounded-xl p-6 card-hover border border-white/10">
-            <div class="tooltip-trigger inline-block mb-3">
-              <span class="text-lg font-semibold text-amber-300">AGI</span>
-              <div class="tooltip-content">
-                <strong class="text-white">Adjusted Gross Income</strong>
-                <p class="text-slate-300 mt-1">Total income minus certain adjustments. Used widely across IRS computations and e-filing validation.</p>
-              </div>
-            </div>
-            <p class="text-slate-300 text-sm">Adjusted Gross Income. Often requested for verification.</p>
-          </div>
-
-          <div class="glass-card rounded-xl p-6 card-hover border border-white/10">
-            <div class="tooltip-trigger inline-block mb-3">
-              <span class="text-lg font-semibold text-orange-300">Code 150</span>
-              <div class="tooltip-content">
-                <strong class="text-white">Return Filed &amp; Tax Assessed</strong>
-                <p class="text-slate-300 mt-1">Shows the IRS processed the return and established tax on the account.</p>
-              </div>
-            </div>
-            <p class="text-slate-300 text-sm">Return processed and tax assessed.</p>
-          </div>
-
-          <div class="glass-card rounded-xl p-6 card-hover border border-white/10">
-            <div class="tooltip-trigger inline-block mb-3">
-              <span class="text-lg font-semibold text-emerald-300">Code 806</span>
-              <div class="tooltip-content">
-                <strong class="text-white">Withholding Credit</strong>
-                <p class="text-slate-300 mt-1">Federal income tax withheld from wages. A common credit line item.</p>
-              </div>
-            </div>
-            <p class="text-slate-300 text-sm">Federal withholding credit.</p>
-          </div>
-
-          <div class="glass-card rounded-xl p-6 card-hover border border-white/10">
-            <div class="tooltip-trigger inline-block mb-3">
-              <span class="text-lg font-semibold text-amber-300">Code 846</span>
-              <div class="tooltip-content">
-                <strong class="text-white">Refund Issued</strong>
-                <p class="text-slate-300 mt-1">Refund released/issued. The date can reflect the scheduled release.</p>
-              </div>
-            </div>
-            <p class="text-slate-300 text-sm">Refund issued or scheduled.</p>
-          </div>
-
-          <div class="glass-card rounded-xl p-6 card-hover border border-white/10">
-            <div class="tooltip-trigger inline-block mb-3">
-              <span class="text-lg font-semibold text-red-300">Code 570</span>
-              <div class="tooltip-content">
-                <strong class="text-white">Additional Account Action Pending</strong>
-                <p class="text-slate-300 mt-1">A hold is present. Often resolves with a follow-up action or internal review completion.</p>
-              </div>
-            </div>
-            <p class="text-slate-300 text-sm">Hold or pending action.</p>
-          </div>
-
-          <div class="glass-card rounded-xl p-6 card-hover border border-white/10">
-            <div class="tooltip-trigger inline-block mb-3">
-              <span class="text-lg font-semibold text-orange-300">Code 971</span>
-              <div class="tooltip-content">
-                <strong class="text-white">Notice Issued</strong>
-                <p class="text-slate-300 mt-1">A notice was generated. Watch your mail and IRS online account messages.</p>
-              </div>
-            </div>
-            <p class="text-slate-300 text-sm">Notice/letter issued.</p>
-          </div>
-        </div>
-
-        <div class="glass-card rounded-2xl p-8 section-reveal border border-white/10">
-          <h3 class="text-xl font-bold text-white mb-6">Key Tips for Reading Your Transcript</h3>
-          <div class="grid md:grid-cols-2 gap-6">
-            <div class="space-y-4">
-              <div class="flex items-start gap-3">
-                <span class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-sm font-bold text-white">1</span>
-                <div>
-                  <h4 class="font-semibold text-white mb-1">Check the Cycle Code</h4>
-                  <p class="text-slate-300 text-sm">It can indicate when processing occurred (year/week/day pattern).</p>
-                </div>
-              </div>
-              <div class="flex items-start gap-3">
-                <span class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-sm font-bold text-white">2</span>
-                <div>
-                  <h4 class="font-semibold text-white mb-1">Look for Refund Dates</h4>
-                  <p class="text-slate-300 text-sm">Code 846 often includes the refund release date.</p>
-                </div>
-              </div>
-              <div class="flex items-start gap-3">
-                <span class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-sm font-bold text-white">3</span>
-                <div>
-                  <h4 class="font-semibold text-white mb-1">Watch for Holds</h4>
-                  <p class="text-slate-300 text-sm">Codes 570/810/420 can imply delay, review, or audit activity.</p>
-                </div>
-              </div>
-            </div>
-            <div class="space-y-4">
-              <div class="flex items-start gap-3">
-                <span class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-sm font-bold text-white">4</span>
-                <div>
-                  <h4 class="font-semibold text-white mb-1">Verify Credits</h4>
-                  <p class="text-slate-300 text-sm">Confirm credits and withholding were applied correctly.</p>
-                </div>
-              </div>
-              <div class="flex items-start gap-3">
-                <span class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-sm font-bold text-white">5</span>
-                <div>
-                  <h4 class="font-semibold text-white mb-1">Review Penalty Lines</h4>
-                  <p class="text-slate-300 text-sm">Penalty/interest codes and dates help explain balances.</p>
-                </div>
-              </div>
-              <div class="flex items-start gap-3">
-                <span class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-sm font-bold text-white">6</span>
-                <div>
-                  <h4 class="font-semibold text-white mb-1">Get Help When Needed</h4>
-                  <p class="text-slate-300 text-sm">If the story doesn’t make sense, don’t guess. Verify.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Help -->
-    <section id="help" class="relative py-20 px-6">
-      <div class="max-w-5xl mx-auto">
-        <div class="text-center mb-16 section-reveal">
-          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/15 text-amber-300 text-sm mb-6">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16h6M21 12c0 4.418-4.03 8-9 8a10.99 10.99 0 01-5.657-1.52L3 20l1.52-3.343A7.98 7.98 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-            </svg>
-            <span>Expert Assistance</span>
-          </div>
-          <h2 class="text-3xl md:text-4xl font-bold mb-4">How We Can <span class="gradient-text">Help</span></h2>
-          <p class="text-slate-300 max-w-2xl mx-auto">Clear explanations, next-step guidance, and professional support.</p>
-        </div>
-
-        <div class="grid md:grid-cols-2 gap-8 section-reveal">
-          <div class="glass-card rounded-2xl overflow-hidden card-hover border border-white/10">
-            <div class="h-2 bg-gradient-to-r from-amber-500 to-orange-500"></div>
-            <div class="p-8">
-              <div class="flex items-center gap-4 mb-6">
-                <div class="w-14 h-14 rounded-xl bg-amber-500/15 flex items-center justify-center">
-                  <svg class="w-7 h-7 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A9 9 0 1118.879 17.8M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                </div>
-                <h3 class="text-2xl font-bold text-white">For Taxpayers</h3>
-              </div>
-              <p class="text-slate-300 mb-6">We help you interpret your transcript, understand notices, and map realistic options.</p>
-              <ul class="space-y-3 mb-8">
-                <li class="flex items-center gap-3 text-slate-300">
-                  <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
-                  <span>Transcript analysis and explanation</span>
-                </li>
-                <li class="flex items-center gap-3 text-slate-300">
-                  <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
-                  <span>Notice and letter guidance</span>
-                </li>
-                <li class="flex items-center gap-3 text-slate-300">
-                  <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
-                  <span>Tax monitoring for ongoing support</span>
-                </li>
-                <li class="flex items-center gap-3 text-slate-300">
-                  <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
-                  <span>Representation workflows</span>
-                </li>
-              </ul>
-              <button class="gradient-btn w-full py-4 rounded-xl font-semibold text-white flex items-center justify-center gap-2" type="button" data-cal-link="tax-monitor-pro/tax-monitor-service-intro" data-cal-namespace="tax-monitor-service-intro" data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'>
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a10.99 10.99 0 01-5.657-1.52L3 20l1.52-3.343A7.98 7.98 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                </svg>
-                <span>Get Personal Help</span>
-              </button>
-            </div>
-          </div>
-
-          <div class="glass-card rounded-2xl overflow-hidden card-hover border border-white/10">
-            <div class="h-2 bg-gradient-to-r from-orange-500 to-red-500"></div>
-            <div class="p-8">
-              <div class="flex items-center gap-4 mb-6">
-                <div class="w-14 h-14 rounded-xl bg-orange-500/15 flex items-center justify-center">
-                  <svg class="w-7 h-7 text-orange-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h4a2 2 0 012 2v1h3a2 2 0 012 2v7a2 2 0 01-2 2H3a2 2 0 01-2-2v-7a2 2 0 012-2h3V8a2 2 0 012-2z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6" />
-                  </svg>
-                </div>
-                <h3 class="text-2xl font-bold text-white">For Tax Professionals</h3>
-              </div>
-              <p class="text-slate-300 mb-6">Get sharper at transcript review, escalations, and documentation workflows.</p>
-              <ul class="space-y-3 mb-8">
-                <li class="flex items-center gap-3 text-slate-300">
-                  <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
-                  <span>Transcript training resources</span>
-                </li>
-                <li class="flex items-center gap-3 text-slate-300">
-                  <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
-                  <span>Complex case consults</span>
-                </li>
-                <li class="flex items-center gap-3 text-slate-300">
-                  <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
-                  <span>Documentation systems</span>
-                </li>
-                <li class="flex items-center gap-3 text-slate-300">
-                  <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
-                  <span>Referral partnership paths</span>
-                </li>
-              </ul>
-              <button class="gradient-btn w-full py-4 rounded-xl font-semibold text-white flex items-center justify-center gap-2" type="button" data-cal-link="tax-monitor-pro/tax-monitor-partnership-digital-coffee" data-cal-namespace="tax-monitor-partnership-digital-coffee" data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'>
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h4a2 2 0 012 2v1h3a2 2 0 012 2v7a2 2 0 01-2 2H3a2 2 0 01-2-2v-7a2 2 0 012-2h3V8a2 2 0 012-2z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6" />
-                </svg>
-                <span>Partner With Us</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Ebook Modal -->
-    <div id="ebook-modal" class="fixed inset-0 hidden items-center justify-center p-6" role="dialog" aria-modal="true" aria-labelledby="ebook-modal-title">
-      <div id="ebook-backdrop" class="absolute inset-0 bg-slate-950/70"></div>
-
-      <div class="relative w-full max-w-lg glass-card rounded-2xl border border-white/10 p-6 md:p-8">
-        <div class="flex items-start justify-between gap-4">
+         </div>
+         <div class="flex items-start gap-3"><span class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-sm font-bold text-white flex-shrink-0">2</span>
           <div>
-            <h3 id="ebook-modal-title" class="text-2xl font-bold text-white">Download the free ebook</h3>
-            <p class="text-slate-300 mt-2">Get the companion guide to the 5-part transcript series.</p>
+           <h4 class="font-semibold text-white mb-1">Look for Refund Dates</h4>
+           <p class="text-slate-300 text-sm">Code 846 often includes the refund release date.</p>
           </div>
-          <button id="ebook-close" class="p-2 rounded-xl hover:bg-white/10 transition-all" type="button" aria-label="Close">
-            <svg class="w-6 h-6 text-white/70" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
-
-        <form id="ebook-form" class="mt-6 space-y-4">
+         </div>
+         <div class="flex items-start gap-3"><span class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-sm font-bold text-white flex-shrink-0">3</span>
           <div>
-            <label for="ebook-email" class="block text-sm font-medium text-slate-200">Email</label>
-            <input
-              id="ebook-email"
-              name="email"
-              type="email"
-              autocomplete="email"
-              required
-              placeholder="you@example.com"
-              class="mt-2 w-full rounded-xl bg-slate-900/50 border border-white/10 px-4 py-3 text-white placeholder:text-slate-500 focus:border-amber-500/50"
-            />
+           <h4 class="font-semibold text-white mb-1">Watch for Holds</h4>
+           <p class="text-slate-300 text-sm">Codes 570/810/420 can imply delay, review, or audit activity.</p>
           </div>
-
-          <label class="flex items-start gap-3 text-sm text-slate-300">
-            <input id="ebook-consent" type="checkbox" checked class="mt-1 h-4 w-4 rounded border-white/20 bg-slate-900/50" />
-            <span>Send me the free transcript ebook. Unsubscribe anytime.</span>
-          </label>
-
-          <div id="ebook-error" class="hidden text-sm text-red-300"></div>
-          <div id="ebook-success" class="hidden text-sm text-emerald-300"></div>
-
-          <button id="ebook-submit" class="gradient-btn w-full py-4 rounded-xl font-semibold text-white" type="submit">
-            Email me the ebook
-          </button>
-
-          <p class="text-xs text-slate-500">
-            We use your email to deliver this ebook and related transcript education. We don’t sell it.
-          </p>
-        </form>
+         </div>
+        </div>
+        <div class="space-y-4">
+         <div class="flex items-start gap-3"><span class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-sm font-bold text-white flex-shrink-0">4</span>
+          <div>
+           <h4 class="font-semibold text-white mb-1">Verify Credits</h4>
+           <p class="text-slate-300 text-sm">Confirm credits and withholding were applied correctly.</p>
+          </div>
+         </div>
+         <div class="flex items-start gap-3"><span class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-sm font-bold text-white flex-shrink-0">5</span>
+          <div>
+           <h4 class="font-semibold text-white mb-1">Review Penalty Lines</h4>
+           <p class="text-slate-300 text-sm">Penalty/interest codes and dates help explain balances.</p>
+          </div>
+         </div>
+         <div class="flex items-start gap-3"><span class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-sm font-bold text-white flex-shrink-0">6</span>
+          <div>
+           <h4 class="font-semibold text-white mb-1">Get Help When Needed</h4>
+           <p class="text-slate-300 text-sm">If the story doesn't make sense, don't guess. Verify.</p>
+          </div>
+         </div>
+        </div>
+       </div>
       </div>
+     </div>
+    </section>
+    <div class="divider-line"></div><!-- Help -->
+    <section id="help" class="w-full px-6 py-20 md:py-28">
+     <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-16 section-reveal">
+       <h2 class="text-3xl md:text-4xl font-bold mb-4">How We Can Help</h2>
+       <p class="text-slate-300 max-w-2xl mx-auto">Clear explanations, next-step guidance, and professional support.</p>
+      </div>
+      <div class="grid md:grid-cols-2 gap-8 section-reveal">
+       <div class="rounded-2xl overflow-hidden tm-card-hover border border-white/10">
+        <div class="h-2 bg-gradient-to-r from-amber-500 to-orange-500"></div>
+        <div class="p-8 bg-slate-900/40">
+         <div class="flex items-center gap-4 mb-6">
+          <div class="w-14 h-14 rounded-xl bg-amber-500/15 flex items-center justify-center">
+           <svg class="w-7 h-7 tm-icon-accent" fill="none" stroke="currentColor" viewbox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A9 9 0 1118.879 17.8M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+           </svg>
+          </div>
+          <h3 class="text-2xl font-bold text-white">For Taxpayers</h3>
+         </div>
+         <p class="text-slate-300 mb-6">We help you interpret your transcript, understand notices, and map realistic options.</p>
+         <ul class="space-y-3 mb-8">
+          <li class="flex items-center gap-3 text-slate-300 text-sm">
+           <svg class="w-5 h-5 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+           </svg><span>Transcript analysis and explanation</span></li>
+          <li class="flex items-center gap-3 text-slate-300 text-sm">
+           <svg class="w-5 h-5 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+           </svg><span>Notice and letter guidance</span></li>
+          <li class="flex items-center gap-3 text-slate-300 text-sm">
+           <svg class="w-5 h-5 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+           </svg><span>Tax monitoring for ongoing support</span></li>
+          <li class="flex items-center gap-3 text-slate-300 text-sm">
+           <svg class="w-5 h-5 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+           </svg><span>Representation workflows</span></li>
+         </ul><button class="tm-btn-primary w-full py-4 rounded-full font-semibold text-slate-950 text-base" type="button" data-cal-link="tax-monitor-pro/tax-monitor-service-intro" data-cal-namespace="tax-monitor-service-intro" data-cal-config="{&quot;layout&quot;:&quot;month_view&quot;,&quot;useSlotsViewOnSmallScreen&quot;:&quot;true&quot;}"> Get Personal Help </button>
+        </div>
+       </div>
+       <div class="rounded-2xl overflow-hidden tm-card-hover border border-white/10">
+        <div class="h-2 bg-gradient-to-r from-orange-500 to-red-500"></div>
+        <div class="p-8 bg-slate-900/40">
+         <div class="flex items-center gap-4 mb-6">
+          <div class="w-14 h-14 rounded-xl bg-orange-500/15 flex items-center justify-center">
+           <svg class="w-7 h-7 text-orange-300" fill="none" stroke="currentColor" viewbox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h4a2 2 0 012 2v1h3a2 2 0 012 2v7a2 2 0 01-2 2H3a2 2 0 01-2-2v-7a2 2 0 012-2h3V8a2 2 0 012-2z" />
+           </svg>
+          </div>
+          <h3 class="text-2xl font-bold text-white">For Tax Professionals</h3>
+         </div>
+         <p class="text-slate-300 mb-6">Get sharper at transcript review, escalations, and documentation workflows.</p>
+         <ul class="space-y-3 mb-8">
+          <li class="flex items-center gap-3 text-slate-300 text-sm">
+           <svg class="w-5 h-5 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+           </svg><span>Transcript training resources</span></li>
+          <li class="flex items-center gap-3 text-slate-300 text-sm">
+           <svg class="w-5 h-5 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+           </svg><span>Complex case consults</span></li>
+          <li class="flex items-center gap-3 text-slate-300 text-sm">
+           <svg class="w-5 h-5 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+           </svg><span>Documentation systems</span></li>
+          <li class="flex items-center gap-3 text-slate-300 text-sm">
+           <svg class="w-5 h-5 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+           </svg><span>Referral partnership paths</span></li>
+         </ul><button class="tm-btn-secondary w-full py-4 rounded-full font-semibold text-white bg-transparent text-base" type="button" data-cal-link="tax-monitor-pro/tax-monitor-partnership-digital-coffee" data-cal-namespace="tax-monitor-partnership-digital-coffee" data-cal-config="{&quot;layout&quot;:&quot;month_view&quot;,&quot;useSlotsViewOnSmallScreen&quot;:&quot;true&quot;}"> Partner With Us </button>
+        </div>
+       </div>
+      </div>
+     </div>
+    </section>
+    <div class="divider-line"></div><!-- Final CTA -->
+    <section class="w-full px-6 py-20 md:py-28 bg-slate-900/40">
+     <div class="max-w-2xl mx-auto text-center">
+      <h2 class="text-3xl md:text-4xl font-bold mb-4">Ready to Learn More?</h2>
+      <p class="text-slate-400 text-lg mb-10">Start with the video series or download the free ebook.</p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center"><button id="cta-button-final" class="tm-btn-primary px-8 py-4 rounded-full text-lg font-semibold text-slate-950 inline-flex items-center justify-center"> Watch Videos </button> <button id="ebook-cta-final" class="tm-btn-secondary px-8 py-4 rounded-full text-lg font-semibold text-white bg-transparent inline-flex items-center justify-center"> Get Free Ebook </button>
+      </div>
+     </div>
+    </section>
+   </main><!-- Ebook Modal -->
+   <div id="ebook-modal" class="fixed inset-0 hidden items-center justify-center p-6" role="dialog" aria-modal="true" aria-labelledby="ebook-modal-title">
+    <div id="ebook-backdrop" class="absolute inset-0 bg-slate-950/70"></div>
+    <div class="relative w-full max-w-lg rounded-2xl border border-white/10 p-6 md:p-8 bg-slate-900/40">
+     <div class="flex items-start justify-between gap-4">
+      <div>
+       <h3 id="ebook-modal-title" class="text-2xl font-bold text-white">Download the free ebook</h3>
+       <p class="text-slate-300 mt-2">Get the companion guide to the 5-part transcript series.</p>
+      </div><button id="ebook-close" class="p-2 rounded-xl hover:bg-white/10 transition-all" type="button" aria-label="Close">
+       <svg class="w-6 h-6 text-white/70" fill="none" stroke="currentColor" viewbox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+       </svg></button>
+     </div>
+     <form id="ebook-form" class="mt-6 space-y-4">
+      <div><label for="ebook-email" class="block text-sm font-medium text-slate-200">Email</label> <input id="ebook-email" name="email" type="email" autocomplete="email" required placeholder="you@example.com" class="mt-2 w-full rounded-xl bg-slate-900/50 border border-white/10 px-4 py-3 text-white placeholder:text-slate-500 focus:border-amber-500/50">
+      </div><label class="flex items-start gap-3 text-sm text-slate-300"> <input id="ebook-consent" type="checkbox" checked class="mt-1 h-4 w-4 rounded border-white/20 bg-slate-900/50"> <span>Send me the free transcript ebook. Unsubscribe anytime.</span> </label>
+      <div id="ebook-error" class="hidden text-sm text-red-300"></div>
+      <div id="ebook-success" class="hidden text-sm text-emerald-300"></div><button id="ebook-submit" class="tm-btn-primary w-full py-4 rounded-full font-semibold text-slate-950" type="submit"> Email me the ebook </button>
+      <p class="text-xs text-slate-500">We use your email to deliver this ebook and related transcript education. We don't sell it.</p>
+     </form>
     </div>
-
-    <!-- PARTIAL:footer -->
+   </div>
   </div>
-
   <script>
     'use strict';
 
     // Default configuration
     const defaultConfig = {
-      background_color: '#0f172a',
-      cta_button_text: 'Watch Video Series',
       font_family: 'DM Sans',
       font_size: 16,
-      main_title: 'Transcript Central',
-      primary_color: '#f59e0b',
-      secondary_color: '#10b981',
-      subtitle_text: 'Understand and Master How To Read An IRS Transcript',
-      surface_color: '#1e293b',
-      text_color: '#ffffff'
+      main_title: 'Understand and Master IRS Transcripts',
+      subtitle_text: 'Learn how to read, obtain, and interpret your IRS transcript in minutes.',
+      cta_button_text: 'Watch Video Series',
+      methods_title: 'How to Obtain Transcripts'
     };
 
-    // Safe HTML escaping for basic text
+    // Safe HTML escaping
     function escapeHtmlBasic(input) {
       const s = String(input == null ? '' : input);
       return s
@@ -1021,13 +485,7 @@
       if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-    // Footer year (optional partial)
-    (function setFooterYear() {
-      const el = document.getElementById('footer-year');
-      if (el) el.textContent = String(new Date().getFullYear());
-    })();
-
-    // Transcript data (small, readable samples)
+    // Transcript data
     const transcriptData = {
       'non-filing': {
         label: 'Non-Filing Letter',
@@ -1106,43 +564,7 @@
       return lines.map((l) => escapeHtmlBasic(l)).join('<br>');
     }
 
-    function updateTranscriptInfo(type) {
-      const info = transcriptData[type] || transcriptData['tax-return'];
-      const container = document.getElementById('transcript-content');
-      if (!container) return;
-
-      const bestFor = (info.bestFor || []).map((x) => `<li class="text-sm text-slate-300">${escapeHtmlBasic(x)}</li>`).join('');
-
-      container.innerHTML = `
-        <div class="text-xs text-slate-400">Selected</div>
-        <div class="text-2xl font-bold text-white mt-1">${escapeHtmlBasic(info.label)}</div>
-        <p class="text-slate-300 mt-3">${escapeHtmlBasic(info.purpose)}</p>
-        <div class="mt-6">
-          <div class="text-sm font-semibold text-amber-300">Best for</div>
-          <ul class="mt-3 space-y-2">${bestFor}</ul>
-        </div>
-      `;
-    }
-
-    function showTranscript(type) {
-      document.querySelectorAll('.transcript-tab').forEach((tab) => {
-        tab.classList.remove('active');
-        if (!tab.classList.contains('bg-white/5')) tab.classList.add('bg-white/5');
-      });
-
-      const activeTab = document.querySelector(`[data-tab="${CSS && CSS.escape ? CSS.escape(type) : type}"]`);
-      if (activeTab) {
-        activeTab.classList.add('active');
-        activeTab.classList.remove('bg-white/5');
-      }
-
-      const previewDiv = document.getElementById('transcript-preview');
-      if (previewDiv) previewDiv.innerHTML = generateTranscriptPreview(type);
-
-      updateTranscriptInfo(type);
-    }
-
-    // Playlist (YouTube)
+    // Playlist
     const playlist = [
       { id: 'ahvwuWvR3gM', title: 'What Is An IRS Transcript And Why Should I Care?' },
       { id: 'RSXXZznJnv0', title: 'How To Order IRS Transcripts (Online, Phone, Mail)' },
@@ -1187,9 +609,9 @@
             <div class="flex items-start justify-between gap-3">
               <div>
                 <div class="text-xs text-slate-400">Part ${idx + 1} of 5</div>
-                <div class="font-semibold text-white mt-1">${escapeHtmlBasic(x.title)}</div>
+                <div class="font-semibold text-white mt-1 text-sm">${escapeHtmlBasic(x.title)}</div>
               </div>
-              <div class="text-slate-400" aria-hidden="true">
+              <div class="text-slate-400 flex-shrink-0" aria-hidden="true">
                 <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M6 4l10 6-10 6V4z" />
                 </svg>
@@ -1228,15 +650,13 @@
 
       const openBtns = [
         document.getElementById('ebook-cta'),
-        document.getElementById('ebook-cta-card'),
-        document.getElementById('ebook-cta-inline')
+        document.getElementById('ebook-cta-final')
       ].filter(Boolean);
 
       function openModal() {
         if (!modal) return;
         modal.classList.remove('hidden');
         modal.classList.add('flex');
-
         const email = document.getElementById('ebook-email');
         if (email) setTimeout(() => email.focus(), 50);
       }
@@ -1255,7 +675,7 @@
         if (e.key === 'Escape') closeModal();
       });
 
-      // Exit intent (desktop only, once per 7 days)
+      // Exit intent
       (function enableExitIntent() {
         const isDesktop = window.matchMedia && window.matchMedia('(pointer:fine)').matches;
         if (!isDesktop) return;
@@ -1277,7 +697,7 @@
         document.addEventListener('mouseout', handler);
       })();
 
-      // Submit ebook form (stores email via Worker)
+      // Form submission
       const form = document.getElementById('ebook-form');
       if (form) {
         form.addEventListener('submit', async (e) => {
@@ -1307,7 +727,6 @@
 
           const qs = new URLSearchParams(window.location.search || '');
           const sessionToken = String(qs.get('sessionToken') || '');
-
           const eventId = (window.crypto && crypto.randomUUID)
             ? crypto.randomUUID()
             : String(Date.now());
@@ -1348,7 +767,6 @@
 
             form.reset();
             if (consentEl) consentEl.checked = true;
-
             setTimeout(() => closeModal(), 900);
           } catch (_) {
             if (errEl) {
@@ -1363,11 +781,9 @@
           }
         });
       }
-
-      return { openModal, closeModal };
     }
 
-    // Initialize SDK
+    // Element SDK
     function initElementSdk() {
       if (!window.elementSdk) return;
 
@@ -1376,7 +792,7 @@
         onConfigChange: async (config) => {
           const mainTitle = document.getElementById('main-title');
           if (mainTitle) {
-            mainTitle.innerHTML = `<span class="gradient-text">${escapeHtmlBasic(config.main_title || defaultConfig.main_title)}</span>`;
+            mainTitle.textContent = config.main_title || defaultConfig.main_title;
           }
 
           const subtitle = document.getElementById('subtitle');
@@ -1389,24 +805,19 @@
             ctaLabel.textContent = config.cta_button_text || defaultConfig.cta_button_text;
           }
 
-          document.documentElement.style.setProperty('--bg-primary', config.background_color || defaultConfig.background_color);
-          document.documentElement.style.setProperty('--accent-1', config.primary_color || defaultConfig.primary_color);
-          document.documentElement.style.setProperty('--success', config.secondary_color || defaultConfig.secondary_color);
-          document.documentElement.style.setProperty('--text-primary', config.text_color || defaultConfig.text_color);
+          const methodsTitle = document.getElementById('methods-title');
+          if (methodsTitle) {
+            methodsTitle.textContent = config.methods_title || defaultConfig.methods_title;
+          }
 
           const fontFamily = config.font_family || defaultConfig.font_family;
-          document.body.style.fontFamily = `${fontFamily}, sans-serif`;
+          document.body.style.fontFamily = `${fontFamily}, system-ui, sans-serif`;
 
           const baseSize = config.font_size || defaultConfig.font_size;
           document.documentElement.style.fontSize = `${baseSize}px`;
         },
         mapToCapabilities: (config) => ({
-          recolorables: [
-            { get: () => config.background_color || defaultConfig.background_color, set: (value) => window.elementSdk.setConfig({ background_color: value }) },
-            { get: () => config.primary_color || defaultConfig.primary_color, set: (value) => window.elementSdk.setConfig({ primary_color: value }) },
-            { get: () => config.secondary_color || defaultConfig.secondary_color, set: (value) => window.elementSdk.setConfig({ secondary_color: value }) },
-            { get: () => config.text_color || defaultConfig.text_color, set: (value) => window.elementSdk.setConfig({ text_color: value }) }
-          ],
+          recolorables: [],
           borderables: [],
           fontEditable: {
             get: () => config.font_family || defaultConfig.font_family,
@@ -1418,36 +829,18 @@
           }
         }),
         mapToEditPanelValues: (config) => new Map([
-          ['cta_button_text', config.cta_button_text || defaultConfig.cta_button_text],
           ['main_title', config.main_title || defaultConfig.main_title],
-          ['subtitle_text', config.subtitle_text || defaultConfig.subtitle_text]
+          ['subtitle_text', config.subtitle_text || defaultConfig.subtitle_text],
+          ['cta_button_text', config.cta_button_text || defaultConfig.cta_button_text],
+          ['methods_title', config.methods_title || defaultConfig.methods_title]
         ])
       });
-    }
-
-    function runTests() {
-      // Tiny sanity tests so we catch regressions before a human does.
-      console.assert(escapeHtmlBasic('<>&"\'') === '&lt;&gt;&amp;&quot;&#39;', 'escapeHtmlBasic should escape');
-      console.assert(typeof generateTranscriptPreview('tax-return') === 'string', 'preview should be string');
-      console.assert(generateTranscriptPreview('tax-return').length > 10, 'preview should have content');
-
-      // DOM-dependent tests
-      const previewDiv = document.getElementById('transcript-preview');
-      const contentDiv = document.getElementById('transcript-content');
-      console.assert(!!previewDiv, 'transcript-preview should exist');
-      console.assert(!!contentDiv, 'transcript-content should exist');
-
-      // Playlist tests
-      console.assert(Array.isArray(playlist) && playlist.length === 5, 'playlist should be length 5');
-      const iframe = document.getElementById('yt-player');
-      console.assert(!!iframe, 'yt-player iframe should exist');
     }
 
     document.addEventListener('DOMContentLoaded', () => {
       initElementSdk();
       setUpRevealOnScroll();
 
-      // Wire scroll-to buttons
       document.querySelectorAll('[data-scroll-to]').forEach((el) => {
         el.addEventListener('click', () => {
           const target = el.getAttribute('data-scroll-to');
@@ -1455,31 +848,18 @@
         });
       });
 
-      // Wire transcript tabs
-      document.querySelectorAll('.transcript-tab').forEach((btn) => {
-        btn.addEventListener('click', () => {
-          const type = btn.getAttribute('data-tab');
-          if (type) showTranscript(type);
-        });
-      });
-      showTranscript('tax-return');
-
-      // Playlist setup
       renderPlaylist();
       setActiveVideo(playlist[0].id);
 
-      // Watch button scrolls to videos
       const watchBtn = document.getElementById('cta-button');
       if (watchBtn) watchBtn.addEventListener('click', () => scrollToSection('video-series'));
 
-      // Ebook modal
+      const watchBtnFinal = document.getElementById('cta-button-final');
+      if (watchBtnFinal) watchBtnFinal.addEventListener('click', () => scrollToSection('video-series'));
+
       setUpEbookModal();
-
-      runTests();
     });
-  </script>
-
-  <!-- Cal element-click embed code begins -->
+  </script><!-- Cal.com embed -->
   <script type="text/javascript">
     (function (C, A, L) {
       let p = function (a, ar) { a.q.push(ar); };
@@ -1506,14 +886,22 @@
         }
         p(cal, ar);
       };
-    })(window, "https://app.cal.com/embed/embed.js", "init");
+    })(window, "https://app.cal.com/embed/embed.js", "L");
 
     Cal("init", "tax-monitor-service-intro", { origin: "https://app.cal.com" });
-    Cal.ns["tax-monitor-service-intro"]("ui", {"cssVarsPerTheme":{"light":{"cal-brand":"#292929"},"dark":{"cal-brand":"#f97316"}},"hideEventTypeDetails":false,"layout":"month_view"});
-
     Cal("init", "tax-monitor-partnership-digital-coffee", { origin: "https://app.cal.com" });
-    Cal.ns["tax-monitor-partnership-digital-coffee"]("ui", {"cssVarsPerTheme":{"light":{"cal-brand":"#292929"},"dark":{"cal-brand":"#f97316"}},"hideEventTypeDetails":false,"layout":"month_view"});
+
+    Cal.ns["tax-monitor-service-intro"]("ui", {
+      "cssVarsPerTheme": { "light": { "cal-brand": "#292929" }, "dark": { "cal-brand": "#f97316" } },
+      "hideEventTypeDetails": false,
+      "layout": "month_view"
+    });
+
+    Cal.ns["tax-monitor-partnership-digital-coffee"]("ui", {
+      "cssVarsPerTheme": { "light": { "cal-brand": "#292929" }, "dark": { "cal-brand": "#f97316" } },
+      "hideEventTypeDetails": false,
+      "layout": "month_view"
+    });
   </script>
-  <!-- Cal element-click embed code ends -->
-</body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9d13a1c9932c27d2',t:'MTc3MTY0OTUyMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
