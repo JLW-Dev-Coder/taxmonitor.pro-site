@@ -1,4 +1,5 @@
 <!-- /app/pages/staff/compliance-records.html -->
+<!-- /app/pages/staff/compliance-records.html -->
 <!doctype html>
 <html lang="en" class="h-full">
   <head>
@@ -125,25 +126,117 @@
       body {
         box-sizing: border-box;
       }
+
+      :root {
+        --mfj-offset: 0px;
+      }
+
+      /* Preview layout contract: preview is ALWAYS visible on the right (never stacked).
+         We use a fixed panel so DOM nesting can’t accidentally break the layout. */
+      :root {
+        --tm-preview-gap: 24px;
+        --tm-preview-w: 420px;
+      }
+
+      /* Keep the page usable when the preview is fixed */
+      .tm-main {
+        padding-right: calc(var(--tm-preview-w) + var(--tm-preview-gap));
+      }
+
+      /* The fixed preview panel */
+      .tm-preview {
+        position: fixed !important;
+        right: var(--tm-preview-gap);
+        width: var(--tm-preview-w);
+        z-index: 40;
+      }
+
+      /* Respect the MFJ banner + sticky header stack */
+      .tm-preview {
+        top: calc(var(--mfj-offset, 0px) + 7.5rem);
+        max-height: calc(100vh - (var(--mfj-offset, 0px) + 8.5rem));
+      }
+
+      /* Make sure the fixed panel can scroll internally */
+      .tm-preview > .print-white {
+        max-height: inherit;
+      }
+
+      /* Allow horizontal overflow if someone insists on a tiny viewport */
+      #two-col-shell {
+        min-width: calc(var(--tm-preview-w) + 420px);
+      }
+
     </style>
 
     <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
   </head>
 
   <body class="bg-slate-950 text-slate-200 font-sans">
-    <!-- App chrome (injected by build.mjs) -->
-    <!-- APP_TOPBAR -->
+<!-- MFJ Associated Records Banner (appears above sticky header when MFJ selected) -->
+    <div id="mfj-banner" class="sticky top-0 z-[60] hidden no-print">
+      <div class="border-b border-purple-500/30 bg-purple-500/15 backdrop-blur">
+        <div class="mx-auto flex max-w-[1600px] items-start justify-between gap-4 px-6 py-3">
+          <div class="flex min-w-0 items-start gap-3">
+            <div class="mt-0.5 flex h-8 w-8 items-center justify-center rounded-lg bg-purple-500/20 text-purple-200 border border-purple-500/30 shrink-0" aria-hidden="true">
+              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                <circle cx="8.5" cy="7" r="4" />
+                <path d="M20 8v6" />
+                <path d="M23 11h-6" />
+              </svg>
+            </div>
 
-    <div class="min-h-screen flex">
-      <!-- IMPORTANT: wrapper is a div because sidebar partial already includes an <aside> -->
-      <div class="w-72 shrink-0 border-r border-slate-800 bg-slate-950">
-        <!-- APP_SIDEBAR -->
+            <div class="min-w-0">
+              <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
+                <div class="text-sm font-semibold text-slate-100">Associated Records</div>
+                <div class="text-xs text-purple-200/90">MFJ detected. Review spouse-linked items before finalizing.</div>
+              </div>
+
+              <div class="mt-2 flex flex-wrap items-center gap-2" id="mfj-records"></div>
+
+              <div class="mt-2 flex flex-wrap items-center gap-2">
+                <button
+                  id="mfj-scope-primary"
+                  type="button"
+                  class="mfj-scope-btn inline-flex items-center gap-2 rounded-md border border-purple-500/25 bg-slate-950/40 px-3 py-1.5 text-xs font-medium text-slate-100 hover:bg-slate-950/60 transition-colors"
+                  data-scope="primary"
+                >
+                  Primary
+                </button>
+                <button
+                  id="mfj-scope-spouse"
+                  type="button"
+                  class="mfj-scope-btn inline-flex items-center gap-2 rounded-md border border-purple-500/25 bg-slate-950/40 px-3 py-1.5 text-xs font-medium text-slate-100 hover:bg-slate-950/60 transition-colors"
+                  data-scope="spouse"
+                >
+                  Spouse
+                </button>
+                <span id="mfj-scope-note" class="text-xs text-slate-300/80">Scope: Primary</span>
+              </div>
+            </div>
+          </div>
+
+          <button
+            id="mfj-banner-close"
+            type="button"
+            class="shrink-0 rounded-md border border-purple-500/25 bg-slate-950/40 p-2 text-purple-100 hover:bg-slate-950/60 transition-colors"
+            aria-label="Dismiss MFJ banner"
+          >
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 6 6 18" />
+              <path d="M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
       </div>
+    </div>
 
-      <div class="flex-1 min-w-0">
+    <div class="min-h-screen">
+      <div class="min-w-0">
         <div class="app-container flex flex-col">
           <!-- Sticky Header -->
-          <header class="sticky top-0 z-50 bg-slate-900 border-b border-slate-700/50 px-6 py-3 no-print">
+          <header class="sticky z-50 bg-slate-900 border-b border-slate-700/50 px-6 py-3 no-print" style="top: var(--mfj-offset, 0px);">
             <div class="flex items-center justify-between">
               <div class="flex items-center gap-6">
                 <!-- Logo -->
@@ -285,9 +378,10 @@
             <!-- Canonical-ish UI state we want persisted (Worker can ignore if not implemented yet) -->
             <input id="input-compliance-tax-year" type="hidden" data-field="Compliance_Tax_Year_Selected" value="" />
 
-            <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 h-full">
+            <div class="mx-auto max-w-[1600px]">
+              <div id="two-col-shell" class="tm-two-col flex items-start gap-6">
               <!-- Left Column - Form Inputs -->
-              <div class="lg:col-span-3 space-y-4">
+              <div class="tm-main space-y-4 min-w-0">
                 <!-- Overview Tab -->
                 <div id="tab-overview" class="tab-content space-y-4">
                   <!-- Client Information Accordion -->
@@ -343,16 +437,16 @@
                                 Show
                               </button>
                             </div>
-                            <p class="mt-2 text-xs text-slate-500">Default is masked because humans overshare. Toggle only when needed.</p>
+                            <p class="mt-2 text-xs text-slate-500"></p>
                           </div>
 
                           <div>
                             <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Filing Status</label>
-                            <select class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm">
-                              <option>Head of Household</option>
-                              <option>Married Filing Jointly</option>
-                              <option>Married Filing Separately</option>
-                              <option selected>Single</option>
+                            <select id="input-filing-status" class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm">
+                              <option value="HOH">Head of Household</option>
+                              <option value="MFJ">Married Filing Jointly</option>
+                              <option value="MFS">Married Filing Separately</option>
+                              <option value="SINGLE" selected>Single</option>
                             </select>
                           </div>
                           <div>
@@ -513,7 +607,7 @@
                             </label>
                             <label class="flex items-center gap-2 p-2 bg-slate-800/50 rounded border border-slate-700/50">
                               <input type="checkbox" data-multi="IRS_Status_Categories" value="2" class="w-4 h-4 rounded border-slate-600 text-blue-500" />
-                              <span class="text-sm text-slate-300">Installment Agreement — Active</span>
+                              <span class="text-sm text-slate-300">Installment Agreement</span>
                             </label>
                             <label class="flex items-center gap-2 p-2 bg-slate-800/50 rounded border border-slate-700/50">
                               <input type="checkbox" data-multi="IRS_Status_Categories" value="3" class="w-4 h-4 rounded border-slate-600 text-blue-500" />
@@ -884,7 +978,7 @@
                         <div class="grid grid-cols-2 gap-4">
                           <div>
                             <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Filing Status</label>
-                            <select class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm">
+                            <select id="input-return-filing-status" class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm">
                               <option>Extension Filed</option>
                               <option selected>Filed - Accepted</option>
                               <option>Filed - Under Review</option>
@@ -893,15 +987,15 @@
                           </div>
                           <div>
                             <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Date Filed</label>
-                            <input type="date" value="2024-04-15" class="tm-date w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm" />
+                            <input id="input-return-date-filed" type="date" value="2024-04-15" class="tm-date w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm" />
                           </div>
                           <div>
                             <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">AGI Reported</label>
-                            <input type="text" value="$142,500" class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm font-mono" />
+                            <input id="input-return-agi" type="text" value="$142,500" class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm font-mono" />
                           </div>
                           <div>
                             <label class="block text-xs font-medium text-slate-400 uppercase tracking-wide mb-1.5">Tax Liability</label>
-                            <input type="text" value="$28,340" class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm font-mono" />
+                            <input id="input-return-liability" type="text" value="$28,340" class="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-slate-100 text-sm font-mono" />
                           </div>
                         </div>
 
@@ -1213,7 +1307,7 @@
                             d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
                           />
                         </svg>
-                        <span class="font-medium text-slate-100">Notice History</span>
+                        <span class="font-medium text-slate-100"></span>
                         <span class="px-2 py-0.5 text-xs bg-red-500/20 text-red-400 rounded font-medium">3 Active</span>
                       </div>
                       <svg class="accordion-icon w-5 h-5 text-slate-500 transition-transform rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -1671,13 +1765,13 @@
               </div>
 
               <!-- Right Column - Live Preview / Meta -->
-              <aside class="lg:col-span-2 space-y-4">
-                <!-- Preview Card -->
-                <div class="rounded-lg border border-slate-700/50 bg-slate-900 overflow-hidden print-white">
-                  <div class="p-4 border-b border-slate-700/50 flex items-center justify-between no-print">
+              <aside class="tm-preview space-y-4" style="overflow: hidden;">
+                <!-- Preview Card (active tab section) -->
+                <div class="rounded-lg border border-slate-700/50 bg-slate-900 overflow-hidden print-white flex flex-col h-full">
+                  <div class="p-4 border-b border-slate-700/50 flex items-center justify-between no-print shrink-0">
                     <div>
-                      <div class="text-xs text-slate-500 uppercase tracking-wide">Compliance Record Preview</div>
-                      <div class="text-sm font-medium text-slate-100">Client-Facing Summary</div>
+                      <div class="text-xs text-slate-500 uppercase tracking-wide">Preview</div>
+                      <div id="preview-active-label" class="text-sm font-medium text-slate-100">Overview</div>
                     </div>
                     <div class="flex items-center gap-2">
                       <button
@@ -1697,106 +1791,193 @@
                     </div>
                   </div>
 
-                  <div class="p-4 space-y-3">
-                    <div class="flex items-start justify-between gap-3">
-                      <div>
-                        <div class="text-xs text-slate-500 uppercase tracking-wide">Client</div>
-                        <div id="preview-client" class="text-sm font-semibold text-slate-100">—</div>
+                  <div id="preview-scroll" class="p-4 space-y-3 overflow-auto flex-1">
+
+                    <!-- Agent -->
+                    <section id="preview-section-agent" data-preview-section="agent" class="rounded-lg border border-slate-700/50 bg-slate-800/30 p-3">
+                      <div class="text-xs text-slate-500 uppercase tracking-wide">Agent</div>
+                      <div class="mt-2 grid grid-cols-2 gap-3 text-sm">
+                        <div>
+                          <div class="text-slate-400">Enrolled Agent</div>
+                          <div id="preview-agent-name" class="font-semibold text-slate-100">—</div>
+                        </div>
+                        <div>
+                          <div class="text-slate-400">CAF</div>
+                          <div id="preview-agent-caf" class="font-mono text-slate-100">—</div>
+                        </div>
+                        <div>
+                          <div class="text-slate-400">PTIN</div>
+                          <div id="preview-agent-ptin" class="font-mono text-slate-100">—</div>
+                        </div>
+                        <div>
+                          <div class="text-slate-400">POA Effective</div>
+                          <div id="preview-agent-effective" class="font-mono text-slate-100">—</div>
+                        </div>
                       </div>
-                      <div class="text-right">
-                        <div class="text-xs text-slate-500 uppercase tracking-wide">Tax Year</div>
-                        <div id="preview-tax-year" class="text-sm font-semibold text-slate-100">—</div>
+                    </section>
+
+                    <!-- Authority -->
+                    <section id="preview-section-authority" data-preview-section="authority" class="rounded-lg border border-slate-700/50 bg-slate-800/30 p-3">
+                      <div class="text-xs text-slate-500 uppercase tracking-wide">Authority</div>
+                      <div class="mt-2 grid grid-cols-1 gap-2 text-sm">
+                        <div class="flex items-center justify-between">
+                          <span class="text-slate-400">Receive Tax Information</span>
+                          <span id="preview-auth-info" class="text-slate-100">—</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                          <span class="text-slate-400">Represent Taxpayer</span>
+                          <span id="preview-auth-represent" class="text-slate-100">—</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                          <span class="text-slate-400">Sign Return</span>
+                          <span id="preview-auth-sign" class="text-slate-100">—</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                          <span class="text-slate-400">Receive Refund Checks</span>
+                          <span id="preview-auth-refund" class="text-slate-100">—</span>
+                        </div>
                       </div>
-                    </div>
+                    </section>
 
-                    <div class="rounded-lg border border-slate-700/50 bg-slate-800/40 p-3">
-                      <div class="text-xs text-slate-500 uppercase tracking-wide">Summary</div>
-                      <p id="preview-summary" class="mt-2 text-sm text-slate-200 leading-relaxed whitespace-pre-wrap">
-                        Add a client-facing summary in the Summary tab. Humans love summaries. They rarely read them, but they love them.
-                      </p>
-                    </div>
+                    <!-- Compliance -->
+                    <section id="preview-section-compliance" data-preview-section="compliance" class="rounded-lg border border-slate-700/50 bg-slate-800/30 p-3">
+                      <div class="text-xs text-slate-500 uppercase tracking-wide">Compliance</div>
+                      <div class="mt-2 space-y-2 text-sm">
+                        <div class="flex items-center justify-between">
+                          <span class="text-slate-400">Activity Type</span>
+                          <span id="preview-compliance-activity" class="text-slate-100">—</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                          <span class="text-slate-400">Period Covered</span>
+                          <span id="preview-compliance-period" class="text-slate-100">—</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                          <div>
+                            <div class="text-slate-400">Return Filing Status</div>
+                            <div id="preview-return-filing-status" class="text-slate-100">—</div>
+                          </div>
+                          <div>
+                            <div class="text-slate-400">Date Filed</div>
+                            <div id="preview-return-date-filed" class="font-mono text-slate-100">—</div>
+                          </div>
+                          <div>
+                            <div class="text-slate-400">AGI</div>
+                            <div id="preview-return-agi" class="font-mono text-slate-100">—</div>
+                          </div>
+                          <div>
+                            <div class="text-slate-400">Tax Liability</div>
+                            <div id="preview-return-liability" class="font-mono text-slate-100">—</div>
+                          </div>
+                        </div>
 
-                    <div class="rounded-lg border border-slate-700/50 bg-slate-800/40 p-3">
-                      <div class="text-xs text-slate-500 uppercase tracking-wide">Key Indicators</div>
-                      <ul class="mt-2 space-y-2 text-sm text-slate-200">
-                        <li class="flex items-center justify-between">
-                          <span class="text-slate-400">Balance Due Range</span>
-                          <span id="preview-balance-range" class="font-mono text-slate-200">—</span>
-                        </li>
-                        <li class="flex items-center justify-between">
-                          <span class="text-slate-400">Missing Years</span>
-                          <span id="preview-missing-years" class="font-mono text-slate-200">—</span>
-                        </li>
-                        <li class="flex items-center justify-between">
-                          <span class="text-slate-400">Lien Exposure</span>
-                          <span id="preview-lien" class="font-mono text-slate-200">—</span>
-                        </li>
-                      </ul>
+                        <div class="rounded-lg border border-slate-700/50 bg-slate-900/40 p-3">
+                          <div class="text-xs text-slate-500 uppercase tracking-wide">Internal Notes</div>
+                          <div id="preview-compliance-notes" class="mt-2 text-sm text-slate-200 whitespace-pre-wrap">—</div>
+                        </div>
+                      </div>
+                    </section>
 
-                      <div class="mt-3 flex flex-wrap gap-2" id="preview-chips"></div>
-                    </div>
-
-                    <div class="rounded-lg border border-slate-700/50 bg-slate-800/40 p-3">
+                    <!-- Notices -->
+                    <section id="preview-section-notices" data-preview-section="notices" class="rounded-lg border border-slate-700/50 bg-slate-800/30 p-3">
                       <div class="text-xs text-slate-500 uppercase tracking-wide">Notices</div>
                       <div id="preview-notices" class="mt-2 space-y-2 text-sm text-slate-200">
                         <div class="text-slate-400">No notice entries yet.</div>
                       </div>
-                    </div>
-                  </div>
-                </div>
+                    </section>
 
-                <!-- Canonical Save Payload (debug) -->
-                <div class="rounded-lg border border-slate-700/50 bg-slate-900 overflow-hidden no-print">
-                  <div class="p-4 border-b border-slate-700/50 flex items-center justify-between">
-                    <div>
-                      <div class="text-xs text-slate-500 uppercase tracking-wide">Canonical Payload</div>
-                      <div class="text-sm font-medium text-slate-100">What gets POSTed</div>
-                    </div>
-                    <button
-                      id="copy-payload-btn"
-                      type="button"
-                      class="px-3 py-2 text-xs font-medium text-slate-300 bg-slate-800 border border-slate-600 rounded-md hover:bg-slate-700 transition-colors"
-                    >
-                      Copy JSON
-                    </button>
-                  </div>
-                  <pre id="payload-preview" class="p-4 text-xs text-slate-300 overflow-auto font-mono bg-slate-950"></pre>
-                </div>
+                    <!-- Installment Agreement -->
+                    <section id="preview-section-installment" data-preview-section="installment" class="rounded-lg border border-slate-700/50 bg-slate-800/30 p-3">
+                      <div class="text-xs text-slate-500 uppercase tracking-wide">Installment Agreement</div>
+                      <div class="mt-2 grid grid-cols-2 gap-3 text-sm">
+                        <div>
+                          <div class="text-slate-400">Established</div>
+                          <div id="preview-ia-established" class="text-slate-100">—</div>
+                        </div>
+                        <div>
+                          <div class="text-slate-400">Requested Payment</div>
+                          <div id="preview-ia-payment" class="font-mono text-slate-100">—</div>
+                        </div>
+                        <div>
+                          <div class="text-slate-400">Next Due</div>
+                          <div id="preview-ia-next" class="font-mono text-slate-100">—</div>
+                        </div>
+                        <div>
+                          <div class="text-slate-400">Last Payment</div>
+                          <div id="preview-ia-last" class="font-mono text-slate-100">—</div>
+                        </div>
+                      </div>
+                    </section>
 
-                <!-- Quick Actions -->
-                <div class="rounded-lg border border-slate-700/50 bg-slate-900 overflow-hidden no-print">
-                  <div class="p-4 border-b border-slate-700/50">
-                    <div class="text-xs text-slate-500 uppercase tracking-wide">Quick Actions</div>
-                    <div class="text-sm font-medium text-slate-100">Workflow Helpers</div>
-                  </div>
-                  <div class="p-4 space-y-3">
-                    <button
-                      id="jump-summary-btn"
-                      type="button"
-                      class="w-full px-4 py-2 text-sm font-medium text-slate-300 bg-slate-800 border border-slate-600 rounded-md hover:bg-slate-700 transition-colors text-left"
-                    >
-                      Jump to Summary tab
-                    </button>
-                    <button
-                      id="jump-notices-btn"
-                      type="button"
-                      class="w-full px-4 py-2 text-sm font-medium text-slate-300 bg-slate-800 border border-slate-600 rounded-md hover:bg-slate-700 transition-colors text-left"
-                    >
-                      Jump to Notices tab
-                    </button>
-                    <button
-                      id="jump-compliance-btn"
-                      type="button"
-                      class="w-full px-4 py-2 text-sm font-medium text-slate-300 bg-slate-800 border border-slate-600 rounded-md hover:bg-slate-700 transition-colors text-left"
-                    >
-                      Jump to Compliance tab
-                    </button>
+                    <!-- Revenue Officer -->
+                    <section id="preview-section-revenue" data-preview-section="revenue" class="rounded-lg border border-slate-700/50 bg-slate-800/30 p-3">
+                      <div class="text-xs text-slate-500 uppercase tracking-wide">Revenue Officer</div>
+                      <div class="mt-2 grid grid-cols-2 gap-3 text-sm">
+                        <div class="col-span-2">
+                          <div class="text-slate-400">Name</div>
+                          <div id="preview-ro-name" class="font-semibold text-slate-100">—</div>
+                        </div>
+                        <div>
+                          <div class="text-slate-400">Phone</div>
+                          <div id="preview-ro-phone" class="font-mono text-slate-100">—</div>
+                        </div>
+                        <div>
+                          <div class="text-slate-400">Email</div>
+                          <div id="preview-ro-email" class="font-mono text-slate-100">—</div>
+                        </div>
+                        <div class="col-span-2">
+                          <div class="text-slate-400">Notes</div>
+                          <div id="preview-ro-notes" class="mt-1 text-sm text-slate-200 whitespace-pre-wrap">—</div>
+                        </div>
+                      </div>
+                    </section>
+
+                    <!-- Transcripts -->
+                    <section id="preview-section-transcripts" data-preview-section="transcripts" class="rounded-lg border border-slate-700/50 bg-slate-800/30 p-3">
+                      <div class="text-xs text-slate-500 uppercase tracking-wide">Transcripts</div>
+                      <div class="mt-2 grid grid-cols-2 gap-3 text-sm">
+                        <div>
+                          <div class="text-slate-400">Request Made</div>
+                          <div id="preview-tr-request" class="text-slate-100">—</div>
+                        </div>
+                        <div>
+                          <div class="text-slate-400">Delivery Method</div>
+                          <div id="preview-tr-delivery" class="text-slate-100">—</div>
+                        </div>
+                        <div>
+                          <div class="text-slate-400">Scope Confirmed</div>
+                          <div id="preview-tr-scope" class="text-slate-100">—</div>
+                        </div>
+                        <div>
+                          <div class="text-slate-400">Retrieval Date</div>
+                          <div id="preview-tr-date" class="font-mono text-slate-100">—</div>
+                        </div>
+                        <div class="col-span-2">
+                          <div class="text-slate-400">Notes</div>
+                          <div id="preview-tr-notes" class="mt-1 text-sm text-slate-200 whitespace-pre-wrap">—</div>
+                        </div>
+                      </div>
+                    </section>
+
+                    <!-- Summary -->
+                    <section id="preview-section-summary" data-preview-section="summary" class="rounded-lg border border-slate-700/50 bg-slate-800/30 p-3">
+                      <div class="text-xs text-slate-500 uppercase tracking-wide">Summary</div>
+                      <div class="mt-2 rounded-lg border border-slate-700/50 bg-slate-900/40 p-3">
+                        <div class="text-xs text-slate-500 uppercase tracking-wide">Client-Facing Summary</div>
+                        <p id="preview-summary" class="mt-2 text-sm text-slate-200 leading-relaxed whitespace-pre-wrap">
+                          
+                        </p>
+                      </div>
+                      <div class="mt-3 rounded-lg border border-slate-700/50 bg-slate-900/40 p-3">
+                        <div class="text-xs text-slate-500 uppercase tracking-wide">Internal Next Steps</div>
+                        <p id="preview-next-steps" class="mt-2 text-sm text-slate-200 leading-relaxed whitespace-pre-wrap">—</p>
+                      </div>
+                    </section>
                   </div>
                 </div>
               </aside>
+              </div>
             </div>
           </main>
-        </div>
       </div>
     </div>
 
@@ -1870,6 +2051,29 @@
         const btns = $$(".tab-btn");
         const contents = $$(".tab-content");
 
+        function focusPreview(tabName) {
+          const label = $("#preview-active-label");
+          const pretty = (tabName || "overview").replace(/^\w/, (c) => c.toUpperCase());
+          if (label) label.textContent = pretty;
+
+          // Overview stays visible in its own card.
+          if ((tabName || "").toLowerCase() === "overview") return;
+
+          const target = document.querySelector(`[data-preview-section="${tabName}"]`);
+          const scroller = $("#preview-scroll");
+          if (!target || !scroller) return;
+
+          $$('[data-preview-section]').forEach((el) => {
+            if (el.id === "preview-section-overview") return;
+            el.classList.remove("ring-2", "ring-blue-500/40", "border-blue-500/40");
+          });
+
+          target.classList.add("ring-2", "ring-blue-500/40", "border-blue-500/40");
+
+          const top = target.offsetTop - 8;
+          scroller.scrollTo({ top, behavior: "smooth" });
+        }
+
         function activate(tabName) {
           btns.forEach((b) => {
             const active = b.dataset.tab === tabName;
@@ -1878,13 +2082,16 @@
           contents.forEach((c) => {
             c.classList.toggle("hidden", c.id !== `tab-${tabName}`);
           });
+
+          focusPreview(tabName);
         }
 
         btns.forEach((b) => {
           b.addEventListener("click", () => activate(b.dataset.tab));
         });
 
-        // default already active in markup
+        const initial = btns.find((b) => b.classList.contains("tab-active"))?.dataset.tab || "overview";
+        focusPreview(initial);
       }
 
       function initAccordions() {
@@ -2213,33 +2420,58 @@
       }
 
       function updatePreview() {
-        $("#preview-client").textContent = $("#input-client-name")?.value || $("#header-client-name")?.textContent || "—";
-        $("#preview-tax-year").textContent = $("#input-compliance-tax-year")?.value || "—";
+        const get = (sel) => (document.querySelector(sel)?.value ?? document.querySelector(sel)?.textContent ?? "").toString();
+        const setText = (sel, val) => {
+          const el = document.querySelector(sel);
+          if (el) el.textContent = (val ?? "").toString() || "—";
+        };
+        const setBlock = (sel, val, fallback) => {
+          const el = document.querySelector(sel);
+          if (!el) return;
+          const t = (val ?? "").toString().trim();
+          el.textContent = t || (fallback ?? "—");
+        };
+        const fmtDate = (v) => {
+          const s = (v || "").toString().trim();
+          if (!s) return "—";
+          try {
+            return new Date(s + "T00:00:00").toLocaleDateString();
+          } catch {
+            return s;
+          }
+        };
 
-        const summary = $('[data-field="Compliance_Client_Summary"]')?.value || "";
-        $("#preview-summary").textContent =
-          summary.trim() ||
-          "Add a client-facing summary in the Summary tab. Humans love summaries. They rarely read them, but they love them.";
+        // Overview
+        setText("#preview-client", get("#input-client-name") || get("#header-client-name") || "—");
+        setText("#preview-tax-year", get("#input-compliance-tax-year") || "—");
 
-        const bal = $("#select-estimated-balance-due-range")?.value || "—";
-        const miss = $("#select-irs-missing-years")?.value || "—";
-        const lien = $("#select-irs-lien-exposure-level")?.value || "—";
+        const filing = get("#input-filing-status");
+        const filingLabel = {
+          HOH: "Head of Household",
+          MFJ: "Married Filing Jointly",
+          MFS: "Married Filing Separately",
+          SINGLE: "Single",
+        }[filing] || filing || "—";
+        setText("#preview-filing-status", filingLabel);
 
-        $("#preview-balance-range").textContent = bal || "—";
-        $("#preview-missing-years").textContent = miss || "—";
-        $("#preview-lien").textContent = lien || "—";
+        const bal = get("#select-estimated-balance-due-range") || "—";
+        const miss = get("#select-irs-missing-years") || "—";
+        const lien = get("#select-irs-lien-exposure-level") || "—";
+        setText("#preview-balance-range", bal || "—");
+        setText("#preview-missing-years", miss || "—");
+        setText("#preview-lien", lien || "—");
 
         const chips = $("#preview-chips");
         if (chips) {
           chips.innerHTML = "";
           const addChip = (text) => {
             const span = document.createElement("span");
-            span.className = "inline-flex items-center px-2.5 py-1 rounded text-xs font-medium bg-slate-800 text-slate-200 border border-slate-700/50";
+            span.className = "inline-flex items-center px-2.5 py-1 rounded text-xs font-medium bg-slate-900/40 text-slate-200 border border-slate-700/50";
             span.textContent = text;
             chips.appendChild(span);
           };
 
-          const categories = $$('input[type="checkbox"][data-multi="IRS_Status_Categories"]')
+          const categories = $$("input[type=\"checkbox\"][data-multi=\"IRS_Status_Categories\"]")
             .filter((c) => c.checked)
             .map((c) => c.closest("label")?.innerText?.trim() || c.value)
             .map((t) => t.replace(/\s+/g, " "))
@@ -2248,6 +2480,32 @@
           categories.forEach(addChip);
         }
 
+        // Agent
+        setText("#preview-agent-name", get("#input-agent-name") || "—");
+        setText("#preview-agent-caf", get("#tab-agent input[value^=\"1234\"]") || "—");
+        setText("#preview-agent-ptin", get("#tab-agent input[value^=\"P\"]") || "—");
+        setText("#preview-agent-effective", fmtDate(get("#tab-agent input[type=\"date\"]")));
+
+        // Authority
+        const authRows = $$("#tab-authority .accordion-content .flex.items-center.justify-between");
+        const safeAuth = (i) => (authRows[i]?.querySelector("span")?.textContent || "—").trim();
+        setText("#preview-auth-info", safeAuth(0));
+        setText("#preview-auth-represent", safeAuth(1));
+        setText("#preview-auth-sign", safeAuth(2));
+        setText("#preview-auth-refund", safeAuth(3));
+
+        // Compliance
+        setText("#preview-compliance-activity", get('[data-field="Compliance_Activity_Type"]') || "—");
+        setText("#preview-compliance-period", get('[data-field="Compliance_Period_Covered"]') || "—");
+        setBlock("#preview-compliance-notes", get('[data-field="Compliance_Internal_Notes"]'), "—");
+
+        // Compliance (Return Status)
+        setText("#preview-return-filing-status", get("#input-return-filing-status") || "—");
+        setText("#preview-return-date-filed", fmtDate(get("#input-return-date-filed")));
+        setText("#preview-return-agi", get("#input-return-agi") || "—");
+        setText("#preview-return-liability", get("#input-return-liability") || "—");
+
+        // Notices
         const noticesWrap = $("#preview-notices");
         if (noticesWrap) {
           const notices = extractNoticesForPreview();
@@ -2257,12 +2515,11 @@
             noticesWrap.innerHTML = "";
             notices.forEach((n) => {
               const div = document.createElement("div");
-              div.className = "rounded border border-slate-700/50 bg-slate-800/40 p-2";
-              const date = n.date ? new Date(n.date + "T00:00:00").toLocaleDateString() : "—";
+              div.className = "rounded border border-slate-700/50 bg-slate-900/40 p-2";
               div.innerHTML = `
                 <div class="flex items-center justify-between gap-2">
                   <div class="font-mono text-xs text-slate-200">${n.label}</div>
-                  <div class="text-xs text-slate-400">${date}</div>
+                  <div class="text-xs text-slate-400">${fmtDate(n.date)}</div>
                 </div>
                 <div class="mt-1 text-xs text-slate-300 whitespace-pre-wrap">${(n.details || "").trim() || "—"}</div>
               `;
@@ -2270,6 +2527,38 @@
             });
           }
         }
+
+        // Installment Agreement
+        setText("#preview-ia-established", get('[data-field="IA_Established"]') || "—");
+        setText("#preview-ia-payment", get('[data-field="IA_Payment_Amount"]') || "—");
+        setText("#preview-ia-next", fmtDate(get('[data-field="IA_Payment_Date"]')));
+
+        const lastAmt = get('[data-field="IA_Last_Payment_Amount"]') || "—";
+        const lastDate = fmtDate(get('[data-field="IA_Last_Payment_Date"]'));
+        setText("#preview-ia-last", `${lastAmt} • ${lastDate}`.replace(/^—\s•\s—$/, "—"));
+
+        // Revenue Officer
+        setText("#preview-ro-name", get('[data-field="IRS_Revenue_Officer_Name"]') || "—");
+        setText("#preview-ro-phone", get('[data-field="IRS_Revenue_Officer_Phone"]') || "—");
+        setText("#preview-ro-email", get('[data-field="IRS_Revenue_Officer_Email"]') || "—");
+        setBlock("#preview-ro-notes", get('[data-field="IRS_Revenue_Officer_Notes"]'), "—");
+
+        // Transcripts
+        const reqMade = (document.querySelector('[data-field="Transcript_Request_Made"]')?.checked ?? false) ? "Yes" : "No";
+        setText("#preview-tr-request", reqMade);
+        setText("#preview-tr-delivery", get('[data-field="Transcript_Delivery_Method"]') || "—");
+        setText("#preview-tr-scope", get('[data-field="Transcript_Scope_Confirmed"]') || "—");
+        setText("#preview-tr-date", fmtDate(get('[data-field="Transcript_Retrieval_Date"]')));
+        setBlock("#preview-tr-notes", get('[data-field="Transcript_Retrieval_Notes"]'), "—");
+
+        // Summary
+        const summary = get('[data-field="Compliance_Client_Summary"]') || "";
+        setBlock(
+          "#preview-summary",
+          summary,
+          "Provide a clear client-facing summary in the Summary tab outlining the current status and next steps."
+        );
+        setBlock("#preview-next-steps", get('[data-field="Compliance_Internal_Next_Steps"]'), "—");
       }
 
       async function postPayload(mode) {
@@ -2402,6 +2691,118 @@
         if ($("#header-client-id")) $("#header-client-id").textContent = accountId || $("#header-client-id").textContent || "—";
       }
 
+      function initMFJBanner() {
+        const banner = $("#mfj-banner");
+        const closeBtn = $("#mfj-banner-close");
+        const filing = $("#input-filing-status");
+        const recordsWrap = $("#mfj-records");
+        const scopeBtns = $$(".mfj-scope-btn");
+        const scopeNote = $("#mfj-scope-note");
+
+        if (!banner || !filing || !recordsWrap) return;
+
+        const STORAGE_KEY = "tm_mfj_banner_dismissed";
+        let scope = "primary";
+
+        const SAMPLE = {
+          primary: [
+            { label: "CP2000", meta: "TY2023" },
+            { label: "CP504", meta: "TY2022" },
+            { label: "RO", meta: "Assigned" },
+          ],
+          spouse: [
+            { label: "CP14", meta: "TY2021" },
+            { label: "LT11", meta: "TY2022" },
+            { label: "IA", meta: "Active" },
+          ],
+        };
+
+        function setOffset() {
+          const visible = !banner.classList.contains("hidden");
+          const h = visible ? banner.getBoundingClientRect().height : 0;
+          document.documentElement.style.setProperty("--mfj-offset", `${Math.round(h)}px`);
+        }
+
+        function renderRecords() {
+          const list = (SAMPLE[scope] || []).slice().sort((a, b) => {
+            const aa = `${a.label} ${a.meta}`.toLowerCase();
+            const bb = `${b.label} ${b.meta}`.toLowerCase();
+            return aa.localeCompare(bb);
+          });
+
+          recordsWrap.innerHTML = "";
+          list.forEach((item) => {
+            const b = document.createElement("button");
+            b.type = "button";
+            b.className =
+              "inline-flex items-center gap-2 rounded-md border border-purple-500/25 bg-slate-950/40 px-3 py-1.5 text-xs font-medium text-slate-100 hover:bg-slate-950/60 transition-colors";
+            b.innerHTML = `<span class=\"font-mono text-purple-100\">${item.label}</span><span class=\"text-slate-300/90\">${item.meta}</span>`;
+            b.addEventListener("click", () => {
+              // UI-only for now: focus attention without side effects.
+              const tabBtn = $(".tab-btn[data-tab=\"notices\"]");
+              if (tabBtn) tabBtn.click();
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            });
+            recordsWrap.appendChild(b);
+          });
+
+          scopeBtns.forEach((btn) => {
+            const active = btn.dataset.scope === scope;
+            btn.classList.toggle("bg-purple-500/20", active);
+            btn.classList.toggle("border-purple-500/40", active);
+          });
+
+          if (scopeNote) scopeNote.textContent = `Scope: ${scope === "spouse" ? "Spouse" : "Primary"}`;
+        }
+
+        function show() {
+          banner.classList.remove("hidden");
+          localStorage.removeItem(STORAGE_KEY);
+          renderRecords();
+          setOffset();
+        }
+
+        function hide() {
+          banner.classList.add("hidden");
+          setOffset();
+        }
+
+        function sync() {
+          const isMFJ = (filing.value || "").toUpperCase() === "MFJ";
+          const dismissed = localStorage.getItem(STORAGE_KEY) === "1";
+
+          if (isMFJ && !dismissed) {
+            show();
+            return;
+          }
+
+          hide();
+        }
+
+        if (closeBtn) {
+          closeBtn.addEventListener("click", () => {
+            localStorage.setItem(STORAGE_KEY, "1");
+            hide();
+          });
+        }
+
+        scopeBtns.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            scope = btn.dataset.scope === "spouse" ? "spouse" : "primary";
+            renderRecords();
+          });
+        });
+
+        filing.addEventListener("change", sync);
+
+        // Keep header sticky offset correct if fonts load / viewport changes.
+        const ro = new ResizeObserver(() => setOffset());
+        ro.observe(banner);
+        window.addEventListener("resize", setOffset);
+
+        sync();
+      }
+
       function init() {
         initAccordions();
         initAutosave();
@@ -2414,6 +2815,7 @@
         initStatusChips();
         initTabs();
         initYearTabs();
+        initMFJBanner();
 
         // Initial renders
         setStatusBadge("draft");
