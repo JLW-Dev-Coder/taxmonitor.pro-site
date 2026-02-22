@@ -1,0 +1,139 @@
+{
+  "clickupProjection": [],
+  "contract": {
+    "id": "account_calendar",
+    "name": "Account Calendar Status",
+    "version": 1
+  },
+  "delivery": {
+    "endpoint": "https://api.taxmonitor.pro/account/calendar",
+    "method": "GET",
+    "type": "web"
+  },
+  "effects": {
+    "reads": [
+      "accounts/{accountId}.google.json",
+      "calendar/{accountId}/events.json"
+    ],
+    "writes": []
+  },
+  "note": "Returns calendar connection + sync status for the authenticated account. Auth is derived from secure session cookie (no client-supplied accountId).",
+  "payload": {
+    "request": {
+      "query": {
+        "end": "YYYY-MM-DD",
+        "start": "YYYY-MM-DD"
+      }
+    },
+    "response": {
+      "calendar": {
+        "autoSyncEnabled": true,
+        "autoSyncEveryHours": 6,
+        "lastSyncAt": "ISO_8601_OR_NULL"
+      },
+      "google": {
+        "connected": false,
+        "scopes": [],
+        "status": "disconnected"
+      },
+      "irs": {
+        "icsUrl": "https://taxmonitor.pro/resources/irs-deadlines.ics",
+        "subscribed": true
+      }
+    }
+  },
+  "schema": {
+    "validation": {
+      "enumStrict": true,
+      "normalizeCheckboxToBoolean": true,
+      "rejectUnknownValues": true
+    },
+    "request": {
+      "additionalProperties": false,
+      "properties": {
+        "query": {
+          "additionalProperties": false,
+          "properties": {
+            "end": { "type": "string" },
+            "start": { "type": "string" }
+          },
+          "required": [
+            "end",
+            "start"
+          ],
+          "type": "object"
+        }
+      },
+      "required": [
+        "query"
+      ],
+      "type": "object"
+    },
+    "response": {
+      "additionalProperties": false,
+      "properties": {
+        "calendar": {
+          "additionalProperties": false,
+          "properties": {
+            "autoSyncEnabled": { "type": "boolean" },
+            "autoSyncEveryHours": { "type": "integer" },
+            "lastSyncAt": {
+              "anyOf": [
+                { "type": "null" },
+                { "type": "string" }
+              ]
+            }
+          },
+          "required": [
+            "autoSyncEnabled",
+            "autoSyncEveryHours",
+            "lastSyncAt"
+          ],
+          "type": "object"
+        },
+        "google": {
+          "additionalProperties": false,
+          "properties": {
+            "connected": { "type": "boolean" },
+            "scopes": {
+              "items": { "type": "string" },
+              "type": "array"
+            },
+            "status": {
+              "enum": [
+                "connected",
+                "disconnected",
+                "needs_reauth"
+              ],
+              "type": "string"
+            }
+          },
+          "required": [
+            "connected",
+            "scopes",
+            "status"
+          ],
+          "type": "object"
+        },
+        "irs": {
+          "additionalProperties": false,
+          "properties": {
+            "icsUrl": { "type": "string" },
+            "subscribed": { "type": "boolean" }
+          },
+          "required": [
+            "icsUrl",
+            "subscribed"
+          ],
+          "type": "object"
+        }
+      },
+      "required": [
+        "calendar",
+        "google",
+        "irs"
+      ],
+      "type": "object"
+    }
+  }
+}
