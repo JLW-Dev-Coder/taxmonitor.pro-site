@@ -1,0 +1,1146 @@
+<!-- /app/pages/messaging.html -->
+<!doctype html>
+<html lang="en" class="h-full">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tax Monitor Pro — Messaging</title>
+
+    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+    <script src="/_sdk/element_sdk.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet" />
+
+    <link rel="icon" href="https://taxmonitor.pro/favicon.ico" sizes="any" />
+    <link rel="icon" href="https://taxmonitor.pro/assets/favicon.ico" sizes="any" />
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: { sans: ['DM Sans', 'system-ui', 'sans-serif'] },
+            colors: {
+              slate: {
+                850: '#1a1f2e',
+                900: '#0f1219',
+                950: '#080a0f'
+              },
+              amber: {
+                400: '#fbbf24',
+                500: '#f59e0b',
+                600: '#d97706'
+              }
+            }
+          }
+        }
+      };
+    </script>
+
+    <style>
+      html, body { height: 100%; }
+      html { font-size: 100%; }
+
+      *, *::before, *::after { box-sizing: border-box; }
+      body { box-sizing: border-box; }
+      * { font-family: 'DM Sans', system-ui, sans-serif; }
+
+      .gradient-text {
+        background: linear-gradient(135deg, #F59E0B, #FB923C);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .glass-card {
+        background: rgba(10, 10, 10, 0.6);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .noise-bg::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        opacity: .03;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #f59e0b, #d97706);
+        transition: all 0.2s ease;
+      }
+
+      .btn-primary:hover {
+        filter: brightness(1.05);
+        transform: translateY(-1px);
+      }
+
+      .btn-secondary {
+        background: rgba(2, 6, 23, 0.35);
+        border: 1px solid rgba(255, 255, 255, 0.10);
+        transition: all 0.2s ease;
+      }
+
+      .btn-secondary:hover {
+        background: rgba(2, 6, 23, 0.55);
+        border-color: rgba(255, 255, 255, 0.16);
+      }
+
+      .pill-active {
+        background: rgba(245, 158, 11, 0.15);
+        border-color: rgba(245, 158, 11, 0.35);
+        color: #fff;
+      }
+
+      .row-hover { transition: all 0.2s ease; }
+      .row-hover:hover { background: rgba(148, 163, 184, 0.06); transform: translateX(4px); }
+
+      .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace; }
+
+      .modal-overlay {
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(4px);
+      }
+
+      .modal-overlay.hidden { display: none; }
+    </style>
+
+    <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  </head>
+
+  <body class="h-full bg-slate-950 text-slate-100 noise-bg overflow-hidden">
+    <div class="relative z-10 flex h-full">
+      <!-- APP SIDEBAR PARTIAL -->
+      <!-- APP_SIDEBAR -->
+
+      <div class="flex-1 flex flex-col min-w-0">
+        <!-- APP TOPBAR PARTIAL -->
+        <!-- APP_TOPBAR -->
+
+        <main class="flex-1 overflow-auto">
+          <div class="max-w-6xl mx-auto px-6 py-8">
+            <!-- Page Header -->
+            <div class="mb-8">
+              <div class="flex flex-col items-center text-center">
+                <h1 class="text-3xl md:text-4xl font-semibold tracking-tight mb-2">
+                  <span class="text-white">Messaging </span><span class="gradient-text">Inbox</span>
+                </h1>
+                <p class="text-slate-400 text-base md:text-lg max-w-2xl">Send, view, and manage your messages. Allow 24 business hours for replies.</p>
+              </div>
+            </div>
+
+            <!-- LIST VIEW -->
+            <section id="listView" class="glass-card rounded-2xl p-6 md:p-8">
+              <div class="mx-auto max-w-5xl">
+                <!-- Controls -->
+                <div class="rounded-2xl border border-white/10 bg-slate-950/30 p-4 md:p-5">
+                  <div class="flex flex-col gap-4">
+                    <div class="flex flex-col md:flex-row gap-3 md:items-center md:justify-between">
+                      <div class="flex-1 relative">
+                        <label class="sr-only" for="searchInput">Search</label>
+                        <input id="searchInput" type="text" placeholder="Search messages…" class="w-full rounded-xl bg-slate-950/30 px-4 py-2.5 text-sm border border-white/10 focus:outline-none focus:ring-2 focus:ring-amber-400/30" />
+                        <svg class="absolute right-3 top-3 w-5 h-5 text-slate-500 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                      </div>
+
+                      <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                        <div>
+                          <label class="sr-only" for="sortSelect">Sort</label>
+                          <select id="sortSelect" class="w-full sm:w-auto rounded-xl bg-slate-950/30 px-4 py-2.5 text-sm border border-white/10 focus:outline-none focus:ring-2 focus:ring-amber-400/30">
+                            <option value="category_asc">Category (A–Z)</option>
+                            <option value="date_desc" selected>Newest</option>
+                            <option value="date_asc">Oldest</option>
+                            <option value="subject_asc">Subject (A–Z)</option>
+                          </select>
+                        </div>
+
+                        <button id="composeBtn" class="btn-primary py-2.5 px-5 rounded-xl text-sm text-white font-medium inline-flex items-center gap-2" type="button">
+                          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                          </svg>
+                          New Message
+                        </button>
+                      </div>
+                    </div>
+
+                    <div class="flex flex-col md:flex-row gap-3 md:items-center md:justify-between">
+                      <div class="flex flex-wrap gap-2">
+                        <button class="pill pill-active px-4 py-2 rounded-full text-sm font-medium border border-white/10 text-slate-200" data-filter="All" type="button">All</button>
+                        <button class="pill px-4 py-2 rounded-full text-sm font-medium border border-white/10 text-slate-300 hover:text-white" data-filter="Account" type="button">Account</button>
+                        <button class="pill px-4 py-2 rounded-full text-sm font-medium border border-white/10 text-slate-300 hover:text-white" data-filter="Monitoring" type="button">Monitoring</button>
+                        <button class="pill px-4 py-2 rounded-full text-sm font-medium border border-white/10 text-slate-300 hover:text-white" data-filter="Recently Deleted" type="button">Recently Deleted</button>
+                      </div>
+
+                      <div class="flex items-center justify-between md:justify-end gap-3">
+                        <div id="countsLabel" class="text-xs text-slate-500">0 messages</div>
+                        <button id="clearDeletedBtn" class="btn-secondary px-4 py-2 rounded-xl text-sm text-slate-300 hover:text-white" type="button">Clear Deleted</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Messages List -->
+                <div class="mt-6 overflow-hidden rounded-2xl border border-white/10 bg-slate-950/30">
+                  <div id="messagesList" class="divide-y divide-white/10"></div>
+
+                  <div id="emptyState" class="hidden p-10 text-center">
+                    <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-white/5">
+                      <svg class="w-7 h-7 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                      </svg>
+                    </div>
+                    <div class="mt-4 text-lg font-semibold text-white">No messages</div>
+                    <div class="mt-1 text-sm text-slate-400">Create a message to keep a record of questions and requests.</div>
+                  </div>
+                </div>
+
+                <p class="text-center text-slate-600 text-xs pt-6">
+                  <span class="text-slate-500">Drafts are saved on this device while you type.</span>
+                  <span class="mx-2">•</span>
+                  <span class="text-slate-500">When you send a message, it is delivered to our support team.</span>
+                </p>
+              </div>
+            </section>
+
+            <!-- DETAIL VIEW -->
+            <section id="detailView" class="hidden glass-card rounded-2xl p-6 md:p-8">
+              <div class="mx-auto max-w-5xl">
+                <div class="flex flex-col gap-4">
+                  <div class="flex items-center justify-between gap-3">
+                    <button id="backBtn" class="btn-secondary px-4 py-2 rounded-xl text-sm text-slate-300 hover:text-white" type="button">Back</button>
+
+                    <div class="flex items-center gap-2">
+                      <button id="restoreBtn" class="hidden btn-secondary px-4 py-2 rounded-xl text-sm text-slate-300 hover:text-white" type="button">Restore</button>
+                      <button id="editBtn" class="btn-secondary px-4 py-2 rounded-xl text-sm text-slate-300 hover:text-white" type="button">Edit</button>
+                      <button id="deleteBtn" class="btn-secondary px-4 py-2 rounded-xl text-sm text-red-200 border border-red-500/25 bg-red-500/10 hover:bg-red-500/15" type="button">Delete</button>
+                    </div>
+                  </div>
+
+                  <div class="rounded-2xl border border-white/10 bg-slate-950/30 p-5">
+                    <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+                      <div class="min-w-0">
+                        <div class="flex items-center gap-2">
+                          <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-400/10 text-amber-200 border border-amber-400/20" id="detailCategory">Account</span>
+                          <span class="text-xs text-slate-500" id="detailDate">—</span>
+                        </div>
+                        <h2 class="mt-2 text-2xl font-semibold text-white break-words" id="detailSubject">(no subject)</h2>
+                      </div>
+
+                      <div class="text-xs text-slate-500 mono">
+                        <div>Message ID</div>
+                        <div id="detailId">—</div>
+                      </div>
+                    </div>
+
+                    <div class="mt-4 text-xs text-slate-500" id="detailHint">—</div>
+                  </div>
+
+                  <div class="rounded-2xl border border-white/10 bg-slate-950/30 p-5">
+                    <div class="text-sm text-slate-200 whitespace-pre-wrap leading-relaxed" id="detailBody">—</div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </main>
+
+        <!-- Toast -->
+        <div class="pointer-events-none fixed top-4 right-4 z-50">
+          <div id="toast" class="hidden pointer-events-auto rounded-xl border border-white/10 bg-slate-950/80 px-4 py-3 text-sm text-slate-100 shadow-lg backdrop-blur">Toast</div>
+        </div>
+
+        <!-- COMPOSE MODAL -->
+        <div id="composeModal" class="modal-overlay hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div id="composeBackdrop" class="absolute inset-0"></div>
+
+          <div class="relative z-10 w-full max-w-2xl">
+            <div class="glass-card rounded-2xl border border-white/10 overflow-hidden">
+              <div class="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-slate-950/30">
+                <h3 id="composeTitle" class="text-lg font-semibold text-white">New message</h3>
+                <button id="composeClose" class="btn-secondary px-3 py-2 rounded-xl text-sm text-slate-300 hover:text-white" type="button" aria-label="Close">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+
+              <form id="messageForm" class="p-6 space-y-4">
+                <input id="editingId" type="hidden" value="" />
+
+                <div>
+                  <label for="msgCategory" class="block text-sm font-medium text-slate-200">Category</label>
+                  <select id="msgCategory" class="mt-2 w-full rounded-xl bg-slate-950/30 px-4 py-2.5 text-sm border border-white/10 focus:outline-none focus:ring-2 focus:ring-amber-400/30">
+                    <option value="">Select a category</option>
+                    <option value="Account">Account</option>
+                    <option value="Monitoring">Monitoring</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label for="msgSubject" class="block text-sm font-medium text-slate-200">Subject</label>
+                  <input id="msgSubject" type="text" placeholder="Short summary" class="mt-2 w-full rounded-xl bg-slate-950/30 px-4 py-2.5 text-sm border border-white/10 focus:outline-none focus:ring-2 focus:ring-amber-400/30" maxlength="120" autocomplete="off" />
+                  <div class="mt-2 flex items-center justify-between text-xs text-slate-500">
+                    <div id="draftHint">Draft saving is enabled</div>
+                    <div><span id="subjectCount">0</span>/120</div>
+                  </div>
+                </div>
+
+                <div>
+                  <label for="msgBody" class="block text-sm font-medium text-slate-200">Message</label>
+                  <textarea id="msgBody" rows="7" placeholder="Write your message…" class="mt-2 w-full resize-none rounded-xl bg-slate-950/30 px-4 py-3 text-sm border border-white/10 focus:outline-none focus:ring-2 focus:ring-amber-400/30" maxlength="5000"></textarea>
+                  <div class="mt-2 flex items-center justify-between text-xs text-slate-500">
+                    <div>Include key details so we can help faster.</div>
+                    <div><span id="bodyCount">0</span>/5000</div>
+                  </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
+                  <button id="btnAttach" class="btn-secondary py-2 px-4 rounded-xl text-sm text-slate-300 hover:text-white" type="button">Attach file</button>
+
+                  <div class="flex items-center gap-3">
+                    <button id="btnReset" class="btn-secondary py-2 px-4 rounded-xl text-sm text-slate-300 hover:text-white" type="button">Reset</button>
+                    <button id="btnSend" class="btn-primary py-2 px-5 rounded-xl text-sm text-white font-medium" type="submit">Send Message</button>
+                  </div>
+                </div>
+
+                <div id="formError" class="hidden rounded-xl border border-red-500/30 bg-red-500/10 p-3 text-sm text-red-200"></div>
+                <div id="formSuccess" class="hidden rounded-xl border border-emerald-500/25 bg-emerald-500/10 p-3 text-sm text-emerald-100"></div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const $ = (id) => document.getElementById(id);
+
+      function must(id) {
+        const el = $(id);
+        if (!el) throw new Error(`Missing required element: #${id}`);
+        return el;
+      }
+
+      function escapeHtml(s) {
+        return String(s || '')
+          .replaceAll('&', '&amp;')
+          .replaceAll('<', '&lt;')
+          .replaceAll('>', '&gt;')
+          .replaceAll('"', '&quot;')
+          .replaceAll("'", '&#39;');
+      }
+
+      function formatDateTime(iso) {
+        const d = new Date(String(iso || ''));
+        if (Number.isNaN(d.getTime())) return '—';
+        return d.toLocaleString('en-US', {
+          day: '2-digit',
+          hour: 'numeric',
+          minute: '2-digit',
+          month: 'short',
+          year: 'numeric'
+        });
+      }
+
+      function normalizeCategory(c) {
+        const v = String(c || '').trim();
+        const allowed = ['Account', 'Monitoring'].sort();
+        if (!v) return '';
+        return allowed.includes(v) ? v : '';
+      }
+
+      const storage = {
+        draftKey: 'tm_message_draft_v3',
+        listKey: 'tm_messages_v2',
+        sessionTokenKey: 'tm_session_token_v1'
+      };
+
+      const worker = {
+        endpoint: 'https://api.taxmonitor.pro/forms/support/message-new'
+      };
+
+      const state = {
+        filter: 'All',
+        search: '',
+        selectedId: null,
+        sort: 'date_desc'
+      };
+
+      function clearAlerts() {
+        const err = must('formError');
+        const ok = must('formSuccess');
+        err.classList.add('hidden');
+        err.textContent = '';
+        ok.classList.add('hidden');
+        ok.textContent = '';
+      }
+
+      function setCounts() {
+        must('bodyCount').textContent = String((must('msgBody').value || '').length);
+        must('subjectCount').textContent = String((must('msgSubject').value || '').length);
+      }
+
+      function setDraftHint(text) {
+        must('draftHint').textContent = text;
+      }
+
+      function showToast(msg, kind = 'info') {
+        const t = $('toast');
+        if (!t) {
+          console.warn('Toast element missing; message:', msg);
+          return;
+        }
+
+        const base = 'pointer-events-auto rounded-xl border px-4 py-3 text-sm shadow-lg backdrop-blur';
+        const classes = {
+          error: 'border-red-500/25 bg-red-500/10 text-red-100',
+          info: 'border-white/10 bg-slate-950/80 text-slate-100',
+          success: 'border-emerald-500/25 bg-emerald-500/10 text-emerald-50'
+        };
+
+        t.className = `${base} ${classes[kind] || classes.info}`;
+        t.textContent = String(msg || '');
+        t.classList.remove('hidden');
+        setTimeout(() => t.classList.add('hidden'), 2200);
+      }
+
+      function showError(msg) {
+        const err = must('formError');
+        err.textContent = msg;
+        err.classList.remove('hidden');
+      }
+
+      function showSuccess(msg) {
+        const ok = must('formSuccess');
+        ok.textContent = msg;
+        ok.classList.remove('hidden');
+      }
+
+      function openComposeModal() {
+        clearAlerts();
+        must('composeModal').classList.remove('hidden');
+        setCounts();
+      }
+
+      function closeComposeModal() {
+        must('composeModal').classList.add('hidden');
+      }
+
+      function showListView() {
+        must('detailView').classList.add('hidden');
+        must('listView').classList.remove('hidden');
+      }
+
+      function showDetailView() {
+        must('listView').classList.add('hidden');
+        must('detailView').classList.remove('hidden');
+      }
+
+      function getMessages() {
+        const raw = localStorage.getItem(storage.listKey);
+        if (!raw) return [];
+        try {
+          const arr = JSON.parse(raw);
+          return Array.isArray(arr) ? arr : [];
+        } catch {
+          return [];
+        }
+      }
+
+      function setMessages(arr) {
+        localStorage.setItem(storage.listKey, JSON.stringify(Array.isArray(arr) ? arr : []));
+      }
+
+      function makeId() {
+        return 'msg_' + Math.random().toString(16).slice(2) + '_' + Date.now();
+      }
+
+      function persistDraft() {
+        const payload = {
+          body: must('msgBody').value || '',
+          category: must('msgCategory').value || '',
+          subject: must('msgSubject').value || ''
+        };
+        localStorage.setItem(storage.draftKey, JSON.stringify(payload));
+      }
+
+      function loadDraft() {
+        const raw = localStorage.getItem(storage.draftKey);
+        if (!raw) return;
+
+        try {
+          const d = JSON.parse(raw);
+          if (d && typeof d === 'object') {
+            must('msgBody').value = d.body || '';
+            must('msgCategory').value = d.category || '';
+            must('msgSubject').value = d.subject || '';
+            setCounts();
+          }
+        } catch {
+          // ignore
+        }
+      }
+
+      function resetComposeForm() {
+        must('editingId').value = '';
+        must('msgBody').value = '';
+        must('msgCategory').value = '';
+        must('msgSubject').value = '';
+        localStorage.removeItem(storage.draftKey);
+        setCounts();
+        clearAlerts();
+        setDraftHint('Draft cleared');
+        setTimeout(() => setDraftHint('Draft saving is enabled'), 1200);
+      }
+
+      function computeFilteredSorted(messages) {
+        const term = String(state.search || '').trim().toLowerCase();
+
+        let out = messages.filter((m) => {
+          const cat = String(m.category || '');
+          const isDeleted = !!m.deleted;
+
+          if (state.filter === 'Recently Deleted') return isDeleted;
+          if (state.filter !== 'All' && cat !== state.filter) return false;
+          if (state.filter === 'All' && isDeleted) return false;
+
+          if (!term) return true;
+
+          const hay = [m.body || '', m.category || '', m.subject || ''].join(' ').toLowerCase();
+          return hay.includes(term);
+        });
+
+        const sort = String(state.sort || 'date_desc');
+        if (sort === 'category_asc') {
+          out.sort((a, b) => String(a.category || '').localeCompare(String(b.category || '')) || String(a.subject || '').localeCompare(String(b.subject || '')));
+          return out;
+        }
+
+        if (sort === 'date_asc') {
+          out.sort((a, b) => String(a.createdAt || '').localeCompare(String(b.createdAt || '')));
+          return out;
+        }
+
+        if (sort === 'subject_asc') {
+          out.sort((a, b) => String(a.subject || '').localeCompare(String(b.subject || '')));
+          return out;
+        }
+
+        out.sort((a, b) => String(b.createdAt || '').localeCompare(String(a.createdAt || '')));
+        return out;
+      }
+
+      function updateCountsLabel(visibleCount, totalCount) {
+        const label = must('countsLabel');
+        const t = totalCount === 1 ? 'message' : 'messages';
+        const v = visibleCount === 1 ? 'message' : 'messages';
+        if (visibleCount === totalCount) label.textContent = `${visibleCount} ${v}`;
+        else label.textContent = `${visibleCount} ${v} (of ${totalCount} ${t})`;
+      }
+
+      function renderList() {
+        const all = getMessages();
+        const filtered = computeFilteredSorted(all);
+
+        updateCountsLabel(filtered.length, all.filter((m) => !m.deleted).length);
+
+        const list = must('messagesList');
+        const empty = must('emptyState');
+
+        if (filtered.length === 0) {
+          list.innerHTML = '';
+          empty.classList.remove('hidden');
+          return;
+        }
+
+        empty.classList.add('hidden');
+
+        list.innerHTML = filtered
+          .map((m) => {
+            const cat = normalizeCategory(m.category || '') || 'Account';
+            const when = formatDateTime(m.createdAt);
+            const subj = escapeHtml(m.subject || '(no subject)');
+            const prev = escapeHtml(String(m.body || '').trim().slice(0, 120));
+            const badge = m.deleted ? '<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-500/10 text-red-200 border border-red-500/25">Deleted</span>' : '';
+
+            return (
+              '<button type="button" class="row-hover w-full text-left p-4" data-open-id="' + escapeHtml(m.id) + '">' +
+                '<div class="flex items-start justify-between gap-4">' +
+                  '<div class="min-w-0">' +
+                    '<div class="flex items-center gap-2">' +
+                      '<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-400/10 text-amber-200 border border-amber-400/20">' + escapeHtml(cat) + '</span>' +
+                      badge +
+                    '</div>' +
+                    '<div class="mt-2 text-sm font-semibold text-white truncate">' + subj + '</div>' +
+                    '<div class="mt-1 text-xs text-slate-400 line-clamp-2">' + prev + '</div>' +
+                  '</div>' +
+                  '<div class="text-xs text-slate-500 whitespace-nowrap">' + escapeHtml(when) + '</div>' +
+                '</div>' +
+              '</button>'
+            );
+          })
+          .join('');
+
+        Array.from(list.querySelectorAll('[data-open-id]')).forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const id = btn.getAttribute('data-open-id');
+            if (id) openMessage(id);
+          });
+        });
+      }
+
+      function openMessage(id) {
+        const all = getMessages();
+        const msg = all.find((m) => m && m.id === id);
+        if (!msg) return;
+
+        state.selectedId = id;
+
+        must('detailCategory').textContent = normalizeCategory(msg.category || '') || 'Account';
+        must('detailDate').textContent = formatDateTime(msg.createdAt);
+        must('detailSubject').textContent = msg.subject || '(no subject)';
+        must('detailBody').textContent = msg.body || '';
+        must('detailId').textContent = msg.id || '—';
+
+        const hint = msg.deleted
+          ? 'This message is in Recently Deleted. You can restore it or permanently delete it.'
+          : 'This message is stored locally on this device. Worker syncing comes later.';
+
+        must('detailHint').textContent = hint;
+
+        if (msg.deleted) {
+          must('restoreBtn').classList.remove('hidden');
+          must('deleteBtn').textContent = 'Delete permanently';
+        } else {
+          must('restoreBtn').classList.add('hidden');
+          must('deleteBtn').textContent = 'Delete';
+        }
+
+        showDetailView();
+      }
+
+      function setActivePill(next) {
+        const pills = Array.from(document.querySelectorAll('.pill'));
+        pills.forEach((p) => {
+          const v = p.getAttribute('data-filter') || '';
+          if (v === next) {
+            p.classList.add('pill-active');
+            p.classList.remove('text-slate-300');
+            p.classList.add('text-slate-200');
+          } else {
+            p.classList.remove('pill-active');
+            p.classList.add('text-slate-300');
+            p.classList.remove('text-slate-200');
+          }
+        });
+      }
+
+      async function deleteSelected() {
+        const id = state.selectedId;
+        if (!id) return;
+
+        const all = getMessages();
+        const idx = all.findIndex((m) => m && m.id === id);
+        if (idx === -1) return;
+
+        if (all[idx].deleted) {
+          const removed = all[idx];
+          all.splice(idx, 1);
+          setMessages(all);
+          showToast('Message deleted permanently', 'success');
+          state.selectedId = null;
+          showListView();
+          renderList();
+          void postToWorker({ ...removed, deleted: true }, 'delete_permanent');
+          return;
+        }
+
+        all[idx].deleted = true;
+        all[idx].deletedAt = new Date().toISOString();
+        setMessages(all);
+        showToast('Message moved to Recently Deleted', 'success');
+        state.selectedId = null;
+        showListView();
+        renderList();
+        void postToWorker(all[idx], 'delete_soft');
+      }
+
+      async function restoreSelected() {
+        const id = state.selectedId;
+        if (!id) return;
+
+        const all = getMessages();
+        const idx = all.findIndex((m) => m && m.id === id);
+        if (idx === -1) return;
+
+        all[idx].deleted = false;
+        all[idx].deletedAt = null;
+        setMessages(all);
+        showToast('Message restored', 'success');
+        state.selectedId = null;
+        showListView();
+        renderList();
+        void postToWorker(all[idx], 'restore');
+      }
+
+      async function clearDeleted() {
+        const all = getMessages();
+        const kept = all.filter((m) => !m.deleted);
+        setMessages(kept);
+        showToast('Deleted messages cleared', 'success');
+        if (state.filter === 'Recently Deleted') {
+          state.filter = 'All';
+          setActivePill('All');
+        }
+        renderList();
+        void postToWorker({ id: 'bulk', deleted: true, createdAt: new Date().toISOString(), category: 'Account', subject: 'Bulk clear', body: '' }, 'clear_deleted');
+      }
+
+      function editSelected() {
+        const id = state.selectedId;
+        if (!id) return;
+        const all = getMessages();
+        const msg = all.find((m) => m && m.id === id);
+        if (!msg) return;
+
+        must('editingId').value = msg.id;
+        must('msgCategory').value = normalizeCategory(msg.category || '') || 'Account';
+        must('msgSubject').value = msg.subject || '';
+        must('msgBody').value = msg.body || '';
+
+        localStorage.setItem(storage.draftKey, JSON.stringify({
+          body: must('msgBody').value || '',
+          category: must('msgCategory').value || '',
+          subject: must('msgSubject').value || ''
+        }));
+
+        must('composeTitle').textContent = 'Edit message';
+        must('btnSend').textContent = 'Send Message';
+        openComposeModal();
+      }
+
+      function makeEventId() {
+        try {
+          if (crypto && typeof crypto.randomUUID === 'function') return crypto.randomUUID();
+        } catch {
+          // ignore
+        }
+        return 'evt_' + Math.random().toString(16).slice(2) + '_' + Date.now();
+      }
+
+      function getSessionToken() {
+        try {
+          const url = new URL(window.location.href);
+          const qs = url.searchParams.get('sessionToken');
+          if (qs) return String(qs);
+        } catch {
+          // ignore
+        }
+        const v = localStorage.getItem(storage.sessionTokenKey);
+        return v ? String(v) : '';
+      }
+
+      function setSessionToken(token) {
+        const v = String(token || '').trim();
+        if (!v) return;
+        localStorage.setItem(storage.sessionTokenKey, v);
+      }
+
+      function buildWorkerPayload(message, action) {
+        const sessionToken = getSessionToken();
+        if (sessionToken) setSessionToken(sessionToken);
+
+        return {
+          action,
+          eventId: makeEventId(),
+          payload: {
+            body: message.body,
+            category: message.category,
+            createdAt: message.createdAt,
+            deleted: !!message.deleted,
+            id: message.id,
+            subject: message.subject,
+            updatedAt: message.updatedAt || null
+          },
+          sessionToken: sessionToken || ''
+        };
+      }
+
+      async function postToWorker(message, action) {
+        try {
+          const res = await fetch(worker.endpoint, {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify(buildWorkerPayload(message, action))
+          });
+
+          if (!res.ok) {
+            const text = await res.text().catch(() => '');
+            throw new Error(`HTTP ${res.status}${text ? `: ${text}` : ''}`);
+          }
+
+          return true;
+        } catch (err) {
+          console.warn('Worker sync failed:', err);
+          return false;
+        }
+      }
+
+      async function createOrUpdateFromForm() {
+        clearAlerts();
+
+        const body = (must('msgBody').value || '').trim();
+        const category = normalizeCategory((must('msgCategory').value || '').trim());
+        const subject = (must('msgSubject').value || '').trim();
+        const editingId = String(must('editingId').value || '').trim();
+
+        if (!category) {
+          showError('Select a category.');
+          return null;
+        }
+
+        if (!subject) {
+          showError('Subject is required.');
+          return null;
+        }
+
+        if (!body) {
+          showError('Message cannot be empty.');
+          return null;
+        }
+
+        const all = getMessages();
+
+        if (editingId) {
+          const idx = all.findIndex((m) => m && m.id === editingId);
+          if (idx === -1) {
+            showError('Could not find message to edit.');
+            return null;
+          }
+
+          const updated = {
+            ...all[idx],
+            body,
+            category,
+            subject,
+            updatedAt: new Date().toISOString()
+          };
+
+          all[idx] = updated;
+          setMessages(all);
+          localStorage.removeItem(storage.draftKey);
+
+          showSuccess('Message updated.');
+
+          const ok = await postToWorker(updated, 'update');
+          showToast(ok ? 'Message updated (synced)' : 'Message updated (saved locally)', ok ? 'success' : 'info');
+
+          return updated.id;
+        }
+
+        const msg = {
+          body,
+          category,
+          createdAt: new Date().toISOString(),
+          deleted: false,
+          deletedAt: null,
+          id: makeId(),
+          subject,
+          updatedAt: null
+        };
+
+        all.unshift(msg);
+        setMessages(all);
+        localStorage.removeItem(storage.draftKey);
+
+        showSuccess('Message sent.');
+
+        const ok = await postToWorker(msg, 'create');
+        showToast(ok ? 'Message created (synced)' : 'Message created (saved locally)', ok ? 'success' : 'info');
+
+        return msg.id;
+      }
+
+      function wireUI() {
+        must('composeBtn').addEventListener('click', () => {
+          must('composeTitle').textContent = 'New message';
+          must('btnSend').textContent = 'Send Message';
+          resetComposeForm();
+          loadDraft();
+          openComposeModal();
+        });
+
+        must('composeClose').addEventListener('click', closeComposeModal);
+        must('composeBackdrop').addEventListener('click', closeComposeModal);
+
+        const autos = ['msgBody', 'msgCategory', 'msgSubject'].sort();
+        autos.forEach((id) => {
+          must(id).addEventListener('input', () => {
+            setCounts();
+            persistDraft();
+          });
+        });
+
+        must('btnAttach').addEventListener('click', () => {
+          clearAlerts();
+          showError('Attachments are not wired yet.');
+        });
+
+        must('btnReset').addEventListener('click', resetComposeForm);
+
+        must('messageForm').addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const id = await createOrUpdateFromForm();
+          if (!id) return;
+          closeComposeModal();
+          renderList();
+          openMessage(id);
+        });
+
+        must('backBtn').addEventListener('click', () => {
+          state.selectedId = null;
+          showListView();
+          renderList();
+        });
+
+        must('deleteBtn').addEventListener('click', deleteSelected);
+        must('editBtn').addEventListener('click', editSelected);
+        must('restoreBtn').addEventListener('click', restoreSelected);
+
+        Array.from(document.querySelectorAll('.pill')).forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const f = btn.getAttribute('data-filter') || 'All';
+            state.filter = f;
+            setActivePill(f);
+            renderList();
+          });
+        });
+
+        must('searchInput').addEventListener('input', (e) => {
+          state.search = String(e.target.value || '');
+          renderList();
+        });
+
+        must('sortSelect').addEventListener('change', (e) => {
+          state.sort = String(e.target.value || 'date_desc');
+          renderList();
+        });
+
+        must('clearDeletedBtn').addEventListener('click', clearDeleted);
+
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') closeComposeModal();
+        });
+
+        setCounts();
+      }
+
+      function seedDemoMessagesIfEmpty() {
+        const existing = getMessages();
+        if (existing.length) return;
+
+        const now = Date.now();
+        const demo = [
+          {
+            body: 'Please confirm we received your compliance records and expected report timeline.',
+            category: 'Account',
+            createdAt: new Date(now - 36 * 60 * 60 * 1000).toISOString(),
+            deleted: false,
+            deletedAt: null,
+            id: makeId(),
+            subject: 'Compliance records status',
+            updatedAt: null
+          },
+          {
+            body: 'Where do I upload the signed 2848 PDF? I see the page but want to confirm the steps.',
+            category: 'Monitoring',
+            createdAt: new Date(now - 2 * 60 * 60 * 1000).toISOString(),
+            deleted: false,
+            deletedAt: null,
+            id: makeId(),
+            subject: '2848 upload question',
+            updatedAt: null
+          }
+        ];
+
+        setMessages(demo);
+      }
+
+      function runSmokeTests() {
+        try {
+          const required = [
+            'backBtn',
+            'bodyCount',
+            'btnAttach',
+            'btnReset',
+            'btnSend',
+            'clearDeletedBtn',
+            'composeBackdrop',
+            'composeBtn',
+            'composeClose',
+            'composeModal',
+            'countsLabel',
+            'deleteBtn',
+            'detailBody',
+            'detailCategory',
+            'detailDate',
+            'detailHint',
+            'detailId',
+            'detailSubject',
+            'detailView',
+            'draftHint',
+            'editBtn',
+            'editingId',
+            'emptyState',
+            'formError',
+            'formSuccess',
+            'listView',
+            'messageForm',
+            'messagesList',
+            'msgBody',
+            'msgCategory',
+            'msgSubject',
+            'restoreBtn',
+            'searchInput',
+            'sortSelect',
+            'subjectCount',
+            'toast'
+          ].sort();
+
+          required.forEach((id) => console.assert(!!$(id), `Missing #${id}`));
+
+          // Limits
+          console.assert(String(must('msgSubject').getAttribute('maxlength') || '') === '120', 'Subject maxlength should be 120');
+          console.assert(String(must('msgBody').getAttribute('maxlength') || '') === '5000', 'Body maxlength should be 5000');
+
+          // Worker payload shape
+          const sample = {
+            body: 'B',
+            category: 'Account',
+            createdAt: new Date().toISOString(),
+            deleted: false,
+            id: 'm1',
+            subject: 'S',
+            updatedAt: null
+          };
+          const payload = buildWorkerPayload(sample, 'create');
+          console.assert(!!payload.eventId, 'Worker payload must include eventId');
+          console.assert(!!payload.payload && payload.payload.id === 'm1', 'Worker payload must include payload.id');
+
+          // Draft roundtrip (non-destructive)
+          const dk = storage.draftKey;
+          const prev = localStorage.getItem(dk);
+          localStorage.setItem(dk, JSON.stringify({ body: 'x', category: 'Account', subject: 'y' }));
+          loadDraft();
+          console.assert(must('msgBody').value === 'x', 'Draft body should load');
+          console.assert(must('msgCategory').value === 'Account', 'Draft category should load');
+          console.assert(must('msgSubject').value === 'y', 'Draft subject should load');
+          if (prev === null) localStorage.removeItem(dk);
+          else localStorage.setItem(dk, prev);
+
+          // CRUD tests (isolated)
+          const lk = storage.listKey;
+          const old = localStorage.getItem(lk);
+          setMessages([]);
+          const start = getMessages();
+          console.assert(Array.isArray(start) && start.length === 0, 'Messages should start empty');
+
+          const id = makeId();
+          setMessages([{ id, category: 'Account', subject: 'Alpha', body: 'Body', createdAt: new Date().toISOString(), deleted: false, deletedAt: null, updatedAt: null }]);
+          console.assert(getMessages().length === 1, 'SetMessages should store 1 message');
+
+          state.selectedId = id;
+          void deleteSelected();
+          console.assert(getMessages().length === 1 && getMessages()[0].deleted === true, 'Soft delete should mark deleted');
+
+          state.selectedId = id;
+          void restoreSelected();
+          console.assert(getMessages().length === 1 && getMessages()[0].deleted === false, 'Restore should unmark deleted');
+
+          if (old === null) localStorage.removeItem(lk);
+          else localStorage.setItem(lk, old);
+
+          resetComposeForm();
+        } catch (err) {
+          console.warn('Messaging smoke tests failed:', err);
+        }
+      }
+
+      // Optional Element SDK wiring (kept minimal)
+      const defaultConfig = {
+        page_title: 'Messaging Inbox'
+      };
+
+      async function onConfigChange(config) {
+        void config;
+      }
+
+      if (window.elementSdk) {
+        try {
+          window.elementSdk.init({
+            defaultConfig,
+            onConfigChange,
+            mapToCapabilities: () => ({ borderables: [], recolorables: [] }),
+            mapToEditPanelValues: (config) => new Map([
+              ['page_title', (config && config.page_title) || defaultConfig.page_title]
+            ])
+          });
+        } catch (err) {
+          console.warn('Element SDK init failed (non-fatal):', err);
+          onConfigChange(defaultConfig);
+        }
+      } else {
+        onConfigChange(defaultConfig);
+      }
+
+      async function injectPartial(slotComment, url) {
+        // Replaces the placeholder comment (<!-- APP_SIDEBAR --> / <!-- APP_TOPBAR -->) with the partial HTML.
+        const html = document.documentElement;
+        const walker = document.createTreeWalker(html, NodeFilter.SHOW_COMMENT, null);
+        let node;
+        while ((node = walker.nextNode())) {
+          if (String(node.nodeValue || '').trim() === slotComment) {
+            const res = await fetch(url, { method: 'GET' });
+            if (!res.ok) throw new Error(`Partial HTTP ${res.status}: ${url}`);
+            const wrap = document.createElement('div');
+            wrap.innerHTML = await res.text();
+
+            const frag = document.createDocumentFragment();
+            while (wrap.firstChild) frag.appendChild(wrap.firstChild);
+            node.parentNode.insertBefore(frag, node);
+            node.parentNode.removeChild(node);
+            return;
+          }
+        }
+      }
+
+      async function initShell() {
+        // This page is a normal sidebar page, not a flow overlay.
+        // Ignore any ?overlay=1 param and always render the full shell.
+        try {
+          await injectPartial('APP_SIDEBAR', '/app/partials/sidebar.html');
+          await injectPartial('APP_TOPBAR', '/app/partials/topbar.html');
+        } catch (err) {
+          console.warn('Shell partial injection failed:', err);
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', async () => {
+        try {
+          seedDemoMessagesIfEmpty();
+          wireUI();
+          renderList();
+          runSmokeTests();
+          showListView();
+        } catch (err) {
+          console.error('Messaging init failed:', err);
+        }
+      });
+    </script>
+  </body>
+</html>
