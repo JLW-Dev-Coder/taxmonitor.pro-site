@@ -1,0 +1,833 @@
+<!-- /app/pages/calendar.html -->
+<!doctype html>
+<html lang="en" class="h-full">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tax Monitor Pro — Support Calendar</title>
+
+    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+    <script src="/_sdk/element_sdk.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet" />
+
+    <link rel="icon" href="https://taxmonitor.pro/favicon.ico" sizes="any" />
+    <link rel="icon" href="https://taxmonitor.pro/assets/favicon.ico" sizes="any" />
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: { sans: ['DM Sans', 'system-ui', 'sans-serif'] },
+            colors: {
+              slate: {
+                850: '#1a1f2e',
+                900: '#0f1219',
+                950: '#080a0f'
+              },
+              amber: {
+                400: '#fbbf24',
+                500: '#f59e0b',
+                600: '#d97706'
+              }
+            }
+          }
+        }
+      };
+    </script>
+
+    <style>
+      html, body { height: 100%; }
+      html { font-size: 100%; }
+
+      *, *::before, *::after { box-sizing: border-box; }
+      body { box-sizing: border-box; }
+      * { font-family: 'DM Sans', system-ui, sans-serif; }
+
+      .gradient-text {
+        background: linear-gradient(135deg, #F59E0B, #FB923C);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .glass-card {
+        background: rgba(10, 10, 10, 0.6);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .gradient-border { background: linear-gradient(135deg, #F59E0B, #FB923C); }
+      .gradient-btn { background: linear-gradient(135deg, #F59E0B, #FB923C); }
+      .gradient-btn:hover { filter: brightness(0.95); }
+
+      .noise-bg::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        opacity: .03;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      /* Calendar specifics */
+      .tab-active {
+        background: rgba(245, 158, 11, 0.15);
+        border-color: rgba(245, 158, 11, 0.35);
+        color: #fff;
+      }
+
+      .calendar-cell:hover {
+        background: rgba(245, 158, 11, 0.10);
+        border-color: rgba(245, 158, 11, 0.30);
+      }
+
+      .calendar-cell.has-event {
+        background: rgba(16, 185, 129, 0.12);
+        border-color: rgba(16, 185, 129, 0.25);
+      }
+
+      .calendar-cell.today {
+        background: rgba(245, 158, 11, 0.18);
+        border-color: rgba(245, 158, 11, 0.45);
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #f59e0b, #d97706);
+        transition: all 0.2s ease;
+      }
+
+      .btn-primary:hover {
+        filter: brightness(1.05);
+        transform: translateY(-1px);
+      }
+
+      .btn-secondary {
+        background: rgba(2, 6, 23, 0.35);
+        border: 1px solid rgba(255, 255, 255, 0.10);
+        transition: all 0.2s ease;
+      }
+
+      .btn-secondary:hover {
+        background: rgba(2, 6, 23, 0.55);
+        border-color: rgba(255, 255, 255, 0.16);
+      }
+
+      .activity-item { transition: all 0.2s ease; }
+      .activity-item:hover { background: rgba(148, 163, 184, 0.06); transform: translateX(4px); }
+
+      .cal-embed-container {
+        min-height: 600px;
+        border-radius: 12px;
+        overflow: hidden;
+      }
+
+      .modal-overlay {
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(4px);
+      }
+
+      .modal-overlay.hidden { display: none; }
+      .event-detail-card { max-width: 520px; }
+    </style>
+
+    <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  </head>
+
+  <body class="h-full bg-slate-950 text-slate-100 noise-bg overflow-hidden">
+    <div class="relative z-10 flex h-full">
+      <!-- APP SIDEBAR PARTIAL -->
+      <!-- APP_SIDEBAR -->
+
+      <div class="flex-1 flex flex-col min-w-0">
+        <!-- APP TOPBAR PARTIAL -->
+        <!-- APP_TOPBAR -->
+
+        <main class="flex-1 overflow-auto">
+          <div class="max-w-6xl mx-auto px-6 py-8">
+            <!-- Page Header -->
+            <div class="mb-8">
+              <div class="flex flex-col items-center text-center">
+                <h1 class="text-3xl md:text-4xl font-semibold tracking-tight mb-2">
+                  <span class="gradient-text">Support Calendar</span>
+                </h1>
+                <p class="text-slate-400 text-base md:text-lg max-w-2xl">
+                  Manage your appointments and view upcoming events. Book onboarding sessions or schedule exit consultations.
+                </p>
+              </div>
+            </div>
+
+            <!-- Tabs + Panels -->
+            <section class="glass-card rounded-2xl p-6 md:p-8">
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-6">
+                <button id="tab-calendar" onclick="switchTab('calendar')" class="tab-active w-full h-full px-5 py-4 rounded-xl font-medium border border-transparent transition-all flex items-center justify-center gap-2 text-center" type="button">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  My Calendar
+                </button>
+
+                <button id="tab-onboarding" onclick="switchTab('onboarding')" class="w-full h-full px-5 py-4 rounded-xl text-slate-300 hover:text-white font-medium border border-white/10 hover:border-white/20 transition-all flex items-center justify-center gap-2 text-center" type="button">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                  </svg>
+                  <span id="onboarding-tab-text">Book Onboarding</span>
+                </button>
+
+                <button id="tab-exit" onclick="switchTab('exit')" class="w-full h-full px-5 py-4 rounded-xl text-slate-300 hover:text-white font-medium border border-white/10 hover:border-white/20 transition-all flex items-center justify-center gap-2 text-center" type="button">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                  </svg>
+                  <span id="exit-tab-text">Book Exit/Offboarding</span>
+                </button>
+              </div>
+
+              <!-- Calendar Panel -->
+              <div id="panel-calendar" class="tab-panel">
+                <div class="grid lg:grid-cols-4 gap-6">
+                  <div class="lg:col-span-3">
+                    <div class="rounded-2xl border border-white/10 bg-slate-950/30 p-4">
+                      <div class="flex items-center justify-between mb-4">
+                        <button id="calendar-prev" class="btn-secondary px-3 py-2 rounded-lg text-slate-300" type="button" aria-label="Previous month">
+                          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                          </svg>
+                        </button>
+                        <h3 id="calendar-month-label" class="text-lg font-semibold text-white">January 2025</h3>
+                        <button id="calendar-next" class="btn-secondary px-3 py-2 rounded-lg text-slate-300" type="button" aria-label="Next month">
+                          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                          </svg>
+                        </button>
+                      </div>
+
+                      <div class="grid grid-cols-7 gap-1 mb-2">
+                        <div class="text-center text-xs font-medium text-slate-500 py-2">Sun</div>
+                        <div class="text-center text-xs font-medium text-slate-500 py-2">Mon</div>
+                        <div class="text-center text-xs font-medium text-slate-500 py-2">Tue</div>
+                        <div class="text-center text-xs font-medium text-slate-500 py-2">Wed</div>
+                        <div class="text-center text-xs font-medium text-slate-500 py-2">Thu</div>
+                        <div class="text-center text-xs font-medium text-slate-500 py-2">Fri</div>
+                        <div class="text-center text-xs font-medium text-slate-500 py-2">Sat</div>
+                      </div>
+
+                      <div id="calendar-grid" class="grid grid-cols-7 gap-1"></div>
+
+                      <div class="flex items-center gap-6 mt-4 pt-4 border-t border-white/10">
+                        <div class="flex items-center gap-2">
+                          <span class="w-3 h-3 bg-amber-400 rounded-full"></span>
+                          <span class="text-xs text-slate-400">Today</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                          <span class="w-3 h-3 bg-emerald-400 rounded-full"></span>
+                          <span class="text-xs text-slate-400">Scheduled Event</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="rounded-2xl border border-white/10 bg-slate-950/30 p-4">
+                    <div class="flex items-start justify-between mb-4">
+                      <h3 class="text-lg font-semibold text-white flex items-center gap-2">
+                        <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Upcoming Events
+                      </h3>
+                      <div class="text-right flex flex-col items-end gap-2">
+                        <p class="text-xs text-slate-500">Auto-sync every 6 hours</p>
+                        <p id="last-sync-label" class="text-xs text-slate-400">Last synced: —</p>
+
+                        <!-- Google Calendar Controls -->
+                        <button id="connect-google-btn" class="btn-primary px-3 py-1.5 rounded-lg text-xs text-white font-medium" type="button">
+                          Connect Google Calendar
+                        </button>
+
+                        <button id="sync-now-btn" class="btn-secondary px-3 py-1.5 rounded-lg text-xs text-slate-300 hidden" type="button">
+                          Sync Now
+                        </button>
+                      </div>
+                    </div>
+
+                    <div class="space-y-3">
+                      <div onclick="showEventDetails('Onboarding Session', 'January 6, 2025', '10:00 AM', '60', 'Your scheduled onboarding session to get started with Tax Monitor Pro', { meetingUrl: 'https://meet.google.com/placeholder', rescheduleUrl: 'https://app.cal.com/booking/placeholder/reschedule', cancelUrl: 'https://app.cal.com/booking/placeholder/cancel' })" class="activity-item p-3 rounded-xl border border-white/10 cursor-pointer">
+                        <div class="flex items-start gap-3">
+                          <div class="w-10 h-10 rounded-xl bg-emerald-400/15 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-5 h-5 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                          </div>
+                          <div class="flex-1 min-w-0">
+                            <p class="text-sm font-medium text-white">Onboarding Session</p>
+                            <p class="text-xs text-slate-400 mt-0.5">Jan 6, 2025 • 10:00 AM</p>
+                            <span class="inline-flex items-center px-2 py-0.5 mt-2 rounded text-xs font-medium bg-emerald-400/15 text-emerald-300">Confirmed</span>
+                            <div class="flex gap-3 mt-3 text-xs">
+                              <a href="https://app.cal.com/booking/placeholder/reschedule" target="_blank" rel="noopener" class="text-amber-400 hover:underline" onclick="event.stopPropagation()">Reschedule</a>
+                              <a href="https://app.cal.com/booking/placeholder/cancel" target="_blank" rel="noopener" class="text-red-400 hover:underline" onclick="event.stopPropagation()">Cancel</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div onclick="showEventDetails('Tax Review Call', 'January 10, 2025', '2:00 PM', '45', 'Quarterly tax review and planning discussion', { meetingUrl: '', rescheduleUrl: 'https://app.cal.com/booking/placeholder/reschedule', cancelUrl: 'https://app.cal.com/booking/placeholder/cancel' })" class="activity-item p-3 rounded-xl border border-white/10 cursor-pointer">
+                        <div class="flex items-start gap-3">
+                          <div class="w-10 h-10 rounded-xl bg-amber-400/15 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-5 h-5 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                          </div>
+                          <div class="flex-1 min-w-0">
+                            <p class="text-sm font-medium text-white">Tax Review Call</p>
+                            <p class="text-xs text-slate-400 mt-0.5">Jan 10, 2025 • 2:00 PM</p>
+                            <span class="inline-flex items-center px-2 py-0.5 mt-2 rounded text-xs font-medium bg-amber-400/15 text-amber-300">Pending</span>
+                            <div class="flex gap-3 mt-3 text-xs">
+                              <a href="https://app.cal.com/booking/placeholder/reschedule" target="_blank" rel="noopener" class="text-amber-400 hover:underline" onclick="event.stopPropagation()">Reschedule</a>
+                              <a href="https://app.cal.com/booking/placeholder/cancel" target="_blank" rel="noopener" class="text-red-400 hover:underline" onclick="event.stopPropagation()">Cancel</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div onclick="showEventDetails('Quarterly Check-in', 'January 20, 2025', '11:00 AM', '30', 'Review progress and discuss upcoming quarter', { meetingUrl: '', rescheduleUrl: '', cancelUrl: '' })" class="activity-item p-3 rounded-xl border border-white/10 cursor-pointer">
+                        <div class="flex items-start gap-3">
+                          <div class="w-10 h-10 rounded-xl bg-slate-400/10 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-5 h-5 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                          </div>
+                          <div class="flex-1 min-w-0">
+                            <p class="text-sm font-medium text-white">Quarterly Check-in</p>
+                            <p class="text-xs text-slate-400 mt-0.5">Jan 20, 2025 • 11:00 AM</p>
+                            <span class="inline-flex items-center px-2 py-0.5 mt-2 rounded text-xs font-medium bg-slate-400/10 text-slate-300">Scheduled</span>
+                            <div class="flex gap-3 mt-3 text-xs">
+                              <a href="#" class="text-amber-400 opacity-50 pointer-events-none" onclick="event.stopPropagation()">Reschedule</a>
+                              <a href="#" class="text-red-400 opacity-50 pointer-events-none" onclick="event.stopPropagation()">Cancel</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <button class="w-full mt-4 btn-secondary py-2 rounded-xl text-sm text-slate-300 hover:text-white" type="button">
+                      View All Events
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Onboarding Panel -->
+              <div id="panel-onboarding" class="tab-panel hidden">
+                <div class="text-center mb-6">
+                  <h2 id="onboarding-heading" class="text-2xl font-semibold text-white mb-2">Book an Onboarding Appointment</h2>
+                  <p class="text-slate-400 max-w-2xl mx-auto">Schedule your onboarding session to set up monitoring and get expert guidance now.</p>
+                </div>
+
+                <div class="rounded-2xl border border-white/10 bg-slate-950/30 p-4 cal-embed-container">
+                  <!-- Cal inline embed mount -->
+                  <div style="width:100%;height:100%;overflow:scroll" id="my-cal-inline-tax-monitor-service-onboarding"></div>
+                </div>
+              </div>
+
+              <!-- Exit Panel -->
+              <div id="panel-exit" class="tab-panel hidden">
+                <div class="text-center mb-6">
+                  <h2 id="exit-heading" class="text-2xl font-semibold text-white mb-2">Book an Exit/Offboarding Appointment</h2>
+                  <p class="text-slate-400 max-w-2xl mx-auto">Schedule a consultation to discuss your exit strategy and ensure a clean handoff.</p>
+                </div>
+
+                <div class="rounded-2xl border border-white/10 bg-slate-950/30 p-4 cal-embed-container">
+                  <!-- Cal inline embed mount -->
+                  <div style="width:100%;height:100%;overflow:scroll" id="my-cal-inline-tax-monitor-service-exit-offboarding"></div>
+                </div>
+              </div>
+            </section>
+
+            <p class="text-center text-slate-600 text-xs pt-6">Appointments are for onboarding and coordination only. IRS representation is a separate engagement.</p>
+          </div>
+        </main>
+
+        <!-- Event Detail Modal -->
+        <div id="event-modal" class="modal-overlay hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div class="event-detail-card glass-card rounded-2xl p-6">
+            <button onclick="closeEventModal()" class="absolute top-4 right-4 p-2 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-all" type="button" aria-label="Close">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+
+            <div class="mb-4">
+              <div class="flex items-center gap-3 mb-2">
+                <div id="event-modal-icon" class="w-12 h-12 rounded-xl bg-emerald-400/15 flex items-center justify-center">
+                  <svg class="w-6 h-6 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <div>
+                  <h2 id="event-modal-title" class="text-2xl font-semibold text-white">Event Title</h2>
+                  <span id="event-modal-badge" class="inline-flex items-center px-2 py-1 mt-1 rounded text-xs font-medium bg-emerald-400/15 text-emerald-300">Status</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="space-y-4 mb-6">
+              <div class="flex items-start gap-4">
+                <div class="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center flex-shrink-0">
+                  <svg class="w-6 h-6 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-sm text-slate-400">Date &amp; Time</p>
+                  <p id="event-modal-datetime" class="text-white font-medium">Jan 6, 2025 • 10:00 AM</p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-4">
+                <div class="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center flex-shrink-0">
+                  <svg class="w-6 h-6 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-sm text-slate-400">Duration</p>
+                  <p id="event-modal-duration" class="text-white font-medium">60 minutes</p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-4">
+                <div class="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center flex-shrink-0">
+                  <svg class="w-6 h-6 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-sm text-slate-400">Description</p>
+                  <p id="event-modal-description" class="text-white font-medium text-sm">Event description goes here</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-3">
+              <a id="event-modal-join" href="#" target="_blank" rel="noopener" class="flex-1 btn-primary py-2 px-4 rounded-xl text-white font-medium text-center">
+                Join Meeting
+              </a>
+              <a id="event-modal-reschedule" href="#" target="_blank" rel="noopener" class="flex-1 btn-secondary py-2 px-4 rounded-xl text-slate-300 font-medium text-center">
+                Reschedule
+              </a>
+              <a id="event-modal-cancel" href="#" target="_blank" rel="noopener" class="flex-1 btn-secondary py-2 px-4 rounded-xl text-slate-300 font-medium text-center">
+                Cancel
+              </a>
+              <button onclick="closeEventModal()" class="sm:hidden btn-secondary py-2 px-4 rounded-xl text-slate-300 font-medium" type="button">Close</button>
+            </div>
+
+            <div class="hidden sm:block mt-3">
+              <button onclick="closeEventModal()" class="w-full btn-secondary py-2 px-4 rounded-xl text-slate-300 font-medium" type="button">Close</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Selected Date Events Panel -->
+        <div id="date-events-panel" class="modal-overlay hidden fixed inset-0 z-40 flex items-end sm:items-center justify-center p-4">
+          <div class="glass-card rounded-2xl p-6 w-full max-w-2xl relative">
+            <button onclick="closeDateEventsPanel()" class="absolute top-4 right-4 p-2 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-all" type="button" aria-label="Close">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+
+            <h2 class="text-2xl font-semibold text-white mb-6 pr-8"><span id="date-panel-title">January 15, 2025</span></h2>
+            <div id="date-events-list" class="space-y-3"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cal inline embed code begins -->
+    <script type="text/javascript">
+      (function (C, A, L) {
+        let p = function (a, ar) { a.q.push(ar); };
+        let d = C.document;
+        C.Cal = C.Cal || function () {
+          let cal = C.Cal;
+          let ar = arguments;
+          if (!cal.loaded) {
+            cal.ns = {};
+            cal.q = cal.q || [];
+            d.head.appendChild(d.createElement('script')).src = A;
+            cal.loaded = true;
+          }
+          if (ar[0] === L) {
+            const api = function () { p(api, arguments); };
+            const namespace = ar[1];
+            api.q = api.q || [];
+            if (typeof namespace === 'string') {
+              cal.ns[namespace] = cal.ns[namespace] || api;
+              p(cal.ns[namespace], ar);
+              p(cal, ['initNamespace', namespace]);
+            } else p(cal, ar);
+            return;
+          }
+          p(cal, ar);
+        };
+      })(window, 'https://app.cal.com/embed/embed.js', 'init');
+
+      Cal('init', 'tax-monitor-service-onboarding', { origin: 'https://app.cal.com' });
+      Cal('init', 'tax-monitor-service-exit-offboarding', { origin: 'https://app.cal.com' });
+
+      Cal.ns['tax-monitor-service-onboarding']('inline', {
+        elementOrSelector: '#my-cal-inline-tax-monitor-service-onboarding',
+        config: { layout: 'month_view', useSlotsViewOnSmallScreen: 'true' },
+        calLink: 'tax-monitor-pro/tax-monitor-service-onboarding'
+      });
+
+      Cal.ns['tax-monitor-service-onboarding']('ui', {
+        cssVarsPerTheme: { light: { 'cal-brand': '#292929' }, dark: { 'cal-brand': '#f97316' } },
+        hideEventTypeDetails: false,
+        layout: 'month_view'
+      });
+
+      Cal.ns['tax-monitor-service-exit-offboarding']('inline', {
+        elementOrSelector: '#my-cal-inline-tax-monitor-service-exit-offboarding',
+        config: { layout: 'month_view', useSlotsViewOnSmallScreen: 'true' },
+        calLink: 'tax-monitor-pro/tax-monitor-service-exit-offboarding'
+      });
+
+      Cal.ns['tax-monitor-service-exit-offboarding']('ui', {
+        cssVarsPerTheme: { light: { 'cal-brand': '#292929' }, dark: { 'cal-brand': '#f97316' } },
+        hideEventTypeDetails: false,
+        layout: 'month_view'
+      });
+    </script>
+    <!-- Cal inline embed code ends -->
+
+    <script>
+      const eventsByDate = {
+        '2025-01-06': [
+          {
+            title: 'Onboarding Session',
+            time: '10:00 AM',
+            duration: '60',
+            description: 'Your scheduled onboarding session to get started with Tax Monitor Pro',
+            icon: 'emerald',
+            links: {
+              cancelUrl: 'https://app.cal.com/booking/placeholder/cancel',
+              meetingUrl: 'https://meet.google.com/placeholder',
+              rescheduleUrl: 'https://app.cal.com/booking/placeholder/reschedule'
+            }
+          }
+        ],
+        '2025-01-10': [
+          {
+            title: 'Tax Review Call',
+            time: '2:00 PM',
+            duration: '45',
+            description: 'Quarterly tax review and planning discussion',
+            icon: 'amber',
+            links: {
+              cancelUrl: 'https://app.cal.com/booking/placeholder/cancel',
+              meetingUrl: '',
+              rescheduleUrl: 'https://app.cal.com/booking/placeholder/reschedule'
+            }
+          }
+        ],
+        '2025-01-20': [
+          {
+            title: 'Quarterly Check-in',
+            time: '11:00 AM',
+            duration: '30',
+            description: 'Review progress and discuss upcoming quarter',
+            icon: 'slate',
+            links: {
+              cancelUrl: '',
+              meetingUrl: '',
+              rescheduleUrl: ''
+            }
+          }
+        ]
+      };
+
+      function setLinkState(anchorEl, url) {
+        if (!anchorEl) return;
+        const u = String(url || '').trim();
+        if (u) {
+          anchorEl.href = u;
+          anchorEl.classList.remove('opacity-50', 'pointer-events-none');
+          anchorEl.setAttribute('aria-disabled', 'false');
+        } else {
+          anchorEl.href = '#';
+          anchorEl.classList.add('opacity-50', 'pointer-events-none');
+          anchorEl.setAttribute('aria-disabled', 'true');
+        }
+      }
+
+      function formatMonthYear(dateObj) {
+        const m = dateObj.toLocaleString('en-US', { month: 'long' });
+        return `${m} ${dateObj.getFullYear()}`;
+      }
+
+      function isoDate(dateObj) {
+        const y = dateObj.getFullYear();
+        const m = String(dateObj.getMonth() + 1).padStart(2, '0');
+        const d = String(dateObj.getDate()).padStart(2, '0');
+        return `${y}-${m}-${d}`;
+      }
+
+      function formatDateLabel(dateObj) {
+        const m = dateObj.toLocaleString('en-US', { month: 'long' });
+        return `${m} ${dateObj.getDate()}, ${dateObj.getFullYear()}`;
+      }
+
+      let currentView = new Date(2025, 0, 1);
+
+      function showEventDetails(title, dateLabel, time, duration, description, links) {
+        const modal = document.getElementById('event-modal');
+        if (!modal) return;
+
+        document.getElementById('event-modal-title').textContent = title;
+        document.getElementById('event-modal-datetime').textContent = `${dateLabel} • ${time}`;
+        document.getElementById('event-modal-duration').textContent = `${duration} minutes`;
+        document.getElementById('event-modal-description').textContent = description;
+
+        const joinEl = document.getElementById('event-modal-join');
+        const rescheduleEl = document.getElementById('event-modal-reschedule');
+        const cancelEl = document.getElementById('event-modal-cancel');
+
+        const safeLinks = links || {};
+        setLinkState(joinEl, safeLinks.meetingUrl);
+        setLinkState(rescheduleEl, safeLinks.rescheduleUrl);
+        setLinkState(cancelEl, safeLinks.cancelUrl);
+
+        const iconDiv = document.getElementById('event-modal-icon');
+        const badge = document.getElementById('event-modal-badge');
+
+        if (title.includes('Onboarding')) {
+          iconDiv.className = 'w-12 h-12 rounded-xl bg-emerald-400/15 flex items-center justify-center';
+          iconDiv.innerHTML = '<svg class="w-6 h-6 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>';
+          badge.className = 'inline-flex items-center px-2 py-1 mt-1 rounded text-xs font-medium bg-emerald-400/15 text-emerald-300';
+          badge.textContent = 'Confirmed';
+        } else if (title.includes('Review')) {
+          iconDiv.className = 'w-12 h-12 rounded-xl bg-amber-400/15 flex items-center justify-center';
+          iconDiv.innerHTML = '<svg class="w-6 h-6 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>';
+          badge.className = 'inline-flex items-center px-2 py-1 mt-1 rounded text-xs font-medium bg-amber-400/15 text-amber-300';
+          badge.textContent = 'Pending';
+        } else {
+          iconDiv.className = 'w-12 h-12 rounded-xl bg-slate-400/10 flex items-center justify-center';
+          iconDiv.innerHTML = '<svg class="w-6 h-6 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>';
+          badge.className = 'inline-flex items-center px-2 py-1 mt-1 rounded text-xs font-medium bg-slate-400/10 text-slate-300';
+          badge.textContent = 'Scheduled';
+        }
+
+        modal.classList.remove('hidden');
+      }
+
+      function closeEventModal() {
+        const m = document.getElementById('event-modal');
+        if (m) m.classList.add('hidden');
+      }
+
+      function renderCalendar() {
+        const grid = document.getElementById('calendar-grid');
+        const label = document.getElementById('calendar-month-label');
+        if (!grid || !label) return;
+
+        label.textContent = formatMonthYear(currentView);
+        grid.innerHTML = '';
+
+        const year = currentView.getFullYear();
+        const month = currentView.getMonth();
+
+        const firstOfMonth = new Date(year, month, 1);
+        const startDay = firstOfMonth.getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const prevMonthDays = new Date(year, month, 0).getDate();
+
+        const today = new Date();
+        const isThisMonth = today.getFullYear() === year && today.getMonth() === month;
+
+        for (let i = 0; i < 42; i++) {
+          const dayNum = i - startDay + 1;
+
+          if (dayNum <= 0) {
+            const prevDay = prevMonthDays + dayNum;
+            const d = document.createElement('div');
+            d.className = 'calendar-cell aspect-square rounded-lg border border-transparent flex items-center justify-center text-slate-700 text-sm';
+            d.textContent = String(prevDay);
+            grid.appendChild(d);
+            continue;
+          }
+
+          if (dayNum > daysInMonth) {
+            const nextDay = dayNum - daysInMonth;
+            const d = document.createElement('div');
+            d.className = 'calendar-cell aspect-square rounded-lg border border-transparent flex items-center justify-center text-slate-700 text-sm';
+            d.textContent = String(nextDay);
+            grid.appendChild(d);
+            continue;
+          }
+
+          const dateObj = new Date(year, month, dayNum);
+          const key = isoDate(dateObj);
+          const hasEvents = Array.isArray(eventsByDate[key]) && eventsByDate[key].length > 0;
+
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'calendar-cell aspect-square rounded-lg border border-white/10 flex items-center justify-center text-slate-300 text-sm cursor-pointer bg-transparent relative';
+          btn.textContent = String(dayNum);
+
+          if (hasEvents) {
+            btn.classList.add('has-event');
+            const dot = document.createElement('span');
+            dot.className = 'absolute bottom-1 w-1.5 h-1.5 bg-emerald-400 rounded-full';
+            btn.appendChild(dot);
+          }
+
+          if (isThisMonth && dayNum === today.getDate()) {
+            btn.classList.add('today', 'text-amber-300', 'font-semibold');
+          }
+
+          btn.addEventListener('click', () => showDateEvents(dateObj));
+          grid.appendChild(btn);
+        }
+      }
+
+      function showDateEvents(dateObj) {
+        const panel = document.getElementById('date-events-panel');
+        const dateTitle = document.getElementById('date-panel-title');
+        const eventsList = document.getElementById('date-events-list');
+        if (!panel || !dateTitle || !eventsList) return;
+
+        dateTitle.textContent = formatDateLabel(dateObj);
+        eventsList.innerHTML = '';
+
+        const key = isoDate(dateObj);
+        const eventsForDate = eventsByDate[key] || [];
+
+        if (eventsForDate.length === 0) {
+          eventsList.innerHTML = '<div class="text-center py-8"><p class="text-slate-400">No events scheduled for this date</p></div>';
+        } else {
+          eventsForDate.forEach((event) => {
+            const eventCard = document.createElement('div');
+            eventCard.className = 'activity-item p-4 rounded-xl border border-white/10 cursor-pointer bg-slate-950/20';
+            eventCard.onclick = () => {
+              closeEventModal();
+              showEventDetails(event.title, formatDateLabel(dateObj), event.time, event.duration, event.description, event.links);
+            };
+
+            let iconClass = 'bg-emerald-400/15 text-emerald-300';
+            if (event.icon === 'amber') iconClass = 'bg-amber-400/15 text-amber-300';
+            if (event.icon === 'slate') iconClass = 'bg-slate-400/10 text-slate-300';
+
+            eventCard.innerHTML = `
+              <div class="flex items-start gap-3">
+                <div class="w-10 h-10 rounded-xl ${iconClass} flex items-center justify-center flex-shrink-0">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <p class="text-sm font-medium text-white">${event.title}</p>
+                  <p class="text-xs text-slate-400 mt-0.5">${event.time}</p>
+                  <p class="text-xs text-slate-500 mt-1">${event.duration} minutes</p>
+                </div>
+              </div>
+            `;
+
+            eventsList.appendChild(eventCard);
+          });
+        }
+
+        panel.classList.remove('hidden');
+      }
+
+      function closeDateEventsPanel() {
+        const p = document.getElementById('date-events-panel');
+        if (p) p.classList.add('hidden');
+      }
+
+      function changeMonth(delta) {
+        currentView = new Date(currentView.getFullYear(), currentView.getMonth() + delta, 1);
+        renderCalendar();
+      }
+
+      function switchTab(tabName) {
+        document.querySelectorAll('.tab-panel').forEach((panel) => panel.classList.add('hidden'));
+
+        document.querySelectorAll('[id^="tab-"]').forEach((tab) => {
+          tab.classList.remove('tab-active');
+          tab.classList.add('text-slate-300', 'border-white/10');
+          tab.classList.remove('text-white');
+        });
+
+        const selectedPanel = document.getElementById(`panel-${tabName}`);
+        if (selectedPanel) selectedPanel.classList.remove('hidden');
+
+        const selectedTab = document.getElementById(`tab-${tabName}`);
+        if (selectedTab) {
+          selectedTab.classList.add('tab-active', 'text-white');
+          selectedTab.classList.remove('text-slate-300', 'border-white/10');
+        }
+      }
+
+      function runSmokeTests() {
+        try {
+          console.assert(typeof switchTab === 'function', 'switchTab should be defined');
+          console.assert(typeof renderCalendar === 'function', 'renderCalendar should be defined');
+
+          const label = document.getElementById('calendar-month-label');
+          const grid = document.getElementById('calendar-grid');
+          console.assert(!!label, '#calendar-month-label should exist');
+          console.assert(!!grid, '#calendar-grid should exist');
+
+          // render should create 42 cells
+          const cells = grid ? grid.children.length : 0;
+          console.assert(cells === 42, `calendar should render 42 cells, got ${cells}`);
+
+          // month label should be non-empty
+          console.assert(label && String(label.textContent || '').trim().length > 0, 'month label should not be empty');
+        } catch (err) {
+          console.warn('Calendar smoke tests failed:', err);
+        }
+      }
+
+      document.addEventListener('click', function (e) {
+        const eventModal = document.getElementById('event-modal');
+        const datePanel = document.getElementById('date-events-panel');
+
+        if (e.target === eventModal) closeEventModal();
+        if (e.target === datePanel) closeDateEventsPanel();
+      });
+
+      document.addEventListener('DOMContentLoaded', () => {
+        const prev = document.getElementById('calendar-prev');
+        const next = document.getElementById('calendar-next');
+        if (prev) prev.addEventListener('click', () => changeMonth(-1));
+        if (next) next.addEventListener('click', () => changeMonth(1));
+
+        renderCalendar();
+        runSmokeTests();
+      });
+
+      // Optional Element SDK wiring (kept minimal)
+      const defaultConfig = {
+        page_title: 'Support Calendar'
+      };
+
+      async function onConfigChange(config) {
+        // Intentionally minimal: page uses app partials for shared layout.
+        void config;
+      }
+
+      if (window.elementSdk) {
+        window.elementSdk.init({
+          defaultConfig,
+          onConfigChange,
+          mapToCapabilities: () => ({ borderables: [], recolorables: [] }),
+          mapToEditPanelValues: (config) => new Map([['page_title', (config && config.page_title) || defaultConfig.page_title]])
+        });
+      } else {
+        onConfigChange(defaultConfig);
+      }
+    </script>
+  </body>
+</html>
