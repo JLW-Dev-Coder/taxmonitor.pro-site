@@ -26,6 +26,13 @@ routes = [
 ]
 
 # ---------------------------------------
+# Cron Triggers (auto-sync every 6 hours)
+# ---------------------------------------
+
+[[triggers.crons]]
+schedule = "0 */6 * * *"
+
+# ---------------------------------------
 # Vars (non-secret)
 # ---------------------------------------
 
@@ -34,10 +41,14 @@ CLICKUP_ACCOUNTS_LIST_ID = "901710909567"
 CLICKUP_ORDERS_LIST_ID = "901710818340"
 CLICKUP_SUPPORT_LIST_ID = "901710818377"
 GOOGLE_CLIENT_EMAIL = "tax-monitor-worker@tax-monitor-pro.iam.gserviceaccount.com"
+GOOGLE_OAUTH_CLIENT_ID = ""
+GOOGLE_OAUTH_REDIRECT_URI = "https://api.taxmonitor.pro/oauth/google/callback"
+GOOGLE_OAUTH_SCOPES = "https://www.googleapis.com/auth/calendar.readonly"
 GOOGLE_TOKEN_URI = "https://oauth2.googleapis.com/token"
 GOOGLE_WORKSPACE_USER_INFO = "info@taxmonitor.pro"
 GOOGLE_WORKSPACE_USER_NO_REPLY = "no-reply@taxmonitor.pro"
 GOOGLE_WORKSPACE_USER_SUPPORT = "support@taxmonitor.pro"
+IRS_ICS_URL = "https://taxmonitor.pro/resources/irs-deadlines.ics"
 MY_ORGANIZATION_ADDRESS = "1175 Avocado Avenue Suite 101 PMB 1010"
 MY_ORGANIZATION_BUSINESS_LOGO = "https://taxmonitor.pro/assets/logo.svg"
 MY_ORGANIZATION_CITY = "El Cajon"
@@ -50,6 +61,8 @@ MY_ORGANIZATION_ZIP = "92020"
 # ---------------------------------------
 # CAL_WEBHOOK_SECRET
 # CLICKUP_API_KEY
+# GOOGLE_OAUTH_CLIENT_SECRET
 # GOOGLE_PRIVATE_KEY
+# GOOGLE_TOKEN_ENCRYPTION_KEY
 # STRIPE_SECRET_KEY
 # STRIPE_WEBHOOK_SECRET
