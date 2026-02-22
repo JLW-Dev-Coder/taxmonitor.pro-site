@@ -28,31 +28,32 @@
     .icon-float { animation: float 3s ease-in-out infinite; }
 
     .gradient-text {
-      background: linear-gradient(135deg, #f59e0b, #f97316, #ef4444);
+      background: linear-gradient(135deg, #F59E0B, #FB923C);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
 
-    .gradient-border {
-      background: linear-gradient(135deg, #f59e0b, #f97316, #ef4444);
+.gradient-border {
+      background: linear-gradient(135deg, #F59E0B, #FB923C);
     }
 
-    .glass-card {
-      background: rgba(30, 41, 59, 0.7);
+.glass-card {
+      background: rgba(10, 10, 10, 0.6);
       backdrop-filter: blur(12px);
       border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: none;
     }
 
-    .gradient-btn {
-      background: linear-gradient(135deg, #f59e0b, #f97316, #ef4444);
+.gradient-btn {
+      background: linear-gradient(135deg, #F59E0B, #FB923C);
     }
 
     .gradient-btn:hover {
-      background: linear-gradient(135deg, #d97706, #ea580c, #dc2626);
+      filter: brightness(0.95);
     }
 
-    .form-input {
+.form-input {
       background: rgba(15, 23, 42, 0.8);
       border: 1px solid rgba(255, 255, 255, 0.15);
     }
@@ -61,6 +62,17 @@
       border-color: #f59e0b;
       outline: none;
       box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2);
+    }
+
+    /* Noise texture overlay (match welcome.html) */
+    .noise-bg::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      opacity: .03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1;
     }
 
     /* Custom select styling */
@@ -89,27 +101,27 @@
 
     .blob-1 {
       position: absolute;
-      width: 400px;
-      height: 400px;
-      background: radial-gradient(circle, rgba(245, 158, 11, 0.15) 0%, transparent 70%);
+      width: 440px;
+      height: 440px;
+      background: radial-gradient(circle, rgba(245, 158, 11, 0.14) 0%, transparent 70%);
       border-radius: 50%;
-      top: -100px;
-      right: -100px;
+      top: -120px;
+      right: -140px;
       pointer-events: none;
     }
 
     .blob-2 {
       position: absolute;
-      width: 300px;
-      height: 300px;
-      background: radial-gradient(circle, rgba(239, 68, 68, 0.1) 0%, transparent 70%);
+      width: 360px;
+      height: 360px;
+      background: radial-gradient(circle, rgba(239, 68, 68, 0.10) 0%, transparent 70%);
       border-radius: 50%;
-      bottom: 100px;
-      left: -50px;
+      bottom: 90px;
+      left: -90px;
       pointer-events: none;
     }
 
-    /* Toasts */
+/* Toasts */
     .toast {
       transform: translateY(20px);
       opacity: 0;
@@ -124,7 +136,7 @@
   <style>body { box-sizing: border-box; }</style>
 </head>
 
-<body class="h-full bg-slate-900 text-white overflow-auto">
+<body class="h-full bg-slate-950 text-slate-100 noise-bg overflow-auto">
   <div id="app-wrapper" class="min-h-full w-full relative">
     <div class="blob-1"></div>
     <div class="blob-2"></div>
@@ -167,7 +179,7 @@
         <div class="glass-card rounded-xl p-5">
           <div class="flex items-center gap-3 mb-3">
             <div class="gradient-border p-0.5 rounded-lg">
-              <div class="bg-slate-800 p-2 rounded-lg">
+              <div class="bg-slate-900 p-2 rounded-lg">
                 <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M12 18a6 6 0 110-12 6 6 0 010 12z" />
                 </svg>
@@ -181,7 +193,7 @@
         <div class="glass-card rounded-xl p-5">
           <div class="flex items-center gap-3 mb-3">
             <div class="gradient-border p-0.5 rounded-lg">
-              <div class="bg-slate-800 p-2 rounded-lg">
+              <div class="bg-slate-900 p-2 rounded-lg">
                 <svg class="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
@@ -195,7 +207,7 @@
         <div class="glass-card rounded-xl p-5">
           <div class="flex items-center gap-3 mb-3">
             <div class="gradient-border p-0.5 rounded-lg">
-              <div class="bg-slate-800 p-2 rounded-lg">
+              <div class="bg-slate-900 p-2 rounded-lg">
                 <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h10a2 2 0 012 2v14a2 2 0 01-2 2z" />
                 </svg>
@@ -221,20 +233,20 @@
 
         <form id="address-form" class="space-y-6" novalidate>
           <div>
-            <label for="address1" class="block text-sm font-semibold text-amber-400 mb-2">Address Line 1 <span class="text-red-400">*</span></label>
+            <label for="address1" class="block text-sm font-semibold text-white mb-2">Address Line 1 <span class="text-red-400">*</span></label>
             <input type="text" id="address1" name="address1" required placeholder="Street address, P.O. Box, etc." class="form-input w-full px-4 py-3 rounded-lg text-white placeholder-slate-500 transition-all" />
           </div>
 
           <div>
-            <label for="address2" class="block text-sm font-semibold text-amber-400 mb-2">Address Line 2 <span class="text-slate-400">(Optional)</span></label>
+            <label for="address2" class="block text-sm font-semibold text-white mb-2">Address Line 2 <span class="text-slate-400">(Optional)</span></label>
             <input type="text" id="address2" name="address2" placeholder="Apartment, suite, unit, building, floor, etc." class="form-input w-full px-4 py-3 rounded-lg text-white placeholder-slate-500 transition-all" />
           </div>
 
           <div>
-            <label for="country" class="block text-sm font-semibold text-amber-400 mb-2">Country <span class="text-red-400">*</span></label>
+            <label for="country" class="block text-sm font-semibold text-white mb-2">Country <span class="text-red-400">*</span></label>
             <div class="select-wrapper">
               <select id="country" name="country" required class="form-input w-full px-4 py-3 rounded-lg text-white transition-all cursor-pointer">
-                <option value="" class="bg-slate-800">Select a country</option>
+                <option value="" class="bg-slate-900">Select a country</option>
               </select>
               <svg class="select-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -243,10 +255,10 @@
           </div>
 
           <div>
-            <label for="state" class="block text-sm font-semibold text-amber-400 mb-2">State / Province <span class="text-red-400">*</span></label>
+            <label for="state" class="block text-sm font-semibold text-white mb-2">State / Province <span class="text-red-400">*</span></label>
             <div class="select-wrapper">
               <select id="state" name="state" required class="form-input w-full px-4 py-3 rounded-lg text-white transition-all cursor-pointer">
-                <option value="" class="bg-slate-800">Select country first</option>
+                <option value="" class="bg-slate-900">Select country first</option>
               </select>
               <svg class="select-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -255,10 +267,10 @@
           </div>
 
           <div>
-            <label for="city" class="block text-sm font-semibold text-amber-400 mb-2">City <span class="text-red-400">*</span></label>
+            <label for="city" class="block text-sm font-semibold text-white mb-2">City <span class="text-red-400">*</span></label>
             <div class="select-wrapper">
               <select id="city" name="city" required class="form-input w-full px-4 py-3 rounded-lg text-white transition-all cursor-pointer">
-                <option value="" class="bg-slate-800">Select state first</option>
+                <option value="" class="bg-slate-900">Select state first</option>
               </select>
               <svg class="select-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -267,14 +279,14 @@
 
             <!-- Make “Other” obvious as a normal field instead of a cryptic dropdown label -->
             <div id="cityOtherWrap" class="mt-4 hidden">
-              <label for="cityOther" class="block text-sm font-semibold text-amber-400 mb-2">Other City <span class="text-red-400">*</span></label>
+              <label for="cityOther" class="block text-sm font-semibold text-white mb-2">Other City <span class="text-red-400">*</span></label>
               <input type="text" id="cityOther" name="cityOther" placeholder="Type your city" class="form-input w-full px-4 py-3 rounded-lg text-white placeholder-slate-500 transition-all" />
               <p class="mt-2 text-xs text-slate-400">This is required when you select <span class="text-amber-300 font-semibold">Other</span> from the City dropdown.</p>
             </div>
           </div>
 
           <div>
-            <label for="zipcode" class="block text-sm font-semibold text-amber-400 mb-2">ZIP / Postal Code <span class="text-red-400">*</span></label>
+            <label for="zipcode" class="block text-sm font-semibold text-white mb-2">ZIP / Postal Code <span class="text-red-400">*</span></label>
             <input type="text" id="zipcode" name="zipcode" required placeholder="Enter ZIP or postal code" class="form-input w-full px-4 py-3 rounded-lg text-white placeholder-slate-500 transition-all" />
             <p id="zip-hint" class="mt-2 text-xs text-slate-400">US: 5 digits (e.g., 90210) | International: varies by country</p>
           </div>
@@ -283,7 +295,7 @@
           <div class="rounded-xl border border-amber-500/15 bg-slate-900/40 p-4">
             <div class="flex items-start justify-between gap-4">
               <div>
-                <h3 class="text-sm font-semibold text-amber-400">Previous Address</h3>
+                <h3 class="text-sm font-semibold text-white">Previous Address</h3>
                 <p class="text-xs text-slate-400 mt-1">Only if you moved within the last year and the IRS may have a different address.</p>
               </div>
               <label class="inline-flex items-center gap-2 text-sm text-slate-200 select-none">
@@ -294,20 +306,20 @@
 
             <div id="previousAddressFields" class="mt-4 space-y-5 hidden">
               <div>
-                <label for="prev_address1" class="block text-sm font-semibold text-amber-400 mb-2">Previous Address Line 1 <span class="text-red-400">*</span></label>
+                <label for="prev_address1" class="block text-sm font-semibold text-white mb-2">Previous Address Line 1 <span class="text-red-400">*</span></label>
                 <input type="text" id="prev_address1" name="prev_address1" placeholder="Street address, P.O. Box, etc." class="form-input w-full px-4 py-3 rounded-lg text-white placeholder-slate-500 transition-all" />
               </div>
 
               <div>
-                <label for="prev_address2" class="block text-sm font-semibold text-amber-400 mb-2">Previous Address Line 2 <span class="text-slate-400">(Optional)</span></label>
+                <label for="prev_address2" class="block text-sm font-semibold text-white mb-2">Previous Address Line 2 <span class="text-slate-400">(Optional)</span></label>
                 <input type="text" id="prev_address2" name="prev_address2" placeholder="Apartment, suite, unit, building, floor, etc." class="form-input w-full px-4 py-3 rounded-lg text-white placeholder-slate-500 transition-all" />
               </div>
 
               <div>
-                <label for="prev_country" class="block text-sm font-semibold text-amber-400 mb-2">Previous Country <span class="text-red-400">*</span></label>
+                <label for="prev_country" class="block text-sm font-semibold text-white mb-2">Previous Country <span class="text-red-400">*</span></label>
                 <div class="select-wrapper">
                   <select id="prev_country" name="prev_country" class="form-input w-full px-4 py-3 rounded-lg text-white transition-all cursor-pointer">
-                    <option value="" class="bg-slate-800">Select a country</option>
+                    <option value="" class="bg-slate-900">Select a country</option>
                   </select>
                   <svg class="select-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -316,10 +328,10 @@
               </div>
 
               <div>
-                <label for="prev_state" class="block text-sm font-semibold text-amber-400 mb-2">Previous State / Province <span class="text-red-400">*</span></label>
+                <label for="prev_state" class="block text-sm font-semibold text-white mb-2">Previous State / Province <span class="text-red-400">*</span></label>
                 <div class="select-wrapper">
                   <select id="prev_state" name="prev_state" class="form-input w-full px-4 py-3 rounded-lg text-white transition-all cursor-pointer">
-                    <option value="" class="bg-slate-800">Select country first</option>
+                    <option value="" class="bg-slate-900">Select country first</option>
                   </select>
                   <svg class="select-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -328,10 +340,10 @@
               </div>
 
               <div>
-                <label for="prev_city" class="block text-sm font-semibold text-amber-400 mb-2">Previous City <span class="text-red-400">*</span></label>
+                <label for="prev_city" class="block text-sm font-semibold text-white mb-2">Previous City <span class="text-red-400">*</span></label>
                 <div class="select-wrapper">
                   <select id="prev_city" name="prev_city" class="form-input w-full px-4 py-3 rounded-lg text-white transition-all cursor-pointer">
-                    <option value="" class="bg-slate-800">Select state first</option>
+                    <option value="" class="bg-slate-900">Select state first</option>
                   </select>
                   <svg class="select-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -339,14 +351,14 @@
                 </div>
 
                 <div id="prevCityOtherWrap" class="mt-4 hidden">
-                  <label for="prevCityOther" class="block text-sm font-semibold text-amber-400 mb-2">Other Previous City <span class="text-red-400">*</span></label>
+                  <label for="prevCityOther" class="block text-sm font-semibold text-white mb-2">Other Previous City <span class="text-red-400">*</span></label>
                   <input type="text" id="prevCityOther" name="prevCityOther" placeholder="Type your previous city" class="form-input w-full px-4 py-3 rounded-lg text-white placeholder-slate-500 transition-all" />
                   <p class="mt-2 text-xs text-slate-400">This is required when you select <span class="text-amber-300 font-semibold">Other</span> from the Previous City dropdown.</p>
                 </div>
               </div>
 
               <div>
-                <label for="prev_zipcode" class="block text-sm font-semibold text-amber-400 mb-2">Previous ZIP / Postal Code <span class="text-red-400">*</span></label>
+                <label for="prev_zipcode" class="block text-sm font-semibold text-white mb-2">Previous ZIP / Postal Code <span class="text-red-400">*</span></label>
                 <input type="text" id="prev_zipcode" name="prev_zipcode" placeholder="Enter ZIP or postal code" class="form-input w-full px-4 py-3 rounded-lg text-white placeholder-slate-500 transition-all" />
                 <p id="prev-zip-hint" class="mt-2 text-xs text-slate-400">US: 5 digits (e.g., 90210) | International: varies by country</p>
               </div>
@@ -363,7 +375,7 @@
               <button type="submit" id="submitBtn" class="gradient-btn w-full py-4 px-6 rounded-xl font-semibold text-white text-lg transition-all transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50">
                 Submit Address Update
               </button>
-              <button type="button" id="resetBtn" class="w-full py-4 px-6 rounded-xl font-semibold text-slate-200 text-lg border border-amber-500/30 bg-slate-900/60 hover:bg-slate-900/80 transition">
+              <button type="button" id="resetBtn" class="w-full py-4 px-6 rounded-xl font-semibold text-slate-200 text-lg border border-slate-300/15 bg-slate-950/30 hover:bg-slate-950/45 transition">
                 Reset Form
               </button>
             </div>
@@ -404,28 +416,28 @@
 
               <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3">
                 <div>
-                  <dt class="text-xs font-semibold text-amber-400">Address Line 1</dt>
+                  <dt class="text-xs font-semibold text-white">Address Line 1</dt>
                   <dd id="previous-address-line1" class="text-white font-medium"></dd>
                 </div>
                 <div>
-                  <dt class="text-xs font-semibold text-amber-400">Address Line 2</dt>
+                  <dt class="text-xs font-semibold text-white">Address Line 2</dt>
                   <dd id="previous-address-line2" class="text-slate-300 hidden"></dd>
                   <dd id="previous-address-line2-empty" class="text-slate-500 text-sm">(None)</dd>
                 </div>
                 <div>
-                  <dt class="text-xs font-semibold text-amber-400">City</dt>
+                  <dt class="text-xs font-semibold text-white">City</dt>
                   <dd id="previous-address-city" class="text-slate-300"></dd>
                 </div>
                 <div>
-                  <dt class="text-xs font-semibold text-amber-400">State / Province</dt>
+                  <dt class="text-xs font-semibold text-white">State / Province</dt>
                   <dd id="previous-address-state" class="text-slate-300"></dd>
                 </div>
                 <div>
-                  <dt class="text-xs font-semibold text-amber-400">ZIP / Postal Code</dt>
+                  <dt class="text-xs font-semibold text-white">ZIP / Postal Code</dt>
                   <dd id="previous-address-zip" class="text-slate-300"></dd>
                 </div>
                 <div>
-                  <dt class="text-xs font-semibold text-amber-400">Country</dt>
+                  <dt class="text-xs font-semibold text-white">Country</dt>
                   <dd id="previous-address-country" class="text-slate-300"></dd>
                 </div>
               </dl>
@@ -441,7 +453,7 @@
 
         <!-- History -->
         <div class="flex items-center justify-between gap-3 mb-3">
-          <h3 class="text-sm font-semibold text-amber-400">Submission History</h3>
+          <h3 class="text-sm font-semibold text-white">Submission History</h3>
           <span id="history-count" class="text-xs text-slate-500"></span>
         </div>
         <div id="submissions-list" class="space-y-3"></div>
@@ -738,19 +750,19 @@
 
     function populateCountriesInto(selectEl) {
       if (!selectEl) return;
-      selectEl.innerHTML = '<option value="" class="bg-slate-800">Select a country</option>';
+      selectEl.innerHTML = '<option value="" class="bg-slate-900">Select a country</option>';
       countries.forEach((country) => {
         const opt = document.createElement('option');
         opt.value = country;
         opt.textContent = country;
-        opt.className = 'bg-slate-800';
+        opt.className = 'bg-slate-900';
         selectEl.appendChild(opt);
       });
     }
 
     function populateStatesInto(stateSelect, citySelect, country) {
       if (!stateSelect) return;
-      stateSelect.innerHTML = '<option value="" class="bg-slate-800">Select state/province</option>';
+      stateSelect.innerHTML = '<option value="" class="bg-slate-900">Select state/province</option>';
 
       let states = [];
       switch (country) {
@@ -775,16 +787,16 @@
         const opt = document.createElement('option');
         opt.value = state;
         opt.textContent = state;
-        opt.className = 'bg-slate-800';
+        opt.className = 'bg-slate-900';
         stateSelect.appendChild(opt);
       });
 
-      if (citySelect) citySelect.innerHTML = '<option value="" class="bg-slate-800">Select state first</option>';
+      if (citySelect) citySelect.innerHTML = '<option value="" class="bg-slate-900">Select state first</option>';
     }
 
     function populateCitiesInto(citySelect, state, country) {
       if (!citySelect) return;
-      citySelect.innerHTML = '<option value="" class="bg-slate-800">Select a city</option>';
+      citySelect.innerHTML = '<option value="" class="bg-slate-900">Select a city</option>';
 
       const list = (country === 'United States')
         ? (citiesByState[state] || citiesByState.default)
@@ -794,7 +806,7 @@
         const opt = document.createElement('option');
         opt.value = city;
         opt.textContent = city;
-        opt.className = 'bg-slate-800';
+        opt.className = 'bg-slate-900';
         citySelect.appendChild(opt);
       });
 
@@ -802,7 +814,7 @@
       const otherOpt = document.createElement('option');
       otherOpt.value = '__other__';
       otherOpt.textContent = 'Other';
-      otherOpt.className = 'bg-slate-800';
+      otherOpt.className = 'bg-slate-900';
       citySelect.appendChild(otherOpt);
     }
 
@@ -918,7 +930,7 @@
         const mk = (label, value, strong) => {
           const wrap = document.createElement('div');
           const dt = document.createElement('dt');
-          dt.className = 'text-xs font-semibold text-amber-400';
+          dt.className = 'text-xs font-semibold text-white';
           dt.textContent = label;
           const dd = document.createElement('dd');
           dd.className = strong ? 'text-white font-medium' : 'text-slate-300';
@@ -1168,10 +1180,10 @@
         if (els.cityOtherWrap) els.cityOtherWrap.classList.add('hidden');
         if (els.prevCityOtherWrap) els.prevCityOtherWrap.classList.add('hidden');
 
-        if (els.state) els.state.innerHTML = '<option value="" class="bg-slate-800">Select country first</option>';
-        if (els.city) els.city.innerHTML = '<option value="" class="bg-slate-800">Select state first</option>';
-        if (els.prevState) els.prevState.innerHTML = '<option value="" class="bg-slate-800">Select country first</option>';
-        if (els.prevCity) els.prevCity.innerHTML = '<option value="" class="bg-slate-800">Select state first</option>';
+        if (els.state) els.state.innerHTML = '<option value="" class="bg-slate-900">Select country first</option>';
+        if (els.city) els.city.innerHTML = '<option value="" class="bg-slate-900">Select state first</option>';
+        if (els.prevState) els.prevState.innerHTML = '<option value="" class="bg-slate-900">Select country first</option>';
+        if (els.prevCity) els.prevCity.innerHTML = '<option value="" class="bg-slate-900">Select state first</option>';
 
         if (els.previousAddressFields) els.previousAddressFields.classList.add('hidden');
 
@@ -1275,10 +1287,10 @@
             if (els.prevCityOtherWrap) els.prevCityOtherWrap.classList.add('hidden');
             if (els.previousAddressFields) els.previousAddressFields.classList.add('hidden');
 
-            if (els.state) els.state.innerHTML = '<option value="" class="bg-slate-800">Select country first</option>';
-            if (els.city) els.city.innerHTML = '<option value="" class="bg-slate-800">Select state first</option>';
-            if (els.prevState) els.prevState.innerHTML = '<option value="" class="bg-slate-800">Select country first</option>';
-            if (els.prevCity) els.prevCity.innerHTML = '<option value="" class="bg-slate-800">Select state first</option>';
+            if (els.state) els.state.innerHTML = '<option value="" class="bg-slate-900">Select country first</option>';
+            if (els.city) els.city.innerHTML = '<option value="" class="bg-slate-900">Select state first</option>';
+            if (els.prevState) els.prevState.innerHTML = '<option value="" class="bg-slate-900">Select country first</option>';
+            if (els.prevCity) els.prevCity.innerHTML = '<option value="" class="bg-slate-900">Select state first</option>';
           } else {
             showInlineError('Failed to submit address.');
             showErrorToast('Unable to save');

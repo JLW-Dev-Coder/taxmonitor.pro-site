@@ -20,36 +20,27 @@
   <style>
     * { font-family: 'DM Sans', sans-serif; }
 
-    @keyframes float {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-10px); }
-    }
-
-    .icon-float { animation: float 3s ease-in-out infinite; }
+    /* Theme tokens (match app/index dashboard palette) */
 
     .gradient-text {
-      background: linear-gradient(135deg, #f59e0b, #f97316, #ef4444);
+      background: linear-gradient(135deg, #F59E0B, #FB923C);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
 
-    .gradient-border {
-      background: linear-gradient(135deg, #f59e0b, #f97316, #ef4444);
-    }
+    .gradient-border { background: linear-gradient(135deg, #F59E0B, #FB923C); }
 
+    .gradient-btn { background: linear-gradient(135deg, #F59E0B, #FB923C); }
+
+    .gradient-btn:hover { filter: brightness(0.95); }
+
+    /* Dashboard-like surfaces */
     .glass-card {
-      background: rgba(30, 41, 59, 0.7);
+      background: rgba(10, 10, 10, 0.6);
       backdrop-filter: blur(12px);
       border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .gradient-btn {
-      background: linear-gradient(135deg, #f59e0b, #f97316, #ef4444);
-    }
-
-    .gradient-btn:hover {
-      background: linear-gradient(135deg, #d97706, #ea580c, #dc2626);
+      box-shadow: none;
     }
 
     .form-input {
@@ -62,6 +53,24 @@
       outline: none;
       box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2);
     }
+
+    /* Noise texture overlay (same as app/index) */
+    .noise-bg::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      opacity: .03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .icon-float { animation: float 3s ease-in-out infinite; }
 
     /* Custom select styling */
     .select-wrapper { position: relative; }
@@ -89,23 +98,23 @@
 
     .blob-1 {
       position: absolute;
-      width: 400px;
-      height: 400px;
-      background: radial-gradient(circle, rgba(245, 158, 11, 0.15) 0%, transparent 70%);
+      width: 440px;
+      height: 440px;
+      background: radial-gradient(circle, rgba(245, 158, 11, 0.14) 0%, transparent 70%);
       border-radius: 50%;
-      top: -100px;
-      right: -100px;
+      top: -120px;
+      right: -140px;
       pointer-events: none;
     }
 
     .blob-2 {
       position: absolute;
-      width: 300px;
-      height: 300px;
-      background: radial-gradient(circle, rgba(239, 68, 68, 0.1) 0%, transparent 70%);
+      width: 360px;
+      height: 360px;
+      background: radial-gradient(circle, rgba(239, 68, 68, 0.10) 0%, transparent 70%);
       border-radius: 50%;
-      bottom: 100px;
-      left: -50px;
+      bottom: 90px;
+      left: -90px;
       pointer-events: none;
     }
 
@@ -135,302 +144,310 @@
       transform: translateY(0);
       opacity: 1;
     }
-  </style>
 
-  <style>body { box-sizing: border-box; }</style>
+    body { box-sizing: border-box; }
+  </style>
 </head>
 
-<body class="h-full bg-slate-900 text-white overflow-auto">
+<body class="h-full bg-slate-950 text-slate-100 noise-bg overflow-auto">
   <div id="app-wrapper" class="min-h-full w-full relative">
     <div class="blob-1"></div>
     <div class="blob-2"></div>
 
-    <div class="relative z-10 max-w-4xl mx-auto px-4 py-8">
-      <header class="text-center mb-10">
-        <div class="mb-6 text-left">
-          <a href="/app/index.html" class="inline-flex items-center gap-2 text-sm font-medium text-amber-400 hover:text-amber-300 transition">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-            </svg>
-            Back to Dashboard
-          </a>
-        </div>
+    <!-- App shell (normal mode injects sidebar/topbar; overlay mode hides them) -->
+    <div id="tmTopbarSlot"></div>
+    <div class="relative z-10 flex w-full">
+      <div id="tmSidebarSlot"></div>
 
-        <div class="inline-flex items-center justify-center mb-6">
-          <div class="icon-float">
-            <svg class="w-16 h-16" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" style="stop-color:#f59e0b" />
-                  <stop offset="50%" style="stop-color:#ef4444" />
-                  <stop offset="100%" style="stop-color:#fbbf24" />
-                </linearGradient>
-              </defs>
-              <path d="M32 4L8 14v18c0 14 10 22 24 28 14-6 24-14 24-28V14L32 4z" stroke="url(#shieldGrad)" stroke-width="2" fill="rgba(245,158,11,0.10)" />
-              <path d="M24 32l6 6 12-14" stroke="url(#shieldGrad)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" />
-            </svg>
-          </div>
-        </div>
+      <main id="tmMain" class="w-full flex-1">
+        <div class="max-w-4xl mx-auto px-4 py-8">
+          <header class="text-center mb-10">
+            <div class="mb-6 text-left">
+              <a id="backLink" href="/app/index.html" class="inline-flex items-center gap-2 text-sm font-medium text-amber-300 hover:text-amber-200 transition" data-overlay-close>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+                Back to Dashboard
+              </a>
+            </div>
 
-        <p class="text-amber-400 font-semibold tracking-wider uppercase text-sm mb-2">Tax Monitor Pro</p>
-        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold gradient-text mb-4">Welcome</h1>
-        <p class="text-slate-400 text-lg">Welcome to your tax monitoring service.</p>
-      </header>
-
-      <!-- Info Cards (must be 3) -->
-      <div class="grid md:grid-cols-3 gap-4 mb-10">
-        <div class="glass-card rounded-xl p-5">
-          <div class="flex items-center gap-3 mb-3">
-            <div class="gradient-border p-0.5 rounded-lg">
-              <div class="bg-slate-800 p-2 rounded-lg">
-                <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M12 18a6 6 0 110-12 6 6 0 010 12z" />
+            <div class="inline-flex items-center justify-center mb-6">
+              <div class="icon-float">
+                <!-- Keep the animated icon (only recolor to match app theme) -->
+                <svg class="w-16 h-16" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" style="stop-color:#f59e0b" />
+                      <stop offset="50%" style="stop-color:#ef4444" />
+                      <stop offset="100%" style="stop-color:#fbbf24" />
+                    </linearGradient>
+                  </defs>
+                  <path d="M32 4L8 14v18c0 14 10 22 24 28 14-6 24-14 24-28V14L32 4z" stroke="url(#shieldGrad)" stroke-width="2" fill="rgba(245,158,11,0.10)" />
+                  <path d="M24 32l6 6 12-14" stroke="url(#shieldGrad)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" />
                 </svg>
               </div>
             </div>
-            <h3 class="font-semibold text-white">What This Step Does</h3>
-          </div>
-          <p class="text-slate-400 text-sm">Collects your contact and scheduling preferences so we can coordinate your results/offboarding appointment efficiently.</p>
-        </div>
 
-        <div class="glass-card rounded-xl p-5">
-          <div class="flex items-center gap-3 mb-3">
-            <div class="gradient-border p-0.5 rounded-lg">
-              <div class="bg-slate-800 p-2 rounded-lg">
-                <svg class="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            <p class="text-amber-300 font-semibold tracking-wider uppercase text-sm mb-2">Tax Monitor Pro</p>
+            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold gradient-text mb-4">Welcome</h1>
+            <p class="text-slate-400 text-lg">Welcome to your tax monitoring service.</p>
+          </header>
+
+          <!-- Info Cards (must be 3) -->
+          <div class="grid md:grid-cols-3 gap-4 mb-10">
+            <div class="glass-card rounded-xl p-5">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="gradient-border p-0.5 rounded-lg">
+                  <div class="bg-slate-800 p-2 rounded-lg">
+                    <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M12 18a6 6 0 110-12 6 6 0 010 12z" />
+                    </svg>
+                  </div>
+                </div>
+                <h3 class="font-semibold text-white">What This Step Does</h3>
+              </div>
+              <p class="text-slate-400 text-sm">Collects your contact and scheduling preferences so we can coordinate your results/offboarding appointment efficiently.</p>
+            </div>
+
+            <div class="glass-card rounded-xl p-5">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="gradient-border p-0.5 rounded-lg">
+                  <div class="bg-slate-800 p-2 rounded-lg">
+                    <svg class="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                </div>
+                <h3 class="font-semibold text-white">What We Do</h3>
+              </div>
+              <p class="text-slate-400 text-sm">We assign your team, track project progress, and use your preferences to schedule the results/offboarding appointment once your report is ready.</p>
+            </div>
+
+            <div class="glass-card rounded-xl p-5">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="gradient-border p-0.5 rounded-lg">
+                  <div class="bg-slate-800 p-2 rounded-lg">
+                    <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h10a2 2 0 012 2v14a2 2 0 01-2 2z" />
+                    </svg>
+                  </div>
+                </div>
+                <h3 class="font-semibold text-white">What We Need From You</h3>
+              </div>
+              <p class="text-slate-400 text-sm">Your preferred contact method and availability so scheduling is smooth and doesn’t turn into a week-long game of phone tag.</p>
+            </div>
+          </div>
+
+          <!-- Form Section -->
+          <div class="glass-card rounded-2xl p-6 md:p-8 mb-8">
+            <div class="mb-4">
+              <h2 class="text-2xl font-bold text-white mb-2 flex items-center gap-3">
+                <svg class="w-6 h-6 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7.5 8.25h9m-9 3h6M21 12c0 4.418-4.03 8-9 8a10.2 10.2 0 01-3.6-.65L3 20l1.1-3.3A7.7 7.7 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                 </svg>
+                <span class="text-white">Contact Preferences</span>
+              </h2>
+              <p class="text-slate-400">Tell us how you prefer to be contacted for your exit/offboarding appointment to review your results.</p>
+            </div>
+
+            <form id="welcome-form" class="space-y-6" novalidate>
+              <!-- Hidden contract fields -->
+              <input type="hidden" id="eventId" name="eventId" />
+              <input type="hidden" id="orderId" name="orderId" />
+              <input type="hidden" id="sessionToken" name="sessionToken" />
+
+              <div>
+                <label class="block text-sm font-semibold text-white mb-2">Exit / Offboarding Appointment</label>
+                <div class="space-y-2 text-slate-200 text-sm">
+                  <label class="flex items-start gap-2">
+                    <input type="radio" name="wantsAppointment" value="no" class="mt-1" />
+                    <span>I prefer to receive my report without a review appointment.</span>
+                  </label>
+                  <label class="flex items-start gap-2">
+                    <input type="radio" name="wantsAppointment" value="yes" class="mt-1" />
+                    <span>Yes, I would like to schedule a results review appointment.</span>
+                  </label>
+                </div>
+                <p id="appointmentHelpText" class="mt-3 text-xs text-slate-300/70 hidden">
+                  To change your notification preferences, <a href="/app/pages/account/profile.html" class="text-amber-300 hover:underline">click here</a> to update your settings in your profile.
+                </p>
+              </div>
+
+              <div>
+                <label class="block text-sm font-semibold text-white mb-2">Preferred Contact Method <span class="text-red-300">*</span></label>
+                <div class="select-wrapper">
+                  <select id="preferredContactMethod" class="form-input w-full px-4 py-3 rounded-lg text-white transition-all cursor-pointer">
+                    <option value="" class="bg-slate-900">Select one</option>
+                    <option value="email" class="bg-slate-900">Email</option>
+                    <option value="phone" class="bg-slate-900">Phone Call</option>
+                    <option value="portal" class="bg-slate-900">Messaging Inbox</option>
+                  </select>
+                  <svg class="select-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+
+                <div id="phoneField" class="hidden mt-4">
+                  <label class="block text-sm font-semibold text-white mb-2">Best Phone Number</label>
+                  <input type="tel" id="phoneNumber" placeholder="(555) 123-4567" class="form-input w-full px-4 py-3 rounded-lg text-white placeholder-slate-500 transition-all" />
+                  <p class="mt-2 text-xs text-slate-300/70">Required if Phone Call is selected.</p>
+                </div>
+
+                <p class="mt-2 text-xs text-slate-300/70">
+                  To change your global notification preferences,
+                  <a href="/app/pages/account/profile.html" target="_blank" rel="noopener" class="text-amber-300 hover:underline">click here</a>
+                  to edit your profile settings.
+                </p>
+              </div>
+
+              <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div>
+                  <label class="block text-sm font-semibold text-white mb-2">Available Days</label>
+                  <div class="day-grid grid grid-cols-3 gap-2 text-sm text-slate-100">
+                    <label><input type="checkbox" value="mon" class="day-checkbox">Monday</label>
+                    <label><input type="checkbox" value="tue" class="day-checkbox">Tuesday</label>
+                    <label><input type="checkbox" value="wed" class="day-checkbox">Wednesday</label>
+                    <label><input type="checkbox" value="thu" class="day-checkbox">Thursday</label>
+                    <label><input type="checkbox" value="fri" class="day-checkbox">Friday</label>
+                    <label><input type="checkbox" id="selectAllDays">Select All</label>
+                  </div>
+                </div>
+
+                <div>
+                  <label class="block text-sm font-semibold text-white mb-2">Video Conferencing</label>
+                  <input type="text" value="Zoom" readonly class="form-input w-full px-4 py-3 rounded-lg text-slate-300 cursor-not-allowed" />
+                  <p class="mt-2 text-xs text-slate-300/70">The default method is Zoom with more options coming soon.</p>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-sm font-semibold text-white mb-2">Time Window</label>
+                <div class="select-wrapper">
+                  <select id="timeWindow" class="form-input w-full px-4 py-3 rounded-lg text-white transition-all cursor-pointer">
+                    <option value="" class="bg-slate-900">Select one</option>
+                    <option value="morning" class="bg-slate-900">Morning (8am–12pm)</option>
+                    <option value="midday" class="bg-slate-900">Midday (12pm–3pm)</option>
+                    <option value="afternoon" class="bg-slate-900">Afternoon (3pm–6pm)</option>
+                    <option value="evening" class="bg-slate-900">Evening (after 6pm)</option>
+                  </select>
+                  <svg class="select-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-sm font-semibold text-white mb-2">Minimum Notice</label>
+                <div class="select-wrapper">
+                  <select id="minimumNotice" class="form-input w-full px-4 py-3 rounded-lg text-white transition-all cursor-pointer">
+                    <option value="" class="bg-slate-900">Select one</option>
+                    <option value="same_day" class="bg-slate-900">Same day</option>
+                    <option value="24h" class="bg-slate-900">24 hours</option>
+                    <option value="48h" class="bg-slate-900">48 hours</option>
+                    <option value="72h_plus" class="bg-slate-900">3+ days</option>
+                  </select>
+                  <svg class="select-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-sm font-semibold text-white mb-2">Timezone</label>
+                <div class="select-wrapper">
+                  <select id="timezone" class="form-input w-full px-4 py-3 rounded-lg text-white transition-all cursor-pointer">
+                    <option value="" class="bg-slate-900">Select one</option>
+                    <option value="CT" class="bg-slate-900">Central Time (CT)</option>
+                    <option value="ET" class="bg-slate-900">Eastern Time (ET)</option>
+                    <option value="MT" class="bg-slate-900">Mountain Time (MT)</option>
+                    <option value="PT" class="bg-slate-900">Pacific Time (PT)</option>
+                  </select>
+                  <svg class="select-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-sm font-semibold text-white mb-2">Confirmation Method</label>
+                <div class="select-wrapper">
+                  <select id="confirmationMethod" class="form-input w-full px-4 py-3 rounded-lg text-white transition-all cursor-pointer">
+                    <option value="" class="bg-slate-900">Select one</option>
+                    <option value="email" class="bg-slate-900">Email</option>
+                    <option value="phone" class="bg-slate-900">Phone Call</option>
+                    <option value="portal" class="bg-slate-900">Messaging Inbox</option>
+                  </select>
+                  <svg class="select-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-sm font-semibold text-white mb-2">Specific Scheduling Notes</label>
+                <textarea id="additionalInfo" rows="4" placeholder="Example: Avoid Fridays after 3pm, traveling March 12–18, prefer early mornings." class="form-input w-full px-4 py-3 rounded-lg text-white placeholder-slate-500 transition-all"></textarea>
+              </div>
+
+              <div id="errorBox" class="hidden rounded-xl p-4 border border-red-500/30 bg-red-500/10">
+                <div class="font-semibold text-red-200 mb-1">We couldn’t submit that.</div>
+                <div id="errorText" class="text-slate-100 text-sm"></div>
+              </div>
+
+              <div class="pt-2">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <button type="submit" id="submitBtn" class="gradient-btn w-full py-4 px-6 rounded-xl font-semibold text-white text-lg transition-all transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50" disabled>
+                    Submit &amp; Continue
+                  </button>
+                  <button type="button" id="resetBtn" class="w-full py-4 px-6 rounded-xl font-semibold text-slate-200 text-lg border border-slate-300/15 bg-slate-950/30 hover:bg-slate-950/45 transition">
+                    Reset Form
+                  </button>
+                </div>
+              </div>
+            </form>
+
+            <div id="successBox" class="hidden mt-6 rounded-xl p-6 text-center border border-green-500/25 bg-green-500/10">
+              <h3 class="text-xl font-bold text-green-300 mb-2">Welcome submitted</h3>
+              <p class="text-slate-300">Next step: Filing status.</p>
+              <div class="mt-5">
+                <a id="nextLink" href="/app/pages/flows/post-payment/filing-status.html" class="inline-flex items-center justify-center px-6 py-3 rounded-xl font-semibold text-white gradient-btn">
+                  Continue to Filing Status
+                </a>
               </div>
             </div>
-            <h3 class="font-semibold text-white">What We Do</h3>
           </div>
-          <p class="text-slate-400 text-sm">We assign your team, track project progress, and use your preferences to schedule the results/offboarding appointment once your report is ready.</p>
-        </div>
 
-        <div class="glass-card rounded-xl p-5">
-          <div class="flex items-center gap-3 mb-3">
-            <div class="gradient-border p-0.5 rounded-lg">
-              <div class="bg-slate-800 p-2 rounded-lg">
-                <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h10a2 2 0 012 2v14a2 2 0 01-2 2z" />
+          <footer class="text-center text-slate-400/70 text-sm">
+            <div class="flex items-center justify-center gap-4">
+              <span class="flex items-center gap-1">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                 </svg>
-              </div>
+                Secure
+              </span>
+              <span>•</span>
+              <span>Confidential</span>
+              <span>•</span>
+              <span>Professional</span>
             </div>
-            <h3 class="font-semibold text-white">What We Need From You</h3>
-          </div>
-          <p class="text-slate-400 text-sm">Your preferred contact method and availability so scheduling is smooth and doesn’t turn into a week-long game of phone tag.</p>
-        </div>
-      </div>
+          </footer>
 
-      <!-- Form Section -->
-      <div class="glass-card rounded-2xl p-6 md:p-8 mb-8">
-        <div class="mb-4">
-          <h2 class="text-2xl font-bold text-white mb-2 flex items-center gap-3">
-            <svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7.5 8.25h9m-9 3h6M21 12c0 4.418-4.03 8-9 8a10.2 10.2 0 01-3.6-.65L3 20l1.1-3.3A7.7 7.7 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+          <!-- Success Toast -->
+          <div id="successToast" class="toast fixed bottom-6 right-6 bg-green-600 text-white px-6 py-4 rounded-xl shadow-lg z-50 flex items-center gap-3" aria-live="polite">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
             </svg>
-            <span class="text-white">Contact Preferences</span>
-          </h2>
-          <p class="text-slate-400">Tell us how you prefer to be contacted for your exit/offboarding appointment to review your results.</p>
-        </div>
-
-        <form id="welcome-form" class="space-y-6" novalidate>
-          <!-- Hidden contract fields -->
-          <input type="hidden" id="eventId" name="eventId" />
-          <input type="hidden" id="orderId" name="orderId" />
-          <input type="hidden" id="sessionToken" name="sessionToken" />
-
-          <div>
-            <label class="block text-sm font-semibold text-amber-400 mb-2">Exit / Offboarding Appointment</label>
-            <div class="space-y-2 text-slate-300 text-sm">
-              <label class="flex items-start gap-2">
-                <input type="radio" name="wantsAppointment" value="no" class="mt-1" />
-                <span>I prefer to receive my report without a review appointment.</span>
-              </label>
-              <label class="flex items-start gap-2">
-                <input type="radio" name="wantsAppointment" value="yes" class="mt-1" />
-                <span>Yes, I would like to schedule a results review appointment.</span>
-              </label>
-            </div>
-            <p id="appointmentHelpText" class="mt-3 text-xs text-slate-400 hidden">
-              To change your notification preferences, <a href="/app/pages/account/profile.html" class="text-amber-400 hover:underline">click here</a> to update your settings in your profile.
-            </p>
+            <span>Saved successfully!</span>
           </div>
 
-          <div>
-            <label class="block text-sm font-semibold text-amber-400 mb-2">Preferred Contact Method <span class="text-red-400">*</span></label>
-            <div class="select-wrapper">
-              <select id="preferredContactMethod" class="form-input w-full px-4 py-3 rounded-lg text-white transition-all cursor-pointer">
-                <option value="" class="bg-slate-800">Select one</option>
-                <option value="email" class="bg-slate-800">Email</option>
-                <option value="phone" class="bg-slate-800">Phone Call</option>
-                <option value="portal" class="bg-slate-800">Messaging Inbox</option>
-              </select>
-              <svg class="select-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-              </svg>
-            </div>
-
-            <div id="phoneField" class="hidden mt-4">
-              <label class="block text-sm font-semibold text-amber-400 mb-2">Best Phone Number</label>
-              <input type="tel" id="phoneNumber" placeholder="(555) 123-4567" class="form-input w-full px-4 py-3 rounded-lg text-white placeholder-slate-500 transition-all" />
-              <p class="mt-2 text-xs text-slate-400">Required if Phone Call is selected.</p>
-            </div>
-
-            <p class="mt-2 text-xs text-slate-400">
-              To change your global notification preferences,
-              <a href="/app/pages/account/profile.html" target="_blank" rel="noopener" class="text-amber-400 hover:underline">click here</a>
-              to edit your profile settings.
-            </p>
-          </div>
-
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div>
-              <label class="block text-sm font-semibold text-amber-400 mb-2">Available Days</label>
-              <div class="day-grid grid grid-cols-3 gap-2 text-sm text-slate-200">
-                <label><input type="checkbox" value="mon" class="day-checkbox">Monday</label>
-                <label><input type="checkbox" value="tue" class="day-checkbox">Tuesday</label>
-                <label><input type="checkbox" value="wed" class="day-checkbox">Wednesday</label>
-                <label><input type="checkbox" value="thu" class="day-checkbox">Thursday</label>
-                <label><input type="checkbox" value="fri" class="day-checkbox">Friday</label>
-                <label><input type="checkbox" id="selectAllDays">Select All</label>
-              </div>
-            </div>
-
-            <div>
-              <label class="block text-sm font-semibold text-amber-400 mb-2">Video Conferencing</label>
-              <input type="text" value="Zoom" readonly class="form-input w-full px-4 py-3 rounded-lg text-slate-300 cursor-not-allowed" />
-              <p class="mt-2 text-xs text-slate-400">The default method is Zoom with more options coming soon.</p>
-            </div>
-          </div>
-
-          <div>
-            <label class="block text-sm font-semibold text-amber-400 mb-2">Time Window</label>
-            <div class="select-wrapper">
-              <select id="timeWindow" class="form-input w-full px-4 py-3 rounded-lg text-white transition-all cursor-pointer">
-                <option value="" class="bg-slate-800">Select one</option>
-                <option value="morning" class="bg-slate-800">Morning (8am–12pm)</option>
-                <option value="midday" class="bg-slate-800">Midday (12pm–3pm)</option>
-                <option value="afternoon" class="bg-slate-800">Afternoon (3pm–6pm)</option>
-                <option value="evening" class="bg-slate-800">Evening (after 6pm)</option>
-              </select>
-              <svg class="select-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-              </svg>
-            </div>
-          </div>
-
-          <div>
-            <label class="block text-sm font-semibold text-amber-400 mb-2">Minimum Notice</label>
-            <div class="select-wrapper">
-              <select id="minimumNotice" class="form-input w-full px-4 py-3 rounded-lg text-white transition-all cursor-pointer">
-                <option value="" class="bg-slate-800">Select one</option>
-                <option value="same_day" class="bg-slate-800">Same day</option>
-                <option value="24h" class="bg-slate-800">24 hours</option>
-                <option value="48h" class="bg-slate-800">48 hours</option>
-                <option value="72h_plus" class="bg-slate-800">3+ days</option>
-              </select>
-              <svg class="select-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-              </svg>
-            </div>
-          </div>
-
-          <div>
-            <label class="block text-sm font-semibold text-amber-400 mb-2">Timezone</label>
-            <div class="select-wrapper">
-              <select id="timezone" class="form-input w-full px-4 py-3 rounded-lg text-white transition-all cursor-pointer">
-                <option value="" class="bg-slate-800">Select one</option>
-                <option value="CT" class="bg-slate-800">Central Time (CT)</option>
-                <option value="ET" class="bg-slate-800">Eastern Time (ET)</option>
-                <option value="MT" class="bg-slate-800">Mountain Time (MT)</option>
-                <option value="PT" class="bg-slate-800">Pacific Time (PT)</option>
-              </select>
-              <svg class="select-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-              </svg>
-            </div>
-          </div>
-
-          <div>
-            <label class="block text-sm font-semibold text-amber-400 mb-2">Confirmation Method</label>
-            <div class="select-wrapper">
-              <select id="confirmationMethod" class="form-input w-full px-4 py-3 rounded-lg text-white transition-all cursor-pointer">
-                <option value="" class="bg-slate-800">Select one</option>
-                <option value="email" class="bg-slate-800">Email</option>
-                <option value="phone" class="bg-slate-800">Phone Call</option>
-                <option value="portal" class="bg-slate-800">Messaging Inbox</option>
-              </select>
-              <svg class="select-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-              </svg>
-            </div>
-          </div>
-
-          <div>
-            <label class="block text-sm font-semibold text-amber-400 mb-2">Specific Scheduling Notes</label>
-            <textarea id="additionalInfo" rows="4" placeholder="Example: Avoid Fridays after 3pm, traveling March 12–18, prefer early mornings." class="form-input w-full px-4 py-3 rounded-lg text-white placeholder-slate-500 transition-all"></textarea>
-          </div>
-
-          <div id="errorBox" class="hidden rounded-xl p-4 border border-red-500/30 bg-red-500/10">
-            <div class="font-semibold text-red-200 mb-1">We couldn’t submit that.</div>
-            <div id="errorText" class="text-slate-100 text-sm"></div>
-          </div>
-
-          <div class="pt-2">
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <button type="submit" id="submitBtn" class="gradient-btn w-full py-4 px-6 rounded-xl font-semibold text-white text-lg transition-all transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50" disabled>
-                Submit &amp; Continue
-              </button>
-              <button type="button" id="resetBtn" class="w-full py-4 px-6 rounded-xl font-semibold text-slate-200 text-lg border border-amber-500/30 bg-slate-900/60 hover:bg-slate-900/80 transition">
-                Reset Form
-              </button>
-            </div>
-          </div>
-        </form>
-
-        <div id="successBox" class="hidden mt-6 rounded-xl p-6 text-center border border-green-500/25 bg-green-500/10">
-          <h3 class="text-xl font-bold text-green-300 mb-2">Welcome submitted</h3>
-          <p class="text-slate-300">Next step: Filing status.</p>
-          <div class="mt-5">
-            <a id="nextLink" href="/app/pages/flows/post-payment/filing-status.html" class="inline-flex items-center justify-center px-6 py-3 rounded-xl font-semibold text-white gradient-btn">
-              Continue to Filing Status
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <footer class="text-center text-slate-500 text-sm">
-        <div class="flex items-center justify-center gap-4">
-          <span class="flex items-center gap-1">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+          <!-- Error Toast -->
+          <div id="errorToast" class="toast fixed bottom-6 right-6 bg-red-600 text-white px-6 py-4 rounded-xl shadow-lg z-50 flex items-center gap-3" aria-live="polite">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
             </svg>
-            Secure
-          </span>
-          <span>•</span>
-          <span>Confidential</span>
-          <span>•</span>
-          <span>Professional</span>
+            <span id="errorToastText">An error occurred</span>
+          </div>
         </div>
-      </footer>
-
-      <!-- Success Toast -->
-      <div id="successToast" class="toast fixed bottom-6 right-6 bg-green-600 text-white px-6 py-4 rounded-xl shadow-lg z-50 flex items-center gap-3" aria-live="polite">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-        </svg>
-        <span>Saved successfully!</span>
-      </div>
-
-      <!-- Error Toast -->
-      <div id="errorToast" class="toast fixed bottom-6 right-6 bg-red-600 text-white px-6 py-4 rounded-xl shadow-lg z-50 flex items-center gap-3" aria-live="polite">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-        </svg>
-        <span id="errorToastText">An error occurred</span>
-      </div>
-
+      </main>
     </div>
   </div>
 
@@ -462,6 +479,7 @@
     const els = {
       additionalInfo: document.getElementById('additionalInfo'),
       appointmentHelpText: document.getElementById('appointmentHelpText'),
+      backLink: document.getElementById('backLink'),
       confirmationMethod: document.getElementById('confirmationMethod'),
       errorBox: document.getElementById('errorBox'),
       errorText: document.getElementById('errorText'),
@@ -478,11 +496,13 @@
       resetBtn: document.getElementById('resetBtn'),
       selectAllDays: document.getElementById('selectAllDays'),
       sessionToken: document.getElementById('sessionToken'),
+      sidebarSlot: document.getElementById('tmSidebarSlot'),
       submitBtn: document.getElementById('submitBtn'),
       successBox: document.getElementById('successBox'),
       successToast: document.getElementById('successToast'),
       timeWindow: document.getElementById('timeWindow'),
-      timezone: document.getElementById('timezone')
+      timezone: document.getElementById('timezone'),
+      topbarSlot: document.getElementById('tmTopbarSlot')
     };
 
     function assertEl(name, el) {
@@ -595,7 +615,49 @@
       }
     }
 
+    // Shell: overlay + chrome injection
+    const params = new URLSearchParams(location.search);
+    const isOverlay = params.get('overlay') === '1';
+
+    async function injectPartial(slotEl, url) {
+      if (!slotEl) return;
+      const res = await fetch(url, { credentials: 'same-origin' });
+      if (!res.ok) return;
+      slotEl.innerHTML = await res.text();
+    }
+
+    function wireOverlayClose() {
+      const close = () => {
+        try {
+          window.parent?.postMessage({ type: 'TM_OVERLAY_CLOSE' }, '*');
+        } catch (_) {}
+      };
+
+      document.querySelectorAll('[data-overlay-close]').forEach((a) => {
+        a.addEventListener('click', (e) => {
+          if (!isOverlay) return;
+          e.preventDefault();
+          close();
+        });
+      });
+    }
+
+    async function initShell() {
+      if (isOverlay) {
+        if (els.sidebarSlot) els.sidebarSlot.classList.add('hidden');
+        if (els.topbarSlot) els.topbarSlot.classList.add('hidden');
+      } else {
+        await Promise.all([
+          injectPartial(els.sidebarSlot, '/app/partials/sidebar.html'),
+          injectPartial(els.topbarSlot, '/app/partials/topbar.html')
+        ]);
+      }
+
+      wireOverlayClose();
+    }
+
     // Init
+    initShell();
     primeHiddenFields();
     setSubmitState();
 

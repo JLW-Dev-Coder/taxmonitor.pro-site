@@ -1,0 +1,1478 @@
+<!-- /app/pages/report.html -->
+<!doctype html>
+<html lang="en" class="h-full">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tax Monitor Pro — Report</title>
+
+    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+    <script src="/_sdk/element_sdk.js"></script>
+    <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+      * { font-family: 'DM Sans', sans-serif; }
+
+      @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+      }
+
+      .icon-float { animation: float 3s ease-in-out infinite; }
+
+      .gradient-text {
+        background: linear-gradient(135deg, #F59E0B, #FB923C);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .gradient-border {
+        background: linear-gradient(135deg, #F59E0B, #FB923C);
+      }
+
+      .glass-card {
+        background: rgba(10, 10, 10, 0.6);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: none;
+      }
+
+      .gradient-btn {
+        background: linear-gradient(135deg, #F59E0B, #FB923C);
+      }
+
+      .gradient-btn:hover { filter: brightness(0.95); }
+
+      /* Noise texture overlay (match post-payment theme) */
+      .noise-bg::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        opacity: .03;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      .blob-1 {
+        position: absolute;
+        width: 440px;
+        height: 440px;
+        background: radial-gradient(circle, rgba(245, 158, 11, 0.14) 0%, transparent 70%);
+        border-radius: 50%;
+        top: -120px;
+        right: -140px;
+        pointer-events: none;
+      }
+
+      .blob-2 {
+        position: absolute;
+        width: 360px;
+        height: 360px;
+        background: radial-gradient(circle, rgba(239, 68, 68, 0.10) 0%, transparent 70%);
+        border-radius: 50%;
+        bottom: 90px;
+        left: -90px;
+        pointer-events: none;
+      }
+
+
+      html,
+      body {
+        height: 100%;
+      }
+
+      .app-container {
+        flex: 1;
+        overflow: auto;
+        min-height: 0;
+      }
+
+      /* Custom scrollbar */
+      ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #1e293b;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #475569;
+        border-radius: 3px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #64748b;
+      }
+
+      /* Accordion animation */
+      .accordion-content {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-out;
+      }
+      .accordion-content.open {
+        max-height: 2000px;
+      }
+
+      /* Print styles */
+      @media print {
+        body {
+          background: white !important;
+        }
+        .no-print {
+          display: none !important;
+        }
+        .print-white {
+          background: white !important;
+          color: #1e293b !important;
+        }
+      }
+
+      /* Tab active indicator (make it obvious) */
+.tab-btn {
+  position: relative;
+}
+
+.tab-active {
+  color: #ffffff !important;
+  border-bottom: 2px solid #f59e0b !important;
+  background: linear-gradient(to bottom, rgba(245,158,11,0.15), rgba(245,158,11,0.05));
+}
+
+.tab-active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 2px;
+  background: linear-gradient(90deg, #f59e0b, #fb923c);
+}
+
+      /* Date input: theme + larger */
+      .tm-date {
+        font-size: 0.95rem;
+        line-height: 1.25rem;
+        padding: 0.65rem 0.75rem;
+      }
+
+      .tm-date::-webkit-calendar-picker-indicator {
+        filter: invert(1) opacity(0.75);
+        cursor: pointer;
+      }
+
+      .tm-date::-webkit-datetime-edit {
+        color: #e2e8f0;
+      }
+
+      .tm-date:disabled {
+        opacity: 0.7;
+      }
+
+      /* Input focus */
+      input:focus,
+      select:focus,
+      textarea:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+      }
+
+      body {
+        box-sizing: border-box;
+      }
+
+      :root {
+        --mfj-offset: 0px;
+      }
+
+      /* Preview layout: embedded right rail (no overlay) */
+/* Two column 50/50 layout (true 50/50, no overlap) */
+.tm-two-col {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+@media (min-width: 1024px) {
+  .tm-two-col {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+
+.tm-main {
+  min-width: 0;
+}
+
+/* Embedded right rail (not a sticky overlay) */
+.tm-preview {
+  position: static;
+  align-self: start;
+  min-width: 0;
+  width: 100%;
+}
+
+.tm-preview > * {
+  width: 100%;
+}
+
+#two-col-shell {
+  min-width: 0;
+}
+
+/* Read-only polish */
+      .ro-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.35rem 0.6rem;
+        border-radius: 9999px;
+        border: 1px solid rgba(148, 163, 184, 0.25);
+        background: rgba(15, 23, 42, 0.35);
+        font-size: 0.75rem;
+        color: rgb(226, 232, 240);
+      }
+
+      .ro-label {
+        font-size: 0.7rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: rgb(100, 116, 139);
+      }
+
+      .ro-value {
+        font-size: 0.9rem;
+        color: rgb(241, 245, 249);
+      }
+
+      .ro-muted {
+        color: rgb(148, 163, 184);
+      }
+
+      .tm-readonly input,
+      .tm-readonly select,
+      .tm-readonly textarea {
+        pointer-events: none;
+      }
+
+      .tm-readonly input,
+      .tm-readonly select,
+      .tm-readonly textarea {
+        opacity: 0.9;
+      }
+
+      .tm-readonly .tm-date::-webkit-calendar-picker-indicator {
+        opacity: 0;
+      }
+    </style>
+  </head>
+
+  <body class="h-full bg-slate-950 text-slate-100 noise-bg overflow-auto">
+    <!-- MFJ Associated Records Banner (client-facing: informational only) -->
+    <div id="mfj-banner" class="sticky top-0 z-[60] hidden no-print">
+      <div class="border-b border-purple-500/30 bg-purple-500/15 backdrop-blur">
+        <div class="mx-auto flex max-w-[1600px] items-start justify-between gap-4 px-6 py-3">
+          <div class="flex min-w-0 items-start gap-3">
+            <div
+              class="mt-0.5 flex h-8 w-8 items-center justify-center rounded-lg bg-purple-500/20 text-purple-200 border border-purple-500/30 shrink-0"
+              aria-hidden="true"
+            >
+              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                <circle cx="8.5" cy="7" r="4" />
+                <path d="M20 8v6" />
+                <path d="M23 11h-6" />
+              </svg>
+            </div>
+
+            <div class="min-w-0">
+              <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
+                <div class="text-sm font-semibold text-slate-100">Associated Records</div>
+                <div class="text-xs text-purple-200/90">MFJ detected. Some items may be linked to spouse activity.</div>
+              </div>
+
+              <div class="mt-2 flex flex-wrap items-center gap-2" id="mfj-records"></div>
+
+              <div class="mt-2 flex flex-wrap items-center gap-2">
+                <button
+                  id="mfj-scope-primary"
+                  type="button"
+                  class="mfj-scope-btn inline-flex items-center gap-2 rounded-md border border-purple-500/25 bg-slate-950/40 px-3 py-1.5 text-xs font-medium text-slate-100 hover:bg-slate-950/60 transition-colors"
+                  data-scope="primary"
+                >
+                  Primary
+                </button>
+                <button
+                  id="mfj-scope-spouse"
+                  type="button"
+                  class="mfj-scope-btn inline-flex items-center gap-2 rounded-md border border-purple-500/25 bg-slate-950/40 px-3 py-1.5 text-xs font-medium text-slate-100 hover:bg-slate-950/60 transition-colors"
+                  data-scope="spouse"
+                >
+                  Spouse
+                </button>
+                <span id="mfj-scope-note" class="text-xs text-slate-300/80">Scope: Primary</span>
+              </div>
+            </div>
+          </div>
+
+          <button
+            id="mfj-banner-close"
+            type="button"
+            class="shrink-0 rounded-md border border-purple-500/25 bg-slate-950/40 p-2 text-purple-100 hover:bg-slate-950/60 transition-colors"
+            aria-label="Dismiss MFJ banner"
+          >
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 6 6 18" />
+              <path d="M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="app-wrapper" class="min-h-screen w-full relative">
+      <div class="blob-1"></div>
+      <div class="blob-2"></div>
+
+      <div class="relative z-10">
+        <div class="min-h-screen">
+      <div class="min-w-0">
+        <div class="app-container flex flex-col">
+          <!-- Sticky Header (Hero) -->
+          <header
+            class="sticky z-50 border-b border-slate-800/60 bg-slate-950/80 backdrop-blur px-6 py-5 no-print"
+            style="top: var(--mfj-offset, 0px);"
+          >
+            <div class="mx-auto max-w-[1600px]">
+              <div class="flex items-center gap-4">
+                <div class="icon-float hidden sm:flex shrink-0">
+                  <svg class="w-12 h-12" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <defs>
+                      <linearGradient id="shieldGradHero" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#f59e0b" />
+                        <stop offset="50%" style="stop-color:#ef4444" />
+                        <stop offset="100%" style="stop-color:#fbbf24" />
+                      </linearGradient>
+                    </defs>
+                    <path d="M32 4L8 14v18c0 14 10 22 24 28 14-6 24-14 24-28V14L32 4z" stroke="url(#shieldGradHero)" stroke-width="2" fill="rgba(245,158,11,0.10)" />
+                    <path d="M24 32l6 6 12-14" stroke="url(#shieldGradHero)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                  </svg>
+                </div>
+
+                <div class="min-w-0">
+                  <p class="text-amber-400 font-semibold tracking-wider uppercase text-xs">Tax Monitor Pro</p>
+                  <h1 class="mt-1 text-xl sm:text-2xl font-bold gradient-text">Compliance Dashboard</h1>
+                  <p class="mt-2 text-sm text-slate-300">
+                    This is a read-only snapshot of your current compliance record. If anything looks incorrect, contact support and we’ll review it.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </header>
+
+          <!-- Hero Subsection Info Cards -->
+          <section class="px-6 py-6 border-b border-slate-800/60 bg-slate-950/60 no-print">
+            <div class="mx-auto max-w-[1600px] grid md:grid-cols-3 gap-4">
+              <div class="rounded-xl p-5 border border-white/10 bg-slate-900/40">
+                <div class="font-semibold text-white mb-2">What You’re Seeing</div>
+                <p class="text-slate-400 text-sm">A snapshot of the most recent compliance data your team has recorded.</p>
+              </div>
+              <div class="rounded-xl p-5 border border-white/10 bg-slate-900/40">
+                <div class="font-semibold text-white mb-2">What We Do</div>
+                <p class="text-slate-400 text-sm">We update this record as new items come in and actions are completed.</p>
+              </div>
+              <div class="rounded-xl p-5 border border-white/10 bg-slate-900/40">
+                <div class="font-semibold text-white mb-2">Need a Fix?</div>
+                <p class="text-slate-400 text-sm">Contact support if something looks off. This page is view-only.</p>
+              </div>
+            </div>
+          </section>
+
+          <!-- Tab Navigation -->
+          <nav class="bg-slate-950/80 border-b border-slate-800/60 px-6 no-print">
+            <div class="flex items-center gap-1 -mb-px overflow-x-auto">
+              <button class="tab-btn tab-active px-4 py-3 text-sm font-medium text-slate-400 hover:text-slate-200 border-b-2 border-transparent whitespace-nowrap transition-colors" data-tab="overview" type="button">Overview</button>
+              <button class="tab-btn px-4 py-3 text-sm font-medium text-slate-400 hover:text-slate-200 border-b-2 border-transparent whitespace-nowrap transition-colors" data-tab="authority" type="button">Authority</button>
+              <button class="tab-btn px-4 py-3 text-sm font-medium text-slate-400 hover:text-slate-200 border-b-2 border-transparent whitespace-nowrap transition-colors" data-tab="compliance" type="button">Compliance</button>
+              <button class="tab-btn px-4 py-3 text-sm font-medium text-slate-400 hover:text-slate-200 border-b-2 border-transparent whitespace-nowrap transition-colors" data-tab="notices" type="button">Notices</button>
+              <button class="tab-btn px-4 py-3 text-sm font-medium text-slate-400 hover:text-slate-200 border-b-2 border-transparent whitespace-nowrap transition-colors" data-tab="installment" type="button">Installment Agreement</button>
+              <button class="tab-btn px-4 py-3 text-sm font-medium text-slate-400 hover:text-slate-200 border-b-2 border-transparent whitespace-nowrap transition-colors" data-tab="revenue" type="button">Revenue Officer</button>
+              <button class="tab-btn px-4 py-3 text-sm font-medium text-slate-400 hover:text-slate-200 border-b-2 border-transparent whitespace-nowrap transition-colors" data-tab="transcripts" type="button">Transcripts</button>
+              <button class="tab-btn px-4 py-3 text-sm font-medium text-slate-400 hover:text-slate-200 border-b-2 border-transparent whitespace-nowrap transition-colors" data-tab="summary" type="button">Summary</button>
+            </div>
+          </nav>
+
+          <!-- Main Content -->
+          <main class="flex-1 p-6 tm-readonly">
+            <!-- Hidden identifiers (read-only) -->
+            <input id="input-account-id" type="hidden" value="" />
+            <input id="input-order-id" type="hidden" value="" />
+            <input id="input-session-token" type="hidden" value="" />
+            <input id="input-compliance-tax-year" type="hidden" data-field="Compliance_Tax_Year_Selected" value="" />
+
+            <div class="mx-auto max-w-[1600px]">
+              <div id="two-col-shell" class="tm-two-col">
+                <!-- Left Column -->
+                <div class="tm-main space-y-4 min-w-0">
+                  <!-- Left Panel (keeps 50/50 alignment with Preview) -->
+                  <div class="rounded-lg border border-slate-700/50 bg-slate-900 overflow-hidden">
+                    <div class="p-4 border-b border-slate-700/50 flex items-center justify-between no-print">
+                      <div>
+                        <div class="text-xs text-slate-500 uppercase tracking-wide">Details</div>
+                        <div id="details-active-label" class="text-sm font-medium text-slate-100">Overview</div>
+                      </div>
+                    </div>
+                    <div id="details-body" class="p-4 space-y-4">
+                  <!-- Overview Tab -->
+                  <div id="tab-overview" class="tab-content space-y-4">
+                    <div class="accordion bg-slate-900 rounded-lg border border-slate-700/50">
+                      <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="client-info" type="button">
+                        <div class="flex items-center gap-3">
+                          <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                          </svg>
+                          <span class="font-medium text-slate-100">Client Information</span>
+                        </div>
+                        <svg class="accordion-icon w-5 h-5 text-slate-500 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </button>
+                      <div class="accordion-content open" id="accordion-client-info">
+                        <div class="px-4 pb-4 border-t border-slate-700/50 pt-4">
+                          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                              <div class="ro-label">Full Legal Name</div>
+                              <div id="ro-client-name" class="ro-value">—</div>
+                            </div>
+                            <div>
+                              <div class="ro-label">Filing Status</div>
+                              <div id="ro-filing-status" class="ro-value">—</div>
+                            </div>
+                            <div>
+                              <div class="ro-label">State of Residence</div>
+                              <div id="ro-state" class="ro-value ro-muted">—</div>
+                            </div>
+                            <div>
+                              <div class="ro-label">Identity</div>
+                              <div class="ro-value ro-muted">SSN is not displayed here.</div>
+                            </div>
+                          </div>
+                          <p class="mt-3 text-xs text-slate-500">Your team verifies identity directly. This page is for visibility, not verification.</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="accordion bg-slate-900 rounded-lg border border-slate-700/50">
+                      <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="account-status" type="button">
+                        <div class="flex items-center gap-3">
+                          <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          <span class="font-medium text-slate-100">Account Status</span>
+                        </div>
+                        <svg class="accordion-icon w-5 h-5 text-slate-500 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </button>
+                      <div class="accordion-content open" id="accordion-account-status">
+                        <div class="px-4 pb-4 border-t border-slate-700/50 pt-4">
+                          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+                            <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700/50">
+                              <div class="ro-label">Total Balance</div>
+                              <div id="ro-total-balance" class="mt-1 font-mono text-lg font-medium leading-7 text-slate-100">—</div>
+                            </div>
+                            <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700/50">
+                              <div class="ro-label">Penalties</div>
+                              <div id="ro-penalties" class="mt-1 font-mono text-lg font-medium leading-7 text-slate-100">—</div>
+                            </div>
+                            <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700/50">
+                              <div class="ro-label">Interest</div>
+                              <div id="ro-interest" class="mt-1 font-mono text-lg font-medium leading-7 text-slate-100">—</div>
+                            </div>
+                          </div>
+
+                          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                              <div class="ro-label">IRS Account Status</div>
+                              <div id="ro-irs-account-status" class="ro-value">—</div>
+                            </div>
+                            <div>
+                              <div class="ro-label">Estimated Balance Due Range</div>
+                              <div id="ro-balance-range" class="ro-value">—</div>
+                            </div>
+                            <div>
+                              <div class="ro-label">IRS Missing Years</div>
+                              <div id="ro-missing-years" class="ro-value">—</div>
+                            </div>
+                            <div>
+                              <div class="ro-label">IRS Lien Exposure Level</div>
+                              <div id="ro-lien" class="ro-value">—</div>
+                            </div>
+                          </div>
+
+                          <div class="mt-4">
+                            <div class="ro-label">IRS Status Categories</div>
+                            <div id="ro-status-categories" class="mt-2 flex flex-wrap gap-2">
+                              <span class="text-sm text-slate-400">—</span>
+                            </div>
+                          </div>
+
+                          <p class="mt-3 text-xs text-slate-500">Numbers shown here are informational, not a payment demand.</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Authority Tab -->
+                  <div id="tab-authority" class="tab-content hidden space-y-4">
+                    <div class="accordion bg-slate-900 rounded-lg border border-slate-700/50">
+                      <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="auth-scope" type="button">
+                        <div class="flex items-center gap-3">
+                          <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                            />
+                          </svg>
+                          <span class="font-medium text-slate-100">Authorization Scope</span>
+                        </div>
+                        <svg class="accordion-icon w-5 h-5 text-slate-500 transition-transform rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </button>
+                      <div class="accordion-content open" id="accordion-auth-scope">
+                        <div class="px-4 pb-4 border-t border-slate-700/50 pt-4">
+                          <div class="space-y-3" id="ro-authority-cards"></div>
+                          <p class="mt-3 text-xs text-slate-500">Authority details come from your signed Form 2848 and IRS processing state.</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Compliance Tab -->
+                  <div id="tab-compliance" class="tab-content hidden space-y-4">
+                    <div class="flex items-center gap-1 p-1 bg-slate-800 rounded-lg w-full max-w-full min-w-0 overflow-x-auto" id="year-tabs" aria-label="Tax year tabs"></div>
+
+                    <div class="accordion bg-slate-900 rounded-lg border border-slate-700/50">
+                      <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="compliance-core" type="button">
+                        <div class="flex items-center gap-3">
+                          <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                            />
+                          </svg>
+                          <span class="font-medium text-slate-100">Compliance Record</span>
+                        </div>
+                        <svg class="accordion-icon w-5 h-5 text-slate-500 transition-transform rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </button>
+                      <div class="accordion-content open" id="accordion-compliance-core">
+                        <div class="px-4 pb-4 border-t border-slate-700/50 pt-4">
+                          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                              <div class="ro-label">Compliance Activity Type</div>
+                              <div id="ro-compliance-activity" class="ro-value">—</div>
+                            </div>
+                            <div>
+                              <div class="ro-label">Compliance Period Covered</div>
+                              <div id="ro-compliance-period" class="ro-value">—</div>
+                            </div>
+                            
+                          </div>
+                          <p class="mt-3 text-xs text-slate-500">This is a status snapshot. It is not legal or tax advice.</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="accordion bg-slate-900 rounded-lg border border-slate-700/50">
+                      <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="return-status" type="button">
+                        <div class="flex items-center gap-3">
+                          <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                            />
+                          </svg>
+                          <span class="font-medium text-slate-100">Return Status — <span id="compliance-year">—</span></span>
+                        </div>
+                        <svg class="accordion-icon w-5 h-5 text-slate-500 transition-transform rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </button>
+                      <div class="accordion-content open" id="accordion-return-status">
+                        <div class="px-4 pb-4 border-t border-slate-700/50 pt-4">
+                          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                              <div class="ro-label">Processing Status</div>
+                              <div id="ro-return-processing" class="ro-value">—</div>
+                            </div>
+                            <div>
+                              <div class="ro-label">Date Filed</div>
+                              <div id="ro-return-date" class="ro-value ro-muted">—</div>
+                            </div>
+                            <div>
+                              <div class="ro-label">Tax Liability</div>
+                              <div id="ro-return-liability" class="ro-value ro-muted">—</div>
+                            </div>
+                            <div>
+                              <div class="ro-label">Filing Status</div>
+                              <div id="ro-return-filing-status" class="ro-value ro-muted">—</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Notices Tab -->
+                  <div id="tab-notices" class="tab-content hidden space-y-4">
+                    <div class="accordion bg-slate-900 rounded-lg border border-slate-700/50">
+                      <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="notice-history" type="button">
+                        <div class="flex items-center gap-3">
+                          <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                            />
+                          </svg>
+                          <span class="font-medium text-slate-100">Notices</span>
+                        </div>
+                        <svg class="accordion-icon w-5 h-5 text-slate-500 transition-transform rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </button>
+                      <div class="accordion-content open" id="accordion-notice-history">
+                        <div class="px-4 pb-4 border-t border-slate-700/50 pt-4">
+                          <div id="ro-notices" class="space-y-3">
+                            <div class="text-slate-400">No notices to display.</div>
+                          </div>
+                          <p class="mt-3 text-xs text-slate-500">Notices shown here are based on records your team has logged.</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Installment Agreement Tab -->
+                  <div id="tab-installment" class="tab-content hidden space-y-4">
+                    <div class="accordion bg-slate-900 rounded-lg border border-slate-700/50">
+                      <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="ia-status" type="button">
+                        <div class="flex items-center gap-3">
+                          <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"
+                            />
+                          </svg>
+                          <span class="font-medium text-slate-100">Installment Agreement</span>
+                        </div>
+                        <svg class="accordion-icon w-5 h-5 text-slate-500 transition-transform rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </button>
+                      <div class="accordion-content open" id="accordion-ia-status">
+                        <div class="px-4 pb-4 border-t border-slate-700/50 pt-4">
+                          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                              <div class="ro-label">IA Established</div>
+                              <div id="ro-ia-established" class="ro-value">—</div>
+                            </div>
+                            <div>
+                              <div class="ro-label">Requested Payment</div>
+                              <div id="ro-ia-payment" class="ro-value ro-muted">—</div>
+                            </div>
+                            <div>
+                              <div class="ro-label">Next Payment Due</div>
+                              <div id="ro-ia-next" class="ro-value ro-muted">—</div>
+                            </div>
+                            <div>
+                              <div class="ro-label">Last Payment</div>
+                              <div id="ro-ia-last" class="ro-value ro-muted">—</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Revenue Officer Tab -->
+                  <div id="tab-revenue" class="tab-content hidden space-y-4">
+                    <div class="accordion bg-slate-900 rounded-lg border border-slate-700/50">
+                      <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="ro-info" type="button">
+                        <div class="flex items-center gap-3">
+                          <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                            />
+                          </svg>
+                          <span class="font-medium text-slate-100">Revenue Officer</span>
+                        </div>
+                        <svg class="accordion-icon w-5 h-5 text-slate-500 transition-transform rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </button>
+                      <div class="accordion-content open" id="accordion-ro-info">
+                        <div class="px-4 pb-4 border-t border-slate-700/50 pt-4">
+                          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="sm:col-span-2">
+                              <div class="ro-label">Name</div>
+                              <div id="ro-ro-name" class="ro-value">—</div>
+                            </div>
+                            <div>
+                              <div class="ro-label">Phone</div>
+                              <div id="ro-ro-phone" class="ro-value ro-muted">—</div>
+                            </div>
+                            <div>
+                              <div class="ro-label">Email</div>
+                              <div id="ro-ro-email" class="ro-value ro-muted">—</div>
+                            </div>
+                            <div class="sm:col-span-2">
+                              <div class="ro-label">Notes</div>
+                              <div id="ro-ro-notes" class="mt-1 text-sm text-slate-200 whitespace-pre-wrap">—</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Transcripts Tab -->
+                  <div id="tab-transcripts" class="tab-content hidden space-y-4">
+                    <div class="accordion bg-slate-900 rounded-lg border border-slate-700/50">
+                      <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="transcripts" type="button">
+                        <div class="flex items-center gap-3">
+                          <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                            />
+                          </svg>
+                          <span class="font-medium text-slate-100">Transcripts</span>
+                        </div>
+                        <svg class="accordion-icon w-5 h-5 text-slate-500 transition-transform rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </button>
+                      <div class="accordion-content open" id="accordion-transcripts">
+                        <div class="px-4 pb-4 border-t border-slate-700/50 pt-4">
+                          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                              <div class="ro-label">Request Made</div>
+                              <div id="ro-tr-request" class="ro-value">—</div>
+                            </div>
+                            <div>
+                              <div class="ro-label">Delivery Method</div>
+                              <div id="ro-tr-delivery" class="ro-value">—</div>
+                            </div>
+                            <div>
+                              <div class="ro-label">Scope Confirmed</div>
+                              <div id="ro-tr-scope" class="ro-value">—</div>
+                            </div>
+                            <div>
+                              <div class="ro-label">Retrieval Date</div>
+                              <div id="ro-tr-date" class="ro-value ro-muted">—</div>
+                            </div>
+                            <div class="sm:col-span-2">
+                              <div class="ro-label">Notes</div>
+                              <div id="ro-tr-notes" class="mt-1 text-sm text-slate-200 whitespace-pre-wrap">—</div>
+                            </div>
+                          </div>
+                          <p class="mt-3 text-xs text-slate-500">Files are managed by your team and are not displayed here.</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Summary Tab -->
+                  <div id="tab-summary" class="tab-content hidden space-y-4">
+                    <div class="accordion bg-slate-900 rounded-lg border border-slate-700/50">
+                      <button class="accordion-header w-full flex items-center justify-between p-4 text-left" data-accordion="case-summary" type="button">
+                        <div class="flex items-center gap-3">
+                          <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
+                            />
+                          </svg>
+                          <span class="font-medium text-slate-100">Summary</span>
+                        </div>
+                        <svg class="accordion-icon w-5 h-5 text-slate-500 transition-transform rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </button>
+                      <div class="accordion-content open" id="accordion-case-summary">
+                        <div class="px-4 pb-4 border-t border-slate-700/50 pt-4 space-y-3">
+                          <div class="rounded-lg border border-slate-700/50 bg-slate-800/40 p-3">
+                            <div class="text-xs text-slate-500 uppercase tracking-wide">Client-Facing Summary</div>
+                            <div id="ro-summary" class="mt-2 text-sm text-slate-200 leading-relaxed whitespace-pre-wrap">—</div>
+                          </div>
+                          <div class="rounded-lg border border-slate-700/50 bg-slate-800/40 p-3">
+                            <div class="text-xs text-slate-500 uppercase tracking-wide">Next Steps</div>
+                            <div id="ro-next-steps" class="mt-2 text-sm text-slate-200 leading-relaxed whitespace-pre-wrap">—</div>
+                          </div>
+                          <p class="text-xs text-slate-500">This summary is informational and may change as new information is received.</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>                    </div>
+                  </div>
+                </div>
+
+                <!-- Right Column - Preview -->
+                <aside class="tm-preview hidden lg:block w-full min-w-0 space-y-4">
+                  <div class="rounded-lg border border-slate-700/50 bg-slate-900 overflow-hidden print-white flex flex-col h-full">
+                    <div class="p-4 border-b border-slate-700/50 flex items-center justify-between no-print shrink-0">
+                      <div>
+                        <div class="text-xs text-slate-500 uppercase tracking-wide">Preview</div>
+                        <div id="preview-active-label" class="text-sm font-medium text-slate-100">Overview</div>
+                      </div>
+                      <div class="flex items-center gap-2">
+                        <button
+                          id="copy-summary-btn"
+                          type="button"
+                          class="px-3 py-2 text-xs font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-colors"
+                        >
+                          Copy Summary
+                        </button>
+                        <button
+                          id="generate-report-btn"
+                          type="button"
+                          class="px-3 py-2 text-xs font-medium text-white bg-emerald-600 rounded-md hover:bg-emerald-700 transition-colors"
+                        >
+                          Generate Report
+                        </button>
+                        <button
+                          id="download-report-btn"
+                          type="button"
+                          class="px-3 py-2 text-xs font-medium text-white bg-slate-700 rounded-md hover:bg-slate-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                          disabled
+                        >
+                          Download PDF
+                        </button>
+                      </div>
+                    </div>
+
+                    <div id="preview-scroll" class="p-4 space-y-3 overflow-auto flex-1">
+                      <div id="report-status" class="hidden rounded-lg border border-slate-700/50 bg-slate-800/30 p-3 text-sm text-slate-200"></div>
+
+                      <section class="rounded-lg border border-slate-700/50 bg-slate-800/30 p-4">
+                        <div class="text-xs text-slate-500 uppercase tracking-wide">Client</div>
+                        <div class="mt-2">
+                          <div id="preview-client-name-top" class="text-lg font-semibold text-slate-100">—</div>
+                        </div>
+                      </section>
+
+                      <section id="preview-section-summary" data-preview-section="summary" class="rounded-lg border border-slate-700/50 bg-slate-800/30 p-3">
+                        <div class="text-xs text-slate-500 uppercase tracking-wide">Year Summary</div>
+                        <div class="mt-3 overflow-x-auto">
+                          <table class="min-w-full text-sm text-left">
+                            <thead>
+                              <tr class="border-b border-slate-700/50 text-slate-400">
+                                <th class="py-2 pr-4 font-medium">Year</th>
+                                <th class="py-2 pr-4 font-medium">Status</th>
+                                <th class="py-2 pr-4 font-medium">Filing</th>
+                                <th class="py-2 font-medium text-right">Total Bal</th>
+                              </tr>
+                            </thead>
+                            <tbody id="preview-summary-years" class="text-slate-200">
+                            </tbody>
+                          </table>
+                        </div>
+                      </section>
+
+                      <section id="preview-section-overview" data-preview-section="overview" class="rounded-lg border border-slate-700/50 bg-slate-800/30 p-3">
+                        <div class="text-xs text-slate-500 uppercase tracking-wide">Overview</div>
+                        <div class="mt-2 space-y-2 text-sm">
+                          <div class="flex items-center justify-between">
+                            <span class="text-slate-400">Filing Status</span>
+                            <span id="preview-filing-status" class="text-slate-100">—</span>
+                          </div>
+                          <div class="flex items-center justify-between">
+                            <span class="text-slate-400">IRS Account Status</span>
+                            <span id="preview-irs-account-status" class="text-slate-100">—</span>
+                          </div>
+                          <div class="flex items-center justify-between">
+                            <span class="text-slate-400">Estimated Balance Range</span>
+                            <span id="preview-balance-range" class="text-slate-100">—</span>
+                          </div>
+                        </div>
+                      </section>
+
+                      <section id="preview-section-authority" data-preview-section="authority" class="rounded-lg border border-slate-700/50 bg-slate-800/30 p-3">
+                        <div class="text-xs text-slate-500 uppercase tracking-wide">Authority</div>
+                        <div id="preview-authority" class="mt-2 text-sm text-slate-200">—</div>
+                      </section>
+
+                      <section id="preview-section-compliance" data-preview-section="compliance" class="rounded-lg border border-slate-700/50 bg-slate-800/30 p-3">
+                        <div class="text-xs text-slate-500 uppercase tracking-wide">Compliance</div>
+                        <div class="mt-2 space-y-2 text-sm">
+                          <div class="flex items-center justify-between">
+                            <span class="text-slate-400">Activity Type</span>
+                            <span id="preview-compliance-activity" class="text-slate-100">—</span>
+                          </div>
+                          <div class="flex items-center justify-between">
+                            <span class="text-slate-400">Period Covered</span>
+                            <span id="preview-compliance-period" class="text-slate-100">—</span>
+                          </div>
+                          
+                        </div>
+                      </section>
+
+                      <section id="preview-section-notices" data-preview-section="notices" class="rounded-lg border border-slate-700/50 bg-slate-800/30 p-3">
+                        <div class="text-xs text-slate-500 uppercase tracking-wide">Notices</div>
+                        <div id="preview-notices" class="mt-2 text-sm text-slate-200">—</div>
+                      </section>
+
+                      <section id="preview-section-installment" data-preview-section="installment" class="rounded-lg border border-slate-700/50 bg-slate-800/30 p-3">
+                        <div class="text-xs text-slate-500 uppercase tracking-wide">Installment Agreement</div>
+                        <div class="mt-2 space-y-2 text-sm">
+                          <div class="flex items-center justify-between">
+                            <span class="text-slate-400">Established</span>
+                            <span id="preview-ia-established" class="text-slate-100">—</span>
+                          </div>
+                          <div class="flex items-center justify-between">
+                            <span class="text-slate-400">Requested Payment</span>
+                            <span id="preview-ia-payment" class="text-slate-100">—</span>
+                          </div>
+                          <div class="flex items-center justify-between">
+                            <span class="text-slate-400">Next Payment Due</span>
+                            <span id="preview-ia-next" class="text-slate-100">—</span>
+                          </div>
+                        </div>
+                      </section>
+
+                      <section id="preview-section-revenue" data-preview-section="revenue" class="rounded-lg border border-slate-700/50 bg-slate-800/30 p-3">
+                        <div class="text-xs text-slate-500 uppercase tracking-wide">Revenue Officer</div>
+                        <div class="mt-2 space-y-2 text-sm">
+                          <div class="flex items-center justify-between">
+                            <span class="text-slate-400">Name</span>
+                            <span id="preview-ro-name" class="text-slate-100">—</span>
+                          </div>
+                          <div class="flex items-center justify-between">
+                            <span class="text-slate-400">Phone</span>
+                            <span id="preview-ro-phone" class="text-slate-100">—</span>
+                          </div>
+                          <div class="flex items-center justify-between">
+                            <span class="text-slate-400">Email</span>
+                            <span id="preview-ro-email" class="text-slate-100">—</span>
+                          </div>
+                        </div>
+                      </section>
+
+                      <section id="preview-section-transcripts" data-preview-section="transcripts" class="rounded-lg border border-slate-700/50 bg-slate-800/30 p-3">
+                        <div class="text-xs text-slate-500 uppercase tracking-wide">Transcripts</div>
+                        <div class="mt-2 space-y-2 text-sm">
+                          <div class="flex items-center justify-between">
+                            <span class="text-slate-400">Request Made</span>
+                            <span id="preview-tr-request" class="text-slate-100">—</span>
+                          </div>
+                          <div class="flex items-center justify-between">
+                            <span class="text-slate-400">Retrieval Date</span>
+                            <span id="preview-tr-date" class="text-slate-100">—</span>
+                          </div>
+                        </div>
+                      </section>
+
+                      <section id="preview-section-case-summary" data-preview-section="case-summary" class="rounded-lg border border-slate-700/50 bg-slate-800/30 p-4">
+                        <div class="text-xs text-slate-500 uppercase tracking-wide">Case Summary</div>
+                        <div id="preview-summary" class="mt-3 text-sm text-slate-200 leading-relaxed whitespace-pre-wrap">—</div>
+                      </section>
+                    </div>
+                  </div>
+                </aside>
+              </div>
+            </div>
+          </main>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+      const $ = (sel, root = document) => root.querySelector(sel);
+
+      const STATE = {
+        download: {
+          blobUrl: null,
+          filename: null,
+        },
+        selectedTaxYear: null,
+      };
+
+      function fmtDate(v) {
+        const s = (v || "").toString().trim();
+        if (!s) return "—";
+        try {
+          return new Date(s + "T00:00:00").toLocaleDateString();
+        } catch {
+          return s;
+        }
+      }
+
+      function getUrlParam(name) {
+        const u = new URL(window.location.href);
+        return u.searchParams.get(name) || "";
+      }
+
+      function setText(sel, val, fallback = "—") {
+        const el = $(sel);
+        if (!el) return;
+        const t = (val ?? "").toString().trim();
+        el.textContent = t || fallback;
+      }
+
+      function setOffsetFromMFJBanner() {
+        const banner = $("#mfj-banner");
+        if (!banner) return;
+        const visible = !banner.classList.contains("hidden");
+        const h = visible ? banner.getBoundingClientRect().height : 0;
+        document.documentElement.style.setProperty("--mfj-offset", `${Math.round(h)}px`);
+      }
+
+      function initTabs() {
+        const btns = $$(".tab-btn");
+        const contents = $$(".tab-content");
+
+        function focusPreview(tabName) {
+          const label = $("#preview-active-label");
+          const detailsLabel = $("#details-active-label");
+          const pretty = (tabName || "overview").replace(/^\w/, (c) => c.toUpperCase());
+          if (label) label.textContent = pretty;
+          if (detailsLabel) detailsLabel.textContent = pretty;
+
+          const target = document.querySelector(`[data-preview-section="${tabName}"]`);
+          const scroller = $("#preview-scroll");
+          if (!target || !scroller) return;
+
+          $$('[data-preview-section]').forEach((el) => {
+            el.classList.remove("ring-2", "ring-blue-500/40", "border-blue-500/40");
+          });
+
+          target.classList.add("ring-2", "ring-blue-500/40", "border-blue-500/40");
+
+          const top = target.offsetTop - 8;
+          scroller.scrollTo({ top, behavior: "smooth" });
+        }
+
+        function activate(tabName) {
+          btns.forEach((b) => b.classList.toggle("tab-active", b.dataset.tab === tabName));
+          contents.forEach((c) => c.classList.toggle("hidden", c.id !== `tab-${tabName}`));
+          focusPreview(tabName);
+        }
+
+        btns.forEach((b) => b.addEventListener("click", () => activate(b.dataset.tab)));
+
+        const initial = btns.find((b) => b.classList.contains("tab-active"))?.dataset.tab || "overview";
+        focusPreview(initial);
+      }
+
+      function initAccordions() {
+        $$(".accordion-header").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const key = btn.dataset.accordion;
+            const content = $(`#accordion-${key}`);
+            const icon = btn.querySelector(".accordion-icon");
+            if (!content) return;
+            const open = content.classList.toggle("open");
+            if (icon) icon.classList.toggle("rotate-180", open);
+          });
+        });
+      }
+
+      function initYearTabs() {
+        const wrap = $("#year-tabs");
+        const yearLabel = $("#compliance-year");
+        const hidden = $("#input-compliance-tax-year");
+        if (!wrap || !yearLabel || !hidden) return;
+
+        const current = new Date().getFullYear();
+        const years = Array.from({ length: 10 }, (_, i) => current - i);
+
+        const preferred = parseInt(localStorage.getItem("tm_client_compliance_year") || "", 10);
+        const initial = Number.isFinite(preferred) ? preferred : years[0];
+
+        function setYear(y) {
+          STATE.selectedTaxYear = y;
+          yearLabel.textContent = y;
+          hidden.value = String(y);
+          localStorage.setItem("tm_client_compliance_year", String(y));
+
+          $$(".year-tab", wrap).forEach((b) => {
+            const active = parseInt(b.dataset.year, 10) === y;
+            b.classList.toggle("bg-blue-600", active);
+            b.classList.toggle("text-white", active);
+            b.classList.toggle("bg-slate-800", !active);
+            b.classList.toggle("text-slate-300", !active);
+          });
+
+          setText("#ro-tax-year", String(y));
+          setText("#preview-tax-year", String(y));
+        }
+
+        wrap.innerHTML = "";
+        years.forEach((y) => {
+          const b = document.createElement("button");
+          b.type = "button";
+          b.dataset.year = String(y);
+          b.className = "year-tab px-3 py-2 text-sm font-medium rounded-md transition-colors bg-slate-800 text-slate-300 hover:text-slate-100 hover:bg-slate-700";
+          b.textContent = y;
+          b.addEventListener("click", () => setYear(y));
+          wrap.appendChild(b);
+        });
+
+        setYear(initial);
+      }
+
+      function initMFJBanner() {
+        const banner = $("#mfj-banner");
+        const closeBtn = $("#mfj-banner-close");
+        const recordsWrap = $("#mfj-records");
+        const scopeBtns = $$(".mfj-scope-btn");
+        const scopeNote = $("#mfj-scope-note");
+
+        if (!banner || !recordsWrap) return;
+
+        const STORAGE_KEY = "tm_mfj_banner_dismissed";
+        let scope = "primary";
+
+        const SAMPLE = {
+          primary: [
+            { label: "CP2000", meta: "TY2023" },
+            { label: "CP504", meta: "TY2022" },
+            { label: "RO", meta: "Assigned" },
+          ],
+          spouse: [
+            { label: "CP14", meta: "TY2021" },
+            { label: "IA", meta: "Active" },
+            { label: "LT11", meta: "TY2022" },
+          ],
+        };
+
+        function renderRecords() {
+          const list = (SAMPLE[scope] || []).slice().sort((a, b) => {
+            const aa = `${a.label} ${a.meta}`.toLowerCase();
+            const bb = `${b.label} ${b.meta}`.toLowerCase();
+            return aa.localeCompare(bb);
+          });
+
+          recordsWrap.innerHTML = "";
+          list.forEach((item) => {
+            const b = document.createElement("span");
+            b.className = "inline-flex items-center gap-2 rounded-md border border-purple-500/25 bg-slate-950/40 px-3 py-1.5 text-xs font-medium text-slate-100";
+            b.innerHTML = `<span class=\"font-mono text-purple-100\">${item.label}</span><span class=\"text-slate-300/90\">${item.meta}</span>`;
+            recordsWrap.appendChild(b);
+          });
+
+          scopeBtns.forEach((btn) => {
+            const active = btn.dataset.scope === scope;
+            btn.classList.toggle("bg-purple-500/20", active);
+            btn.classList.toggle("border-purple-500/40", active);
+          });
+
+          if (scopeNote) scopeNote.textContent = `Scope: ${scope === "spouse" ? "Spouse" : "Primary"}`;
+        }
+
+        function show() {
+          banner.classList.remove("hidden");
+          localStorage.removeItem(STORAGE_KEY);
+          renderRecords();
+          setOffsetFromMFJBanner();
+        }
+
+        function hide() {
+          banner.classList.add("hidden");
+          setOffsetFromMFJBanner();
+        }
+
+        function sync() {
+          const filing = (getUrlParam("filingStatus") || "").toUpperCase();
+          const isMFJ = filing === "MFJ";
+          const dismissed = localStorage.getItem(STORAGE_KEY) === "1";
+
+          if (isMFJ && !dismissed) {
+            show();
+            return;
+          }
+
+          hide();
+        }
+
+        if (closeBtn) {
+          closeBtn.addEventListener("click", () => {
+            localStorage.setItem(STORAGE_KEY, "1");
+            hide();
+          });
+        }
+
+        scopeBtns.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            scope = btn.dataset.scope === "spouse" ? "spouse" : "primary";
+            renderRecords();
+          });
+        });
+
+        const ro = new ResizeObserver(() => setOffsetFromMFJBanner());
+        ro.observe(banner);
+        window.addEventListener("resize", setOffsetFromMFJBanner);
+
+        sync();
+      }
+
+      function hydrateFromQuery() {
+        const accountId = getUrlParam("accountId");
+        const clientName = getUrlParam("clientName");
+        const filingStatus = getUrlParam("filingStatus");
+        const orderId = getUrlParam("orderId");
+        const sessionToken = getUrlParam("sessionToken");
+        const updated = getUrlParam("updated");
+
+        $("#input-account-id").value = accountId;
+        $("#input-order-id").value = orderId;
+        $("#input-session-token").value = sessionToken;
+
+        setText("#header-client-id", accountId || "—");
+        setText("#header-client-name", clientName || "—");
+        setText("#header-order-id", orderId || "—");
+
+        setText("#preview-client", clientName || "—");
+        setText("#preview-client-name-top", clientName || "—");
+        setText("#ro-client-name", clientName || "—");
+
+        const filingMap = {
+          HOH: "Head of Household",
+          MFJ: "Married Filing Jointly",
+          MFS: "Married Filing Separately",
+          SINGLE: "Single",
+        };
+        setText("#ro-filing-status", filingMap[(filingStatus || "").toUpperCase()] || (filingStatus || "—"));
+        setText("#ro-return-filing-status", filingMap[(filingStatus || "").toUpperCase()] || (filingStatus || "—"));
+        setText("#preview-filing-status", filingMap[(filingStatus || "").toUpperCase()] || (filingStatus || "—"));
+
+        setText("#last-updated", updated ? fmtDate(updated) : "—");
+      }
+
+      function hydratePlaceholderData() {
+        // This is intentionally UI-only.
+        // Wire this to your real canonical read when you confirm the endpoint + auth contract.
+
+        const current = new Date().getFullYear();
+        const years = Array.from({ length: 10 }, (_, i) => current - i);
+        const tbody = document.getElementById("preview-summary-years");
+        if (tbody) {
+          tbody.innerHTML = "";
+          years.forEach((y) => {
+            const tr = document.createElement("tr");
+            tr.className = "border-b border-slate-800/60";
+            tr.innerHTML = `
+              <td class="py-2 pr-4 font-mono">${y}</td>
+              <td class="py-2 pr-4">—</td>
+              <td class="py-2 pr-4">—</td>
+              <td class="py-2 text-right font-mono">—</td>
+            `;
+            tbody.appendChild(tr);
+          });
+        }
+
+        setText("#ro-record-status", "In Progress");
+
+        setText("#ro-state", "—");
+
+        setText("#ro-total-balance", "—");
+        setText("#ro-penalties", "—");
+        setText("#ro-interest", "—");
+
+        setText("#ro-irs-account-status", "—");
+        setText("#preview-irs-account-status", $("#ro-irs-account-status")?.textContent || "—");
+        setText("#ro-balance-range", "—");
+        setText("#preview-balance-range", $("#ro-balance-range")?.textContent || "—");
+        setText("#ro-missing-years", "—");
+        setText("#ro-lien", "—");
+
+        const cats = $("#ro-status-categories");
+        if (cats) cats.innerHTML = '<span class="text-sm text-slate-400">—</span>';
+
+        setText("#preview-summary", $("#ro-summary")?.textContent || "—");
+
+        // Keep download state coherent with UI-only hydrations
+        clearDownloadState();
+        setReportStatus("", "");
+      }
+
+      function setReportStatus(message, tone) {
+        const el = $("#report-status");
+        if (!el) return;
+        const msg = (message || "").toString().trim();
+        if (!msg) {
+          el.classList.add("hidden");
+          el.textContent = "";
+          return;
+        }
+
+        el.classList.remove("hidden");
+        el.textContent = msg;
+
+        el.classList.remove("border-emerald-500/30", "bg-emerald-500/10", "border-red-500/30", "bg-red-500/10");
+        if (tone === "error") el.classList.add("border-red-500/30", "bg-red-500/10");
+        if (tone === "success") el.classList.add("border-emerald-500/30", "bg-emerald-500/10");
+      }
+
+      function setBtnLoading(btn, loading, loadingText) {
+        if (!btn) return;
+        btn.disabled = !!loading;
+        if (loading) {
+          btn.dataset.prevText = btn.textContent;
+          btn.textContent = loadingText || "Working…";
+        } else {
+          btn.textContent = btn.dataset.prevText || btn.textContent;
+          btn.dataset.prevText = "";
+        }
+      }
+
+      function clearDownloadState() {
+        if (STATE.download.blobUrl) URL.revokeObjectURL(STATE.download.blobUrl);
+        STATE.download.blobUrl = null;
+        STATE.download.filename = null;
+        const dl = $("#download-report-btn");
+        if (dl) dl.disabled = true;
+      }
+
+      async function generateComplianceReportPdf() {
+        const accountId = $("#input-account-id")?.value || "";
+        const orderId = $("#input-order-id")?.value || "";
+        const sessionToken = $("#input-session-token")?.value || "";
+        const taxYear = STATE.selectedTaxYear ? String(STATE.selectedTaxYear) : "";
+
+        if (!accountId || !sessionToken || !taxYear) {
+          setReportStatus("Missing required context (accountId, sessionToken, taxYear).", "error");
+          return;
+        }
+
+        clearDownloadState();
+
+        const genBtn = $("#generate-report-btn");
+        const dlBtn = $("#download-report-btn");
+        setBtnLoading(genBtn, true, "Generating…");
+        setReportStatus("Generating PDF report…", "");
+
+        const payload = {
+          accountId,
+          eventId: (crypto?.randomUUID ? crypto.randomUUID() : String(Date.now())),
+          orderId,
+          sessionToken,
+          taxYear,
+        };
+
+        try {
+          const res = await fetch("https://api.taxmonitor.pro/forms/post-payment/compliance-report-generate", {
+            method: "POST",
+            headers: {
+              "Accept": "application/pdf",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+          });
+
+          if (!res.ok) {
+            const text = await res.text().catch(() => "");
+            throw new Error(`Report generation failed (${res.status}). ${text}`.trim());
+          }
+
+          const blob = await res.blob();
+          if (!blob || !blob.size) throw new Error("Empty PDF response");
+
+          const blobUrl = URL.createObjectURL(blob);
+          const filename = `compliance-${taxYear}.pdf`;
+
+          STATE.download.blobUrl = blobUrl;
+          STATE.download.filename = filename;
+
+          if (dlBtn) dlBtn.disabled = false;
+          setReportStatus("Report ready. You can download the PDF.", "success");
+        } catch (e) {
+          setReportStatus(String(e?.message || e || "Unable to generate report"), "error");
+        } finally {
+          setBtnLoading(genBtn, false);
+        }
+      }
+
+      function downloadReportPdf() {
+        if (!STATE.download.blobUrl) return;
+        const a = document.createElement("a");
+        a.href = STATE.download.blobUrl;
+        a.download = STATE.download.filename || "compliance.pdf";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      }
+
+      function initPrintAndCopy() {
+        const printBtn = $("#print-btn");
+        const copySummaryBtn = $("#copy-summary-btn");
+        const downloadBtn = $("#download-report-btn");
+        const generateBtn = $("#generate-report-btn");
+
+        if (downloadBtn) downloadBtn.addEventListener("click", downloadReportPdf);
+
+        if (generateBtn) generateBtn.addEventListener("click", generateComplianceReportPdf);
+
+        if (printBtn) printBtn.addEventListener("click", () => window.print());
+
+        if (copySummaryBtn) {
+          copySummaryBtn.addEventListener("click", async () => {
+            const text = $("#ro-summary")?.textContent || "";
+            await navigator.clipboard.writeText((text || "").toString());
+          });
+        }
+      }
+
+      function initRefresh() {
+        const btn = $("#refresh-btn");
+        if (!btn) return;
+        btn.addEventListener("click", async () => {
+          // UI-only refresh for now.
+          // Once you confirm the canonical read endpoint, call it here.
+          hydrateFromQuery();
+          hydratePlaceholderData();
+        });
+      }
+
+      function init() {
+        initAccordions();
+        initMFJBanner();
+        initPrintAndCopy();
+        initRefresh();
+        initTabs();
+        initYearTabs();
+
+        hydrateFromQuery();
+        hydratePlaceholderData();
+        setOffsetFromMFJBanner();
+      }
+
+      document.addEventListener("DOMContentLoaded", init);
+    </script>
+  </body>
+</html>

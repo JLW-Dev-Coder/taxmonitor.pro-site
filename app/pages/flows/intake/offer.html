@@ -171,8 +171,8 @@
   </style>
 </head>
 
-<body class="h-full bg-slate-950 text-slate-100">
-  <div class="relative min-h-screen overflow-hidden">
+<body class="h-full bg-slate-950 text-slate-100 noise-bg overflow-hidden">
+  <div class="relative h-full overflow-hidden">
     <div class="aurora" aria-hidden="true"></div>
     <div class="pointer-events-none absolute inset-0 noise-bg opacity-50" aria-hidden="true"></div>
 
@@ -187,13 +187,13 @@
       <input type="hidden" name="viewport" id="viewport" value="" />
     </form>
 
-    <div class="relative z-10 min-h-screen grid lg:grid-cols-[280px_1fr]">
+    <div class="relative z-10 flex h-full">
       <!-- App Sidebar (partial injection target) -->
-      <aside class="hidden lg:block sidebar-shell">
+      <aside class="hidden lg:block w-[280px] shrink-0 sidebar-shell">
         <div id="tm-sidebar" class="h-full"></div>
       </aside>
 
-      <div class="min-h-screen flex flex-col">
+      <div class="flex-1 flex flex-col min-w-0">
         <!-- App Topbar (partial injection target) -->
         <div class="topbar-shell sticky top-0 z-30">
           <div id="tm-topbar"></div>
@@ -268,7 +268,7 @@
         </header>
 
         <!-- Content -->
-        <main class="flex-1">
+        <main class="flex-1 overflow-auto">
           <div class="mx-auto max-w-5xl px-6 py-10">
             <section class="gradient-border rounded-[24px] fade-in-up">
               <div class="glass-card rounded-[24px] p-6 md:p-8">
@@ -772,10 +772,7 @@
           if (sidebarShell) sidebarShell.style.display = 'none';
           if (topbarShell) topbarShell.style.display = 'none';
 
-          // Collapse grid to single column
-          var grid = document.querySelector('.grid');
-          if (grid) grid.classList.remove('lg:grid-cols-[280px_1fr]');
-        }
+                  }
 
         wireCards();
         wireNav();

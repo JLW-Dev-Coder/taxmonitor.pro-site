@@ -21,40 +21,52 @@
 
     .icon-float { animation: float 3s ease-in-out infinite; }
 
+    /* Theme tokens (match app/index dashboard palette) */
     .gradient-text {
-      background: linear-gradient(135deg, #f59e0b, #f97316, #ef4444);
+      background: linear-gradient(135deg, #F59E0B, #FB923C);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
-    .gradient-border {
-      background: linear-gradient(135deg, #f59e0b, #f97316, #ef4444);
-    }
+
+    .gradient-border { background: linear-gradient(135deg, #F59E0B, #FB923C); }
+
+    .gradient-btn { background: linear-gradient(135deg, #F59E0B, #FB923C); }
+
+    .gradient-btn:hover { filter: brightness(0.95); }
+
+    /* Dashboard-like surfaces */
     .glass-card {
-      background: rgba(30, 41, 59, 0.7);
+      background: rgba(10, 10, 10, 0.6);
       backdrop-filter: blur(12px);
       border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: none;
     }
-    .gradient-btn {
-      background: linear-gradient(135deg, #f59e0b, #f97316, #ef4444);
-    }
-    .gradient-btn:hover {
-      background: linear-gradient(135deg, #d97706, #ea580c, #dc2626);
-    }
+
     .form-input {
       background: rgba(15, 23, 42, 0.8);
       border: 1px solid rgba(255, 255, 255, 0.15);
     }
+
     .form-input:focus {
       border-color: #f59e0b;
       outline: none;
       box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2);
     }
 
-    /* Custom select styling */
-    .select-wrapper {
-      position: relative;
+    /* Noise texture overlay (same as app/index) */
+    .noise-bg::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      opacity: .03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1;
     }
+
+    /* Custom select styling */
+    .select-wrapper { position: relative; }
     .select-wrapper select {
       appearance: none;
       -webkit-appearance: none;
@@ -76,24 +88,26 @@
       transform: translateY(-50%) rotate(180deg);
       color: #fbbf24;
     }
+
     .blob-1 {
       position: absolute;
-      width: 400px;
-      height: 400px;
-      background: radial-gradient(circle, rgba(245, 158, 11, 0.15) 0%, transparent 70%);
+      width: 440px;
+      height: 440px;
+      background: radial-gradient(circle, rgba(245, 158, 11, 0.14) 0%, transparent 70%);
       border-radius: 50%;
-      top: -100px;
-      right: -100px;
+      top: -120px;
+      right: -140px;
       pointer-events: none;
     }
+
     .blob-2 {
       position: absolute;
-      width: 300px;
-      height: 300px;
-      background: radial-gradient(circle, rgba(239, 68, 68, 0.1) 0%, transparent 70%);
+      width: 360px;
+      height: 360px;
+      background: radial-gradient(circle, rgba(239, 68, 68, 0.10) 0%, transparent 70%);
       border-radius: 50%;
-      bottom: 100px;
-      left: -50px;
+      bottom: 90px;
+      left: -90px;
       pointer-events: none;
     }
 
@@ -103,9 +117,7 @@
       backdrop-filter: blur(18px);
       border: 1px solid rgba(245, 158, 11, 0.18);
     }
-    .email-gradient-border {
-      position: relative;
-    }
+    .email-gradient-border { position: relative; }
     .email-gradient-border::before {
       content: '';
       position: absolute;
@@ -119,20 +131,25 @@
       mask-composite: exclude;
       pointer-events: none;
     }
-    .email-glow-amber {
-      box-shadow: 0 0 30px rgba(245, 158, 11, 0.12), 0 0 60px rgba(245, 158, 11, 0.04);
-    }
+    .email-glow-amber { box-shadow: 0 0 30px rgba(245, 158, 11, 0.12), 0 0 60px rgba(245, 158, 11, 0.04); }
+
+    body { box-sizing: border-box; }
   </style>
-  <style>body { box-sizing: border-box; }</style>
  </head>
- <body class="h-full bg-slate-900 text-white overflow-auto">
-  <div id="app-wrapper" class="min-h-full w-full relative"><!-- Background Blobs -->
+ <body class="h-full bg-slate-950 text-slate-100 noise-bg overflow-auto">
+
+  <!-- Shell slots (normal mode injects sidebar/topbar; overlay mode hides them) -->
+  <div id="shell" class="min-h-full w-full">
+    <div id="sidebar-slot" class="hidden lg:block"></div>
+    <div id="topbar-slot" class="hidden"></div>
+
+    <div id="app-wrapper" class="min-h-full w-full relative"><!-- Background Blobs -->
    <div class="blob-1"></div>
    <div class="blob-2"></div><!-- Main Content -->
    <div class="relative z-10 max-w-4xl mx-auto px-4 py-8"><!-- Header -->
     <header class="text-center mb-10">
      <div class="mb-6 text-left">
-      <a href="/app/index.html" class="inline-flex items-center gap-2 text-sm font-medium text-amber-400 hover:text-amber-300 transition">
+      <a href="/app/index.html" data-overlay-close class="inline-flex items-center gap-2 text-sm font-medium text-amber-300 hover:text-amber-200 transition">
        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
        </svg> Back to Dashboard </a>
@@ -208,7 +225,8 @@
       <div>
        <label for="filing-status" class="block text-sm font-medium text-slate-300 mb-2"> Filing Status during compliance years 2016 - 2025 </label>
        <div class="select-wrapper">
-        <select id="filing-status" name="filing-status" class="form-input w-full px-4 py-3 rounded-lg text-white transition-all cursor-pointer"> <option value="" class="bg-slate-800">Select your filing status</option> <option value="single" class="bg-slate-800">Single</option> <option value="mfj" class="bg-slate-800">Married Filing Jointly</option> <option value="mfs" class="bg-slate-800">Married Filing Separately</option> <option value="hoh" class="bg-slate-800">Head of Household</option> <option value="widow" class="bg-slate-800">Qualifying Widow(er)</option> </select>
+        <select id="filing-status" name="filing-status" class="form-input w-full px-4 py-3 rounded-lg text-white transition-all cursor-pointer"> 
+          <option value="" class="bg-slate-800">Select your filing status</option> <option value="single" class="bg-slate-800">Single</option> <option value="mfj" class="bg-slate-800">Married Filing Jointly</option> <option value="mfs" class="bg-slate-800">Married Filing Separately</option> <option value="hoh" class="bg-slate-800">Head of Household</option> <option value="widow" class="bg-slate-800">Qualifying Widow(er)</option> </select>
         <svg class="select-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
         </svg>
@@ -356,9 +374,54 @@
     </svg><span id="error-message">An error occurred</span>
    </div>
   </div>
+  </div>
 
   <script>
 const API_BASE = 'https://api.taxmonitor.pro';
+
+const isOverlay = new URLSearchParams(location.search).get('overlay') === '1';
+
+async function injectPartial(slotId, url) {
+  const slot = document.getElementById(slotId);
+  if (!slot) return;
+  const res = await fetch(url, { method: 'GET' });
+  if (!res.ok) throw new Error(`Partial HTTP ${res.status}: ${url}`);
+  slot.innerHTML = await res.text();
+}
+
+function wireOverlayClose() {
+  document.querySelectorAll('[data-overlay-close]').forEach((el) => {
+    el.addEventListener('click', (e) => {
+      e.preventDefault();
+      try {
+        window.parent?.postMessage({ type: 'TM_OVERLAY_CLOSE' }, '*');
+      } catch (_) {}
+    });
+  });
+}
+
+async function initShell() {
+  const sidebarSlot = document.getElementById('sidebar-slot');
+  const topbarSlot = document.getElementById('topbar-slot');
+
+  if (isOverlay) {
+    if (sidebarSlot) sidebarSlot.classList.add('hidden');
+    if (topbarSlot) topbarSlot.classList.add('hidden');
+    wireOverlayClose();
+    return;
+  }
+
+  // Normal mode: inject like other flow steps
+  try {
+    if (sidebarSlot) sidebarSlot.classList.remove('hidden');
+    if (topbarSlot) topbarSlot.classList.remove('hidden');
+    await injectPartial('sidebar-slot', '/app/partials/sidebar.html');
+    await injectPartial('topbar-slot', '/app/partials/topbar.html');
+  } catch (err) {
+    console.warn('Shell partial injection failed:', err);
+  }
+}
+
 const ORDER_STATE_ENDPOINT = `${API_BASE}/orders/state`;
 const FILING_STATUS_ENDPOINT = `${API_BASE}/forms/post-payment/filing-status`;
 
@@ -414,11 +477,11 @@ async function fetchOrderState(orderId, sessionToken) {
 
   // DOM sanity checks
   console.assert(!!document.getElementById('spouse-section'), 'spouse-section should exist');
-  console.assert(!document.getElementById('reset-btn'), 'reset-btn should not exist before DOMContentLoaded (added later in markup)');
-  console.assert(!document.getElementById('spouse-fields'), 'spouse-fields should not exist (removed)');
+  console.assert(!!document.getElementById('reset-btn'), 'reset-btn should exist');
 })();
 
 document.addEventListener('DOMContentLoaded', async () => {
+  await initShell();
   const primeHiddenFields = () => {
     // Keep hidden contract fields stable after resets
     if (eventIdEl) eventIdEl.value = getQuery('eventId') || tmCommon.ensureEventId();

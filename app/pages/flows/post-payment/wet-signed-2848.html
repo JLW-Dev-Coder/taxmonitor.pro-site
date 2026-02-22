@@ -25,42 +25,45 @@
     .icon-float { animation: float 3s ease-in-out infinite; }
 
     .gradient-text {
-      background: linear-gradient(135deg, #f59e0b, #f97316, #ef4444);
+      background: linear-gradient(135deg, #F59E0B, #FB923C);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
-    .gradient-border { background: linear-gradient(135deg, #f59e0b, #f97316, #ef4444); }
+    .gradient-border { background: linear-gradient(135deg, #F59E0B, #FB923C); }
     .glass-card {
-      background: rgba(30, 41, 59, 0.7);
+      background: rgba(10, 10, 10, 0.6);
       backdrop-filter: blur(12px);
       border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: none;
     }
     .gradient-btn {
-      background: linear-gradient(135deg, #f59e0b, #f97316, #ef4444);
+      background: linear-gradient(135deg, #F59E0B, #FB923C);
     }
-    .gradient-btn:hover {
-      background: linear-gradient(135deg, #d97706, #ea580c, #dc2626);
-    }
+    .gradient-btn:hover { filter: brightness(0.95); }
 
     .blob-1 {
       position: absolute;
-      width: 420px;
-      height: 420px;
+      width: 400px;
+      height: 400px;
       background: radial-gradient(circle, rgba(245, 158, 11, 0.15) 0%, transparent 70%);
       border-radius: 50%;
-      top: -110px;
-      right: -120px;
+      top: -100px;
+      right: -100px;
+      pointer-events: none;
+    }
       pointer-events: none;
     }
     .blob-2 {
       position: absolute;
-      width: 320px;
-      height: 320px;
-      background: radial-gradient(circle, rgba(239, 68, 68, 0.1) 0%, transparent 70%);
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(251, 146, 60, 0.10) 0%, transparent 70%);
       border-radius: 50%;
-      bottom: 90px;
-      left: -60px;
+      bottom: 100px;
+      left: -50px;
+      pointer-events: none;
+    }
       pointer-events: none;
     }
 
@@ -87,15 +90,26 @@
       border-radius: 14px;
       padding: 12px 14px;
     }
-    .tm-kv-k { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: rgba(251,191,36,0.85); }
+    .tm-kv-k { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: rgba(255,255,255,0.80); }
     .tm-kv-v { margin-top: 6px; font-weight: 700; color: #fff; }
     .tm-muted { font-weight: 600; color: rgba(148,163,184,1); }
 
     /* Draft bar */
     .tm-draft {
       background: rgba(15, 23, 42, 0.85);
-      border: 1px solid rgba(245, 158, 11, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.12);
       backdrop-filter: blur(18px);
+    }
+
+    /* Noise texture overlay (match welcome shell) */
+    .noise-bg::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      opacity: .03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1;
     }
 
     /* Toast */
@@ -166,7 +180,7 @@
       font-weight: 600;
       letter-spacing: 0.05em;
       text-transform: uppercase;
-      color: rgba(251, 191, 36, 0.85);
+      color: rgba(255,255,255,0.80);
       z-index: 10;
     }
     .flip-card-controls {
@@ -193,7 +207,7 @@
       background: rgba(15, 23, 42, 0.8);
     }
     .flip-toggle-btn.active {
-      background: linear-gradient(135deg, #f59e0b, #f97316, #ef4444);
+      background: linear-gradient(135deg, #F59E0B, #FB923C);
       color: white;
       border-color: transparent;
     }
@@ -323,16 +337,21 @@
   <style>body { box-sizing: border-box; }</style>
 </head>
 
-<body class="h-full bg-slate-900 text-white overflow-auto">
+<body class="h-full bg-slate-950 text-slate-100 noise-bg overflow-auto">
   <div id="app-wrapper" class="min-h-full w-full relative">
     <div class="blob-1"></div>
     <div class="blob-2"></div>
 
-    <div class="relative z-10 max-w-4xl mx-auto px-4 py-8">
+    <div id="tm-shell" class="relative z-10 w-full">
+    <div id="tmTopbar" class="w-full"></div>
+    <div class="mx-auto flex max-w-7xl gap-0">
+      <aside id="tmSidebar" class="w-[280px] shrink-0"></aside>
+      <main class="flex-1">
+        <div class="max-w-4xl mx-auto px-4 py-8">
       <!-- Header -->
       <header class="text-center mb-10">
         <div class="mb-6 text-left">
-          <a href="/app/index.html" class="inline-flex items-center gap-2 text-sm font-medium text-amber-400 hover:text-amber-300 transition">
+          <a href="/app/index.html" id="tmBackLink" data-overlay-close="1" class="inline-flex items-center gap-2 text-sm font-medium text-slate-200 hover:text-white transition">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
             Back to Dashboard
           </a>
@@ -354,7 +373,7 @@
           </div>
         </div>
 
-        <p class="text-amber-400 font-semibold tracking-wider uppercase text-sm mb-2">Tax Monitor Pro</p>
+        <p class="text-slate-200 font-semibold tracking-wider uppercase text-sm mb-2">Tax Monitor Pro</p>
         <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold gradient-text mb-4">IRS Authorization (2848)</h1>
         <p class="text-slate-400 text-lg">Generate Form 2848, wet-sign it, then upload the signed PDF.</p>
       </header>
@@ -364,7 +383,7 @@
         <div class="glass-card rounded-xl p-5">
           <div class="flex items-center gap-3 mb-3">
             <div class="gradient-border p-0.5 rounded-lg">
-              <div class="bg-slate-800 p-2 rounded-lg">
+              <div class="bg-slate-900 p-2 rounded-lg">
                 <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4" />
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12a8 8 0 11-16 0 8 8 0 0116 0z" />
@@ -379,7 +398,7 @@
         <div class="glass-card rounded-xl p-5">
           <div class="flex items-center gap-3 mb-3">
             <div class="gradient-border p-0.5 rounded-lg">
-              <div class="bg-slate-800 p-2 rounded-lg">
+              <div class="bg-slate-900 p-2 rounded-lg">
                 <svg class="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
@@ -393,7 +412,7 @@
         <div class="glass-card rounded-xl p-5">
           <div class="flex items-center gap-3 mb-3">
             <div class="gradient-border p-0.5 rounded-lg">
-              <div class="bg-slate-800 p-2 rounded-lg">
+              <div class="bg-slate-900 p-2 rounded-lg">
                 <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M12 18a. 18z" />
                 </svg>
@@ -424,9 +443,9 @@
 
           <div class="p-4 rounded-lg bg-slate-900/40 border border-white/5">
             <p class="text-sm text-slate-400">
-              <span class="text-amber-300 font-semibold">(Rev. January 2021)</span><br>
+              <span class="text-slate-200 font-semibold">(Rev. January 2021)</span><br>
               IRS Form 2848 — Power of Attorney and Declaration of Representative<br>
-              ▶ Go to <a class="text-amber-400 hover:text-amber-300 underline" href="http://www.irs.gov/Form2848" target="_blank" rel="noopener">www.irs.gov/Form2848</a> for instructions and the latest information.
+              ▶ Go to <a class="text-slate-200 hover:text-white underline" href="http://www.irs.gov/Form2848" target="_blank" rel="noopener">www.irs.gov/Form2848</a> for instructions and the latest information.
             </p>
           </div>
 
@@ -447,7 +466,7 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-3">
               <button type="button" id="draft-save" class="w-full py-2.5 px-4 rounded-lg font-semibold text-white gradient-btn">Save Draft</button>
-              <button type="button" id="draft-clear" class="w-full py-2.5 px-4 rounded-lg font-semibold text-slate-200 border border-amber-500/30 bg-slate-900/60 hover:bg-slate-900/80 transition">Clear Draft</button>
+              <button type="button" id="draft-clear" class="w-full py-2.5 px-4 rounded-lg font-semibold text-slate-200 border border-slate-300/15 bg-slate-950/30 hover:bg-slate-950/45 transition">Clear Draft</button>
             </div>
 
             <div class="text-[11px] text-slate-400" id="draft-status">Draft not saved.</div>
@@ -596,56 +615,56 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
               <div>
-                <label class="block text-xs font-semibold text-slate-300 mb-2"><span class="text-amber-400">1a.</span> Last Name</label>
+                <label class="block text-xs font-semibold text-white/90 mb-2"><span class="text-white">1a.</span> Last Name</label>
                 <input type="text" id="form-taxpayer-lastname" placeholder="Last name" class="w-full">
               </div>
               <div>
-                <label class="block text-xs font-semibold text-slate-300 mb-2"><span class="text-amber-400">1b.</span> First Name</label>
+                <label class="block text-xs font-semibold text-white/90 mb-2"><span class="text-white">1b.</span> First Name</label>
                 <input type="text" id="form-taxpayer-firstname" placeholder="First name" class="w-full">
               </div>
               <div>
-                <label class="block text-xs font-semibold text-slate-300 mb-2"><span class="text-amber-400">1c.</span> Middle Initial (optional)</label>
+                <label class="block text-xs font-semibold text-white/90 mb-2"><span class="text-white">1c.</span> Middle Initial (optional)</label>
                 <input type="text" id="form-taxpayer-middleinitial" placeholder="M.I." maxlength="1" class="w-full">
               </div>
             </div>
 
             <div class="mb-4">
-              <label class="block text-xs font-semibold text-slate-300 mb-2"><span class="text-amber-400">2.</span> Address (number, street, and apt. or suite number)</label>
+              <label class="block text-xs font-semibold text-white/90 mb-2"><span class="text-white">2.</span> Address (number, street, and apt. or suite number)</label>
               <input type="text" id="form-taxpayer-address" placeholder="123 Main Street, Apt 4B" class="w-full">
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-4">
               <div>
-                <label class="block text-xs font-semibold text-slate-300 mb-2">City</label>
+                <label class="block text-xs font-semibold text-white/90 mb-2">City</label>
                 <input type="text" id="form-taxpayer-city" placeholder="City" class="w-full">
               </div>
               <div>
-                <label class="block text-xs font-semibold text-slate-300 mb-2">State</label>
+                <label class="block text-xs font-semibold text-white/90 mb-2">State</label>
                 <input type="text" id="form-taxpayer-state" placeholder="CA" maxlength="2" class="w-full">
               </div>
               <div>
-                <label class="block text-xs font-semibold text-slate-300 mb-2">ZIP</label>
+                <label class="block text-xs font-semibold text-white/90 mb-2">ZIP</label>
                 <input type="text" id="form-taxpayer-zip" placeholder="12345" class="w-full">
               </div>
             </div>
 
             <div class="mb-4">
-              <label class="block text-xs font-semibold text-slate-300 mb-2">
-                <span class="text-amber-400">4.</span> Taxpayer Identification Number (SSN or ITIN)
-                <button type="button" id="toggle-ssn" class="inline-flex items-center text-amber-400 hover:text-amber-300 text-[10px] ml-2 underline decoration-amber-500/40">Show</button>
+              <label class="block text-xs font-semibold text-white/90 mb-2">
+                <span class="text-white">4.</span> Taxpayer Identification Number (SSN or ITIN)
+                <button type="button" id="toggle-ssn" class="inline-flex items-center text-slate-200 hover:text-white text-[10px] ml-2 underline decoration-white/20">Show</button>
               </label>
               <input type="password" id="form-taxpayer-id" placeholder="•••-••-1234" class="w-full" autocomplete="off" inputmode="numeric">
               <p class="text-[10px] text-slate-500 mt-1">Format: XXX-XX-XXXX</p>
             </div>
 
             <div class="mb-4">
-              <label class="block text-xs font-semibold text-slate-300 mb-2"><span class="text-amber-400">5.</span> Daytime Telephone Number</label>
+              <label class="block text-xs font-semibold text-white/90 mb-2"><span class="text-white">5.</span> Daytime Telephone Number</label>
               <input type="tel" id="form-taxpayer-phone" placeholder="(555) 123-4567" class="w-full">
               <p class="text-[10px] text-slate-500 mt-1">Optional: Email address can be provided below</p>
             </div>
 
             <div>
-              <label class="block text-xs font-semibold text-slate-300 mb-2"><span class="text-amber-400">6.</span> Email Address (optional)</label>
+              <label class="block text-xs font-semibold text-white/90 mb-2"><span class="text-white">6.</span> Email Address (optional)</label>
               <input type="email" id="form-taxpayer-email" placeholder="you@example.com" class="w-full" autocomplete="email">
             </div>
           </div>
@@ -697,17 +716,17 @@
             <h4 class="text-base font-bold text-white mb-4 uppercase tracking-wide">Tax Matters (Read-Only)</h4>
 
             <div class="mb-4">
-              <label class="block text-xs font-semibold text-slate-300 mb-2"><span class="text-amber-400">3a.</span> Tax Type</label>
+              <label class="block text-xs font-semibold text-white/90 mb-2"><span class="text-white">3a.</span> Tax Type</label>
               <input type="text" id="form-tax-type" class="w-full" readonly>
             </div>
 
             <div class="mb-4">
-              <label class="block text-xs font-semibold text-slate-300 mb-2"><span class="text-amber-400">3b.</span> Form Number(s)</label>
+              <label class="block text-xs font-semibold text-white/90 mb-2"><span class="text-white">3b.</span> Form Number(s)</label>
               <input type="text" id="form-tax-form" class="w-full" readonly>
             </div>
 
             <div>
-              <label class="block text-xs font-semibold text-slate-300 mb-2"><span class="text-amber-400">3c.</span> Tax Years or Periods</label>
+              <label class="block text-xs font-semibold text-white/90 mb-2"><span class="text-white">3c.</span> Tax Years or Periods</label>
               <input type="text" id="form-tax-years" class="w-full" readonly>
             </div>
           </div>
@@ -726,7 +745,7 @@
             </div>
 
             <div class="mt-4">
-              <label class="block text-xs font-semibold text-slate-300 mb-2"><span class="text-amber-400">4.</span> Specific Use</label>
+              <label class="block text-xs font-semibold text-white/90 mb-2"><span class="text-white">4.</span> Specific Use</label>
               <textarea id="form-specific-use" class="w-full min-h-[96px]" placeholder="(Not applicable for monitoring)" readonly tabindex="-1"></textarea>
             </div>
           </div>
@@ -795,7 +814,7 @@
             </div>
 
             <div class="mt-4">
-              <label class="block text-xs font-semibold text-slate-300 mb-2"><span class="text-amber-400">6.</span> List any prior representatives you want to retain</label>
+              <label class="block text-xs font-semibold text-white/90 mb-2"><span class="text-white">6.</span> List any prior representatives you want to retain</label>
               <textarea id="form-prior-reps" class="w-full min-h-[96px]" placeholder="Optional" readonly></textarea>
               <p class="text-[11px] text-slate-500 mt-1">This monitoring authorization is added without revoking prior representatives.</p>
             </div>
@@ -833,12 +852,12 @@
 
             <div class="space-y-3">
               <div>
-                <label class="block text-xs font-semibold text-slate-300 mb-2">Signed PDF (required)</label>
+                <label class="block text-xs font-semibold text-white/90 mb-2">Signed PDF (required)</label>
                 <input type="file" id="signed-file" accept="application/pdf" class="w-full" />
                 <p class="text-[11px] text-slate-500 mt-1">PDF only. Keep it legible. No artistic signatures, please.</p>
               </div>
 
-              <button type="button" id="upload-btn" class="w-full py-3 px-4 rounded-lg font-semibold text-white bg-slate-800 hover:bg-slate-700 transition flex items-center justify-center gap-2">
+              <button type="button" id="upload-btn" class="w-full py-3 px-4 rounded-lg font-semibold text-white bg-slate-900 hover:bg-slate-700 transition flex items-center justify-center gap-2">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 10l5-5 5 5" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v11" /></svg>
                 <span id="upload-btn-text">Upload Signed PDF</span>
               </button>
@@ -874,7 +893,7 @@
             <button id="submit-btn" type="submit" class="w-full py-4 px-6 rounded-xl font-semibold text-white text-lg bg-gradient-to-r from-amber-500 to-amber-600 hover:opacity-90 transition flex items-center justify-center gap-2" disabled aria-disabled="true">
               Complete & Await Processing
             </button>
-            <button type="button" id="reset-form-btn" class="w-full py-4 px-6 rounded-xl font-semibold text-slate-200 text-lg border border-amber-500/30 bg-slate-900/60 hover:bg-slate-900/80 transition flex items-center justify-center">
+            <button type="button" id="reset-form-btn" class="w-full py-4 px-6 rounded-xl font-semibold text-slate-200 text-lg border border-slate-300/15 bg-slate-950/30 hover:bg-slate-950/45 transition flex items-center justify-center">
               Reset Form
             </button>
           </div>
@@ -917,10 +936,53 @@
           </div>
         </div>
       </div>
+            </div>
+      </main>
     </div>
   </div>
 
   <script>
+    'use strict';
+
+    // Overlay + shell behavior
+    const tmOverlay = new URLSearchParams(location.search).get('overlay') === '1';
+
+    function tmOverlayClose() {
+      try { window.parent.postMessage({ type: 'TM_OVERLAY_CLOSE' }, '*'); } catch (_) {}
+    }
+
+    async function tmInjectPartial(targetId, url) {
+      const target = document.getElementById(targetId);
+      if (!target) return;
+      const res = await fetch(url, { credentials: 'same-origin' });
+      if (!res.ok) return;
+      target.innerHTML = await res.text();
+    }
+
+    (function initShell() {
+      const topbar = document.getElementById('tmTopbar');
+      const sidebar = document.getElementById('tmSidebar');
+
+      if (tmOverlay) {
+        if (topbar) topbar.classList.add('hidden');
+        if (sidebar) sidebar.classList.add('hidden');
+
+        document.addEventListener('click', (e) => {
+          const el = e.target && e.target.closest ? e.target.closest('[data-overlay-close="1"]') : null;
+          if (!el) return;
+          e.preventDefault();
+          tmOverlayClose();
+        });
+
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') tmOverlayClose();
+        });
+      } else {
+        tmInjectPartial('tmTopbar', '/app/partials/topbar.html');
+        tmInjectPartial('tmSidebar', '/app/partials/sidebar.html');
+      }
+    })();
+
     // Flip card functionality
     const flipCard = document.getElementById('flip-card');
     const page1Btn = document.getElementById('page-1-btn');

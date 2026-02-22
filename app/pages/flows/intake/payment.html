@@ -14,7 +14,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
-  <!-- Match offer.html exactly -->
   <link rel="apple-touch-icon" href="/assets/favicon.ico" />
   <link rel="icon" href="/assets/favicon.ico" />
 
@@ -154,122 +153,97 @@
   <style>@view-transition { navigation: auto; }</style>
 </head>
 
-<body class="h-full bg-slate-950 text-slate-100">
+<body class="h-full bg-slate-950 text-slate-100 noise-bg overflow-hidden">
   <div class="relative min-h-screen overflow-hidden">
     <div class="aurora" aria-hidden="true"></div>
     <div class="pointer-events-none absolute inset-0 noise-bg opacity-50" aria-hidden="true"></div>
 
-    <div class="relative z-10 min-h-screen grid lg:grid-cols-[280px_1fr]">
-      <aside class="hidden lg:block sidebar-shell">
-        <div id="tm-sidebar" class="h-full">
-          <!-- Canvas preview fallback (partials load at runtime in the real app) -->
-          <div class="p-4">
-            <div class="flex items-center gap-3">
-              <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 text-slate-950 font-bold">TM</span>
-              <div>
-                <div class="text-sm font-semibold text-slate-200">Tax Monitor Pro</div>
-                <div class="text-xs text-slate-500">Loading sidebar…</div>
-              </div>
-            </div>
-            <div class="mt-6 space-y-2">
-              <div class="h-9 rounded-xl bg-white/5 border border-white/10"></div>
-              <div class="h-9 rounded-xl bg-white/5 border border-white/10"></div>
-              <div class="h-9 rounded-xl bg-white/5 border border-white/10"></div>
-            </div>
-          </div>
-        </div>
+    <div class="relative z-10 flex h-full">
+      <!-- APP SIDEBAR PARTIAL -->
+      <aside class="hidden lg:block w-[280px] shrink-0 sidebar-shell">
+        <div id="tm-sidebar" class="h-full"></div>
       </aside>
 
-      <div class="min-h-screen flex flex-col">
+      <!-- Main Content Area -->
+      <div class="flex-1 flex flex-col min-w-0">
+        <!-- APP TOPBAR PARTIAL -->
         <div class="topbar-shell sticky top-0 z-30">
-          <div id="tm-topbar">
-            <!-- Canvas preview fallback (partials load at runtime in the real app) -->
-            <div class="mx-auto max-w-5xl px-6 py-3">
-              <div class="flex items-center justify-between">
-                <div class="h-4 w-40 rounded bg-white/10"></div>
-                <div class="flex items-center gap-2">
-                  <div class="h-8 w-8 rounded-full bg-white/10"></div>
-                  <div class="h-8 w-8 rounded-full bg-white/10"></div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <div id="tm-topbar"></div>
         </div>
 
-        <header class="px-6 pt-6">
-          <div class="mx-auto max-w-5xl">
-            <div class="glass-card rounded-[24px] p-5 border border-white/10">
-              <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-                <div class="flex items-center gap-3">
-                  <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 text-slate-950 font-bold">TM</span>
+        <!-- Main Content -->
+        <main class="flex-1 overflow-auto">
+          <div class="mx-auto max-w-5xl px-6 py-8">
+            <header class="pt-0">
+              <div class="glass-card rounded-[24px] p-5 border border-white/10">
+                <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                  <div class="flex items-center gap-3">
+                    <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 text-slate-950 font-bold">TM</span>
+                    <div>
+                      <div class="font-semibold">Tax Monitor Pro</div>
+                      <div class="text-xs text-slate-400">Payment</div>
+                    </div>
+                  </div>
+
+                  <div class="flex items-center gap-2 sm:gap-4">
+                    <div class="flex items-center gap-2" data-step="intake">
+                      <div class="w-8 h-8 rounded-full bg-emerald-600 flex items-center justify-center">
+                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                      </div>
+                      <span class="text-sm font-semibold text-emerald-400">Intake</span>
+                    </div>
+
+                    <div class="w-8 h-0.5 bg-white/10"></div>
+
+                    <div class="flex items-center gap-2" data-step="offer">
+                      <div class="w-8 h-8 rounded-full bg-emerald-600 flex items-center justify-center">
+                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                      </div>
+                      <span class="text-sm font-semibold text-emerald-400">Offer</span>
+                    </div>
+
+                    <div class="w-8 h-0.5 bg-white/10"></div>
+
+                    <div class="flex items-center gap-2" data-step="agreement">
+                      <div class="w-8 h-8 rounded-full bg-emerald-600 flex items-center justify-center">
+                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                      </div>
+                      <span class="text-sm font-semibold text-emerald-400">Agreement</span>
+                    </div>
+
+                    <div class="w-8 h-0.5 bg-white/10"></div>
+
+                    <div class="flex items-center gap-2" data-step="payment">
+                      <div class="w-8 h-8 rounded-full bg-amber-500 flex items-center justify-center animate-pulse-glow">
+                        <span class="text-xs font-bold text-slate-950">4</span>
+                      </div>
+                      <span class="text-sm font-semibold text-amber-400">Payment</span>
+                    </div>
+                  </div>
+
                   <div>
-                    <div class="font-semibold">Tax Monitor Pro</div>
-                    <div class="text-xs text-slate-400">Payment</div>
+                    <button id="back-btn" type="button" class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-semibold text-slate-300 hover:text-amber-300 hover:border-amber-500/30">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                      </svg>
+                      Back
+                    </button>
                   </div>
                 </div>
 
-                <div class="flex items-center gap-2 sm:gap-4">
-                  <div class="flex items-center gap-2" data-step="intake">
-                    <div class="w-8 h-8 rounded-full bg-emerald-600 flex items-center justify-center">
-                      <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                      </svg>
-                    </div>
-                    <span class="text-sm font-semibold text-emerald-400">Intake</span>
-                  </div>
-
-                  <div class="w-8 h-0.5 bg-white/10"></div>
-
-                  <div class="flex items-center gap-2" data-step="offer">
-                    <div class="w-8 h-8 rounded-full bg-emerald-600 flex items-center justify-center">
-                      <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                      </svg>
-                    </div>
-                    <span class="text-sm font-semibold text-emerald-400">Offer</span>
-                  </div>
-
-                  <div class="w-8 h-0.5 bg-white/10"></div>
-
-                  <div class="flex items-center gap-2" data-step="agreement">
-                    <div class="w-8 h-8 rounded-full bg-emerald-600 flex items-center justify-center">
-                      <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                      </svg>
-                    </div>
-                    <span class="text-sm font-semibold text-emerald-400">Agreement</span>
-                  </div>
-
-                  <div class="w-8 h-0.5 bg-white/10"></div>
-
-                  <div class="flex items-center gap-2" data-step="payment">
-                    <div class="w-8 h-8 rounded-full bg-amber-500 flex items-center justify-center animate-pulse-glow">
-                      <span class="text-xs font-bold text-slate-950">4</span>
-                    </div>
-                    <span class="text-sm font-semibold text-amber-400">Payment</span>
-                  </div>
-                </div>
-
-                <div>
-                  <button id="back-btn" type="button" class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-semibold text-slate-300 hover:text-amber-300 hover:border-amber-500/30">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                    </svg>
-                    Back
-                  </button>
+                <div class="mt-4 h-1 bg-white/5 rounded-full overflow-hidden">
+                  <div class="h-full w-full progress-glow rounded-full"></div>
                 </div>
               </div>
+            </header>
 
-              <div class="mt-4 h-1 bg-white/5 rounded-full overflow-hidden">
-                <div class="h-full w-full progress-glow rounded-full"></div>
-              </div>
-            </div>
-          </div>
-        </header>
-
-        <main class="flex-1">
-          <div class="mx-auto max-w-5xl px-6 py-10">
-            <section class="gradient-border rounded-[24px] fade-in-up">
+            <section class="mt-6 gradient-border rounded-[24px] fade-in-up">
               <div class="glass-card rounded-[24px] p-6 md:p-8">
                 <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10">
                   <svg class="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
@@ -361,7 +335,7 @@
                   </aside>
                 </div>
 
-                <footer class="text-center py-6">
+                <footer class="text-center pt-8">
                   <p class="text-sm text-slate-500">© <span id="footer-year"></span> Tax Monitor Pro. All rights reserved.</p>
                   <p class="text-xs text-slate-600 mt-1">
                     Encrypted in transit using industry-standard
@@ -390,6 +364,10 @@
       // Contract: Payment is delegated to Stripe webhooks.
       // This page may request a Stripe Checkout session, but payment confirmation is handled only by Stripe webhook contracts.
       var PAYMENT_ENDPOINT = 'https://api.taxmonitor.pro/forms/intake/payment';
+
+      // --- Overlay mode detection ---
+      var qs = new URLSearchParams(window.location.search || '');
+      var isOverlay = qs.get('overlay') === '1';
 
       // --- tmCommon helpers (use global if present; otherwise local fallbacks) ---
       var tmCommon = window.tmCommon || {};
@@ -467,49 +445,65 @@
 
       function withQuery(urlPath) {
         var u = new URL(urlPath, window.location.origin);
-        var qs = new URLSearchParams(window.location.search || '');
-        qs.forEach(function (v, k) { u.searchParams.set(k, v); });
+        var qs2 = new URLSearchParams(window.location.search || '');
+        qs2.forEach(function (v, k) { u.searchParams.set(k, v); });
         return u.toString();
       }
 
-      injectPartial('tm-sidebar', '/app/partials/sidebar.html');
-      injectPartial('tm-topbar', '/app/partials/topbar.html');
+      // Partials: only in standalone mode
+      if (!isOverlay) {
+        injectPartial('tm-sidebar', '/app/partials/sidebar.html');
+        injectPartial('tm-topbar', '/app/partials/topbar.html');
+      } else {
+        var sidebarShell = document.querySelector('.sidebar-shell');
+        var topbarShell = document.querySelector('.topbar-shell');
+        if (sidebarShell) sidebarShell.style.display = 'none';
+        if (topbarShell) topbarShell.style.display = 'none';
+      }
 
+      // Nav
       var headerBack = document.getElementById('back-btn');
       var backAgreement = document.getElementById('btn-back-agreement');
       var backOffer = document.getElementById('btn-back-offer');
 
+      function closeOverlay() {
+        if (window.parent) window.parent.postMessage({ type: 'TM_OVERLAY_CLOSE' }, '*');
+      }
+
       function goAgreement() {
+        if (isOverlay) return closeOverlay();
         window.location.href = withQuery('/app/agreement.html');
       }
 
       function goOffer() {
+        if (isOverlay) return closeOverlay();
         window.location.href = withQuery('/app/offer.html');
       }
 
-      if (headerBack) headerBack.addEventListener('click', goAgreement);
       if (backAgreement) backAgreement.addEventListener('click', goAgreement);
       if (backOffer) backOffer.addEventListener('click', goOffer);
+      if (headerBack) headerBack.addEventListener('click', goAgreement);
 
+      // Query + pricing
       var params = new URLSearchParams(window.location.search || '');
       var code = safeText(params.get('code'));
       var item = safeText(params.get('item'));
 
-      // Alphabetical keys (because humans love chaos, but you asked nicely).
-      var PRICE_BY_ITEM = {
-        bronze: 275,
-        gold: 425,
-        mfj: 79,
-        one_time: 299,
-        silver: 325
-      };
-
+      // Alphabetical keys.
       var NAME_BY_ITEM = {
         bronze: 'Tax Monitoring — Bronze',
         gold: 'Tax Monitoring — Gold',
         mfj: 'Tax Monitoring — MFJ Add-On',
         one_time: 'Tax Monitoring — One-Time Service',
         silver: 'Tax Monitoring — Silver'
+      };
+
+      var PRICE_BY_ITEM = {
+        bronze: 275,
+        gold: 425,
+        mfj: 79,
+        one_time: 299,
+        silver: 325
       };
 
       var orderName = document.getElementById('order-name');
@@ -547,8 +541,6 @@
 
         setPayLoading(true);
 
-        // NOTE: eventId + sessionToken are part of the canonical contract pattern.
-        // We generate/persist eventId and sync sessionToken from URL/localStorage.
         var eventId = ensureEventId();
         var sessionToken = syncSessionToken();
 

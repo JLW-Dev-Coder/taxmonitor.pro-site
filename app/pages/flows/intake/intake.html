@@ -1,25 +1,4 @@
 <!--/app/pages/flows/intake/intake.html-->
-<!--
-TM Overlay Standard (authoritative notes)
-
-Dashboard shell behavior (already wired):
-- Clicking a step opens a fullscreen overlay.
-- Step page loads in an iframe with ?overlay=1.
-- URL updates to ?step=... (deep link).
-- Refresh with ?step=... reopens overlay automatically.
-- Step page can close itself by sending:
-    window.parent.postMessage({ type: 'TM_OVERLAY_CLOSE' }, '*');
-- Clicking the dark backdrop closes overlay.
-- Closing overlay resets URL back to /app/index.html.
-
-Next (apply to Intake first, then standardize across all flow pages):
-- Detect ?overlay=1
-- Hide sidebar/topbar partials
-- Replace Back button behavior with postMessage close
-
-Goal: do this once correctly, then reuse the pattern across flows.
--->
-
 <!doctype html>
 <html lang="en" class="h-full">
 <head>
@@ -275,18 +254,18 @@ Goal: do this once correctly, then reuse the pattern across flows.
   </style>
 </head>
 
-<body class="h-full bg-slate-950 text-slate-100">
-  <div class="relative min-h-screen overflow-hidden">
+<body class="h-full bg-slate-950 text-slate-100 noise-bg overflow-hidden">
+  <div class="relative h-full overflow-hidden">
     <div class="aurora" aria-hidden="true"></div>
     <div class="pointer-events-none absolute inset-0 noise-bg opacity-50" aria-hidden="true"></div>
 
-    <div class="relative z-10 min-h-screen grid lg:grid-cols-[280px_1fr]">
+    <div class="relative z-10 flex h-full">
       <!-- App Sidebar (partial injection target) -->
-      <aside class="hidden lg:block sidebar-shell">
+      <aside class="hidden lg:block w-[280px] shrink-0 sidebar-shell">
         <div id="tm-sidebar" class="h-full"></div>
       </aside>
 
-      <div class="min-h-screen flex flex-col">
+      <div class="flex-1 flex flex-col min-w-0">
         <!-- App Topbar (partial injection target) -->
         <div class="topbar-shell sticky top-0 z-30">
           <div id="tm-topbar"></div>
@@ -357,7 +336,7 @@ Goal: do this once correctly, then reuse the pattern across flows.
         </header>
 
         <!-- Content -->
-        <main class="flex-1">
+        <main class="flex-1 overflow-auto">
           <div class="mx-auto max-w-5xl px-6 py-10">
             <section class="gradient-border rounded-[24px] fade-in-up">
               <div class="glass-card rounded-[24px] p-6 md:p-8">
@@ -775,10 +754,7 @@ Goal: do this once correctly, then reuse the pattern across flows.
         if (sidebarShell) sidebarShell.style.display = 'none';
         if (topbarShell) topbarShell.style.display = 'none';
 
-        // Collapse grid to single column
-        var grid = document.querySelector('.grid');
-        if (grid) grid.classList.remove('lg:grid-cols-[280px_1fr]');
-
+        
         // Replace Back behavior
         if (back) {
           back.removeAttribute('href');
