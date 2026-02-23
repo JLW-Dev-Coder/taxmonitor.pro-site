@@ -121,34 +121,26 @@
       <div class="flex-1 flex flex-col min-w-0">
         <!-- APP TOPBAR PARTIAL -->
         <!-- APP_TOPBAR -->
+        <main class="flex-1 min-h-0 overflow-hidden">
+          <div class="max-w-6xl mx-auto h-full px-6 py-8">
+            <!-- Page Header (match calendar) -->
+            <div class="mb-8">
+              <div class="flex flex-col items-center text-center">
+                <h1 class="text-3xl md:text-4xl font-semibold tracking-tight mb-2">
+                  <span class="text-white">Project </span><span class="gradient-text">Status</span>
+                </h1>
+                <p class="text-slate-400 text-base md:text-lg max-w-2xl">
+                  Roadmap and next steps. Some items are processed by staff.
+                </p>
 
-        <!-- Header / Phase Progress -->
-        <div class="border-b border-white/10 bg-slate-950/30">
-          <div class="max-w-6xl mx-auto px-6 py-5">
-            <div class="flex flex-col gap-3">
-              <div class="flex items-center justify-between gap-4">
-                <div class="min-w-0">
-                  <h1 class="text-2xl md:text-3xl font-semibold tracking-tight">
-                    <span class="text-white">Project </span><span class="gradient-text">Status</span>
-                  </h1>
-                  <p class="text-sm text-slate-400 mt-1">Roadmap and next steps. Some items are processed by staff.</p>
+                <!-- Phase pills -->
+                <div class="mt-5 flex items-center justify-center w-full">
+                  <div id="phase-indicators" class="flex items-center gap-2 overflow-x-auto justify-center"></div>
                 </div>
-                <div class="hidden md:flex items-center gap-2 rounded-xl border border-white/10 bg-slate-950/30 px-3 py-2">
-                  <svg class="live-dot" width="10" height="10" viewBox="0 0 10 10" aria-hidden="true" focusable="false">
-                    <circle cx="5" cy="5" r="4" fill="#F97316"></circle>
-                  </svg>
-                  <span class="text-xs text-slate-300">Live</span>
-                </div>
-              </div>
-
-              <div class="flex items-center gap-2">
-                <div id="phase-indicators" class="flex items-center gap-2 overflow-x-auto"></div>
               </div>
             </div>
-          </div>
-        </div>
 
-        <!-- Main -->
+            <!-- Main -->
         <main class="flex-1 min-h-0 overflow-hidden">
           <div class="max-w-6xl mx-auto h-full px-6 py-6">
             <div id="status-grid" class="h-full grid grid-cols-1 gap-6 status-grid-collapsed">
