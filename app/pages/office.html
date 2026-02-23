@@ -1,0 +1,838 @@
+<!--/app/pages/office.html-->
+<!doctype html>
+<html lang="en" class="h-full">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tax Monitor Pro — Office</title>
+
+    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+    <script src="/_sdk/element_sdk.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet" />
+
+    <link rel="icon" href="https://taxmonitor.pro/favicon.ico" sizes="any" />
+    <link rel="icon" href="https://taxmonitor.pro/assets/favicon.ico" sizes="any" />
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: { sans: ['DM Sans', 'system-ui', 'sans-serif'] },
+            colors: {
+              slate: {
+                850: '#1a1f2e',
+                900: '#0f1219',
+                950: '#080a0f'
+              },
+              amber: {
+                400: '#fbbf24',
+                500: '#f59e0b',
+                600: '#d97706'
+              }
+            }
+          }
+        }
+      };
+    </script>
+
+    <style>
+      html, body { height: 100%; }
+      html { font-size: 100%; }
+
+      *, *::before, *::after { box-sizing: border-box; }
+      body { box-sizing: border-box; }
+      * { font-family: 'DM Sans', system-ui, sans-serif; }
+
+      .gradient-text {
+        background: linear-gradient(135deg, #F59E0B, #FB923C);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .glass-card {
+        background: rgba(10, 10, 10, 0.6);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .noise-bg::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        opacity: .03;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #f59e0b, #d97706);
+        transition: all 0.2s ease;
+      }
+
+      .btn-primary:hover {
+        filter: brightness(1.05);
+        transform: translateY(-1px);
+      }
+
+      .btn-secondary {
+        background: rgba(2, 6, 23, 0.35);
+        border: 1px solid rgba(255, 255, 255, 0.10);
+        transition: all 0.2s ease;
+      }
+
+      .btn-secondary:hover {
+        background: rgba(2, 6, 23, 0.55);
+        border-color: rgba(255, 255, 255, 0.16);
+      }
+
+      .pill-active {
+        background: rgba(245, 158, 11, 0.15);
+        border-color: rgba(245, 158, 11, 0.35);
+        color: #fff;
+      }
+
+      .row-hover { transition: all 0.2s ease; }
+      .row-hover:hover { background: rgba(148, 163, 184, 0.06); transform: translateX(4px); }
+
+      .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace; }
+
+      .modal-overlay {
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(4px);
+      }
+
+      .modal-overlay.hidden { display: none; }
+
+      @media print {
+        .no-print { display: none !important; }
+        body { background: white !important; }
+      }
+    </style>
+  </head>
+
+  <body class="h-full bg-slate-950 text-slate-100 noise-bg overflow-hidden">
+    <div class="relative z-10 flex h-full">
+      <!-- APP SIDEBAR PARTIAL -->
+      <!-- APP_SIDEBAR -->
+
+      <div class="flex-1 flex flex-col min-w-0">
+        <!-- APP TOPBAR PARTIAL -->
+        <!-- APP_TOPBAR -->
+
+        <main class="flex-1 overflow-auto">
+          <div class="max-w-6xl mx-auto px-6 py-8">
+            <!-- Page Header -->
+            <div class="mb-8">
+              <div class="flex flex-col items-center text-center">
+                <h1 class="text-3xl md:text-4xl font-semibold tracking-tight mb-2">
+                  <span class="text-white">Office </span><span class="gradient-text">Payments</span>
+                </h1>
+                <p id="page-subtitle" class="text-slate-400 text-base md:text-lg max-w-2xl">Your payment history and receipts.</p>
+              </div>
+            </div>
+
+            <!-- CONTENT -->
+            <section class="glass-card rounded-2xl p-6 md:p-8">
+              <div class="mx-auto max-w-5xl">
+                <!-- Controls -->
+                <div class="rounded-2xl border border-white/10 bg-slate-950/30 p-4 md:p-5">
+                  <div class="flex flex-col gap-4">
+                    <div class="flex flex-col md:flex-row gap-3 md:items-center md:justify-between">
+                      <div class="flex-1 relative">
+                        <label class="sr-only" for="search-input">Search</label>
+                        <input id="search-input" type="text" placeholder="Search payments…" class="w-full rounded-xl bg-slate-950/30 px-4 py-2.5 text-sm border border-white/10 focus:outline-none focus:ring-2 focus:ring-amber-400/30" />
+                        <svg class="absolute right-3 top-3 w-5 h-5 text-slate-500 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                      </div>
+
+                      <div class="flex items-center justify-between md:justify-end gap-3">
+                        <div id="countsLabel" class="text-xs text-slate-500">0 payments</div>
+                        <button id="retry-btn" class="btn-secondary px-4 py-2 rounded-xl text-sm text-slate-300 hover:text-white" type="button">Refresh</button>
+                      </div>
+                    </div>
+
+                    <div class="flex flex-col md:flex-row gap-3 md:items-center md:justify-between">
+                      <div class="flex flex-wrap gap-2">
+                        <button class="pill pill-active px-4 py-2 rounded-full text-sm font-medium border border-white/10 text-slate-200" data-filter="all" type="button">All</button>
+                        <button class="pill px-4 py-2 rounded-full text-sm font-medium border border-white/10 text-slate-300 hover:text-white" data-filter="paid" type="button">Paid</button>
+                        <button class="pill px-4 py-2 rounded-full text-sm font-medium border border-white/10 text-slate-300 hover:text-white" data-filter="pending" type="button">Pending</button>
+                        <button class="pill px-4 py-2 rounded-full text-sm font-medium border border-white/10 text-slate-300 hover:text-white" data-filter="failed" type="button">Failed</button>
+                      </div>
+
+                      <div class="hidden md:flex items-center gap-2 bg-slate-950/30 px-3 py-2 rounded-xl border border-white/10">
+                        <svg class="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                          <path d="M13.976 9.15c-2.172-.806-3.356-1.426-3.356-2.409 0-.831.683-1.305 1.901-1.305 2.227 0 4.515.858 6.09 1.631l.89-5.494C18.252.975 15.697 0 12.165 0 9.667 0 7.589.654 6.104 1.872 4.56 3.147 3.757 4.992 3.757 7.218c0 4.039 2.467 5.76 6.476 7.219 2.585.92 3.445 1.574 3.445 2.583 0 .98-.84 1.545-2.354 1.545-1.875 0-4.965-.921-6.99-2.109l-.9 5.555C5.175 22.99 8.385 24 11.714 24c2.641 0 4.843-.624 6.328-1.813 1.664-1.305 2.525-3.236 2.525-5.732 0-4.128-2.524-5.851-6.591-7.305z"/>
+                        </svg>
+                        <span class="text-xs text-slate-400 font-medium">Powered by Stripe</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Stats -->
+                <div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div class="rounded-2xl border border-white/10 bg-slate-950/30 p-5">
+                    <div class="flex items-center gap-3">
+                      <div class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/15 flex items-center justify-center">
+                        <svg class="w-5 h-5 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                      </div>
+                      <div>
+                        <div class="text-sm text-slate-400">Total Paid</div>
+                        <div id="total-paid" class="text-xl font-semibold text-white">$0.00</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="rounded-2xl border border-white/10 bg-slate-950/30 p-5">
+                    <div class="flex items-center gap-3">
+                      <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/15 flex items-center justify-center">
+                        <svg class="w-5 h-5 text-amber-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                      </div>
+                      <div>
+                        <div class="text-sm text-slate-400">Pending</div>
+                        <div id="total-pending" class="text-xl font-semibold text-white">$0.00</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="rounded-2xl border border-white/10 bg-slate-950/30 p-5">
+                    <div class="flex items-center gap-3">
+                      <div class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center">
+                        <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                        </svg>
+                      </div>
+                      <div>
+                        <div class="text-sm text-slate-400">Total Payments</div>
+                        <div id="total-count" class="text-xl font-semibold text-white">0</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- List -->
+                <div class="mt-6 overflow-hidden rounded-2xl border border-white/10 bg-slate-950/30">
+                  <div id="loading-state" class="hidden p-10 text-center">
+                    <div class="mx-auto h-12 w-12 rounded-full border-4 border-amber-400/20 border-t-amber-400 animate-spin"></div>
+                    <div class="mt-4 text-sm text-slate-400">Loading payments…</div>
+                  </div>
+
+                  <div id="error-state" class="hidden p-10 text-center">
+                    <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-red-500/10 border border-red-500/20">
+                      <svg class="w-7 h-7 text-red-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M5.07 19h13.86c1.54 0 2.5-1.67 1.73-3L13.73 4c-.77-1.33-2.69-1.33-3.46 0L3.34 16c-.77 1.33.19 3 1.73 3z" />
+                      </svg>
+                    </div>
+                    <div class="mt-4 text-lg font-semibold text-white">Could not load payments</div>
+                    <div id="error-message" class="mt-1 text-sm text-slate-400">Try again in a moment.</div>
+                    <div class="mt-5">
+                      <button id="retry-btn-inline" class="btn-primary px-5 py-2.5 rounded-xl text-sm text-white font-medium" type="button">Retry</button>
+                    </div>
+                  </div>
+
+                  <div id="empty-state" class="hidden p-10 text-center">
+                    <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-white/5">
+                      <svg class="w-7 h-7 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                      </svg>
+                    </div>
+                    <div class="mt-4 text-lg font-semibold text-white">No payments</div>
+                    <div class="mt-1 text-sm text-slate-400">When payments post to your account, they will show up here.</div>
+                  </div>
+
+                  <div id="paymentsList" class="divide-y divide-white/10"></div>
+                </div>
+
+                <p class="text-center text-slate-600 text-xs pt-6">
+                  <span class="text-slate-500">This page is read-only.</span>
+                  <span class="mx-2">•</span>
+                  <span class="text-slate-500">Receipts open in Stripe when available.</span>
+                </p>
+              </div>
+            </section>
+          </div>
+        </main>
+
+        <!-- Toast -->
+        <div class="pointer-events-none fixed top-4 right-4 z-50">
+          <div id="toast" class="hidden pointer-events-auto rounded-xl border border-white/10 bg-slate-950/80 px-4 py-3 text-sm text-slate-100 shadow-lg backdrop-blur">Toast</div>
+        </div>
+
+        <!-- DETAILS MODAL -->
+        <div id="details-modal" class="modal-overlay hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div id="details-backdrop" class="absolute inset-0"></div>
+
+          <div class="relative z-10 w-full max-w-lg">
+            <div class="glass-card rounded-2xl border border-white/10 overflow-hidden">
+              <div class="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-slate-950/30">
+                <h3 class="text-lg font-semibold text-white">Payment Details</h3>
+                <button id="details-close" class="btn-secondary px-3 py-2 rounded-xl text-sm text-slate-300 hover:text-white" type="button" aria-label="Close">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+
+              <div id="details-content" class="p-6 space-y-4"></div>
+
+              <div class="px-6 pb-6">
+                <div class="flex flex-col sm:flex-row gap-3">
+                  <button id="details-close-2" class="btn-secondary flex-1 py-2.5 px-4 rounded-xl text-sm text-slate-300 hover:text-white" type="button">Close</button>
+                  <button id="print-from-details" class="btn-primary flex-1 py-2.5 px-5 rounded-xl text-sm text-white font-medium inline-flex items-center justify-center gap-2" type="button">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                    </svg>
+                    Print Receipt
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Print Template (hidden unless printing) -->
+        <div id="print-receipt" class="hidden"></div>
+      </div>
+    </div>
+
+    <script>
+      // Read-only Stripe view.
+      // Data is real, server-derived, and comes ONLY from:
+      //   GET https://api.taxmonitor.pro/app/payments
+      // This page does not invent statuses, amounts, or records.
+
+      const PAYMENTS_ENDPOINT = 'https://api.taxmonitor.pro/app/payments';
+
+      // Canonical response (v1):
+      // {
+      //   accountId: string,
+      //   payments: [{
+      //     amount: number,
+      //     card?: { brand?: string, last4?: string },
+      //     completedAt?: string,
+      //     createdAt?: string,
+      //     currency: string,
+      //     description: string,
+      //     id: string,
+      //     paymentIntentId?: string,
+      //     receiptUrl?: string,
+      //     status: 'failed'|'paid'|'pending',
+      //     stripeSessionId?: string
+      //   }],
+      //   totalCount: number
+      // }
+      // IMPORTANT: amount is expected to be in MAJOR currency units (e.g., 1499.00 USD), not cents.
+
+      const defaultConfig = {
+        page_subtitle: 'Your payment history and receipts.'
+      };
+
+      const allowedStatuses = ['failed', 'paid', 'pending'].sort();
+
+      let payments = [];
+      let currentFilter = 'all';
+      let searchQuery = '';
+      let selectedPayment = null;
+
+      const $ = (id) => document.getElementById(id);
+
+      function must(id) {
+        const el = $(id);
+        if (!el) throw new Error(`Missing required element: #${id}`);
+        return el;
+      }
+
+      function escapeHtml(s) {
+        return String(s ?? '')
+          .replaceAll('&', '&amp;')
+          .replaceAll('<', '&lt;')
+          .replaceAll('>', '&gt;')
+          .replaceAll('"', '&quot;')
+          .replaceAll("'", '&#39;');
+      }
+
+      function escapeAttr(s) {
+        return escapeHtml(s).replaceAll('`', '&#096;');
+      }
+
+      function formatCurrency(amount, currency) {
+        const cur = String(currency || 'USD').toUpperCase();
+        const n = Number(amount);
+        if (!Number.isFinite(n)) return '—';
+        try {
+          return new Intl.NumberFormat('en-US', { style: 'currency', currency: cur }).format(n);
+        } catch {
+          return `${n.toFixed(2)} ${cur}`;
+        }
+      }
+
+      function formatDateTime(iso) {
+        const d = new Date(String(iso || ''));
+        if (Number.isNaN(d.getTime())) return '—';
+        return d.toLocaleString('en-US', {
+          day: '2-digit',
+          hour: 'numeric',
+          minute: '2-digit',
+          month: 'short',
+          year: 'numeric'
+        });
+      }
+
+      function normalizeStatus(status) {
+        const s = String(status || '').toLowerCase();
+        return allowedStatuses.includes(s) ? s : 'pending';
+      }
+
+      function paymentDate(p) {
+        return p.completedAt || p.createdAt || '';
+      }
+
+      function paymentId(p) {
+        return String(p.id || '');
+      }
+
+      function setCountsLabel(visibleCount, totalCount) {
+        const label = must('countsLabel');
+        const t = totalCount === 1 ? 'payment' : 'payments';
+        const v = visibleCount === 1 ? 'payment' : 'payments';
+        if (visibleCount === totalCount) label.textContent = `${visibleCount} ${v}`;
+        else label.textContent = `${visibleCount} ${v} (of ${totalCount} ${t})`;
+      }
+
+      function showToast(msg) {
+        const t = $('toast');
+        if (!t) return;
+        t.textContent = String(msg || '');
+        t.classList.remove('hidden');
+        setTimeout(() => t.classList.add('hidden'), 2200);
+      }
+
+      function showPanel(panel) {
+        const ids = ['empty-state', 'error-state', 'loading-state', 'paymentsList'].sort();
+        ids.forEach((id) => {
+          const el = $(id);
+          if (el) el.classList.add('hidden');
+        });
+
+        const el = $(panel);
+        if (el) el.classList.remove('hidden');
+      }
+
+      function setActivePill(next) {
+        const pills = Array.from(document.querySelectorAll('.pill'));
+        pills.forEach((p) => {
+          const v = p.getAttribute('data-filter') || '';
+          if (v === next) {
+            p.classList.add('pill-active');
+            p.classList.remove('text-slate-300');
+            p.classList.add('text-slate-200');
+          } else {
+            p.classList.remove('pill-active');
+            p.classList.add('text-slate-300');
+            p.classList.remove('text-slate-200');
+          }
+        });
+      }
+
+      function updateStats() {
+        const paid = payments
+          .filter((p) => normalizeStatus(p.status) === 'paid')
+          .reduce((sum, p) => sum + Number(p.amount || 0), 0);
+
+        const pending = payments
+          .filter((p) => normalizeStatus(p.status) === 'pending')
+          .reduce((sum, p) => sum + Number(p.amount || 0), 0);
+
+        const currency = payments[0]?.currency || 'USD';
+
+        must('total-paid').textContent = formatCurrency(paid, currency);
+        must('total-pending').textContent = formatCurrency(pending, currency);
+        must('total-count').textContent = String(payments.length);
+      }
+
+      function renderPayments() {
+        const list = must('paymentsList');
+
+        const filtered = payments
+          .filter((p) => {
+            const status = normalizeStatus(p.status);
+            if (currentFilter !== 'all' && status !== currentFilter) return false;
+            if (!searchQuery) return true;
+            const q = String(searchQuery).toLowerCase();
+            const hay = [p.description || '', p.id || '', p.paymentIntentId || '', p.stripeSessionId || ''].join(' ').toLowerCase();
+            return hay.includes(q);
+          })
+          .sort((a, b) => String(paymentDate(b)).localeCompare(String(paymentDate(a))));
+
+        setCountsLabel(filtered.length, payments.length);
+
+        if (filtered.length === 0) {
+          list.innerHTML = '';
+          showPanel('empty-state');
+          return;
+        }
+
+        showPanel('paymentsList');
+
+        list.innerHTML = filtered
+          .map((p) => {
+            const status = normalizeStatus(p.status);
+            const amount = formatCurrency(p.amount, p.currency);
+            const when = formatDateTime(paymentDate(p));
+            const desc = escapeHtml(p.description || 'Payment');
+            const txn = escapeHtml(p.paymentIntentId || p.stripeSessionId || p.id || '—');
+            const brand = p.card?.brand ? String(p.card.brand) : '';
+            const last4 = p.card?.last4 ? String(p.card.last4) : '';
+
+            const badge =
+              status === 'paid'
+                ? '<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-emerald-500/10 text-emerald-200 border border-emerald-500/20">Paid</span>'
+                : status === 'failed'
+                  ? '<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-500/10 text-red-200 border border-red-500/20">Failed</span>'
+                  : '<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-400/10 text-amber-200 border border-amber-400/20">Pending</span>';
+
+            const amountClass = status === 'paid' ? 'text-emerald-200' : status === 'failed' ? 'text-red-200' : 'text-amber-200';
+
+            const meta = [
+              when,
+              brand ? brand.toUpperCase() : '',
+              last4 ? '•••• ' + last4 : ''
+            ].filter(Boolean).join(' • ');
+
+            return (
+              '<div class="row-hover p-4" data-row-id="' + escapeAttr(paymentId(p)) + '">' +
+                '<div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">' +
+                  '<div class="min-w-0">' +
+                    '<div class="flex items-center gap-2">' +
+                      badge +
+                      '<span class="text-xs text-slate-500">' + escapeHtml(meta || '—') + '</span>' +
+                    '</div>' +
+                    '<div class="mt-2 text-sm font-semibold text-white truncate">' + desc + '</div>' +
+                    '<div class="mt-1 text-xs text-slate-500 mono break-all">' + txn + '</div>' +
+                  '</div>' +
+                  '<div class="flex items-center justify-between sm:justify-end gap-3">' +
+                    '<div class="text-right">' +
+                      '<div class="text-lg font-semibold ' + amountClass + '">' + escapeHtml(amount) + '</div>' +
+                    '</div>' +
+                    '<div class="flex items-center gap-2">' +
+                      '<button type="button" class="btn-secondary px-3 py-2 rounded-xl text-xs text-slate-300 hover:text-white" data-action="details" data-id="' + escapeAttr(paymentId(p)) + '">Details</button>' +
+                      '<button type="button" class="btn-primary px-3 py-2 rounded-xl text-xs text-white font-medium" data-action="print" data-id="' + escapeAttr(paymentId(p)) + '">Print</button>' +
+                    '</div>' +
+                  '</div>' +
+                '</div>' +
+              '</div>'
+            );
+          })
+          .join('');
+      }
+
+      function closeDetailsModal() {
+        must('details-modal').classList.add('hidden');
+        selectedPayment = null;
+      }
+
+      function openDetailsModal() {
+        must('details-modal').classList.remove('hidden');
+      }
+
+      function viewDetailsById(id) {
+        const p = payments.find((x) => paymentId(x) === id);
+        if (!p) return;
+        selectedPayment = p;
+
+        const status = normalizeStatus(p.status);
+        const amount = formatCurrency(p.amount, p.currency);
+        const when = formatDateTime(paymentDate(p));
+        const desc = escapeHtml(p.description || 'Payment');
+        const txn = escapeHtml(p.paymentIntentId || p.stripeSessionId || p.id || '—');
+        const brand = p.card?.brand ? String(p.card.brand).toUpperCase() : '';
+        const last4 = p.card?.last4 ? String(p.card.last4) : '';
+        const receiptUrl = p.receiptUrl ? String(p.receiptUrl) : '';
+
+        const badge =
+          status === 'paid'
+            ? '<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-emerald-500/10 text-emerald-200 border border-emerald-500/20">Paid</span>'
+            : status === 'failed'
+              ? '<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-500/10 text-red-200 border border-red-500/20">Failed</span>'
+              : '<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-400/10 text-amber-200 border border-amber-400/20">Pending</span>';
+
+        const content = must('details-content');
+        content.innerHTML =
+          '<div class="rounded-2xl border border-white/10 bg-slate-950/30 p-5">' +
+            '<div class="flex items-start justify-between gap-4">' +
+              '<div class="min-w-0">' +
+                '<div class="flex items-center gap-2">' + badge + '<span class="text-xs text-slate-500">' + escapeHtml(when) + '</span></div>' +
+                '<div class="mt-2 text-lg font-semibold text-white break-words">' + desc + '</div>' +
+                '<div class="mt-1 text-xs text-slate-500 mono break-all">' + txn + '</div>' +
+              '</div>' +
+              '<div class="text-right">' +
+                '<div class="text-xl font-semibold text-white">' + escapeHtml(amount) + '</div>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="rounded-2xl border border-white/10 bg-slate-950/30 p-5 space-y-3">' +
+            '<div class="flex items-center justify-between gap-4"><div class="text-sm text-slate-400">Payment Method</div><div class="text-sm text-slate-200">' + escapeHtml((brand || '—') + (last4 ? ' •••• ' + last4 : '')) + '</div></div>' +
+            '<div class="flex items-center justify-between gap-4"><div class="text-sm text-slate-400">Status</div><div class="text-sm text-slate-200">' + escapeHtml(status) + '</div></div>' +
+            '<div class="flex items-center justify-between gap-4"><div class="text-sm text-slate-400">Transaction</div><div class="text-xs text-slate-500 mono break-all">' + txn + '</div></div>' +
+            (receiptUrl
+              ? '<div class="flex items-center justify-between gap-4"><div class="text-sm text-slate-400">Stripe Receipt</div><a class="text-sm text-amber-200 hover:text-amber-100 underline" target="_blank" rel="noopener" href="' + escapeAttr(receiptUrl) + '">Open</a></div>'
+              : '') +
+          '</div>';
+
+        openDetailsModal();
+      }
+
+      function printReceiptById(id) {
+        const p = payments.find((x) => paymentId(x) === id);
+        if (!p) return;
+
+        const amount = formatCurrency(p.amount, p.currency);
+        const when = formatDateTime(paymentDate(p));
+        const desc = escapeHtml(p.description || 'Payment');
+        const status = normalizeStatus(p.status);
+        const txn = escapeHtml(p.paymentIntentId || p.stripeSessionId || p.id || '—');
+        const brand = p.card?.brand ? String(p.card.brand).toUpperCase() : '';
+        const last4 = p.card?.last4 ? String(p.card.last4) : '';
+        const receiptUrl = p.receiptUrl ? String(p.receiptUrl) : '';
+
+        const print = must('print-receipt');
+        print.innerHTML =
+          '<div style="max-width: 640px; margin: 0 auto; padding: 40px; font-family: DM Sans, system-ui, sans-serif;">' +
+            '<div style="text-align:center; margin-bottom: 28px;">' +
+              '<div style="width:60px;height:60px;border-radius:14px;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;background: linear-gradient(135deg,#f59e0b,#d97706);color:#fff;font-weight:700;font-size:22px;">TM</div>' +
+              '<div style="font-size: 22px; font-weight: 700; color: #0f172a;">Tax Monitor Pro</div>' +
+              '<div style="margin-top: 6px; color:#64748b;">Payment Receipt</div>' +
+            '</div>' +
+            '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:14px;padding:18px;">' +
+              '<div style="display:flex;justify-content:space-between;gap:14px;padding:10px 0;border-bottom:1px solid #e2e8f0;"><div style="color:#64748b;">Description</div><div style="font-weight:600;color:#0f172a;text-align:right;">' + desc + '</div></div>' +
+              '<div style="display:flex;justify-content:space-between;gap:14px;padding:10px 0;border-bottom:1px solid #e2e8f0;"><div style="color:#64748b;">Amount</div><div style="font-weight:800;color:#0f172a;text-align:right;">' + escapeHtml(amount) + '</div></div>' +
+              '<div style="display:flex;justify-content:space-between;gap:14px;padding:10px 0;border-bottom:1px solid #e2e8f0;"><div style="color:#64748b;">Status</div><div style="font-weight:700;color:#0f172a;text-transform:uppercase;text-align:right;">' + escapeHtml(status) + '</div></div>' +
+              '<div style="display:flex;justify-content:space-between;gap:14px;padding:10px 0;border-bottom:1px solid #e2e8f0;"><div style="color:#64748b;">Date</div><div style="color:#0f172a;text-align:right;">' + escapeHtml(when) + '</div></div>' +
+              '<div style="display:flex;justify-content:space-between;gap:14px;padding:10px 0;border-bottom:1px solid #e2e8f0;"><div style="color:#64748b;">Payment Method</div><div style="color:#0f172a;text-align:right;">' + escapeHtml((brand || '—') + (last4 ? ' •••• ' + last4 : '')) + '</div></div>' +
+              '<div style="display:flex;justify-content:space-between;gap:14px;padding:10px 0;"><div style="color:#64748b;">Transaction</div><div style="font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace; font-size:12px; color:#64748b; text-align:right;">' + txn + '</div></div>' +
+              (receiptUrl ? '<div style="margin-top:10px;font-size:12px;color:#64748b;">Stripe Receipt: ' + escapeHtml(receiptUrl) + '</div>' : '') +
+            '</div>' +
+            '<div style="text-align:center;color:#94a3b8;font-size:12px;margin-top:18px;">Powered by Stripe</div>' +
+          '</div>';
+
+        const prev = document.body.className;
+        document.body.className = 'bg-white';
+        window.print();
+        document.body.className = prev;
+      }
+
+      function getSessionToken() {
+        try {
+          const url = new URL(window.location.href);
+          const qs = url.searchParams.get('sessionToken');
+          if (qs) return String(qs);
+        } catch {
+          // ignore
+        }
+
+        try {
+          return localStorage.getItem('tm_sessionToken') || '';
+        } catch {
+          return '';
+        }
+      }
+
+      function assertPaymentsResponse(data) {
+        if (!data || typeof data !== 'object') throw new Error('Payments response must be an object.');
+        if (!Array.isArray(data.payments)) throw new Error('Payments response must include payments[].');
+        if (typeof data.totalCount !== 'number') throw new Error('Payments response must include totalCount (number).');
+        return data;
+      }
+
+      async function fetchPayments() {
+        showPanel('loading-state');
+
+        const sessionToken = getSessionToken();
+        const headers = { Accept: 'application/json' };
+        if (sessionToken) headers['X-Session-Token'] = sessionToken;
+
+        let res;
+        try {
+          res = await fetch(PAYMENTS_ENDPOINT, {
+            method: 'GET',
+            headers,
+            credentials: 'include'
+          });
+        } catch {
+          must('error-message').textContent = 'Network error while calling payments endpoint.';
+          showPanel('error-state');
+          return;
+        }
+
+        if (!res.ok) {
+          must('error-message').textContent = `Payments endpoint returned ${res.status}.`;
+          showPanel('error-state');
+          return;
+        }
+
+        let data;
+        try {
+          data = await res.json();
+        } catch {
+          must('error-message').textContent = 'Payments endpoint returned non-JSON.';
+          showPanel('error-state');
+          return;
+        }
+
+        try {
+          const ok = assertPaymentsResponse(data);
+          payments = ok.payments.map((p) => ({
+            amount: Number(p.amount),
+            card: p.card && typeof p.card === 'object' ? { brand: p.card.brand || '', last4: p.card.last4 || '' } : undefined,
+            completedAt: p.completedAt || null,
+            createdAt: p.createdAt || null,
+            currency: String(p.currency || 'USD').toUpperCase(),
+            description: String(p.description || 'Payment'),
+            id: String(p.id || ''),
+            paymentIntentId: p.paymentIntentId ? String(p.paymentIntentId) : '',
+            receiptUrl: p.receiptUrl ? String(p.receiptUrl) : '',
+            status: normalizeStatus(p.status),
+            stripeSessionId: p.stripeSessionId ? String(p.stripeSessionId) : ''
+          })).filter((p) => !!p.id);
+        } catch (err) {
+          must('error-message').textContent = err && err.message ? err.message : 'Payments response did not match expected shape.';
+          showPanel('error-state');
+          return;
+        }
+
+        updateStats();
+        renderPayments();
+
+        if (payments.length === 0) showPanel('empty-state');
+        else showPanel('paymentsList');
+      }
+
+      function wireUI() {
+        must('retry-btn').addEventListener('click', () => {
+          showToast('Refreshing…');
+          void fetchPayments();
+        });
+
+        const retryInline = $('retry-btn-inline');
+        if (retryInline) {
+          retryInline.addEventListener('click', () => {
+            showToast('Retrying…');
+            void fetchPayments();
+          });
+        }
+
+        must('search-input').addEventListener('input', (e) => {
+          searchQuery = String(e.target.value || '');
+          renderPayments();
+        });
+
+        Array.from(document.querySelectorAll('.pill')).forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const f = btn.getAttribute('data-filter') || 'all';
+            currentFilter = f;
+            setActivePill(f);
+            renderPayments();
+          });
+        });
+
+        must('paymentsList').addEventListener('click', (e) => {
+          const t = e.target.closest('[data-action]');
+          if (!t) return;
+          const action = t.getAttribute('data-action');
+          const id = t.getAttribute('data-id');
+          if (!id) return;
+          if (action === 'details') viewDetailsById(id);
+          if (action === 'print') printReceiptById(id);
+        });
+
+        const closeIds = ['details-backdrop', 'details-close', 'details-close-2'].sort();
+        closeIds.forEach((id) => {
+          const el = $(id);
+          if (el) el.addEventListener('click', closeDetailsModal);
+        });
+
+        must('print-from-details').addEventListener('click', () => {
+          if (!selectedPayment) return;
+          printReceiptById(paymentId(selectedPayment));
+        });
+
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') closeDetailsModal();
+        });
+      }
+
+      // Optional Element SDK wiring
+      async function onConfigChange(config) {
+        const subtitle = (config && config.page_subtitle) || defaultConfig.page_subtitle;
+        must('page-subtitle').textContent = subtitle;
+      }
+
+      if (window.elementSdk) {
+        try {
+          window.elementSdk.init({
+            defaultConfig,
+            onConfigChange,
+            mapToCapabilities: () => ({ borderables: [], recolorables: [] }),
+            mapToEditPanelValues: (config) => new Map([
+              ['page_subtitle', (config && config.page_subtitle) || defaultConfig.page_subtitle]
+            ])
+          });
+        } catch (err) {
+          console.warn('Element SDK init failed (non-fatal):', err);
+          void onConfigChange(defaultConfig);
+        }
+      } else {
+        void onConfigChange(defaultConfig);
+      }
+
+      async function injectPartial(slotComment, url) {
+        const html = document.documentElement;
+        const walker = document.createTreeWalker(html, NodeFilter.SHOW_COMMENT, null);
+        let node;
+        while ((node = walker.nextNode())) {
+          if (String(node.nodeValue || '').trim() === slotComment) {
+            const res = await fetch(url, { method: 'GET' });
+            if (!res.ok) throw new Error(`Partial HTTP ${res.status}: ${url}`);
+            const wrap = document.createElement('div');
+            wrap.innerHTML = await res.text();
+
+            const frag = document.createDocumentFragment();
+            while (wrap.firstChild) frag.appendChild(wrap.firstChild);
+            node.parentNode.insertBefore(frag, node);
+            node.parentNode.removeChild(node);
+            return;
+          }
+        }
+      }
+
+      async function initShell() {
+        try {
+          await injectPartial('APP_SIDEBAR', '/app/partials/sidebar.html');
+          await injectPartial('APP_TOPBAR', '/app/partials/topbar.html');
+        } catch (err) {
+          console.warn('Shell partial injection failed:', err);
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', async () => {
+        try {
+          wireUI();
+          await initShell();
+          await fetchPayments();
+        } catch (err) {
+          console.error('Office init failed:', err);
+        }
+      });
+    </script>
+  </body>
+</html>
