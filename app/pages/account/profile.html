@@ -29,16 +29,9 @@
               950: '#080a0f'
             },
             amber: {
-              50: '#fffbeb',
-              100: '#fef3c7',
-              200: '#fde68a',
-              300: '#fcd34d',
               400: '#fbbf24',
               500: '#f59e0b',
-              600: '#d97706',
-              700: '#b45309',
-              800: '#92400e',
-              900: '#78350f'
+              600: '#d97706'
             }
           }
         }
@@ -47,120 +40,100 @@
   </script>
 
   <style>
-    * { box-sizing: border-box; font-family: 'DM Sans', sans-serif; }
     html, body { height: 100%; }
+    html { font-size: 100%; }
 
-    /* Glass cards */
+    *, *::before, *::after { box-sizing: border-box; }
+    body { box-sizing: border-box; }
+    * { font-family: 'DM Sans', system-ui, sans-serif; }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #F59E0B, #FB923C);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
     .glass-card {
-      background: rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(10, 10, 10, 0.6);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-    /* Gradient border */
-    .gradient-border { position: relative; }
-    .gradient-border::before {
+    .gradient-border { background: linear-gradient(135deg, #F59E0B, #FB923C); }
+
+    .noise-bg::before {
       content: '';
-      position: absolute;
-      inset: -2px;
-      border-radius: inherit;
-      padding: 2px;
-      background: linear-gradient(135deg, #f59e0b, #ef4444, #fbbf24);
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      opacity: 0.6;
-      animation: borderGlow 3s ease-in-out infinite;
-      pointer-events: none;
-    }
-    @keyframes borderGlow {
-      0%, 100% { opacity: 0.4; }
-      50% { opacity: 0.8; }
-    }
-
-    /* Aurora background */
-    .aurora {
       position: fixed;
       inset: 0;
-      overflow: hidden;
-      z-index: 0;
-      pointer-events: none;
-    }
-    .aurora-blob {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(80px);
-      opacity: 0.4;
-      animation: float 20s ease-in-out infinite;
-    }
-    .aurora-blob-1 {
-      width: 600px;
-      height: 600px;
-      background: radial-gradient(circle, #f59e0b 0%, transparent 70%);
-      top: -200px;
-      right: -100px;
-      animation-delay: 0s;
-    }
-    .aurora-blob-2 {
-      width: 500px;
-      height: 500px;
-      background: radial-gradient(circle, #ef4444 0%, transparent 70%);
-      bottom: -150px;
-      left: -100px;
-      animation-delay: -7s;
-    }
-    .aurora-blob-3 {
-      width: 400px;
-      height: 400px;
-      background: radial-gradient(circle, #fbbf24 0%, transparent 70%);
-      top: 40%;
-      left: 30%;
-      animation-delay: -14s;
-    }
-    @keyframes float {
-      0%, 100% { transform: translate(0, 0) scale(1); }
-      25% { transform: translate(30px, -30px) scale(1.05); }
-      50% { transform: translate(-20px, 20px) scale(0.95); }
-      75% { transform: translate(20px, 30px) scale(1.02); }
-    }
-
-    /* Noise overlay */
-    .noise-overlay {
-      position: fixed;
-      inset: 0;
+      opacity: .03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
       pointer-events: none;
       z-index: 1;
-      opacity: 0.03;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
     }
 
-    /* Inputs */
-    .input-field {
-      background: rgba(0, 0, 0, 0.3);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+    .btn-primary {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
       transition: all 0.2s ease;
     }
+
+    .btn-primary:hover {
+      filter: brightness(1.05);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: rgba(2, 6, 23, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      transition: all 0.2s ease;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(2, 6, 23, 0.55);
+      border-color: rgba(255, 255, 255, 0.16);
+    }
+
+    .btn-danger {
+      background: rgba(239, 68, 68, 0.12);
+      border: 1px solid rgba(239, 68, 68, 0.35);
+      color: #fecaca;
+      transition: all 0.2s ease;
+    }
+
+    .btn-danger:hover {
+      background: rgba(239, 68, 68, 0.2);
+      border-color: rgba(239, 68, 68, 0.5);
+    }
+
+    .input-field {
+      background: rgba(2, 6, 23, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      transition: all 0.2s ease;
+    }
+
     .input-field:focus {
       border-color: rgba(245, 158, 11, 0.55);
       box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.12);
       outline: none;
     }
 
-    /* Toggle */
     .toggle-switch {
       width: 48px;
       height: 26px;
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.10);
       border-radius: 13px;
       position: relative;
       cursor: pointer;
       transition: all 0.2s ease;
+      border: 1px solid rgba(255, 255, 255, 0.10);
     }
+
     .toggle-switch.active {
       background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      border-color: rgba(245, 158, 11, 0.35);
     }
+
     .toggle-switch::after {
       content: '';
       position: absolute;
@@ -172,59 +145,29 @@
       left: 2px;
       transition: all 0.2s ease;
     }
+
     .toggle-switch.active::after { left: 24px; }
 
-    /* Buttons */
-    .btn-primary {
-      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-      transition: all 0.2s ease;
-    }
-    .btn-primary:hover { filter: brightness(1.05); transform: translateY(-1px); }
-
-    .btn-secondary {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      transition: all 0.2s ease;
-    }
-    .btn-secondary:hover { background: rgba(255, 255, 255, 0.09); border-color: rgba(255, 255, 255, 0.18); }
-
-    .btn-danger {
-      background: rgba(239, 68, 68, 0.12);
-      border: 1px solid rgba(239, 68, 68, 0.35);
-      color: #fecaca;
-      transition: all 0.2s ease;
-    }
-    .btn-danger:hover { background: rgba(239, 68, 68, 0.2); border-color: rgba(239, 68, 68, 0.5); }
-
-    /* Toast */
     .notification-toast { animation: slideIn 0.25s ease forwards; }
+
     @keyframes slideIn {
       from { opacity: 0; transform: translateY(-10px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Scrollbar */
+    .section-card {
+      background: rgba(2, 6, 23, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.10);
+    }
+
     ::-webkit-scrollbar { width: 8px; height: 8px; }
     ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.12); border-radius: 4px; }
     ::-webkit-scrollbar-thumb { background: linear-gradient(135deg, #f59e0b, #d97706); border-radius: 4px; }
-
-    /* Helpers */
-    .section-card { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.06); }
   </style>
 </head>
 
-<body class="h-full bg-slate-900 text-white overflow-hidden">
-  <!-- Aurora Background -->
-  <div class="aurora" aria-hidden="true">
-    <div class="aurora-blob aurora-blob-1"></div>
-    <div class="aurora-blob aurora-blob-2"></div>
-    <div class="aurora-blob aurora-blob-3"></div>
-  </div>
-
-  <!-- Noise Overlay -->
-  <div class="noise-overlay" aria-hidden="true"></div>
-
-  <div class="relative z-10 flex h-full">
+<body class="h-full bg-slate-950 text-slate-100 noise-bg overflow-hidden">
+<div class="relative z-10 flex h-full">
     <!-- APP SIDEBAR PARTIAL -->
     <!-- APP_SIDEBAR -->
 
@@ -233,13 +176,13 @@
       <!-- APP_TOPBAR -->
 
       <main class="flex-1 overflow-auto">
-        <div class="max-w-5xl mx-auto p-4 md:p-8 space-y-6">
+        <div class="max-w-6xl mx-auto px-6 py-8 space-y-6">
           <!-- Hero -->
-          <section class="glass-card gradient-border rounded-3xl p-6 md:p-8">
+          <section class="glass-card rounded-2xl p-6 md:p-8">
             <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <div class="space-y-2">
-                <h1 class="text-2xl md:text-4xl font-bold">Account Profile</h1>
-                <p class="text-slate-300 text-sm md:text-base">Manage and maintain this account record</p>
+                <h1 class="text-3xl md:text-4xl font-semibold tracking-tight mb-2"><span class="text-white">Account <\/span><span class="gradient-text">Profile<\/span><\/h1>
+                <p class="text-slate-400 text-base md:text-lg">Manage and maintain this account record<\/p>
                 <p class="text-slate-500 text-xs md:text-sm">Your changes are saved securely and reflected in your account.</p>
               </div>
               <div class="flex items-center gap-3">
@@ -257,7 +200,7 @@
           </div>
 
           <!-- Profile -->
-          <section class="glass-card gradient-border rounded-3xl p-6 md:p-8">
+          <section class="glass-card rounded-2xl p-6 md:p-8">
             <div class="flex flex-col sm:flex-row items-center gap-6 mb-8 pb-8 border-b border-white/10">
               <div class="relative">
                 <div id="avatar-display" class="w-24 h-24 rounded-2xl bg-gradient-to-br from-amber-400 via-orange-600 to-emerald-500 flex items-center justify-center text-white text-3xl font-bold shadow-lg overflow-hidden">
@@ -341,7 +284,7 @@
           </section>
 
           <!-- Security Section -->
-          <section class="glass-card gradient-border rounded-3xl p-6 md:p-8">
+          <section class="glass-card rounded-2xl p-6 md:p-8">
             <h3 class="text-lg font-semibold flex items-center gap-2 mb-6">
               <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
@@ -385,7 +328,7 @@
           </section>
 
           <!-- Preferences Section -->
-          <section class="glass-card gradient-border rounded-3xl p-6 md:p-8">
+          <section class="glass-card rounded-2xl p-6 md:p-8">
             <h3 class="text-lg font-semibold flex items-center gap-2 mb-6">
               <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
@@ -426,9 +369,9 @@
               <div class="section-card rounded-xl p-4">
                 <h4 class="text-white font-medium mb-3">Theme Preference</h4>
                 <div class="flex flex-wrap gap-3">
-                  <button type="button" class="theme-btn px-4 py-2 rounded-lg text-sm font-medium transition-all bg-white/5 border border-white/10 text-slate-300 hover:border-amber-500/50" data-theme="dark">Dark</button>
-                  <button type="button" class="theme-btn px-4 py-2 rounded-lg text-sm font-medium transition-all bg-white/5 border border-white/10 text-slate-300 hover:border-amber-500/50" data-theme="light">Light</button>
-                  <button type="button" class="theme-btn px-4 py-2 rounded-lg text-sm font-medium transition-all bg-white/5 border border-white/10 text-slate-300 hover:border-amber-500/50" data-theme="system">System</button>
+                  <button type="button" class="theme-btn px-4 py-2 rounded-lg text-sm font-medium transition-all bg-slate-950\/30 border border-white/10 text-slate-300 hover:border-amber-500/50" data-theme="dark">Dark</button>
+                  <button type="button" class="theme-btn px-4 py-2 rounded-lg text-sm font-medium transition-all bg-slate-950\/30 border border-white/10 text-slate-300 hover:border-amber-500/50" data-theme="light">Light</button>
+                  <button type="button" class="theme-btn px-4 py-2 rounded-lg text-sm font-medium transition-all bg-slate-950\/30 border border-white/10 text-slate-300 hover:border-amber-500/50" data-theme="system">System</button>
                 </div>
                 <p id="prefs-save-note" class="text-slate-500 text-xs mt-3">Preferences save automatically.</p>
               </div>
@@ -533,7 +476,7 @@
         icon.innerHTML = "<svg class='w-5 h-5 text-red-300' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 18L18 6M6 6l12 12'/></svg>";
       } else {
         icon.className = "w-8 h-8 rounded-full flex items-center justify-center bg-amber-500/20";
-        icon.innerHTML = "<svg class='w-5 h-5 text-amber-300' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'/></svg>";
+        icon.innerHTML = "<svg class='w-5 h-5 text-amber-400' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'/></svg>";
       }
 
       toast.classList.remove("hidden");
@@ -652,9 +595,9 @@
         const active = (b.dataset.theme === theme);
         b.classList.toggle("bg-amber-500/20", active);
         b.classList.toggle("border-amber-500/50", active);
-        b.classList.toggle("text-amber-200", active);
+        b.classList.toggle("text-amber-400", active);
 
-        b.classList.toggle("bg-white/5", !active);
+        b.classList.toggle("bg-slate-950\/30", !active);
         b.classList.toggle("border-white/10", !active);
         b.classList.toggle("text-slate-300", !active);
       });
@@ -941,7 +884,7 @@
         toggle.setAttribute("aria-checked", "true");
       } else if (twoFactorState === "pending") {
         el.textContent = "Setup in progress";
-        el.className = "text-amber-300 text-sm";
+        el.className = "text-amber-400 text-sm";
         toggle.dataset.enabled = "true";
         toggle.classList.add("active");
         toggle.setAttribute("aria-checked", "true");
