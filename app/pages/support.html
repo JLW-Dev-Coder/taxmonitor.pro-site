@@ -1,0 +1,1290 @@
+<!--app/pages/support.html-->
+<!doctype html>
+<html lang="en" class="h-full">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tax Monitor Pro — Support</title>
+
+    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+    <script src="/_sdk/element_sdk.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet" />
+
+    <link rel="icon" href="https://taxmonitor.pro/favicon.ico" sizes="any" />
+    <link rel="icon" href="https://taxmonitor.pro/assets/favicon.ico" sizes="any" />
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: { sans: ['DM Sans', 'system-ui', 'sans-serif'] },
+            colors: {
+              slate: {
+                850: '#1a1f2e',
+                900: '#0f1219',
+                950: '#080a0f'
+              },
+              amber: {
+                400: '#fbbf24',
+                500: '#f59e0b',
+                600: '#d97706'
+              }
+            }
+          }
+        }
+      };
+    </script>
+
+    <style>
+      html, body { height: 100%; }
+      html { font-size: 100%; }
+
+      *, *::before, *::after { box-sizing: border-box; }
+      body { box-sizing: border-box; }
+      * { font-family: 'DM Sans', system-ui, sans-serif; }
+
+      .gradient-text {
+        background: linear-gradient(135deg, #F59E0B, #FB923C);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .glass-card {
+        background: rgba(10, 10, 10, 0.6);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .gradient-border { background: linear-gradient(135deg, #F59E0B, #FB923C); }
+      .gradient-btn { background: linear-gradient(135deg, #F59E0B, #FB923C); }
+      .gradient-btn:hover { filter: brightness(0.95); }
+
+      .noise-bg::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        opacity: .03;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      .scrollbar-thin::-webkit-scrollbar { width: 6px; }
+      .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
+      .scrollbar-thin::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.25); border-radius: 999px; }
+      .scrollbar-thin::-webkit-scrollbar-thumb:hover { background: rgba(148, 163, 184, 0.4); }
+
+      @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+      .fade-in { animation: fadeIn 0.2s ease-out; }
+
+      @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+      .pulse { animation: pulse 2s infinite; }
+
+      .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace; }
+
+      .tab-active {
+        background: rgba(245, 158, 11, 0.15);
+        border-color: rgba(245, 158, 11, 0.35);
+        color: #fff;
+      }
+
+      .ticket-card { transition: all 0.2s ease; }
+      .ticket-card:hover { transform: translateY(-1px); }
+
+      .activity-item { transition: all 0.2s ease; }
+      .activity-item:hover { background: rgba(148, 163, 184, 0.06); transform: translateX(4px); }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #f59e0b, #d97706);
+        transition: all 0.2s ease;
+      }
+
+      .btn-primary:hover {
+        filter: brightness(1.05);
+        transform: translateY(-1px);
+      }
+
+      .btn-secondary {
+        background: rgba(2, 6, 23, 0.35);
+        border: 1px solid rgba(255, 255, 255, 0.10);
+        transition: all 0.2s ease;
+      }
+
+      .btn-secondary:hover {
+        background: rgba(2, 6, 23, 0.55);
+        border-color: rgba(255, 255, 255, 0.16);
+      }
+    </style>
+
+    <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  </head>
+
+  <body class="h-full bg-slate-950 text-slate-100 noise-bg overflow-hidden">
+    <div class="relative z-10 flex h-full">
+      <!-- APP SIDEBAR PARTIAL -->
+      <!-- APP_SIDEBAR -->
+
+      <div class="flex-1 flex flex-col min-w-0">
+        <!-- APP TOPBAR PARTIAL -->
+        <!-- APP_TOPBAR -->
+
+        <main class="flex-1 overflow-auto">
+          <div class="max-w-7xl mx-auto px-6 py-8">
+            <!-- Page Header -->
+            <div class="mb-8">
+              <div class="flex flex-col items-center text-center">
+                <h1 class="text-3xl md:text-4xl font-semibold tracking-tight mb-2">
+                  <span class="text-white">Account </span><span class="gradient-text">Support</span>
+                </h1>
+                <p class="text-slate-400 text-base md:text-lg max-w-2xl">
+                  Create tickets, track updates, and keep an audit-friendly thread for your case.
+                </p>
+              </div>
+            </div>
+
+            <!-- Support Layout (keeps original content, re-homed into the app shell) -->
+            <section class="glass-card rounded-2xl p-4 md:p-6">
+              <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+                <!-- Left Column: Folders + New Ticket -->
+                <aside class="lg:col-span-3">
+                  <div class="rounded-2xl border border-white/10 bg-slate-950/30 overflow-hidden">
+                    <div class="p-5 border-b border-white/10">
+                      <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl gradient-btn flex items-center justify-center shadow-lg shadow-amber-500/20">
+                          <svg class="w-6 h-6 text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                          </svg>
+                        </div>
+                        <div>
+                          <p class="text-sm font-semibold text-white">Support Portal</p>
+                          <p class="text-xs text-amber-400 font-medium" id="support-email-label">support@taxmonitor.pro</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="p-4">
+                      <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3 px-2">Folders</p>
+                      <ul class="space-y-1">
+                        <li>
+                          <button onclick="filterTickets('all')" class="folder-btn w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-slate-300 hover:bg-white/5 transition-all" data-folder="all" type="button">
+                            <span class="font-medium">All Tickets</span>
+                            <span class="text-xs bg-white/10 px-2 py-0.5 rounded-full">12</span>
+                          </button>
+                        </li>
+                        <li>
+                          <button onclick="filterTickets('awaiting-client')" class="folder-btn w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-slate-300 hover:bg-white/5 transition-all" data-folder="awaiting-client" type="button">
+                            <span class="font-medium">Awaiting Client</span>
+                            <span class="text-xs bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded-full">3</span>
+                          </button>
+                        </li>
+                        <li>
+                          <button onclick="filterTickets('awaiting-support')" class="folder-btn w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-slate-300 hover:bg-white/5 transition-all" data-folder="awaiting-support" type="button">
+                            <span class="font-medium">Awaiting Support</span>
+                            <span class="text-xs bg-white/10 px-2 py-0.5 rounded-full">4</span>
+                          </button>
+                        </li>
+                        <li>
+                          <button onclick="filterTickets('open')" class="folder-btn w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-slate-300 hover:bg-white/5 transition-all" data-folder="open" type="button">
+                            <span class="font-medium">Open</span>
+                            <span class="text-xs bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full">5</span>
+                          </button>
+                        </li>
+                        <li>
+                          <button onclick="filterTickets('closed')" class="folder-btn w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-slate-300 hover:bg-white/5 transition-all" data-folder="closed" type="button">
+                            <span class="font-medium">Closed</span>
+                            <span class="text-xs bg-white/10 px-2 py-0.5 rounded-full">5</span>
+                          </button>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <div class="p-4 border-t border-white/10">
+                      <button onclick="openNewTicketModal()" class="w-full btn-primary py-3.5 px-6 rounded-2xl text-sm text-white font-semibold flex items-center justify-center gap-2" type="button">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                        </svg>
+                        New Support Ticket
+                      </button>
+                    </div>
+                  </div>
+                </aside>
+
+                <!-- Middle Column: Ticket List -->
+                <section class="lg:col-span-5">
+                  <div class="rounded-2xl border border-white/10 bg-slate-950/30 overflow-hidden flex flex-col min-h-[640px]">
+                    <header class="p-5 border-b border-white/10">
+                      <div class="flex items-start justify-between gap-4">
+                        <div>
+                          <h2 class="text-xl font-semibold text-white">Tickets</h2>
+                          <p class="text-sm text-slate-400">Search, filter, and keep moving.</p>
+                        </div>
+                      </div>
+
+                      <div class="mt-4 relative">
+                        <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                        <input type="text" id="search-input" placeholder="Search tickets..." class="w-full bg-black/20 border border-white/10 rounded-xl py-3 pl-12 pr-4 text-slate-200 placeholder-slate-500 focus:outline-none focus:border-amber-500/40 focus:ring-1 focus:ring-amber-500/30 transition-all" />
+                      </div>
+
+                      <div class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-2">
+                        <select id="filter-order" class="w-full bg-black/20 border border-white/10 rounded-xl py-2 px-4 text-sm text-slate-300 focus:outline-none focus:border-amber-500/40">
+                          <option value="">Order ID</option>
+                          <option value="ORD-2024-001">ORD-2024-001</option>
+                          <option value="ORD-2024-002">ORD-2024-002</option>
+                          <option value="ORD-2024-003">ORD-2024-003</option>
+                        </select>
+                        <select id="filter-priority" class="w-full bg-black/20 border border-white/10 rounded-xl py-2 px-4 text-sm text-slate-300 focus:outline-none focus:border-amber-500/40">
+                          <option value="">Priority</option>
+                          <option value="critical">Critical</option>
+                          <option value="high">High</option>
+                          <option value="low">Low</option>
+                          <option value="normal">Normal</option>
+                        </select>
+                        <select id="filter-status" class="w-full bg-black/20 border border-white/10 rounded-xl py-2 px-4 text-sm text-slate-300 focus:outline-none focus:border-amber-500/40">
+                          <option value="">Status</option>
+                          <option value="awaiting-client">Awaiting Client</option>
+                          <option value="awaiting-support">Awaiting Support</option>
+                          <option value="closed">Closed</option>
+                          <option value="open">Open</option>
+                        </select>
+                        <select id="filter-type" class="w-full bg-black/20 border border-white/10 rounded-xl py-2 px-4 text-sm text-slate-300 focus:outline-none focus:border-amber-500/40">
+                          <option value="">Type</option>
+                          <option value="Address Update">Address Update</option>
+                          <option value="Compliance Report">Compliance Report</option>
+                          <option value="Demo Appointment">Demo Appointment</option>
+                          <option value="E-Sign 2848">E-Sign 2848</option>
+                          <option value="Filing Status">Filing Status</option>
+                          <option value="Intake">Intake</option>
+                          <option value="Payment">Payment</option>
+                        </select>
+                      </div>
+
+                      <div class="mt-4 flex items-center gap-2">
+                        <label class="flex items-center gap-2 text-sm text-slate-400">
+                          <input type="checkbox" id="select-all" class="w-4 h-4 rounded border-white/20 bg-black/20 text-amber-500 focus:ring-amber-500/30" />
+                          <span>Select All</span>
+                        </label>
+                        <div class="flex-1"></div>
+
+                        <button onclick="bulkDelete()" class="btn-secondary text-slate-300 py-2 px-4 rounded-xl text-sm font-medium flex items-center gap-2" type="button">
+                          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                          </svg>
+                          Delete from View
+                        </button>
+                        <button onclick="bulkMarkRead()" class="btn-secondary text-slate-300 py-2 px-4 rounded-xl text-sm font-medium flex items-center gap-2" type="button">
+                          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 19v-8.93a2 2 0 01.89-1.664l7-4.666a2 2 0 012.22 0l7 4.666A2 2 0 0121 10.07V19M3 19a2 2 0 002 2h14a2 2 0 002-2M3 19l6.75-4.5M21 19l-6.75-4.5M3 10l6.75 4.5M21 10l-6.75 4.5m0 0l-1.14.76a2 2 0 01-2.22 0l-1.14-.76" />
+                          </svg>
+                          Mark Read/Unread
+                        </button>
+                      </div>
+                    </header>
+
+                    <div id="ticket-list" class="flex-1 overflow-y-auto scrollbar-thin p-4 space-y-2"></div>
+                  </div>
+                </section>
+
+                <!-- Right Column: Ticket Detail -->
+                <aside class="lg:col-span-4">
+                  <div id="ticket-detail" class="rounded-2xl border border-white/10 bg-slate-950/30 overflow-hidden flex flex-col min-h-[640px]">
+                    <div id="detail-content" class="flex-1 overflow-y-auto scrollbar-thin">
+                      <div class="h-full flex items-center justify-center text-slate-500">
+                        <div class="text-center">
+                          <svg class="w-16 h-16 mx-auto mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
+                          </svg>
+                          <p class="text-lg font-medium">Select a ticket</p>
+                          <p class="text-sm opacity-75">Choose a ticket from the list to view details</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </aside>
+              </div>
+            </section>
+
+            <p class="text-center text-slate-600 text-xs pt-6">Support messages are logged for audit and may be read-only once sent.</p>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <!-- New Ticket Modal (kept) -->
+    <div id="new-ticket-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+      <div class="glass-card rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90%] overflow-hidden flex flex-col fade-in">
+        <div class="p-6 border-b border-white/10 flex items-center justify-between">
+          <h3 class="text-xl font-semibold text-white">New Support Ticket</h3>
+          <button onclick="closeNewTicketModal()" class="text-slate-400 hover:text-white transition-colors" type="button" aria-label="Close">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <div id="modal-body" class="flex-1 overflow-y-auto scrollbar-thin p-6 space-y-5"></div>
+
+        <div id="modal-footer" class="p-6 border-t border-white/10 flex gap-3"></div>
+      </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="fixed bottom-4 right-4 z-50 space-y-2"></div>
+
+    <script>
+      // Default configuration
+      const defaultConfig = {
+        app_title: 'Tax Monitor Pro | Support',
+        background_color: '#0f172a',
+        primary_color: '#f59e0b',
+        secondary_color: '#475569',
+        support_email: 'support@taxmonitor.pro',
+        surface_color: '#1e293b',
+        text_color: '#f1f5f9'
+      };
+
+      let config = { ...defaultConfig };
+
+      // Sample ticket data
+      let tickets = [
+        {
+          id: 'TKT-001',
+          actionRequired: 'Resolve',
+          orderId: 'ORD-2024-001',
+          priority: 'high',
+          selected: false,
+          status: 'open',
+          subject: 'Payment processing issue with invoice #4521',
+          threadCount: 4,
+          timestamp: '2024-01-15T10:30:00Z',
+          type: 'Payment',
+          unread: true,
+          threads: [
+            { sender: 'system', message: 'Ticket created and assigned to support team.', timestamp: '2024-01-15T10:30:00Z' },
+            { sender: 'you', message: "I'm having trouble with my payment. The invoice shows unpaid but I already submitted payment last week.", timestamp: '2024-01-15T10:30:00Z', attachments: ['payment_receipt.pdf'] },
+            { sender: 'staff', message: "Thank you for reaching out. I've located your payment in our system. It appears there was a processing delay. Let me escalate this.", timestamp: '2024-01-15T14:22:00Z', staffName: 'Sarah M.' },
+            { sender: 'system', message: 'Priority escalated to High.', timestamp: '2024-01-15T14:25:00Z' }
+          ]
+        },
+        {
+          id: 'TKT-002',
+          actionRequired: 'Acknowledge',
+          orderId: 'ORD-2024-002',
+          priority: 'normal',
+          selected: false,
+          status: 'open',
+          subject: 'E-Sign 2848 form questions',
+          threadCount: 2,
+          timestamp: '2024-01-14T16:45:00Z',
+          type: 'E-Sign 2848',
+          unread: true,
+          threads: [
+            { sender: 'system', message: 'Ticket created.', timestamp: '2024-01-14T16:45:00Z' },
+            { sender: 'you', message: 'I need clarification on filling out the 2848 form. Which boxes should I check for my specific situation?', timestamp: '2024-01-14T16:45:00Z' }
+          ]
+        },
+        {
+          id: 'TKT-003',
+          actionRequired: 'Triage',
+          orderId: 'ORD-2024-003',
+          priority: 'critical',
+          selected: false,
+          status: 'open',
+          subject: 'Compliance report deadline extension',
+          threadCount: 6,
+          timestamp: '2024-01-14T09:15:00Z',
+          type: 'Compliance Report',
+          unread: false,
+          threads: [
+            { sender: 'system', message: 'Ticket created with Critical priority.', timestamp: '2024-01-14T09:15:00Z' },
+            { sender: 'you', message: 'Need an urgent extension for compliance report. My documentation was delayed due to unforeseen circumstances.', timestamp: '2024-01-14T09:15:00Z' },
+            { sender: 'staff', message: 'I understand the urgency. Please provide the specific report ID and new requested deadline.', timestamp: '2024-01-14T09:45:00Z', staffName: 'Mike R.' },
+            { sender: 'you', message: 'Report ID: CR-2024-0892. Requesting extension to January 31st.', timestamp: '2024-01-14T10:00:00Z' },
+            { sender: 'staff', message: 'Extension request submitted. You should receive confirmation within 24 hours.', timestamp: '2024-01-14T10:30:00Z', staffName: 'Mike R.' },
+            { sender: 'system', message: 'Status changed to Under Review.', timestamp: '2024-01-14T10:31:00Z' }
+          ]
+        },
+        {
+          id: 'TKT-004',
+          actionRequired: 'Close',
+          orderId: 'ORD-2024-001',
+          priority: 'low',
+          selected: false,
+          status: 'closed',
+          subject: 'Address update for tax records',
+          threadCount: 3,
+          timestamp: '2024-01-12T11:20:00Z',
+          type: 'Address Update',
+          unread: false,
+          threads: [
+            { sender: 'system', message: 'Ticket created.', timestamp: '2024-01-12T11:20:00Z' },
+            { sender: 'you', message: 'Please update my address on file to: 123 New Street, Suite 400, New York, NY 10001', timestamp: '2024-01-12T11:20:00Z' },
+            { sender: 'staff', message: 'Address has been updated in our system. Please verify in your account settings.', timestamp: '2024-01-12T15:00:00Z', staffName: 'Lisa K.' }
+          ]
+        },
+        {
+          id: 'TKT-005',
+          actionRequired: 'Acknowledge',
+          orderId: '',
+          priority: 'normal',
+          selected: false,
+          status: 'awaiting-client',
+          subject: 'Demo appointment rescheduling',
+          threadCount: 2,
+          timestamp: '2024-01-11T14:00:00Z',
+          type: 'Demo Appointment',
+          unread: false,
+          threads: [
+            { sender: 'system', message: 'Appointment rescheduling request submitted.', timestamp: '2024-01-11T14:00:00Z' },
+            { sender: 'staff', message: 'We have availability on Tuesday at 2pm or Thursday at 10am. Please confirm your preferred time.', timestamp: '2024-01-11T16:30:00Z', staffName: 'John D.' }
+          ]
+        }
+      ];
+
+      let selectedTicketId = null;
+      let selectedPriority = 'normal';
+      let currentFolder = 'all';
+
+      // --- SDK + config ---
+      async function initSDK() {
+        if (window.elementSdk) {
+          await window.elementSdk.init({
+            defaultConfig,
+            onConfigChange: async (newConfig) => {
+              config = { ...defaultConfig, ...newConfig };
+              applyConfig();
+            },
+            mapToCapabilities: (cfg) => ({
+              borderables: [],
+              recolorables: [
+                {
+                  get: () => cfg.background_color || defaultConfig.background_color,
+                  set: (v) => window.elementSdk.setConfig({ background_color: v })
+                },
+                {
+                  get: () => cfg.primary_color || defaultConfig.primary_color,
+                  set: (v) => window.elementSdk.setConfig({ primary_color: v })
+                },
+                {
+                  get: () => cfg.secondary_color || defaultConfig.secondary_color,
+                  set: (v) => window.elementSdk.setConfig({ secondary_color: v })
+                },
+                {
+                  get: () => cfg.surface_color || defaultConfig.surface_color,
+                  set: (v) => window.elementSdk.setConfig({ surface_color: v })
+                },
+                {
+                  get: () => cfg.text_color || defaultConfig.text_color,
+                  set: (v) => window.elementSdk.setConfig({ text_color: v })
+                }
+              ],
+              fontEditable: undefined,
+              fontSizeable: undefined
+            }),
+            mapToEditPanelValues: (cfg) =>
+              new Map([
+                ['app_title', cfg.app_title || defaultConfig.app_title],
+                ['support_email', cfg.support_email || defaultConfig.support_email]
+              ])
+          });
+
+          config = { ...defaultConfig, ...(window.elementSdk.config || {}) };
+        }
+
+        applyConfig();
+        renderTickets();
+      }
+
+      function applyConfig() {
+        const email = (config.support_email || defaultConfig.support_email).trim();
+        const el = document.getElementById('support-email-label');
+        if (el) el.textContent = email;
+        const modalEmail = document.getElementById('modal-support-email');
+        if (modalEmail) modalEmail.textContent = email;
+
+        document.documentElement.style.setProperty('--bg-color', config.background_color || defaultConfig.background_color);
+        document.documentElement.style.setProperty('--surface-color', config.surface_color || defaultConfig.surface_color);
+        document.documentElement.style.setProperty('--text-color', config.text_color || defaultConfig.text_color);
+        document.documentElement.style.setProperty('--primary-color', config.primary_color || defaultConfig.primary_color);
+        document.documentElement.style.setProperty('--secondary-color', config.secondary_color || defaultConfig.secondary_color);
+      }
+
+      // --- filtering ---
+      function getFilterState() {
+        const orderId = String(document.getElementById('filter-order')?.value || '').trim();
+        const priority = String(document.getElementById('filter-priority')?.value || '').trim();
+        const status = String(document.getElementById('filter-status')?.value || '').trim();
+        const type = String(document.getElementById('filter-type')?.value || '').trim();
+        const search = String(document.getElementById('search-input')?.value || '').trim().toLowerCase();
+
+        return { orderId, priority, status, type, search };
+      }
+
+      function filterTicketsByFolder(ticketList, folder) {
+        switch (folder) {
+          case 'awaiting-client':
+            return ticketList.filter((t) => t.status === 'awaiting-client');
+          case 'awaiting-support':
+            return ticketList.filter(
+              (t) => t.status === 'awaiting-support' || (t.status === 'open' && t.threads[t.threads.length - 1]?.sender === 'you')
+            );
+          case 'closed':
+            return ticketList.filter((t) => t.status === 'closed');
+          case 'open':
+            return ticketList.filter((t) => t.status === 'open' || t.status === 'awaiting-client' || t.status === 'awaiting-support');
+          default:
+            return ticketList;
+        }
+      }
+
+      function filterTicketsByControls(ticketList) {
+        const { orderId, priority, status, type, search } = getFilterState();
+
+        return ticketList
+          .filter((t) => (orderId ? String(t.orderId || '').trim() === orderId : true))
+          .filter((t) => (priority ? String(t.priority || '').trim() === priority : true))
+          .filter((t) => (status ? String(t.status || '').trim() === status : true))
+          .filter((t) => (type ? String(t.type || '').trim() === type : true))
+          .filter((t) => {
+            if (!search) return true;
+            const hay = [t.id, t.subject, t.orderId, t.type, t.priority, t.status].map((x) => String(x || '').toLowerCase()).join(' ');
+            return hay.includes(search);
+          });
+      }
+
+      // --- rendering ---
+      function renderTickets() {
+        const container = document.getElementById('ticket-list');
+        if (!container) return;
+
+        const byFolder = filterTicketsByFolder(tickets, currentFolder);
+        const filteredTickets = filterTicketsByControls(byFolder);
+
+        container.innerHTML = filteredTickets
+          .map(
+            (ticket) => `
+        <div onclick="selectTicket('${ticket.id}')" class="ticket-card p-4 rounded-2xl border cursor-pointer transition-all ${
+          selectedTicketId === ticket.id
+            ? 'bg-amber-500/10 border-amber-500/30'
+            : 'bg-black/20 border-white/10 hover:bg-black/30 hover:border-white/15'
+        }">
+          <div class="flex items-start gap-3">
+            <input type="checkbox" onclick="event.stopPropagation(); toggleSelect('${ticket.id}')" ${ticket.selected ? 'checked' : ''} class="mt-1 w-4 h-4 rounded border-white/20 bg-black/20 text-amber-500 focus:ring-amber-500/30">
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 mb-1">
+                ${ticket.unread ? '<div class="w-2 h-2 bg-amber-400 rounded-full pulse"></div>' : ''}
+                <h4 class="font-semibold text-white truncate">${ticket.subject}</h4>
+              </div>
+              <div class="flex flex-wrap items-center gap-2 mb-2">
+                <span class="px-2 py-0.5 rounded-lg text-xs font-medium ${getTypeColor(ticket.type)}">${ticket.type}</span>
+                <span class="px-2 py-0.5 rounded-lg text-xs font-medium ${getPriorityColor(ticket.priority)}">${capitalizeFirst(ticket.priority)}</span>
+                ${
+                  ticket.actionRequired !== 'Close'
+                    ? `<span class="px-2 py-0.5 rounded-lg text-xs font-medium bg-rose-500/20 text-rose-300">${ticket.actionRequired}</span>`
+                    : ''
+                }
+              </div>
+              <div class="flex items-center gap-3 text-xs text-slate-500">
+                ${ticket.orderId ? `<span class="mono bg-white/10 px-2 py-0.5 rounded">${ticket.orderId}</span>` : ''}
+                <span>${formatTimestamp(ticket.timestamp)}</span>
+                <span class="flex items-center gap-1">
+                  <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+                  ${ticket.threadCount}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      `
+          )
+          .join('');
+
+        syncSelectAllCheckbox();
+      }
+
+      function filterTickets(folder) {
+        currentFolder = folder;
+        document.querySelectorAll('.folder-btn').forEach((btn) => {
+          btn.classList.remove('tab-active');
+          if (btn.dataset.folder === folder) btn.classList.add('tab-active');
+        });
+        renderTickets();
+      }
+
+      function selectTicket(id) {
+        selectedTicketId = id;
+        renderTickets();
+        renderTicketDetail();
+      }
+
+      function renderTicketDetail() {
+        const container = document.getElementById('detail-content');
+        if (!container) return;
+
+        const ticket = tickets.find((t) => t.id === selectedTicketId);
+
+        if (!ticket) {
+          container.innerHTML = `
+          <div class="h-full flex items-center justify-center text-slate-500">
+            <div class="text-center">
+              <svg class="w-16 h-16 mx-auto mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+              <p class="text-lg font-medium">Select a ticket</p>
+              <p class="text-sm opacity-75">Choose a ticket from the list to view details</p>
+            </div>
+          </div>
+        `;
+          return;
+        }
+
+        container.innerHTML = `
+        <div class="p-6 border-b border-white/10">
+          <h3 class="text-lg font-semibold text-white mb-4">${ticket.subject}</h3>
+
+          <div class="space-y-3 text-sm">
+            <div class="flex items-center justify-between gap-3">
+              <span class="text-slate-500">Support Email</span>
+              <span class="text-slate-300">${(config.support_email || defaultConfig.support_email).trim()}</span>
+            </div>
+            <div class="flex items-center justify-between gap-3">
+              <span class="text-slate-500">Action Required</span>
+              <span class="px-2 py-0.5 rounded-lg text-xs font-medium bg-amber-500/20 text-amber-300">${ticket.actionRequired}</span>
+            </div>
+            <div class="flex items-center justify-between gap-3">
+              <span class="text-slate-500">Type</span>
+              <span class="px-2 py-0.5 rounded-lg text-xs font-medium ${getTypeColor(ticket.type)}">${ticket.type}</span>
+            </div>
+            <div class="flex items-center justify-between gap-3">
+              <span class="text-slate-500">Priority</span>
+              <span class="px-2 py-0.5 rounded-lg text-xs font-medium ${getPriorityColor(ticket.priority)}">${capitalizeFirst(ticket.priority)}</span>
+            </div>
+            ${
+              ticket.orderId
+                ? `
+            <div class="flex items-center justify-between gap-3">
+              <span class="text-slate-500">Related Order ID</span>
+              <button onclick="copyToClipboard('${ticket.orderId}')" class="flex items-center gap-2 text-slate-300 hover:text-amber-300 transition-colors" type="button">
+                <span class="mono bg-white/10 px-2 py-0.5 rounded">${ticket.orderId}</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+              </button>
+            </div>
+            `
+                : ''
+            }
+          </div>
+
+          <div class="flex gap-2 mt-4">
+            <button onclick="toggleRead('${ticket.id}')" class="btn-secondary flex-1 text-slate-300 py-2.5 px-4 rounded-xl text-sm font-medium transition-all flex items-center justify-center gap-2" type="button">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 19v-8.93a2 2 0 01.89-1.664l7-4.666a2 2 0 012.22 0l7 4.666A2 2 0 0121 10.07V19M3 19a2 2 0 002 2h14a2 2 0 002-2M3 19l6.75-4.5M21 19l-6.75-4.5"/></svg>
+              ${ticket.unread ? 'Mark Read' : 'Mark Unread'}
+            </button>
+            <button onclick="deleteTicket('${ticket.id}')" class="btn-secondary text-slate-300 py-2.5 px-4 rounded-xl text-sm font-medium transition-all" type="button" aria-label="Delete">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="p-6 space-y-4">
+          <div class="bg-black/20 border border-white/10 rounded-xl p-3 flex items-center gap-2 text-xs text-slate-400">
+            <svg class="w-4 h-4 text-amber-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <span>Logged for audit; email read-only once sent.</span>
+          </div>
+
+          ${ticket.threads.map((thread) => renderThread(thread)).join('')}
+        </div>
+
+        <div class="p-6 border-t border-white/10 mt-auto">
+          <textarea id="reply-message" rows="3" placeholder="Type your reply..." class="w-full bg-black/20 border border-white/10 rounded-xl py-3 px-4 text-slate-200 placeholder-slate-500 focus:outline-none focus:border-amber-500/40 focus:ring-1 focus:ring-amber-500/30 resize-none mb-3"></textarea>
+          <div class="flex gap-2">
+            <button onclick="attachFile()" class="btn-secondary text-slate-300 py-2.5 px-4 rounded-xl text-sm font-medium transition-all flex items-center gap-2" type="button">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/></svg>
+              Attach
+            </button>
+            <div class="flex-1"></div>
+            <button onclick="saveDraft()" class="btn-secondary text-slate-300 py-2.5 px-4 rounded-xl text-sm font-medium transition-all" type="button">Save Draft</button>
+            <button onclick="sendReply('${ticket.id}')" class="btn-primary text-slate-950 font-bold py-2.5 px-6 rounded-xl shadow-lg shadow-amber-500/20 transition-all" type="button">Send Reply</button>
+          </div>
+        </div>
+      `;
+      }
+
+      function renderThread(thread) {
+        const isSystem = thread.sender === 'system';
+        const isYou = thread.sender === 'you';
+
+        if (isSystem) {
+          return `
+          <div class="flex items-center gap-2 text-xs text-slate-500">
+            <div class="h-px flex-1 bg-white/10"></div>
+            <span>${thread.message}</span>
+            <span>• ${formatTimestamp(thread.timestamp)}</span>
+            <div class="h-px flex-1 bg-white/10"></div>
+          </div>
+        `;
+        }
+
+        const initials = (thread.staffName || 'Support')
+          .split(' ')
+          .map((n) => (n && n[0]) || '')
+          .join('')
+          .slice(0, 2)
+          .toUpperCase();
+
+        return `
+        <div class="flex gap-3 ${isYou ? 'flex-row-reverse' : ''}">
+          <div class="w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center text-[10px] font-bold ${
+            isYou ? 'bg-amber-500/20 text-amber-300' : 'bg-sky-500/20 text-sky-300'
+          }">
+            ${isYou ? 'YOU' : initials}
+          </div>
+          <div class="flex-1 max-w-[85%]">
+            <div class="flex items-center gap-2 mb-1 ${isYou ? 'justify-end' : ''}">
+              <span class="text-xs font-medium text-slate-400">${isYou ? 'You' : thread.staffName || 'Support Staff'}</span>
+              <span class="text-xs text-slate-600">${formatTimestamp(thread.timestamp)}</span>
+            </div>
+            <div class="p-4 rounded-2xl ${
+              isYou ? 'bg-amber-500/10 border border-amber-500/20 rounded-tr-md' : 'bg-black/20 border border-white/10 rounded-tl-md'
+            }">
+              <p class="text-sm text-slate-300">${thread.message}</p>
+              ${
+                thread.attachments
+                  ? `
+                <div class="mt-3 flex flex-wrap gap-2">
+                  ${
+                    thread.attachments
+                      .map(
+                        (att) => `
+                    <span class="inline-flex items-center gap-1 px-3 py-1 bg-white/10 rounded-lg text-xs text-slate-300 hover:text-amber-300 cursor-pointer transition-colors">
+                      <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/></svg>
+                      ${att}
+                    </span>
+                  `
+                      )
+                      .join('')
+                  }
+                </div>
+              `
+                  : ''
+              }
+            </div>
+          </div>
+        </div>
+      `;
+      }
+
+      function getPriorityColor(priority) {
+        const colors = {
+          critical: 'bg-red-500/20 text-red-300',
+          high: 'bg-orange-500/20 text-orange-300',
+          low: 'bg-white/10 text-slate-300',
+          normal: 'bg-amber-500/20 text-amber-300'
+        };
+        return colors[priority] || 'bg-white/10 text-slate-300';
+      }
+
+      function getTypeColor(type) {
+        const colors = {
+          'Address Update': 'bg-sky-500/20 text-sky-300',
+          'Compliance Report': 'bg-rose-500/20 text-rose-300',
+          'Demo Appointment': 'bg-amber-500/20 text-amber-300',
+          'E-Sign 2848': 'bg-violet-500/20 text-violet-300',
+          'Filing Status': 'bg-indigo-500/20 text-indigo-300',
+          Intake: 'bg-blue-500/20 text-blue-300',
+          Payment: 'bg-emerald-500/20 text-emerald-300'
+        };
+        return colors[type] || 'bg-white/10 text-slate-300';
+      }
+
+      function capitalizeFirst(str) {
+        const s = String(str || '');
+        return s ? s.charAt(0).toUpperCase() + s.slice(1) : '';
+      }
+
+      function formatTimestamp(ts) {
+        const date = new Date(ts);
+        const now = new Date();
+        const diff = now - date;
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+        if (days === 0) return date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+        if (days === 1) return 'Yesterday';
+        if (days < 7) return `${days} days ago`;
+        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      }
+
+      // --- selection + actions ---
+      function toggleSelect(id) {
+        const ticket = tickets.find((t) => t.id === id);
+        if (!ticket) return;
+        ticket.selected = !ticket.selected;
+        renderTickets();
+      }
+
+      function toggleRead(id) {
+        const ticket = tickets.find((t) => t.id === id);
+        if (!ticket) return;
+
+        ticket.unread = !ticket.unread;
+        renderTickets();
+        renderTicketDetail();
+        showToast(ticket.unread ? 'Marked as unread' : 'Marked as read');
+      }
+
+      function deleteTicket(id) {
+        tickets = tickets.filter((t) => t.id !== id);
+        if (selectedTicketId === id) selectedTicketId = null;
+        renderTickets();
+        renderTicketDetail();
+        showToast('Ticket removed from view');
+      }
+
+      function sendReply(id) {
+        const messageEl = document.getElementById('reply-message');
+        const message = messageEl ? messageEl.value : '';
+
+        if (!String(message || '').trim()) {
+          showToast('Please enter a message', 'error');
+          return;
+        }
+
+        const ticket = tickets.find((t) => t.id === id);
+        if (!ticket) return;
+
+        ticket.threads.push({
+          sender: 'you',
+          message: String(message).trim(),
+          timestamp: new Date().toISOString()
+        });
+
+        ticket.threadCount = ticket.threads.length;
+        ticket.unread = false;
+
+        if (messageEl) messageEl.value = '';
+
+        renderTicketDetail();
+        renderTickets();
+        showToast('Reply sent');
+      }
+
+      function saveDraft() {
+        showToast('Draft saved');
+      }
+
+      function attachFile() {
+        showToast('File attachment dialog would open');
+      }
+
+      function copyToClipboard(text) {
+        if (!navigator.clipboard) {
+          showToast('Clipboard not available in this browser', 'error');
+          return;
+        }
+        navigator.clipboard.writeText(String(text || '')).then(
+          () => showToast('Copied to clipboard'),
+          () => showToast('Copy failed', 'error')
+        );
+      }
+
+      function bulkDelete() {
+        const selected = tickets.filter((t) => t.selected);
+        if (selected.length === 0) {
+          showToast('No tickets selected', 'error');
+          return;
+        }
+
+        tickets = tickets.filter((t) => !t.selected);
+        if (selectedTicketId && !tickets.find((t) => t.id === selectedTicketId)) selectedTicketId = null;
+
+        renderTickets();
+        renderTicketDetail();
+        showToast(`${selected.length} ticket(s) removed`);
+      }
+
+      function bulkMarkRead() {
+        const selected = tickets.filter((t) => t.selected);
+        if (selected.length === 0) {
+          showToast('No tickets selected', 'error');
+          return;
+        }
+
+        const allRead = selected.every((t) => !t.unread);
+        selected.forEach((t) => (t.unread = allRead));
+
+        renderTickets();
+        showToast(allRead ? 'Marked as unread' : 'Marked as read');
+      }
+
+      function syncSelectAllCheckbox() {
+        const box = document.getElementById('select-all');
+        if (!box) return;
+        box.checked = tickets.length > 0 && tickets.every((t) => t.selected);
+        box.indeterminate = tickets.some((t) => t.selected) && !box.checked;
+      }
+
+      // --- modal ---
+      function openNewTicketModal() {
+        const modal = document.getElementById('new-ticket-modal');
+        if (!modal) return;
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        resetModalForm();
+      }
+
+      function closeNewTicketModal() {
+        const modal = document.getElementById('new-ticket-modal');
+        if (!modal) return;
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        resetModalForm();
+      }
+
+      function resetModalForm() {
+        const body = document.getElementById('modal-body');
+        const footer = document.getElementById('modal-footer');
+        if (!body || !footer) return;
+
+        body.innerHTML = getModalFormHTML();
+        footer.innerHTML = `
+        <button onclick="closeNewTicketModal()" class="flex-1 btn-secondary text-slate-300 font-semibold py-3.5 px-6 rounded-2xl transition-all" type="button">
+          Cancel
+        </button>
+        <button onclick="submitTicket()" class="flex-1 btn-primary text-slate-950 font-bold py-3.5 px-6 rounded-2xl shadow-lg shadow-amber-500/20 transition-all" type="button">
+          Submit Ticket
+        </button>
+      `;
+
+        selectedPriority = 'normal';
+      }
+
+      function getModalFormHTML() {
+        const email = (config.support_email || defaultConfig.support_email).trim();
+
+        return `
+        <div>
+          <label class="block text-sm font-medium text-slate-400 mb-2">Support Email</label>
+          <div class="bg-black/20 border border-white/10 rounded-xl py-3 px-4 text-slate-300 flex items-center gap-2">
+            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+            <span id="modal-support-email">${email}</span>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-slate-400 mb-2">Related Order ID</label>
+          <select id="new-order-id" class="w-full bg-black/20 border border-white/10 rounded-xl py-3 px-4 text-slate-200 focus:outline-none focus:border-amber-500/40 focus:ring-1 focus:ring-amber-500/30">
+            <option value="">Select Order (Optional)</option>
+            <option value="ORD-2024-001">ORD-2024-001</option>
+            <option value="ORD-2024-002">ORD-2024-002</option>
+            <option value="ORD-2024-003">ORD-2024-003</option>
+            <option value="ORD-2024-004">ORD-2024-004</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-slate-400 mb-2">Type</label>
+          <select id="new-type" class="w-full bg-black/20 border border-white/10 rounded-xl py-3 px-4 text-slate-200 focus:outline-none focus:border-amber-500/40 focus:ring-1 focus:ring-amber-500/30">
+            <option value="" disabled selected>Select Type</option>
+            <optgroup label="Appointments">
+              <option value="appt-demo">Demo Appointment</option>
+              <option value="appt-exit">Exit Appointment</option>
+              <option value="appt-intro">Intro Appointment</option>
+              <option value="appt-onboarding">Onboarding Appointment</option>
+              <option value="appt-support">Support Appointment</option>
+            </optgroup>
+            <optgroup label="Tickets">
+              <option value="ticket-address-update">Address Update</option>
+              <option value="ticket-agreement">Agreement</option>
+              <option value="ticket-client-exit-survey">Client Exit Survey</option>
+              <option value="ticket-compliance-report">Compliance Report</option>
+              <option value="ticket-esign-2848">E-Sign 2848</option>
+              <option value="ticket-filing-status">Filing Status</option>
+              <option value="ticket-intake">Intake</option>
+              <option value="ticket-offer">Offer</option>
+              <option value="ticket-payment">Payment</option>
+              <option value="ticket-welcome">Welcome</option>
+            </optgroup>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-slate-400 mb-2">Priority</label>
+          <div class="grid grid-cols-4 gap-2">
+            <button type="button" onclick="selectPriority('critical')" class="priority-btn p-3 rounded-xl border-2 border-transparent bg-black/20 hover:border-red-500/40 transition-all text-center" data-priority="critical">
+              <div class="w-3 h-3 bg-red-500 rounded-full mx-auto mb-1"></div>
+              <span class="text-xs font-medium text-slate-300">Critical</span>
+            </button>
+            <button type="button" onclick="selectPriority('high')" class="priority-btn p-3 rounded-xl border-2 border-transparent bg-black/20 hover:border-orange-500/40 transition-all text-center" data-priority="high">
+              <div class="w-3 h-3 bg-orange-500 rounded-full mx-auto mb-1"></div>
+              <span class="text-xs font-medium text-slate-300">High</span>
+            </button>
+            <button type="button" onclick="selectPriority('normal')" class="priority-btn p-3 rounded-xl border-2 border-amber-500/40 bg-amber-500/10 transition-all text-center" data-priority="normal">
+              <div class="w-3 h-3 bg-amber-500 rounded-full mx-auto mb-1"></div>
+              <span class="text-xs font-medium text-amber-300">Normal</span>
+            </button>
+            <button type="button" onclick="selectPriority('low')" class="priority-btn p-3 rounded-xl border-2 border-transparent bg-black/20 hover:border-slate-500/40 transition-all text-center" data-priority="low">
+              <div class="w-3 h-3 bg-slate-500 rounded-full mx-auto mb-1"></div>
+              <span class="text-xs font-medium text-slate-300">Low</span>
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-slate-400 mb-2">Action Required</label>
+          <div class="bg-black/20 border border-white/10 rounded-xl py-3 px-4 text-slate-400 text-sm">
+            Default: <span class="text-amber-300 font-medium">Acknowledge</span>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-slate-400 mb-2">Subject</label>
+          <input type="text" id="new-subject" placeholder="Enter ticket subject..." class="w-full bg-black/20 border border-white/10 rounded-xl py-3 px-4 text-slate-200 placeholder-slate-500 focus:outline-none focus:border-amber-500/40 focus:ring-1 focus:ring-amber-500/30">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-slate-400 mb-2">Message</label>
+          <textarea id="new-message" rows="4" placeholder="Describe your issue..." class="w-full bg-black/20 border border-white/10 rounded-xl py-3 px-4 text-slate-200 placeholder-slate-500 focus:outline-none focus:border-amber-500/40 focus:ring-1 focus:ring-amber-500/30 resize-none"></textarea>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-slate-400 mb-2">Attachments</label>
+          <div class="border-2 border-dashed border-white/10 rounded-xl p-6 text-center hover:border-amber-500/30 transition-all cursor-pointer" onclick="document.getElementById('file-input').click()">
+            <svg class="w-8 h-8 mx-auto mb-2 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+            <p class="text-sm text-slate-400">Click to upload or drag and drop</p>
+            <p class="text-xs text-slate-500 mt-1">PDF, PNG, JPG up to 10MB</p>
+          </div>
+          <input type="file" id="file-input" class="hidden" multiple>
+          <div id="file-list" class="mt-2 space-y-1"></div>
+        </div>
+      `;
+      }
+
+      function selectPriority(priority) {
+        selectedPriority = priority;
+
+        document.querySelectorAll('.priority-btn').forEach((btn) => {
+          const p = btn.dataset.priority;
+          btn.classList.remove(
+            'border-red-500/40',
+            'border-orange-500/40',
+            'border-amber-500/40',
+            'border-slate-500/40',
+            'bg-red-500/10',
+            'bg-orange-500/10',
+            'bg-amber-500/10',
+            'bg-slate-500/10'
+          );
+
+          const span = btn.querySelector('span');
+          if (span) {
+            span.classList.remove('text-red-300', 'text-orange-300', 'text-amber-300', 'text-slate-300');
+            span.classList.add('text-slate-300');
+          }
+
+          if (p === priority) {
+            const colors = {
+              critical: ['border-red-500/40', 'bg-red-500/10', 'text-red-300'],
+              high: ['border-orange-500/40', 'bg-orange-500/10', 'text-orange-300'],
+              low: ['border-slate-500/40', 'bg-slate-500/10', 'text-slate-300'],
+              normal: ['border-amber-500/40', 'bg-amber-500/10', 'text-amber-300']
+            };
+
+            const c = colors[p] || colors.normal;
+            btn.classList.add(c[0], c[1]);
+
+            if (span) {
+              span.classList.remove('text-slate-300');
+              span.classList.add(c[2]);
+            }
+          }
+        });
+      }
+
+      function submitTicket() {
+        const type = document.getElementById('new-type')?.value;
+        const subject = document.getElementById('new-subject')?.value;
+        const message = document.getElementById('new-message')?.value;
+        const orderId = document.getElementById('new-order-id')?.value;
+
+        if (!type) {
+          showToast('Please select a type', 'error');
+          return;
+        }
+        if (!String(subject || '').trim()) {
+          showToast('Please enter a subject', 'error');
+          return;
+        }
+        if (!String(message || '').trim()) {
+          showToast('Please enter a message', 'error');
+          return;
+        }
+
+        const typeNames = {
+          'appt-demo': 'Demo Appointment',
+          'appt-exit': 'Exit Appointment',
+          'appt-intro': 'Intro Appointment',
+          'appt-onboarding': 'Onboarding Appointment',
+          'appt-support': 'Support Appointment',
+          'ticket-address-update': 'Address Update',
+          'ticket-agreement': 'Agreement',
+          'ticket-client-exit-survey': 'Client Exit Survey',
+          'ticket-compliance-report': 'Compliance Report',
+          'ticket-esign-2848': 'E-Sign 2848',
+          'ticket-filing-status': 'Filing Status',
+          'ticket-intake': 'Intake',
+          'ticket-offer': 'Offer',
+          'ticket-payment': 'Payment',
+          'ticket-welcome': 'Welcome'
+        };
+
+        const newTicketId = `TKT-${String(tickets.length + 1).padStart(3, '0')}`;
+        const now = new Date().toISOString();
+
+        const newTicket = {
+          id: newTicketId,
+          actionRequired: 'Acknowledge',
+          orderId: orderId || '',
+          priority: selectedPriority,
+          selected: false,
+          status: 'open',
+          subject: String(subject).trim(),
+          threadCount: 2,
+          timestamp: now,
+          type: typeNames[type] || type,
+          unread: false,
+          threads: [
+            { sender: 'system', message: 'Ticket created.', timestamp: now },
+            { sender: 'you', message: String(message).trim(), timestamp: now }
+          ]
+        };
+
+        tickets.unshift(newTicket);
+        showConfirmation(newTicketId);
+      }
+
+      function showConfirmation(ticketId) {
+        const body = document.getElementById('modal-body');
+        const footer = document.getElementById('modal-footer');
+        if (!body || !footer) return;
+
+        body.innerHTML = `
+        <div class="text-center py-8">
+          <div class="w-16 h-16 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+          </div>
+          <h3 class="text-xl font-semibold text-white mb-2">Ticket Submitted</h3>
+          <p class="text-slate-400 mb-4">Your support ticket has been created successfully.</p>
+          <div class="bg-black/20 border border-white/10 rounded-xl p-4 inline-block">
+            <p class="text-sm text-slate-500">Ticket ID</p>
+            <p class="text-lg font-bold text-amber-300 mono">${ticketId}</p>
+          </div>
+        </div>
+      `;
+
+        footer.innerHTML = `
+        <button onclick="closeNewTicketModal(); renderTickets();" class="flex-1 btn-secondary text-slate-300 font-semibold py-3.5 px-6 rounded-2xl transition-all" type="button">Close</button>
+        <button onclick="viewNewTicket('${ticketId}')" class="flex-1 btn-primary text-slate-950 font-bold py-3.5 px-6 rounded-2xl shadow-lg shadow-amber-500/20 transition-all" type="button">View Ticket</button>
+      `;
+      }
+
+      function viewNewTicket(ticketId) {
+        closeNewTicketModal();
+        selectTicket(ticketId);
+        renderTickets();
+      }
+
+      // --- toast ---
+      function showToast(message, type = 'success') {
+        const container = document.getElementById('toast-container');
+        if (!container) return;
+
+        const toast = document.createElement('div');
+        toast.className = `px-4 py-3 rounded-xl shadow-lg fade-in flex items-center gap-2 ${
+          type === 'error' ? 'bg-rose-500/90 text-white' : 'bg-emerald-500/90 text-white'
+        }`;
+
+        toast.innerHTML = `
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          ${
+            type === 'error'
+              ? '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>'
+              : '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>'
+          }
+        </svg>
+        <span class="font-medium">${message}</span>
+      `;
+
+        container.appendChild(toast);
+
+        setTimeout(() => {
+          toast.style.opacity = '0';
+          toast.style.transform = 'translateY(10px)';
+          toast.style.transition = 'all 0.3s ease';
+          setTimeout(() => toast.remove(), 300);
+        }, 3000);
+      }
+
+      // --- UI wiring + tests ---
+      function initUI() {
+        const search = document.getElementById('search-input');
+        const filterOrder = document.getElementById('filter-order');
+        const filterPriority = document.getElementById('filter-priority');
+        const filterStatus = document.getElementById('filter-status');
+        const filterType = document.getElementById('filter-type');
+        const selectAll = document.getElementById('select-all');
+
+        if (search) search.addEventListener('input', () => renderTickets());
+        if (filterOrder) filterOrder.addEventListener('change', () => renderTickets());
+        if (filterPriority) filterPriority.addEventListener('change', () => renderTickets());
+        if (filterStatus) filterStatus.addEventListener('change', () => renderTickets());
+        if (filterType) filterType.addEventListener('change', () => renderTickets());
+
+        if (selectAll) {
+          selectAll.addEventListener('change', () => {
+            const shouldSelect = !!selectAll.checked;
+            tickets.forEach((t) => (t.selected = shouldSelect));
+            renderTickets();
+          });
+        }
+
+        // Default folder highlight
+        const allBtn = document.querySelector('.folder-btn[data-folder="all"]');
+        if (allBtn) allBtn.classList.add('tab-active');
+      }
+
+      function runSmokeTests() {
+        try {
+          console.assert(typeof bulkDelete === 'function', 'bulkDelete should be defined');
+          console.assert(typeof bulkMarkRead === 'function', 'bulkMarkRead should be defined');
+          console.assert(typeof renderTickets === 'function', 'renderTickets should be defined');
+          console.assert(typeof renderTicketDetail === 'function', 'renderTicketDetail should be defined');
+          console.assert(!!document.getElementById('ticket-list'), '#ticket-list should exist');
+          console.assert(!!document.getElementById('detail-content'), '#detail-content should exist');
+
+          // Render should create at least 1 ticket card
+          const list = document.getElementById('ticket-list');
+          const count = list ? list.querySelectorAll('.ticket-card').length : 0;
+          console.assert(count > 0, `expected > 0 .ticket-card, got ${count}`);
+
+          // Selecting first ticket should populate detail
+          const first = tickets[0];
+          if (first) {
+            selectTicket(first.id);
+            const detail = document.getElementById('detail-content');
+            console.assert(detail && String(detail.textContent || '').includes(first.subject), 'detail should include selected subject');
+          }
+        } catch (err) {
+          console.warn('Support page smoke tests failed:', err);
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', async () => {
+        initUI();
+        await initSDK();
+        runSmokeTests();
+      });
+    </script>
+  </body>
+</html>
