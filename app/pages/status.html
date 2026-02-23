@@ -1,26 +1,17 @@
 <!-- /app/pages/status.html -->
 <!doctype html>
 <html lang="en" class="h-full">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tax Monitor Pro — Status</title>
-
-    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
-    <script src="/_sdk/element_sdk.js"></script>
-    <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet" />
-
-    <link rel="icon" href="https://taxmonitor.pro/favicon.ico" sizes="any" />
-    <link rel="icon" href="https://taxmonitor.pro/assets/favicon.ico" sizes="any" />
-
-    <style>
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tax Monitor Pro — Status</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
       html, body { height: 100%; }
-      html { font-size: 100%; }
-
       *, *::before, *::after { box-sizing: border-box; }
       body { box-sizing: border-box; }
       * { font-family: 'DM Sans', system-ui, sans-serif; }
@@ -78,1029 +69,846 @@
 
       .node-card { transition: all 0.2s ease; }
       .node-card:hover { transform: translateY(-2px); }
-
-      /* Locked nodes are still clickable (we show messaging instead of blocking clicks). */
       .node-card.locked { cursor: pointer; opacity: 0.75; }
 
-      /* Allows hash navigation to land nicely below the header/topbar. */
       .phase-section { scroll-margin-top: 140px; }
 
       .phase-connector {
         background: linear-gradient(90deg, transparent, rgba(249, 115, 22, 0.28), transparent);
       }
 
-      /* Hide/show the detail panel by changing the grid template (Tailwind CDN can't see dynamic classes). */
-      @media (min-width: 1024px) {
-        .status-grid-collapsed { grid-template-columns: 1fr; }
-        .status-grid-expanded { grid-template-columns: 1fr 35rem; }
+      #phase-indicators {
+        position: sticky;
+        top: 0;
+        z-index: 30;
+        background: linear-gradient(180deg, rgba(8, 10, 15, 0.95) 0%, rgba(8, 10, 15, 0.8) 100%);
+        backdrop-filter: blur(12px);
+        padding: 1rem 0;
+        margin: 0 -1.5rem;
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      /* Detail panel slide-over */
+      #detail-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(4px);
+        z-index: 40;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+      }
+
+      #detail-overlay.active {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      #detail-panel {
+        position: fixed;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+        max-width: 600px;
+        background: linear-gradient(180deg, rgba(8, 10, 15, 0.98) 0%, rgba(8, 10, 15, 0.95) 100%);
+        border-left: 1px solid rgba(255, 255, 255, 0.1);
+        z-index: 50;
+        transform: translateX(100%);
+        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        overflow-y: auto;
+        padding: 2rem;
+      }
+
+      #detail-panel.active {
+        transform: translateX(0);
+      }
+
+      @media (max-width: 768px) {
+        #detail-panel {
+          max-width: 100%;
+          padding: 1.5rem;
+        }
       }
 
       ::-webkit-scrollbar { width: 6px; height: 6px; }
       ::-webkit-scrollbar-track { background: #1e293b; }
       ::-webkit-scrollbar-thumb { background: #475569; border-radius: 3px; }
       ::-webkit-scrollbar-thumb:hover { background: #64748b; }
-
-      @media print {
-        .no-print { display: none !important; }
-        body { background: white !important; }
-      }
     </style>
-  </head>
-
-  <!--
-    SCROLL FIX NOTE:
-    Flex + overflow requires min-h-0 on the flex children you want to scroll.
-    Status uses: main(min-h-0) + columns(min-h-0 overflow-y-auto)
-  -->
-
-  <body class="h-full bg-slate-950 text-slate-100 noise-bg overflow-hidden">
-    <div class="relative z-10 flex h-full">
-      <!-- APP SIDEBAR PARTIAL -->
-      <!-- APP_SIDEBAR -->
-
-      <div class="flex-1 flex flex-col min-w-0">
-        <!-- APP TOPBAR PARTIAL -->
-        <!-- APP_TOPBAR -->
-        <main class="flex-1 min-h-0 overflow-hidden">
-          <div class="max-w-6xl mx-auto h-full px-6 py-8">
-            <!-- Page Header (match calendar) -->
-            <div class="mb-8">
-              <div class="flex flex-col items-center text-center">
-                <h1 class="text-3xl md:text-4xl font-semibold tracking-tight mb-2">
-                  <span class="text-white">Project </span><span class="gradient-text">Status</span>
-                </h1>
-                <p class="text-slate-400 text-base md:text-lg max-w-2xl">
-                  Roadmap and next steps. Some items are processed by staff.
-                </p>
-
-                <!-- Phase pills -->
-                <div class="mt-5 flex items-center justify-center w-full">
-                  <div id="phase-indicators" class="flex items-center gap-2 overflow-x-auto justify-center"></div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Main -->
-        <main class="flex-1 min-h-0 overflow-hidden">
-          <div class="max-w-6xl mx-auto h-full px-6 py-6">
-            <div id="status-grid" class="h-full grid grid-cols-1 gap-6 status-grid-collapsed">
-
-              <!-- Roadmap (scrollable) -->
-              <section class="min-h-0 overflow-y-auto overscroll-contain" aria-label="Roadmap">
-                <div id="mind-map" class="mt-5 space-y-6 pb-24"></div>
-              </section>
-
-              <!-- Details (scrollable) -->
-              <aside id="detail-aside" class="min-h-0 overflow-y-auto overscroll-contain hidden" aria-label="Details">
-                <section class="glass-card rounded-2xl p-5 md:p-6">
-                  <div id="detail-panel"></div>
-                </section>
-              </aside>
-
-            </div>
-          </div>
-        </main>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full bg-slate-950 text-slate-100 noise-bg overflow-hidden">
+  <div class="relative z-10 flex h-full">
+   <!-- PARTIAL:sidebar -->
+   <div class="flex-1 flex flex-col min-w-0">
+    <!-- PARTIAL:topbar -->
+    <main class="flex-1 min-h-0 overflow-y-auto">
+     <div class="max-w-6xl mx-auto px-6 py-8"><!-- Page Header -->
+      <div class="mb-8">
+       <div class="flex flex-col items-center text-center">
+        <h1 id="page-title" class="text-3xl md:text-4xl font-semibold tracking-tight mb-2"><span class="text-white">Project </span><span class="gradient-text">Status</span></h1>
+        <p class="text-slate-400 text-base md:text-lg max-w-2xl">Roadmap and next steps. Some items are processed by staff.</p>
+        <div class="mt-5 flex items-center justify-center w-full">
+         <div id="phase-indicators" class="flex items-center gap-2 overflow-x-auto justify-center"></div>
+        </div>
+       </div>
+      </div><!-- Roadmap Container -->
+      <div class="pb-24">
+       <div id="mind-map" class="space-y-6 max-w-6xl"></div>
       </div>
-    </div>
+     </div>
+    </main>
+   </div>
+  </div><!-- Detail Panel Overlay -->
+  <div id="detail-overlay"></div><!-- Detail Panel Slide-Over -->
+  <div id="detail-panel"></div>
+  <script>
+    const DEMO_LOCK_ALL = true;
+    const WET_SIGNATURE_REQUIRED = true;
 
-    <script>
-      // Content preserved from the original page (projectData + rendering), with updated styling.
-      // Footer "Activity" row removed by request.
-
-      // Demo flags
-      const DEMO_LOCK_ALL = true;
-      const WET_SIGNATURE_REQUIRED = true; // toggle for Phase 2 wet signature requirement
-
-      const projectData = {
-        phases: [
-          {
-            id: 0,
-            name: 'Intake Triage / Payment',
-            connector: 'Unlocked after Payment',
-            steps: [
+    const projectData = {
+      phases: [
+        {
+          id: 0,
+          name: 'Intake Triage / Payment',
+          connector: 'Unlocked after Payment',
+          steps: [
+            {
+              id: 'intake',
+              name: 'Intake',
+              status: 'complete',
+              type: 'form',
+              icon: 'clipboard',
+              microcopy: 'Share your details to set up your project file.',
+              description: 'We collect your basic information to understand your tax situation and determine how we can help you.',
+              whatWeNeed: ['Full legal name', 'Contact information', 'Tax years of concern', 'Brief description of issue'],
+              whatWeDo: ['Review your submission', 'Assign a case specialist', 'Prepare next steps'],
+              formFields: ['Full Name', 'Email', 'Phone', 'Tax Years', 'Issue Type', 'Description'],
+              link: '/app/intake.html'
+            },
+            {
+              id: 'offer',
+              name: 'Offer',
+              status: 'complete',
+              type: 'form',
+              icon: 'document',
+              microcopy: 'Review your service proposal and confirm scope details.',
+              description: 'Review our proposed services and pricing based on your specific tax situation.',
+              whatWeNeed: ['Review of proposed services', 'Confirmation of scope'],
+              whatWeDo: ['Customize service package', 'Provide transparent pricing', 'Answer questions'],
+              formFields: ['Service Selection', 'Add-ons', 'Payment Plan', 'Questions'],
+              link: '/app/offer.html'
+            },
+            {
+              id: 'agreement',
+              name: 'Agreement',
+              status: 'complete',
+              type: 'form',
+              icon: 'shield',
+              microcopy: 'Review and sign the agreement to confirm engagement.',
+              description: 'Sign our service agreement to formalize our engagement and protect both parties.',
+              whatWeNeed: ['Electronic signature', 'Agreement acknowledgment'],
+              whatWeDo: ['Provide clear terms', 'Secure your data', 'Begin onboarding'],
+              formFields: ['Agreement Review', 'Terms Acceptance', 'E-Signature', 'Date'],
+              link: '/app/agreement.html'
+            },
+            {
+              id: 'payment',
+              name: 'Payment',
+              status: 'complete',
+              type: 'form',
+              icon: 'credit-card',
+              microcopy: 'Submit payment securely to activate your account.',
+              description: 'Complete your payment to activate your account and begin the compliance process.',
+              whatWeNeed: ['Payment method', 'Billing information'],
+              whatWeDo: ['Process securely', 'Send receipt', 'Activate account'],
+              formFields: ['Payment Method', 'Billing Address', 'Amount', 'Confirmation'],
+              link: '/app/payment.html'
+            }
+          ]
+        },
+        {
+          id: 1,
+          name: 'ESign 2848 / Review',
+          connector: 'Next: IRS Authorization & Review Begins',
+          steps: [
+            {
+              id: 'welcome',
+              name: 'Welcome',
+              status: 'complete',
+              type: 'form',
+              icon: 'sparkles',
+              microcopy: 'Complete setup preferences to personalize your account.',
+              description: 'Complete your welcome questionnaire to help us personalize your experience.',
+              whatWeNeed: ['Communication preferences', 'Availability windows'],
+              whatWeDo: ['Track project progress', 'Assign your team', 'Create your timeline'],
+              formFields: ['Preferred Contact Method', 'Best Times', 'Timezone', 'Additional Info'],
+              link: '/app/pages/flows/post-payment/welcome.html'
+            },
+            {
+              id: 'filing-status',
+              name: 'Filing Status',
+              status: 'complete',
+              type: 'form',
+              icon: 'user-group',
+              microcopy: 'Confirm your filing status and household details.',
+              description: 'Confirm your current filing status to ensure accurate representation with the IRS.',
+              whatWeNeed: ['Current filing status', 'Dependent information'],
+              whatWeDo: ['Verify against IRS records', 'Flag discrepancies', 'Update if needed'],
+              formFields: ['Filing Status', 'Spouse Info', 'Full Legal Name', 'SSN / ITIN'],
+              link: '/app/pages/flows/post-payment/filing-status.html'
+            },
+            {
+              id: 'address-update',
+              name: 'Address Update',
+              status: 'current',
+              type: 'form',
+              icon: 'location',
+              microcopy: 'Verify your mailing address for IRS correspondence.',
+              description: 'Verify your current mailing address to ensure all IRS correspondence reaches you.',
+              whatWeNeed: ['Current mailing address', 'Address history if changed'],
+              whatWeDo: ['Update IRS records', 'Redirect correspondence', 'Confirm receipt'],
+              formFields: ['Street Address', 'City', 'State', 'ZIP', 'Previous Address'],
+              link: '/app/pages/flows/post-payment/address-update.html'
+            },
+            {
+              id: 'esign-2848',
+              name: 'eSign 2848',
+              status: 'ready',
+              type: 'form',
+              icon: 'pencil',
+              microcopy: 'Authorize representation with your signed IRS Form 2848.',
+              description: 'Sign Form 2848 to authorize us to represent you before the IRS and access your records.',
+              whatWeNeed: ['Electronic signature', 'Identity verification'],
+              whatWeDo: ['File with IRS', 'Obtain CAF number', 'Begin representation'],
+              formFields: ['Taxpayer Info', 'Representative Info', 'Tax Matters', 'Signature', 'Date'],
+              link: '/app/pages/flows/post-payment/esign-2848.html'
+            }
+          ]
+        },
+        {
+          id: 2,
+          name: 'Processing / Due Diligence',
+          connector: 'Requires CAF Verified',
+          steps: [
+            {
+              id: 'authorization-caf',
+              name: 'Authorization + CAF',
+              status: 'locked',
+              type: 'operator',
+              icon: 'key',
+              microcopy: 'We process your IRS authorization and confirm access.',
+              description: 'We process your Form 2848 with the IRS and obtain your Centralized Authorization File (CAF) number.',
+              whatWeNeed: ['eSigned 2848', 'Patience while processing'],
+              whatWeDo: ['Submit to IRS', 'Track processing', 'Verify authorization'],
+              checklist: ['Submit Form 2848 to IRS', 'Receive CAF confirmation', 'Verify access level', 'Test record access'],
+              estimate: '3-5 business days'
+            },
+            ...(WET_SIGNATURE_REQUIRED ? [
               {
-                id: 'intake',
-                name: 'Intake',
-                status: 'complete',
-                type: 'form',
-                icon: 'clipboard',
-                microcopy: 'Share your details to set up your project file.',
-                description: 'We collect your basic information to understand your tax situation and determine how we can help you.',
-                whatWeNeed: ['Full legal name', 'Contact information', 'Tax years of concern', 'Brief description of issue'],
-                whatWeDo: ['Review your submission', 'Assign a case specialist', 'Prepare next steps'],
-                formFields: ['Full Name', 'Email', 'Phone', 'Tax Years', 'Issue Type', 'Description'],
-                link: '/app/pages/flows/intake/intake.html'
-              },
-              {
-                id: 'offer',
-                name: 'Offer',
-                status: 'complete',
-                type: 'form',
-                icon: 'document',
-                microcopy: 'Review your service proposal and confirm scope details.',
-                description: 'Review our proposed services and pricing based on your specific tax situation.',
-                whatWeNeed: ['Review of proposed services', 'Confirmation of scope'],
-                whatWeDo: ['Customize service package', 'Provide transparent pricing', 'Answer questions'],
-                formFields: ['Service Selection', 'Add-ons', 'Payment Plan', 'Questions'],
-                link: '/app/pages/flows/intake/offer.html'
-              },
-              {
-                id: 'agreement',
-                name: 'Agreement',
-                status: 'complete',
-                type: 'form',
-                icon: 'shield',
-                microcopy: 'Review and sign the agreement to confirm engagement.',
-                description: 'Sign our service agreement to formalize our engagement and protect both parties.',
-                whatWeNeed: ['Electronic signature', 'Agreement acknowledgment'],
-                whatWeDo: ['Provide clear terms', 'Secure your data', 'Begin onboarding'],
-                formFields: ['Agreement Review', 'Terms Acceptance', 'E-Signature', 'Date'],
-                link: '/app/pages/flows/intake/agreement.html'
-              },
-              {
-                id: 'payment',
-                name: 'Payment',
-                status: 'complete',
-                type: 'form',
-                icon: 'credit-card',
-                microcopy: 'Submit payment securely to activate your account.',
-                description: 'Complete your payment to activate your account and begin the compliance process.',
-                whatWeNeed: ['Payment method', 'Billing information'],
-                whatWeDo: ['Process securely', 'Send receipt', 'Activate account'],
-                formFields: ['Payment Method', 'Billing Address', 'Amount', 'Confirmation'],
-                link: '/app/pages/flows/intake/payment.html'
-              }
-            ]
-          },
-          {
-            id: 1,
-            name: 'ESign 2848 / Review',
-            connector: 'Next: IRS Authorization & Review Begins',
-            steps: [
-              {
-                id: 'welcome',
-                name: 'Welcome',
-                status: 'complete',
-                type: 'form',
-                icon: 'sparkles',
-                microcopy: 'Complete setup preferences to personalize your account.',
-                description: 'Complete your welcome questionnaire to help us personalize your experience.',
-                whatWeNeed: ['Communication preferences', 'Availability windows'],
-                whatWeDo: ['Track project progress', 'Assign your team', 'Create your timeline'],
-                formFields: ['Preferred Contact Method', 'Best Times', 'Timezone', 'Additional Info'],
-                link: '/app/pages/flows/review/welcome.html'
-              },
-              {
-                id: 'filing-status',
-                name: 'Filing Status',
-                status: 'complete',
-                type: 'form',
-                icon: 'user-group',
-                microcopy: 'Confirm your filing status and household details.',
-                description: 'Confirm your current filing status to ensure accurate representation with the IRS.',
-                whatWeNeed: ['Current filing status', 'Dependent information'],
-                whatWeDo: ['Verify against IRS records', 'Flag discrepancies', 'Update if needed'],
-                formFields: ['Filing Status', 'Spouse Info', 'Full Legal Name', 'SSN / ITIN'],
-                link: '/app/pages/flows/review/filing-status.html'
-              },
-              {
-                id: 'address-update',
-                name: 'Address Update',
-                status: 'current',
-                type: 'form',
-                icon: 'location',
-                microcopy: 'Verify your mailing address for IRS correspondence.',
-                description: 'Verify your current mailing address to ensure all IRS correspondence reaches you.',
-                whatWeNeed: ['Current mailing address', 'Address history if changed'],
-                whatWeDo: ['Update IRS records', 'Redirect correspondence', 'Confirm receipt'],
-                formFields: ['Street Address', 'City', 'State', 'ZIP', 'Previous Address'],
-                link: '/app/pages/flows/review/address-update.html'
-              },
-              {
-                id: 'esign-2848',
-                name: 'eSign 2848',
-                status: 'ready',
+                id: 'wet-signature-2848',
+                name: 'Wet Signature Required (2848)',
+                status: 'locked',
                 type: 'form',
                 icon: 'pencil',
-                microcopy: 'Authorize representation with your signed IRS Form 2848.',
-                description: 'Sign Form 2848 to authorize us to represent you before the IRS and access your records.',
-                whatWeNeed: ['Electronic signature', 'Identity verification'],
-                whatWeDo: ['File with IRS', 'Obtain CAF number', 'Begin representation'],
-                formFields: ['Taxpayer Info', 'Representative Info', 'Tax Matters', 'Signature', 'Date'],
-                link: '/app/pages/flows/review/esign-2848.html'
+                microcopy: 'Print, sign, and upload the required 2848 form.',
+                description: 'In certain cases, the IRS requires a physical (wet) signature on Form 2848. Please print, sign, and upload the completed form so we can proceed.',
+                whatWeNeed: ['Printed Form 2848', 'Handwritten signature', 'Uploaded signed copy (PDF)'],
+                whatWeDo: ['Review for accuracy', 'Submit to IRS', 'Confirm receipt'],
+                formFields: ['Download 2848', 'Upload Signed Copy'],
+                link: '/app/pages/flows/post-payment/wet-signed-2848.html'
               }
-            ]
-          },
-          {
-            id: 2,
-            name: 'Processing / Due Diligence',
-            connector: 'Requires CAF Verified',
-            steps: [
-              {
-                id: 'authorization-caf',
-                name: 'Authorization + CAF',
-                status: 'locked',
-                type: 'operator',
-                icon: 'key',
-                microcopy: 'We process your IRS authorization and confirm access.',
-                description: 'We process your Form 2848 with the IRS and obtain your Centralized Authorization File (CAF) number.',
-                whatWeNeed: ['eSigned 2848', 'Patience while processing'],
-                whatWeDo: ['Submit to IRS', 'Track processing', 'Verify authorization'],
-                checklist: ['Submit Form 2848 to IRS', 'Receive CAF confirmation', 'Verify access level', 'Test record access'],
-                estimate: '3-5 business days'
-              },
-              ...(WET_SIGNATURE_REQUIRED ? [
-                {
-                  id: 'wet-signature-2848',
-                  name: 'Wet Signature Required (2848)',
-                  status: 'locked',
-                  type: 'form',
-                  icon: 'pencil',
-                  microcopy: 'Print, sign, and upload the required 2848 form.',
-                  description: 'In certain cases, the IRS requires a physical (wet) signature on Form 2848. Please print, sign, and upload the completed form so we can proceed.',
-                  whatWeNeed: ['Printed Form 2848', 'Handwritten signature', 'Uploaded signed copy (PDF)'],
-                  whatWeDo: ['Review for accuracy', 'Submit to IRS', 'Confirm receipt'],
-                  formFields: ['Download 2848', 'Upload Signed Copy'],
-                  link: '/app/pages/flows/review/wet-sign-2848.html'
-                }
-              ] : []),
-              {
-                id: 'record-retrieval',
-                name: 'Record Retrieval + Analysis',
-                status: 'locked',
-                type: 'operator',
-                icon: 'search',
-                microcopy: 'We retrieve and analyze your complete IRS records.',
-                description: 'We retrieve your complete tax records from the IRS and perform comprehensive analysis.',
-                whatWeNeed: ['CAF verification', 'Any additional documents'],
-                whatWeDo: ['Pull IRS transcripts', 'Analyze records', 'Identify issues', 'Prepare findings'],
-                checklist: ['Request wage & income', 'Request account transcripts', 'Request return transcripts', 'Cross-reference data', 'Document findings'],
-                estimate: '5-7 business days'
-              }
-            ]
-          },
-          {
-            id: 3,
-            name: 'Tax Record / Results',
-            connector: null,
-            steps: [
-              {
-                id: 'compliance-report',
-                name: 'Compliance Report',
-                status: 'locked',
-                type: 'operator',
-                icon: 'chart',
-                microcopy: 'Receive your detailed compliance findings report.',
-                description: 'Receive your detailed compliance report with findings, recommendations, and next steps.',
-                whatWeNeed: ['Review of findings', 'Questions prepared'],
-                whatWeDo: ['Compile findings', 'Create recommendations', 'Prepare presentation'],
-                checklist: ['Compile all findings', 'Create visual summary', 'Draft recommendations', 'Prepare action items'],
-                estimate: '2-3 business days'
-              },
-              {
-                id: 'results-appointment',
-                name: 'Results Appointment',
-                status: 'locked',
-                type: 'form',
-                icon: 'calendar',
-                microcopy: 'Staff coordinates and confirms your results meeting.',
-                description: 'Your assigned specialist will schedule your results appointment after the compliance report is ready.',
-                whatWeNeed: ['Keep an eye out for a scheduling message'],
-                whatWeDo: ['Send scheduling options', 'Confirm appointment time', 'Prepare review agenda'],
-                formFields: [
-                  "Client's Preferred Date",
-                  "Client's Preferred Time",
-                  'Meeting Type',
-                  'Topics to Discuss'
-                ],
-                link: '/app/pages/calendar.html'
-              },
-              {
-                id: 'exit-survey',
-                name: 'Exit Survey',
-                status: 'locked',
-                type: 'form',
-                icon: 'star',
-                microcopy: 'Share feedback to help improve our service.',
-                description: 'Help us improve by sharing your experience with our service.',
-                whatWeNeed: ['Honest feedback', 'Suggestions'],
-                whatWeDo: ['Review feedback', 'Improve services', 'Follow up if needed'],
-                formFields: ['Overall Rating', 'Service Quality', 'Communication', 'Recommendations', 'Comments'],
-                link: '/app/pages/flows/results/exit-survey.html'
-              }
-            ]
-          }
-        ],
-        crossPhaseSteps: [
-          {
-            id: 'support-ticket',
-            name: 'Support Ticket',
-            status: 'ready',
-            type: 'form',
-            icon: 'support',
-            microcopy: 'Submit a support request for assistance anytime.',
-            description: 'Need assistance? Visit the Support page and our team will respond within 24 hours.',
-            whatWeNeed: ['Issue description', 'Relevant details'],
-            whatWeDo: ['Review immediately', 'Assign specialist', 'Resolve promptly'],
-            formFields: ['Subject', 'Category', 'Priority', 'Description', 'Attachments'],
-            link: '/app/pages/support.html'
-          }
-        ]
+            ] : []),
+            {
+              id: 'record-retrieval',
+              name: 'Record Retrieval + Analysis',
+              status: 'locked',
+              type: 'operator',
+              icon: 'search',
+              microcopy: 'We retrieve and analyze your complete IRS records.',
+              description: 'We retrieve your complete tax records from the IRS and perform comprehensive analysis.',
+              whatWeNeed: ['CAF verification', 'Any additional documents'],
+              whatWeDo: ['Pull IRS transcripts', 'Analyze records', 'Identify issues', 'Prepare findings'],
+              checklist: ['Request wage & income', 'Request account transcripts', 'Request return transcripts', 'Cross-reference data', 'Document findings'],
+              estimate: '5-7 business days'
+            }
+          ]
+        },
+        {
+          id: 3,
+          name: 'Tax Record / Results',
+          connector: null,
+          steps: [
+            {
+              id: 'compliance-report',
+              name: 'Compliance Report',
+              status: 'locked',
+              type: 'operator',
+              icon: 'chart',
+              microcopy: 'Receive your detailed compliance findings report.',
+              description: 'Receive your detailed compliance report with findings, recommendations, and next steps.',
+              whatWeNeed: ['Review of findings', 'Questions prepared'],
+              whatWeDo: ['Compile findings', 'Create recommendations', 'Prepare presentation'],
+              checklist: ['Compile all findings', 'Create visual summary', 'Draft recommendations', 'Prepare action items'],
+              estimate: '2-3 business days'
+            },
+            {
+              id: 'results-appointment',
+              name: 'Results Appointment',
+              status: 'locked',
+              type: 'form',
+              icon: 'calendar',
+              microcopy: 'Staff coordinates and confirms your results meeting.',
+              description: 'Your assigned specialist will schedule your results appointment after the compliance report is ready.',
+              whatWeNeed: ['Keep an eye out for a scheduling message'],
+              whatWeDo: ['Send scheduling options', 'Confirm appointment time', 'Prepare review agenda'],
+              formFields: ["Client's Preferred Date", "Client's Preferred Time", 'Meeting Type', 'Topics to Discuss'],
+              link: '/app/pages/calendar.html'
+            },
+            {
+              id: 'exit-survey',
+              name: 'Exit Survey',
+              status: 'locked',
+              type: 'form',
+              icon: 'star',
+              microcopy: 'Share feedback to help improve our service.',
+              description: 'Help us improve by sharing your experience with our service.',
+              whatWeNeed: ['Honest feedback', 'Suggestions'],
+              whatWeDo: ['Review feedback', 'Improve services', 'Follow up if needed'],
+              formFields: ['Overall Rating', 'Service Quality', 'Communication', 'Recommendations', 'Comments'],
+              link: '/site/exit-survey.html'
+            }
+          ]
+        }
+      ],
+      crossPhaseSteps: [
+        {
+          id: 'support-ticket',
+          name: 'Support Ticket',
+          status: 'ready',
+          type: 'form',
+          icon: 'support',
+          microcopy: 'Submit a support request for assistance anytime.',
+          description: 'Need assistance? Visit the Support page and our team will respond within 24 hours.',
+          whatWeNeed: ['Issue description', 'Relevant details'],
+          whatWeDo: ['Review immediately', 'Assign specialist', 'Resolve promptly'],
+          formFields: ['Subject', 'Category', 'Priority', 'Description', 'Attachments'],
+          link: '/app/pages/support.html'
+        }
+      ]
+    };
+
+    let selectedStep = null;
+    let config = {};
+
+    const defaultConfig = {
+      background_color: '#080a0f',
+      page_title: 'Tax Monitor Pro',
+      primary_color: '#f97316',
+      secondary_color: '#475569',
+      surface_color: '#0f1219',
+      text_color: '#f1f5f9',
+      welcome_message: 'Your Compliance Journey'
+    };
+
+    const icons = {
+      'arrow-right': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>',
+      calendar: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>',
+      chart: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>',
+      check: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>',
+      clipboard: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>',
+      'credit-card': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>',
+      document: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>',
+      key: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/>',
+      location: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>',
+      lock: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>',
+      pencil: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>',
+      search: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>',
+      shield: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>',
+      sparkles: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>',
+      star: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>',
+      support: '<circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.5"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4v.01M8 12h8a2 2 0 012 2v2a2 2 0 01-2 2h-8a2 2 0 01-2-2v-2a2 2 0 012-2z"/>',
+      'user-group': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a3 3 0 11-6 0 3 3 0 016 0zM7 10a3 3 0 11-6 0 3 3 0 016 0z"/>'
+    };
+
+    function getIcon(name, className = 'w-5 h-5') {
+      const body = icons[name] || icons.document;
+      return `<svg class="${className}" fill="none" stroke="currentColor" viewBox="0 0 24 24">${body}</svg>`;
+    }
+
+    function getStatusStyles(status) {
+      const styles = {
+        blocked: { bg: 'bg-red-500/10', border: 'border-red-500/30', pill: 'bg-red-500/15 text-red-300 border border-red-500/20', pillText: 'Blocked', text: 'text-red-300' },
+        complete: { bg: 'bg-emerald-500/10', border: 'border-emerald-500/30', pill: 'bg-emerald-500/15 text-emerald-200 border border-emerald-500/20', pillText: 'Complete', text: 'text-emerald-200' },
+        current: { bg: 'bg-orange-500/10', border: 'border-orange-400/30', pill: 'bg-orange-400/10 text-orange-200 border border-orange-400/20', pillText: 'Current', text: 'text-orange-200' },
+        locked: { bg: 'bg-slate-950/30', border: 'border-white/10', pill: 'bg-slate-800/60 text-slate-300 border border-white/10', pillText: 'Locked', text: 'text-slate-400' },
+        ready: { bg: 'bg-slate-950/30', border: 'border-white/10', pill: 'bg-blue-500/10 text-blue-200 border border-blue-500/20', pillText: 'Ready', text: 'text-slate-200' }
       };
+      return styles[status] || styles.locked;
+    }
 
-      let selectedStep = null;
-      let config = {};
+    function getLinearSteps() {
+      return [...projectData.phases.flatMap((p) => p.steps), ...projectData.crossPhaseSteps];
+    }
 
-      const defaultConfig = {
-        background_color: '#080a0f',
-        page_title: 'Tax Monitor Pro',
-        primary_color: '#f97316',
-        secondary_color: '#475569',
-        surface_color: '#0f1219',
-        text_color: '#f1f5f9',
-        welcome_message: 'Your Compliance Journey'
-      };
+    function lockAllSteps() {
+      projectData.phases.forEach((phase) => {
+        phase.steps.forEach((s) => { s.status = 'locked'; });
+      });
 
-      const icons = {
-        'arrow-right': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>',
-        calendar: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>',
-        chart: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>',
-        check: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>',
-        clipboard: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>',
-        'credit-card': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>',
-        document: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>',
-        key: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/>',
-        location: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>',
-        lock: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>',
-        pencil: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>',
-        search: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>',
-        shield: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>',
-        sparkles: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>',
-        star: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>',
-        support: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/>',
-        'user-group': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>'
-      };
+      const intake = projectData.phases.flatMap((p) => p.steps).find((s) => s.id === 'intake');
+      if (intake) intake.status = 'ready';
 
-      function getIcon(name, className = 'w-5 h-5') {
-        const body = icons[name] || icons.document;
-        return `<svg class="${className}" fill="none" stroke="currentColor" viewBox="0 0 24 24">${body}</svg>`;
-      }
+      projectData.crossPhaseSteps.forEach((s) => {
+        s.status = (s.id === 'support-ticket') ? 'ready' : 'locked';
+      });
+    }
 
-      function getStatusStyles(status) {
-        const styles = {
-          blocked: { bg: 'bg-red-500/10', border: 'border-red-500/30', pill: 'bg-red-500/15 text-red-300 border border-red-500/20', pillText: 'Blocked', text: 'text-red-300' },
-          complete: { bg: 'bg-emerald-500/10', border: 'border-emerald-500/30', pill: 'bg-emerald-500/15 text-emerald-200 border border-emerald-500/20', pillText: 'Complete', text: 'text-emerald-200' },
-          current: { bg: 'bg-orange-500/10', border: 'border-orange-400/30', pill: 'bg-orange-400/10 text-orange-200 border border-orange-400/20', pillText: 'Current', text: 'text-orange-200' },
-          locked: { bg: 'bg-slate-950/30', border: 'border-white/10', pill: 'bg-slate-800/60 text-slate-300 border border-white/10', pillText: 'Locked', text: 'text-slate-400' },
-          ready: { bg: 'bg-slate-950/30', border: 'border-white/10', pill: 'bg-blue-500/10 text-blue-200 border border-blue-500/20', pillText: 'Ready', text: 'text-slate-200' }
-        };
-        return styles[status] || styles.locked;
-      }
+    function renderPhaseIndicators() {
+      const container = document.getElementById('phase-indicators');
+      if (!container) return;
 
-      function getLinearSteps() {
-        return [
-          ...projectData.phases.flatMap((p) => p.steps),
-          ...projectData.crossPhaseSteps
-        ];
-      }
+      let html = '';
+      projectData.phases.forEach((phase, index) => {
+        const isComplete = phase.steps.every((s) => s.status === 'complete');
+        const isCurrent = phase.steps.some((s) => s.status === 'current');
 
-      function getPrerequisiteStep(stepId) {
-        const steps = getLinearSteps();
-        const index = steps.findIndex((s) => s.id === stepId);
-        if (index > 0) return steps[index - 1];
-        return null;
-      }
-
-      function lockAllSteps() {
-        projectData.phases.forEach((phase) => {
-          phase.steps.forEach((s) => { s.status = 'locked'; });
-        });
-
-        // Demo start: Intake is the only unlocked step.
-        const intake = projectData.phases.flatMap((p) => p.steps).find((s) => s.id === 'intake');
-        if (intake) intake.status = 'ready';
-
-        // Support remains available.
-        projectData.crossPhaseSteps.forEach((s) => {
-          s.status = (s.id === 'support-ticket') ? 'ready' : 'locked';
-        });
-      }
-
-      function renderPhaseIndicators() {
-        const container = document.getElementById('phase-indicators');
-        if (!container) return;
-
-        let html = '';
-
-        projectData.phases.forEach((phase, index) => {
-          const isComplete = phase.steps.every((s) => s.status === 'complete');
-          const isCurrent = phase.steps.some((s) => s.status === 'current');
-
-          let statusClass = 'bg-slate-950/30 text-slate-400 border border-white/10';
-          if (isComplete) statusClass = 'bg-emerald-500/10 text-emerald-200 border border-emerald-500/20';
-          else if (isCurrent) statusClass = 'bg-orange-500/10 text-orange-200 border border-orange-400/20';
-
-          html += `
-            <div class="flex items-center ${index < projectData.phases.length - 1 ? 'flex-1' : ''}">
-              <button
-                type="button"
-                data-phase-target="phase-${phase.id}"
-                class="px-3 py-1.5 rounded-full text-xs font-medium ${statusClass} whitespace-nowrap hover:opacity-90 transition"
-              >
-                Phase ${phase.id}: ${phase.name}
-              </button>
-              ${index < projectData.phases.length - 1 ? `<div class="flex-1 h-0.5 mx-2 phase-connector rounded-full"></div>` : ''}
-            </div>
-          `;
-        });
-
-        container.innerHTML = html;
-
-        // Enable phase click scroll
-        container.querySelectorAll('[data-phase-target]').forEach((btn) => {
-          btn.addEventListener('click', () => {
-            const targetId = btn.getAttribute('data-phase-target');
-            const el = targetId ? document.getElementById(targetId) : null;
-            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          });
-        });
-      }
-
-      function renderStepNode(step) {
-        const styles = getStatusStyles(step.status);
-        const isLocked = step.status === 'locked';
-        const isCurrent = step.status === 'current';
-        const isComplete = step.status === 'complete';
-        const isSelected = selectedStep === step.id;
-        const isStart = step.id === 'intake';
-
-        // Keep this call for future prerequisite-based UX, but we no longer show the gating text.
-        const prerequisite = getPrerequisiteStep(step.id);
-        void prerequisite;
-
-        // For locked steps, show a brief explanation of THIS step instead of prerequisite gating text.
-        const lockedMessage = isLocked
-          ? (step.microcopy || step.description || 'This step will unlock when prior requirements are met.')
-          : step.microcopy;
-
-        return `
-          <div
-            class="node-card p-4 rounded-2xl border ${styles.border} ${styles.bg} ${isLocked ? 'locked' : 'cursor-pointer'} ${(isCurrent || isStart) ? 'node-current' : ''} ${isSelected ? 'ring-2 ring-orange-500/40' : ''} ${isStart ? 'ring-2 ring-orange-500/30' : ''}"
-            data-step-id="${step.id}"
-          >
-            <div class="flex items-start justify-between mb-3">
-              <div class="w-10 h-10 rounded-xl bg-slate-950/30 border border-white/10 flex items-center justify-center ${styles.text}">
-                ${isComplete ? getIcon('check') : isLocked ? getIcon('lock') : getIcon(step.icon)}
-              </div>
-              <span class="px-2 py-0.5 rounded-full text-[10px] font-medium ${styles.pill}">
-                ${styles.pillText}
-              </span>
-            </div>
-            <h3 class="font-semibold text-white text-sm mb-1">${step.name}</h3>
-            <p class="text-xs ${styles.text} leading-snug">${lockedMessage}</p>
-          </div>
-        `;
-      }
-
-      function renderMindMap() {
-        const container = document.getElementById('mind-map');
-        if (!container) return;
-
-        let html = '';
-
-        projectData.phases.forEach((phase) => {
-          const phaseStatus =
-            phase.steps.every((s) => s.status === 'complete') ? 'complete' :
-            phase.steps.some((s) => s.status === 'current') ? 'current' :
-            'locked';
-
-          const styles = getStatusStyles(phaseStatus);
-
-          html += `
-            <div class="phase-section" id="phase-${phase.id}">
-              <div class="flex items-center gap-3 mb-4">
-                <div class="w-8 h-8 rounded-xl ${styles.bg} ${styles.border} border flex items-center justify-center">
-                  <span class="text-sm font-bold ${styles.text}">${phase.id}</span>
-                </div>
-                <h2 class="text-lg font-semibold text-white">${phase.name}</h2>
-              </div>
-
-              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
-                ${phase.steps.map(renderStepNode).join('')}
-              </div>
-
-              ${phase.connector ? `
-                <div class="flex items-center gap-2 text-xs text-slate-500 ml-1 mb-2">
-                  ${getIcon('arrow-right', 'w-4 h-4')}
-                  <span class="italic">${phase.connector}</span>
-                </div>
-              ` : ''}
-            </div>
-          `;
-        });
+        let statusClass = 'bg-slate-950/30 text-slate-400 border border-white/10';
+        if (isComplete) statusClass = 'bg-emerald-500/10 text-emerald-200 border border-emerald-500/20';
+        else if (isCurrent) statusClass = 'bg-orange-500/10 text-orange-200 border border-orange-400/20';
 
         html += `
-          <div class="mt-6 pt-6 border-t border-white/10">
-            <div class="flex items-center gap-2 mb-4 text-slate-400">
-              <span class="text-xs uppercase tracking-wider">Cross-Phase Support</span>
+          <div class="flex items-center ${index < projectData.phases.length - 1 ? 'flex-1' : ''}">
+            <button type="button" data-phase-target="phase-${phase.id}" class="px-3 py-1.5 rounded-full text-xs font-medium ${statusClass} whitespace-nowrap hover:opacity-90 transition">
+              Phase ${phase.id}: ${phase.name}
+            </button>
+            ${index < projectData.phases.length - 1 ? `<div class="flex-1 h-0.5 mx-2 phase-connector rounded-full"></div>` : ''}
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+      container.querySelectorAll('[data-phase-target]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const targetId = btn.getAttribute('data-phase-target');
+          const el = document.getElementById(targetId);
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      });
+    }
+
+    function renderStepNode(step) {
+      const styles = getStatusStyles(step.status);
+      const isComplete = step.status === 'complete';
+      const isCurrent = step.status === 'current';
+      const isStart = step.id === 'intake';
+
+      return `
+        <div class="node-card p-4 rounded-2xl border ${styles.border} ${styles.bg} cursor-pointer ${(isCurrent || isStart) ? 'node-current' : ''}" data-step-id="${step.id}">
+          <div class="flex items-start justify-between mb-3">
+            <div class="w-10 h-10 rounded-xl bg-slate-950/30 border border-white/10 flex items-center justify-center ${styles.text}">
+              ${isComplete ? getIcon('check') : step.status === 'locked' ? getIcon('lock') : getIcon(step.icon)}
+            </div>
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-medium ${styles.pill}">${styles.pillText}</span>
+          </div>
+          <h3 class="font-semibold text-white text-sm mb-1">${step.name}</h3>
+          <p class="text-xs ${styles.text} leading-snug">${step.microcopy}</p>
+        </div>
+      `;
+    }
+
+    function renderMindMap() {
+      const container = document.getElementById('mind-map');
+      if (!container) return;
+
+      let html = '';
+
+      projectData.phases.forEach((phase) => {
+        const phaseStatus =
+          phase.steps.every((s) => s.status === 'complete') ? 'complete' :
+          phase.steps.some((s) => s.status === 'current') ? 'current' : 'locked';
+        const styles = getStatusStyles(phaseStatus);
+
+        html += `
+          <div class="phase-section" id="phase-${phase.id}">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-8 h-8 rounded-xl ${styles.bg} ${styles.border} border flex items-center justify-center">
+                <span class="text-sm font-bold ${styles.text}">${phase.id}</span>
+              </div>
+              <h2 class="text-lg font-semibold text-white">${phase.name}</h2>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-              ${projectData.crossPhaseSteps.map(renderStepNode).join('')}
+              ${phase.steps.map((step) => renderStepNode(step)).join('')}
             </div>
           </div>
         `;
+      });
 
-        container.innerHTML = html;
-
-        document.querySelectorAll('.node-card').forEach((node) => {
-          node.addEventListener('click', () => selectStep(node.dataset.stepId));
-        });
-
-        if (!selectedStep) {
-          const currentStep = projectData.phases.flatMap((p) => p.steps).find((s) => s.status === 'current');
-          if (currentStep) selectStep(currentStep.id);
-        }
-      }
-
-      function updateSelectedRings() {
-        document.querySelectorAll('.node-card').forEach((node) => {
-          node.classList.remove('ring-2', 'ring-orange-500/40');
-          if (selectedStep && node.dataset.stepId === selectedStep) {
-            node.classList.add('ring-2', 'ring-orange-500/40');
-          }
-        });
-      }
-
-      function selectStep(stepId) {
-        // Toggle off if clicking the same step again
-        if (selectedStep === stepId) {
-          selectedStep = null;
-          updateSelectedRings();
-          renderDetailPanel();
-          return;
-        }
-
-        selectedStep = stepId;
-        updateSelectedRings();
-        renderDetailPanel();
-      }
-
-      function findStep(stepId) {
-        for (const phase of projectData.phases) {
-          const found = phase.steps.find((s) => s.id === stepId);
-          if (found) return found;
-        }
-        return projectData.crossPhaseSteps.find((s) => s.id === stepId) || null;
-      }
-
-      function renderFormContent(step) {
-        const isComplete = step.status === 'complete';
-        if (!step.formFields) return '';
-
-        return `
-          <div class="rounded-2xl border border-white/10 bg-slate-950/30 p-5">
-            <div class="flex items-center justify-between mb-3">
-              <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Form Preview</h3>
-              ${isComplete ? `<span class="flex items-center gap-1 text-xs text-slate-500">${getIcon('lock', 'w-3 h-3')}Submitted</span>` : ''}
-            </div>
-            <div class="space-y-2">
-              ${step.formFields.slice(0, 5).map((field) => `
-                <div class="flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-900/50 border border-white/10 ${isComplete ? 'opacity-70' : ''}">
-                  <span class="w-2 h-2 rounded-full ${isComplete ? 'bg-emerald-400' : 'bg-slate-500'}"></span>
-                  <span class="text-sm ${isComplete ? 'text-slate-400' : 'text-slate-300'}">${field}</span>
-                  ${isComplete ? `<span class="ml-auto text-xs text-emerald-300">✓</span>` : ''}
-                </div>
-              `).join('')}
-              ${step.formFields.length > 5 ? `<p class="text-xs text-slate-500 text-center pt-2">+${step.formFields.length - 5} more fields</p>` : ''}
-            </div>
-            ${isComplete ? `<p class="text-xs text-slate-500 mt-3 italic">Changes require a support request.</p>` : ''}
+      html += `
+        <div class="mt-6 pt-6 border-t border-white/10">
+          <div class="flex items-center gap-2 mb-4 text-slate-400">
+            <span class="text-xs uppercase tracking-wider">Cross-Phase Support</span>
           </div>
-        `;
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            ${projectData.crossPhaseSteps.map((step) => renderStepNode(step)).join('')}
+          </div>
+        </div>
+      `;
+
+      container.innerHTML = html;
+
+      container.querySelectorAll('[data-step-id]').forEach((card) => {
+        card.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const stepId = card.getAttribute('data-step-id');
+          selectStep(stepId);
+        });
+      });
+    }
+
+    function selectStep(stepId) {
+      if (selectedStep === stepId) {
+        closeDetailPanel();
+        return;
       }
 
-      function renderOperatorContent(step) {
-        const statusMap = {
-          blocked: { text: 'Waiting on You', class: 'text-red-200 bg-red-500/10 border border-red-500/20' },
-          complete: { text: 'Complete', class: 'text-emerald-200 bg-emerald-500/10 border border-emerald-500/20' },
-          current: { text: 'In Progress', class: 'text-orange-200 bg-orange-500/10 border border-orange-400/20' },
-          locked: { text: 'Pending', class: 'text-slate-300 bg-slate-950/30 border border-white/10' }
-        };
+      selectedStep = stepId;
+      openDetailPanel(stepId);
+    }
 
-        const status = statusMap[step.status] || statusMap.locked;
+    function openDetailPanel(stepId) {
+      const overlay = document.getElementById('detail-overlay');
+      const panel = document.getElementById('detail-panel');
 
-        return `
-          <div class="rounded-2xl border border-white/10 bg-slate-950/30 p-5">
-            <div class="flex items-center justify-between mb-4">
-              <span class="px-3 py-1 rounded-full text-xs font-medium ${status.class}">${status.text}</span>
-              ${step.estimate ? `<span class="text-xs text-slate-500">Est. ${step.estimate}</span>` : ''}
-            </div>
+      overlay.classList.add('active');
+      panel.classList.add('active');
 
-            <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Processing Checklist</h3>
-            <div class="space-y-2">
-              ${(step.checklist || []).map((item, index) => {
-                const isItemComplete = step.status === 'complete' || (step.status === 'current' && index === 0);
-                return `
-                  <div class="flex items-center gap-3 px-3 py-2 rounded-xl bg-slate-900/50 border border-white/10">
-                    <div class="w-5 h-5 rounded-full ${isItemComplete ? 'bg-emerald-500/10 text-emerald-200 border border-emerald-500/20' : 'bg-slate-950/30 text-slate-400 border border-white/10'} flex items-center justify-center flex-shrink-0">
-                      ${isItemComplete ? getIcon('check', 'w-3 h-3') : `<span class="text-xs">${index + 1}</span>`}
-                    </div>
-                    <span class="text-sm ${isItemComplete ? 'text-slate-400 line-through' : 'text-slate-300'}">${item}</span>
+      renderDetailPanel(stepId);
+
+      overlay.addEventListener('click', closeDetailPanel);
+    }
+
+    function closeDetailPanel() {
+      selectedStep = null;
+      const overlay = document.getElementById('detail-overlay');
+      const panel = document.getElementById('detail-panel');
+
+      overlay.classList.remove('active');
+      panel.classList.remove('active');
+
+      overlay.removeEventListener('click', closeDetailPanel);
+    }
+
+    function findStep(stepId) {
+      for (const phase of projectData.phases) {
+        const found = phase.steps.find((s) => s.id === stepId);
+        if (found) return found;
+      }
+      return projectData.crossPhaseSteps.find((s) => s.id === stepId) || null;
+    }
+
+    function renderFormContent(step) {
+      const isComplete = step.status === 'complete';
+      if (!step.formFields) return '';
+
+      return `
+        <div class="rounded-2xl border border-white/10 bg-slate-950/30 p-5">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Form Preview</h3>
+            ${isComplete ? `<span class="flex items-center gap-1 text-xs text-slate-500">${getIcon('lock', 'w-3 h-3')}Submitted</span>` : ''}
+          </div>
+          <div class="space-y-2">
+            ${step.formFields.slice(0, 5).map((field) => `
+              <div class="flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-900/50 border border-white/10 ${isComplete ? 'opacity-70' : ''}">
+                <span class="w-2 h-2 rounded-full ${isComplete ? 'bg-emerald-400' : 'bg-slate-500'}"></span>
+                <span class="text-sm ${isComplete ? 'text-slate-400' : 'text-slate-300'}">${field}</span>
+                ${isComplete ? `<span class="ml-auto text-xs text-emerald-300">✓</span>` : ''}
+              </div>
+            `).join('')}
+            ${step.formFields.length > 5 ? `<p class="text-xs text-slate-500 text-center pt-2">+${step.formFields.length - 5} more fields</p>` : ''}
+          </div>
+          ${isComplete ? `<p class="text-xs text-slate-500 mt-3 italic">Changes require a support request.</p>` : ''}
+        </div>
+      `;
+    }
+
+    function renderOperatorContent(step) {
+      const statusMap = {
+        blocked: { text: 'Waiting on You', class: 'text-red-200 bg-red-500/10 border border-red-500/20' },
+        complete: { text: 'Complete', class: 'text-emerald-200 bg-emerald-500/10 border border-emerald-500/20' },
+        current: { text: 'In Progress', class: 'text-orange-200 bg-orange-500/10 border border-orange-400/20' },
+        locked: { text: 'Pending', class: 'text-slate-300 bg-slate-950/30 border border-white/10' }
+      };
+
+      const status = statusMap[step.status] || statusMap.locked;
+
+      return `
+        <div class="rounded-2xl border border-white/10 bg-slate-950/30 p-5">
+          <div class="flex items-center justify-between mb-4">
+            <span class="px-3 py-1 rounded-full text-xs font-medium ${status.class}">${status.text}</span>
+            ${step.estimate ? `<span class="text-xs text-slate-500">Est. ${step.estimate}</span>` : ''}
+          </div>
+          <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Processing Checklist</h3>
+          <div class="space-y-2">
+            ${(step.checklist || []).map((item, index) => {
+              const isItemComplete = step.status === 'complete' || (step.status === 'current' && index === 0);
+              return `
+                <div class="flex items-center gap-3 px-3 py-2 rounded-xl bg-slate-900/50 border border-white/10">
+                  <div class="w-5 h-5 rounded-full ${isItemComplete ? 'bg-emerald-500/10 text-emerald-200 border border-emerald-500/20' : 'bg-slate-950/30 text-slate-400 border border-white/10'} flex items-center justify-center flex-shrink-0">
+                    ${isItemComplete ? getIcon('check', 'w-3 h-3') : `<span class="text-xs">${index + 1}</span>`}
                   </div>
-                `;
-              }).join('')}
-            </div>
+                  <span class="text-sm ${isItemComplete ? 'text-slate-400 line-through' : 'text-slate-300'}">${item}</span>
+                </div>
+              `;
+            }).join('')}
           </div>
-        `;
+        </div>
+      `;
+    }
+
+    function getDynamicButtonConfig(step) {
+      const isComplete = step.status === 'complete';
+      const isLocked = step.status === 'locked';
+      const isOperator = step.type === 'operator';
+      const isSupport = step.id === 'support-ticket';
+
+      if (isSupport) {
+        return { href: '/app/pages/support.html', icon: 'support', label: 'Go To Support Page', style: 'primary' };
       }
 
-      function getDynamicButtonConfig(step) {
-        const isComplete = step.status === 'complete';
-        const isLocked = step.status === 'locked';
-        const isOperator = step.type === 'operator';
-        const isSupport = step.id === 'support-ticket';
-
-        if (isSupport) {
-          return { href: '/app/pages/support.html', icon: 'support', label: 'Go To Support Page', style: 'primary' };
-        }
-
-        if (isOperator) {
-          return { href: '#', icon: 'chart', label: 'View Processing Details', style: 'operator' };
-        }
-
-        const varietyMap = {
-          agreement: { edit: 'Edit Agreement', view: 'View Signed Agreement' },
-          'address-update': { edit: 'Edit Address Information', view: 'View Address Details' },
-          'esign-2848': { edit: 'Complete eSign 2848', view: 'View eSigned 2848' },
-          'exit-survey': { edit: 'Complete Exit Survey', view: 'View Survey Submission' },
-          'filing-status': { edit: 'Edit Filing Status', view: 'View Filing Status' },
-          intake: { edit: 'Edit Intake Form', view: 'View Intake Form' },
-          offer: { edit: 'Edit Offer Details', view: 'View Offer Summary' },
-          payment: { edit: 'Update Payment Method', view: 'View Payment Receipt' },
-          'results-appointment': { edit: 'Await Staff Scheduling', view: 'View Scheduled Results Appointment' },
-          welcome: { edit: 'Edit Welcome Info', view: 'View Welcome Responses' },
-          'wet-signature-2848': { edit: 'Upload Signed 2848', view: 'View Uploaded 2848' }
-        };
-
-        const map = varietyMap[step.id] || { edit: `Edit ${step.name}`, view: `View ${step.name}` };
-
-        if (step.id === 'results-appointment' && !isComplete) {
-          return { href: step.link || '#', icon: 'lock', label: map.edit, style: 'ghost' };
-        }
-
-        if (isComplete) {
-          return { href: step.link || '#', icon: 'search', label: map.view, style: 'complete' };
-        }
-
-        return {
-          href: step.link || '#',
-          icon: isLocked ? 'lock' : 'pencil',
-          label: map.edit,
-          style: isLocked ? 'ghost' : 'primary'
-        };
+      if (isOperator) {
+        return { href: '#', icon: 'chart', label: 'View Processing Details', style: 'operator' };
       }
 
-      function renderPrimaryAction(step) {
-        const cfg = getDynamicButtonConfig(step);
+      const varietyMap = {
+        agreement: { edit: 'Edit Agreement', view: 'View Signed Agreement' },
+        'address-update': { edit: 'Edit Address Information', view: 'View Address Details' },
+        'esign-2848': { edit: 'Complete eSign 2848', view: 'View eSigned 2848' },
+        'exit-survey': { edit: 'Complete Exit Survey', view: 'View Survey Submission' },
+        'filing-status': { edit: 'Edit Filing Status', view: 'View Filing Status' },
+        intake: { edit: 'Edit Intake Form', view: 'View Intake Form' },
+        offer: { edit: 'Edit Offer Details', view: 'View Offer Summary' },
+        payment: { edit: 'Update Payment Method', view: 'View Payment Receipt' },
+        'results-appointment': { edit: 'Await Staff Scheduling', view: 'View Scheduled Results Appointment' },
+        welcome: { edit: 'Edit Welcome Info', view: 'View Welcome Responses' },
+        'wet-signature-2848': { edit: 'Upload Signed 2848', view: 'View Uploaded 2848' }
+      };
 
-        if (cfg.style === 'operator') {
-          return `
-            <button
-              class="w-full py-3 px-4 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all bg-slate-950/30 text-slate-300 border border-white/10 hover:bg-slate-950/40"
-              data-action="noop"
-              type="button"
-            >
-              ${getIcon(cfg.icon)}
-              ${cfg.label}
-            </button>
-          `;
-        }
+      const map = varietyMap[step.id] || { edit: `Edit ${step.name}`, view: `View ${step.name}` };
 
-        const baseClass = cfg.style === 'complete'
-          ? 'bg-emerald-500/10 text-emerald-200 border border-emerald-500/20 hover:bg-emerald-500/15'
-          : cfg.style === 'ghost'
-            ? 'bg-slate-950/30 text-slate-300 border border-white/10 hover:bg-slate-950/40'
-            : 'btn-primary text-white shadow-lg shadow-orange-500/15';
+      if (step.id === 'results-appointment' && !isComplete) {
+        return { href: step.link || '#', icon: 'lock', label: map.edit, style: 'ghost' };
+      }
 
-        const weightClass = cfg.style === 'ghost' ? 'font-medium' : 'font-semibold';
+      if (isComplete) {
+        return { href: step.link || '#', icon: 'search', label: map.view, style: 'complete' };
+      }
 
+      return {
+        href: step.link || '#',
+        icon: isLocked ? 'lock' : 'pencil',
+        label: map.edit,
+        style: isLocked ? 'ghost' : 'primary'
+      };
+    }
+
+    function renderPrimaryAction(step) {
+      const cfg = getDynamicButtonConfig(step);
+
+      if (cfg.style === 'operator') {
         return `
-          <button
-            class="w-full py-3 px-4 rounded-xl ${weightClass} flex items-center justify-center gap-2 transition-all ${baseClass}"
-            data-action="navigate"
-            data-href="${cfg.href}"
-            type="button"
-          >
+          <button class="w-full py-3 px-4 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all bg-slate-950/30 text-slate-300 border border-white/10 hover:bg-slate-950/40" type="button">
             ${getIcon(cfg.icon)}
             ${cfg.label}
           </button>
         `;
       }
 
-      function renderDetailBadge(step) {
-        const isOperator = step.type === 'operator';
-        const isSupport = step.id === 'support-ticket';
-        const isStaffScheduled = step.id === 'results-appointment';
+      const baseClass = cfg.style === 'complete'
+        ? 'bg-emerald-500/10 text-emerald-200 border border-emerald-500/20 hover:bg-emerald-500/15'
+        : cfg.style === 'ghost'
+          ? 'bg-slate-950/30 text-slate-300 border border-white/10 hover:bg-slate-950/40'
+          : 'btn-primary text-white shadow-lg shadow-orange-500/15';
 
-        if (isOperator) {
-          return `
-            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-purple-500/10 text-purple-200 border border-purple-500/20 text-xs">
-              ${getIcon('shield', 'w-3 h-3')}
-              Internal Processing
-            </span>
-          `;
-        }
+      const weightClass = cfg.style === 'ghost' ? 'font-medium' : 'font-semibold';
 
-        if (isStaffScheduled) {
-          return `
-            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-slate-950/30 text-slate-300 border border-white/10 text-xs">
-              ${getIcon('lock', 'w-3 h-3')}
-              Staff Scheduled
-            </span>
-          `;
-        }
+      return `
+        <button class="w-full py-3 px-4 rounded-xl ${weightClass} flex items-center justify-center gap-2 transition-all ${baseClass}" data-action="navigate" data-href="${cfg.href}" type="button">
+          ${getIcon(cfg.icon)}
+          ${cfg.label}
+        </button>
+      `;
+    }
 
-        if (isSupport) {
-          return `
-            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-orange-500/10 text-orange-200 border border-orange-400/20 text-xs">
-              ${getIcon('support', 'w-3 h-3')}
-              Optional — If You Need Help
-            </span>
-          `;
-        }
+    function renderDetailBadge(step) {
+      const isOperator = step.type === 'operator';
+      const isSupport = step.id === 'support-ticket';
+      const isStaffScheduled = step.id === 'results-appointment';
 
-        return `
-          <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-orange-500/10 text-orange-200 border border-orange-400/20 text-xs">
-            ${getIcon('user-group', 'w-3 h-3')}
-            Action Required From You
-          </span>
-        `;
+      if (isOperator) {
+        return `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-purple-500/10 text-purple-200 border border-purple-500/20 text-xs">${getIcon('shield', 'w-3 h-3')}Internal Processing</span>`;
       }
 
-      function renderDetailPanel() {
-        const container = document.getElementById('detail-panel');
-        const aside = document.getElementById('detail-aside');
-        const grid = document.getElementById('status-grid');
-        if (!container) return;
+      if (isStaffScheduled) {
+        return `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-slate-950/30 text-slate-300 border border-white/10 text-xs">${getIcon('lock', 'w-3 h-3')}Staff Scheduled</span>`;
+      }
 
-        // Hide the entire panel when nothing is selected.
-        if (!selectedStep) {
-          if (aside) aside.classList.add('hidden');
-          if (grid) {
-            grid.classList.remove('status-grid-expanded');
-            grid.classList.add('status-grid-collapsed');
-          }
-          container.innerHTML = '';
-          return;
-        }
+      if (isSupport) {
+        return `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-orange-500/10 text-orange-200 border border-orange-400/20 text-xs">${getIcon('support', 'w-3 h-3')}Optional — If You Need Help</span>`;
+      }
 
-        if (aside) aside.classList.remove('hidden');
-        if (grid) {
-          grid.classList.remove('status-grid-collapsed');
-          grid.classList.add('status-grid-expanded');
-        }
+      return `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-orange-500/10 text-orange-200 border border-orange-400/20 text-xs">${getIcon('user-group', 'w-3 h-3')}Action Required From You</span>`;
+    }
 
-        // IMPORTANT: single declaration only (fixes "Identifier 'step' has already been declared")
-        const step = findStep(selectedStep);
-        if (!step) return;
+    function renderDetailPanel(stepId) {
+      const step = findStep(stepId);
+      if (!step) return;
 
-        const styles = getStatusStyles(step.status);
-        const isOperator = step.type === 'operator';
+      const container = document.getElementById('detail-panel');
+      const styles = getStatusStyles(step.status);
+      const isOperator = step.type === 'operator';
 
-        container.innerHTML = `
-          <div class="detail-panel">
-            <div class="flex items-start gap-4 mb-6">
-              <div class="w-14 h-14 rounded-2xl ${styles.bg} ${styles.border} border flex items-center justify-center ${styles.text} flex-shrink-0">
-                ${getIcon(step.icon, 'w-7 h-7')}
-              </div>
-              <div class="flex-1 min-w-0">
-                <div class="flex items-center gap-2 mb-1">
-                  <h2 class="text-xl font-bold text-white">${step.name}</h2>
-                  <span class="px-2 py-0.5 rounded-full text-xs font-medium ${styles.pill}">${styles.pillText}</span>
-                </div>
-                ${renderDetailBadge(step)}
-              </div>
+      container.innerHTML = `
+        <button id="detail-close" class="absolute top-4 right-4 p-2 text-slate-400 hover:text-white transition" aria-label="Close details">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+
+        <div class="detail-panel pt-8">
+          <div class="flex items-start gap-4 mb-6">
+            <div class="w-14 h-14 rounded-2xl ${styles.bg} ${styles.border} border flex items-center justify-center ${styles.text} flex-shrink-0">
+              ${getIcon(step.icon, 'w-7 h-7')}
             </div>
-
-            <div class="mb-6">
-              <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">What This Step Does</h3>
-              <p class="text-sm text-slate-300 leading-relaxed">${step.description || ''}</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-              <div class="rounded-2xl border border-white/10 bg-slate-950/30 p-5">
-                <h3 class="text-xs font-semibold text-orange-200 uppercase tracking-wider mb-3 flex items-center gap-2">
-                  ${getIcon('user-group', 'w-4 h-4')}
-                  What We Need From You
-                </h3>
-                <ul class="space-y-2">
-                  ${(step.whatWeNeed || []).map((item) => `
-                    <li class="flex items-start gap-2 text-sm text-slate-300">
-                      <span class="w-1.5 h-1.5 rounded-full bg-orange-500 mt-1.5 flex-shrink-0"></span>
-                      ${item}
-                    </li>
-                  `).join('')}
-                </ul>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 mb-1">
+                <h2 class="text-xl font-bold text-white">${step.name}</h2>
+                <span class="px-2 py-0.5 rounded-full text-xs font-medium ${styles.pill}">${styles.pillText}</span>
               </div>
-
-              <div class="rounded-2xl border border-white/10 bg-slate-950/30 p-5">
-                <h3 class="text-xs font-semibold text-emerald-200 uppercase tracking-wider mb-3 flex items-center gap-2">
-                  ${getIcon('sparkles', 'w-4 h-4')}
-                  What We Do
-                </h3>
-                <ul class="space-y-2">
-                  ${(step.whatWeDo || []).map((item) => `
-                    <li class="flex items-start gap-2 text-sm text-slate-300">
-                      <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-1.5 flex-shrink-0"></span>
-                      ${item}
-                    </li>
-                  `).join('')}
-                </ul>
-              </div>
-            </div>
-
-            ${isOperator ? renderOperatorContent(step) : renderFormContent(step)}
-
-            <div class="flex flex-col gap-3 mt-6">
-              ${renderPrimaryAction(step)}
-              <div class="flex items-center gap-3 text-xs">
-                <a href="/app/pages/calendar.html" class="text-slate-400 hover:text-orange-200 transition-colors flex items-center gap-1">
-                  ${getIcon('calendar', 'w-4 h-4')}
-                  Calendar
-                </a>
-                <a href="/app/pages/files.html" class="text-slate-400 hover:text-orange-200 transition-colors flex items-center gap-1">
-                  ${getIcon('document', 'w-4 h-4')}
-                  Files
-                </a>
-              </div>
+              ${renderDetailBadge(step)}
             </div>
           </div>
-        `;
 
-        wireDetailPanelActions(container);
-      }
+          <div class="mb-6">
+            <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">What This Step Does</h3>
+            <p class="text-sm text-slate-300 leading-relaxed">${step.description || ''}</p>
+          </div>
 
-      function wireDetailPanelActions(container) {
-        container.querySelectorAll('button[data-action]').forEach((btn) => {
-          const action = btn.getAttribute('data-action');
-          if (action !== 'navigate') return;
+          <div class="grid grid-cols-1 gap-4 mb-6">
+            <div class="rounded-2xl border border-white/10 bg-slate-950/30 p-5">
+              <h3 class="text-xs font-semibold text-orange-200 uppercase tracking-wider mb-3 flex items-center gap-2">
+                ${getIcon('user-group', 'w-4 h-4')}
+                What We Need From You
+              </h3>
+              <ul class="space-y-2">
+                ${(step.whatWeNeed || []).map((item) => `
+                  <li class="flex items-start gap-2 text-sm text-slate-300">
+                    <span class="w-1.5 h-1.5 rounded-full bg-orange-500 mt-1.5 flex-shrink-0"></span>
+                    ${item}
+                  </li>
+                `).join('')}
+              </ul>
+            </div>
 
-          btn.addEventListener('click', () => {
-            const href = btn.getAttribute('data-href');
-            if (!href || href === '#') return;
-            window.location.href = href;
-          });
+            <div class="rounded-2xl border border-white/10 bg-slate-950/30 p-5">
+              <h3 class="text-xs font-semibold text-emerald-200 uppercase tracking-wider mb-3 flex items-center gap-2">
+                ${getIcon('sparkles', 'w-4 h-4')}
+                What We Do
+              </h3>
+              <ul class="space-y-2">
+                ${(step.whatWeDo || []).map((item) => `
+                  <li class="flex items-start gap-2 text-sm text-slate-300">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-1.5 flex-shrink-0"></span>
+                    ${item}
+                  </li>
+                `).join('')}
+              </ul>
+            </div>
+          </div>
+
+          ${isOperator ? renderOperatorContent(step) : renderFormContent(step)}
+
+          <div class="flex flex-col gap-3 mt-6">
+            ${renderPrimaryAction(step)}
+            <div class="flex items-center gap-3 text-xs">
+              <a href="/app/pages/calendar.html" class="text-slate-400 hover:text-orange-200 transition-colors flex items-center gap-1">
+                ${getIcon('calendar', 'w-4 h-4')}
+                Calendar
+              </a>
+              <a href="/app/pages/report.html" class="text-slate-400 hover:text-orange-200 transition-colors flex items-center gap-1">
+                ${getIcon('document', 'w-4 h-4')}
+                Files
+              </a>
+            </div>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('detail-close').addEventListener('click', closeDetailPanel);
+
+      container.querySelectorAll('button[data-action="navigate"]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const href = btn.getAttribute('data-href');
+          if (!href || href === '#') return;
+          window.location.href = href;
         });
-      }
+      });
+    }
 
-      function applyColors() {
-        const bgColor = config.background_color || defaultConfig.background_color;
-        const textColor = config.text_color || defaultConfig.text_color;
-        document.body.style.backgroundColor = bgColor;
-        document.body.style.color = textColor;
-      }
+    function applyColors() {
+      const bgColor = config.background_color || defaultConfig.background_color;
+      const textColor = config.text_color || defaultConfig.text_color;
+      document.body.style.backgroundColor = bgColor;
+      document.body.style.color = textColor;
+    }
 
-      async function onConfigChange(newConfig) {
-        config = newConfig || {};
-        applyColors();
-      }
+    async function onConfigChange(newConfig) {
+      config = newConfig || {};
+      applyColors();
+    }
 
-      function mapToCapabilities(cfg) {
-        return {
-          borderables: [],
-          fontEditable: undefined,
-          fontSizeable: undefined,
-          recolorables: [
-            { get: () => cfg.background_color || defaultConfig.background_color, set: (value) => { cfg.background_color = value; window.elementSdk && window.elementSdk.setConfig({ background_color: value }); } },
-            { get: () => cfg.primary_color || defaultConfig.primary_color, set: (value) => { cfg.primary_color = value; window.elementSdk && window.elementSdk.setConfig({ primary_color: value }); } },
-            { get: () => cfg.secondary_color || defaultConfig.secondary_color, set: (value) => { cfg.secondary_color = value; window.elementSdk && window.elementSdk.setConfig({ secondary_color: value }); } },
-            { get: () => cfg.surface_color || defaultConfig.surface_color, set: (value) => { cfg.surface_color = value; window.elementSdk && window.elementSdk.setConfig({ surface_color: value }); } },
-            { get: () => cfg.text_color || defaultConfig.text_color, set: (value) => { cfg.text_color = value; window.elementSdk && window.elementSdk.setConfig({ text_color: value }); } }
-          ]
-        };
-      }
+    function mapToCapabilities(cfg) {
+      return {
+        borderables: [],
+        fontEditable: undefined,
+        fontSizeable: undefined,
+        recolorables: [
+          { get: () => cfg.background_color || defaultConfig.background_color, set: (value) => { cfg.background_color = value; window.elementSdk && window.elementSdk.setConfig({ background_color: value }); } },
+          { get: () => cfg.primary_color || defaultConfig.primary_color, set: (value) => { cfg.primary_color = value; window.elementSdk && window.elementSdk.setConfig({ primary_color: value }); } }
+        ]
+      };
+    }
 
-      function mapToEditPanelValues(cfg) {
-        return new Map([
-          ['page_title', (cfg && cfg.page_title) || defaultConfig.page_title],
-          ['welcome_message', (cfg && cfg.welcome_message) || defaultConfig.welcome_message]
-        ]);
-      }
+    function mapToEditPanelValues(cfg) {
+      return new Map([
+        ['page_title', (cfg && cfg.page_title) || defaultConfig.page_title],
+        ['welcome_message', (cfg && cfg.welcome_message) || defaultConfig.welcome_message]
+      ]);
+    }
 
-      async function injectPartial(slotComment, url) {
-        const html = document.documentElement;
-        const walker = document.createTreeWalker(html, NodeFilter.SHOW_COMMENT, null);
-        let node;
-        while ((node = walker.nextNode())) {
-          if (String(node.nodeValue || '').trim() === slotComment) {
-            const res = await fetch(url, { method: 'GET' });
-            if (!res.ok) throw new Error(`Partial HTTP ${res.status}: ${url}`);
-            const wrap = document.createElement('div');
-            wrap.innerHTML = await res.text();
+    function init() {
+      if (DEMO_LOCK_ALL) lockAllSteps();
 
-            const frag = document.createDocumentFragment();
-            while (wrap.firstChild) frag.appendChild(wrap.firstChild);
-            node.parentNode.insertBefore(frag, node);
-            node.parentNode.removeChild(node);
-            return;
-          }
-        }
-      }
+      renderMindMap();
+      renderPhaseIndicators();
+      applyColors();
 
-      async function initShell() {
+      if (window.elementSdk) {
         try {
-          await injectPartial('APP_SIDEBAR', '/app/partials/sidebar.html');
-          await injectPartial('APP_TOPBAR', '/app/partials/topbar.html');
-        } catch (err) {
-          console.warn('Shell partial injection failed:', err);
-        }
-      }
-
-      // Tiny smoke tests. These run in the browser console.
-      function assert(condition, message) {
-        if (!condition) throw new Error(message);
-      }
-
-      function runTests() {
-        // DOM exists
-        assert(!!document.getElementById('mind-map'), 'Expected #mind-map to exist');
-        assert(!!document.getElementById('detail-panel'), 'Expected #detail-panel to exist');
-        assert(!!document.getElementById('detail-aside'), 'Expected #detail-aside to exist');
-        assert(!!document.getElementById('status-grid'), 'Expected #status-grid to exist');
-
-        // Selection behavior
-        selectedStep = null;
-        renderDetailPanel();
-        assert(document.getElementById('detail-aside').classList.contains('hidden'), 'Expected detail aside hidden when no selection');
-
-        selectStep('intake');
-        assert(selectedStep === 'intake', 'Expected selectStep to set selection');
-        assert(!document.getElementById('detail-aside').classList.contains('hidden'), 'Expected detail aside visible when selected');
-
-        selectStep('intake');
-        assert(selectedStep === null, 'Expected selectStep to toggle off when selecting same step');
-        assert(document.getElementById('detail-aside').classList.contains('hidden'), 'Expected detail aside hidden after toggle off');
-
-        // Phase indicators should have buttons
-        const phaseButtons = document.querySelectorAll('#phase-indicators [data-phase-target]');
-        assert(phaseButtons.length === projectData.phases.length, 'Expected one phase button per phase');
-
-        console.info('[status.html] tests: PASS');
-      }
-
-      function runTestsSafe() {
-        try {
-          runTests();
-        } catch (err) {
-          console.error('[status.html] tests: FAIL', err);
-        }
-      }
-
-      function init() {
-        if (DEMO_LOCK_ALL) {
-          lockAllSteps();
-          selectedStep = 'intake';
-        }
-
-        renderMindMap();
-        renderPhaseIndicators();
-        applyColors();
-        renderDetailPanel();
-
-        runTestsSafe();
-
-        if (window.elementSdk) {
-          try {
-            window.elementSdk.init({
-              defaultConfig,
-              mapToCapabilities,
-              mapToEditPanelValues,
-              onConfigChange
-            });
-          } catch (err) {
-            console.warn('Element SDK init failed (non-fatal):', err);
-          }
-        }
-      }
-
-      document.addEventListener('DOMContentLoaded', async () => {
-        try {
-          await initShell();
-          init();
-
-          // Click-away behavior: clicking outside a node or detail panel clears selection
-          document.addEventListener('click', (e) => {
-            const node = e.target.closest('.node-card');
-            const detail = e.target.closest('.detail-panel');
-            if (!node && !detail && selectedStep) {
-              selectedStep = null;
-              updateSelectedRings();
-              renderDetailPanel();
-            }
+          window.elementSdk.init({
+            defaultConfig,
+            mapToCapabilities,
+            mapToEditPanelValues,
+            onConfigChange
           });
         } catch (err) {
-          console.error('Status init failed:', err);
+          console.warn('Element SDK init failed (non-fatal):', err);
         }
-      });
-    </script>
-  </body>
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9d23e642a31327d7',t:'MTc3MTgyMDA5OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
