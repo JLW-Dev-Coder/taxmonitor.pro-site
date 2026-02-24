@@ -45,9 +45,11 @@ id = "d5fdcbf714ed47a2a734b72eba698f86"
 name = "TOKEN_LEDGER"
 class_name = "TokenLedger"
 
+# IMPORTANT:
+# Free plan requires a Durable Objects namespace created via SQLite migration.
 [[migrations]]
 tag = "v1"
-new_classes = ["TokenLedger"]
+new_sqlite_classes = ["TokenLedger"]
 
 # ---------------------------------------
 # Vars (non-secret)
