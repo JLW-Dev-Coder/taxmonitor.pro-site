@@ -8,6 +8,7 @@ const ASSETS_DIR = path.join(process.cwd(), "assets");
 const BUILD_TARGET = (process.env.BUILD_TARGET || "site").toLowerCase(); // "app" | "site"
 const DIST_DIR = path.join(process.cwd(), "dist");
 const LEGAL_DIR = path.join(process.cwd(), "legal");
+const PAGES_PARTIALS_DIR = path.join(process.cwd(), "partials", "pages"); // NEW: /partials/pages/*.html
 const PUBLIC_DIR = path.join(process.cwd(), "public");
 const REDIRECTS_DEST = path.join(DIST_DIR, "_redirects");
 const REDIRECTS_SRC = path.join(process.cwd(), "_redirects");
@@ -69,7 +70,45 @@ function injectApp(html, sidebar, topbar) {
     .replace(/<!--\s*APP_TOPBAR\s*-->/g, topbar);
 }
 
-async function injectSitePartialsIntoTree({ distBaseDir, skipPartialsDirName, sourceDir }) {
+async function loadPagePartials() {
+  const map = new Map();
+
+  if (!(await exists(PAGES_PARTIALS_DIR))) return map;
+
+  const entries = await readdir(PAGES_PARTIALS_DIR, { withFileTypes: true });
+  for (const e of entries) {
+    if (!e.isFile()) continue;
+    if (!e.name.endsWith(".html")) continue;
+
+    const full = path.join(PAGES_PARTIALS_DIR, e.name);
+    const key = path.basename(e.name, ".html"); // e.g. sales-page
+    const html = await readFile(full, "utf8");
+    map.set(key, html);
+  }
+
+  return map;
+}
+
+function injectPagePartials(html, pagePartials) {
+  if (!pagePartials || pagePartials.size === 0) return html;
+
+  // Supports:
+  // <!-- PARTIAL:pages/sales-page -->
+  // <!-- PARTIAL:page:sales-page -->
+  for (const [key, partialHtml] of pagePartials.entries()) {
+    const re1 = new RegExp(`<!--\\s*PARTIAL:pages\\/${escapeRegExp(key)}\\s*-->`, "g");
+    const re2 = new RegExp(`<!--\\s*PARTIAL:page:${escapeRegExp(key)}\\s*-->`, "g");
+    html = html.replace(re1, partialHtml).replace(re2, partialHtml);
+  }
+
+  return html;
+}
+
+function escapeRegExp(s) {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+async function injectSitePartialsIntoTree({ distBaseDir, skipPartialsDirName, sourceDir, pagePartials }) {
   if (!(await exists(SITE_PARTIALS_DIR))) return;
 
   const footerPath = path.join(SITE_PARTIALS_DIR, "footer.html");
@@ -86,7 +125,8 @@ async function injectSitePartialsIntoTree({ distBaseDir, skipPartialsDirName, so
     if (skipPartialsDirName && filePath.includes(`${path.sep}${skipPartialsDirName}${path.sep}`)) continue;
 
     const html = await readFile(filePath, "utf8");
-    const out = injectSite(html, header, footer);
+    const withSite = injectSite(html, header, footer);
+    const out = injectPagePartials(withSite, pagePartials);
 
     const relative = path.relative(sourceDir, filePath);
     const destPath = path.join(distBaseDir, relative);
@@ -96,7 +136,7 @@ async function injectSitePartialsIntoTree({ distBaseDir, skipPartialsDirName, so
   }
 }
 
-async function injectAppPartialsIntoTree({ distBaseDir, skipPartialsDirName, sourceDir }) {
+async function injectAppPartialsIntoTree({ distBaseDir, skipPartialsDirName, sourceDir, pagePartials }) {
   if (!(await exists(APP_PARTIALS_DIR))) return;
 
   const sidebarPath = path.join(APP_PARTIALS_DIR, "sidebar.html");
@@ -113,7 +153,8 @@ async function injectAppPartialsIntoTree({ distBaseDir, skipPartialsDirName, sou
     if (skipPartialsDirName && filePath.includes(`${path.sep}${skipPartialsDirName}${path.sep}`)) continue;
 
     const html = await readFile(filePath, "utf8");
-    const out = injectApp(html, sidebar, topbar);
+    const withApp = injectApp(html, sidebar, topbar);
+    const out = injectPagePartials(withApp, pagePartials);
 
     const relative = path.relative(sourceDir, filePath);
     const destPath = path.join(distBaseDir, relative);
@@ -141,6 +182,9 @@ async function copySiteNonHtmlToDistRoot() {
 async function main() {
   await cleanDist();
 
+  // NEW: load once, inject everywhere we render HTML
+  const pagePartials = await loadPagePartials();
+
   // Always copy public root stuff (/_sdk, etc.)
   await copyDirContentsToDistRoot(PUBLIC_DIR);
 
@@ -153,12 +197,13 @@ async function main() {
   if (await exists(REDIRECTS_SRC)) await cp(REDIRECTS_SRC, REDIRECTS_DEST);
 
   if (BUILD_TARGET === "app") {
-    // Build APP into dist root so app.taxmonitor.pro/ loads the app
+    // Build APP into dist root so app.* loads the app
     await copyDirIfExists(APP_DIR, null);
 
-    // ✅ FIX: inject into DIST_DIR (not dist/app) because app is at dist root
+    // Inject app partials into DIST_DIR (not dist/app) because app is at dist root
     await injectAppPartialsIntoTree({
       distBaseDir: DIST_DIR,
+      pagePartials,
       skipPartialsDirName: "partials",
       sourceDir: APP_DIR,
     });
@@ -166,12 +211,13 @@ async function main() {
     return;
   }
 
-  // Default: build SITE into dist root so taxmonitor.pro/ loads marketing
+  // Default: build SITE into dist root so root domain loads marketing
   await copySiteNonHtmlToDistRoot();
 
   // Inject site partials into site HTML (skip site/partials/)
   await injectSitePartialsIntoTree({
     distBaseDir: DIST_DIR,
+    pagePartials,
     skipPartialsDirName: "partials",
     sourceDir: SITE_DIR,
   });
@@ -183,6 +229,7 @@ async function main() {
   // Inject app partials into the copied app HTML (skip app/partials/)
   await injectAppPartialsIntoTree({
     distBaseDir: distAppDir,
+    pagePartials,
     skipPartialsDirName: "partials",
     sourceDir: APP_DIR,
   });
