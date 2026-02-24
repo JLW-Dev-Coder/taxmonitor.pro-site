@@ -48,8 +48,35 @@ MY_ORGANIZATION_ZIP = "92020"
 # ---------------------------------------
 # Secrets (set via wrangler secret put)
 # ---------------------------------------
+
 # CAL_WEBHOOK_SECRET
 # CLICKUP_API_KEY
 # GOOGLE_PRIVATE_KEY
 # STRIPE_SECRET_KEY
 # STRIPE_WEBHOOK_SECRET
+
+# ---------------------------------------
+# KV Binding (token balances)
+# ---------------------------------------
+
+[[kv_namespaces]]
+binding = "TOKENS_KV"
+id = "TOKENS_KV"
+
+# ---------------------------------------
+# Optional R2 bucket for Transcript receipts
+# ---------------------------------------
+
+[[r2_buckets]]
+binding = "TRANSCRIPT_R2"
+bucket_name = "transcript-taxmonitor-pro"
+
+# ---------------------------------------
+# Vars (non-secret)
+# ---------------------------------------
+
+[vars]
+CREDIT_MAP_JSON = "{\"price_1T4Ar2CMpIgwe61ZMzAI6yKa\":10,\"price_1T4AxzCMpIgwe61ZsWh7GGAb\":25,\"price_1T4B1gCMpIgwe61ZG12b5tjN\":100}"
+PRICE_10 = "price_1T4Ar2CMpIgwe61ZMzAI6yKa"
+PRICE_25 = "price_1T4AxzCMpIgwe61ZsWh7GGAb"
+PRICE_100 = "price_1T4B1gCMpIgwe61ZG12b5tjN"
