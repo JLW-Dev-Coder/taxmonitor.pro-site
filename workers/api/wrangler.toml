@@ -76,6 +76,7 @@ CREDIT_MAP_JSON = "{\"price_1T4Ar2CMpIgwe61ZMzAI6yKa\":10,\"price_1T4AxzCMpIgwe6
 PRICE_10 = "price_1T4Ar2CMpIgwe61ZMzAI6yKa"
 PRICE_100 = "price_1T4B1gCMpIgwe61ZG12b5tjN"
 PRICE_25 = "price_1T4AxzCMpIgwe61ZsWh7GGAb"
+TRANSCRIPT_RETURN_ORIGINS_JSON = "[\"https://transcript.taxmonitor.pro\"]"
 
 # ---------------------------------------
 # Secrets (set via wrangler secret put)
@@ -86,3 +87,4 @@ PRICE_25 = "price_1T4AxzCMpIgwe61ZsWh7GGAb"
 # GOOGLE_PRIVATE_KEY
 # STRIPE_SECRET_KEY
 # STRIPE_WEBHOOK_SECRET
+
