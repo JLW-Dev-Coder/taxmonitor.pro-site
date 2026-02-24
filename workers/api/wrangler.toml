@@ -34,8 +34,8 @@ bucket_name = "transcript-taxmonitor-pro"
 # ---------------------------------------
 
 [[kv_namespaces]]
-binding = "TOKENS_KV"
-id = "TOKENS_KV"
+binding = "KV_TOKENS"
+id = "KV_TOKENS"
 
 # ---------------------------------------
 # Durable Object (consistent token ledger)
@@ -84,3 +84,4 @@ PRICE_25 = "price_1T4AxzCMpIgwe61ZsWh7GGAb"
 # GOOGLE_PRIVATE_KEY
 # STRIPE_SECRET_KEY
 # STRIPE_WEBHOOK_SECRET
+
