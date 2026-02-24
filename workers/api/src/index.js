@@ -26,7 +26,7 @@ binding = "R2_BUCKET"
 bucket_name = "taxmonitor-pro"
 
 [[r2_buckets]]
-binding = "TRANSCRIPT_R2"
+binding = "R2_TRANSCRIPT"
 bucket_name = "transcript-taxmonitor-pro"
 
 # ---------------------------------------
@@ -84,3 +84,4 @@ PRICE_25 = "price_1T4AxzCMpIgwe61ZsWh7GGAb"
 # GOOGLE_PRIVATE_KEY
 # STRIPE_SECRET_KEY
 # STRIPE_WEBHOOK_SECRET
+
