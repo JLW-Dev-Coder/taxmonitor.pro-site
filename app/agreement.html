@@ -73,6 +73,10 @@
     }
 
     /* Agreement readability */
+    .fade-in-up { animation: fadeInUp 520ms ease both; }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Agreement readability */
     .agreement-prose { font-size: 18px; line-height: 1.8; }
     .agreement-prose h1, .agreement-prose h2, .agreement-prose h3 { scroll-margin-top: 110px; }
     .agreement-prose a { text-decoration: underline; }
@@ -188,21 +192,15 @@
     </header>
 
     <!-- Main Content (match intake.html spacing) -->
-    <main class="flex-1 flex flex-col px-4 sm:px-6 py-8 sm:py-12">
-      <div class="w-full max-w-2xl mx-auto">
+    <main class="flex-1 flex flex-col px-4 sm:px-6 py-8 sm:py-10">
+      <div class="max-w-5xl mx-auto space-y-6 fade-in-up">
 
         <!-- Hero Header (match intake.html structure) -->
-        <div class="text-center mb-12">
-          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/20 mb-6">
-            <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <span class="text-amber-400 font-medium text-sm">Agreement Review</span>
-          </div>
-          <h1 class="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">Service Agreement</h1>
-          <p class="text-slate-400 text-lg max-w-2xl mx-auto mb-6">Please review and accept the terms below.</p>
-          <div class="h-px w-full bg-gradient-to-r from-transparent via-slate-700 to-transparent"></div>
-          <div class="mt-6 text-sm text-slate-500">Acceptance is required to proceed to payment.</div>
+        <div class="text-center pt-6 sm:pt-8">
+          <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">Service Agreement</h1>
+          <p class="mt-3 text-lg sm:text-xl text-slate-400 max-w-2xl mx-auto">Please review and accept the terms below.</p>
+          <div class="h-px w-full bg-gradient-to-r from-transparent via-slate-700 to-transparent mt-6"></div>
+          <div class="mt-4 text-sm text-slate-500">Acceptance is required to proceed to payment.</div>
         </div>
 
         <!-- Agreement Card -->
