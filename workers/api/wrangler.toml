@@ -3,13 +3,6 @@ main = "src/index.js"
 compatibility_date = "2025-02-09"
 
 # ---------------------------------------
-# Observability
-# ---------------------------------------
-
-[observability]
-enabled = true
-
-# ---------------------------------------
 # Routes
 # ---------------------------------------
 
@@ -17,6 +10,13 @@ routes = [
   { pattern = "api.taxmonitor.pro/*", zone_name = "taxmonitor.pro" },
   { pattern = "api.transcript.taxmonitor.pro/*", zone_name = "taxmonitor.pro" }
 ]
+
+# ---------------------------------------
+# Observability
+# ---------------------------------------
+
+[observability]
+enabled = true
 
 # ---------------------------------------
 # R2 Buckets
