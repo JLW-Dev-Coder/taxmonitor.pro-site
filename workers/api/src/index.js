@@ -1,4 +1,4 @@
-/**
+/** 
  * Tax Monitor Pro — Cloudflare Worker (API + Orchestration)
  *
  * Inbound routes:
@@ -17,16 +17,12 @@
  * - POST /transcript/stripe/webhook
  *
  * Implemented:
- * - Receipts ledger (append-only): receipts/form/{eventId}.json
- * - Canonical objects (R2 authority):
- *   - accounts/{accountId}.json
- *   - orders/{orderId}.json
- *   - support/{supportId}.json
- * - ClickUp projections after R2 update
+ * - Receipts ledger (append-only): receipts/form/{eventId}.json, receipts/stripe/{eventId}.json, receipts/cal/{eventId}.json
+ * - Canonical objects: accounts/{accountId}.json, orders/{orderId}.json, support/{supportId}.json
+ * - ClickUp projection after R2 write
  *
- * Transcript entitlements:
- * - Durable Object TOKEN_LEDGER is authoritative balance (consistent)
- * - R2_TRANSCRIPT stores receipts/audit logs (optional)
+ * NOTE:
+ * This file is large. Keep edits minimal and contract-safe.
  */
 
 /* ------------------------------------------
@@ -1602,3 +1598,4 @@ async function handleStripeWebhook(request, env, ctx) {
   console.log("[stripe] webhook received", { type: parsed.value?.type, id: parsed.value?.id });
   return jsonResponse({ ok: true }, { status: 200 });
 }
+
