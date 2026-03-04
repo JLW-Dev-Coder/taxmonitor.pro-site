@@ -1598,4 +1598,3 @@ async function handleStripeWebhook(request, env, ctx) {
   return jsonResponse({ ok: true }, { status: 200 });
 }
 
-
