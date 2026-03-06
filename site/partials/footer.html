@@ -1,267 +1,104 @@
-<!-- /site/partials/header.html -->
-<header class="sticky top-0 z-50 border-b border-slate-800/60 bg-slate-950/80 backdrop-blur">
-  <div class="mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-4">
+<!-- /site/partials/footer.html -->
+<footer class="border-t border-slate-800/60 bg-slate-950">
+  <div class="mx-auto max-w-7xl px-6 py-12">
+    <div class="grid gap-10 md:grid-cols-[1.35fr_1fr_1fr_1fr] md:gap-x-16 md:items-start">
 
-    <!-- Logo -->
-    <a href="/index.html" class="flex items-center gap-3">
-      <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 text-slate-950 font-bold">
-        TM
-      </span>
-      <div class="flex flex-col leading-tight">
-        <span class="font-semibold tracking-tight text-white">Tax Monitor Pro</span>
-        <span class="text-xs text-slate-400">Proactive tax monitoring</span>
-      </div>
-    </a>
-
-    <!-- Desktop Navigation -->
-    <div class="hidden items-center gap-10 md:flex">
-
-      <nav class="flex items-center gap-8">
-        <a href="/about.html" class="text-sm text-slate-300 hover:text-white transition">About</a>
-        <a href="/index.html#features" class="text-sm text-slate-300 hover:text-white transition">Features</a>
-        <a href="/index.html#how-it-works" class="text-sm text-slate-300 hover:text-white transition">How It Works</a>
-        <a href="/pricing.html" class="text-sm text-slate-300 hover:text-white transition">Pricing</a>
-        <a href="/contact.html" class="text-sm text-slate-300 hover:text-white transition">Contact</a>
-
-        <!-- Resources Mega Menu -->
-        <div class="relative">
-          <button
-            id="resources-toggle"
-            type="button"
-            class="inline-flex items-center gap-2 text-sm text-slate-300 hover:text-white transition"
-            aria-expanded="false"
-            aria-controls="resources-menu"
-          >
-            Resources
-            <svg class="h-4 w-4 opacity-80" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
-
-          <div
-            id="resources-menu"
-            class="hidden absolute left-1/2 mt-3 w-[min(920px,calc(100vw-3rem))] -translate-x-1/2 rounded-2xl border border-slate-800/70 bg-slate-950 shadow-2xl"
-          >
-            <div class="grid gap-4 p-4 lg:grid-cols-3">
-
-              <!-- Discover -->
-              <div class="rounded-xl border border-slate-800/60 bg-slate-950/40 p-4">
-                <div class="text-xs font-semibold uppercase tracking-wide text-slate-400">Discover</div>
-                <div class="mt-2 space-y-1">
-                  <a href="/about.html" class="group flex items-start justify-between gap-3 rounded-lg px-3 py-2 hover:bg-slate-900 transition">
-                    <div>
-                      <div class="text-sm font-semibold text-slate-100 group-hover:text-white">About</div>
-                      <div class="text-xs text-slate-400">Why Tax Monitor Pro exists</div>
-                    </div>
-                    <span class="text-slate-500 group-hover:text-amber-300 transition">→</span>
-                  </a>
-
-                  <a href="/contact.html" class="group flex items-start justify-between gap-3 rounded-lg px-3 py-2 hover:bg-slate-900 transition">
-                    <div>
-                      <div class="text-sm font-semibold text-slate-100 group-hover:text-white">Contact</div>
-                      <div class="text-xs text-slate-400">Talk to our team or start intake</div>
-                    </div>
-                    <span class="text-slate-500 group-hover:text-amber-300 transition">→</span>
-                  </a>
-
-                  <a href="https://taxmonitor.pro/resources/transcript-central" class="group flex items-start justify-between gap-3 rounded-lg px-3 py-2 hover:bg-slate-900 transition">
-                    <div>
-                      <div class="text-sm font-semibold text-slate-100 group-hover:text-white">Transcript Central</div>
-                      <div class="text-xs text-slate-400">Video series, e-book, and support paths</div>
-                    </div>
-                    <span class="text-slate-500 group-hover:text-amber-300 transition">→</span>
-                  </a>
-                </div>
-              </div>
-
-              <!-- Learn -->
-              <div class="rounded-xl border border-slate-800/60 bg-slate-950/40 p-4">
-                <div class="text-xs font-semibold uppercase tracking-wide text-slate-400">Learn</div>
-                <div class="mt-2 space-y-1">
-                  <a href="/index.html#features" class="block rounded-lg px-3 py-2 text-sm text-slate-200 hover:bg-slate-900 transition">Features</a>
-                  <a href="/index.html#how-it-works" class="block rounded-lg px-3 py-2 text-sm text-slate-200 hover:bg-slate-900 transition">How It Works</a>
-                  <a href="/index.html#pricing" class="block rounded-lg px-3 py-2 text-sm text-slate-200 hover:bg-slate-900 transition">Pricing</a>
-                  <a href="https://transcript.taxmonitor.pro/how-to-read-irs-transcripts" target="_blank" rel="noopener" class="block rounded-lg px-3 py-2 text-sm text-slate-200 hover:bg-slate-900 transition">How to Read IRS Transcripts</a>
-                  <a href="https://transcript.taxmonitor.pro/transcript-types" target="_blank" rel="noopener" class="block rounded-lg px-3 py-2 text-sm text-slate-200 hover:bg-slate-900 transition">Transcript Types</a>
-                </div>
-              </div>
-
-              <!-- Tools + Extras -->
-              <div class="rounded-xl border border-slate-800/60 bg-slate-950/40 p-4">
-                <div class="text-xs font-semibold uppercase tracking-wide text-slate-400">Tools &amp; extras</div>
-                <div class="mt-2 space-y-1">
-                  <a href="https://transcript.taxmonitor.pro/transcript-codes" target="_blank" rel="noopener" class="block rounded-lg px-3 py-2 text-sm text-slate-200 hover:bg-slate-900 transition">Transcript Codes Database</a>
-                  <a href="https://transcript.taxmonitor.pro/order-walkthrough" target="_blank" rel="noopener" class="block rounded-lg px-3 py-2 text-sm text-slate-200 hover:bg-slate-900 transition">Order Walkthrough</a>
-                  <a href="https://transcript.taxmonitor.pro" target="_blank" rel="noopener" class="block rounded-lg px-3 py-2 text-sm text-slate-200 hover:bg-slate-900 transition">Transcript Automation</a>
-                  <a href="https://taxtools.taxmonitor.pro" target="_blank" rel="noopener" class="block rounded-lg px-3 py-2 text-sm text-slate-200 hover:bg-slate-900 transition">TaxTools Arcade</a>
-                </div>
-
-                <div class="mt-4 rounded-xl border border-slate-800/60 bg-slate-950/60 p-4">
-                  <div class="text-xs text-slate-400">Need human review before a transcript issue becomes a client fire drill?</div>
-                  <div class="mt-3 flex flex-col gap-2">
-                    <a
-                      href="/contact.html#contact-options"
-                      class="inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 px-4 py-2 text-sm font-semibold text-slate-950 hover:from-amber-400 hover:to-amber-500 transition"
-                    >
-                      Start Intake →
-                    </a>
-                    <a
-                      href="/login.html"
-                      class="inline-flex items-center justify-center rounded-lg border border-slate-800/70 bg-slate-950/40 px-4 py-2 text-sm font-semibold text-slate-200 hover:bg-slate-900 transition"
-                    >
-                      Log In
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-            </div>
+      <!-- Brand -->
+      <div class="flex flex-col gap-4 md:col-span-1">
+        <a href="/index.html" class="flex items-center gap-3">
+          <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 text-slate-950 font-bold">
+            TM
+          </span>
+          <div class="flex flex-col leading-tight">
+            <span class="font-semibold tracking-tight text-white">Tax Monitor Pro</span>
+            <span class="text-xs text-slate-400">Proactive tax monitoring</span>
           </div>
+        </a>
+
+        <p id="footer-text" class="text-sm leading-relaxed text-slate-400">
+          Professional tax account monitoring services provided by a licensed tax professional.
+        </p>
+
+        <p class="text-xs text-slate-500">
+          Monitoring does not create IRS representation. Representation, filing, and resolution are separate engagements.
+        </p>
+
+        <div class="mt-2 flex flex-col gap-2">
+          <a
+            href="/contact.html#contact-options"
+            class="inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:from-amber-400 hover:to-amber-500"
+          >
+            Start Intake →
+          </a>
+          <a
+            href="/pricing.html"
+            class="inline-flex items-center justify-center rounded-lg border border-slate-800/70 bg-slate-950/40 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:bg-slate-900"
+          >
+            View pricing
+          </a>
         </div>
-      </nav>
-
-      <div class="h-6 w-px bg-slate-700"></div>
-
-      <div class="flex items-center gap-3">
-        <a href="/login.html" class="text-sm font-medium text-slate-300 hover:text-white transition">Log In</a>
-        <a
-          href="/contact.html#contact-options"
-          class="inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 px-4 py-2 text-sm font-semibold text-slate-950 hover:from-amber-400 hover:to-amber-500 transition"
-        >
-          Start Intake →
-        </a>
       </div>
 
-    </div>
-
-    <!-- Mobile Toggle -->
-    <button
-      id="menu-toggle"
-      class="md:hidden inline-flex items-center justify-center rounded-lg p-2 text-slate-300 hover:text-white"
-      aria-expanded="false"
-      type="button"
-    >
-      <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-      </svg>
-    </button>
-
-  </div>
-
-  <!-- Mobile Menu -->
-  <div id="mobile-menu" class="hidden border-t border-slate-800 bg-slate-950 md:hidden">
-    <div class="flex flex-col gap-4 px-6 py-6 text-sm">
-      <a href="/about.html" class="text-slate-300 hover:text-white transition">About</a>
-      <a href="/index.html#features" class="text-slate-300 hover:text-white transition">Features</a>
-      <a href="/index.html#how-it-works" class="text-slate-300 hover:text-white transition">How It Works</a>
-      <a href="/index.html#pricing" class="text-slate-300 hover:text-white transition">Pricing</a>
-      <a href="/contact.html" class="text-slate-300 hover:text-white transition">Contact</a>
-
-      <!-- Mobile Resources -->
-      <button
-        id="mobile-resources-toggle"
-        class="flex items-center justify-between rounded-lg border border-slate-800 px-4 py-3 text-left text-slate-200 hover:bg-slate-900 transition"
-        aria-expanded="false"
-        type="button"
-      >
-        <span>Resources</span>
-        <svg class="h-4 w-4 opacity-80" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-        </svg>
-      </button>
-
-      <div id="mobile-resources-menu" class="hidden pl-2 flex flex-col gap-2">
-        <a href="/about.html" class="rounded-lg px-4 py-2 text-slate-300 hover:text-white hover:bg-slate-900 transition">About</a>
-        <a href="https://transcript.taxmonitor.pro/how-to-read-irs-transcripts" target="_blank" rel="noopener" class="rounded-lg px-4 py-2 text-slate-300 hover:text-white hover:bg-slate-900 transition">How to Read IRS Transcripts</a>
-        <a href="https://taxmonitor.pro/resources/transcript-central" class="rounded-lg px-4 py-2 text-slate-300 hover:text-white hover:bg-slate-900 transition">Transcript Central</a>
-        <a href="https://transcript.taxmonitor.pro/transcript-codes" target="_blank" rel="noopener" class="rounded-lg px-4 py-2 text-slate-300 hover:text-white hover:bg-slate-900 transition">Transcript Codes Database</a>
-        <a href="https://transcript.taxmonitor.pro/order-walkthrough" target="_blank" rel="noopener" class="rounded-lg px-4 py-2 text-slate-300 hover:text-white hover:bg-slate-900 transition">Order Walkthrough</a>
-        <a href="https://taxtools.taxmonitor.pro" target="_blank" rel="noopener" class="rounded-lg px-4 py-2 text-slate-300 hover:text-white hover:bg-slate-900 transition">TaxTools Arcade</a>
-        <a href="https://transcript.taxmonitor.pro" target="_blank" rel="noopener" class="rounded-lg px-4 py-2 text-slate-300 hover:text-white hover:bg-slate-900 transition">Transcript Automation</a>
-        <a href="https://transcript.taxmonitor.pro/transcript-types" target="_blank" rel="noopener" class="rounded-lg px-4 py-2 text-slate-300 hover:text-white hover:bg-slate-900 transition">Transcript Types</a>
+      <!-- Links -->
+      <div class="flex flex-col gap-4">
+        <h3 class="text-sm font-semibold text-white">Links</h3>
+        <nav class="grid gap-2 text-sm">
+          <a href="/about.html" class="text-slate-300 transition hover:text-white">About</a>
+          <a href="/contact.html" class="text-slate-300 transition hover:text-white">Contact</a>
+          <a href="/index.html#features" class="text-slate-300 transition hover:text-white">Features</a>
+          <a href="/index.html#how-it-works" class="text-slate-300 transition hover:text-white">How It Works</a>
+          <a href="/login.html" class="text-slate-300 transition hover:text-white">Log In</a>
+          <a href="/pricing.html" class="text-slate-300 transition hover:text-white">Pricing</a>
+        </nav>
       </div>
 
-      <a href="/login.html" class="text-slate-300 hover:text-white transition">Log In</a>
+      <!-- Resources -->
+      <div class="flex flex-col gap-4 md:-ml-8">
+        <h3 class="text-sm font-semibold text-white">Resources</h3>
 
-      <div class="border-t border-slate-800 pt-4 mt-2">
-        <a
-          href="/contact.html#contact-options"
-          class="inline-flex w-full items-center justify-center rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 px-4 py-3 font-semibold text-slate-950 hover:from-amber-400 hover:to-amber-500 transition"
-        >
-          Start Intake →
-        </a>
+        <!-- Learn -->
+        <nav class="grid gap-2 text-sm">
+          <a href="https://transcript.taxmonitor.pro/how-to-read-irs-transcripts" target="_blank" rel="noopener" class="text-slate-300 transition hover:text-white">How to Read IRS Transcripts</a>
+          <a href="https://taxmonitor.pro/resources/transcript-central" class="text-slate-300 transition hover:text-white">Transcript Central</a>
+          <a href="https://transcript.taxmonitor.pro/transcript-types" target="_blank" rel="noopener" class="text-slate-300 transition hover:text-white">Transcript Types</a>
+        </nav>
+
+        <div class="mt-2 h-px w-full bg-slate-800/80"></div>
+
+        <!-- Tools & Extras -->
+        <nav class="grid gap-2 text-sm">
+          <a href="https://transcript.taxmonitor.pro/order-walkthrough" target="_blank" rel="noopener" class="text-slate-300 transition hover:text-white">Order Walkthrough</a>
+          <a href="https://taxtools.taxmonitor.pro" target="_blank" rel="noopener" class="text-slate-300 transition hover:text-white">TaxTools Arcade</a>
+          <a href="https://transcript.taxmonitor.pro" target="_blank" rel="noopener" class="text-slate-300 transition hover:text-white">Transcript Automation</a>
+          <a href="https://transcript.taxmonitor.pro/transcript-codes" target="_blank" rel="noopener" class="text-slate-300 transition hover:text-white">Transcript Codes Database</a>
+        </nav>
+
+        <div class="mt-2 h-px w-full bg-slate-800/80"></div>
+
+        <nav class="grid gap-2 text-sm">
+          <a href="/assets/report-preview.html" class="text-slate-300 transition hover:text-white">Report Sample</a>
+          <a href="/index.html#transcript-sample" class="text-slate-300 transition hover:text-white">Transcript Sample</a>
+        </nav>
+      </div>
+
+      <!-- Legal -->
+      <div class="flex flex-col gap-4">
+        <h3 class="text-sm font-semibold text-white">Legal</h3>
+        <div class="grid gap-2 text-sm">
+          <a href="/legal/privacy.html" class="text-slate-300 transition hover:text-white">Privacy</a>
+          <a href="/legal/terms.html" class="text-slate-300 transition hover:text-white">Terms</a>
+        </div>
+
+        <p class="mt-4 text-sm text-slate-500">© <span id="footer-year"></span> Tax Monitor Pro</p>
       </div>
 
     </div>
   </div>
+</footer>
 
-  <script>
-    (function () {
-      var toggle = document.getElementById('menu-toggle');
-      var mobileMenu = document.getElementById('mobile-menu');
-
-      var resourcesToggle = document.getElementById('resources-toggle');
-      var resourcesMenu = document.getElementById('resources-menu');
-
-      var mobileResourcesToggle = document.getElementById('mobile-resources-toggle');
-      var mobileResourcesMenu = document.getElementById('mobile-resources-menu');
-
-      toggle && toggle.addEventListener('click', function () {
-        var isHidden = mobileMenu.classList.toggle('hidden');
-        toggle.setAttribute('aria-expanded', String(!isHidden));
-      });
-
-      resourcesToggle && resourcesToggle.addEventListener('click', function (e) {
-        e.preventDefault();
-        var isHidden = resourcesMenu.classList.toggle('hidden');
-        resourcesToggle.setAttribute('aria-expanded', String(!isHidden));
-      });
-
-      mobileResourcesToggle && mobileResourcesToggle.addEventListener('click', function () {
-        var isHidden = mobileResourcesMenu.classList.toggle('hidden');
-        mobileResourcesToggle.setAttribute('aria-expanded', String(!isHidden));
-      });
-
-      document.addEventListener('click', function (e) {
-        if (!resourcesMenu || !resourcesToggle) return;
-        var clickedInside = resourcesMenu.contains(e.target) || resourcesToggle.contains(e.target);
-
-        if (!clickedInside) {
-          resourcesMenu.classList.add('hidden');
-          resourcesToggle.setAttribute('aria-expanded', 'false');
-        }
-      });
-
-      document.addEventListener('keydown', function (e) {
-        if (e.key !== 'Escape') return;
-        resourcesMenu && resourcesMenu.classList.add('hidden');
-        resourcesToggle && resourcesToggle.setAttribute('aria-expanded', 'false');
-        mobileResourcesMenu && mobileResourcesMenu.classList.add('hidden');
-        mobileResourcesToggle && mobileResourcesToggle.setAttribute('aria-expanded', 'false');
-        mobileMenu && mobileMenu.classList.add('hidden');
-        toggle && toggle.setAttribute('aria-expanded', 'false');
-      });
-
-      var head = document.head;
-      if (!head) return;
-
-      var icons = [
-        { rel: 'icon', href: '/assets/favicon.ico', type: 'image/x-icon' },
-        { rel: 'icon', href: '/assets/favicon.svg', type: 'image/svg+xml' }
-      ].sort(function (a, b) { return String(a.href).localeCompare(String(b.href)); });
-
-      function hasIcon(href) {
-        return !!head.querySelector('link[rel~="icon"][href="' + href + '"]');
-      }
-
-      icons.forEach(function (i) {
-        if (hasIcon(i.href)) return;
-        var link = document.createElement('link');
-        link.rel = i.rel;
-        link.href = i.href;
-        link.type = i.type;
-        head.appendChild(link);
-      });
-    })();
-  </script>
-</header>
+<script>
+  (function () {
+    var el = document.getElementById('footer-year');
+    if (el) el.textContent = String(new Date().getFullYear());
+  })();
+</script>
