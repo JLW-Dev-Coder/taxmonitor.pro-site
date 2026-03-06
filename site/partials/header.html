@@ -1,89 +1,133 @@
 <!-- /site/partials/header.html -->
 <header class="sticky top-0 z-50 border-b border-slate-800/60 bg-slate-950/80 backdrop-blur">
-  <div class="mx-auto flex max-w-6xl items-center justify-between gap-6 px-6 py-4">
+  <div class="mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-4">
 
     <!-- Logo -->
-    <a href="https://taxmonitor.pro/" class="flex items-center gap-3">
+    <a href="/index.html" class="flex items-center gap-3">
       <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 text-slate-950 font-bold">
         TM
       </span>
-      <span class="font-semibold tracking-tight text-white">Tax Monitor Pro</span>
+      <div class="flex flex-col leading-tight">
+        <span class="font-semibold tracking-tight text-white">Tax Monitor Pro</span>
+        <span class="text-xs text-slate-400">Proactive tax monitoring</span>
+      </div>
     </a>
 
     <!-- Desktop Navigation -->
     <div class="hidden items-center gap-10 md:flex">
 
       <nav class="flex items-center gap-8">
+        <a href="/about.html" class="text-sm text-slate-300 hover:text-white transition">About</a>
+        <a href="/index.html#features" class="text-sm text-slate-300 hover:text-white transition">Features</a>
+        <a href="/index.html#how-it-works" class="text-sm text-slate-300 hover:text-white transition">How It Works</a>
+        <a href="/index.html#pricing" class="text-sm text-slate-300 hover:text-white transition">Pricing</a>
+        <a href="/contact.html" class="text-sm text-slate-300 hover:text-white transition">Contact</a>
 
-        <a href="/#how-it-works" class="text-sm text-slate-300 hover:text-white transition">
-          How It Works
-        </a>
-
-        <a href="/pricing.html" class="text-sm text-slate-300 hover:text-white transition">
-          Pricing
-        </a>
-
-        <a href="/contact.html" class="text-sm text-slate-300 hover:text-white transition">
-          Contact
-        </a>
-
-        <!-- Resources Dropdown -->
+        <!-- Resources Mega Menu -->
         <div class="relative">
           <button
             id="resources-toggle"
             type="button"
             class="inline-flex items-center gap-2 text-sm text-slate-300 hover:text-white transition"
             aria-expanded="false"
+            aria-controls="resources-menu"
           >
             Resources
-            <svg class="h-4 w-4 opacity-80" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+            <svg class="h-4 w-4 opacity-80" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
             </svg>
           </button>
 
           <div
             id="resources-menu"
-            class="hidden absolute left-0 mt-3 w-56 rounded-xl border border-slate-800 bg-slate-950 shadow-xl"
+            class="hidden absolute left-1/2 mt-3 w-[min(920px,calc(100vw-3rem))] -translate-x-1/2 rounded-2xl border border-slate-800/70 bg-slate-950 shadow-2xl"
           >
-            <div class="p-2">
+            <div class="grid gap-4 p-4 lg:grid-cols-3">
 
-              <!-- Alphabetical -->
-              <a href="/resources/case-studies.html"
-                 class="block rounded-lg px-3 py-2 text-sm text-slate-200 hover:bg-slate-900 transition">
-                Case Studies
-              </a>
+              <!-- Discover -->
+              <div class="rounded-xl border border-slate-800/60 bg-slate-950/40 p-4">
+                <div class="text-xs font-semibold uppercase tracking-wide text-slate-400">Discover</div>
+                <div class="mt-2 space-y-1">
+                  <a href="/about.html" class="group flex items-start justify-between gap-3 rounded-lg px-3 py-2 hover:bg-slate-900 transition">
+                    <div>
+                      <div class="text-sm font-semibold text-slate-100 group-hover:text-white">About</div>
+                      <div class="text-xs text-slate-400">Why Tax Monitor Pro exists</div>
+                    </div>
+                    <span class="text-slate-500 group-hover:text-amber-300 transition">→</span>
+                  </a>
 
-              <a href="/resources/433f.html"
-                 class="block rounded-lg px-3 py-2 text-sm text-slate-200 hover:bg-slate-900 transition">
-                Form 433-F Sample
-              </a>
+                  <a href="/contact.html" class="group flex items-start justify-between gap-3 rounded-lg px-3 py-2 hover:bg-slate-900 transition">
+                    <div>
+                      <div class="text-sm font-semibold text-slate-100 group-hover:text-white">Contact</div>
+                      <div class="text-xs text-slate-400">Talk to our team or start intake</div>
+                    </div>
+                    <span class="text-slate-500 group-hover:text-amber-300 transition">→</span>
+                  </a>
 
-              <a href="https://taxtools.taxmonitor.pro"
-                 class="block rounded-lg px-3 py-2 text-sm text-slate-200 hover:bg-slate-900 transition">
-                TaxTools Arcade
-              </a>
+                  <a href="/resources/index.html" class="group flex items-start justify-between gap-3 rounded-lg px-3 py-2 hover:bg-slate-900 transition">
+                    <div>
+                      <div class="text-sm font-semibold text-slate-100 group-hover:text-white">Resources Hub</div>
+                      <div class="text-xs text-slate-400">Guides, explainers, and monitoring content</div>
+                    </div>
+                    <span class="text-slate-500 group-hover:text-amber-300 transition">→</span>
+                  </a>
+                </div>
+              </div>
 
-              <a href="/resources/transcript-central.html"
-                 class="block rounded-lg px-3 py-2 text-sm text-slate-200 hover:bg-slate-900 transition">
-                Transcript Central
-              </a>
+              <!-- Learn -->
+              <div class="rounded-xl border border-slate-800/60 bg-slate-950/40 p-4">
+                <div class="text-xs font-semibold uppercase tracking-wide text-slate-400">Learn</div>
+                <div class="mt-2 space-y-1">
+                  <a href="/index.html#features" class="block rounded-lg px-3 py-2 text-sm text-slate-200 hover:bg-slate-900 transition">Features</a>
+                  <a href="/index.html#how-it-works" class="block rounded-lg px-3 py-2 text-sm text-slate-200 hover:bg-slate-900 transition">How It Works</a>
+                  <a href="/index.html#pricing" class="block rounded-lg px-3 py-2 text-sm text-slate-200 hover:bg-slate-900 transition">Pricing</a>
+                  <a href="/resources/how-to-read-irs-transcripts.html" class="block rounded-lg px-3 py-2 text-sm text-slate-200 hover:bg-slate-900 transition">How to Read IRS Transcripts</a>
+                  <a href="/resources/transcript-types.html" class="block rounded-lg px-3 py-2 text-sm text-slate-200 hover:bg-slate-900 transition">Transcript Types</a>
+                </div>
+              </div>
+
+              <!-- Tools + Extras -->
+              <div class="rounded-xl border border-slate-800/60 bg-slate-950/40 p-4">
+                <div class="text-xs font-semibold uppercase tracking-wide text-slate-400">Tools &amp; extras</div>
+                <div class="mt-2 space-y-1">
+                  <a href="/resources/transcript-codes.html" class="block rounded-lg px-3 py-2 text-sm text-slate-200 hover:bg-slate-900 transition">Transcript Codes Database</a>
+                  <a href="/resources/transcript-orders.html" class="block rounded-lg px-3 py-2 text-sm text-slate-200 hover:bg-slate-900 transition">Order Walkthrough</a>
+                  <a href="https://transcript.taxmonitor.pro" class="block rounded-lg px-3 py-2 text-sm text-slate-200 hover:bg-slate-900 transition">Transcript Automation</a>
+                  <a href="https://taxtools.taxmonitor.pro" class="block rounded-lg px-3 py-2 text-sm text-slate-200 hover:bg-slate-900 transition">TaxTools Arcade</a>
+                </div>
+
+                <div class="mt-4 rounded-xl border border-slate-800/60 bg-slate-950/60 p-4">
+                  <div class="text-xs text-slate-400">Need human review before a transcript issue becomes a client fire drill?</div>
+                  <div class="mt-3 flex flex-col gap-2">
+                    <a
+                      href="/contact.html#contact-options"
+                      class="inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 px-4 py-2 text-sm font-semibold text-slate-950 hover:from-amber-400 hover:to-amber-500 transition"
+                    >
+                      Start Intake →
+                    </a>
+                    <a
+                      href="/contact.html#contact-options"
+                      class="inline-flex items-center justify-center rounded-lg border border-slate-800/70 bg-slate-950/40 px-4 py-2 text-sm font-semibold text-slate-200 hover:bg-slate-900 transition"
+                    >
+                      Log In
+                    </a>
+                  </div>
+                </div>
+              </div>
 
             </div>
           </div>
         </div>
-
       </nav>
 
       <div class="h-6 w-px bg-slate-700"></div>
 
-      <div class="flex items-center gap-4">
-        <a href="/app/login.html"
-           class="text-sm font-medium text-slate-300 hover:text-white transition">
-          Log In
-        </a>
-
-        <a href="/app/intake.html"
-           class="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 px-4 py-2 text-sm font-semibold text-slate-950 hover:from-amber-400 hover:to-amber-500 transition">
+      <div class="flex items-center gap-3">
+        <a href="/login.html" class="text-sm font-medium text-slate-300 hover:text-white transition">Log In</a>
+        <a
+          href="/contact.html#contact-options"
+          class="inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 px-4 py-2 text-sm font-semibold text-slate-950 hover:from-amber-400 hover:to-amber-500 transition"
+        >
           Start Intake →
         </a>
       </div>
@@ -91,12 +135,14 @@
     </div>
 
     <!-- Mobile Toggle -->
-    <button id="menu-toggle"
-            class="md:hidden inline-flex items-center justify-center rounded-lg p-2 text-slate-300 hover:text-white"
-            aria-expanded="false">
-      <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round"
-              d="M4 6h16M4 12h16M4 18h16"/>
+    <button
+      id="menu-toggle"
+      class="md:hidden inline-flex items-center justify-center rounded-lg p-2 text-slate-300 hover:text-white"
+      aria-expanded="false"
+      type="button"
+    >
+      <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
       </svg>
     </button>
 
@@ -105,114 +151,117 @@
   <!-- Mobile Menu -->
   <div id="mobile-menu" class="hidden border-t border-slate-800 bg-slate-950 md:hidden">
     <div class="flex flex-col gap-4 px-6 py-6 text-sm">
-
-      <a href="/#how-it-works" class="text-slate-300 hover:text-white transition">
-        How It Works
-      </a>
-
-      <a href="/pricing.html" class="text-slate-300 hover:text-white transition">
-        Pricing
-      </a>
+      <a href="/about.html" class="text-slate-300 hover:text-white transition">About</a>
+      <a href="/index.html#features" class="text-slate-300 hover:text-white transition">Features</a>
+      <a href="/index.html#how-it-works" class="text-slate-300 hover:text-white transition">How It Works</a>
+      <a href="/index.html#pricing" class="text-slate-300 hover:text-white transition">Pricing</a>
+      <a href="/contact.html" class="text-slate-300 hover:text-white transition">Contact</a>
 
       <!-- Mobile Resources -->
-      <button id="mobile-resources-toggle"
-              class="flex items-center justify-between rounded-lg border border-slate-800 px-4 py-3 text-left text-slate-200 hover:bg-slate-900 transition"
-              aria-expanded="false"
-              type="button">
+      <button
+        id="mobile-resources-toggle"
+        class="flex items-center justify-between rounded-lg border border-slate-800 px-4 py-3 text-left text-slate-200 hover:bg-slate-900 transition"
+        aria-expanded="false"
+        type="button"
+      >
         <span>Resources</span>
-        <svg class="h-4 w-4 opacity-80" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round"
-                d="M19 9l-7 7-7-7"/>
+        <svg class="h-4 w-4 opacity-80" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
         </svg>
       </button>
 
       <div id="mobile-resources-menu" class="hidden pl-2 flex flex-col gap-2">
-        <a href="/resources/case-studies.html"
-           class="rounded-lg px-4 py-2 text-slate-300 hover:text-white hover:bg-slate-900 transition">
-          Case Studies
-        </a>
-
-        <a href="/resources/433f.html"
-           class="rounded-lg px-4 py-2 text-slate-300 hover:text-white hover:bg-slate-900 transition">
-          Form 433-F Sample
-        </a>
-
-        <a href="https://taxtools.taxmonitor.pro"
-           class="rounded-lg px-4 py-2 text-slate-300 hover:text-white hover:bg-slate-900 transition">
-          TaxTools Arcade
-        </a>
-
-        <a href="/resources/transcript-central.html"
-           class="rounded-lg px-4 py-2 text-slate-300 hover:text-white hover:bg-slate-900 transition">
-          Transcript Central
-        </a>
+        <a href="/about.html" class="rounded-lg px-4 py-2 text-slate-300 hover:text-white hover:bg-slate-900 transition">About</a>
+        <a href="/resources/how-to-read-irs-transcripts.html" class="rounded-lg px-4 py-2 text-slate-300 hover:text-white hover:bg-slate-900 transition">How to Read IRS Transcripts</a>
+        <a href="/resources/index.html" class="rounded-lg px-4 py-2 text-slate-300 hover:text-white hover:bg-slate-900 transition">Resources Hub</a>
+        <a href="https://taxtools.taxmonitor.pro" class="rounded-lg px-4 py-2 text-slate-300 hover:text-white hover:bg-slate-900 transition">TaxTools Arcade</a>
+        <a href="/resources/transcript-codes.html" class="rounded-lg px-4 py-2 text-slate-300 hover:text-white hover:bg-slate-900 transition">Transcript Codes Database</a>
+        <a href="/resources/transcript-orders.html" class="rounded-lg px-4 py-2 text-slate-300 hover:text-white hover:bg-slate-900 transition">Order Walkthrough</a>
+        <a href="https://transcript.taxmonitor.pro" class="rounded-lg px-4 py-2 text-slate-300 hover:text-white hover:bg-slate-900 transition">Transcript Automation</a>
+        <a href="/resources/transcript-types.html" class="rounded-lg px-4 py-2 text-slate-300 hover:text-white hover:bg-slate-900 transition">Transcript Types</a>
       </div>
 
-      <a href="/contact.html" class="text-slate-300 hover:text-white transition">
-        Contact
-      </a>
+      <a href="/login.html" class="text-slate-300 hover:text-white transition">Log In</a>
 
       <div class="border-t border-slate-800 pt-4 mt-2">
-        <a href="/app/login.html"
-           class="block text-slate-300 hover:text-white transition mb-4">
-          Log In
-        </a>
-
-        <a href="/app/intake.html"
-           class="inline-flex w-full items-center justify-center rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 px-4 py-3 font-semibold text-slate-950 hover:from-amber-400 hover:to-amber-500 transition">
+        <a
+          href="/contact.html#contact-options"
+          class="inline-flex w-full items-center justify-center rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 px-4 py-3 font-semibold text-slate-950 hover:from-amber-400 hover:to-amber-500 transition"
+        >
           Start Intake →
         </a>
       </div>
 
     </div>
   </div>
+
+  <script>
+    (function () {
+      var toggle = document.getElementById('menu-toggle');
+      var mobileMenu = document.getElementById('mobile-menu');
+
+      var resourcesToggle = document.getElementById('resources-toggle');
+      var resourcesMenu = document.getElementById('resources-menu');
+
+      var mobileResourcesToggle = document.getElementById('mobile-resources-toggle');
+      var mobileResourcesMenu = document.getElementById('mobile-resources-menu');
+
+      toggle && toggle.addEventListener('click', function () {
+        var isHidden = mobileMenu.classList.toggle('hidden');
+        toggle.setAttribute('aria-expanded', String(!isHidden));
+      });
+
+      resourcesToggle && resourcesToggle.addEventListener('click', function (e) {
+        e.preventDefault();
+        var isHidden = resourcesMenu.classList.toggle('hidden');
+        resourcesToggle.setAttribute('aria-expanded', String(!isHidden));
+      });
+
+      mobileResourcesToggle && mobileResourcesToggle.addEventListener('click', function () {
+        var isHidden = mobileResourcesMenu.classList.toggle('hidden');
+        mobileResourcesToggle.setAttribute('aria-expanded', String(!isHidden));
+      });
+
+      document.addEventListener('click', function (e) {
+        if (!resourcesMenu || !resourcesToggle) return;
+        var clickedInside = resourcesMenu.contains(e.target) || resourcesToggle.contains(e.target);
+
+        if (!clickedInside) {
+          resourcesMenu.classList.add('hidden');
+          resourcesToggle.setAttribute('aria-expanded', 'false');
+        }
+      });
+
+      document.addEventListener('keydown', function (e) {
+        if (e.key !== 'Escape') return;
+        resourcesMenu && resourcesMenu.classList.add('hidden');
+        resourcesToggle && resourcesToggle.setAttribute('aria-expanded', 'false');
+        mobileResourcesMenu && mobileResourcesMenu.classList.add('hidden');
+        mobileResourcesToggle && mobileResourcesToggle.setAttribute('aria-expanded', 'false');
+        mobileMenu && mobileMenu.classList.add('hidden');
+        toggle && toggle.setAttribute('aria-expanded', 'false');
+      });
+
+      var head = document.head;
+      if (!head) return;
+
+      var icons = [
+        { rel: 'icon', href: '/assets/favicon.ico', type: 'image/x-icon' },
+        { rel: 'icon', href: '/assets/favicon.svg', type: 'image/svg+xml' }
+      ].sort(function (a, b) { return String(a.href).localeCompare(String(b.href)); });
+
+      function hasIcon(href) {
+        return !!head.querySelector('link[rel~="icon"][href="' + href + '"]');
+      }
+
+      icons.forEach(function (i) {
+        if (hasIcon(i.href)) return;
+        var link = document.createElement('link');
+        link.rel = i.rel;
+        link.href = i.href;
+        link.type = i.type;
+        head.appendChild(link);
+      });
+    })();
+  </script>
 </header>
-
-<script>
-  const toggle = document.getElementById('menu-toggle');
-  const mobileMenu = document.getElementById('mobile-menu');
-
-  const resourcesToggle = document.getElementById('resources-toggle');
-  const resourcesMenu = document.getElementById('resources-menu');
-
-  const mobileResourcesToggle = document.getElementById('mobile-resources-toggle');
-  const mobileResourcesMenu = document.getElementById('mobile-resources-menu');
-
-  toggle?.addEventListener('click', () => {
-    const isHidden = mobileMenu.classList.toggle('hidden');
-    toggle.setAttribute('aria-expanded', String(!isHidden));
-  });
-
-  resourcesToggle?.addEventListener('click', (e) => {
-    e.preventDefault();
-    const isHidden = resourcesMenu.classList.toggle('hidden');
-    resourcesToggle.setAttribute('aria-expanded', String(!isHidden));
-  });
-
-  mobileResourcesToggle?.addEventListener('click', () => {
-    const isHidden = mobileResourcesMenu.classList.toggle('hidden');
-    mobileResourcesToggle.setAttribute('aria-expanded', String(!isHidden));
-  });
-
-  document.addEventListener('click', (e) => {
-    if (!resourcesMenu || !resourcesToggle) return;
-    const clickedInside =
-      resourcesMenu.contains(e.target) ||
-      resourcesToggle.contains(e.target);
-
-    if (!clickedInside) {
-      resourcesMenu.classList.add('hidden');
-      resourcesToggle.setAttribute('aria-expanded', 'false');
-    }
-  });
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key !== 'Escape') return;
-    resourcesMenu?.classList.add('hidden');
-    resourcesToggle?.setAttribute('aria-expanded', 'false');
-    mobileResourcesMenu?.classList.add('hidden');
-    mobileResourcesToggle?.setAttribute('aria-expanded', 'false');
-    mobileMenu?.classList.add('hidden');
-    toggle?.setAttribute('aria-expanded', 'false');
-  });
-</script>
