@@ -17,6 +17,11 @@
       --text-primary: #ffffff;
     }
 
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     html, body {
       height: 100%;
       background: var(--bg-primary);
@@ -29,6 +34,17 @@
       width: 100%;
       overflow-y: auto;
     }
+
+    main section {
+      animation: fadeInUp 0.8s ease-out both;
+    }
+
+    main section:nth-of-type(1) { animation-delay: 0.10s; }
+    main section:nth-of-type(2) { animation-delay: 0.20s; }
+    main section:nth-of-type(3) { animation-delay: 0.30s; }
+    main section:nth-of-type(4) { animation-delay: 0.40s; }
+    main section:nth-of-type(5) { animation-delay: 0.50s; }
+    main section:nth-of-type(6) { animation-delay: 0.60s; }
 
     .divider-line {
       background: linear-gradient(90deg, transparent, rgba(255,255,255,0.10), transparent);
@@ -106,7 +122,7 @@
  <body class="bg-slate-950 text-slate-100">
   <div id="app" class="min-h-screen flex flex-col"><!-- PARTIAL:header -->
    <main class="flex-1"><!-- Hero -->
-    <section class="w-full px-6 pt-20 pb-16 md:pt-28 md:pb-24">
+    <section class="w-full px-6 pt-12 pb-12 md:pt-20 md:pb-20">
      <div class="max-w-3xl mx-auto text-center">
       <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-800/50 border border-slate-700 mb-8">
        <svg class="w-4 h-4 text-amber-500" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
@@ -419,7 +435,7 @@
           <li class="flex items-center gap-3 text-slate-300 text-sm">
            <svg class="w-5 h-5 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
            </svg><span>Representation workflows</span></li>
-         </ul><button class="tm-btn-primary w-full py-4 rounded-full font-semibold text-slate-950 text-base" type="button" data-cal-link="tax-monitor-pro/tax-monitor-service-intro" data-cal-namespace="tax-monitor-service-intro" data-cal-config="{&quot;layout&quot;:&quot;month_view&quot;,&quot;useSlotsViewOnSmallScreen&quot;:&quot;true&quot;}"> Get Personal Help </button>
+         </ul><a class="tm-btn-primary w-full py-4 rounded-full font-semibold text-slate-950 text-base inline-flex items-center justify-center" href="/contact.html">Get Personal Help</a>
         </div>
        </div>
        <div class="rounded-2xl overflow-hidden tm-card-hover border border-white/10">
@@ -447,7 +463,7 @@
           <li class="flex items-center gap-3 text-slate-300 text-sm">
            <svg class="w-5 h-5 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
            </svg><span>Referral partnership paths</span></li>
-         </ul><button class="tm-btn-secondary w-full py-4 rounded-full font-semibold text-white bg-transparent text-base" type="button" data-cal-link="tax-monitor-pro/tax-monitor-partnership-digital-coffee" data-cal-namespace="tax-monitor-partnership-digital-coffee" data-cal-config="{&quot;layout&quot;:&quot;month_view&quot;,&quot;useSlotsViewOnSmallScreen&quot;:&quot;true&quot;}"> Partner With Us </button>
+         </ul><a class="tm-btn-secondary w-full py-4 rounded-full font-semibold text-white bg-transparent text-base inline-flex items-center justify-center" href="https://virtuallaunch.pro" target="_blank" rel="noopener noreferrer">Partner With Us</a>
         </div>
        </div>
       </div>
@@ -943,48 +959,5 @@
       setUpEbookModal();
     });
   </script><!-- Cal.com embed -->
-  <script type="text/javascript">
-    (function (C, A, L) {
-      let p = function (a, ar) { a.q.push(ar); };
-      let d = C.document;
-      C.Cal = C.Cal || function () {
-        let cal = C.Cal;
-        let ar = arguments;
-        if (!cal.loaded) {
-          cal.ns = {};
-          cal.q = cal.q || [];
-          d.head.appendChild(d.createElement("script")).src = A;
-          cal.loaded = true;
-        }
-        if (ar[0] === L) {
-          const api = function () { p(api, arguments); };
-          const namespace = ar[1];
-          api.q = api.q || [];
-          if (typeof namespace === "string") {
-            cal.ns[namespace] = cal.ns[namespace] || api;
-            p(cal.ns[namespace], ar);
-            p(cal, ["initNamespace", namespace]);
-          } else p(cal, ar);
-          return;
-        }
-        p(cal, ar);
-      };
-    })(window, "https://app.cal.com/embed/embed.js", "L");
-
-    Cal("init", "tax-monitor-service-intro", { origin: "https://app.cal.com" });
-    Cal("init", "tax-monitor-partnership-digital-coffee", { origin: "https://app.cal.com" });
-
-    Cal.ns["tax-monitor-service-intro"]("ui", {
-      "cssVarsPerTheme": { "light": { "cal-brand": "#292929" }, "dark": { "cal-brand": "#f97316" } },
-      "hideEventTypeDetails": false,
-      "layout": "month_view"
-    });
-
-    Cal.ns["tax-monitor-partnership-digital-coffee"]("ui", {
-      "cssVarsPerTheme": { "light": { "cal-brand": "#292929" }, "dark": { "cal-brand": "#f97316" } },
-      "hideEventTypeDetails": false,
-      "layout": "month_view"
-    });
-  </script>
  <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9d13b1e0f18227d2',t:'MTc3MTY1MDE4MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
