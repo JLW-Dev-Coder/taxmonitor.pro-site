@@ -31,14 +31,6 @@ binding = "R2_TRANSCRIPT"
 bucket_name = "transcript-taxmonitor-pro"
 
 # ---------------------------------------
-# KV (legacy token balances; keep until migration confirmed)
-# ---------------------------------------
-
-[[kv_namespaces]]
-binding = "KV_TOKENS"
-id = "d5fdcbf714ed47a2a734b72eba698f86"
-
-# ---------------------------------------
 # Durable Object (consistent token ledger)
 # ---------------------------------------
 
@@ -60,6 +52,7 @@ new_sqlite_classes = ["TokenLedger"]
 CLICKUP_ACCOUNTS_LIST_ID = "901710909567"
 CLICKUP_ORDERS_LIST_ID = "901710818340"
 CLICKUP_SUPPORT_LIST_ID = "901710818377"
+CREDIT_MAP_JSON = "{\"price_1T4Ar2CMpIgwe61ZMzAI6yKa\":10,\"price_1T4AxzCMpIgwe61ZsWh7GGAb\":25,\"price_1T4B1gCMpIgwe61ZG12b5tjN\":100}"
 GOOGLE_CLIENT_EMAIL = "tax-monitor-worker@tax-monitor-pro.iam.gserviceaccount.com"
 GOOGLE_TOKEN_URI = "https://oauth2.googleapis.com/token"
 GOOGLE_WORKSPACE_USER_INFO = "info@taxmonitor.pro"
@@ -71,9 +64,6 @@ MY_ORGANIZATION_CITY = "El Cajon"
 MY_ORGANIZATION_NAME = "Tax Monitor Pro"
 MY_ORGANIZATION_STATE_PROVINCE = "CA"
 MY_ORGANIZATION_ZIP = "92020"
-
-# Transcript pricing/token vars
-CREDIT_MAP_JSON = "{\"price_1T4Ar2CMpIgwe61ZMzAI6yKa\":10,\"price_1T4AxzCMpIgwe61ZsWh7GGAb\":25,\"price_1T4B1gCMpIgwe61ZG12b5tjN\":100}"
 PRICE_10 = "price_1T4Ar2CMpIgwe61ZMzAI6yKa"
 PRICE_100 = "price_1T4B1gCMpIgwe61ZG12b5tjN"
 PRICE_25 = "price_1T4AxzCMpIgwe61ZsWh7GGAb"
