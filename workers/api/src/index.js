@@ -1,37 +1,27 @@
-/** 
- * Tax Monitor Pro — Cloudflare Worker (API + Orchestration)
+/**
+ * Transcript Tax Monitor Pro — Cloudflare Worker
  *
- * Inbound routes:
+ * Routes:
  * - GET  /health
- * - POST /cal/webhook
- * - POST /stripe/webhook
- * - POST /forms/intake
- * - POST /forms/order
- * - POST /forms/support
- *
- * Transcript routes:
  * - GET  /transcript/prices
  * - POST /transcript/checkout
  * - GET  /transcript/tokens?tokenId=...
  * - POST /transcript/consume
  * - POST /transcript/stripe/webhook
+ * - GET  /assets/report?r=...
+ * - POST /forms/transcript/report-email
+ * - GET  /transcript/report-link?reportId=...
+ * - GET  /assets/report?r=...
  *
- * Implemented:
- * - Receipts ledger (append-only): receipts/form/{eventId}.json, receipts/stripe/{eventId}.json, receipts/cal/{eventId}.json
- * - Canonical objects: accounts/{accountId}.json, orders/{orderId}.json, support/{supportId}.json
- * - ClickUp projection after R2 write
- *
- * NOTE:
- * This file is large. Keep edits minimal and contract-safe.
+ * Notes:
+ * - Extracted from the mixed Tax Monitor Pro Worker.
+ * - Keeps existing Stripe, Durable Object, Gmail, and transcript receipt behavior.
+ * - Non-transcript routes intentionally removed.
  */
 
 /* ------------------------------------------
  * Shared Utilities
  * ------------------------------------------ */
-
-async function readRawBody(request) {
-  return await request.text();
-}
 
 function tryParseJson(raw) {
   try {
@@ -71,15 +61,13 @@ function withCors(request, headers = {}) {
   const origin = request.headers.get("origin") || "";
   const allowed = new Set(["https://taxmonitor.pro", "https://transcript.taxmonitor.pro"]);
 
-  const out = {
+  return {
     "access-control-allow-headers": "content-type, stripe-signature",
     "access-control-allow-methods": "GET, POST, OPTIONS",
     "access-control-allow-origin": allowed.has(origin) ? origin : "https://transcript.taxmonitor.pro",
     "access-control-max-age": "86400",
     ...headers,
   };
-
-  return out;
 }
 
 function handleCorsPreflight(request) {
@@ -93,9 +81,7 @@ function handleCorsPreflight(request) {
 
 function corsHeadersForRequest(req) {
   const origin = req.headers.get("Origin") || "";
-  const allowed = [
-    "https://transcript.taxmonitor.pro",
-  ];
+  const allowed = ["https://transcript.taxmonitor.pro"];
 
   if (!origin) return {};
   const ok = allowed.includes(origin);
@@ -106,7 +92,7 @@ function corsHeadersForRequest(req) {
     "Access-Control-Allow-Methods": "OPTIONS, POST",
     "Access-Control-Allow-Origin": ok ? origin : "null",
     "Access-Control-Max-Age": "86400",
-    "Vary": "Origin",
+    Vary: "Origin",
   };
 }
 
@@ -124,8 +110,149 @@ function isTokenIdFormat(v) {
 function isSafeReportUrl(v) {
   const s = String(v || "").trim();
   if (!s) return false;
-  if (s.length > 12000) return false;
-  return s.startsWith("https://transcript.taxmonitor.pro/assets/report-preview.html#");
+
+  let url;
+  try {
+    url = new URL(s);
+  } catch {
+    return false;
+  }
+
+  if (url.origin !== "https://transcript.taxmonitor.pro") return false;
+
+  const allowedPaths = new Set([
+    "/assets/report",
+    "/assets/report.html",
+    "/assets/report-preview.html",
+  ]);
+
+  if (!allowedPaths.has(url.pathname)) return false;
+
+  const hasShortId = !!url.searchParams.get("r");
+  const hasHash = !!(url.hash && url.hash.slice(1).trim());
+  const hasPayloadQuery = !!(
+    (url.searchParams.get("data") || "").trim() ||
+    (url.searchParams.get("payload") || "").trim()
+  );
+
+  return hasShortId || hasHash || hasPayloadQuery;
+}
+
+
+
+async function getShortReportLink(env, reportId) {
+  const stored = await resolveShortReportPayload(env, reportId);
+  if (!stored || !stored.payload) return null;
+
+  const target = new URL("https://transcript.taxmonitor.pro/assets/report.html");
+
+  if (String(stored.payloadTransport || "hash") === "query") {
+    target.searchParams.set("data", String(stored.payload));
+  } else {
+    target.hash = String(stored.payload);
+  }
+
+  return {
+    reportId: String(reportId || "").trim(),
+    reportUrl: target.toString(),
+  };
+}
+
+function getReportKv(env) {
+  // Canonical KV binding for permanent report links
+  return env.KV_TRANSCRIPT || null;
+}
+
+// TTL removed intentionally — report links are permanent unless manually deleted from KV
+function getReportLinkTtlSeconds(env) {
+  return null;
+}
+
+function randomShortId(bytes = 18) {
+  const arr = new Uint8Array(bytes);
+  crypto.getRandomValues(arr);
+  return b64UrlEncode(arr);
+}
+
+function getShortReportKey(reportId) {
+  return `report:${String(reportId || "").trim()}`;
+}
+
+function getReportUnlockKey(eventId) {
+  return `report-unlock:${String(eventId || "").trim()}`;
+}
+
+function extractStoredReportPayload(reportUrl) {
+  const url = new URL(String(reportUrl || "").trim());
+
+  if (url.searchParams.get("r")) {
+    return { ok: false, error: "reportUrl_already_short" };
+  }
+
+  const hash = url.hash ? url.hash.slice(1).trim() : "";
+  if (hash) {
+    return { ok: true, payload: hash, transport: "hash" };
+  }
+
+  const qp = url.searchParams.get("data") || url.searchParams.get("payload") || "";
+  if (qp.trim()) {
+    return { ok: true, payload: qp.trim(), transport: "query" };
+  }
+
+  return { ok: false, error: "missing_report_payload" };
+}
+
+async function storeShortReportPayload(env, payload, meta = {}) {
+  const kv = getReportKv(env);
+  if (!kv) throw new Error("Missing KV binding: KV_TRANSCRIPT");
+
+  const now = new Date().toISOString();
+
+  for (let i = 0; i < 5; i++) {
+    const reportId = randomShortId();
+    const key = getShortReportKey(reportId);
+
+    const existing = await kv.get(key);
+    if (existing) continue;
+
+    await kv.put(
+      key,
+      JSON.stringify(
+        {
+          createdAt: now,
+          payload: String(payload || ""),
+          payloadTransport: meta.payloadTransport || "hash",
+          sourcePath: meta.sourcePath || "/assets/report.html"
+        },
+        null,
+        2
+      )
+    );
+
+    return {
+      reportId,
+      shortUrl: buildShortReportUrl(reportId)
+    };
+  }
+
+  throw new Error("Failed to allocate a unique reportId");
+}
+
+function buildShortReportUrl(reportId) {
+  return `https://transcript.taxmonitor.pro/assets/report?r=${encodeURIComponent(reportId)}`;
+}
+
+async function resolveShortReportPayload(env, reportId) {
+  const kv = getReportKv(env);
+  if (!kv) throw new Error("Missing KV binding: KV_TRANSCRIPT");
+
+  const raw = await kv.get(getShortReportKey(reportId));
+  if (!raw) return null;
+
+  const parsed = tryParseJson(raw);
+  if (!parsed.ok || !parsed.value || typeof parsed.value !== "object") return null;
+
+  return parsed.value;
 }
 
 function pemToArrayBuffer(pem) {
@@ -206,8 +333,8 @@ async function googleServiceAccountAccessToken(env, subjectUser, scopes) {
     throw new Error("Google token exchange failed (" + String(res.status) + "): " + (t || res.statusText));
   }
 
-  const json = await res.json();
-  const accessToken = json && json.access_token ? String(json.access_token) : "";
+  const parsed = await res.json();
+  const accessToken = parsed && parsed.access_token ? String(parsed.access_token) : "";
   if (!accessToken) throw new Error("Google token exchange returned no access_token.");
   return accessToken;
 }
@@ -247,7 +374,7 @@ async function gmailSendMessage(env, { from, to, subject, text }) {
   const res = await fetch("https://gmail.googleapis.com/gmail/v1/users/me/messages/send", {
     method: "POST",
     headers: {
-      "Authorization": "Bearer " + token,
+      Authorization: "Bearer " + token,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ raw }),
@@ -274,8 +401,11 @@ function jsonError(request, status, error, details = null) {
   const payload = { error };
   if (details) payload.details = details;
 
-  const isTranscript = new URL(request.url).pathname.startsWith("/transcript/");
-  return json(payload, status, isTranscript ? withCors(request) : undefined);
+  const pathname = new URL(request.url).pathname;
+  const isTranscriptRequest =
+    pathname.startsWith("/transcript/") || pathname === "/forms/transcript/report-email";
+
+  return json(payload, status, isTranscriptRequest ? withCors(request) : undefined);
 }
 
 /* ------------------------------------------
@@ -346,82 +476,7 @@ async function parseInboundBody(request) {
 }
 
 /* ------------------------------------------
- * Intake/Order/Support Normalization
- * ------------------------------------------ */
-
-function normalizeIntakePayload(input) {
-  const get = (key) => {
-    const v = input?.[key];
-    return typeof v === "string" ? v.trim() : "";
-  };
-
-  const normalized = {
-    companyName: get("CRM Company Name"),
-    estimatedBalanceDueRange: get("Estimated Balance Due Range"),
-    firstName: get("CRM First Name"),
-    irsMonitoringOnlyAcknowledged: get("IRS Monitoring Only Acknowledged"),
-    irsNoticeDate: get("IRS Notice Date"),
-    irsNoticeReceived: get("IRS Notice Received"),
-    irsNoticeType: get("IRS Notice Type"),
-    lastName: get("CRM Last Name"),
-    primaryConcern: get("Primary Concern"),
-    primaryEmail: get("CRM Primary Email"),
-    unfiledReturnsIndicator: get("Unfiled Returns Indicator"),
-    urgencyLevel: get("Urgency Level"),
-  };
-
-  const missing = [];
-  if (!normalized.firstName) missing.push("CRM First Name");
-  if (!normalized.lastName) missing.push("CRM Last Name");
-  if (!normalized.primaryEmail) missing.push("CRM Primary Email");
-
-  return { missing, normalized };
-}
-
-function normalizeOrderPayload(input) {
-  const get = (key) => {
-    const v = input?.[key];
-    return typeof v === "string" ? v.trim() : "";
-  };
-
-  const normalized = {
-    notes: get("Notes") || get("notes"),
-    orderToken: get("CF_Order Token") || get("Order Token") || get("orderToken"),
-    orderType: get("Order Type") || get("orderType"),
-    primaryEmail: get("CRM Primary Email") || get("Email") || get("email"),
-    productName: get("Product Name") || get("Plan") || get("productName"),
-  };
-
-  const missing = [];
-  if (!normalized.primaryEmail) missing.push("CRM Primary Email");
-  if (!normalized.productName && !normalized.orderType) missing.push("Product Name");
-
-  return { missing, normalized };
-}
-
-function normalizeSupportPayload(input) {
-  const get = (key) => {
-    const v = input?.[key];
-    return typeof v === "string" ? v.trim() : "";
-  };
-
-  const normalized = {
-    issueType: get("CF_Support Issue Type") || get("Issue Type") || get("issueType"),
-    orderToken: get("CF_Order Token") || get("Support Related Order ID") || get("orderToken"),
-    primaryEmail: get("CF_Support Email") || get("CRM Primary Email") || get("Email") || get("email"),
-    priority: get("CF_Support Priority") || get("Priority") || get("priority"),
-    summary: get("Summary") || get("Message") || get("summary"),
-  };
-
-  const missing = [];
-  if (!normalized.primaryEmail) missing.push("CF_Support Email");
-  if (!normalized.summary) missing.push("Summary");
-
-  return { missing, normalized };
-}
-
-/* ------------------------------------------
- * Ids + Throttle
+ * Ids
  * ------------------------------------------ */
 
 function isUuidLike(v) {
@@ -429,276 +484,6 @@ function isUuidLike(v) {
     typeof v === "string" &&
     /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(v.trim())
   );
-}
-
-async function sha256Hex(input) {
-  const enc = new TextEncoder().encode(input);
-  const digest = await crypto.subtle.digest("SHA-256", enc);
-  const bytes = new Uint8Array(digest);
-  let hex = "";
-  for (let i = 0; i < bytes.length; i++) hex += bytes[i].toString(16).padStart(2, "0");
-  return hex;
-}
-
-async function accountIdFromEmail(email) {
-  const e = String(email || "").trim().toLowerCase();
-  const hex = await sha256Hex(e);
-  return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-4${hex.slice(13, 16)}-a${hex.slice(17, 20)}-${hex.slice(20, 32)}`;
-}
-
-function dayKeyUTC(date = new Date()) {
-  const y = date.getUTCFullYear();
-  const m = String(date.getUTCMonth() + 1).padStart(2, "0");
-  const d = String(date.getUTCDate()).padStart(2, "0");
-  return `${y}-${m}-${d}`;
-}
-
-async function enforceEmailThrottle(env, email, opts = {}) {
-  const cooldownSeconds = Number(opts.cooldownSeconds ?? 600);
-  const maxPerDay = Number(opts.maxPerDay ?? 3);
-  const scope = String(opts.scope || "form:intake");
-
-  const cleanEmail = String(email || "").trim().toLowerCase();
-  if (!cleanEmail) return { ok: true };
-
-  const now = new Date();
-  const nowIso = now.toISOString();
-  const today = dayKeyUTC(now);
-
-  const emailHash = await sha256Hex(cleanEmail);
-  const throttleKey = `rate/${scope}/email/${emailHash}.json`;
-
-  const existing = await readJsonR2(env, throttleKey);
-  const lastAt = existing?.lastAt ? Date.parse(existing.lastAt) : 0;
-  const sameDay = existing?.dayKey === today;
-
-  const countToday = sameDay ? Number(existing?.countToday || 0) : 0;
-  const secondsSinceLast = lastAt ? Math.floor((Date.now() - lastAt) / 1000) : Infinity;
-
-  if (countToday >= maxPerDay) {
-    return { ok: false, error: "Daily submission limit reached for this email.", retryAfterSeconds: 86400 };
-  }
-
-  if (secondsSinceLast < cooldownSeconds) {
-    return { ok: false, error: "Please wait before submitting again.", retryAfterSeconds: cooldownSeconds - secondsSinceLast };
-  }
-
-  const nextState = {
-    countToday: countToday + 1,
-    dayKey: today,
-    lastAt: nowIso,
-    scope,
-    updatedAt: nowIso,
-  };
-
-  await writeJsonR2(env, throttleKey, nextState);
-  return { ok: true };
-}
-
-/* ------------------------------------------
- * R2 Utilities
- * ------------------------------------------ */
-
-async function readJsonR2(env, key) {
-  const obj = await env.R2_BUCKET.get(key);
-  if (!obj) return null;
-  return await obj.json();
-}
-
-async function writeJsonR2(env, key, value) {
-  await env.R2_BUCKET.put(key, JSON.stringify(value, null, 2), {
-    httpMetadata: { contentType: "application/json" },
-  });
-}
-
-/* ------------------------------------------
- * ClickUp Utilities
- * ------------------------------------------ */
-
-const CU_ACCOUNTS_CF = {
-  accountFirstName: "f5c9f6da-c994-4733-a15f-59188b37f531",
-  accountId: "e5f176ba-82c8-47d8-b3b1-0716d075f43f",
-  accountLastName: "a348d629-fa05-45d8-a2dd-b909f78ddf49",
-  accountOrderTaskLink: "4b22ab15-26f3-4f6f-98b5-7b4f5446e62d",
-  accountPrimaryEmail: "a105f99e-b33d-4d12-bb24-f7c827ec761a",
-  accountSupportTaskLink: "9e14a458-96fd-4109-a276-034d8270e15b",
-};
-
-async function clickUpRequest(env, path, options = {}) {
-  if (!env.CLICKUP_API_KEY) throw new Error("Missing CLICKUP_API_KEY");
-
-  const url = `https://api.clickup.com/api/v2${path}`;
-  const headers = new Headers(options.headers || {});
-  headers.set("authorization", env.CLICKUP_API_KEY);
-  headers.set("content-type", "application/json");
-
-  const res = await fetch(url, { ...options, headers });
-  const text = await res.text();
-  const parsed = tryParseJson(text);
-  const body = parsed.ok ? parsed.value : { raw: text };
-
-  if (!res.ok) throw new Error(`ClickUp ${res.status}: ${JSON.stringify(body)}`);
-  return body;
-}
-
-async function addClickUpComment(env, taskId, commentText) {
-  if (!taskId) return;
-
-  await clickUpRequest(env, `/task/${taskId}/comment`, {
-    method: "POST",
-    body: JSON.stringify({ comment_text: commentText, notify_all: false }),
-  });
-}
-
-async function setClickUpTaskCustomField(env, taskId, fieldId, value) {
-  if (!taskId) return;
-  if (!fieldId) return;
-
-  await clickUpRequest(env, `/task/${taskId}/field/${fieldId}`, {
-    method: "POST",
-    body: JSON.stringify({ value }),
-  });
-}
-
-async function createClickUpAccountTask(env, account, receipt) {
-  if (!env.CLICKUP_ACCOUNTS_LIST_ID) throw new Error("Missing CLICKUP_ACCOUNTS_LIST_ID");
-
-  const name = `Intake — ${account.firstName} ${account.lastName}`.trim();
-
-  const description = [
-    `Account: ${account.firstName} ${account.lastName}`.trim(),
-    `Company: ${account.metadata?.companyName || "—"}`,
-    `Email: ${account.primaryEmail}`,
-    `Received: ${receipt.timestamp}`,
-    `Trigger: ${receipt.source}:${receipt.type}`,
-    "",
-    "R2 Keys:",
-    `- accounts/${account.accountId}.json`,
-    `- receipts/form/${receipt.eventId}.json`,
-    "",
-    "Submitted:",
-    `- Estimated Balance Due Range: ${account.metadata?.estimatedBalanceDueRange || "—"}`,
-    `- IRS Notice Date: ${account.metadata?.irsNoticeDate || "—"}`,
-    `- IRS Notice Received: ${account.metadata?.irsNoticeReceived || "—"}`,
-    `- IRS Notice Type: ${account.metadata?.irsNoticeType || "—"}`,
-    `- Primary Concern: ${account.metadata?.primaryConcern || "—"}`,
-    `- Unfiled Returns Indicator: ${account.metadata?.unfiledReturnsIndicator || "—"}`,
-    `- Urgency Level: ${account.metadata?.urgencyLevel || "—"}`,
-  ].join("\n");
-
-  const payload = {
-    custom_fields: [
-      { id: CU_ACCOUNTS_CF.accountFirstName, value: account.firstName || "" },
-      { id: CU_ACCOUNTS_CF.accountId, value: account.accountId || "" },
-      { id: CU_ACCOUNTS_CF.accountLastName, value: account.lastName || "" },
-      { id: CU_ACCOUNTS_CF.accountPrimaryEmail, value: account.primaryEmail || "" },
-    ],
-    description,
-    name,
-    status: "Lead",
-  };
-
-  const created = await clickUpRequest(env, `/list/${env.CLICKUP_ACCOUNTS_LIST_ID}/task`, {
-    method: "POST",
-    body: JSON.stringify(payload),
-  });
-
-  return created?.id || null;
-}
-
-async function ensureClickUpAccountTask(env, account, accountKey, receipt) {
-  const existingId = account?.clickUp?.accountTaskId || null;
-
-  if (existingId) return existingId;
-  if (!env.CLICKUP_API_KEY || !env.CLICKUP_ACCOUNTS_LIST_ID) return null;
-
-  const createdId = await createClickUpAccountTask(env, account, receipt);
-
-  const comment = [
-    `tm_account=accounts/${account.accountId}.json`,
-    `tm_accountId=${account.accountId}`,
-    `tm_event=${receipt.source}:${receipt.type}`,
-    `tm_eventId=${receipt.eventId}`,
-    `tm_receipt=receipts/form/${receipt.eventId}.json`,
-  ].join(" ");
-
-  await addClickUpComment(env, createdId, comment);
-
-  const patched = {
-    ...account,
-    clickUp: { ...(account.clickUp || {}), accountTaskId: createdId },
-  };
-
-  await writeJsonR2(env, accountKey, patched);
-  return createdId;
-}
-
-async function createClickUpOrderTask(env, account, order, receipt) {
-  if (!env.CLICKUP_ORDERS_LIST_ID) throw new Error("Missing CLICKUP_ORDERS_LIST_ID");
-
-  const name = (`Order — ${account.firstName || ""} ${account.lastName || ""}`.trim() || `Order — ${account.accountId}`);
-
-  const description = [
-    `Account: ${account.firstName || ""} ${account.lastName || ""}`.trim(),
-    `Account ID: ${account.accountId}`,
-    `Email: ${account.primaryEmail || "—"}`,
-    `Order ID: ${order.orderId}`,
-    `Product/Plan: ${order.productName || "—"}`,
-    `Type: ${order.orderType || "—"}`,
-    `Received: ${receipt.timestamp}`,
-    `Trigger: ${receipt.source}:${receipt.type}`,
-    "",
-    "R2 Keys:",
-    `- accounts/${account.accountId}.json`,
-    `- orders/${order.orderId}.json`,
-    `- receipts/form/${receipt.eventId}.json`,
-    "",
-    `Notes: ${order.notes || "—"}`,
-  ].join("\n");
-
-  const payload = { description, name, status: "New" };
-
-  const created = await clickUpRequest(env, `/list/${env.CLICKUP_ORDERS_LIST_ID}/task`, {
-    method: "POST",
-    body: JSON.stringify(payload),
-  });
-
-  return created?.id || null;
-}
-
-async function createClickUpSupportTask(env, account, support, receipt) {
-  if (!env.CLICKUP_SUPPORT_LIST_ID) throw new Error("Missing CLICKUP_SUPPORT_LIST_ID");
-
-  const name = (`Support — ${account.firstName || ""} ${account.lastName || ""}`.trim() || `Support — ${account.accountId}`);
-
-  const description = [
-    `Account: ${account.firstName || ""} ${account.lastName || ""}`.trim(),
-    `Account ID: ${account.accountId}`,
-    `Email: ${account.primaryEmail || "—"}`,
-    `Support ID: ${support.supportId}`,
-    `Issue Type: ${support.issueType || "—"}`,
-    `Priority: ${support.priority || "—"}`,
-    `Related Order Token: ${support.orderToken || "—"}`,
-    `Received: ${receipt.timestamp}`,
-    `Trigger: ${receipt.source}:${receipt.type}`,
-    "",
-    "R2 Keys:",
-    `- accounts/${account.accountId}.json`,
-    `- receipts/form/${receipt.eventId}.json`,
-    `- support/${support.supportId}.json`,
-    "",
-    "Summary:",
-    `${support.summary || "—"}`,
-  ].join("\n");
-
-  const payload = { description, name, status: "Open" };
-
-  const created = await clickUpRequest(env, `/list/${env.CLICKUP_SUPPORT_LIST_ID}/task`, {
-    method: "POST",
-    body: JSON.stringify(payload),
-  });
-
-  return created?.id || null;
 }
 
 /* ------------------------------------------
@@ -882,7 +667,6 @@ async function handleCreateTranscriptCheckout(request, env) {
   const body = await request.json().catch(() => ({}));
   const priceId = typeof body?.priceId === "string" ? body.priceId.trim() : "";
   const tokenId = typeof body?.tokenId === "string" ? body.tokenId.trim() : "";
-
   const returnUrlBaseRaw = typeof body?.returnUrlBase === "string" ? body.returnUrlBase.trim() : "";
   const successPathRaw = typeof body?.successPath === "string" ? body.successPath.trim() : "";
 
@@ -898,7 +682,10 @@ async function handleCreateTranscriptCheckout(request, env) {
   if (!returnOrigin) return jsonError(request, 400, "missing_or_invalid_returnUrlBase");
 
   if (!allowedReturnOrigins.has(returnOrigin)) {
-    return jsonError(request, 400, "return_origin_not_allowed", { allowed: Array.from(allowedReturnOrigins).sort(), returnOrigin });
+    return jsonError(request, 400, "return_origin_not_allowed", {
+      allowed: Array.from(allowedReturnOrigins).sort(),
+      returnOrigin,
+    });
   }
 
   const successPath = successPathRaw === "/payment-confirmation" ? "/payment-confirmation" : "/payment-confirmation";
@@ -906,6 +693,7 @@ async function handleCreateTranscriptCheckout(request, env) {
   try {
     const session = await stripeFetch(env, "POST", "/checkout/sessions", {
       mode: "payment",
+      allow_promotion_codes: "true",
       "line_items[0][price]": priceId,
       "line_items[0][quantity]": "1",
       cancel_url: `${returnOrigin}/index.html#pricing`,
@@ -951,6 +739,28 @@ async function handleConsumeTranscriptTokens(request, env, ctx) {
 
   const out = await res.json().catch(() => ({}));
 
+  if (res.ok) {
+    const kv = getReportKv(env);
+    if (kv) {
+      ctx.waitUntil(
+        kv.put(
+          getReportUnlockKey(requestId),
+          JSON.stringify(
+            {
+              amount,
+              balanceAfter: out.balance ?? null,
+              createdAt: new Date().toISOString(),
+              tokenId,
+              type: "preview_unlock",
+            },
+            null,
+            2
+          )
+        )
+      );
+    }
+  }
+
   if (env.R2_TRANSCRIPT) {
     const key = `receipts/consume/${requestId}.json`;
     ctx.waitUntil(
@@ -962,7 +772,7 @@ async function handleConsumeTranscriptTokens(request, env, ctx) {
     );
   }
 
-  return json({ ...out, tokenId }, res.status, withCors(request));
+  return json({ ...out, requestId, tokenId }, res.status, withCors(request));
 }
 
 async function handleTranscriptStripeWebhook(request, env, ctx) {
@@ -973,7 +783,6 @@ async function handleTranscriptStripeWebhook(request, env, ctx) {
 
   const rawBody = await request.arrayBuffer();
   const rawText = new TextDecoder().decode(rawBody);
-
   const event = await verifyStripeSignature(env, sig, rawText);
 
   if (event.type === "checkout.session.completed") {
@@ -1001,7 +810,14 @@ async function handleTranscriptStripeWebhook(request, env, ctx) {
             env.R2_TRANSCRIPT.put(
               key,
               JSON.stringify(
-                { at: new Date().toISOString(), credits, priceId, sessionId: session.id, tokenId, type: event.type },
+                {
+                  at: new Date().toISOString(),
+                  credits,
+                  priceId,
+                  sessionId: session.id,
+                  tokenId,
+                  type: event.type,
+                },
                 null,
                 2
               ),
@@ -1014,6 +830,217 @@ async function handleTranscriptStripeWebhook(request, env, ctx) {
   }
 
   return json({ received: true }, 200);
+}
+
+/* ------------------------------------------
+ * FORMS: Transcript Report Email
+ * ------------------------------------------ */
+
+async function handleShortReportLookup(request, env, url) {
+  if (!requireMethod(request, ["GET"])) {
+    return new Response("Method not allowed", { status: 405 });
+  }
+
+  const reportId = String(url.searchParams.get("r") || "").trim();
+  if (!reportId || !/^[A-Za-z0-9_-]{8,128}$/.test(reportId)) {
+    return new Response("Invalid report link.", {
+      status: 400,
+      headers: { "content-type": "text/plain; charset=utf-8", "cache-control": "no-store" },
+    });
+  }
+
+  const stored = await resolveShortReportPayload(env, reportId);
+  if (!stored || !stored.payload) {
+    return new Response("This report link was not found.", {
+      status: 404,
+      headers: { "content-type": "text/plain; charset=utf-8", "cache-control": "no-store" },
+    });
+  }
+
+  const target = new URL("https://transcript.taxmonitor.pro/assets/report.html");
+  if (String(stored.payloadTransport || "hash") === "query") {
+    target.searchParams.set("data", String(stored.payload));
+  } else {
+    target.hash = String(stored.payload);
+  }
+
+  return Response.redirect(target.toString(), 302);
+}
+
+async function handleFormsTranscriptReportEmail(request, env, ctx) {
+  if (!requireMethod(request, ["POST"])) {
+    return new Response(JSON.stringify({ ok: false, error: "Method not allowed" }), {
+      status: 405,
+      headers: { ...corsHeadersForRequest(request), "Content-Type": "application/json; charset=utf-8" },
+    });
+  }
+
+  const parsed = await parseInboundBody(request);
+  if (!parsed.ok) {
+    return new Response(JSON.stringify({ ok: false, error: parsed.error, details: parsed.details }), {
+      status: 400,
+      headers: { ...corsHeadersForRequest(request), "Content-Type": "application/json; charset=utf-8" },
+    });
+  }
+
+  const email = String(parsed.data?.email || "").trim();
+  const eventId = String(parsed.data?.eventId || "").trim();
+  const reportUrl = String(parsed.data?.reportUrl || "").trim();
+  const tokenId = String(parsed.data?.tokenId || "").trim();
+
+  const missing = [];
+  if (!email) missing.push("email");
+  if (!eventId) missing.push("eventId");
+  if (!reportUrl) missing.push("reportUrl");
+  if (!tokenId) missing.push("tokenId");
+
+  if (missing.length) {
+    return new Response(JSON.stringify({ ok: false, error: "Missing required fields", missing }), {
+      status: 400,
+      headers: { ...corsHeadersForRequest(request), "Content-Type": "application/json; charset=utf-8" },
+    });
+  }
+
+  if (!isLikelyEmail(email)) {
+    return new Response(JSON.stringify({ ok: false, error: "Invalid email" }), {
+      status: 400,
+      headers: { ...corsHeadersForRequest(request), "Content-Type": "application/json; charset=utf-8" },
+    });
+  }
+
+  if (!isTokenIdFormat(tokenId)) {
+    return new Response(JSON.stringify({ ok: false, error: "Invalid tokenId format" }), {
+      status: 400,
+      headers: { ...corsHeadersForRequest(request), "Content-Type": "application/json; charset=utf-8" },
+    });
+  }
+
+  if (!isUuidLike(eventId)) {
+    return new Response(JSON.stringify({ ok: false, error: "Invalid eventId format" }), {
+      status: 400,
+      headers: { ...corsHeadersForRequest(request), "Content-Type": "application/json; charset=utf-8" },
+    });
+  }
+
+  if (!isSafeReportUrl(reportUrl)) {
+    return new Response(JSON.stringify({ ok: false, error: "Invalid reportUrl" }), {
+      status: 400,
+      headers: { ...corsHeadersForRequest(request), "Content-Type": "application/json; charset=utf-8" },
+    });
+  }
+
+  const kv = getReportKv(env);
+  if (!kv) {
+    return new Response(JSON.stringify({ ok: false, error: "Missing KV binding: KV_TRANSCRIPT" }), {
+      status: 500,
+      headers: { ...corsHeadersForRequest(request), "Content-Type": "application/json; charset=utf-8" },
+    });
+  }
+
+  const unlockRaw = await kv.get(getReportUnlockKey(eventId));
+  if (!unlockRaw) {
+    return new Response(JSON.stringify({ ok: false, error: "report_not_unlocked" }), {
+      status: 403,
+      headers: { ...corsHeadersForRequest(request), "Content-Type": "application/json; charset=utf-8" },
+    });
+  }
+
+  const unlockParsed = tryParseJson(unlockRaw);
+  const unlock = unlockParsed.ok ? unlockParsed.value : null;
+  if (!unlock || String(unlock.tokenId || "") !== tokenId) {
+    return new Response(JSON.stringify({ ok: false, error: "report_unlock_token_mismatch" }), {
+      status: 403,
+      headers: { ...corsHeadersForRequest(request), "Content-Type": "application/json; charset=utf-8" },
+    });
+  }
+
+  const stub = getLedgerStub(env, tokenId);
+  const balanceRes = await stub.fetch("https://ledger/balance", { method: "GET" });
+  const balanceOut = await balanceRes.json().catch(() => ({}));
+
+  const extracted = extractStoredReportPayload(reportUrl);
+  if (!extracted.ok) {
+    return new Response(JSON.stringify({ ok: false, error: extracted.error }), {
+      status: 400,
+      headers: { ...corsHeadersForRequest(request), "Content-Type": "application/json; charset=utf-8" },
+    });
+  }
+
+  const shortLink = await storeShortReportPayload(env, extracted.payload, {
+    payloadTransport: extracted.transport,
+    sourcePath: "/assets/report.html",
+  });
+
+  const fromUser =
+    env.GOOGLE_WORKSPACE_USER_SUPPORT ||
+    env.GOOGLE_WORKSPACE_USER_NOREPLY ||
+    env.GOOGLE_WORKSPACE_USER_DEFAULT;
+
+  const from = "Transcript Tax Monitor Pro <" + String(fromUser || "support@taxmonitor.pro") + ">";
+  const subject = "Your Transcript Tax Report";
+  const text = `Your transcript report is ready.
+
+Open report:
+${shortLink.shortUrl}
+
+Important:
+- Save this email if you may need the report again.
+- This link is intended for your use only.
+- This report link does not expire unless you remove it from KV.
+
+If you did not request this report, you can ignore this email.
+
+Transcript Tax Monitor Pro`;
+
+  await gmailSendMessage(env, { from, to: email, subject, text });
+
+  if (env.R2_TRANSCRIPT) {
+    const key = `receipts/report-email/${shortLink.reportId}.json`;
+    ctx.waitUntil(
+      env.R2_TRANSCRIPT.put(
+        key,
+        JSON.stringify(
+          {
+            at: new Date().toISOString(),
+            email,
+            eventId,
+            remainingBalance: balanceOut?.balance ?? null,
+            reportId: shortLink.reportId,
+            shortUrl: shortLink.shortUrl,
+            tokenId,
+          },
+          null,
+          2
+        ),
+        { httpMetadata: { contentType: "application/json" } }
+      )
+    );
+  }
+
+  return new Response(JSON.stringify({ ok: true, reportId: shortLink.reportId, reportUrl: shortLink.shortUrl, remainingBalance: balanceOut?.balance ?? null }), {
+    status: 200,
+    headers: {
+      ...corsHeadersForRequest(request),
+      "Content-Type": "application/json; charset=utf-8",
+    },
+  });
+}
+
+async function handleGetTranscriptReportLink(request, url, env) {
+  const reportId = (url.searchParams.get("reportId") || url.searchParams.get("r") || "").trim();
+  if (!reportId) return json({ ok: false, error: "missing_reportId" }, 400, withCors(request));
+
+  const link = await getShortReportLink(env, reportId);
+  if (!link) return json({ ok: false, error: "report_not_found" }, 404, withCors(request));
+
+  return json({ ok: true, reportId: link.reportId, reportUrl: link.reportUrl }, 200, withCors(request));
+}
+
+async function handleAssetReportRedirect(request, url, env) {
+  const reportId = (url.searchParams.get("r") || "").trim();
+  if (!reportId) return null;
+
+  return await handleShortReportLookup(request, env, url);
 }
 
 /* ------------------------------------------
@@ -1055,546 +1082,51 @@ export default {
       }
     }
 
+    if (request.method === "GET" && isPath(url, "/transcript/report-link")) {
+      try {
+        return await handleGetTranscriptReportLink(request, url, env);
+      } catch (err) {
+        return jsonError(request, 500, "internal_error", String(err?.message || err));
+      }
+    }
+
+    if (request.method === "GET" && (isPath(url, "/assets/report") || isPath(url, "/assets/report.html"))) {
+      try {
+        const redirectRes = await handleAssetReportRedirect(request, url, env);
+        if (redirectRes) return redirectRes;
+      } catch (err) {
+        return new Response("Unable to open this report link.", {
+          status: 500,
+          headers: { "content-type": "text/plain; charset=utf-8", "cache-control": "no-store" },
+        });
+      }
+    }
+
     if (request.method === "GET" && isPath(url, "/health")) {
-      return jsonResponse({ ok: true, service: "taxmonitor-pro-api" }, { status: 200 });
+      return jsonResponse({ ok: true, service: "transcript-tax-monitor-pro-api" }, { status: 200 });
     }
 
     if (request.method === "OPTIONS" && isPath(url, "/forms/transcript/report-email")) {
       return new Response("", { status: 204, headers: corsHeadersForRequest(request) });
     }
 
-    if (isPath(url, "/forms/transcript/report-email")) return await handleFormsTranscriptReportEmail(request, env, ctx);
-
-    if (isPath(url, "/cal/webhook")) return await handleCalWebhook(request, env, ctx);
-    if (isPath(url, "/forms/intake")) return await handleFormsIntake(request, env, ctx);
-    if (isPath(url, "/forms/order")) return await handleFormsOrder(request, env, ctx);
-    if (isPath(url, "/forms/support")) return await handleFormsSupport(request, env, ctx);
-    if (isPath(url, "/stripe/webhook")) return await handleStripeWebhook(request, env, ctx);
+    if (isPath(url, "/forms/transcript/report-email")) {
+      try {
+        return await handleFormsTranscriptReportEmail(request, env, ctx);
+      } catch (err) {
+        return new Response(
+          JSON.stringify({ ok: false, error: "internal_error", details: String(err?.message || err) }),
+          {
+            status: 500,
+            headers: {
+              ...corsHeadersForRequest(request),
+              "Content-Type": "application/json; charset=utf-8",
+            },
+          }
+        );
+      }
+    }
 
     return jsonResponse({ ok: false, error: "Not found" }, { status: 404 });
   },
 };
-
-/* ------------------------------------------
- * CAL (stub)
- * ------------------------------------------ */
-
-async function handleCalWebhook(request, env, ctx) {
-  if (!requireMethod(request, ["POST"])) {
-    return jsonResponse({ ok: false, error: "Method not allowed" }, { status: 405 });
-  }
-  const rawBody = await readRawBody(request);
-  const parsed = tryParseJson(rawBody);
-  if (!parsed.ok) {
-    return jsonResponse({ ok: false, error: "Invalid JSON" }, { status: 400 });
-  }
-  console.log("[cal] webhook received", { keys: Object.keys(parsed.value || {}) });
-  return jsonResponse({ ok: true }, { status: 200 });
-}
-
-/* ------------------------------------------
- * FORMS: Intake
- * ------------------------------------------ */
-
-async function handleFormsIntake(request, env, ctx) {
-  if (!requireMethod(request, ["POST"])) {
-    return jsonResponse({ ok: false, error: "Method not allowed" }, { status: 405 });
-  }
-
-  if (!env.R2_BUCKET) {
-    return jsonResponse({ ok: false, error: "R2_BUCKET binding missing." }, { status: 500 });
-  }
-
-  const parsed = await parseInboundBody(request);
-  if (!parsed.ok) {
-    return jsonResponse({ ok: false, error: parsed.error, details: parsed.details }, { status: 400 });
-  }
-
-  const { missing, normalized } = normalizeIntakePayload(parsed.data);
-  if (missing.length) {
-    return jsonResponse({ ok: false, error: "Missing required fields", missing }, { status: 400 });
-  }
-
-  const inboundEventId = parsed.data?.eventId;
-  const eventId = isUuidLike(inboundEventId) ? inboundEventId.trim() : crypto.randomUUID();
-  const receiptKey = `receipts/form/${eventId}.json`;
-
-  const existingReceipt = await readJsonR2(env, receiptKey);
-  if (existingReceipt && existingReceipt.processed === true) {
-    return jsonResponse({ ok: true, idempotent: true, eventId }, { status: 200 });
-  }
-
-  const throttle = await enforceEmailThrottle(env, normalized.primaryEmail, {
-    cooldownSeconds: 600,
-    maxPerDay: 3,
-    scope: "form:intake",
-  });
-
-  if (!throttle.ok) {
-    return jsonResponse(
-      { ok: false, error: throttle.error },
-      { status: 429, headers: { "Retry-After": String(throttle.retryAfterSeconds || 60) } }
-    );
-  }
-
-  const accountId = await accountIdFromEmail(normalized.primaryEmail);
-  const accountKey = `accounts/${accountId}.json`;
-
-  const receipt = {
-    accountId,
-    eventId,
-    source: "form",
-    type: "intake",
-    timestamp: new Date().toISOString(),
-    rawPayload: { ...parsed.data, eventId },
-    normalizedPayload: normalized,
-    processed: false,
-    processingError: null,
-  };
-
-  await writeJsonR2(env, receiptKey, receipt);
-
-  try {
-    const existingAccount = await readJsonR2(env, accountKey);
-
-    const account = {
-      accountId,
-      activeOrders: Array.isArray(existingAccount?.activeOrders) ? existingAccount.activeOrders : [],
-      firstName: normalized.firstName,
-      lastName: normalized.lastName,
-      lifecycleState: "intake_submitted",
-      metadata: {
-        companyName: normalized.companyName,
-        estimatedBalanceDueRange: normalized.estimatedBalanceDueRange,
-        irsMonitoringOnlyAcknowledged: normalized.irsMonitoringOnlyAcknowledged,
-        irsNoticeDate: normalized.irsNoticeDate,
-        irsNoticeReceived: normalized.irsNoticeReceived,
-        irsNoticeType: normalized.irsNoticeType,
-        primaryConcern: normalized.primaryConcern,
-        unfiledReturnsIndicator: normalized.unfiledReturnsIndicator,
-        urgencyLevel: normalized.urgencyLevel,
-      },
-      primaryEmail: normalized.primaryEmail,
-      stripeCustomerId: existingAccount?.stripeCustomerId || null,
-      clickUp: { ...(existingAccount?.clickUp || {}) },
-    };
-
-    await writeJsonR2(env, accountKey, account);
-
-    let clickUpTaskId = null;
-    if (env.CLICKUP_API_KEY && env.CLICKUP_ACCOUNTS_LIST_ID) {
-      clickUpTaskId = await ensureClickUpAccountTask(env, account, accountKey, receipt);
-    }
-
-    receipt.processed = true;
-    receipt.processingError = null;
-    receipt.clickUpTaskId = clickUpTaskId;
-
-    await writeJsonR2(env, receiptKey, receipt);
-
-    return jsonResponse(
-      {
-        ok: true,
-        accountId,
-        clickUpTaskId,
-        eventId,
-        message: "Intake processed: receipt + canonical + ClickUp.",
-        receivedAs: parsed.type,
-      },
-      { status: 200 }
-    );
-  } catch (err) {
-    receipt.processed = false;
-    receipt.processingError = String(err?.message || err);
-    await writeJsonR2(env, receiptKey, receipt);
-
-    return jsonResponse(
-      { ok: false, error: "Intake processing failed", eventId, details: receipt.processingError },
-      { status: 500 }
-    );
-  }
-}
-
-/* ------------------------------------------
- * FORMS: Order
- * ------------------------------------------ */
-
-async function handleFormsOrder(request, env, ctx) {
-  if (!requireMethod(request, ["POST"])) {
-    return jsonResponse({ ok: false, error: "Method not allowed" }, { status: 405 });
-  }
-
-  if (!env.R2_BUCKET) {
-    return jsonResponse({ ok: false, error: "R2_BUCKET binding missing." }, { status: 500 });
-  }
-
-  const parsed = await parseInboundBody(request);
-  if (!parsed.ok) {
-    return jsonResponse({ ok: false, error: parsed.error, details: parsed.details }, { status: 400 });
-  }
-
-  const { missing, normalized } = normalizeOrderPayload(parsed.data);
-  if (missing.length) {
-    return jsonResponse({ ok: false, error: "Missing required fields", missing }, { status: 400 });
-  }
-
-  const inboundEventId = parsed.data?.eventId;
-  const eventId = isUuidLike(inboundEventId) ? inboundEventId.trim() : crypto.randomUUID();
-  const receiptKey = `receipts/form/${eventId}.json`;
-
-  const existingReceipt = await readJsonR2(env, receiptKey);
-  if (existingReceipt && existingReceipt.processed === true) {
-    return jsonResponse({ ok: true, idempotent: true, eventId }, { status: 200 });
-  }
-
-  const throttle = await enforceEmailThrottle(env, normalized.primaryEmail, {
-    cooldownSeconds: 600,
-    maxPerDay: 10,
-    scope: "form:order",
-  });
-
-  if (!throttle.ok) {
-    return jsonResponse(
-      { ok: false, error: throttle.error },
-      { status: 429, headers: { "Retry-After": String(throttle.retryAfterSeconds || 60) } }
-    );
-  }
-
-  const accountId = await accountIdFromEmail(normalized.primaryEmail);
-  const accountKey = `accounts/${accountId}.json`;
-
-  const orderId = normalized.orderToken || eventId;
-  const orderKey = `orders/${orderId}.json`;
-
-  const receipt = {
-    accountId,
-    eventId,
-    source: "form",
-    type: "order",
-    timestamp: new Date().toISOString(),
-    rawPayload: { ...parsed.data, eventId },
-    normalizedPayload: normalized,
-    processed: false,
-    processingError: null,
-  };
-
-  await writeJsonR2(env, receiptKey, receipt);
-
-  try {
-    const existingAccount = await readJsonR2(env, accountKey);
-    if (!existingAccount) throw new Error("Account not found for email. Submit intake first or create account before order.");
-
-    const order = {
-      accountId,
-      createdAt: new Date().toISOString(),
-      orderId,
-      orderType: normalized.orderType || null,
-      productName: normalized.productName || null,
-      notes: normalized.notes || null,
-      status: "order_submitted",
-    };
-
-    await writeJsonR2(env, orderKey, order);
-
-    const account = {
-      ...existingAccount,
-      activeOrders: Array.isArray(existingAccount?.activeOrders)
-        ? Array.from(new Set([...(existingAccount.activeOrders || []), orderId]))
-        : [orderId],
-    };
-
-    await writeJsonR2(env, accountKey, account);
-
-    let orderTaskId = null;
-    let accountTaskId = null;
-
-    if (env.CLICKUP_API_KEY) {
-      accountTaskId = await ensureClickUpAccountTask(env, account, accountKey, receipt);
-
-      if (env.CLICKUP_ORDERS_LIST_ID) {
-        orderTaskId = await createClickUpOrderTask(env, account, order, receipt);
-
-        const comment = [
-          `tm_account=accounts/${account.accountId}.json`,
-          `tm_accountId=${account.accountId}`,
-          `tm_event=${receipt.source}:${receipt.type}`,
-          `tm_eventId=${receipt.eventId}`,
-          `tm_order=orders/${order.orderId}.json`,
-          `tm_receipt=receipts/form/${receipt.eventId}.json`,
-        ].join(" ");
-
-        await addClickUpComment(env, orderTaskId, comment);
-        await setClickUpTaskCustomField(env, accountTaskId, CU_ACCOUNTS_CF.accountOrderTaskLink, [orderTaskId]);
-      }
-    }
-
-    receipt.processed = true;
-    receipt.processingError = null;
-    receipt.clickUpTaskId = orderTaskId;
-
-    await writeJsonR2(env, receiptKey, receipt);
-
-    return jsonResponse(
-      { ok: true, accountId, eventId, orderId, orderTaskId, message: "Order processed: receipt + canonical + ClickUp.", receivedAs: parsed.type },
-      { status: 200 }
-    );
-  } catch (err) {
-    receipt.processed = false;
-    receipt.processingError = String(err?.message || err);
-    await writeJsonR2(env, receiptKey, receipt);
-
-    return jsonResponse(
-      { ok: false, error: "Order processing failed", eventId, details: receipt.processingError },
-      { status: 500 }
-    );
-  }
-}
-
-/* ------------------------------------------
- * FORMS: Support
- * ------------------------------------------ */
-
-async function handleFormsSupport(request, env, ctx) {
-  if (!requireMethod(request, ["POST"])) {
-    return jsonResponse({ ok: false, error: "Method not allowed" }, { status: 405 });
-  }
-
-  if (!env.R2_BUCKET) {
-    return jsonResponse({ ok: false, error: "R2_BUCKET binding missing." }, { status: 500 });
-  }
-
-  const parsed = await parseInboundBody(request);
-  if (!parsed.ok) {
-    return jsonResponse({ ok: false, error: parsed.error, details: parsed.details }, { status: 400 });
-  }
-
-  const { missing, normalized } = normalizeSupportPayload(parsed.data);
-  if (missing.length) {
-    return jsonResponse({ ok: false, error: "Missing required fields", missing }, { status: 400 });
-  }
-
-  const inboundEventId = parsed.data?.eventId;
-  const eventId = isUuidLike(inboundEventId) ? inboundEventId.trim() : crypto.randomUUID();
-  const receiptKey = `receipts/form/${eventId}.json`;
-
-  const existingReceipt = await readJsonR2(env, receiptKey);
-  if (existingReceipt && existingReceipt.processed === true) {
-    return jsonResponse({ ok: true, idempotent: true, eventId }, { status: 200 });
-  }
-
-  const throttle = await enforceEmailThrottle(env, normalized.primaryEmail, {
-    cooldownSeconds: 120,
-    maxPerDay: 25,
-    scope: "form:support",
-  });
-
-  if (!throttle.ok) {
-    return jsonResponse(
-      { ok: false, error: throttle.error },
-      { status: 429, headers: { "Retry-After": String(throttle.retryAfterSeconds || 60) } }
-    );
-  }
-
-  const accountId = await accountIdFromEmail(normalized.primaryEmail);
-  const accountKey = `accounts/${accountId}.json`;
-
-  const supportId = eventId;
-  const supportKey = `support/${supportId}.json`;
-
-  const receipt = {
-    accountId,
-    eventId,
-    source: "form",
-    type: "support",
-    timestamp: new Date().toISOString(),
-    rawPayload: { ...parsed.data, eventId },
-    normalizedPayload: normalized,
-    processed: false,
-    processingError: null,
-  };
-
-  await writeJsonR2(env, receiptKey, receipt);
-
-  try {
-    const existingAccount = await readJsonR2(env, accountKey);
-    if (!existingAccount) throw new Error("Account not found for email. Submit intake first or create account before support.");
-
-    const support = {
-      accountId,
-      createdAt: new Date().toISOString(),
-      issueType: normalized.issueType || null,
-      orderToken: normalized.orderToken || null,
-      priority: normalized.priority || null,
-      status: "support_submitted",
-      summary: normalized.summary || null,
-      supportId,
-    };
-
-    await writeJsonR2(env, supportKey, support);
-
-    const account = { ...existingAccount };
-
-    let supportTaskId = null;
-    let accountTaskId = null;
-
-    if (env.CLICKUP_API_KEY) {
-      accountTaskId = await ensureClickUpAccountTask(env, account, accountKey, receipt);
-
-      if (env.CLICKUP_SUPPORT_LIST_ID) {
-        supportTaskId = await createClickUpSupportTask(env, account, support, receipt);
-
-        const comment = [
-          `tm_account=accounts/${account.accountId}.json`,
-          `tm_accountId=${account.accountId}`,
-          `tm_event=${receipt.source}:${receipt.type}`,
-          `tm_eventId=${receipt.eventId}`,
-          `tm_receipt=receipts/form/${receipt.eventId}.json`,
-          `tm_support=support/${support.supportId}.json`,
-        ].join(" ");
-
-        await addClickUpComment(env, supportTaskId, comment);
-        await setClickUpTaskCustomField(env, accountTaskId, CU_ACCOUNTS_CF.accountSupportTaskLink, [supportTaskId]);
-      }
-    }
-
-    receipt.processed = true;
-    receipt.processingError = null;
-    receipt.clickUpTaskId = supportTaskId;
-
-    await writeJsonR2(env, receiptKey, receipt);
-
-    return jsonResponse(
-      { ok: true, accountId, eventId, supportId, supportTaskId, message: "Support processed: receipt + canonical + ClickUp.", receivedAs: parsed.type },
-      { status: 200 }
-    );
-  } catch (err) {
-    receipt.processed = false;
-    receipt.processingError = String(err?.message || err);
-    await writeJsonR2(env, receiptKey, receipt);
-
-    return jsonResponse(
-      { ok: false, error: "Support processing failed", eventId, details: receipt.processingError },
-      { status: 500 }
-    );
-  }
-}
-
-/* ------------------------------------------
- * FORMS: Transcript Report Email
- * ------------------------------------------ */
-
-async function handleFormsTranscriptReportEmail(request, env, ctx) {
-  if (!requireMethod(request, ["POST"])) {
-    return new Response(JSON.stringify({ ok: false, error: "Method not allowed" }), {
-      status: 405,
-      headers: { ...corsHeadersForRequest(request), "Content-Type": "application/json; charset=utf-8" },
-    });
-  }
-
-  const parsed = await parseInboundBody(request);
-  if (!parsed.ok) {
-    return new Response(JSON.stringify({ ok: false, error: parsed.error, details: parsed.details }), {
-      status: 400,
-      headers: { ...corsHeadersForRequest(request), "Content-Type": "application/json; charset=utf-8" },
-    });
-  }
-
-  const email = String(parsed.data?.email || "").trim();
-  const eventId = String(parsed.data?.eventId || "").trim();
-  const reportId = String(parsed.data?.reportId || "").trim();
-  const reportUrl = String(parsed.data?.reportUrl || "").trim();
-  const tokenId = String(parsed.data?.tokenId || "").trim();
-
-  const missing = [];
-  if (!email) missing.push("email");
-  if (!eventId) missing.push("eventId");
-  if (!reportId) missing.push("reportId");
-  if (!reportUrl) missing.push("reportUrl");
-  if (!tokenId) missing.push("tokenId");
-
-  if (missing.length) {
-    return new Response(JSON.stringify({ ok: false, error: "Missing required fields", missing }), {
-      status: 400,
-      headers: { ...corsHeadersForRequest(request), "Content-Type": "application/json; charset=utf-8" },
-    });
-  }
-
-  if (!isLikelyEmail(email)) {
-    return new Response(JSON.stringify({ ok: false, error: "Invalid email" }), {
-      status: 400,
-      headers: { ...corsHeadersForRequest(request), "Content-Type": "application/json; charset=utf-8" },
-    });
-  }
-
-  if (!isTokenIdFormat(tokenId)) {
-    return new Response(JSON.stringify({ ok: false, error: "Invalid tokenId format" }), {
-      status: 400,
-      headers: { ...corsHeadersForRequest(request), "Content-Type": "application/json; charset=utf-8" },
-    });
-  }
-
-  if (!isSafeReportUrl(reportUrl)) {
-    return new Response(JSON.stringify({ ok: false, error: "Invalid reportUrl" }), {
-      status: 400,
-      headers: { ...corsHeadersForRequest(request), "Content-Type": "application/json; charset=utf-8" },
-    });
-  }
-
-  // Enforce 1-credit consumption for report-email (idempotent by eventId)
-  const stub = getLedgerStub(env, tokenId);
-  const consumeRes = await stub.fetch("https://ledger/consume", {
-    method: "POST",
-    headers: { "content-type": "application/json" },
-    body: JSON.stringify({ amount: 1, requestId: eventId }),
-  });
-
-  const consumeOut = await consumeRes.json().catch(() => ({}));
-  if (!consumeRes.ok) {
-    return new Response(JSON.stringify({ ok: false, error: consumeOut?.error || "insufficient_balance", details: consumeOut }), {
-      status: consumeRes.status || 402,
-      headers: { ...corsHeadersForRequest(request), "Content-Type": "application/json; charset=utf-8" },
-    });
-  }
-
-  const fromUser =
-    env.GOOGLE_WORKSPACE_USER_SUPPORT ||
-    env.GOOGLE_WORKSPACE_USER_NOREPLY ||
-    env.GOOGLE_WORKSPACE_USER_DEFAULT;
-
-  const from = "Transcript Tax Monitor Pro <" + String(fromUser || "support@taxmonitor.pro") + ">";
-  const subject = "Your Transcript Report Link";
-  const text = `Here’s your report link:
-
-${reportUrl}
-
-Tip: Save this email. The link contains the report data (nothing is uploaded).
-`;
-
-  await gmailSendMessage(env, { from, to: email, subject, text });
-
-  return new Response(JSON.stringify({ ok: true }), {
-    status: 200,
-    headers: {
-      ...corsHeadersForRequest(request),
-      "Content-Type": "application/json; charset=utf-8",
-    },
-  });
-}
-
-/* ------------------------------------------
- * STRIPE (legacy stub)
- * ------------------------------------------ */
-
-async function handleStripeWebhook(request, env, ctx) {
-  if (!requireMethod(request, ["POST"])) {
-    return jsonResponse({ ok: false, error: "Method not allowed" }, { status: 405 });
-  }
-  const rawBody = await readRawBody(request);
-  const parsed = tryParseJson(rawBody);
-  if (!parsed.ok) {
-    return jsonResponse({ ok: false, error: "Invalid JSON" }, { status: 400 });
-  }
-  console.log("[stripe] webhook received", { type: parsed.value?.type, id: parsed.value?.id });
-  return jsonResponse({ ok: true }, { status: 200 });
-}
-
