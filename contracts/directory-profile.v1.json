@@ -1,0 +1,23 @@
+{
+  "contract": "directory-profile.v1",
+  "description": "Public tax professional profile",
+  "fields": {
+    "slug": "string",
+    "name": "string",
+    "initials": "string",
+    "profession": ["string"],
+    "status": "string",
+    "location": "string",
+    "languages": ["string"],
+    "credentials": ["string"],
+    "services": ["string"],
+    "client_types": ["string"],
+    "bio_short": "string",
+    "bio_full": "string",
+    "years_experience": "number",
+    "firm_name": "string",
+    "website": "string",
+    "contact_email": "string",
+    "profile_image": "string"
+  }
+}
