@@ -1,1 +1,17 @@
-
+{
+  "slug": "sample-sarah-mitchell",
+  "name": "Sarah Mitchell",
+  "initials": "SM",
+  "profession": ["attorney", "cpa"],
+  "status": "featured",
+  "location": "Los Angeles, CA",
+  "languages": ["English"],
+  "credentials": ["JD", "CPA"],
+  "services": ["audit", "planning"],
+  "client_types": ["business", "individual"],
+  "bio_short": "Specializing in complex tax litigation and IRS audit defense.",
+  "bio_full": "Over 20 years helping clients resolve complex tax disputes, defend audits, and structure tax-efficient strategies.",
+  "years_experience": 20,
+  "firm_name": "Mitchell Tax Law",
+  "website": "https://example.com"
+}
