@@ -1,0 +1,34 @@
+{
+  "contract": "directory-index.v1",
+  "description": "Public directory listing of tax professionals",
+  "fields": {
+    "featured": [
+      {
+        "slug": "string",
+        "name": "string",
+        "initials": "string",
+        "profession": ["string"],
+        "location": "string",
+        "services": ["string"],
+        "client_types": ["string"],
+        "bio_short": "string",
+        "status": "featured",
+        "avatar_color": "string"
+      }
+    ],
+    "professionals": [
+      {
+        "slug": "string",
+        "name": "string",
+        "initials": "string",
+        "profession": ["string"],
+        "location": "string",
+        "services": ["string"],
+        "client_types": ["string"],
+        "bio_short": "string",
+        "status": "standard",
+        "avatar_color": "string"
+      }
+    ]
+  }
+}
