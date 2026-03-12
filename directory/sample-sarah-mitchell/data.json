@@ -1,17 +1,82 @@
 {
-  "slug": "sample-sarah-mitchell",
-  "name": "Sarah Mitchell",
-  "initials": "SM",
-  "profession": ["attorney", "cpa"],
-  "status": "featured",
-  "location": "Los Angeles, CA",
-  "languages": ["English"],
-  "credentials": ["JD", "CPA"],
-  "services": ["audit", "planning"],
-  "client_types": ["business", "individual"],
-  "bio_short": "Specializing in complex tax litigation and IRS audit defense.",
-  "bio_full": "Over 20 years helping clients resolve complex tax disputes, defend audits, and structure tax-efficient strategies.",
-  "years_experience": 20,
-  "firm_name": "Mitchell Tax Law",
-  "website": "https://example.com"
+  "contract": "directory-profile.v1",
+
+  "profile": {
+    "slug": "sample-sarah-mitchell",
+    "name": "Sarah Mitchell",
+    "initials": "SM",
+    "profile_image": null,
+    "status": "featured"
+  },
+
+  "professional": {
+    "profession": ["CPA", "Attorney"],
+    "credentials": [
+      "CPA (California)",
+      "Juris Doctor (UCLA)",
+      "IRS Form 2848 Representative"
+    ],
+    "years_experience": 20,
+    "firm_name": "Mitchell Tax Law"
+  },
+
+  "location": {
+    "city": "Los Angeles",
+    "state": "CA",
+    "country": "USA"
+  },
+
+  "contact": {
+    "contact_email": "sarah@mitchelltaxlaw.com",
+    "website": "https://mitchelltaxlaw.com",
+    "languages": ["English", "Spanish"]
+  },
+
+  "bio": {
+    "bio_short": "Tax litigation and IRS audit defense specialist.",
+    "bio_full": "Sarah Mitchell is a dual-credentialed CPA and attorney with over 20 years of experience representing taxpayers before the IRS and Tax Court."
+  },
+
+  "services": {
+    "services": [
+      "Audit Defense",
+      "Tax Litigation",
+      "IRS Appeals",
+      "Tax Planning"
+    ],
+    "client_types": [
+      "Individuals",
+      "Businesses",
+      "Partnerships",
+      "Executives"
+    ]
+  },
+
+  "reviews": {
+    "enabled": true,
+    "allow_submission": true,
+    "items": [
+      {
+        "name": "John D.",
+        "rating": 5,
+        "text": "Exceptional representation during my audit."
+      }
+    ]
+  },
+
+  "buttons": {
+    "contact_button": {
+      "active": true,
+      "label": "Get in Touch",
+      "mode": "email",
+      "url": "mailto:sarah@mitchelltaxlaw.com"
+    },
+
+    "schedule_button": {
+      "active": true,
+      "mode": "cal_com",
+      "url": "https://cal.com/sarah-mitchell/consultation",
+      "behavior_phrase": "Yes, I have created/connected my Cal.com account, use my Cal.com link"
+    }
+  }
 }

@@ -1,0 +1,20 @@
+{
+    "contract":  "directory-profile.v1",
+    "slug":  "sample-steven-roberts",
+    "name":  "Steven Roberts",
+    "initials":  "SR",
+    "professions":  [
+                        "ea"
+                    ],
+    "status":  "standard",
+    "location":  "Orlando, FL",
+    "services":  [
+                     "audit",
+                     "tax-prep"
+                 ],
+    "client_types":  [
+                         "individual"
+                     ],
+    "short_bio":  "EA focused on individual returns with rentals, stock options, and crypto tax issues.",
+    "profile_type":  "sample"
+}

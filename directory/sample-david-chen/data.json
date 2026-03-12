@@ -1,0 +1,21 @@
+{
+    "contract":  "directory-profile.v1",
+    "slug":  "sample-david-chen",
+    "name":  "David Chen",
+    "initials":  "DC",
+    "professions":  [
+                        "attorney"
+                    ],
+    "status":  "standard",
+    "location":  "San Diego, CA",
+    "services":  [
+                     "estate",
+                     "planning"
+                 ],
+    "client_types":  [
+                         "business",
+                         "individual"
+                     ],
+    "short_bio":  "Tax attorney focused on estate planning and wealth transfer strategy.",
+    "profile_type":  "sample"
+}

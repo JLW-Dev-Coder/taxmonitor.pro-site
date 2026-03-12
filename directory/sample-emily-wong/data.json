@@ -1,0 +1,21 @@
+{
+    "contract":  "directory-profile.v1",
+    "slug":  "sample-emily-wong",
+    "name":  "Emily Wong",
+    "initials":  "EW",
+    "professions":  [
+                        "cpa"
+                    ],
+    "status":  "featured",
+    "location":  "San Francisco, CA",
+    "services":  [
+                     "planning",
+                     "tax-prep"
+                 ],
+    "client_types":  [
+                         "business",
+                         "individual"
+                     ],
+    "short_bio":  "Small business CPA specializing in startup tax strategy and R\u0026D credits.",
+    "profile_type":  "sample"
+}

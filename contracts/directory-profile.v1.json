@@ -1,23 +1,1048 @@
 {
   "contract": "directory-profile.v1",
-  "description": "Public tax professional profile",
+  "description": "Schema contract for a public Tax Monitor Pro directory profile page rendered from directory/{slug}/data.json.",
   "fields": {
-    "slug": "string",
-    "name": "string",
-    "initials": "string",
-    "profession": ["string"],
-    "status": "string",
-    "location": "string",
-    "languages": ["string"],
-    "credentials": ["string"],
-    "services": ["string"],
-    "client_types": ["string"],
-    "bio_short": "string",
-    "bio_full": "string",
-    "years_experience": "number",
-    "firm_name": "string",
-    "website": "string",
-    "contact_email": "string",
-    "profile_image": "string"
+    "bio": {
+      "display_role": "main_about_section",
+      "nullable": false,
+      "required": true,
+      "type": "object",
+      "fields": {
+        "bio_full_paragraphs": {
+          "display_role": "rich_text_paragraphs",
+          "item_schema": {
+            "max_length": 1200,
+            "nullable": false,
+            "required": true,
+            "type": "string"
+          },
+          "max_items": 6,
+          "min_items": 1,
+          "nullable": false,
+          "required": true,
+          "type": "array"
+        },
+        "bio_short": {
+          "display_role": "directory_card_summary",
+          "max_length": 220,
+          "nullable": false,
+          "required": true,
+          "type": "string"
+        }
+      }
+    },
+    "buttons": {
+      "display_role": "cta_controls",
+      "nullable": false,
+      "required": true,
+      "type": "object",
+      "fields": {
+        "contact_button": {
+          "display_role": "primary_contact_cta",
+          "nullable": false,
+          "required": true,
+          "type": "object",
+          "fields": {
+            "active": {
+              "display_role": "interaction_state",
+              "nullable": false,
+              "required": true,
+              "type": "boolean"
+            },
+            "label": {
+              "display_role": "button_text",
+              "enum": [
+                "Contact Now",
+                "Get In Touch"
+              ],
+              "max_length": 40,
+              "nullable": false,
+              "required": true,
+              "type": "string"
+            },
+            "mode": {
+              "display_role": "button_behavior",
+              "enum": [
+                "email",
+                "external_link",
+                "inactive"
+              ],
+              "nullable": false,
+              "required": true,
+              "type": "string"
+            },
+            "show": {
+              "display_role": "button_visibility",
+              "nullable": false,
+              "required": true,
+              "type": "boolean"
+            },
+            "url": {
+              "display_role": "button_destination",
+              "format_hint": "absolute_url_or_mailto",
+              "max_length": 500,
+              "nullable": true,
+              "required": true,
+              "type": "string"
+            }
+          }
+        },
+        "review_button": {
+          "display_role": "review_cta",
+          "nullable": false,
+          "required": true,
+          "type": "object",
+          "fields": {
+            "active": {
+              "display_role": "interaction_state",
+              "nullable": false,
+              "required": true,
+              "type": "boolean"
+            },
+            "label": {
+              "display_role": "button_text",
+              "enum": [
+                "Add Your Review"
+              ],
+              "max_length": 40,
+              "nullable": false,
+              "required": true,
+              "type": "string"
+            },
+            "mode": {
+              "display_role": "button_behavior",
+              "enum": [
+                "external_link",
+                "inactive",
+                "modal"
+              ],
+              "nullable": false,
+              "required": true,
+              "type": "string"
+            },
+            "show": {
+              "display_role": "button_visibility",
+              "nullable": false,
+              "required": true,
+              "type": "boolean"
+            },
+            "url": {
+              "display_role": "button_destination",
+              "format_hint": "absolute_url",
+              "max_length": 500,
+              "nullable": true,
+              "required": true,
+              "type": "string"
+            }
+          }
+        },
+        "schedule_button": {
+          "display_role": "schedule_cta",
+          "nullable": false,
+          "required": true,
+          "type": "object",
+          "fields": {
+            "active": {
+              "display_role": "interaction_state",
+              "nullable": false,
+              "required": true,
+              "type": "boolean"
+            },
+            "behavior_phrase": {
+              "display_role": "admin_logic_phrase",
+              "enum": [
+                "No, I have not connected Cal.com or my own booking link, keep button inactive",
+                "Yes, I have connected my own booking link, use my booking link",
+                "Yes, I have created/connected my Cal.com account, use my Cal.com link"
+              ],
+              "nullable": false,
+              "required": true,
+              "type": "string"
+            },
+            "description": {
+              "display_role": "supporting_copy",
+              "max_length": 180,
+              "nullable": true,
+              "required": false,
+              "type": "string"
+            },
+            "description_mode": {
+              "display_role": "supporting_copy_behavior",
+              "enum": [
+                "custom",
+                "derived"
+              ],
+              "nullable": false,
+              "required": true,
+              "type": "string"
+            },
+            "event_type_duration_minutes": {
+              "display_role": "derived_event_duration",
+              "max_value": 480,
+              "min_value": 0,
+              "nullable": true,
+              "required": false,
+              "type": "number"
+            },
+            "event_type_label": {
+              "display_role": "derived_event_name",
+              "max_length": 80,
+              "nullable": true,
+              "required": false,
+              "type": "string"
+            },
+            "label": {
+              "display_role": "button_text",
+              "enum": [
+                "Schedule Consultation",
+                "Schedule Now"
+              ],
+              "max_length": 40,
+              "nullable": false,
+              "required": true,
+              "type": "string"
+            },
+            "mode": {
+              "display_role": "button_behavior",
+              "enum": [
+                "cal_com",
+                "custom_booking_link",
+                "none"
+              ],
+              "nullable": false,
+              "required": true,
+              "type": "string"
+            },
+            "provider_label": {
+              "display_role": "provider_badge_text",
+              "enum": [
+                "Cal.com",
+                "Custom",
+                "None"
+              ],
+              "nullable": false,
+              "required": true,
+              "type": "string"
+            },
+            "show": {
+              "display_role": "button_visibility",
+              "nullable": false,
+              "required": true,
+              "type": "boolean"
+            },
+            "url": {
+              "display_role": "button_destination",
+              "format_hint": "absolute_url",
+              "max_length": 500,
+              "nullable": true,
+              "required": true,
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "contact": {
+      "display_role": "sidebar_contact_information",
+      "nullable": false,
+      "required": true,
+      "type": "object",
+      "fields": {
+        "availability_display": {
+          "display_role": "availability_text",
+          "max_length": 80,
+          "nullable": true,
+          "required": false,
+          "type": "string"
+        },
+        "contact_email": {
+          "display_role": "contact_email",
+          "format_hint": "email",
+          "max_length": 254,
+          "nullable": true,
+          "required": false,
+          "type": "string"
+        },
+        "languages": {
+          "display_role": "language_list",
+          "item_schema": {
+            "enum": [
+              "Arabic",
+              "Chinese",
+              "English",
+              "French",
+              "German",
+              "Hindi",
+              "Japanese",
+              "Korean",
+              "Portuguese",
+              "Russian",
+              "Spanish",
+              "Tagalog",
+              "Vietnamese"
+            ],
+            "max_length": 40,
+            "nullable": false,
+            "required": true,
+            "type": "string"
+          },
+          "max_items": 8,
+          "min_items": 0,
+          "nullable": false,
+          "required": true,
+          "type": "array"
+        },
+        "phone": {
+          "display_role": "contact_phone",
+          "format_hint": "phone",
+          "max_length": 30,
+          "nullable": true,
+          "required": false,
+          "type": "string"
+        },
+        "timezone": {
+          "display_role": "availability_timezone",
+          "enum": [
+            "America/Anchorage",
+            "America/Chicago",
+            "America/Denver",
+            "America/Detroit",
+            "America/Indiana/Indianapolis",
+            "America/Los_Angeles",
+            "America/New_York",
+            "America/Phoenix",
+            "Pacific/Honolulu"
+          ],
+          "nullable": true,
+          "required": false,
+          "type": "string"
+        },
+        "website": {
+          "display_role": "contact_website",
+          "format_hint": "absolute_url",
+          "max_length": 500,
+          "nullable": true,
+          "required": false,
+          "type": "string"
+        },
+        "weekly_availability": {
+          "display_role": "structured_availability",
+          "item_schema": {
+            "nullable": false,
+            "required": true,
+            "type": "object",
+            "fields": {
+              "day": {
+                "enum": [
+                  "Friday",
+                  "Monday",
+                  "Saturday",
+                  "Sunday",
+                  "Thursday",
+                  "Tuesday",
+                  "Wednesday"
+                ],
+                "nullable": false,
+                "required": true,
+                "type": "string"
+              },
+              "enabled": {
+                "nullable": false,
+                "required": true,
+                "type": "boolean"
+              },
+              "end_time": {
+                "format_hint": "HH:MM_24_hour",
+                "max_length": 5,
+                "nullable": true,
+                "required": false,
+                "type": "string"
+              },
+              "start_time": {
+                "format_hint": "HH:MM_24_hour",
+                "max_length": 5,
+                "nullable": true,
+                "required": false,
+                "type": "string"
+              }
+            }
+          },
+          "max_items": 7,
+          "min_items": 0,
+          "nullable": false,
+          "required": true,
+          "type": "array"
+        }
+      }
+    },
+    "credentials_experience": {
+      "display_role": "credentials_and_background_section",
+      "nullable": false,
+      "required": true,
+      "type": "object",
+      "fields": {
+        "background_items": {
+          "display_role": "career_timeline",
+          "item_schema": {
+            "display_role": "timeline_item",
+            "nullable": false,
+            "required": true,
+            "type": "object",
+            "fields": {
+              "date_label": {
+                "display_role": "timeline_date",
+                "max_length": 40,
+                "nullable": false,
+                "required": true,
+                "type": "string"
+              },
+              "description": {
+                "display_role": "timeline_description",
+                "max_length": 280,
+                "nullable": false,
+                "required": true,
+                "type": "string"
+              },
+              "title": {
+                "display_role": "timeline_title",
+                "max_length": 100,
+                "nullable": false,
+                "required": true,
+                "type": "string"
+              }
+            }
+          },
+          "max_items": 12,
+          "min_items": 0,
+          "nullable": false,
+          "required": true,
+          "type": "array"
+        },
+        "licenses_certifications": {
+          "display_role": "credential_list",
+          "item_schema": {
+            "display_role": "credential_item",
+            "nullable": false,
+            "required": true,
+            "type": "object",
+            "fields": {
+              "subtitle": {
+                "display_role": "credential_supporting_text",
+                "max_length": 180,
+                "nullable": true,
+                "required": false,
+                "type": "string"
+              },
+              "title": {
+                "display_role": "credential_title",
+                "max_length": 100,
+                "nullable": false,
+                "required": true,
+                "type": "string"
+              }
+            }
+          },
+          "max_items": 20,
+          "min_items": 0,
+          "nullable": false,
+          "required": true,
+          "type": "array"
+        }
+      }
+    },
+    "hero": {
+      "display_role": "hero_section",
+      "nullable": false,
+      "required": true,
+      "type": "object",
+      "fields": {
+        "credential_badges": {
+          "display_role": "hero_badges",
+          "item_schema": {
+            "display_role": "badge",
+            "nullable": false,
+            "required": true,
+            "type": "object",
+            "fields": {
+              "label": {
+                "display_role": "badge_text",
+                "max_length": 30,
+                "nullable": false,
+                "required": true,
+                "type": "string"
+              },
+              "style_key": {
+                "display_role": "badge_style",
+                "enum": [
+                  "attorney",
+                  "cpa",
+                  "custom",
+                  "ea",
+                  "featured"
+                ],
+                "nullable": false,
+                "required": true,
+                "type": "string"
+              }
+            }
+          },
+          "max_items": 6,
+          "min_items": 0,
+          "nullable": false,
+          "required": true,
+          "type": "array"
+        },
+        "headline": {
+          "display_role": "hero_subheadline",
+          "max_length": 120,
+          "nullable": false,
+          "required": true,
+          "type": "string"
+        },
+        "location_label": {
+          "display_role": "hero_location_summary",
+          "max_length": 80,
+          "nullable": false,
+          "required": true,
+          "type": "string"
+        },
+        "rating_label": {
+          "display_role": "hero_rating_summary",
+          "max_length": 60,
+          "nullable": false,
+          "required": true,
+          "type": "string"
+        },
+        "years_experience_label": {
+          "display_role": "hero_experience_summary",
+          "max_length": 60,
+          "nullable": false,
+          "required": true,
+          "type": "string"
+        }
+      }
+    },
+    "location": {
+      "display_role": "location_metadata",
+      "nullable": false,
+      "required": true,
+      "type": "object",
+      "fields": {
+        "city": {
+          "display_role": "city",
+          "max_length": 80,
+          "nullable": false,
+          "required": true,
+          "type": "string"
+        },
+        "country": {
+          "display_role": "country",
+          "max_length": 80,
+          "nullable": false,
+          "required": true,
+          "type": "string"
+        },
+        "state": {
+          "display_role": "state",
+          "enum": [
+            "Alabama",
+            "Alaska",
+            "Arizona",
+            "Arkansas",
+            "California",
+            "Colorado",
+            "Connecticut",
+            "Delaware",
+            "Florida",
+            "Georgia",
+            "Hawaii",
+            "Idaho",
+            "Illinois",
+            "Indiana",
+            "Iowa",
+            "Kansas",
+            "Kentucky",
+            "Louisiana",
+            "Maine",
+            "Maryland",
+            "Massachusetts",
+            "Michigan",
+            "Minnesota",
+            "Mississippi",
+            "Missouri",
+            "Montana",
+            "Nebraska",
+            "Nevada",
+            "New Hampshire",
+            "New Jersey",
+            "New Mexico",
+            "New York",
+            "North Carolina",
+            "North Dakota",
+            "Ohio",
+            "Oklahoma",
+            "Oregon",
+            "Pennsylvania",
+            "Rhode Island",
+            "South Carolina",
+            "South Dakota",
+            "Tennessee",
+            "Texas",
+            "Utah",
+            "Vermont",
+            "Virginia",
+            "Washington",
+            "West Virginia",
+            "Wisconsin",
+            "Wyoming"
+          ],
+          "nullable": false,
+          "required": true,
+          "type": "string"
+        },
+        "zip": {
+          "display_role": "zip_code",
+          "max_length": 10,
+          "nullable": true,
+          "required": false,
+          "type": "string"
+        }
+      }
+    },
+    "profile": {
+      "display_role": "identity_and_visibility",
+      "nullable": false,
+      "required": true,
+      "type": "object",
+      "fields": {
+        "avatar": {
+          "display_role": "hero_avatar",
+          "nullable": false,
+          "required": true,
+          "type": "object",
+          "fields": {
+            "display_dimensions": {
+              "display_role": "avatar_display_size",
+              "nullable": false,
+              "required": true,
+              "type": "object",
+              "fields": {
+                "height": {
+                  "display_role": "avatar_height",
+                  "enum": [
+                    96,
+                    128
+                  ],
+                  "nullable": false,
+                  "required": true,
+                  "type": "number"
+                },
+                "width": {
+                  "display_role": "avatar_width",
+                  "enum": [
+                    96,
+                    128
+                  ],
+                  "nullable": false,
+                  "required": true,
+                  "type": "number"
+                }
+              }
+            },
+            "file": {
+              "display_role": "avatar_uploaded_asset",
+              "nullable": true,
+              "required": false,
+              "type": "object",
+              "fields": {
+                "file_type": {
+                  "display_role": "avatar_file_type",
+                  "enum": [
+                    "jpeg",
+                    "jpg",
+                    "png",
+                    "svg",
+                    "webp"
+                  ],
+                  "nullable": false,
+                  "required": true,
+                  "type": "string"
+                },
+                "height": {
+                  "display_role": "avatar_source_height",
+                  "max_value": 2000,
+                  "min_value": 128,
+                  "nullable": false,
+                  "required": true,
+                  "type": "number"
+                },
+                "width": {
+                  "display_role": "avatar_source_width",
+                  "max_value": 2000,
+                  "min_value": 128,
+                  "nullable": false,
+                  "required": true,
+                  "type": "number"
+                }
+              }
+            },
+            "initials_fallback": {
+              "display_role": "avatar_fallback_behavior",
+              "nullable": false,
+              "required": true,
+              "type": "boolean"
+            },
+            "upload_type": {
+              "display_role": "avatar_mode",
+              "enum": [
+                "firm_logo",
+                "initials_only",
+                "profile_photo"
+              ],
+              "nullable": false,
+              "required": true,
+              "type": "string"
+            }
+          }
+        },
+        "initials": {
+          "display_role": "avatar_initials_fallback",
+          "max_length": 4,
+          "nullable": false,
+          "required": true,
+          "type": "string"
+        },
+        "name": {
+          "display_role": "primary_name",
+          "max_length": 80,
+          "nullable": false,
+          "required": true,
+          "type": "string"
+        },
+        "profile_type": {
+          "display_role": "content_mode",
+          "enum": [
+            "live",
+            "sample"
+          ],
+          "nullable": false,
+          "required": true,
+          "type": "string"
+        },
+        "slug": {
+          "display_role": "url_slug",
+          "max_length": 120,
+          "nullable": false,
+          "pattern": "^[a-z0-9-]+$",
+          "required": true,
+          "type": "string"
+        },
+        "status": {
+          "display_role": "listing_visibility",
+          "enum": [
+            "featured",
+            "hidden",
+            "standard"
+          ],
+          "nullable": false,
+          "required": true,
+          "type": "string"
+        },
+        "status_badge_label": {
+          "display_role": "status_badge_text",
+          "enum": [
+            "Featured",
+            "Hidden",
+            "Standard",
+            "Verified"
+          ],
+          "nullable": true,
+          "required": false,
+          "type": "string"
+        }
+      }
+    },
+    "professional": {
+      "display_role": "professional_metadata",
+      "nullable": false,
+      "required": true,
+      "type": "object",
+      "fields": {
+        "credentials": {
+          "display_role": "credential_keywords",
+          "item_schema": {
+            "max_length": 80,
+            "nullable": false,
+            "required": true,
+            "type": "string"
+          },
+          "max_items": 20,
+          "min_items": 0,
+          "nullable": false,
+          "required": true,
+          "type": "array"
+        },
+        "firm_name": {
+          "display_role": "firm_or_practice_name",
+          "max_length": 100,
+          "nullable": true,
+          "required": false,
+          "type": "string"
+        },
+        "profession": {
+          "display_role": "professional_type_dropdown",
+          "item_schema": {
+            "enum": [
+              "Attorney",
+              "CPA",
+              "Enrolled Actuary",
+              "Enrolled Agent",
+              "ERPA"
+            ],
+            "nullable": false,
+            "required": true,
+            "type": "string"
+          },
+          "max_items": 4,
+          "min_items": 1,
+          "nullable": false,
+          "required": true,
+          "type": "array"
+        },
+        "years_experience": {
+          "display_role": "experience_numeric_value",
+          "max_value": 80,
+          "min_value": 0,
+          "nullable": false,
+          "required": true,
+          "type": "number"
+        }
+      }
+    },
+    "quick_stats": {
+      "display_role": "hero_stat_cards",
+      "item_schema": {
+        "display_role": "stat_card",
+        "nullable": false,
+        "required": true,
+        "type": "object",
+        "fields": {
+          "label": {
+            "display_role": "stat_label",
+            "max_length": 50,
+            "nullable": false,
+            "required": true,
+            "type": "string"
+          },
+          "value": {
+            "display_role": "stat_value",
+            "max_length": 20,
+            "nullable": false,
+            "required": true,
+            "type": "string"
+          }
+        }
+      },
+      "max_items": 4,
+      "min_items": 0,
+      "nullable": false,
+      "required": true,
+      "type": "array"
+    },
+    "reviews": {
+      "display_role": "review_system",
+      "nullable": false,
+      "required": true,
+      "type": "object",
+      "fields": {
+        "allow_submission": {
+          "display_role": "review_form_enabled",
+          "nullable": false,
+          "required": true,
+          "type": "boolean"
+        },
+        "enabled": {
+          "display_role": "review_section_visibility",
+          "nullable": false,
+          "required": true,
+          "type": "boolean"
+        },
+        "items": {
+          "display_role": "review_list",
+          "item_schema": {
+            "display_role": "review_item",
+            "nullable": false,
+            "required": true,
+            "type": "object",
+            "fields": {
+              "name": {
+                "display_role": "reviewer_name",
+                "max_length": 60,
+                "nullable": false,
+                "required": true,
+                "type": "string"
+              },
+              "rating": {
+                "display_role": "review_rating",
+                "enum": [
+                  1,
+                  2,
+                  3,
+                  4,
+                  5
+                ],
+                "nullable": false,
+                "required": true,
+                "type": "number"
+              },
+              "text": {
+                "display_role": "review_body",
+                "max_length": 500,
+                "nullable": false,
+                "required": true,
+                "type": "string"
+              }
+            }
+          },
+          "max_items": 100,
+          "min_items": 0,
+          "nullable": false,
+          "required": true,
+          "type": "array"
+        },
+        "summary": {
+          "display_role": "review_summary",
+          "nullable": false,
+          "required": true,
+          "type": "object",
+          "fields": {
+            "average_rating": {
+              "display_role": "average_rating_value",
+              "max_value": 5,
+              "min_value": 0,
+              "nullable": false,
+              "required": true,
+              "type": "number"
+            },
+            "review_count": {
+              "display_role": "review_count_value",
+              "max_value": 100000,
+              "min_value": 0,
+              "nullable": false,
+              "required": true,
+              "type": "number"
+            }
+          }
+        }
+      }
+    },
+    "services_offered": {
+      "display_role": "services_section",
+      "nullable": false,
+      "required": true,
+      "type": "object",
+      "fields": {
+        "items": {
+          "display_role": "service_cards",
+          "item_schema": {
+            "display_role": "service_card",
+            "nullable": false,
+            "required": true,
+            "type": "object",
+            "fields": {
+              "description": {
+                "display_role": "service_description",
+                "max_length": 220,
+                "nullable": false,
+                "required": true,
+                "type": "string"
+              },
+              "icon": {
+                "display_role": "service_icon",
+                "enum": [
+                  "book-open",
+                  "briefcase",
+                  "calculator",
+                  "file-check",
+                  "gavel",
+                  "globe",
+                  "scale-3",
+                  "shield-check",
+                  "target",
+                  "users"
+                ],
+                "nullable": false,
+                "required": true,
+                "type": "string"
+              },
+              "title": {
+                "display_role": "service_title",
+                "enum": [
+                  "Appeals",
+                  "Audit Defense",
+                  "Business Tax Advisory",
+                  "Compliance",
+                  "Consulting",
+                  "Estate & Trust Tax",
+                  "Expert Witness",
+                  "Foreign Reporting (FBAR/FATCA)",
+                  "IRS Collections Defense",
+                  "Offer in Compromise",
+                  "Payroll Tax Defense",
+                  "Penalty Abatement",
+                  "Tax Litigation",
+                  "Tax Monitoring",
+                  "Tax Planning",
+                  "Tax Preparation",
+                  "Tax Resolution",
+                  "Trust Fund Recovery Defense"
+                ],
+                "max_length": 60,
+                "nullable": false,
+                "required": true,
+                "type": "string"
+              }
+            }
+          },
+          "max_items": 16,
+          "min_items": 1,
+          "nullable": false,
+          "required": true,
+          "type": "array"
+        }
+      }
+    },
+    "specializations": {
+      "display_role": "client_type_grid",
+      "nullable": false,
+      "required": true,
+      "type": "object",
+      "fields": {
+        "client_types": {
+          "display_role": "specialization_items",
+          "item_schema": {
+            "enum": [
+              "Businesses",
+              "C Corporations",
+              "Executives",
+              "Individuals",
+              "LLCs",
+              "Nonprofits",
+              "Partnerships",
+              "S Corporations"
+            ],
+            "max_length": 40,
+            "nullable": false,
+            "required": true,
+            "type": "string"
+          },
+          "max_items": 16,
+          "min_items": 0,
+          "nullable": false,
+          "required": true,
+          "type": "array"
+        }
+      }
+    }
   }
 }

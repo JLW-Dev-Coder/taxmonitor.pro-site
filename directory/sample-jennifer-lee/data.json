@@ -1,0 +1,24 @@
+{
+    "contract":  "directory-profile.v1",
+    "slug":  "sample-jennifer-lee",
+    "name":  "Jennifer Lee",
+    "initials":  "JL",
+    "professions":  [
+                        "attorney",
+                        "cpa"
+                    ],
+    "status":  "standard",
+    "location":  "Beverly Hills, CA",
+    "services":  [
+                     "estate",
+                     "international",
+                     "planning"
+                 ],
+    "client_types":  [
+                         "business",
+                         "individual",
+                         "nonprofit"
+                     ],
+    "short_bio":  "Dual-credentialed advisor for estate, nonprofit, and complex tax planning.",
+    "profile_type":  "sample"
+}

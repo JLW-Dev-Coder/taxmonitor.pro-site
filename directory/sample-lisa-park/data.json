@@ -1,0 +1,20 @@
+{
+    "contract":  "directory-profile.v1",
+    "slug":  "sample-lisa-park",
+    "name":  "Lisa Park",
+    "initials":  "LP",
+    "professions":  [
+                        "ea"
+                    ],
+    "status":  "standard",
+    "location":  "Austin, TX",
+    "services":  [
+                     "audit",
+                     "tax-prep"
+                 ],
+    "client_types":  [
+                         "individual"
+                     ],
+    "short_bio":  "Former IRS examiner offering audit defense and tax preparation support.",
+    "profile_type":  "sample"
+}

@@ -1,0 +1,22 @@
+{
+    "contract":  "directory-profile.v1",
+    "slug":  "sample-amanda-garcia",
+    "name":  "Amanda Garcia",
+    "initials":  "AG",
+    "professions":  [
+                        "cpa"
+                    ],
+    "status":  "standard",
+    "location":  "Remote/Virtual",
+    "services":  [
+                     "bookkeeping",
+                     "international",
+                     "tax-prep"
+                 ],
+    "client_types":  [
+                         "expat",
+                         "individual"
+                     ],
+    "short_bio":  "Remote-first CPA practice serving US expats worldwide.",
+    "profile_type":  "sample"
+}

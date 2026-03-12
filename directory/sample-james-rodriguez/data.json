@@ -1,0 +1,21 @@
+{
+    "contract":  "directory-profile.v1",
+    "slug":  "sample-james-rodriguez",
+    "name":  "James Rodriguez",
+    "initials":  "JR",
+    "professions":  [
+                        "ea"
+                    ],
+    "status":  "featured",
+    "location":  "Miami, FL",
+    "services":  [
+                     "audit",
+                     "international"
+                 ],
+    "client_types":  [
+                         "expat",
+                         "individual"
+                     ],
+    "short_bio":  "Enrolled Agent specializing in expat and international tax matters.",
+    "profile_type":  "sample"
+}

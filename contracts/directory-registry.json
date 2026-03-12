@@ -1,0 +1,41 @@
+{
+  "registry": "directory-registry.v1",
+  "description": "Registry for Tax Monitor Pro public directory routes and integrations.",
+  "routes": [
+    {
+      "name": "directory_index",
+      "method": "GET",
+      "path": "/directory/index.json",
+      "contract": "directory-index.v1",
+      "purpose": "Return directory listing and featured profiles."
+    },
+    {
+      "name": "directory_profile",
+      "method": "GET",
+      "path": "/directory/{slug}/data.json",
+      "contract": "directory-profile.v1",
+      "purpose": "Return profile data for a specific tax professional."
+    },
+    {
+      "name": "directory_review_submit",
+      "method": "POST",
+      "path": "/directory/{slug}/review",
+      "contract": "directory-profile.v1",
+      "purpose": "Submit a review for a directory profile."
+    },
+    {
+      "name": "cal_pro_oauth_start",
+      "method": "GET",
+      "path": "/cal/pro/oauth/start",
+      "provider": "cal_com",
+      "purpose": "Begin OAuth connection for a tax professional's Cal.com account."
+    },
+    {
+      "name": "cal_pro_oauth_callback",
+      "method": "GET",
+      "path": "/cal/pro/oauth/callback",
+      "provider": "cal_com",
+      "purpose": "OAuth callback for tax professional Cal.com connection."
+    }
+  ]
+}

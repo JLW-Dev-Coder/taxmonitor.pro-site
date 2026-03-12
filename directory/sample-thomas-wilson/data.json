@@ -1,0 +1,21 @@
+{
+    "contract":  "directory-profile.v1",
+    "slug":  "sample-thomas-wilson",
+    "name":  "Thomas Wilson",
+    "initials":  "TW",
+    "professions":  [
+                        "ea"
+                    ],
+    "status":  "standard",
+    "location":  "Houston, TX",
+    "services":  [
+                     "bookkeeping",
+                     "payroll",
+                     "tax-prep"
+                 ],
+    "client_types":  [
+                         "business"
+                     ],
+    "short_bio":  "Enrolled Agent delivering bookkeeping, payroll, and tax support for small businesses.",
+    "profile_type":  "sample"
+}

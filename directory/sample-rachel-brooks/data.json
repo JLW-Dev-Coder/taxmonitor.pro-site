@@ -1,0 +1,19 @@
+{
+    "contract":  "directory-profile.v1",
+    "slug":  "sample-rachel-brooks",
+    "name":  "Rachel Brooks",
+    "initials":  "RB",
+    "professions":  [
+                        "erpa"
+                    ],
+    "status":  "standard",
+    "location":  "Tampa, FL",
+    "services":  [
+                     "planning"
+                 ],
+    "client_types":  [
+                         "business"
+                     ],
+    "short_bio":  "ERPA specializing in retirement plan compliance and administration.",
+    "profile_type":  "sample"
+}

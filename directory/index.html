@@ -1,1 +1,695 @@
 <!-- directory/index.html -->
+<!doctype html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tax Monitor Pro • Directory</title>
+
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['DM Sans', 'system-ui', 'sans-serif']
+          },
+          boxShadow: {
+            soft: '0 0 0 1px rgba(148,163,184,.06), 0 30px 80px rgba(0,0,0,.35)'
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    html, body { height: 100%; margin: 0; }
+    body { box-sizing: border-box; overflow-x: hidden; }
+    * { font-family: 'DM Sans', sans-serif; }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #F59E0B, #D97706);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-glow {
+      background:
+        radial-gradient(circle at top right, rgba(245, 158, 11, 0.14), transparent 28%),
+        radial-gradient(circle at top left, rgba(251, 191, 36, 0.08), transparent 20%);
+    }
+
+    .glass-card {
+      background: rgba(15, 23, 42, 0.58);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(51, 65, 85, 0.75);
+      box-shadow: 0 0 0 1px rgba(148,163,184,.04), 0 35px 120px rgba(0,0,0,.30);
+    }
+
+    .soft-card {
+      background: rgba(15, 23, 42, 0.42);
+      border: 1px solid rgba(51, 65, 85, 0.70);
+    }
+
+    .featured-card {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.10) 0%, rgba(15, 23, 42, 0.72) 100%);
+      border: 1px solid rgba(245, 158, 11, 0.22);
+      box-shadow: 0 0 0 1px rgba(245,158,11,.05), 0 30px 90px rgba(0,0,0,.24);
+    }
+
+    .featured-badge {
+      background: linear-gradient(135deg, #F59E0B, #D97706);
+      color: #0f172a;
+    }
+
+    .badge-attorney { background: linear-gradient(135deg, #2563eb, #1d4ed8); }
+    .badge-cpa { background: linear-gradient(135deg, #10b981, #059669); }
+    .badge-ea { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+    .badge-actuary { background: linear-gradient(135deg, #ec4899, #db2777); }
+    .badge-erpa { background: linear-gradient(135deg, #14b8a6, #0d9488); }
+
+    .animated-section {
+      animation: fadeInUp 0.8s ease-out both;
+    }
+
+    .animated-section:nth-of-type(1) { animation-delay: 0.08s; }
+    .animated-section:nth-of-type(2) { animation-delay: 0.14s; }
+    .animated-section:nth-of-type(3) { animation-delay: 0.20s; }
+    .animated-section:nth-of-type(4) { animation-delay: 0.26s; }
+    .animated-section:nth-of-type(5) { animation-delay: 0.32s; }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #0f172a; border-radius: 999px; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 999px; }
+    ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+    @view-transition { navigation: auto; }
+  </style>
+</head>
+
+<body class="h-full bg-slate-950 text-slate-100 font-sans overflow-auto">
+  <div class="min-h-full w-full flex flex-col">
+    <!-- PARTIAL:header -->
+
+    <header class="animated-section relative overflow-hidden hero-glow border-b border-slate-800/70">
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(245,158,11,0.08),_transparent_42%)]"></div>
+      <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20 text-center">
+        <div class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-full bg-slate-900/70 border border-slate-700/70 mb-5 text-sm text-slate-300">
+          <i data-lucide="shield-check" class="w-4 h-4 text-amber-400"></i>
+          <span>Find tax professionals by specialty, credentials, and fit</span>
+        </div>
+
+        <h1 id="page-title" class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight mb-4">
+          Find the Right <span class="gradient-text">Tax Professional</span>
+        </h1>
+
+        <p id="page-subtitle" class="text-lg sm:text-xl text-slate-400 max-w-3xl leading-relaxed mx-auto">
+          Browse licensed tax professionals, compare specialties, and explore profiles to find the right fit for your tax situation.
+        </p>
+      </div>
+    </header>
+
+    <main class="flex-1">
+      
+
+      <section class="animated-section max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="glass-card rounded-3xl p-4 sm:p-5 mb-8">
+          <div class="relative mb-4">
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+              <i data-lucide="search" class="w-5 h-5 text-slate-500"></i>
+            </div>
+            <input type="text" id="search-input" placeholder="Search by name, specialty, or keyword..." class="w-full pl-12 pr-4 py-4 bg-slate-900/70 border border-slate-700 rounded-2xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-500 transition-all" />
+          </div>
+
+          <div class="flex flex-wrap gap-3 items-center">
+            <span class="text-sm font-medium text-slate-400 flex items-center gap-2">
+              <i data-lucide="filter" class="w-4 h-4 text-amber-400"></i>
+              Filters:
+            </span>
+
+            <div class="relative">
+              <button onclick="toggleDropdown('profession-dropdown')" class="px-4 py-2 bg-slate-900/70 border border-slate-700 rounded-full text-sm font-medium hover:bg-slate-800 transition-all flex items-center gap-2">
+                Profession
+                <i data-lucide="chevron-down" class="w-4 h-4"></i>
+              </button>
+              <div id="profession-dropdown" class="hidden absolute top-full left-0 mt-2 w-64 bg-slate-900 border border-slate-700 rounded-2xl shadow-soft z-50 p-2">
+                <label class="flex items-center gap-2 px-3 py-2 hover:bg-slate-800 rounded-lg cursor-pointer"><input type="checkbox" value="actuary" class="profession-filter rounded border-slate-600 text-amber-500 focus:ring-amber-500"><span class="text-sm">Enrolled Actuary</span></label>
+                <label class="flex items-center gap-2 px-3 py-2 hover:bg-slate-800 rounded-lg cursor-pointer"><input type="checkbox" value="attorney" class="profession-filter rounded border-slate-600 text-amber-500 focus:ring-amber-500"><span class="text-sm">Attorney</span></label>
+                <label class="flex items-center gap-2 px-3 py-2 hover:bg-slate-800 rounded-lg cursor-pointer"><input type="checkbox" value="cpa" class="profession-filter rounded border-slate-600 text-amber-500 focus:ring-amber-500"><span class="text-sm">CPA</span></label>
+                <label class="flex items-center gap-2 px-3 py-2 hover:bg-slate-800 rounded-lg cursor-pointer"><input type="checkbox" value="ea" class="profession-filter rounded border-slate-600 text-amber-500 focus:ring-amber-500"><span class="text-sm">Enrolled Agent</span></label>
+                <label class="flex items-center gap-2 px-3 py-2 hover:bg-slate-800 rounded-lg cursor-pointer"><input type="checkbox" value="erpa" class="profession-filter rounded border-slate-600 text-amber-500 focus:ring-amber-500"><span class="text-sm">Enrolled Retirement Plan Agent</span></label>
+              </div>
+            </div>
+
+            <div class="relative">
+              <button onclick="toggleDropdown('status-dropdown')" class="px-4 py-2 bg-slate-900/70 border border-slate-700 rounded-full text-sm font-medium hover:bg-slate-800 transition-all flex items-center gap-2">
+                Status
+                <i data-lucide="chevron-down" class="w-4 h-4"></i>
+              </button>
+              <div id="status-dropdown" class="hidden absolute top-full left-0 mt-2 w-48 bg-slate-900 border border-slate-700 rounded-2xl shadow-soft z-50 p-2">
+                <label class="flex items-center gap-2 px-3 py-2 hover:bg-slate-800 rounded-lg cursor-pointer"><input type="checkbox" value="featured" class="status-filter rounded border-slate-600 text-amber-500 focus:ring-amber-500"><span class="text-sm">Featured</span></label>
+                <label class="flex items-center gap-2 px-3 py-2 hover:bg-slate-800 rounded-lg cursor-pointer"><input type="checkbox" value="standard" class="status-filter rounded border-slate-600 text-amber-500 focus:ring-amber-500"><span class="text-sm">Standard</span></label>
+              </div>
+            </div>
+
+            <div class="relative">
+              <button onclick="toggleDropdown('services-dropdown')" class="px-4 py-2 bg-slate-900/70 border border-slate-700 rounded-full text-sm font-medium hover:bg-slate-800 transition-all flex items-center gap-2">
+                Services
+                <i data-lucide="chevron-down" class="w-4 h-4"></i>
+              </button>
+              <div id="services-dropdown" class="hidden absolute top-full left-0 mt-2 w-56 bg-slate-900 border border-slate-700 rounded-2xl shadow-soft z-50 p-2 max-h-64 overflow-y-auto">
+                <label class="flex items-center gap-2 px-3 py-2 hover:bg-slate-800 rounded-lg cursor-pointer"><input type="checkbox" value="audit" class="service-filter rounded border-slate-600 text-amber-500 focus:ring-amber-500"><span class="text-sm">Audit Defense</span></label>
+                <label class="flex items-center gap-2 px-3 py-2 hover:bg-slate-800 rounded-lg cursor-pointer"><input type="checkbox" value="bookkeeping" class="service-filter rounded border-slate-600 text-amber-500 focus:ring-amber-500"><span class="text-sm">Bookkeeping</span></label>
+                <label class="flex items-center gap-2 px-3 py-2 hover:bg-slate-800 rounded-lg cursor-pointer"><input type="checkbox" value="estate" class="service-filter rounded border-slate-600 text-amber-500 focus:ring-amber-500"><span class="text-sm">Estate Planning</span></label>
+                <label class="flex items-center gap-2 px-3 py-2 hover:bg-slate-800 rounded-lg cursor-pointer"><input type="checkbox" value="international" class="service-filter rounded border-slate-600 text-amber-500 focus:ring-amber-500"><span class="text-sm">International Tax</span></label>
+                <label class="flex items-center gap-2 px-3 py-2 hover:bg-slate-800 rounded-lg cursor-pointer"><input type="checkbox" value="payroll" class="service-filter rounded border-slate-600 text-amber-500 focus:ring-amber-500"><span class="text-sm">Payroll</span></label>
+                <label class="flex items-center gap-2 px-3 py-2 hover:bg-slate-800 rounded-lg cursor-pointer"><input type="checkbox" value="planning" class="service-filter rounded border-slate-600 text-amber-500 focus:ring-amber-500"><span class="text-sm">Tax Planning</span></label>
+                <label class="flex items-center gap-2 px-3 py-2 hover:bg-slate-800 rounded-lg cursor-pointer"><input type="checkbox" value="tax-prep" class="service-filter rounded border-slate-600 text-amber-500 focus:ring-amber-500"><span class="text-sm">Tax Preparation</span></label>
+              </div>
+            </div>
+
+            <div class="relative">
+              <button onclick="toggleDropdown('location-dropdown')" class="px-4 py-2 bg-slate-900/70 border border-slate-700 rounded-full text-sm font-medium hover:bg-slate-800 transition-all flex items-center gap-2">
+                Location
+                <i data-lucide="chevron-down" class="w-4 h-4"></i>
+              </button>
+              <div id="location-dropdown" class="hidden absolute top-full left-0 mt-2 w-48 bg-slate-900 border border-slate-700 rounded-2xl shadow-soft z-50 p-2 max-h-64 overflow-y-auto">
+                <label class="flex items-center gap-2 px-3 py-2 hover:bg-slate-800 rounded-lg cursor-pointer"><input type="checkbox" value="ca" class="location-filter rounded border-slate-600 text-amber-500 focus:ring-amber-500"><span class="text-sm">California</span></label>
+                <label class="flex items-center gap-2 px-3 py-2 hover:bg-slate-800 rounded-lg cursor-pointer"><input type="checkbox" value="fl" class="location-filter rounded border-slate-600 text-amber-500 focus:ring-amber-500"><span class="text-sm">Florida</span></label>
+                <label class="flex items-center gap-2 px-3 py-2 hover:bg-slate-800 rounded-lg cursor-pointer"><input type="checkbox" value="ny" class="location-filter rounded border-slate-600 text-amber-500 focus:ring-amber-500"><span class="text-sm">New York</span></label>
+                <label class="flex items-center gap-2 px-3 py-2 hover:bg-slate-800 rounded-lg cursor-pointer"><input type="checkbox" value="remote" class="location-filter rounded border-slate-600 text-amber-500 focus:ring-amber-500"><span class="text-sm">Remote/Virtual</span></label>
+                <label class="flex items-center gap-2 px-3 py-2 hover:bg-slate-800 rounded-lg cursor-pointer"><input type="checkbox" value="tx" class="location-filter rounded border-slate-600 text-amber-500 focus:ring-amber-500"><span class="text-sm">Texas</span></label>
+              </div>
+            </div>
+
+            <div class="relative">
+              <button onclick="toggleDropdown('client-dropdown')" class="px-4 py-2 bg-slate-900/70 border border-slate-700 rounded-full text-sm font-medium hover:bg-slate-800 transition-all flex items-center gap-2">
+                Client Type
+                <i data-lucide="chevron-down" class="w-4 h-4"></i>
+              </button>
+              <div id="client-dropdown" class="hidden absolute top-full left-0 mt-2 w-48 bg-slate-900 border border-slate-700 rounded-2xl shadow-soft z-50 p-2">
+                <label class="flex items-center gap-2 px-3 py-2 hover:bg-slate-800 rounded-lg cursor-pointer"><input type="checkbox" value="business" class="client-filter rounded border-slate-600 text-amber-500 focus:ring-amber-500"><span class="text-sm">Business</span></label>
+                <label class="flex items-center gap-2 px-3 py-2 hover:bg-slate-800 rounded-lg cursor-pointer"><input type="checkbox" value="expat" class="client-filter rounded border-slate-600 text-amber-500 focus:ring-amber-500"><span class="text-sm">Expat</span></label>
+                <label class="flex items-center gap-2 px-3 py-2 hover:bg-slate-800 rounded-lg cursor-pointer"><input type="checkbox" value="individual" class="client-filter rounded border-slate-600 text-amber-500 focus:ring-amber-500"><span class="text-sm">Individual</span></label>
+                <label class="flex items-center gap-2 px-3 py-2 hover:bg-slate-800 rounded-lg cursor-pointer"><input type="checkbox" value="nonprofit" class="client-filter rounded border-slate-600 text-amber-500 focus:ring-amber-500"><span class="text-sm">Nonprofit</span></label>
+              </div>
+            </div>
+
+            <button onclick="clearFilters()" class="ml-auto px-4 py-2 text-sm font-medium text-amber-300 hover:text-amber-200 transition-colors flex items-center gap-2">
+              <i data-lucide="x" class="w-4 h-4"></i>
+              Clear All
+            </button>
+          </div>
+
+          <div id="active-filters" class="hidden mt-4 pt-4 border-t border-slate-700/70">
+            <div class="flex flex-wrap gap-2" id="active-filters-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="animated-section max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="w-1 h-8 bg-gradient-to-b from-amber-500 to-amber-600 rounded-full"></div>
+          <h2 id="featured-section-title" class="text-2xl font-bold">Featured Profiles</h2>
+          <i data-lucide="star" class="w-5 h-5 text-amber-400 fill-amber-400"></i>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6" id="featured-cards">
+          <div class="featured-card rounded-3xl p-6 transition-all duration-300 hover:-translate-y-1" data-professional="1" data-profession="attorney,cpa" data-status="featured" data-services="audit,planning" data-location="ca" data-client="business,individual">
+            <div class="flex items-start gap-4 mb-4">
+              <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center text-2xl font-bold text-slate-950 flex-shrink-0">SM</div>
+              <div class="flex-1 min-w-0">
+                <div class="flex flex-wrap items-center gap-2 mb-1">
+                  <h3 class="text-lg font-bold">Sarah Mitchell</h3>
+                  <span class="featured-badge px-2 py-0.5 rounded-full text-xs font-semibold">Featured</span>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                  <span class="badge-attorney px-2.5 py-1 rounded-full text-xs font-semibold">Attorney</span>
+                  <span class="badge-cpa px-2.5 py-1 rounded-full text-xs font-semibold">CPA</span>
+                </div>
+              </div>
+            </div>
+            <p class="text-slate-400 text-sm mb-4 line-clamp-2">Specializing in complex tax litigation and IRS audit defense. Over 20 years helping clients navigate challenging tax situations.</p>
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span class="px-2.5 py-1 bg-slate-900/70 rounded-full text-xs text-slate-300">Audit Defense</span>
+              <span class="px-2.5 py-1 bg-slate-900/70 rounded-full text-xs text-slate-300">Tax Litigation</span>
+              <span class="px-2.5 py-1 bg-slate-900/70 rounded-full text-xs text-slate-300">Tax Planning</span>
+            </div>
+            <div class="flex items-center justify-between pt-4 border-t border-slate-700/60">
+              <div class="flex items-center gap-2 text-sm text-slate-400"><i data-lucide="map-pin" class="w-4 h-4 text-amber-400"></i><span>Los Angeles, CA</span></div>
+              <div class="flex gap-2">
+                <button class="contact-btn px-3 py-1.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 rounded-lg text-sm font-medium transition-colors">Sample</button>
+                <button class="view-btn px-3 py-1.5 border border-slate-600 hover:border-amber-500 hover:text-amber-300 rounded-lg text-sm font-medium transition-colors flex items-center gap-1">View <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
+              </div>
+            </div>
+          </div>
+
+          <div class="featured-card rounded-3xl p-6 transition-all duration-300 hover:-translate-y-1" data-professional="2" data-profession="ea" data-status="featured" data-services="audit,international" data-location="fl" data-client="expat,individual">
+            <div class="flex items-start gap-4 mb-4">
+              <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center text-2xl font-bold flex-shrink-0">JR</div>
+              <div class="flex-1 min-w-0">
+                <div class="flex flex-wrap items-center gap-2 mb-1">
+                  <h3 class="text-lg font-bold">James Rodriguez</h3>
+                  <span class="featured-badge px-2 py-0.5 rounded-full text-xs font-semibold">Featured</span>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                  <span class="badge-ea px-2.5 py-1 rounded-full text-xs font-semibold">Enrolled Agent</span>
+                </div>
+              </div>
+            </div>
+            <p class="text-slate-400 text-sm mb-4 line-clamp-2">Expert in international tax compliance and expat taxation. Fluent in Spanish and Portuguese. Former IRS Revenue Agent.</p>
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span class="px-2.5 py-1 bg-slate-900/70 rounded-full text-xs text-slate-300">Expat Services</span>
+              <span class="px-2.5 py-1 bg-slate-900/70 rounded-full text-xs text-slate-300">FBAR</span>
+              <span class="px-2.5 py-1 bg-slate-900/70 rounded-full text-xs text-slate-300">International Tax</span>
+            </div>
+            <div class="flex items-center justify-between pt-4 border-t border-slate-700/60">
+              <div class="flex items-center gap-2 text-sm text-slate-400"><i data-lucide="map-pin" class="w-4 h-4 text-amber-400"></i><span>Miami, FL</span></div>
+              <div class="flex gap-2">
+                <button class="contact-btn px-3 py-1.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 rounded-lg text-sm font-medium transition-colors">Sample</button>
+                <button class="view-btn px-3 py-1.5 border border-slate-600 hover:border-amber-500 hover:text-amber-300 rounded-lg text-sm font-medium transition-colors flex items-center gap-1">View <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
+              </div>
+            </div>
+          </div>
+
+          <div class="featured-card rounded-3xl p-6 transition-all duration-300 hover:-translate-y-1" data-professional="3" data-profession="cpa" data-status="featured" data-services="planning,tax-prep" data-location="ca" data-client="business,individual">
+            <div class="flex items-start gap-4 mb-4">
+              <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center text-2xl font-bold flex-shrink-0">EW</div>
+              <div class="flex-1 min-w-0">
+                <div class="flex flex-wrap items-center gap-2 mb-1">
+                  <h3 class="text-lg font-bold">Emily Wong</h3>
+                  <span class="featured-badge px-2 py-0.5 rounded-full text-xs font-semibold">Featured</span>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                  <span class="badge-cpa px-2.5 py-1 rounded-full text-xs font-semibold">CPA</span>
+                </div>
+              </div>
+            </div>
+            <p class="text-slate-400 text-sm mb-4 line-clamp-2">Small business specialist with expertise in startup tax strategy and R&amp;D credits. Helping entrepreneurs optimize their tax position.</p>
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span class="px-2.5 py-1 bg-slate-900/70 rounded-full text-xs text-slate-300">R&amp;D Credits</span>
+              <span class="px-2.5 py-1 bg-slate-900/70 rounded-full text-xs text-slate-300">Small Business</span>
+              <span class="px-2.5 py-1 bg-slate-900/70 rounded-full text-xs text-slate-300">Startups</span>
+            </div>
+            <div class="flex items-center justify-between pt-4 border-t border-slate-700/60">
+              <div class="flex items-center gap-2 text-sm text-slate-400"><i data-lucide="map-pin" class="w-4 h-4 text-amber-400"></i><span>San Francisco, CA</span></div>
+              <div class="flex gap-2">
+                <button class="contact-btn px-3 py-1.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 rounded-lg text-sm font-medium transition-colors">Sample</button>
+                <button class="view-btn px-3 py-1.5 border border-slate-600 hover:border-amber-500 hover:text-amber-300 rounded-lg text-sm font-medium transition-colors flex items-center gap-1">View <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="animated-section max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+        <div class="flex items-center justify-between mb-6 gap-4">
+          <div class="flex items-center gap-3">
+            <div class="w-1 h-8 bg-gradient-to-b from-slate-500 to-slate-600 rounded-full"></div>
+            <h2 class="text-2xl font-bold">All Professionals</h2>
+          </div>
+          <p id="results-count" class="text-sm text-slate-400">Showing 9 professionals</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="directory-grid">
+          <div class="glass-card rounded-3xl p-5 transition-all duration-300 hover:-translate-y-1" data-professional="4" data-profession="cpa" data-status="standard" data-services="bookkeeping,planning,tax-prep" data-location="ny" data-client="business,individual">
+            <div class="flex items-start gap-3 mb-3">
+              <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center text-lg font-bold flex-shrink-0">MJ</div>
+              <div class="flex-1 min-w-0"><h3 class="font-semibold truncate">Michael Johnson</h3><span class="badge-cpa px-2 py-0.5 rounded-full text-xs font-semibold inline-block mt-1">CPA</span></div>
+            </div>
+            <p class="text-slate-400 text-sm mb-3 line-clamp-2">Comprehensive tax preparation and planning for individuals and small businesses. 15+ years of experience.</p>
+            <div class="flex flex-wrap gap-1.5 mb-3"><span class="px-2 py-0.5 bg-slate-900/70 rounded-full text-xs text-slate-300">Bookkeeping</span><span class="px-2 py-0.5 bg-slate-900/70 rounded-full text-xs text-slate-300">Planning</span><span class="px-2 py-0.5 bg-slate-900/70 rounded-full text-xs text-slate-300">Tax Prep</span></div>
+            <div class="flex items-center justify-between pt-3 border-t border-slate-700/60"><div class="flex items-center gap-1.5 text-xs text-slate-400"><i data-lucide="map-pin" class="w-3.5 h-3.5 text-amber-400"></i><span>New York, NY</span></div><button class="contact-btn px-3 py-1.5 bg-slate-900/70 hover:bg-slate-800 rounded-lg text-xs font-medium transition-colors">Sample</button></div>
+          </div>
+
+          <div class="glass-card rounded-3xl p-5 transition-all duration-300 hover:-translate-y-1" data-professional="5" data-profession="ea" data-status="standard" data-services="audit,tax-prep" data-location="tx" data-client="individual">
+            <div class="flex items-start gap-3 mb-3">
+              <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center text-lg font-bold flex-shrink-0">LP</div>
+              <div class="flex-1 min-w-0"><h3 class="font-semibold truncate">Lisa Park</h3><span class="badge-ea px-2 py-0.5 rounded-full text-xs font-semibold inline-block mt-1">Enrolled Agent</span></div>
+            </div>
+            <p class="text-slate-400 text-sm mb-3 line-clamp-2">IRS audit specialist with a 98% success rate. Former IRS examiner with inside knowledge of audit procedures.</p>
+            <div class="flex flex-wrap gap-1.5 mb-3"><span class="px-2 py-0.5 bg-slate-900/70 rounded-full text-xs text-slate-300">Audit Defense</span><span class="px-2 py-0.5 bg-slate-900/70 rounded-full text-xs text-slate-300">Tax Prep</span></div>
+            <div class="flex items-center justify-between pt-3 border-t border-slate-700/60"><div class="flex items-center gap-1.5 text-xs text-slate-400"><i data-lucide="map-pin" class="w-3.5 h-3.5 text-amber-400"></i><span>Austin, TX</span></div><button class="contact-btn px-3 py-1.5 bg-slate-900/70 hover:bg-slate-800 rounded-lg text-xs font-medium transition-colors">Sample</button></div>
+          </div>
+
+          <div class="glass-card rounded-3xl p-5 transition-all duration-300 hover:-translate-y-1" data-professional="6" data-profession="attorney" data-status="standard" data-services="estate,planning" data-location="ca" data-client="business,individual">
+            <div class="flex items-start gap-3 mb-3">
+              <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-lg font-bold flex-shrink-0">DC</div>
+              <div class="flex-1 min-w-0"><h3 class="font-semibold truncate">David Chen</h3><span class="badge-attorney px-2 py-0.5 rounded-full text-xs font-semibold inline-block mt-1">Attorney</span></div>
+            </div>
+            <p class="text-slate-400 text-sm mb-3 line-clamp-2">Tax attorney specializing in estate planning and wealth transfer strategies. JD/LLM in Taxation from NYU.</p>
+            <div class="flex flex-wrap gap-1.5 mb-3"><span class="px-2 py-0.5 bg-slate-900/70 rounded-full text-xs text-slate-300">Estate Planning</span><span class="px-2 py-0.5 bg-slate-900/70 rounded-full text-xs text-slate-300">Tax Planning</span></div>
+            <div class="flex items-center justify-between pt-3 border-t border-slate-700/60"><div class="flex items-center gap-1.5 text-xs text-slate-400"><i data-lucide="map-pin" class="w-3.5 h-3.5 text-amber-400"></i><span>San Diego, CA</span></div><button class="contact-btn px-3 py-1.5 bg-slate-900/70 hover:bg-slate-800 rounded-lg text-xs font-medium transition-colors">Sample</button></div>
+          </div>
+
+          <div class="glass-card rounded-3xl p-5 transition-all duration-300 hover:-translate-y-1" data-professional="7" data-profession="erpa" data-status="standard" data-services="planning" data-location="fl" data-client="business">
+            <div class="flex items-start gap-3 mb-3">
+              <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-teal-500 to-teal-600 flex items-center justify-center text-lg font-bold flex-shrink-0">RB</div>
+              <div class="flex-1 min-w-0"><h3 class="font-semibold truncate">Rachel Brooks</h3><span class="badge-erpa px-2 py-0.5 rounded-full text-xs font-semibold inline-block mt-1">ERPA</span></div>
+            </div>
+            <p class="text-slate-400 text-sm mb-3 line-clamp-2">Retirement plan specialist helping businesses design and maintain compliant 401(k) and pension plans.</p>
+            <div class="flex flex-wrap gap-1.5 mb-3"><span class="px-2 py-0.5 bg-slate-900/70 rounded-full text-xs text-slate-300">401(k) Plans</span><span class="px-2 py-0.5 bg-slate-900/70 rounded-full text-xs text-slate-300">Pension</span></div>
+            <div class="flex items-center justify-between pt-3 border-t border-slate-700/60"><div class="flex items-center gap-1.5 text-xs text-slate-400"><i data-lucide="map-pin" class="w-3.5 h-3.5 text-amber-400"></i><span>Tampa, FL</span></div><button class="contact-btn px-3 py-1.5 bg-slate-900/70 hover:bg-slate-800 rounded-lg text-xs font-medium transition-colors">Sample</button></div>
+          </div>
+
+          <div class="glass-card rounded-3xl p-5 transition-all duration-300 hover:-translate-y-1" data-professional="8" data-profession="actuary" data-status="standard" data-services="planning" data-location="ny" data-client="business">
+            <div class="flex items-start gap-3 mb-3">
+              <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center text-lg font-bold flex-shrink-0">KN</div>
+              <div class="flex-1 min-w-0"><h3 class="font-semibold truncate">Kevin Nakamura</h3><span class="badge-actuary px-2 py-0.5 rounded-full text-xs font-semibold inline-block mt-1">Enrolled Actuary</span></div>
+            </div>
+            <p class="text-slate-400 text-sm mb-3 line-clamp-2">Pension actuary with expertise in defined benefit plan funding and IRS compliance requirements.</p>
+            <div class="flex flex-wrap gap-1.5 mb-3"><span class="px-2 py-0.5 bg-slate-900/70 rounded-full text-xs text-slate-300">Compliance</span><span class="px-2 py-0.5 bg-slate-900/70 rounded-full text-xs text-slate-300">Defined Benefit</span></div>
+            <div class="flex items-center justify-between pt-3 border-t border-slate-700/60"><div class="flex items-center gap-1.5 text-xs text-slate-400"><i data-lucide="map-pin" class="w-3.5 h-3.5 text-amber-400"></i><span>New York, NY</span></div><button class="contact-btn px-3 py-1.5 bg-slate-900/70 hover:bg-slate-800 rounded-lg text-xs font-medium transition-colors">Sample</button></div>
+          </div>
+
+          <div class="glass-card rounded-3xl p-5 transition-all duration-300 hover:-translate-y-1" data-professional="9" data-profession="cpa" data-status="standard" data-services="bookkeeping,international,tax-prep" data-location="remote" data-client="expat,individual">
+            <div class="flex items-start gap-3 mb-3">
+              <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center text-lg font-bold text-slate-950 flex-shrink-0">AG</div>
+              <div class="flex-1 min-w-0"><h3 class="font-semibold truncate">Amanda Garcia</h3><span class="badge-cpa px-2 py-0.5 rounded-full text-xs font-semibold inline-block mt-1">CPA</span></div>
+            </div>
+            <p class="text-slate-400 text-sm mb-3 line-clamp-2">Remote-first practice serving US expats worldwide. Bilingual English/Spanish. FBAR and FATCA expert.</p>
+            <div class="flex flex-wrap gap-1.5 mb-3"><span class="px-2 py-0.5 bg-slate-900/70 rounded-full text-xs text-slate-300">Expat Tax</span><span class="px-2 py-0.5 bg-slate-900/70 rounded-full text-xs text-slate-300">FATCA</span><span class="px-2 py-0.5 bg-slate-900/70 rounded-full text-xs text-slate-300">FBAR</span></div>
+            <div class="flex items-center justify-between pt-3 border-t border-slate-700/60"><div class="flex items-center gap-1.5 text-xs text-slate-400"><i data-lucide="globe" class="w-3.5 h-3.5 text-amber-400"></i><span>Remote/Virtual</span></div><button class="contact-btn px-3 py-1.5 bg-slate-900/70 hover:bg-slate-800 rounded-lg text-xs font-medium transition-colors">Sample</button></div>
+          </div>
+
+          <div class="glass-card rounded-3xl p-5 transition-all duration-300 hover:-translate-y-1" data-professional="10" data-profession="ea" data-status="standard" data-services="bookkeeping,payroll,tax-prep" data-location="tx" data-client="business">
+            <div class="flex items-start gap-3 mb-3">
+              <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500 to-indigo-600 flex items-center justify-center text-lg font-bold flex-shrink-0">TW</div>
+              <div class="flex-1 min-w-0"><h3 class="font-semibold truncate">Thomas Wilson</h3><span class="badge-ea px-2 py-0.5 rounded-full text-xs font-semibold inline-block mt-1">Enrolled Agent</span></div>
+            </div>
+            <p class="text-slate-400 text-sm mb-3 line-clamp-2">Full-service tax and bookkeeping for small businesses. QuickBooks ProAdvisor. Payroll specialist.</p>
+            <div class="flex flex-wrap gap-1.5 mb-3"><span class="px-2 py-0.5 bg-slate-900/70 rounded-full text-xs text-slate-300">Bookkeeping</span><span class="px-2 py-0.5 bg-slate-900/70 rounded-full text-xs text-slate-300">Payroll</span><span class="px-2 py-0.5 bg-slate-900/70 rounded-full text-xs text-slate-300">Tax Prep</span></div>
+            <div class="flex items-center justify-between pt-3 border-t border-slate-700/60"><div class="flex items-center gap-1.5 text-xs text-slate-400"><i data-lucide="map-pin" class="w-3.5 h-3.5 text-amber-400"></i><span>Houston, TX</span></div><button class="contact-btn px-3 py-1.5 bg-slate-900/70 hover:bg-slate-800 rounded-lg text-xs font-medium transition-colors">Sample</button></div>
+          </div>
+
+          <div class="glass-card rounded-3xl p-5 transition-all duration-300 hover:-translate-y-1" data-professional="11" data-profession="attorney,cpa" data-status="standard" data-services="estate,international,planning" data-location="ca" data-client="business,individual,nonprofit">
+            <div class="flex items-start gap-3 mb-3">
+              <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-rose-500 to-rose-600 flex items-center justify-center text-lg font-bold flex-shrink-0">JL</div>
+              <div class="flex-1 min-w-0"><h3 class="font-semibold truncate">Jennifer Lee</h3><div class="flex gap-1 mt-1"><span class="badge-attorney px-2 py-0.5 rounded-full text-xs font-semibold">Attorney</span><span class="badge-cpa px-2 py-0.5 rounded-full text-xs font-semibold">CPA</span></div></div>
+            </div>
+            <p class="text-slate-400 text-sm mb-3 line-clamp-2">Dual-credentialed expert in complex wealth transfer and nonprofit tax law. Board-certified tax specialist.</p>
+            <div class="flex flex-wrap gap-1.5 mb-3"><span class="px-2 py-0.5 bg-slate-900/70 rounded-full text-xs text-slate-300">Estate Planning</span><span class="px-2 py-0.5 bg-slate-900/70 rounded-full text-xs text-slate-300">Nonprofit</span></div>
+            <div class="flex items-center justify-between pt-3 border-t border-slate-700/60"><div class="flex items-center gap-1.5 text-xs text-slate-400"><i data-lucide="map-pin" class="w-3.5 h-3.5 text-amber-400"></i><span>Beverly Hills, CA</span></div><button class="contact-btn px-3 py-1.5 bg-slate-900/70 hover:bg-slate-800 rounded-lg text-xs font-medium transition-colors">Sample</button></div>
+          </div>
+
+          <div class="glass-card rounded-3xl p-5 transition-all duration-300 hover:-translate-y-1" data-professional="12" data-profession="ea" data-status="standard" data-services="audit,tax-prep" data-location="fl" data-client="individual">
+            <div class="flex items-start gap-3 mb-3">
+              <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-cyan-500 to-cyan-600 flex items-center justify-center text-lg font-bold flex-shrink-0">SR</div>
+              <div class="flex-1 min-w-0"><h3 class="font-semibold truncate">Steven Roberts</h3><span class="badge-ea px-2 py-0.5 rounded-full text-xs font-semibold inline-block mt-1">Enrolled Agent</span></div>
+            </div>
+            <p class="text-slate-400 text-sm mb-3 line-clamp-2">Specializing in individual returns with complex situations: rental properties, stock options, and crypto taxation.</p>
+            <div class="flex flex-wrap gap-1.5 mb-3"><span class="px-2 py-0.5 bg-slate-900/70 rounded-full text-xs text-slate-300">Crypto Tax</span><span class="px-2 py-0.5 bg-slate-900/70 rounded-full text-xs text-slate-300">Rentals</span><span class="px-2 py-0.5 bg-slate-900/70 rounded-full text-xs text-slate-300">Stock Options</span></div>
+            <div class="flex items-center justify-between pt-3 border-t border-slate-700/60"><div class="flex items-center gap-1.5 text-xs text-slate-400"><i data-lucide="map-pin" class="w-3.5 h-3.5 text-amber-400"></i><span>Orlando, FL</span></div><button class="contact-btn px-3 py-1.5 bg-slate-900/70 hover:bg-slate-800 rounded-lg text-xs font-medium transition-colors">Sample</button></div>
+          </div>
+        </div>
+
+        <div id="no-results" class="hidden text-center py-16">
+          <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-slate-900/70 border border-slate-800 flex items-center justify-center"><i data-lucide="search-x" class="w-10 h-10 text-slate-600"></i></div>
+          <h3 class="text-xl font-semibold mb-2">No professionals found</h3>
+          <p class="text-slate-400 mb-4">Try adjusting your filters or search terms.</p>
+          <button onclick="clearFilters()" class="px-6 py-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 rounded-xl font-medium transition-colors">Clear All Filters</button>
+        </div>
+      </section>
+    </main>
+
+        <!-- PARTIAL:footer -->
+  </div>
+
+  <script>
+    const defaultConfig = {
+      page_title: 'Tax Professional',
+      page_subtitle: 'Browse licensed tax professionals, compare specialties, and explore profiles to find the right fit for your tax situation.',
+      featured_section_title: 'Featured Profiles',
+      cta_button_text: 'Sample',
+      background_color: '#020617',
+      card_color: '#0f172a',
+      text_color: '#f8fafc',
+      accent_color: '#f59e0b',
+      secondary_color: '#334155'
+    };
+
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange: async (config) => {
+          const titleEl = document.getElementById('page-title');
+          if (titleEl) {
+            titleEl.innerHTML = `Find the Right <span class="gradient-text">${config.page_title || defaultConfig.page_title}</span>`;
+          }
+
+          const subtitleEl = document.getElementById('page-subtitle');
+          if (subtitleEl) {
+            subtitleEl.textContent = config.page_subtitle || defaultConfig.page_subtitle;
+          }
+
+          const featuredTitleEl = document.getElementById('featured-section-title');
+          if (featuredTitleEl) {
+            featuredTitleEl.textContent = config.featured_section_title || defaultConfig.featured_section_title;
+          }
+
+          document.querySelectorAll('.contact-btn').forEach(btn => {
+            btn.textContent = config.cta_button_text || defaultConfig.cta_button_text;
+          });
+
+          document.body.style.backgroundColor = config.background_color || defaultConfig.background_color;
+        },
+        mapToCapabilities: (config) => ({
+          recolorables: [
+            {
+              get: () => config.background_color || defaultConfig.background_color,
+              set: (value) => window.elementSdk.setConfig({ background_color: value })
+            },
+            {
+              get: () => config.card_color || defaultConfig.card_color,
+              set: (value) => window.elementSdk.setConfig({ card_color: value })
+            },
+            {
+              get: () => config.text_color || defaultConfig.text_color,
+              set: (value) => window.elementSdk.setConfig({ text_color: value })
+            },
+            {
+              get: () => config.accent_color || defaultConfig.accent_color,
+              set: (value) => window.elementSdk.setConfig({ accent_color: value })
+            },
+            {
+              get: () => config.secondary_color || defaultConfig.secondary_color,
+              set: (value) => window.elementSdk.setConfig({ secondary_color: value })
+            }
+          ],
+          borderables: [],
+          fontEditable: undefined,
+          fontSizeable: undefined
+        }),
+        mapToEditPanelValues: (config) => new Map([
+          ['page_title', config.page_title || defaultConfig.page_title],
+          ['page_subtitle', config.page_subtitle || defaultConfig.page_subtitle],
+          ['featured_section_title', config.featured_section_title || defaultConfig.featured_section_title],
+          ['cta_button_text', config.cta_button_text || defaultConfig.cta_button_text]
+        ])
+      });
+    }
+
+    let activeFilters = {
+      profession: [],
+      status: [],
+      services: [],
+      location: [],
+      client: [],
+      search: ''
+    };
+
+    function toggleDropdown(id) {
+      const dropdown = document.getElementById(id);
+      const allDropdowns = document.querySelectorAll('[id$="-dropdown"]');
+      allDropdowns.forEach(d => {
+        if (d.id !== id) d.classList.add('hidden');
+      });
+      dropdown.classList.toggle('hidden');
+    }
+
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('[id$="-dropdown"]') && !e.target.closest('button')) {
+        document.querySelectorAll('[id$="-dropdown"]').forEach(d => d.classList.add('hidden'));
+      }
+    });
+
+    document.querySelectorAll('.profession-filter').forEach(cb => {
+      cb.addEventListener('change', () => updateFilters('profession', cb.value, cb.checked));
+    });
+
+    document.querySelectorAll('.status-filter').forEach(cb => {
+      cb.addEventListener('change', () => updateFilters('status', cb.value, cb.checked));
+    });
+
+    document.querySelectorAll('.service-filter').forEach(cb => {
+      cb.addEventListener('change', () => updateFilters('services', cb.value, cb.checked));
+    });
+
+    document.querySelectorAll('.location-filter').forEach(cb => {
+      cb.addEventListener('change', () => updateFilters('location', cb.value, cb.checked));
+    });
+
+    document.querySelectorAll('.client-filter').forEach(cb => {
+      cb.addEventListener('change', () => updateFilters('client', cb.value, cb.checked));
+    });
+
+    document.getElementById('search-input').addEventListener('input', (e) => {
+      activeFilters.search = e.target.value.toLowerCase();
+      applyFilters();
+    });
+
+    function updateFilters(type, value, add) {
+      if (add) {
+        if (!activeFilters[type].includes(value)) activeFilters[type].push(value);
+      } else {
+        activeFilters[type] = activeFilters[type].filter(v => v !== value);
+      }
+      applyFilters();
+      updateActiveFiltersDisplay();
+    }
+
+    function applyFilters() {
+      const cards = document.querySelectorAll('[data-professional]');
+      let visibleCount = 0;
+
+      cards.forEach(card => {
+        const profession = card.dataset.profession || '';
+        const status = card.dataset.status || '';
+        const services = card.dataset.services || '';
+        const location = card.dataset.location || '';
+        const client = card.dataset.client || '';
+        const cardText = card.textContent.toLowerCase();
+
+        let show = true;
+
+        if (activeFilters.search && !cardText.includes(activeFilters.search)) show = false;
+
+        if (show && activeFilters.profession.length > 0) {
+          const professions = profession.split(',');
+          if (!activeFilters.profession.some(p => professions.includes(p))) show = false;
+        }
+
+        if (show && activeFilters.status.length > 0) {
+          if (!activeFilters.status.includes(status)) show = false;
+        }
+
+        if (show && activeFilters.services.length > 0) {
+          const cardServices = services.split(',');
+          if (!activeFilters.services.some(s => cardServices.includes(s))) show = false;
+        }
+
+        if (show && activeFilters.location.length > 0) {
+          if (!activeFilters.location.includes(location)) show = false;
+        }
+
+        if (show && activeFilters.client.length > 0) {
+          const clients = client.split(',');
+          if (!activeFilters.client.some(c => clients.includes(c))) show = false;
+        }
+
+        card.style.display = show ? '' : 'none';
+        if (show) visibleCount++;
+      });
+
+      document.getElementById('results-count').textContent = `Showing ${visibleCount} professionals`;
+
+      const noResults = document.getElementById('no-results');
+      const directoryGrid = document.getElementById('directory-grid');
+      const featuredCards = document.getElementById('featured-cards');
+
+      if (visibleCount === 0) {
+        noResults.classList.remove('hidden');
+        directoryGrid.classList.add('hidden');
+        featuredCards.classList.add('hidden');
+      } else {
+        noResults.classList.add('hidden');
+        directoryGrid.classList.remove('hidden');
+        featuredCards.classList.remove('hidden');
+      }
+    }
+
+    function updateActiveFiltersDisplay() {
+      const container = document.getElementById('active-filters');
+      const list = document.getElementById('active-filters-list');
+
+      const allFilters = [
+        ...activeFilters.client.map(f => ({ type: 'client', value: f, label: getFilterLabel('client', f) })),
+        ...activeFilters.location.map(f => ({ type: 'location', value: f, label: getFilterLabel('location', f) })),
+        ...activeFilters.profession.map(f => ({ type: 'profession', value: f, label: getFilterLabel('profession', f) })),
+        ...activeFilters.services.map(f => ({ type: 'services', value: f, label: getFilterLabel('services', f) })),
+        ...activeFilters.status.map(f => ({ type: 'status', value: f, label: getFilterLabel('status', f) }))
+      ];
+
+      if (allFilters.length === 0) {
+        container.classList.add('hidden');
+        return;
+      }
+
+      container.classList.remove('hidden');
+      list.innerHTML = allFilters.map(f => `
+        <button onclick="removeFilter('${f.type}', '${f.value}')" class="px-3 py-1.5 bg-amber-500/10 border border-amber-500/25 rounded-full text-sm text-amber-300 hover:bg-amber-500/20 transition-colors flex items-center gap-2">
+          ${f.label}
+          <i data-lucide="x" class="w-3.5 h-3.5"></i>
+        </button>
+      `).join('');
+
+      lucide.createIcons();
+    }
+
+    function getFilterLabel(type, value) {
+      const labels = {
+        profession: { actuary: 'Enrolled Actuary', attorney: 'Attorney', cpa: 'CPA', ea: 'Enrolled Agent', erpa: 'ERPA' },
+        status: { featured: 'Featured', standard: 'Standard' },
+        services: { audit: 'Audit Defense', bookkeeping: 'Bookkeeping', estate: 'Estate Planning', international: 'International Tax', payroll: 'Payroll', planning: 'Tax Planning', 'tax-prep': 'Tax Preparation' },
+        location: { ca: 'California', fl: 'Florida', ny: 'New York', remote: 'Remote', tx: 'Texas' },
+        client: { business: 'Business', expat: 'Expat', individual: 'Individual', nonprofit: 'Nonprofit' }
+      };
+      return labels[type]?.[value] || value;
+    }
+
+    function removeFilter(type, value) {
+      activeFilters[type] = activeFilters[type].filter(v => v !== value);
+      const checkbox = document.querySelector(`.${type}-filter[value="${value}"]`);
+      if (checkbox) checkbox.checked = false;
+      applyFilters();
+      updateActiveFiltersDisplay();
+    }
+
+    function clearFilters() {
+      activeFilters = {
+        profession: [],
+        status: [],
+        services: [],
+        location: [],
+        client: [],
+        search: ''
+      };
+
+      document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+      document.getElementById('search-input').value = '';
+
+      applyFilters();
+      updateActiveFiltersDisplay();
+    }
+
+    lucide.createIcons();
+
+    const footerYearEl = document.getElementById('footer-year');
+    if (footerYearEl) footerYearEl.textContent = String(new Date().getFullYear());
+  </script>
+</body>
+</html>

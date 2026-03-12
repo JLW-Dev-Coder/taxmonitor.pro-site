@@ -1,0 +1,22 @@
+{
+    "contract":  "directory-profile.v1",
+    "slug":  "sample-michael-johnson",
+    "name":  "Michael Johnson",
+    "initials":  "MJ",
+    "professions":  [
+                        "cpa"
+                    ],
+    "status":  "standard",
+    "location":  "New York, NY",
+    "services":  [
+                     "bookkeeping",
+                     "planning",
+                     "tax-prep"
+                 ],
+    "client_types":  [
+                         "business",
+                         "individual"
+                     ],
+    "short_bio":  "CPA offering tax prep, planning, and bookkeeping for small businesses and individuals.",
+    "profile_type":  "sample"
+}

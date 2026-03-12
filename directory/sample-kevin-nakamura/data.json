@@ -1,0 +1,19 @@
+{
+    "contract":  "directory-profile.v1",
+    "slug":  "sample-kevin-nakamura",
+    "name":  "Kevin Nakamura",
+    "initials":  "KN",
+    "professions":  [
+                        "actuary"
+                    ],
+    "status":  "standard",
+    "location":  "New York, NY",
+    "services":  [
+                     "planning"
+                 ],
+    "client_types":  [
+                         "business"
+                     ],
+    "short_bio":  "Enrolled Actuary focused on pension funding and compliance.",
+    "profile_type":  "sample"
+}

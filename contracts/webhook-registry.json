@@ -1,0 +1,25 @@
+{
+  "registry": "webhook-registry.v1",
+  "description": "Webhook event registry for Tax Monitor Pro integrations.",
+  "providers": {
+    "cal_com": {
+      "events": [
+        {
+          "name": "booking_created",
+          "path": "/webhooks/cal/booking-created",
+          "purpose": "Triggered when a consultation booking is created."
+        },
+        {
+          "name": "booking_rescheduled",
+          "path": "/webhooks/cal/booking-rescheduled",
+          "purpose": "Triggered when a consultation booking is rescheduled."
+        },
+        {
+          "name": "booking_cancelled",
+          "path": "/webhooks/cal/booking-cancelled",
+          "purpose": "Triggered when a consultation booking is cancelled."
+        }
+      ]
+    }
+  }
+}
