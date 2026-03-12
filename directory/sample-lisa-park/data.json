@@ -1,20 +1,264 @@
 {
-    "contract":  "directory-profile.v1",
-    "slug":  "sample-lisa-park",
-    "name":  "Lisa Park",
-    "initials":  "LP",
-    "professions":  [
-                        "ea"
-                    ],
-    "status":  "standard",
-    "location":  "Austin, TX",
-    "services":  [
-                     "audit",
-                     "tax-prep"
-                 ],
-    "client_types":  [
-                         "individual"
-                     ],
-    "short_bio":  "Former IRS examiner offering audit defense and tax preparation support.",
-    "profile_type":  "sample"
+  "contract": "directory-profile.v1",
+  "bio": {
+    "bio_full_paragraphs": [
+      "Lisa Park is a seasoned tax professional with more than 11 years of experience helping clients navigate compliance, planning, and higher-stakes tax matters.",
+      "At Park Audit Defense, the practice emphasizes clear communication, structured workflows, and practical recommendations tailored to each client\u2019s facts and filing posture.",
+      "Clients value Lisa for thoughtful strategy, reliable follow-through, and the ability to translate technical tax issues into plain English without the usual nonsense."
+    ],
+    "bio_short": "Former IRS examiner offering audit defense, notice response, and tax prep support."
+  },
+  "buttons": {
+    "contact_button": {
+      "active": true,
+      "label": "Get In Touch",
+      "mode": "email",
+      "show": true,
+      "url": "mailto:lisa@parkauditdefense.com"
+    },
+    "review_button": {
+      "active": true,
+      "label": "Add Your Review",
+      "mode": "modal",
+      "show": true,
+      "url": null
+    },
+    "schedule_button": {
+      "active": true,
+      "behavior_phrase": "Yes, I have connected my own booking link, use my booking link",
+      "description": "Book a free 30-minute consultation to discuss your tax situation.",
+      "description_mode": "custom",
+      "event_type_duration_minutes": 30,
+      "event_type_label": "Consultation",
+      "label": "Schedule Consultation",
+      "mode": "custom_booking_link",
+      "provider_label": "Custom",
+      "show": true,
+      "url": "https://www.parkauditdefense.com/book"
+    }
+  },
+  "contact": {
+    "availability_display": "Mon-Fri, 9AM-5PM MT",
+    "contact_email": "lisa@parkauditdefense.com",
+    "languages": [
+      "English",
+      "Korean"
+    ],
+    "phone": "(303) 555-0135",
+    "timezone": "America/Denver",
+    "website": "https://www.parkauditdefense.com",
+    "weekly_availability": [
+      {
+        "day": "Monday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "17:00"
+      },
+      {
+        "day": "Tuesday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "17:00"
+      },
+      {
+        "day": "Wednesday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "17:00"
+      },
+      {
+        "day": "Thursday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "17:00"
+      },
+      {
+        "day": "Friday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "15:00"
+      },
+      {
+        "day": "Saturday",
+        "enabled": false,
+        "start_time": null,
+        "end_time": null
+      },
+      {
+        "day": "Sunday",
+        "enabled": false,
+        "start_time": null,
+        "end_time": null
+      }
+    ]
+  },
+  "credentials_experience": {
+    "background_items": [
+      {
+        "date_label": "2020 - Present",
+        "description": "Built a practice centered on audit defense and transcript-based issue response.",
+        "title": "Founder, Park Audit Defense"
+      },
+      {
+        "date_label": "2015 - 2020",
+        "description": "Reviewed returns, supporting documentation, and exam-related correspondence.",
+        "title": "IRS Examiner"
+      },
+      {
+        "date_label": "2013 - 2015",
+        "description": "Prepared individual and business returns and assisted with notice response.",
+        "title": "Tax Associate, Regional Firm"
+      }
+    ],
+    "licenses_certifications": [
+      {
+        "subtitle": "Federally authorized to represent taxpayers before the IRS",
+        "title": "Enrolled Agent"
+      },
+      {
+        "subtitle": "Direct experience with examination processes and document requests",
+        "title": "Former IRS Examiner"
+      },
+      {
+        "subtitle": "Focused on transcripts, notices, and audit defense preparation",
+        "title": "IRS Notice Response Practice"
+      }
+    ]
+  },
+  "hero": {
+    "credential_badges": [
+      {
+        "label": "EA",
+        "style_key": "ea"
+      }
+    ],
+    "headline": "Former IRS Examiner Focused on Audit Defense",
+    "location_label": "Denver, CO",
+    "rating_label": "4.8/5 (35 reviews)",
+    "years_experience_label": "11+ Years Experience"
+  },
+  "location": {
+    "city": "Denver",
+    "country": "United States",
+    "state": "Colorado",
+    "zip": "80202"
+  },
+  "profile": {
+    "avatar": {
+      "display_dimensions": {
+        "height": 128,
+        "width": 128
+      },
+      "file": {
+        "file_type": "png",
+        "height": 512,
+        "width": 512
+      },
+      "initials_fallback": true,
+      "upload_type": "profile_photo"
+    },
+    "initials": "LP",
+    "name": "Lisa Park",
+    "profile_type": "sample",
+    "slug": "sample-lisa-park",
+    "status": "standard",
+    "status_badge_label": "Verified"
+  },
+  "professional": {
+    "credentials": [
+      "Enrolled Agent",
+      "Former IRS Examiner",
+      "IRS Notice Response Practice"
+    ],
+    "firm_name": "Park Audit Defense",
+    "profession": [
+      "Enrolled Agent"
+    ],
+    "years_experience": 11
+  },
+  "quick_stats": [
+    {
+      "label": "Years of Experience",
+      "value": "11+"
+    },
+    {
+      "label": "Audits Managed",
+      "value": "450+"
+    },
+    {
+      "label": "Client Reviews",
+      "value": "35"
+    },
+    {
+      "label": "Returns Prepared",
+      "value": "900+"
+    }
+  ],
+  "reviews": {
+    "allow_submission": true,
+    "enabled": true,
+    "items": [
+      {
+        "name": "Kevin S.",
+        "rating": 5,
+        "text": "Lisa understood the audit process from the inside and it showed."
+      },
+      {
+        "name": "Maria G.",
+        "rating": 5,
+        "text": "Very organized and reassuring during a stressful audit."
+      },
+      {
+        "name": "Tina P.",
+        "rating": 4,
+        "text": "Good communication and strong documentation support."
+      }
+    ],
+    "summary": {
+      "average_rating": 4.7,
+      "review_count": 39
+    }
+  },
+  "services_offered": {
+    "items": [
+      {
+        "title": "Audit Defense",
+        "description": "Comprehensive IRS audit representation and negotiation.",
+        "icon": "file-check"
+      },
+      {
+        "title": "Tax Preparation",
+        "description": "Preparation and cleanup work aligned to audit-ready documentation.",
+        "icon": "calculator"
+      },
+      {
+        "title": "Compliance",
+        "description": "Tax compliance and audit readiness consulting.",
+        "icon": "book-open"
+      },
+      {
+        "title": "Appeals",
+        "description": "Administrative review and appeals support when examinations escalate.",
+        "icon": "scale-3"
+      },
+      {
+        "title": "Tax Monitoring",
+        "description": "Monitoring to flag transcript changes, notices, and account movement.",
+        "icon": "shield-check"
+      },
+      {
+        "title": "Penalty Abatement",
+        "description": "Requests and advocacy for penalty relief where facts support it.",
+        "icon": "target"
+      }
+    ]
+  },
+  "specializations": {
+    "client_types": [
+      "Individuals",
+      "Businesses",
+      "LLCs",
+      "S Corporations"
+    ]
+  }
 }

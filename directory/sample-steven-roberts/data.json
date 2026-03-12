@@ -1,20 +1,263 @@
 {
-    "contract":  "directory-profile.v1",
-    "slug":  "sample-steven-roberts",
-    "name":  "Steven Roberts",
-    "initials":  "SR",
-    "professions":  [
-                        "ea"
-                    ],
-    "status":  "standard",
-    "location":  "Orlando, FL",
-    "services":  [
-                     "audit",
-                     "tax-prep"
-                 ],
-    "client_types":  [
-                         "individual"
-                     ],
-    "short_bio":  "EA focused on individual returns with rentals, stock options, and crypto tax issues.",
-    "profile_type":  "sample"
+  "contract": "directory-profile.v1",
+  "bio": {
+    "bio_full_paragraphs": [
+      "Steven Roberts is a seasoned tax professional with more than 10 years of experience helping clients navigate compliance, planning, and higher-stakes tax matters.",
+      "At Roberts Tax Solutions, the practice emphasizes clear communication, structured workflows, and practical recommendations tailored to each client\u2019s facts and filing posture.",
+      "Clients value Steven for thoughtful strategy, reliable follow-through, and the ability to translate technical tax issues into plain English without the usual nonsense."
+    ],
+    "bio_short": "EA focused on individual returns involving rentals, stock options, and crypto tax issues."
+  },
+  "buttons": {
+    "contact_button": {
+      "active": true,
+      "label": "Get In Touch",
+      "mode": "email",
+      "show": true,
+      "url": "mailto:steven@robertstaxsolutions.com"
+    },
+    "review_button": {
+      "active": true,
+      "label": "Add Your Review",
+      "mode": "modal",
+      "show": true,
+      "url": null
+    },
+    "schedule_button": {
+      "active": true,
+      "behavior_phrase": "Yes, I have connected my own booking link, use my booking link",
+      "description": "Book a free 30-minute consultation to discuss your tax situation.",
+      "description_mode": "custom",
+      "event_type_duration_minutes": 30,
+      "event_type_label": "Consultation",
+      "label": "Schedule Consultation",
+      "mode": "custom_booking_link",
+      "provider_label": "Custom",
+      "show": true,
+      "url": "https://www.robertstaxsolutions.com/book"
+    }
+  },
+  "contact": {
+    "availability_display": "Mon-Fri, 9AM-5PM MT",
+    "contact_email": "steven@robertstaxsolutions.com",
+    "languages": [
+      "English"
+    ],
+    "phone": "(602) 555-0168",
+    "timezone": "America/Phoenix",
+    "website": "https://www.robertstaxsolutions.com",
+    "weekly_availability": [
+      {
+        "day": "Monday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "17:00"
+      },
+      {
+        "day": "Tuesday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "17:00"
+      },
+      {
+        "day": "Wednesday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "17:00"
+      },
+      {
+        "day": "Thursday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "17:00"
+      },
+      {
+        "day": "Friday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "15:00"
+      },
+      {
+        "day": "Saturday",
+        "enabled": false,
+        "start_time": null,
+        "end_time": null
+      },
+      {
+        "day": "Sunday",
+        "enabled": false,
+        "start_time": null,
+        "end_time": null
+      }
+    ]
+  },
+  "credentials_experience": {
+    "background_items": [
+      {
+        "date_label": "2021 - Present",
+        "description": "Serves individuals with increasingly complex filing and reporting needs.",
+        "title": "Founder, Roberts Tax Solutions"
+      },
+      {
+        "date_label": "2017 - 2021",
+        "description": "Handled investor, rental, and high-income individual returns.",
+        "title": "Senior Tax Advisor, Multi-Office Tax Practice"
+      },
+      {
+        "date_label": "2014 - 2017",
+        "description": "Prepared returns and supported client communications and cleanup work.",
+        "title": "Tax Preparer, Boutique Firm"
+      }
+    ],
+    "licenses_certifications": [
+      {
+        "subtitle": "Federally authorized to represent taxpayers before the IRS",
+        "title": "Enrolled Agent"
+      },
+      {
+        "subtitle": "Experience with rentals, equity awards, and digital asset reporting",
+        "title": "Investor Tax Practice"
+      },
+      {
+        "subtitle": "Focused on transcript review and issue triage for individuals",
+        "title": "IRS Notice Support"
+      }
+    ]
+  },
+  "hero": {
+    "credential_badges": [
+      {
+        "label": "EA",
+        "style_key": "ea"
+      }
+    ],
+    "headline": "EA for Individual Returns, Rentals, Equity Compensation & Crypto",
+    "location_label": "Phoenix, AZ",
+    "rating_label": "4.7/5 (28 reviews)",
+    "years_experience_label": "10+ Years Experience"
+  },
+  "location": {
+    "city": "Phoenix",
+    "country": "United States",
+    "state": "Arizona",
+    "zip": "85004"
+  },
+  "profile": {
+    "avatar": {
+      "display_dimensions": {
+        "height": 128,
+        "width": 128
+      },
+      "file": {
+        "file_type": "png",
+        "height": 512,
+        "width": 512
+      },
+      "initials_fallback": true,
+      "upload_type": "profile_photo"
+    },
+    "initials": "SR",
+    "name": "Steven Roberts",
+    "profile_type": "sample",
+    "slug": "sample-steven-roberts",
+    "status": "standard",
+    "status_badge_label": "Verified"
+  },
+  "professional": {
+    "credentials": [
+      "Enrolled Agent",
+      "Investor Tax Practice",
+      "IRS Notice Support"
+    ],
+    "firm_name": "Roberts Tax Solutions",
+    "profession": [
+      "Enrolled Agent"
+    ],
+    "years_experience": 10
+  },
+  "quick_stats": [
+    {
+      "label": "Years of Experience",
+      "value": "10+"
+    },
+    {
+      "label": "Returns Filed",
+      "value": "1,100+"
+    },
+    {
+      "label": "Client Reviews",
+      "value": "28"
+    },
+    {
+      "label": "Complex Cases",
+      "value": "260+"
+    }
+  ],
+  "reviews": {
+    "allow_submission": true,
+    "enabled": true,
+    "items": [
+      {
+        "name": "Derek B.",
+        "rating": 5,
+        "text": "Steven handled a messy stock and crypto year with zero drama."
+      },
+      {
+        "name": "Holly T.",
+        "rating": 4,
+        "text": "Good explanations and strong follow-through."
+      },
+      {
+        "name": "Mina K.",
+        "rating": 5,
+        "text": "Very helpful with rentals and estimated tax planning."
+      }
+    ],
+    "summary": {
+      "average_rating": 4.7,
+      "review_count": 39
+    }
+  },
+  "services_offered": {
+    "items": [
+      {
+        "title": "Tax Preparation",
+        "description": "Individual return preparation for multi-issue, high-complexity tax profiles.",
+        "icon": "calculator"
+      },
+      {
+        "title": "Tax Planning",
+        "description": "Planning around equity compensation, estimated taxes, and timing decisions.",
+        "icon": "target"
+      },
+      {
+        "title": "Compliance",
+        "description": "Tax compliance and audit readiness consulting for investors and landlords.",
+        "icon": "book-open"
+      },
+      {
+        "title": "Tax Monitoring",
+        "description": "Monitoring notices and account changes tied to filing and payment risk.",
+        "icon": "shield-check"
+      },
+      {
+        "title": "Consulting",
+        "description": "Support for transaction-heavy tax years and documentation strategy.",
+        "icon": "users"
+      },
+      {
+        "title": "Penalty Abatement",
+        "description": "Requests for relief where filing or payment penalties can be challenged.",
+        "icon": "file-check"
+      }
+    ]
+  },
+  "specializations": {
+    "client_types": [
+      "Individuals",
+      "Executives",
+      "LLCs",
+      "Partnerships"
+    ]
+  }
 }

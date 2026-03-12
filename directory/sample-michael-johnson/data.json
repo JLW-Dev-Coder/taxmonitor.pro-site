@@ -1,22 +1,263 @@
 {
-    "contract":  "directory-profile.v1",
-    "slug":  "sample-michael-johnson",
-    "name":  "Michael Johnson",
-    "initials":  "MJ",
-    "professions":  [
-                        "cpa"
-                    ],
-    "status":  "standard",
-    "location":  "New York, NY",
-    "services":  [
-                     "bookkeeping",
-                     "planning",
-                     "tax-prep"
-                 ],
-    "client_types":  [
-                         "business",
-                         "individual"
-                     ],
-    "short_bio":  "CPA offering tax prep, planning, and bookkeeping for small businesses and individuals.",
-    "profile_type":  "sample"
+  "contract": "directory-profile.v1",
+  "bio": {
+    "bio_full_paragraphs": [
+      "Michael Johnson is a seasoned tax professional with more than 15 years of experience helping clients navigate compliance, planning, and higher-stakes tax matters.",
+      "At Johnson CPA Advisory, the practice emphasizes clear communication, structured workflows, and practical recommendations tailored to each client\u2019s facts and filing posture.",
+      "Clients value Michael for thoughtful strategy, reliable follow-through, and the ability to translate technical tax issues into plain English without the usual nonsense."
+    ],
+    "bio_short": "CPA offering tax preparation, planning, and bookkeeping for small businesses and individuals."
+  },
+  "buttons": {
+    "contact_button": {
+      "active": true,
+      "label": "Get In Touch",
+      "mode": "email",
+      "show": true,
+      "url": "mailto:michael@johnsoncpaadvisory.com"
+    },
+    "review_button": {
+      "active": true,
+      "label": "Add Your Review",
+      "mode": "modal",
+      "show": true,
+      "url": null
+    },
+    "schedule_button": {
+      "active": true,
+      "behavior_phrase": "Yes, I have connected my own booking link, use my booking link",
+      "description": "Book a free 30-minute consultation to discuss your tax situation.",
+      "description_mode": "custom",
+      "event_type_duration_minutes": 30,
+      "event_type_label": "Consultation",
+      "label": "Schedule Consultation",
+      "mode": "custom_booking_link",
+      "provider_label": "Custom",
+      "show": true,
+      "url": "https://www.johnsoncpaadvisory.com/book"
+    }
+  },
+  "contact": {
+    "availability_display": "Mon-Fri, 9AM-5PM CT",
+    "contact_email": "michael@johnsoncpaadvisory.com",
+    "languages": [
+      "English"
+    ],
+    "phone": "(312) 555-0159",
+    "timezone": "America/Chicago",
+    "website": "https://www.johnsoncpaadvisory.com",
+    "weekly_availability": [
+      {
+        "day": "Monday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "17:00"
+      },
+      {
+        "day": "Tuesday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "17:00"
+      },
+      {
+        "day": "Wednesday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "17:00"
+      },
+      {
+        "day": "Thursday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "17:00"
+      },
+      {
+        "day": "Friday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "15:00"
+      },
+      {
+        "day": "Saturday",
+        "enabled": false,
+        "start_time": null,
+        "end_time": null
+      },
+      {
+        "day": "Sunday",
+        "enabled": false,
+        "start_time": null,
+        "end_time": null
+      }
+    ]
+  },
+  "credentials_experience": {
+    "background_items": [
+      {
+        "date_label": "2018 - Present",
+        "description": "Leads a CPA practice serving small businesses with tax and financial clarity.",
+        "title": "Principal, Johnson CPA Advisory"
+      },
+      {
+        "date_label": "2012 - 2018",
+        "description": "Handled compliance, planning, and review for owner-managed businesses.",
+        "title": "Tax Manager, Mid-Market CPA Firm"
+      },
+      {
+        "date_label": "2009 - 2012",
+        "description": "Worked on bookkeeping, compilations, and tax prep across industries.",
+        "title": "Staff Accountant, Public Accounting"
+      }
+    ],
+    "licenses_certifications": [
+      {
+        "subtitle": "Illinois, Active since 2010",
+        "title": "CPA (Certified Public Accountant)"
+      },
+      {
+        "subtitle": "Experience with service firms, consultants, and owner-managed entities",
+        "title": "Small Business Advisory Practice"
+      },
+      {
+        "subtitle": "Focused on tax-ready books and process discipline",
+        "title": "Bookkeeping Systems Cleanup"
+      }
+    ]
+  },
+  "hero": {
+    "credential_badges": [
+      {
+        "label": "CPA",
+        "style_key": "cpa"
+      }
+    ],
+    "headline": "CPA for Small Business Tax, Bookkeeping & Planning",
+    "location_label": "Chicago, IL",
+    "rating_label": "4.7/5 (29 reviews)",
+    "years_experience_label": "15+ Years Experience"
+  },
+  "location": {
+    "city": "Chicago",
+    "country": "United States",
+    "state": "Illinois",
+    "zip": "60601"
+  },
+  "profile": {
+    "avatar": {
+      "display_dimensions": {
+        "height": 128,
+        "width": 128
+      },
+      "file": {
+        "file_type": "png",
+        "height": 512,
+        "width": 512
+      },
+      "initials_fallback": true,
+      "upload_type": "profile_photo"
+    },
+    "initials": "MJ",
+    "name": "Michael Johnson",
+    "profile_type": "sample",
+    "slug": "sample-michael-johnson",
+    "status": "standard",
+    "status_badge_label": "Verified"
+  },
+  "professional": {
+    "credentials": [
+      "CPA (Certified Public Accountant)",
+      "Small Business Advisory Practice",
+      "Bookkeeping Systems Cleanup"
+    ],
+    "firm_name": "Johnson CPA Advisory",
+    "profession": [
+      "CPA"
+    ],
+    "years_experience": 15
+  },
+  "quick_stats": [
+    {
+      "label": "Years of Experience",
+      "value": "15+"
+    },
+    {
+      "label": "Clients Served",
+      "value": "650+"
+    },
+    {
+      "label": "Client Reviews",
+      "value": "29"
+    },
+    {
+      "label": "Books Cleaned Up",
+      "value": "400+"
+    }
+  ],
+  "reviews": {
+    "allow_submission": true,
+    "enabled": true,
+    "items": [
+      {
+        "name": "Lauren H.",
+        "rating": 5,
+        "text": "Michael cleaned up our books and gave us much better visibility into taxes."
+      },
+      {
+        "name": "Chris W.",
+        "rating": 4,
+        "text": "Solid CPA and very practical for small business owners."
+      },
+      {
+        "name": "Alana D.",
+        "rating": 5,
+        "text": "Reliable, responsive, and good at explaining the why behind the numbers."
+      }
+    ],
+    "summary": {
+      "average_rating": 4.7,
+      "review_count": 39
+    }
+  },
+  "services_offered": {
+    "items": [
+      {
+        "title": "Tax Preparation",
+        "description": "Individual and business return preparation with year-round support.",
+        "icon": "calculator"
+      },
+      {
+        "title": "Business Tax Advisory",
+        "description": "Practical advisory for owner compensation, entity planning, and margin protection.",
+        "icon": "briefcase"
+      },
+      {
+        "title": "Tax Planning",
+        "description": "Quarterly and annual planning to improve tax readiness and decision-making.",
+        "icon": "target"
+      },
+      {
+        "title": "Compliance",
+        "description": "Tax compliance and audit readiness consulting for service businesses.",
+        "icon": "book-open"
+      },
+      {
+        "title": "Tax Monitoring",
+        "description": "Monitoring to catch notices, changes, and unresolved account issues early.",
+        "icon": "shield-check"
+      },
+      {
+        "title": "Consulting",
+        "description": "Advisory support for systems cleanup, reporting, and workflow improvement.",
+        "icon": "users"
+      }
+    ]
+  },
+  "specializations": {
+    "client_types": [
+      "Businesses",
+      "Individuals",
+      "LLCs",
+      "S Corporations"
+    ]
+  }
 }

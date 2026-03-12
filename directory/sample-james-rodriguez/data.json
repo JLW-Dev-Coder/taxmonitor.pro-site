@@ -1,21 +1,268 @@
 {
-    "contract":  "directory-profile.v1",
-    "slug":  "sample-james-rodriguez",
-    "name":  "James Rodriguez",
-    "initials":  "JR",
-    "professions":  [
-                        "ea"
-                    ],
-    "status":  "featured",
-    "location":  "Miami, FL",
-    "services":  [
-                     "audit",
-                     "international"
-                 ],
-    "client_types":  [
-                         "expat",
-                         "individual"
-                     ],
-    "short_bio":  "Enrolled Agent specializing in expat and international tax matters.",
-    "profile_type":  "sample"
+  "contract": "directory-profile.v1",
+  "bio": {
+    "bio_full_paragraphs": [
+      "James Rodriguez is a seasoned tax professional with more than 16 years of experience helping clients navigate compliance, planning, and higher-stakes tax matters.",
+      "At Rodriguez Tax Resolution, the practice emphasizes clear communication, structured workflows, and practical recommendations tailored to each client\u2019s facts and filing posture.",
+      "Clients value James for thoughtful strategy, reliable follow-through, and the ability to translate technical tax issues into plain English without the usual nonsense."
+    ],
+    "bio_short": "Enrolled Agent specializing in expat matters, notices, collections, and IRS resolution work."
+  },
+  "buttons": {
+    "contact_button": {
+      "active": true,
+      "label": "Get In Touch",
+      "mode": "email",
+      "show": true,
+      "url": "mailto:james@rodrigueztaxresolution.com"
+    },
+    "review_button": {
+      "active": true,
+      "label": "Add Your Review",
+      "mode": "modal",
+      "show": true,
+      "url": null
+    },
+    "schedule_button": {
+      "active": true,
+      "behavior_phrase": "Yes, I have connected my own booking link, use my booking link",
+      "description": "Book a free 30-minute consultation to discuss your tax situation.",
+      "description_mode": "custom",
+      "event_type_duration_minutes": 30,
+      "event_type_label": "Consultation",
+      "label": "Schedule Consultation",
+      "mode": "custom_booking_link",
+      "provider_label": "Custom",
+      "show": true,
+      "url": "https://www.rodrigueztaxresolution.com/book"
+    }
+  },
+  "contact": {
+    "availability_display": "Mon-Fri, 9AM-5PM CT",
+    "contact_email": "james@rodrigueztaxresolution.com",
+    "languages": [
+      "English",
+      "Spanish"
+    ],
+    "phone": "(512) 555-0176",
+    "timezone": "America/Chicago",
+    "website": "https://www.rodrigueztaxresolution.com",
+    "weekly_availability": [
+      {
+        "day": "Monday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "17:00"
+      },
+      {
+        "day": "Tuesday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "17:00"
+      },
+      {
+        "day": "Wednesday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "17:00"
+      },
+      {
+        "day": "Thursday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "17:00"
+      },
+      {
+        "day": "Friday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "15:00"
+      },
+      {
+        "day": "Saturday",
+        "enabled": false,
+        "start_time": null,
+        "end_time": null
+      },
+      {
+        "day": "Sunday",
+        "enabled": false,
+        "start_time": null,
+        "end_time": null
+      }
+    ]
+  },
+  "credentials_experience": {
+    "background_items": [
+      {
+        "date_label": "2017 - Present",
+        "description": "Leads a practice focused on collections defense, notice response, and international compliance issues.",
+        "title": "Principal, Rodriguez Tax Resolution"
+      },
+      {
+        "date_label": "2011 - 2017",
+        "description": "Managed high-volume IRS resolution matters and negotiated payment alternatives.",
+        "title": "Senior Resolution Specialist, National Tax Firm"
+      },
+      {
+        "date_label": "2008 - 2011",
+        "description": "Handled compliance, payroll, and notice response for owner-operated companies.",
+        "title": "Tax Advisor, Small Business Practice"
+      }
+    ],
+    "licenses_certifications": [
+      {
+        "subtitle": "Federally authorized to represent taxpayers before the IRS",
+        "title": "Enrolled Agent"
+      },
+      {
+        "subtitle": "Focused on installment agreements, CNC, and compromise strategy",
+        "title": "IRS Collections & Resolution Practice"
+      },
+      {
+        "subtitle": "Experience with offshore reporting and remedial filing matters",
+        "title": "International Compliance Support"
+      }
+    ]
+  },
+  "hero": {
+    "credential_badges": [
+      {
+        "label": "EA",
+        "style_key": "ea"
+      },
+      {
+        "label": "Featured",
+        "style_key": "featured"
+      }
+    ],
+    "headline": "Enrolled Agent for International & IRS Resolution Matters",
+    "location_label": "Austin, TX",
+    "rating_label": "4.9/5 (53 reviews)",
+    "years_experience_label": "16+ Years Experience"
+  },
+  "location": {
+    "city": "Austin",
+    "country": "United States",
+    "state": "Texas",
+    "zip": "78701"
+  },
+  "profile": {
+    "avatar": {
+      "display_dimensions": {
+        "height": 128,
+        "width": 128
+      },
+      "file": {
+        "file_type": "png",
+        "height": 512,
+        "width": 512
+      },
+      "initials_fallback": true,
+      "upload_type": "profile_photo"
+    },
+    "initials": "JR",
+    "name": "James Rodriguez",
+    "profile_type": "sample",
+    "slug": "sample-james-rodriguez",
+    "status": "featured",
+    "status_badge_label": "Featured"
+  },
+  "professional": {
+    "credentials": [
+      "Enrolled Agent",
+      "IRS Collections & Resolution Practice",
+      "International Compliance Support"
+    ],
+    "firm_name": "Rodriguez Tax Resolution",
+    "profession": [
+      "Enrolled Agent"
+    ],
+    "years_experience": 16
+  },
+  "quick_stats": [
+    {
+      "label": "Years of Experience",
+      "value": "16+"
+    },
+    {
+      "label": "Cases Resolved",
+      "value": "1,000+"
+    },
+    {
+      "label": "Client Reviews",
+      "value": "53"
+    },
+    {
+      "label": "Plans Negotiated",
+      "value": "400+"
+    }
+  ],
+  "reviews": {
+    "allow_submission": true,
+    "enabled": true,
+    "items": [
+      {
+        "name": "Angela R.",
+        "rating": 5,
+        "text": "James took control of a scary collections case and explained every step."
+      },
+      {
+        "name": "Omar T.",
+        "rating": 5,
+        "text": "Great with IRS notices and very calm under pressure."
+      },
+      {
+        "name": "Linda C.",
+        "rating": 5,
+        "text": "Strong communicator and got us into a workable resolution quickly."
+      }
+    ],
+    "summary": {
+      "average_rating": 5.0,
+      "review_count": 48
+    }
+  },
+  "services_offered": {
+    "items": [
+      {
+        "title": "IRS Collections Defense",
+        "description": "Representation for balances due, levy risk, and active collections matters.",
+        "icon": "shield-check"
+      },
+      {
+        "title": "Offer in Compromise",
+        "description": "Evaluation, preparation, and negotiation of compromise submissions.",
+        "icon": "file-check"
+      },
+      {
+        "title": "Penalty Abatement",
+        "description": "Requests and advocacy to reduce or remove qualifying penalties.",
+        "icon": "target"
+      },
+      {
+        "title": "Tax Resolution",
+        "description": "Comprehensive IRS resolution support for notices, balances, and collection strategy.",
+        "icon": "users"
+      },
+      {
+        "title": "Foreign Reporting (FBAR/FATCA)",
+        "description": "Support for delinquent international reporting and compliance cleanup.",
+        "icon": "globe"
+      },
+      {
+        "title": "Tax Monitoring",
+        "description": "Ongoing transcript and notice monitoring to catch new IRS actions early.",
+        "icon": "book-open"
+      }
+    ]
+  },
+  "specializations": {
+    "client_types": [
+      "Individuals",
+      "Businesses",
+      "LLCs",
+      "Partnerships"
+    ]
+  }
 }

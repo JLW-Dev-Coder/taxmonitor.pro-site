@@ -1,19 +1,263 @@
 {
-    "contract":  "directory-profile.v1",
-    "slug":  "sample-rachel-brooks",
-    "name":  "Rachel Brooks",
-    "initials":  "RB",
-    "professions":  [
-                        "erpa"
-                    ],
-    "status":  "standard",
-    "location":  "Tampa, FL",
-    "services":  [
-                     "planning"
-                 ],
-    "client_types":  [
-                         "business"
-                     ],
-    "short_bio":  "ERPA specializing in retirement plan compliance and administration.",
-    "profile_type":  "sample"
+  "contract": "directory-profile.v1",
+  "bio": {
+    "bio_full_paragraphs": [
+      "Rachel Brooks is a seasoned tax professional with more than 13 years of experience helping clients navigate compliance, planning, and higher-stakes tax matters.",
+      "At Brooks Retirement Compliance, the practice emphasizes clear communication, structured workflows, and practical recommendations tailored to each client\u2019s facts and filing posture.",
+      "Clients value Rachel for thoughtful strategy, reliable follow-through, and the ability to translate technical tax issues into plain English without the usual nonsense."
+    ],
+    "bio_short": "ERPA specializing in retirement plan compliance, reporting, and sponsor support."
+  },
+  "buttons": {
+    "contact_button": {
+      "active": true,
+      "label": "Get In Touch",
+      "mode": "email",
+      "show": true,
+      "url": "mailto:rachel@brooksretirement.com"
+    },
+    "review_button": {
+      "active": true,
+      "label": "Add Your Review",
+      "mode": "modal",
+      "show": true,
+      "url": null
+    },
+    "schedule_button": {
+      "active": true,
+      "behavior_phrase": "Yes, I have connected my own booking link, use my booking link",
+      "description": "Book a free 30-minute consultation to discuss your tax situation.",
+      "description_mode": "custom",
+      "event_type_duration_minutes": 30,
+      "event_type_label": "Consultation",
+      "label": "Schedule Consultation",
+      "mode": "custom_booking_link",
+      "provider_label": "Custom",
+      "show": true,
+      "url": "https://www.brooksretirement.com/book"
+    }
+  },
+  "contact": {
+    "availability_display": "Mon-Fri, 9AM-5PM ET",
+    "contact_email": "rachel@brooksretirement.com",
+    "languages": [
+      "English"
+    ],
+    "phone": "(404) 555-0114",
+    "timezone": "America/New_York",
+    "website": "https://www.brooksretirement.com",
+    "weekly_availability": [
+      {
+        "day": "Monday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "17:00"
+      },
+      {
+        "day": "Tuesday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "17:00"
+      },
+      {
+        "day": "Wednesday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "17:00"
+      },
+      {
+        "day": "Thursday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "17:00"
+      },
+      {
+        "day": "Friday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "15:00"
+      },
+      {
+        "day": "Saturday",
+        "enabled": false,
+        "start_time": null,
+        "end_time": null
+      },
+      {
+        "day": "Sunday",
+        "enabled": false,
+        "start_time": null,
+        "end_time": null
+      }
+    ]
+  },
+  "credentials_experience": {
+    "background_items": [
+      {
+        "date_label": "2021 - Present",
+        "description": "Advises employers on plan operations, reporting, and correction strategy.",
+        "title": "Principal, Brooks Retirement Compliance"
+      },
+      {
+        "date_label": "2015 - 2021",
+        "description": "Managed retirement plan compliance reviews and sponsor communications.",
+        "title": "Senior Compliance Consultant, Retirement Services Firm"
+      },
+      {
+        "date_label": "2012 - 2015",
+        "description": "Supported plan documentation, testing workflows, and client service.",
+        "title": "Plan Administrator, Benefits Advisory Group"
+      }
+    ],
+    "licenses_certifications": [
+      {
+        "subtitle": "Authorized to practice before the IRS on retirement plan matters",
+        "title": "Enrolled Retirement Plan Agent (ERPA)"
+      },
+      {
+        "subtitle": "Experience with correction programs and sponsor remediation",
+        "title": "Retirement Plan Operations"
+      },
+      {
+        "subtitle": "Works closely with TPAs, payroll, and finance stakeholders",
+        "title": "Compliance Coordination"
+      }
+    ]
+  },
+  "hero": {
+    "credential_badges": [
+      {
+        "label": "ERPA",
+        "style_key": "custom"
+      }
+    ],
+    "headline": "ERPA Focused on Retirement Plan Compliance & Administration",
+    "location_label": "Atlanta, GA",
+    "rating_label": "4.8/5 (24 reviews)",
+    "years_experience_label": "13+ Years Experience"
+  },
+  "location": {
+    "city": "Atlanta",
+    "country": "United States",
+    "state": "Georgia",
+    "zip": "30303"
+  },
+  "profile": {
+    "avatar": {
+      "display_dimensions": {
+        "height": 128,
+        "width": 128
+      },
+      "file": {
+        "file_type": "png",
+        "height": 512,
+        "width": 512
+      },
+      "initials_fallback": true,
+      "upload_type": "profile_photo"
+    },
+    "initials": "RB",
+    "name": "Rachel Brooks",
+    "profile_type": "sample",
+    "slug": "sample-rachel-brooks",
+    "status": "standard",
+    "status_badge_label": "Verified"
+  },
+  "professional": {
+    "credentials": [
+      "Enrolled Retirement Plan Agent (ERPA)",
+      "Retirement Plan Operations",
+      "Compliance Coordination"
+    ],
+    "firm_name": "Brooks Retirement Compliance",
+    "profession": [
+      "ERPA"
+    ],
+    "years_experience": 13
+  },
+  "quick_stats": [
+    {
+      "label": "Years of Experience",
+      "value": "13+"
+    },
+    {
+      "label": "Plans Supported",
+      "value": "420+"
+    },
+    {
+      "label": "Client Reviews",
+      "value": "24"
+    },
+    {
+      "label": "Corrections Managed",
+      "value": "180+"
+    }
+  ],
+  "reviews": {
+    "allow_submission": true,
+    "enabled": true,
+    "items": [
+      {
+        "name": "Jeff M.",
+        "rating": 5,
+        "text": "Rachel helped us untangle a retirement compliance issue without making it overwhelming."
+      },
+      {
+        "name": "Carla N.",
+        "rating": 4,
+        "text": "Detailed, reliable, and easy to work with."
+      },
+      {
+        "name": "Monica F.",
+        "rating": 5,
+        "text": "Excellent support across a messy correction project."
+      }
+    ],
+    "summary": {
+      "average_rating": 4.7,
+      "review_count": 39
+    }
+  },
+  "services_offered": {
+    "items": [
+      {
+        "title": "Compliance",
+        "description": "Retirement plan compliance review, testing coordination, and corrective guidance.",
+        "icon": "book-open"
+      },
+      {
+        "title": "Consulting",
+        "description": "Operational consulting for sponsors, TPAs, and finance teams.",
+        "icon": "users"
+      },
+      {
+        "title": "Business Tax Advisory",
+        "description": "Benefit design and compliance considerations for employer tax planning.",
+        "icon": "briefcase"
+      },
+      {
+        "title": "Tax Planning",
+        "description": "Coordination of retirement contribution strategy with business goals.",
+        "icon": "target"
+      },
+      {
+        "title": "Payroll Tax Defense",
+        "description": "Support where payroll and benefit reporting issues overlap.",
+        "icon": "calculator"
+      },
+      {
+        "title": "Tax Monitoring",
+        "description": "Monitoring account activity and notices related to plan compliance follow-up.",
+        "icon": "shield-check"
+      }
+    ]
+  },
+  "specializations": {
+    "client_types": [
+      "Businesses",
+      "Executives",
+      "Nonprofits",
+      "S Corporations"
+    ]
+  }
 }

@@ -1,19 +1,264 @@
 {
-    "contract":  "directory-profile.v1",
-    "slug":  "sample-kevin-nakamura",
-    "name":  "Kevin Nakamura",
-    "initials":  "KN",
-    "professions":  [
-                        "actuary"
-                    ],
-    "status":  "standard",
-    "location":  "New York, NY",
-    "services":  [
-                     "planning"
-                 ],
-    "client_types":  [
-                         "business"
-                     ],
-    "short_bio":  "Enrolled Actuary focused on pension funding and compliance.",
-    "profile_type":  "sample"
+  "contract": "directory-profile.v1",
+  "bio": {
+    "bio_full_paragraphs": [
+      "Kevin Nakamura is a seasoned tax professional with more than 19 years of experience helping clients navigate compliance, planning, and higher-stakes tax matters.",
+      "At Nakamura Pension Advisory, the practice emphasizes clear communication, structured workflows, and practical recommendations tailored to each client\u2019s facts and filing posture.",
+      "Clients value Kevin for thoughtful strategy, reliable follow-through, and the ability to translate technical tax issues into plain English without the usual nonsense."
+    ],
+    "bio_short": "Enrolled Actuary focused on pension funding, plan compliance, and retirement program design."
+  },
+  "buttons": {
+    "contact_button": {
+      "active": true,
+      "label": "Get In Touch",
+      "mode": "email",
+      "show": true,
+      "url": "mailto:kevin@nakamurapension.com"
+    },
+    "review_button": {
+      "active": true,
+      "label": "Add Your Review",
+      "mode": "modal",
+      "show": true,
+      "url": null
+    },
+    "schedule_button": {
+      "active": true,
+      "behavior_phrase": "Yes, I have connected my own booking link, use my booking link",
+      "description": "Book a free 30-minute consultation to discuss your tax situation.",
+      "description_mode": "custom",
+      "event_type_duration_minutes": 30,
+      "event_type_label": "Consultation",
+      "label": "Schedule Consultation",
+      "mode": "custom_booking_link",
+      "provider_label": "Custom",
+      "show": true,
+      "url": "https://www.nakamurapension.com/book"
+    }
+  },
+  "contact": {
+    "availability_display": "Mon-Fri, 9AM-5PM HST",
+    "contact_email": "kevin@nakamurapension.com",
+    "languages": [
+      "English",
+      "Japanese"
+    ],
+    "phone": "(808) 555-0127",
+    "timezone": "Pacific/Honolulu",
+    "website": "https://www.nakamurapension.com",
+    "weekly_availability": [
+      {
+        "day": "Monday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "17:00"
+      },
+      {
+        "day": "Tuesday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "17:00"
+      },
+      {
+        "day": "Wednesday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "17:00"
+      },
+      {
+        "day": "Thursday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "17:00"
+      },
+      {
+        "day": "Friday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "15:00"
+      },
+      {
+        "day": "Saturday",
+        "enabled": false,
+        "start_time": null,
+        "end_time": null
+      },
+      {
+        "day": "Sunday",
+        "enabled": false,
+        "start_time": null,
+        "end_time": null
+      }
+    ]
+  },
+  "credentials_experience": {
+    "background_items": [
+      {
+        "date_label": "2016 - Present",
+        "description": "Advises employers on pension funding, compliance, and retirement plan design.",
+        "title": "Principal, Nakamura Pension Advisory"
+      },
+      {
+        "date_label": "2009 - 2016",
+        "description": "Led actuarial valuations and compliance reviews for mid-market employers.",
+        "title": "Senior Actuarial Consultant, National Benefits Firm"
+      },
+      {
+        "date_label": "2005 - 2009",
+        "description": "Supported plan modeling, reporting, and sponsor communications.",
+        "title": "Actuarial Analyst, Retirement Services Group"
+      }
+    ],
+    "licenses_certifications": [
+      {
+        "subtitle": "Authorized to practice before the IRS on actuarial matters",
+        "title": "Enrolled Actuary"
+      },
+      {
+        "subtitle": "Experience with defined benefit design and ongoing compliance",
+        "title": "Pension Funding Advisory"
+      },
+      {
+        "subtitle": "Coordination with TPAs, ERISA counsel, and finance teams",
+        "title": "Retirement Plan Administration"
+      }
+    ]
+  },
+  "hero": {
+    "credential_badges": [
+      {
+        "label": "Enrolled Actuary",
+        "style_key": "custom"
+      }
+    ],
+    "headline": "Pension Funding & Retirement Plan Compliance Specialist",
+    "location_label": "Honolulu, HI",
+    "rating_label": "4.7/5 (26 reviews)",
+    "years_experience_label": "19+ Years Experience"
+  },
+  "location": {
+    "city": "Honolulu",
+    "country": "United States",
+    "state": "Hawaii",
+    "zip": "96813"
+  },
+  "profile": {
+    "avatar": {
+      "display_dimensions": {
+        "height": 128,
+        "width": 128
+      },
+      "file": {
+        "file_type": "png",
+        "height": 512,
+        "width": 512
+      },
+      "initials_fallback": true,
+      "upload_type": "profile_photo"
+    },
+    "initials": "KN",
+    "name": "Kevin Nakamura",
+    "profile_type": "sample",
+    "slug": "sample-kevin-nakamura",
+    "status": "standard",
+    "status_badge_label": "Verified"
+  },
+  "professional": {
+    "credentials": [
+      "Enrolled Actuary",
+      "Pension Funding Advisory",
+      "Retirement Plan Administration"
+    ],
+    "firm_name": "Nakamura Pension Advisory",
+    "profession": [
+      "Enrolled Actuary"
+    ],
+    "years_experience": 19
+  },
+  "quick_stats": [
+    {
+      "label": "Years of Experience",
+      "value": "19+"
+    },
+    {
+      "label": "Plans Managed",
+      "value": "500+"
+    },
+    {
+      "label": "Client Reviews",
+      "value": "26"
+    },
+    {
+      "label": "Compliance Projects",
+      "value": "300+"
+    }
+  ],
+  "reviews": {
+    "allow_submission": true,
+    "enabled": true,
+    "items": [
+      {
+        "name": "Dana L.",
+        "rating": 5,
+        "text": "Kevin made a very technical retirement plan issue understandable and actionable."
+      },
+      {
+        "name": "Paul R.",
+        "rating": 4,
+        "text": "Strong actuarial knowledge and dependable follow-through."
+      },
+      {
+        "name": "Alicia M.",
+        "rating": 5,
+        "text": "Very helpful with compliance coordination across our advisors."
+      }
+    ],
+    "summary": {
+      "average_rating": 4.7,
+      "review_count": 39
+    }
+  },
+  "services_offered": {
+    "items": [
+      {
+        "title": "Compliance",
+        "description": "Retirement plan compliance and funding review for employers and plan sponsors.",
+        "icon": "book-open"
+      },
+      {
+        "title": "Consulting",
+        "description": "Ongoing actuarial and plan administration advisory support.",
+        "icon": "users"
+      },
+      {
+        "title": "Business Tax Advisory",
+        "description": "Coordination of retirement strategy with owner compensation and business planning.",
+        "icon": "briefcase"
+      },
+      {
+        "title": "Tax Planning",
+        "description": "Retirement and deferred compensation planning for owners and executives.",
+        "icon": "target"
+      },
+      {
+        "title": "Payroll Tax Defense",
+        "description": "Support where payroll reporting issues intersect with benefit structures.",
+        "icon": "calculator"
+      },
+      {
+        "title": "Tax Monitoring",
+        "description": "Periodic monitoring to flag notice or transcript changes tied to plan activity.",
+        "icon": "shield-check"
+      }
+    ]
+  },
+  "specializations": {
+    "client_types": [
+      "Businesses",
+      "Executives",
+      "Nonprofits",
+      "S Corporations"
+    ]
+  }
 }

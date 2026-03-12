@@ -1,21 +1,268 @@
 {
-    "contract":  "directory-profile.v1",
-    "slug":  "sample-emily-wong",
-    "name":  "Emily Wong",
-    "initials":  "EW",
-    "professions":  [
-                        "cpa"
-                    ],
-    "status":  "featured",
-    "location":  "San Francisco, CA",
-    "services":  [
-                     "planning",
-                     "tax-prep"
-                 ],
-    "client_types":  [
-                         "business",
-                         "individual"
-                     ],
-    "short_bio":  "Small business CPA specializing in startup tax strategy and R\u0026D credits.",
-    "profile_type":  "sample"
+  "contract": "directory-profile.v1",
+  "bio": {
+    "bio_full_paragraphs": [
+      "Emily Wong is a seasoned tax professional with more than 14 years of experience helping clients navigate compliance, planning, and higher-stakes tax matters.",
+      "At Wong Advisory CPA, the practice emphasizes clear communication, structured workflows, and practical recommendations tailored to each client\u2019s facts and filing posture.",
+      "Clients value Emily for thoughtful strategy, reliable follow-through, and the ability to translate technical tax issues into plain English without the usual nonsense."
+    ],
+    "bio_short": "Small business CPA specializing in startup tax strategy, compliance, and R&D credit planning."
+  },
+  "buttons": {
+    "contact_button": {
+      "active": true,
+      "label": "Get In Touch",
+      "mode": "email",
+      "show": true,
+      "url": "mailto:emily@wongadvisorycpa.com"
+    },
+    "review_button": {
+      "active": true,
+      "label": "Add Your Review",
+      "mode": "modal",
+      "show": true,
+      "url": null
+    },
+    "schedule_button": {
+      "active": true,
+      "behavior_phrase": "Yes, I have connected my own booking link, use my booking link",
+      "description": "Book a free 30-minute consultation to discuss your tax situation.",
+      "description_mode": "custom",
+      "event_type_duration_minutes": 30,
+      "event_type_label": "Consultation",
+      "label": "Schedule Consultation",
+      "mode": "custom_booking_link",
+      "provider_label": "Custom",
+      "show": true,
+      "url": "https://www.wongadvisorycpa.com/book"
+    }
+  },
+  "contact": {
+    "availability_display": "Mon-Fri, 9AM-5PM PT",
+    "contact_email": "emily@wongadvisorycpa.com",
+    "languages": [
+      "Chinese",
+      "English"
+    ],
+    "phone": "(415) 555-0194",
+    "timezone": "America/Los_Angeles",
+    "website": "https://www.wongadvisorycpa.com",
+    "weekly_availability": [
+      {
+        "day": "Monday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "17:00"
+      },
+      {
+        "day": "Tuesday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "17:00"
+      },
+      {
+        "day": "Wednesday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "17:00"
+      },
+      {
+        "day": "Thursday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "17:00"
+      },
+      {
+        "day": "Friday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "15:00"
+      },
+      {
+        "day": "Saturday",
+        "enabled": false,
+        "start_time": null,
+        "end_time": null
+      },
+      {
+        "day": "Sunday",
+        "enabled": false,
+        "start_time": null,
+        "end_time": null
+      }
+    ]
+  },
+  "credentials_experience": {
+    "background_items": [
+      {
+        "date_label": "2019 - Present",
+        "description": "Built a boutique CPA firm serving startups, agencies, and founder-led businesses.",
+        "title": "Founder, Wong Advisory CPA"
+      },
+      {
+        "date_label": "2014 - 2019",
+        "description": "Advised venture-backed clients on compliance, planning, and tax credit opportunities.",
+        "title": "Senior Manager, Venture-Focused CPA Firm"
+      },
+      {
+        "date_label": "2010 - 2014",
+        "description": "Worked across audit, tax prep, and financial reporting for growing companies.",
+        "title": "Audit & Tax Associate, Public Accounting"
+      }
+    ],
+    "licenses_certifications": [
+      {
+        "subtitle": "California, Active since 2012",
+        "title": "CPA (Certified Public Accountant)"
+      },
+      {
+        "subtitle": "Experience documenting and defending credit methodology",
+        "title": "Research Credit Advisory"
+      },
+      {
+        "subtitle": "Cross-functional support for founders and finance teams",
+        "title": "Startup Finance & Tax Advisory"
+      }
+    ]
+  },
+  "hero": {
+    "credential_badges": [
+      {
+        "label": "CPA",
+        "style_key": "cpa"
+      },
+      {
+        "label": "Featured",
+        "style_key": "featured"
+      }
+    ],
+    "headline": "Small Business CPA & R&D Credit Advisor",
+    "location_label": "San Francisco, CA",
+    "rating_label": "4.9/5 (44 reviews)",
+    "years_experience_label": "14+ Years Experience"
+  },
+  "location": {
+    "city": "San Francisco",
+    "country": "United States",
+    "state": "California",
+    "zip": "94105"
+  },
+  "profile": {
+    "avatar": {
+      "display_dimensions": {
+        "height": 128,
+        "width": 128
+      },
+      "file": {
+        "file_type": "png",
+        "height": 512,
+        "width": 512
+      },
+      "initials_fallback": true,
+      "upload_type": "profile_photo"
+    },
+    "initials": "EW",
+    "name": "Emily Wong",
+    "profile_type": "sample",
+    "slug": "sample-emily-wong",
+    "status": "featured",
+    "status_badge_label": "Featured"
+  },
+  "professional": {
+    "credentials": [
+      "CPA (Certified Public Accountant)",
+      "Research Credit Advisory",
+      "Startup Finance & Tax Advisory"
+    ],
+    "firm_name": "Wong Advisory CPA",
+    "profession": [
+      "CPA"
+    ],
+    "years_experience": 14
+  },
+  "quick_stats": [
+    {
+      "label": "Years of Experience",
+      "value": "14+"
+    },
+    {
+      "label": "Clients Served",
+      "value": "800+"
+    },
+    {
+      "label": "Client Reviews",
+      "value": "44"
+    },
+    {
+      "label": "Credits Secured",
+      "value": "$9M+"
+    }
+  ],
+  "reviews": {
+    "allow_submission": true,
+    "enabled": true,
+    "items": [
+      {
+        "name": "Nina P.",
+        "rating": 5,
+        "text": "Emily helped us clean up years of startup tax confusion and found credits we had missed."
+      },
+      {
+        "name": "Eric L.",
+        "rating": 5,
+        "text": "Very sharp, practical, and easy to work with."
+      },
+      {
+        "name": "Ben H.",
+        "rating": 4,
+        "text": "Strong guidance and excellent follow-through for a fast-moving team."
+      }
+    ],
+    "summary": {
+      "average_rating": 4.7,
+      "review_count": 48
+    }
+  },
+  "services_offered": {
+    "items": [
+      {
+        "title": "Business Tax Advisory",
+        "description": "Entity, compensation, and growth-stage advisory for founders and operators.",
+        "icon": "briefcase"
+      },
+      {
+        "title": "Tax Preparation",
+        "description": "Business and founder returns with close coordination across tax years.",
+        "icon": "calculator"
+      },
+      {
+        "title": "Tax Planning",
+        "description": "Strategic planning to improve readiness and reduce tax drag as companies scale.",
+        "icon": "target"
+      },
+      {
+        "title": "Compliance",
+        "description": "Tax compliance and audit readiness consulting for startups and service firms.",
+        "icon": "book-open"
+      },
+      {
+        "title": "Consulting",
+        "description": "Fractional tax advisory and board-ready reporting support.",
+        "icon": "users"
+      },
+      {
+        "title": "Tax Monitoring",
+        "description": "Transcript and notice monitoring to identify issues before they escalate.",
+        "icon": "shield-check"
+      }
+    ]
+  },
+  "specializations": {
+    "client_types": [
+      "Businesses",
+      "Executives",
+      "LLCs",
+      "S Corporations"
+    ]
+  }
 }

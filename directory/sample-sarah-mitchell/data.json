@@ -1,82 +1,282 @@
 {
   "contract": "directory-profile.v1",
-
-  "profile": {
-    "slug": "sample-sarah-mitchell",
-    "name": "Sarah Mitchell",
-    "initials": "SM",
-    "profile_image": null,
-    "status": "featured"
-  },
-
-  "professional": {
-    "profession": ["CPA", "Attorney"],
-    "credentials": [
-      "CPA (California)",
-      "Juris Doctor (UCLA)",
-      "IRS Form 2848 Representative"
-    ],
-    "years_experience": 20,
-    "firm_name": "Mitchell Tax Law"
-  },
-
-  "location": {
-    "city": "Los Angeles",
-    "state": "CA",
-    "country": "USA"
-  },
-
-  "contact": {
-    "contact_email": "sarah@mitchelltaxlaw.com",
-    "website": "https://mitchelltaxlaw.com",
-    "languages": ["English", "Spanish"]
-  },
-
   "bio": {
-    "bio_short": "Tax litigation and IRS audit defense specialist.",
-    "bio_full": "Sarah Mitchell is a dual-credentialed CPA and attorney with over 20 years of experience representing taxpayers before the IRS and Tax Court."
-  },
-
-  "services": {
-    "services": [
-      "Audit Defense",
-      "Tax Litigation",
-      "IRS Appeals",
-      "Tax Planning"
+    "bio_full_paragraphs": [
+      "Sarah Mitchell is a seasoned tax professional with more than 20 years of experience helping clients navigate compliance, planning, and higher-stakes tax matters.",
+      "At Mitchell Tax Law, the practice emphasizes clear communication, structured workflows, and practical recommendations tailored to each client\u2019s facts and filing posture.",
+      "Clients value Sarah for thoughtful strategy, reliable follow-through, and the ability to translate technical tax issues into plain English without the usual nonsense."
     ],
-    "client_types": [
-      "Individuals",
-      "Businesses",
-      "Partnerships",
-      "Executives"
+    "bio_short": "Tax litigation and IRS audit defense specialist with deep controversy experience."
+  },
+  "buttons": {
+    "contact_button": {
+      "active": true,
+      "label": "Get In Touch",
+      "mode": "email",
+      "show": true,
+      "url": "mailto:sarah@mitchelltaxlaw.com"
+    },
+    "review_button": {
+      "active": true,
+      "label": "Add Your Review",
+      "mode": "modal",
+      "show": true,
+      "url": null
+    },
+    "schedule_button": {
+      "active": true,
+      "behavior_phrase": "Yes, I have connected my own booking link, use my booking link",
+      "description": "Book a free 30-minute consultation to discuss your tax situation.",
+      "description_mode": "custom",
+      "event_type_duration_minutes": 30,
+      "event_type_label": "Consultation",
+      "label": "Schedule Consultation",
+      "mode": "custom_booking_link",
+      "provider_label": "Custom",
+      "show": true,
+      "url": "https://www.mitchelltaxlaw.com/book"
+    }
+  },
+  "contact": {
+    "availability_display": "Mon-Fri, 9AM-5PM PT",
+    "contact_email": "sarah@mitchelltaxlaw.com",
+    "languages": [
+      "English",
+      "Spanish"
+    ],
+    "phone": "(213) 555-1234",
+    "timezone": "America/Los_Angeles",
+    "website": "https://www.mitchelltaxlaw.com",
+    "weekly_availability": [
+      {
+        "day": "Monday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "17:00"
+      },
+      {
+        "day": "Tuesday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "17:00"
+      },
+      {
+        "day": "Wednesday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "17:00"
+      },
+      {
+        "day": "Thursday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "17:00"
+      },
+      {
+        "day": "Friday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "15:00"
+      },
+      {
+        "day": "Saturday",
+        "enabled": false,
+        "start_time": null,
+        "end_time": null
+      },
+      {
+        "day": "Sunday",
+        "enabled": false,
+        "start_time": null,
+        "end_time": null
+      }
     ]
   },
-
+  "credentials_experience": {
+    "background_items": [
+      {
+        "date_label": "2008 - Present",
+        "description": "Founded and grew a practice focused on tax litigation and audit defense.",
+        "title": "Founder & Principal, Mitchell Tax Law"
+      },
+      {
+        "date_label": "2003 - 2008",
+        "description": "Led tax controversy work involving complex matters for business and individual clients.",
+        "title": "Senior Tax Attorney, Major Accounting Firm"
+      },
+      {
+        "date_label": "2001 - 2003",
+        "description": "Built expertise in audit procedures and IRS enforcement processes.",
+        "title": "Revenue Agent, IRS"
+      }
+    ],
+    "licenses_certifications": [
+      {
+        "subtitle": "California, Active since 2003",
+        "title": "CPA (Certified Public Accountant)"
+      },
+      {
+        "subtitle": "UCLA School of Law, Licensed to practice in California",
+        "title": "Juris Doctor (J.D.)"
+      },
+      {
+        "subtitle": "Authorized to represent clients before the IRS",
+        "title": "IRS Form 2848 Power of Attorney"
+      },
+      {
+        "subtitle": "State Bar of California Tax Law Certification",
+        "title": "Board Certified Tax Specialist"
+      }
+    ]
+  },
+  "hero": {
+    "credential_badges": [
+      {
+        "label": "Attorney",
+        "style_key": "attorney"
+      },
+      {
+        "label": "CPA",
+        "style_key": "cpa"
+      },
+      {
+        "label": "Featured",
+        "style_key": "featured"
+      }
+    ],
+    "headline": "Tax Litigation & IRS Audit Defense Specialist",
+    "location_label": "Los Angeles, CA",
+    "rating_label": "4.9/5 (48 reviews)",
+    "years_experience_label": "20+ Years Experience"
+  },
+  "location": {
+    "city": "Los Angeles",
+    "country": "United States",
+    "state": "California",
+    "zip": "90012"
+  },
+  "profile": {
+    "avatar": {
+      "display_dimensions": {
+        "height": 128,
+        "width": 128
+      },
+      "file": {
+        "file_type": "png",
+        "height": 512,
+        "width": 512
+      },
+      "initials_fallback": true,
+      "upload_type": "profile_photo"
+    },
+    "initials": "SM",
+    "name": "Sarah Mitchell",
+    "profile_type": "sample",
+    "slug": "sample-sarah-mitchell",
+    "status": "featured",
+    "status_badge_label": "Featured"
+  },
+  "professional": {
+    "credentials": [
+      "CPA (Certified Public Accountant)",
+      "Juris Doctor (J.D.)",
+      "IRS Form 2848 Power of Attorney",
+      "Board Certified Tax Specialist"
+    ],
+    "firm_name": "Mitchell Tax Law",
+    "profession": [
+      "Attorney",
+      "CPA"
+    ],
+    "years_experience": 20
+  },
+  "quick_stats": [
+    {
+      "label": "Years of Experience",
+      "value": "20+"
+    },
+    {
+      "label": "Cases Handled",
+      "value": "500+"
+    },
+    {
+      "label": "Success Rate",
+      "value": "98%"
+    },
+    {
+      "label": "Client Reviews",
+      "value": "48"
+    }
+  ],
   "reviews": {
-    "enabled": true,
     "allow_submission": true,
+    "enabled": true,
     "items": [
       {
         "name": "John D.",
         "rating": 5,
-        "text": "Exceptional representation during my audit."
+        "text": "Exceptional representation during my audit. Sarah's expertise saved me thousands."
+      },
+      {
+        "name": "Michael R.",
+        "rating": 5,
+        "text": "Highly recommended. Professional, knowledgeable, and results-oriented."
+      },
+      {
+        "name": "Leah P.",
+        "rating": 5,
+        "text": "Strong strategist and relentless advocate when the stakes were high."
+      }
+    ],
+    "summary": {
+      "average_rating": 5.0,
+      "review_count": 48
+    }
+  },
+  "services_offered": {
+    "items": [
+      {
+        "title": "Tax Litigation",
+        "description": "Representation in Tax Court and federal district court proceedings.",
+        "icon": "shield-check"
+      },
+      {
+        "title": "Audit Defense",
+        "description": "Comprehensive IRS audit representation and negotiation.",
+        "icon": "file-check"
+      },
+      {
+        "title": "Tax Planning",
+        "description": "Strategic tax planning to reduce liability and improve readiness.",
+        "icon": "target"
+      },
+      {
+        "title": "Appeals",
+        "description": "IRS Appeals Office and administrative review representation.",
+        "icon": "scale-3"
+      },
+      {
+        "title": "Compliance",
+        "description": "Tax compliance and audit readiness consulting.",
+        "icon": "book-open"
+      },
+      {
+        "title": "Consulting",
+        "description": "Expert witness and litigation support services.",
+        "icon": "users"
       }
     ]
   },
-
-  "buttons": {
-    "contact_button": {
-      "active": true,
-      "label": "Get in Touch",
-      "mode": "email",
-      "url": "mailto:sarah@mitchelltaxlaw.com"
-    },
-
-    "schedule_button": {
-      "active": true,
-      "mode": "cal_com",
-      "url": "https://cal.com/sarah-mitchell/consultation",
-      "behavior_phrase": "Yes, I have created/connected my Cal.com account, use my Cal.com link"
-    }
+  "specializations": {
+    "client_types": [
+      "Individuals",
+      "Businesses",
+      "C Corporations",
+      "S Corporations",
+      "Partnerships",
+      "LLCs",
+      "Nonprofits",
+      "Executives"
+    ]
   }
 }

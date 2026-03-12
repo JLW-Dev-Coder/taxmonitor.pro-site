@@ -1,24 +1,269 @@
 {
-    "contract":  "directory-profile.v1",
-    "slug":  "sample-jennifer-lee",
-    "name":  "Jennifer Lee",
-    "initials":  "JL",
-    "professions":  [
-                        "attorney",
-                        "cpa"
-                    ],
-    "status":  "standard",
-    "location":  "Beverly Hills, CA",
-    "services":  [
-                     "estate",
-                     "international",
-                     "planning"
-                 ],
-    "client_types":  [
-                         "business",
-                         "individual",
-                         "nonprofit"
-                     ],
-    "short_bio":  "Dual-credentialed advisor for estate, nonprofit, and complex tax planning.",
-    "profile_type":  "sample"
+  "contract": "directory-profile.v1",
+  "bio": {
+    "bio_full_paragraphs": [
+      "Jennifer Lee is a seasoned tax professional with more than 21 years of experience helping clients navigate compliance, planning, and higher-stakes tax matters.",
+      "At Lee Tax Strategy Group, the practice emphasizes clear communication, structured workflows, and practical recommendations tailored to each client\u2019s facts and filing posture.",
+      "Clients value Jennifer for thoughtful strategy, reliable follow-through, and the ability to translate technical tax issues into plain English without the usual nonsense."
+    ],
+    "bio_short": "Attorney-CPA serving families, nonprofits, and closely held businesses with advanced planning needs."
+  },
+  "buttons": {
+    "contact_button": {
+      "active": true,
+      "label": "Get In Touch",
+      "mode": "email",
+      "show": true,
+      "url": "mailto:jennifer@leetaxstrategy.com"
+    },
+    "review_button": {
+      "active": true,
+      "label": "Add Your Review",
+      "mode": "modal",
+      "show": true,
+      "url": null
+    },
+    "schedule_button": {
+      "active": true,
+      "behavior_phrase": "Yes, I have connected my own booking link, use my booking link",
+      "description": "Book a free 30-minute consultation to discuss your tax situation.",
+      "description_mode": "custom",
+      "event_type_duration_minutes": 30,
+      "event_type_label": "Consultation",
+      "label": "Schedule Consultation",
+      "mode": "custom_booking_link",
+      "provider_label": "Custom",
+      "show": true,
+      "url": "https://www.leetaxstrategy.com/book"
+    }
+  },
+  "contact": {
+    "availability_display": "Mon-Fri, 9AM-5PM PT",
+    "contact_email": "jennifer@leetaxstrategy.com",
+    "languages": [
+      "English",
+      "Korean"
+    ],
+    "phone": "(206) 555-0182",
+    "timezone": "America/Los_Angeles",
+    "website": "https://www.leetaxstrategy.com",
+    "weekly_availability": [
+      {
+        "day": "Monday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "17:00"
+      },
+      {
+        "day": "Tuesday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "17:00"
+      },
+      {
+        "day": "Wednesday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "17:00"
+      },
+      {
+        "day": "Thursday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "17:00"
+      },
+      {
+        "day": "Friday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "15:00"
+      },
+      {
+        "day": "Saturday",
+        "enabled": false,
+        "start_time": null,
+        "end_time": null
+      },
+      {
+        "day": "Sunday",
+        "enabled": false,
+        "start_time": null,
+        "end_time": null
+      }
+    ]
+  },
+  "credentials_experience": {
+    "background_items": [
+      {
+        "date_label": "2012 - Present",
+        "description": "Leads advanced planning work for families, nonprofit leaders, and closely held businesses.",
+        "title": "Managing Partner, Lee Tax Strategy Group"
+      },
+      {
+        "date_label": "2006 - 2012",
+        "description": "Oversaw planning, entity structuring, and exempt organization consulting.",
+        "title": "Tax Director, Regional Advisory Firm"
+      },
+      {
+        "date_label": "2003 - 2006",
+        "description": "Worked across tax research, compliance, and family office planning matters.",
+        "title": "Attorney-Accountant, Private Practice"
+      }
+    ],
+    "licenses_certifications": [
+      {
+        "subtitle": "Washington, Active since 2004",
+        "title": "CPA (Certified Public Accountant)"
+      },
+      {
+        "subtitle": "Licensed attorney with focus on tax-sensitive planning",
+        "title": "Juris Doctor (J.D.)"
+      },
+      {
+        "subtitle": "Experience serving exempt organizations and their leadership",
+        "title": "Nonprofit Tax Advisory"
+      }
+    ]
+  },
+  "hero": {
+    "credential_badges": [
+      {
+        "label": "Attorney",
+        "style_key": "attorney"
+      },
+      {
+        "label": "CPA",
+        "style_key": "cpa"
+      }
+    ],
+    "headline": "Dual-Credentialed Tax Advisor for Estate, Nonprofit & Complex Planning",
+    "location_label": "Seattle, WA",
+    "rating_label": "4.8/5 (37 reviews)",
+    "years_experience_label": "21+ Years Experience"
+  },
+  "location": {
+    "city": "Seattle",
+    "country": "United States",
+    "state": "Washington",
+    "zip": "98101"
+  },
+  "profile": {
+    "avatar": {
+      "display_dimensions": {
+        "height": 128,
+        "width": 128
+      },
+      "file": {
+        "file_type": "png",
+        "height": 512,
+        "width": 512
+      },
+      "initials_fallback": true,
+      "upload_type": "profile_photo"
+    },
+    "initials": "JL",
+    "name": "Jennifer Lee",
+    "profile_type": "sample",
+    "slug": "sample-jennifer-lee",
+    "status": "standard",
+    "status_badge_label": "Verified"
+  },
+  "professional": {
+    "credentials": [
+      "CPA (Certified Public Accountant)",
+      "Juris Doctor (J.D.)",
+      "Nonprofit Tax Advisory"
+    ],
+    "firm_name": "Lee Tax Strategy Group",
+    "profession": [
+      "Attorney",
+      "CPA"
+    ],
+    "years_experience": 21
+  },
+  "quick_stats": [
+    {
+      "label": "Years of Experience",
+      "value": "21+"
+    },
+    {
+      "label": "Plans Structured",
+      "value": "900+"
+    },
+    {
+      "label": "Client Reviews",
+      "value": "37"
+    },
+    {
+      "label": "Complex Matters",
+      "value": "350+"
+    }
+  ],
+  "reviews": {
+    "allow_submission": true,
+    "enabled": true,
+    "items": [
+      {
+        "name": "Grace Y.",
+        "rating": 5,
+        "text": "Jennifer brought structure and clarity to a very complex family planning project."
+      },
+      {
+        "name": "Mark E.",
+        "rating": 4,
+        "text": "Thoughtful and highly technical, especially on nonprofit issues."
+      },
+      {
+        "name": "Sonia P.",
+        "rating": 5,
+        "text": "Exactly the kind of dual-credentialed advisor we needed."
+      }
+    ],
+    "summary": {
+      "average_rating": 4.7,
+      "review_count": 39
+    }
+  },
+  "services_offered": {
+    "items": [
+      {
+        "title": "Estate & Trust Tax",
+        "description": "Planning and compliance support for trusts, estates, and multigenerational transfers.",
+        "icon": "briefcase"
+      },
+      {
+        "title": "Business Tax Advisory",
+        "description": "Strategic structuring for owners, family businesses, and advisory-heavy organizations.",
+        "icon": "calculator"
+      },
+      {
+        "title": "Tax Planning",
+        "description": "Forward-looking planning for transactions, succession, and entity optimization.",
+        "icon": "target"
+      },
+      {
+        "title": "Compliance",
+        "description": "Tax compliance and readiness consulting for nonprofits and operating businesses.",
+        "icon": "book-open"
+      },
+      {
+        "title": "Consulting",
+        "description": "High-level advisory and technical review for complex planning questions.",
+        "icon": "users"
+      },
+      {
+        "title": "Appeals",
+        "description": "Administrative review support when planning issues turn into controversies.",
+        "icon": "scale-3"
+      }
+    ]
+  },
+  "specializations": {
+    "client_types": [
+      "Businesses",
+      "Individuals",
+      "Nonprofits",
+      "Executives"
+    ]
+  }
 }

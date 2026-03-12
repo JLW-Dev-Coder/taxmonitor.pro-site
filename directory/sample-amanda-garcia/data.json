@@ -1,22 +1,264 @@
 {
-    "contract":  "directory-profile.v1",
-    "slug":  "sample-amanda-garcia",
-    "name":  "Amanda Garcia",
-    "initials":  "AG",
-    "professions":  [
-                        "cpa"
-                    ],
-    "status":  "standard",
-    "location":  "Remote/Virtual",
-    "services":  [
-                     "bookkeeping",
-                     "international",
-                     "tax-prep"
-                 ],
-    "client_types":  [
-                         "expat",
-                         "individual"
-                     ],
-    "short_bio":  "Remote-first CPA practice serving US expats worldwide.",
-    "profile_type":  "sample"
+  "contract": "directory-profile.v1",
+  "bio": {
+    "bio_full_paragraphs": [
+      "Amanda Garcia is a seasoned tax professional with more than 12 years of experience helping clients navigate compliance, planning, and higher-stakes tax matters.",
+      "At Garcia Global Tax, the practice emphasizes clear communication, structured workflows, and practical recommendations tailored to each client\u2019s facts and filing posture.",
+      "Clients value Amanda for thoughtful strategy, reliable follow-through, and the ability to translate technical tax issues into plain English without the usual nonsense."
+    ],
+    "bio_short": "Remote-first CPA practice serving U.S. expats and internationally mobile taxpayers."
+  },
+  "buttons": {
+    "contact_button": {
+      "active": true,
+      "label": "Get In Touch",
+      "mode": "email",
+      "show": true,
+      "url": "mailto:amanda@garciaglobaltax.com"
+    },
+    "review_button": {
+      "active": true,
+      "label": "Add Your Review",
+      "mode": "modal",
+      "show": true,
+      "url": null
+    },
+    "schedule_button": {
+      "active": true,
+      "behavior_phrase": "Yes, I have connected my own booking link, use my booking link",
+      "description": "Book a free 30-minute consultation to discuss your tax situation.",
+      "description_mode": "custom",
+      "event_type_duration_minutes": 30,
+      "event_type_label": "Consultation",
+      "label": "Schedule Consultation",
+      "mode": "custom_booking_link",
+      "provider_label": "Custom",
+      "show": true,
+      "url": "https://www.garciaglobaltax.com/book"
+    }
+  },
+  "contact": {
+    "availability_display": "Mon-Fri, 9AM-5PM ET",
+    "contact_email": "amanda@garciaglobaltax.com",
+    "languages": [
+      "English",
+      "Spanish"
+    ],
+    "phone": "(305) 555-0142",
+    "timezone": "America/New_York",
+    "website": "https://www.garciaglobaltax.com",
+    "weekly_availability": [
+      {
+        "day": "Monday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "17:00"
+      },
+      {
+        "day": "Tuesday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "17:00"
+      },
+      {
+        "day": "Wednesday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "17:00"
+      },
+      {
+        "day": "Thursday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "17:00"
+      },
+      {
+        "day": "Friday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "15:00"
+      },
+      {
+        "day": "Saturday",
+        "enabled": false,
+        "start_time": null,
+        "end_time": null
+      },
+      {
+        "day": "Sunday",
+        "enabled": false,
+        "start_time": null,
+        "end_time": null
+      }
+    ]
+  },
+  "credentials_experience": {
+    "background_items": [
+      {
+        "date_label": "2018 - Present",
+        "description": "Built a remote tax practice serving expatriates, consultants, and small business owners worldwide.",
+        "title": "Founder, Garcia Global Tax"
+      },
+      {
+        "date_label": "2014 - 2018",
+        "description": "Led complex individual and small business return preparation with international reporting needs.",
+        "title": "Senior Tax Manager, Regional CPA Firm"
+      },
+      {
+        "date_label": "2011 - 2014",
+        "description": "Supported federal and state compliance projects for growing businesses and high-income taxpayers.",
+        "title": "Tax Associate, Public Accounting Firm"
+      }
+    ],
+    "licenses_certifications": [
+      {
+        "subtitle": "Florida, Active since 2014",
+        "title": "CPA (Certified Public Accountant)"
+      },
+      {
+        "subtitle": "Continuing compliance and annual training",
+        "title": "IRS Annual Filing Season Program"
+      },
+      {
+        "subtitle": "Focused on expatriate, treaty, and reporting matters",
+        "title": "International Tax Advisory Practice"
+      }
+    ]
+  },
+  "hero": {
+    "credential_badges": [
+      {
+        "label": "CPA",
+        "style_key": "cpa"
+      }
+    ],
+    "headline": "International Tax & Expat Filing Specialist",
+    "location_label": "Miami, FL",
+    "rating_label": "4.8/5 (32 reviews)",
+    "years_experience_label": "12+ Years Experience"
+  },
+  "location": {
+    "city": "Miami",
+    "country": "United States",
+    "state": "Florida",
+    "zip": "33101"
+  },
+  "profile": {
+    "avatar": {
+      "display_dimensions": {
+        "height": 128,
+        "width": 128
+      },
+      "file": {
+        "file_type": "png",
+        "height": 512,
+        "width": 512
+      },
+      "initials_fallback": true,
+      "upload_type": "profile_photo"
+    },
+    "initials": "AG",
+    "name": "Amanda Garcia",
+    "profile_type": "sample",
+    "slug": "sample-amanda-garcia",
+    "status": "standard",
+    "status_badge_label": "Verified"
+  },
+  "professional": {
+    "credentials": [
+      "CPA (Certified Public Accountant)",
+      "IRS Annual Filing Season Program",
+      "International Tax Advisory Practice"
+    ],
+    "firm_name": "Garcia Global Tax",
+    "profession": [
+      "CPA"
+    ],
+    "years_experience": 12
+  },
+  "quick_stats": [
+    {
+      "label": "Years of Experience",
+      "value": "12+"
+    },
+    {
+      "label": "Returns Filed",
+      "value": "1,200+"
+    },
+    {
+      "label": "Client Reviews",
+      "value": "32"
+    },
+    {
+      "label": "Specialty Cases",
+      "value": "300+"
+    }
+  ],
+  "reviews": {
+    "allow_submission": true,
+    "enabled": true,
+    "items": [
+      {
+        "name": "Melissa T.",
+        "rating": 5,
+        "text": "Amanda made expat filing much less stressful and caught issues my prior preparer missed."
+      },
+      {
+        "name": "Carlos V.",
+        "rating": 5,
+        "text": "Clear advice, quick turnaround, and very strong international knowledge."
+      },
+      {
+        "name": "Priya N.",
+        "rating": 4,
+        "text": "Professional and organized throughout a complicated multi-country filing."
+      }
+    ],
+    "summary": {
+      "average_rating": 4.7,
+      "review_count": 39
+    }
+  },
+  "services_offered": {
+    "items": [
+      {
+        "title": "Foreign Reporting (FBAR/FATCA)",
+        "description": "FBAR, FATCA, and cross-border reporting support for individuals and families.",
+        "icon": "globe"
+      },
+      {
+        "title": "Tax Monitoring",
+        "description": "Ongoing monitoring to flag account changes, notices, and filing risks early.",
+        "icon": "shield-check"
+      },
+      {
+        "title": "Tax Preparation",
+        "description": "Individual and small business preparation with multi-jurisdiction coordination.",
+        "icon": "calculator"
+      },
+      {
+        "title": "Tax Resolution",
+        "description": "Guidance for notices, balances due, and transcript-based issue triage.",
+        "icon": "file-check"
+      },
+      {
+        "title": "Tax Planning",
+        "description": "Forward-looking planning for expatriates, contractors, and globally mobile clients.",
+        "icon": "target"
+      },
+      {
+        "title": "Compliance",
+        "description": "Tax compliance and audit readiness consulting across U.S. reporting obligations.",
+        "icon": "book-open"
+      }
+    ]
+  },
+  "specializations": {
+    "client_types": [
+      "Individuals",
+      "Businesses",
+      "LLCs",
+      "S Corporations"
+    ]
+  }
 }

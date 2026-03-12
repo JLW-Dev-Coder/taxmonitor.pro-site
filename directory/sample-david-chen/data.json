@@ -1,21 +1,264 @@
 {
-    "contract":  "directory-profile.v1",
-    "slug":  "sample-david-chen",
-    "name":  "David Chen",
-    "initials":  "DC",
-    "professions":  [
-                        "attorney"
-                    ],
-    "status":  "standard",
-    "location":  "San Diego, CA",
-    "services":  [
-                     "estate",
-                     "planning"
-                 ],
-    "client_types":  [
-                         "business",
-                         "individual"
-                     ],
-    "short_bio":  "Tax attorney focused on estate planning and wealth transfer strategy.",
-    "profile_type":  "sample"
+  "contract": "directory-profile.v1",
+  "bio": {
+    "bio_full_paragraphs": [
+      "David Chen is a seasoned tax professional with more than 18 years of experience helping clients navigate compliance, planning, and higher-stakes tax matters.",
+      "At Chen Tax Counsel, the practice emphasizes clear communication, structured workflows, and practical recommendations tailored to each client\u2019s facts and filing posture.",
+      "Clients value David for thoughtful strategy, reliable follow-through, and the ability to translate technical tax issues into plain English without the usual nonsense."
+    ],
+    "bio_short": "Tax attorney focused on controversy, estate planning, and wealth transfer strategy."
+  },
+  "buttons": {
+    "contact_button": {
+      "active": true,
+      "label": "Get In Touch",
+      "mode": "email",
+      "show": true,
+      "url": "mailto:david@chentaxcounsel.com"
+    },
+    "review_button": {
+      "active": true,
+      "label": "Add Your Review",
+      "mode": "modal",
+      "show": true,
+      "url": null
+    },
+    "schedule_button": {
+      "active": true,
+      "behavior_phrase": "Yes, I have connected my own booking link, use my booking link",
+      "description": "Book a free 30-minute consultation to discuss your tax situation.",
+      "description_mode": "custom",
+      "event_type_duration_minutes": 30,
+      "event_type_label": "Consultation",
+      "label": "Schedule Consultation",
+      "mode": "custom_booking_link",
+      "provider_label": "Custom",
+      "show": true,
+      "url": "https://www.chentaxcounsel.com/book"
+    }
+  },
+  "contact": {
+    "availability_display": "Mon-Fri, 9AM-5PM PT",
+    "contact_email": "david@chentaxcounsel.com",
+    "languages": [
+      "Chinese",
+      "English"
+    ],
+    "phone": "(619) 555-0108",
+    "timezone": "America/Los_Angeles",
+    "website": "https://www.chentaxcounsel.com",
+    "weekly_availability": [
+      {
+        "day": "Monday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "17:00"
+      },
+      {
+        "day": "Tuesday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "17:00"
+      },
+      {
+        "day": "Wednesday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "17:00"
+      },
+      {
+        "day": "Thursday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "17:00"
+      },
+      {
+        "day": "Friday",
+        "enabled": true,
+        "start_time": "09:00",
+        "end_time": "15:00"
+      },
+      {
+        "day": "Saturday",
+        "enabled": false,
+        "start_time": null,
+        "end_time": null
+      },
+      {
+        "day": "Sunday",
+        "enabled": false,
+        "start_time": null,
+        "end_time": null
+      }
+    ]
+  },
+  "credentials_experience": {
+    "background_items": [
+      {
+        "date_label": "2015 - Present",
+        "description": "Advises families and business owners on estate structuring, controversy defense, and tax-sensitive transactions.",
+        "title": "Founder, Chen Tax Counsel"
+      },
+      {
+        "date_label": "2010 - 2015",
+        "description": "Handled federal controversy, tax planning, and appeals matters for high-net-worth clients.",
+        "title": "Tax Attorney, National Law Firm"
+      },
+      {
+        "date_label": "2007 - 2010",
+        "description": "Focused on trust, estate, and business tax matters.",
+        "title": "Associate Attorney, Boutique Tax Practice"
+      }
+    ],
+    "licenses_certifications": [
+      {
+        "subtitle": "University of California, Active California Bar Member",
+        "title": "Juris Doctor (J.D.)"
+      },
+      {
+        "subtitle": "Advanced study in estate, gift, and controversy matters",
+        "title": "LL.M. in Taxation"
+      },
+      {
+        "subtitle": "Authorized to represent clients before the IRS",
+        "title": "IRS Form 2848 Power of Attorney"
+      }
+    ]
+  },
+  "hero": {
+    "credential_badges": [
+      {
+        "label": "Attorney",
+        "style_key": "attorney"
+      }
+    ],
+    "headline": "Tax Controversy & Estate Planning Attorney",
+    "location_label": "San Diego, CA",
+    "rating_label": "4.9/5 (41 reviews)",
+    "years_experience_label": "18+ Years Experience"
+  },
+  "location": {
+    "city": "San Diego",
+    "country": "United States",
+    "state": "California",
+    "zip": "92101"
+  },
+  "profile": {
+    "avatar": {
+      "display_dimensions": {
+        "height": 128,
+        "width": 128
+      },
+      "file": {
+        "file_type": "png",
+        "height": 512,
+        "width": 512
+      },
+      "initials_fallback": true,
+      "upload_type": "profile_photo"
+    },
+    "initials": "DC",
+    "name": "David Chen",
+    "profile_type": "sample",
+    "slug": "sample-david-chen",
+    "status": "standard",
+    "status_badge_label": "Verified"
+  },
+  "professional": {
+    "credentials": [
+      "Juris Doctor (J.D.)",
+      "LL.M. in Taxation",
+      "IRS Form 2848 Power of Attorney"
+    ],
+    "firm_name": "Chen Tax Counsel",
+    "profession": [
+      "Attorney"
+    ],
+    "years_experience": 18
+  },
+  "quick_stats": [
+    {
+      "label": "Years of Experience",
+      "value": "18+"
+    },
+    {
+      "label": "Plans Drafted",
+      "value": "700+"
+    },
+    {
+      "label": "Client Reviews",
+      "value": "41"
+    },
+    {
+      "label": "Tax Matters Resolved",
+      "value": "250+"
+    }
+  ],
+  "reviews": {
+    "allow_submission": true,
+    "enabled": true,
+    "items": [
+      {
+        "name": "Helen S.",
+        "rating": 5,
+        "text": "David was measured, strategic, and incredibly sharp during our appeals process."
+      },
+      {
+        "name": "Jason K.",
+        "rating": 5,
+        "text": "Excellent planning advice for our family business and trust structure."
+      },
+      {
+        "name": "Robert M.",
+        "rating": 5,
+        "text": "Strong communicator and very thoughtful legal analysis."
+      }
+    ],
+    "summary": {
+      "average_rating": 5.0,
+      "review_count": 39
+    }
+  },
+  "services_offered": {
+    "items": [
+      {
+        "title": "Estate & Trust Tax",
+        "description": "Planning and compliance for estates, trusts, and generational wealth transfer.",
+        "icon": "briefcase"
+      },
+      {
+        "title": "Appeals",
+        "description": "IRS Appeals Office and administrative review representation.",
+        "icon": "scale-3"
+      },
+      {
+        "title": "Tax Litigation",
+        "description": "Representation in Tax Court and federal district court proceedings.",
+        "icon": "gavel"
+      },
+      {
+        "title": "Tax Planning",
+        "description": "Strategic planning for owners, families, and trusts with complex tax exposure.",
+        "icon": "target"
+      },
+      {
+        "title": "Consulting",
+        "description": "Advisory support for counsel, fiduciaries, and closely held businesses.",
+        "icon": "users"
+      },
+      {
+        "title": "Compliance",
+        "description": "Tax compliance and audit readiness consulting.",
+        "icon": "book-open"
+      }
+    ]
+  },
+  "specializations": {
+    "client_types": [
+      "Individuals",
+      "Businesses",
+      "Nonprofits",
+      "Executives"
+    ]
+  }
 }
