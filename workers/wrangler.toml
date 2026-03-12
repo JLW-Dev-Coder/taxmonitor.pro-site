@@ -38,8 +38,6 @@ bucket_name = "transcript-taxmonitor-pro"
 name = "TOKEN_LEDGER"
 class_name = "TokenLedger"
 
-# IMPORTANT:
-# Free plan requires a Durable Objects namespace created via SQLite migration.
 [[migrations]]
 tag = "v1"
 new_sqlite_classes = ["TokenLedger"]
@@ -49,30 +47,77 @@ new_sqlite_classes = ["TokenLedger"]
 # ---------------------------------------
 
 [vars]
+
+# -------------------------
+# ClickUp
+# -------------------------
+
 CLICKUP_ACCOUNTS_LIST_ID = "901710909567"
 CLICKUP_ORDERS_LIST_ID = "901710818340"
 CLICKUP_SUPPORT_LIST_ID = "901710818377"
+
+# -------------------------
+# Stripe credit mapping
+# -------------------------
+
 CREDIT_MAP_JSON = "{\"price_1T4Ar2CMpIgwe61ZMzAI6yKa\":10,\"price_1T4AxzCMpIgwe61ZsWh7GGAb\":25,\"price_1T4B1gCMpIgwe61ZG12b5tjN\":100}"
+
+PRICE_10 = "price_1T4Ar2CMpIgwe61ZMzAI6yKa"
+PRICE_25 = "price_1T4AxzCMpIgwe61ZsWh7GGAb"
+PRICE_100 = "price_1T4B1gCMpIgwe61ZG12b5tjN"
+
+# -------------------------
+# Google Workspace
+# -------------------------
+
 GOOGLE_CLIENT_EMAIL = "tax-monitor-worker@tax-monitor-pro.iam.gserviceaccount.com"
 GOOGLE_TOKEN_URI = "https://oauth2.googleapis.com/token"
+
 GOOGLE_WORKSPACE_USER_INFO = "info@taxmonitor.pro"
 GOOGLE_WORKSPACE_USER_NO_REPLY = "no-reply@taxmonitor.pro"
 GOOGLE_WORKSPACE_USER_SUPPORT = "support@taxmonitor.pro"
-MY_ORGANIZATION_ADDRESS = "1175 Avocado Avenue Suite 101 PMB 1010"
-MY_ORGANIZATION_BUSINESS_LOGO = "https://taxmonitor.pro/assets/logo.svg"
-MY_ORGANIZATION_CITY = "El Cajon"
+
+# -------------------------
+# Organization metadata
+# -------------------------
+
 MY_ORGANIZATION_NAME = "Tax Monitor Pro"
+MY_ORGANIZATION_ADDRESS = "1175 Avocado Avenue Suite 101 PMB 1010"
+MY_ORGANIZATION_CITY = "El Cajon"
 MY_ORGANIZATION_STATE_PROVINCE = "CA"
 MY_ORGANIZATION_ZIP = "92020"
-PRICE_10 = "price_1T4Ar2CMpIgwe61ZMzAI6yKa"
-PRICE_100 = "price_1T4B1gCMpIgwe61ZG12b5tjN"
-PRICE_25 = "price_1T4AxzCMpIgwe61ZsWh7GGAb"
+MY_ORGANIZATION_BUSINESS_LOGO = "https://taxmonitor.pro/assets/logo.svg"
+
+# -------------------------
+# Transcript return origins
+# -------------------------
+
 TRANSCRIPT_RETURN_ORIGINS_JSON = "[\"https://transcript.taxmonitor.pro\"]"
+
+# ---------------------------------------
+# Cal.com OAuth (Taxpayer App)
+# ---------------------------------------
+
+CAL_APP_OAUTH_CLIENT_ID = "d6839d7dccd5a878d6c5e26b52effd2ab6d241dc047ed2786f9f56de039ca7f3"
+CAL_APP_OAUTH_AUTHORIZE_URL = "https://app.cal.com/auth/oauth2/authorize"
+CAL_APP_OAUTH_TOKEN_URL = "https://api.cal.com/v2/auth/oauth2/token"
+CAL_APP_OAUTH_REDIRECT_URI = "https://api.taxmonitor.pro/cal/app/oauth/callback"
+
+# ---------------------------------------
+# Cal.com OAuth (Tax Pro Directory Profiles)
+# ---------------------------------------
+
+CAL_PRO_OAUTH_CLIENT_ID = "d6839d7dccd5a878d6c5e26b52effd2ab6d241dc047ed2786f9f56de039ca7f3"
+CAL_PRO_OAUTH_AUTHORIZE_URL = "https://app.cal.com/auth/oauth2/authorize"
+CAL_PRO_OAUTH_TOKEN_URL = "https://api.cal.com/v2/auth/oauth2/token"
+CAL_PRO_OAUTH_REDIRECT_URI = "https://api.taxmonitor.pro/cal/pro/oauth/callback"
 
 # ---------------------------------------
 # Secrets (set via wrangler secret put)
 # ---------------------------------------
 
+# CAL_APP_OAUTH_CLIENT_SECRET
+# CAL_PRO_OAUTH_CLIENT_SECRET
 # CAL_WEBHOOK_SECRET
 # CLICKUP_API_KEY
 # GOOGLE_PRIVATE_KEY
