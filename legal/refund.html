@@ -1,0 +1,226 @@
+<!-- legal/refund.html-->
+<!doctype html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tax Monitor Pro — Refund Policy</title>
+  <meta name="description" content="Refund Policy for Tax Monitor Pro subscriptions, directory visibility, featured placement, verification-related fees, and related digital purchases." />
+
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&amp;display=swap" rel="stylesheet" />
+
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+  <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['DM Sans', 'ui-sans-serif', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial']
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    body { box-sizing: border-box; }
+    * { font-family: "DM Sans", system-ui, sans-serif; }
+
+    .amber-glow {
+      background: radial-gradient(ellipse 700px 420px at 50% -140px, rgba(245, 158, 11, 0.12), transparent 60%);
+    }
+
+    .grid-overlay {
+      background-image:
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 80px 80px;
+    }
+
+    .glass-card {
+      background: rgba(30, 35, 45, 0.6);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow:
+        0 0 60px rgba(245, 158, 11, 0.03),
+        0 25px 50px -12px rgba(0, 0, 0, 0.4);
+    }
+
+    .badge-gradient {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    }
+
+    .section-divider {
+      border-color: rgba(255, 255, 255, 0.06);
+    }
+
+    @keyframes tmFadeUp {
+      0% { opacity: 0; transform: translateY(14px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .tm-anim { opacity: 0; transform: translateY(14px); }
+    .tm-loaded .tm-anim { animation: tmFadeUp 700ms ease forwards; }
+    .tm-loaded .tm-anim.delay-1 { animation-delay: 80ms; }
+    .tm-loaded .tm-anim.delay-2 { animation-delay: 160ms; }
+    .tm-loaded .tm-anim.delay-3 { animation-delay: 240ms; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .tm-anim { opacity: 1 !important; transform: none !important; }
+      .tm-loaded .tm-anim { animation: none !important; }
+    }
+  </style>
+
+  <style>@view-transition { navigation: auto; }</style>
+</head>
+
+<body class="h-full bg-slate-950 text-slate-300 overflow-auto">
+  <div id="app" class="min-h-screen flex flex-col grid-overlay">
+    <div class="amber-glow min-h-screen flex flex-col">
+
+      <!-- PARTIAL:header -->
+
+      <main class="flex-1 max-w-[900px] mx-auto px-6 py-12 tm-anim">
+        <div class="text-center mb-10 tm-anim delay-1">
+          <div class="inline-flex items-center justify-center gap-3 mb-2">
+            <div class="badge-gradient w-10 h-10 rounded-lg flex items-center justify-center shadow-lg">
+              <span class="text-slate-950 font-bold text-sm tracking-tight">TM</span>
+            </div>
+            <div class="text-left">
+              <h1 class="text-white font-semibold text-lg leading-tight">Tax Monitor Pro</h1>
+              <p class="text-slate-500 text-xs">Owned by Lenore, Inc.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center mb-8 tm-anim delay-2">
+          <h2 class="text-3xl font-bold text-white mb-2">Refund Policy</h2>
+          <p class="text-slate-400 text-base mb-3">Directory, Visibility, Verification, and Digital Service Purchases</p>
+          <p class="text-slate-500 text-sm">Last updated: March 12, 2026</p>
+        </div>
+
+        <div class="glass-card rounded-2xl p-8 md:p-10 tm-anim delay-3">
+          <section class="mb-8 pb-8 border-b section-divider">
+            <p class="text-slate-400 leading-relaxed">
+              This Refund Policy applies to purchases made through Tax Monitor Pro, including directory subscriptions, featured listing upgrades, profile visibility fees, verification-related review fees, client pool access fees, and other related digital services or platform access purchases. For support, use <a class="text-amber-400 hover:underline" href="/contact.html">Contact Support</a>.
+            </p>
+          </section>
+
+          <section class="mb-8 pb-8 border-b section-divider">
+            <h3 class="text-white font-semibold text-lg mb-3">A. What You’re Buying</h3>
+            <ul class="list-disc list-inside text-slate-400 leading-relaxed space-y-2">
+              <li><span class="font-semibold">Directory and profile products</span> are digital listing and platform visibility services.</li>
+              <li><span class="font-semibold">Featured placement, profile exposure, and client pool access</span> are access and positioning features, not guaranteed lead-generation products.</li>
+              <li><span class="font-semibold">Verification-related charges</span> may cover administrative review, document handling, and profile qualification workflows.</li>
+              <li>These purchases are <span class="font-semibold">digital services and access rights</span>, not physical goods.</li>
+            </ul>
+          </section>
+
+          <section class="mb-8 pb-8 border-b section-divider">
+            <h3 class="text-white font-semibold text-lg mb-3">B. General Rule</h3>
+            <p class="text-slate-400 leading-relaxed">
+              Because Tax Monitor Pro products are digital services that may be provisioned, activated, reviewed, published, or made available promptly after purchase, fees are generally <span class="font-semibold">non-refundable once the service, access, review, or listing process has started</span>.
+            </p>
+          </section>
+
+          <section class="mb-8 pb-8 border-b section-divider">
+            <h3 class="text-white font-semibold text-lg mb-3">C. When We May Approve a Refund</h3>
+            <p class="text-slate-400 leading-relaxed mb-4">We may approve a refund, platform credit, or billing adjustment in situations such as:</p>
+            <ul class="list-disc list-inside text-slate-400 leading-relaxed space-y-2">
+              <li><span class="font-semibold">Duplicate charge</span> for the same order or subscription period.</li>
+              <li><span class="font-semibold">Unauthorized charge</span> that appears to be fraudulent or not approved by the account holder, subject to review.</li>
+              <li><span class="font-semibold">Technical failure</span> where the purchased service was never provisioned and the issue cannot be corrected.</li>
+              <li><span class="font-semibold">Verified billing error</span> caused by our system.</li>
+              <li><span class="font-semibold">Accidental overpayment</span> where the same feature or plan was charged more than once.</li>
+            </ul>
+            <p class="text-slate-500 text-sm mt-4">All approvals are discretionary, case-by-case, and may require supporting information.</p>
+          </section>
+
+          <section class="mb-8 pb-8 border-b section-divider">
+            <h3 class="text-white font-semibold text-lg mb-3">D. When We Typically Do Not Refund</h3>
+            <p class="text-slate-400 leading-relaxed mb-4">Refunds are not typically provided for the following:</p>
+            <ul class="list-disc list-inside text-slate-400 leading-relaxed space-y-2">
+              <li><span class="font-semibold">Change of mind</span> after purchase.</li>
+              <li><span class="font-semibold">Directory or featured listing fees</span> once the listing has been published, queued, reviewed, or activated.</li>
+              <li><span class="font-semibold">Client pool or visibility access fees</span> where access has been granted or enabled.</li>
+              <li><span class="font-semibold">Verification review fees</span> once document review, credential screening, or profile assessment has begun, even if approval is denied, delayed, or limited.</li>
+              <li><span class="font-semibold">Lack of leads, inquiries, engagement, conversions, or revenue</span>.</li>
+              <li><span class="font-semibold">Ranking, placement, or visibility expectations</span> that were not expressly guaranteed in writing.</li>
+              <li><span class="font-semibold">Profile suspension, restriction, rejection, or removal</span> caused by inaccurate, incomplete, misleading, expired, or unverifiable credential, license, or business information.</li>
+              <li><span class="font-semibold">Failure to complete requested verification steps</span> within the required timeframe.</li>
+              <li><span class="font-semibold">User-side setup, browser, device, email, or account access issues</span> when the platform is otherwise functioning.</li>
+            </ul>
+          </section>
+
+          <section class="mb-8 pb-8 border-b section-divider">
+            <h3 class="text-white font-semibold text-lg mb-3">E. Verification and Credential Review</h3>
+            <p class="text-slate-400 leading-relaxed mb-4">
+              Tax Monitor Pro may request documentation to evaluate claimed credentials, licenses, professional designations, business identity, jurisdictional standing, or related profile eligibility.
+            </p>
+            <ul class="list-disc list-inside text-slate-400 leading-relaxed space-y-2">
+              <li>Payment of a fee does <span class="font-semibold">not</span> guarantee profile approval, publication, verification status, preferred placement, or continued visibility.</li>
+              <li>We may approve, deny, limit, label, unpublish, or remove a profile in our discretion, subject to applicable law and our Terms.</li>
+              <li>Fees tied to review or administrative processing are generally earned when the review workflow begins.</li>
+            </ul>
+          </section>
+
+          <section class="mb-8 pb-8 border-b section-divider">
+            <h3 class="text-white font-semibold text-lg mb-3">F. Subscriptions and Renewals</h3>
+            <p class="text-slate-400 leading-relaxed mb-4">
+              If Tax Monitor Pro offers recurring subscriptions, the following rules apply unless different terms are stated at checkout:
+            </p>
+            <ul class="list-disc list-inside text-slate-400 leading-relaxed space-y-2">
+              <li>Subscription fees apply to the billing period purchased.</li>
+              <li>Cancellation stops future renewals but does not usually create a refund for the current billing period.</li>
+              <li>Partial-period or unused-time refunds are not typically provided.</li>
+            </ul>
+          </section>
+
+          <section class="mb-8 pb-8 border-b section-divider">
+            <h3 class="text-white font-semibold text-lg mb-3">G. How to Request a Refund</h3>
+            <ol class="list-decimal list-inside text-slate-400 leading-relaxed space-y-2">
+              <li>Submit your request through <a class="text-amber-400 hover:underline" href="/contact.html">Contact Support</a>.</li>
+              <li>Include the account email, business name, and approximate purchase date.</li>
+              <li>Include any receipt, invoice, transaction ID, subscription reference, or related order details available to you.</li>
+              <li>Briefly explain the reason for the request and any relevant technical or billing issue.</li>
+            </ol>
+          </section>
+
+          <section class="mb-8 pb-8 border-b section-divider">
+            <h3 class="text-white font-semibold text-lg mb-3">H. Chargebacks and Payment Disputes</h3>
+            <p class="text-slate-400 leading-relaxed">
+              Initiating a chargeback or payment dispute may result in temporary restriction, suspension, or removal of platform access, listing visibility, verification status, or related services while the matter is investigated.
+            </p>
+          </section>
+
+          <section>
+            <h3 class="text-white font-semibold text-lg mb-3">I. Policy Changes</h3>
+            <p class="text-slate-400 leading-relaxed">
+              We may update this Refund Policy from time to time. The “Last updated” date reflects the most recent revision.
+            </p>
+          </section>
+        </div>
+      </main>
+
+      <!-- PARTIAL:footer -->
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      requestAnimationFrame(() => document.documentElement.classList.add('tm-loaded'));
+      var y = document.getElementById('footer-year');
+      if (y) y.textContent = String(new Date().getFullYear());
+    })();
+  </script>
+</body>
+</html>
