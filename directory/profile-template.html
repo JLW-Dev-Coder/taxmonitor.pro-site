@@ -1,3 +1,4 @@
+<!-- directory/profile-template.html -->
 <!doctype html>
 <html lang="en" class="h-full">
 <head>
@@ -18,28 +19,21 @@
     tailwind.config = {
       theme: {
         extend: {
-          fontFamily: {
-            sans: ['DM Sans', 'system-ui', 'sans-serif']
-          },
           boxShadow: {
             soft: '0 0 0 1px rgba(148,163,184,.06), 0 30px 80px rgba(0,0,0,.35)'
+          },
+          fontFamily: {
+            sans: ['DM Sans', 'system-ui', 'sans-serif']
           }
         }
       }
-    }
+    };
   </script>
 
   <style>
     html, body { height: 100%; margin: 0; }
     body { box-sizing: border-box; overflow-x: hidden; }
     * { font-family: 'DM Sans', sans-serif; }
-
-    .gradient-text {
-      background: linear-gradient(135deg, #F59E0B, #D97706);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
 
     .hero-glow {
       background:
@@ -121,36 +115,30 @@
         <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
           <div class="flex flex-col lg:flex-row lg:items-end gap-8">
             <div class="flex flex-col sm:flex-row items-start sm:items-end gap-6 flex-1 min-w-0">
-              <div class="w-24 h-24 sm:w-32 sm:h-32 rounded-3xl bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center text-5xl sm:text-6xl font-extrabold text-slate-950 shadow-soft border border-amber-300/20 flex-shrink-0">
-                SM
+              <div id="profile-avatar" class="w-24 h-24 sm:w-32 sm:h-32 rounded-3xl bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center text-5xl sm:text-6xl font-extrabold text-slate-950 shadow-soft border border-amber-300/20 flex-shrink-0 overflow-hidden">
+                <span id="profile-avatar-initials">SM</span>
               </div>
 
               <div class="flex-1 min-w-0">
-                
-
                 <div class="flex flex-wrap items-center gap-3 mb-3">
-                  <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight">Sarah Mitchell</h1>
-                  <div class="flex gap-2 flex-wrap">
-                    <span class="badge-cpa px-3 py-1 rounded-full text-sm font-semibold">CPA</span>
-                    <span class="badge-attorney px-3 py-1 rounded-full text-sm font-semibold">Attorney</span>
-                    <span class="featured-badge px-3 py-1 rounded-full text-sm font-bold">Featured</span>
-                  </div>
+                  <h1 id="profile-name" class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight">Sarah Mitchell</h1>
+                  <div id="hero-badges" class="flex gap-2 flex-wrap"></div>
                 </div>
 
-                <p class="text-xl text-slate-400 mb-4">Tax Litigation &amp; IRS Audit Defense Specialist</p>
+                <p id="profile-headline" class="text-xl text-slate-400 mb-4">Tax Litigation and IRS Audit Defense Specialist</p>
 
                 <div class="flex flex-wrap gap-4 text-sm text-slate-300">
                   <div class="flex items-center gap-2">
                     <i data-lucide="map-pin" class="w-4 h-4 text-amber-400"></i>
-                    <span>Los Angeles, CA</span>
+                    <span id="hero-location">Los Angeles, California</span>
                   </div>
                   <div class="flex items-center gap-2">
                     <i data-lucide="briefcase" class="w-4 h-4 text-amber-400"></i>
-                    <span>20+ Years Experience</span>
+                    <span id="hero-experience">20+ Years Experience</span>
                   </div>
                   <div class="flex items-center gap-2">
                     <i data-lucide="star" class="w-4 h-4 text-amber-400 fill-amber-400"></i>
-                    <span>4.9/5 (48 reviews)</span>
+                    <span id="hero-rating">4.9/5 (48 reviews)</span>
                   </div>
                 </div>
               </div>
@@ -159,7 +147,7 @@
             <div class="w-full lg:w-auto lg:min-w-[240px] flex flex-col gap-3">
               <button id="contact-button" class="px-6 py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 rounded-xl font-semibold transition-all shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2">
                 <i data-lucide="mail" class="w-5 h-5"></i>
-                <span id="contact-button-text">Get in Touch</span>
+                <span id="contact-button-text">Get In Touch</span>
               </button>
               <button id="schedule-button" class="px-6 py-3 bg-slate-900/60 border border-slate-700 hover:border-amber-500/40 hover:bg-slate-800 rounded-xl font-semibold transition-all flex items-center justify-center gap-2">
                 <i data-lucide="calendar" class="w-5 h-5 text-amber-400"></i>
@@ -168,28 +156,9 @@
             </div>
           </div>
 
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8">
-            <div class="glass-card rounded-2xl p-4">
-              <div class="text-2xl font-bold text-amber-400 mb-1">20+</div>
-              <div class="text-xs sm:text-sm text-slate-400">Years of Experience</div>
-            </div>
-            <div class="glass-card rounded-2xl p-4">
-              <div class="text-2xl font-bold text-amber-400 mb-1">500+</div>
-              <div class="text-xs sm:text-sm text-slate-400">Cases Handled</div>
-            </div>
-            <div class="glass-card rounded-2xl p-4">
-              <div class="text-2xl font-bold text-amber-400 mb-1">98%</div>
-              <div class="text-xs sm:text-sm text-slate-400">Success Rate</div>
-            </div>
-            <div class="glass-card rounded-2xl p-4">
-              <div class="text-2xl font-bold text-amber-400 mb-1">48</div>
-              <div class="text-xs sm:text-sm text-slate-400">Client Reviews</div>
-            </div>
-          </div>
+          <div id="quick-stats" class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8"></div>
         </div>
       </section>
-
-      
 
       <section class="animated-section max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -197,92 +166,26 @@
             <div class="glass-card rounded-3xl p-8">
               <div class="flex items-center gap-3 mb-6">
                 <div class="w-1 h-8 bg-gradient-to-b from-amber-500 to-amber-600 rounded-full"></div>
-                <h2 id="about-section-title" class="text-2xl font-bold">About</h2>
+                <h2 class="text-2xl font-bold">About</h2>
               </div>
-              <div class="space-y-4 text-slate-300 leading-relaxed">
-                <p>Sarah Mitchell is a dual-credentialed tax professional with over 20 years of experience in complex tax litigation and IRS audit defense. With both her CPA and law degree, she brings a unique perspective to tax problem-solving.</p>
-                <p>She has successfully represented clients before the IRS, Tax Court, and various state tax authorities. Her expertise includes navigating complex audit procedures, developing effective defense strategies, and negotiating favorable settlements with tax authorities.</p>
-                <p>Known for her meticulous attention to detail and aggressive advocacy, Sarah has built a reputation for achieving strong outcomes for clients facing high-stakes tax disputes.</p>
-              </div>
+              <div id="about-paragraphs" class="space-y-4 text-slate-300 leading-relaxed"></div>
             </div>
 
             <div class="glass-card rounded-3xl p-8">
               <div class="flex items-center gap-3 mb-6">
                 <div class="w-1 h-8 bg-gradient-to-b from-amber-500 to-amber-600 rounded-full"></div>
-                <h2 id="credentials-section-title" class="text-2xl font-bold">Credentials &amp; Experience</h2>
+                <h2 class="text-2xl font-bold">Credentials and Experience</h2>
               </div>
 
               <div class="space-y-6">
                 <div>
-                  <h3 class="text-lg font-semibold mb-4 text-amber-300">Licenses &amp; Certifications</h3>
-                  <div class="space-y-3">
-                    <div class="flex items-start gap-3">
-                      <i data-lucide="check-circle" class="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5"></i>
-                      <div>
-                        <div class="font-medium">CPA (Certified Public Accountant)</div>
-                        <div class="text-sm text-slate-400">California, Active since 2003</div>
-                      </div>
-                    </div>
-                    <div class="flex items-start gap-3">
-                      <i data-lucide="check-circle" class="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5"></i>
-                      <div>
-                        <div class="font-medium">Juris Doctor (J.D.)</div>
-                        <div class="text-sm text-slate-400">UCLA School of Law, Licensed to practice in California</div>
-                      </div>
-                    </div>
-                    <div class="flex items-start gap-3">
-                      <i data-lucide="check-circle" class="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5"></i>
-                      <div>
-                        <div class="font-medium">IRS Form 2848 Power of Attorney</div>
-                        <div class="text-sm text-slate-400">Authorized to represent clients before the IRS</div>
-                      </div>
-                    </div>
-                    <div class="flex items-start gap-3">
-                      <i data-lucide="check-circle" class="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5"></i>
-                      <div>
-                        <div class="font-medium">Board Certified Tax Specialist</div>
-                        <div class="text-sm text-slate-400">State Bar of California Tax Law Certification</div>
-                      </div>
-                    </div>
-                  </div>
+                  <h3 class="text-lg font-semibold mb-4 text-amber-300">Licenses and Certifications</h3>
+                  <div id="licenses-list" class="space-y-3"></div>
                 </div>
 
                 <div>
                   <h3 class="text-lg font-semibold mb-4 text-amber-300">Professional Background</h3>
-                  <div class="space-y-4">
-                    <div class="flex gap-4">
-                      <div class="flex flex-col items-center">
-                        <div class="w-3 h-3 rounded-full bg-amber-500 mt-2"></div>
-                        <div class="w-0.5 h-12 bg-slate-700"></div>
-                      </div>
-                      <div>
-                        <div class="font-medium">Founder &amp; Principal, Mitchell Tax Law</div>
-                        <div class="text-sm text-slate-400 mb-1">2008 - Present</div>
-                        <p class="text-sm text-slate-300">Founded and grew a practice focused on tax litigation and audit defense.</p>
-                      </div>
-                    </div>
-                    <div class="flex gap-4">
-                      <div class="flex flex-col items-center">
-                        <div class="w-3 h-3 rounded-full bg-amber-500 mt-2"></div>
-                        <div class="w-0.5 h-12 bg-slate-700"></div>
-                      </div>
-                      <div>
-                        <div class="font-medium">Senior Tax Attorney, Major Accounting Firm</div>
-                        <div class="text-sm text-slate-400 mb-1">2003 - 2008</div>
-                        <p class="text-sm text-slate-300">Led tax controversy work involving complex matters for business and individual clients.</p>
-                      </div>
-                    </div>
-                    <div class="flex gap-4">
-                      <div class="flex flex-col items-center">
-                        <div class="w-3 h-3 rounded-full bg-amber-500"></div>
-                      </div>
-                      <div>
-                        <div class="font-medium">Revenue Agent, IRS</div>
-                        <div class="text-sm text-slate-400 mb-1">2001 - 2003</div>
-                        <p class="text-sm text-slate-300">Built expertise in audit procedures and IRS enforcement processes.</p>
-                      </div>
-                    </div>
-                  </div>
+                  <div id="background-list" class="space-y-4"></div>
                 </div>
               </div>
             </div>
@@ -290,82 +193,18 @@
             <div class="glass-card rounded-3xl p-8">
               <div class="flex items-center gap-3 mb-6">
                 <div class="w-1 h-8 bg-gradient-to-b from-amber-500 to-amber-600 rounded-full"></div>
-                <h2 id="services-section-title" class="text-2xl font-bold">Services Offered</h2>
+                <h2 class="text-2xl font-bold">Services Offered</h2>
               </div>
 
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div class="soft-card rounded-2xl p-4">
-                  <div class="flex items-start gap-3">
-                    <i data-lucide="shield-check" class="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5"></i>
-                    <div>
-                      <div class="font-semibold mb-1">Tax Litigation</div>
-                      <div class="text-sm text-slate-400">Representation in Tax Court and federal district court proceedings.</div>
-                    </div>
-                  </div>
-                </div>
-                <div class="soft-card rounded-2xl p-4">
-                  <div class="flex items-start gap-3">
-                    <i data-lucide="file-check" class="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5"></i>
-                    <div>
-                      <div class="font-semibold mb-1">Audit Defense</div>
-                      <div class="text-sm text-slate-400">Comprehensive IRS audit representation and negotiation.</div>
-                    </div>
-                  </div>
-                </div>
-                <div class="soft-card rounded-2xl p-4">
-                  <div class="flex items-start gap-3">
-                    <i data-lucide="target" class="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5"></i>
-                    <div>
-                      <div class="font-semibold mb-1">Tax Planning</div>
-                      <div class="text-sm text-slate-400">Strategic tax planning to reduce liability and improve readiness.</div>
-                    </div>
-                  </div>
-                </div>
-                <div class="soft-card rounded-2xl p-4">
-                  <div class="flex items-start gap-3">
-                    <i data-lucide="scale-3" class="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5"></i>
-                    <div>
-                      <div class="font-semibold mb-1">Appeals</div>
-                      <div class="text-sm text-slate-400">IRS Appeals Office and administrative review representation.</div>
-                    </div>
-                  </div>
-                </div>
-                <div class="soft-card rounded-2xl p-4">
-                  <div class="flex items-start gap-3">
-                    <i data-lucide="book-open" class="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5"></i>
-                    <div>
-                      <div class="font-semibold mb-1">Compliance</div>
-                      <div class="text-sm text-slate-400">Tax compliance and audit readiness consulting.</div>
-                    </div>
-                  </div>
-                </div>
-                <div class="soft-card rounded-2xl p-4">
-                  <div class="flex items-start gap-3">
-                    <i data-lucide="users" class="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5"></i>
-                    <div>
-                      <div class="font-semibold mb-1">Consulting</div>
-                      <div class="text-sm text-slate-400">Expert witness and litigation support services.</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <div id="services-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
             </div>
 
             <div class="glass-card rounded-3xl p-8">
               <h3 class="text-xl font-bold mb-6 flex items-center gap-3">
                 <i data-lucide="users-2" class="w-5 h-5 text-amber-400"></i>
-                Specializations &amp; Client Types
+                Specializations and Client Types
               </h3>
-              <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                <div class="soft-card rounded-xl p-3 text-center text-sm font-medium">Individuals</div>
-                <div class="soft-card rounded-xl p-3 text-center text-sm font-medium">Businesses</div>
-                <div class="soft-card rounded-xl p-3 text-center text-sm font-medium">C Corporations</div>
-                <div class="soft-card rounded-xl p-3 text-center text-sm font-medium">S Corporations</div>
-                <div class="soft-card rounded-xl p-3 text-center text-sm font-medium">Partnerships</div>
-                <div class="soft-card rounded-xl p-3 text-center text-sm font-medium">LLCs</div>
-                <div class="soft-card rounded-xl p-3 text-center text-sm font-medium">Nonprofits</div>
-                <div class="soft-card rounded-xl p-3 text-center text-sm font-medium">Executives</div>
-              </div>
+              <div id="specializations-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-3"></div>
             </div>
           </div>
 
@@ -375,28 +214,26 @@
               <div class="space-y-5">
                 <div>
                   <div class="text-xs font-semibold text-slate-500 mb-1">Email</div>
-                  <a href="mailto:sarah@mitchelltaxlaw.com" class="text-amber-400 hover:text-amber-300 break-all">sarah@mitchelltaxlaw.com</a>
+                  <a id="contact-email-link" href="#" class="text-amber-400 hover:text-amber-300 break-all"></a>
                 </div>
                 <div>
                   <div class="text-xs font-semibold text-slate-500 mb-1">Phone</div>
-                  <a href="tel:+12135551234" class="text-amber-400 hover:text-amber-300">(213) 555-1234</a>
+                  <a id="contact-phone-link" href="#" class="text-amber-400 hover:text-amber-300"></a>
                 </div>
                 <div>
                   <div class="text-xs font-semibold text-slate-500 mb-1">Location</div>
-                  <div class="text-slate-100">Los Angeles, CA 90012</div>
+                  <div id="contact-location" class="text-slate-100"></div>
                 </div>
                 <div>
                   <div class="text-xs font-semibold text-slate-500 mb-1">Availability</div>
-                  <div class="text-slate-100">Mon-Fri, 9AM-6PM PT</div>
+                  <div id="contact-availability" class="text-slate-100"></div>
                 </div>
                 <div>
                   <div class="text-xs font-semibold text-slate-500 mb-1">Languages</div>
-                  <div class="text-slate-100">English, Spanish</div>
+                  <div id="contact-languages" class="text-slate-100"></div>
                 </div>
               </div>
-              <button class="w-full mt-6 px-4 py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 rounded-xl font-semibold transition-colors">
-                Contact Now
-              </button>
+              <button id="contact-sidebar-button" class="w-full mt-6 px-4 py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 rounded-xl font-semibold transition-colors">Contact Now</button>
             </div>
 
             <div class="glass-card rounded-3xl p-6">
@@ -407,50 +244,17 @@
               <div class="mb-4">
                 <div class="flex items-center gap-2 mb-2">
                   <div class="text-2xl font-bold" id="review-average">4.9</div>
-                  <div class="flex gap-0.5" id="review-stars-display">
-                    <i data-lucide="star" class="w-4 h-4 text-amber-400 fill-amber-400"></i>
-                    <i data-lucide="star" class="w-4 h-4 text-amber-400 fill-amber-400"></i>
-                    <i data-lucide="star" class="w-4 h-4 text-amber-400 fill-amber-400"></i>
-                    <i data-lucide="star" class="w-4 h-4 text-amber-400 fill-amber-400"></i>
-                    <i data-lucide="star" class="w-4 h-4 text-amber-400 fill-amber-400"></i>
-                  </div>
+                  <div class="flex gap-0.5" id="review-stars-display"></div>
                 </div>
                 <div class="text-sm text-slate-400">Based on <span id="review-count">48</span> client reviews</div>
               </div>
 
               <button id="add-review-btn" class="w-full px-4 py-2 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 rounded-lg text-sm font-semibold text-amber-300 transition-colors mb-4 flex items-center justify-center gap-2">
                 <i data-lucide="plus" class="w-4 h-4"></i>
-                Add Your Review
+                <span id="review-button-text">Add Your Review</span>
               </button>
 
-              <div class="space-y-3 max-h-96 overflow-y-auto pr-2" id="reviews-container">
-                <div class="border-t border-slate-700 pt-3">
-                  <div class="flex items-center justify-between mb-1">
-                    <div class="font-medium">John D.</div>
-                    <div class="flex gap-0.5">
-                      <i data-lucide="star" class="w-3.5 h-3.5 text-amber-400 fill-amber-400"></i>
-                      <i data-lucide="star" class="w-3.5 h-3.5 text-amber-400 fill-amber-400"></i>
-                      <i data-lucide="star" class="w-3.5 h-3.5 text-amber-400 fill-amber-400"></i>
-                      <i data-lucide="star" class="w-3.5 h-3.5 text-amber-400 fill-amber-400"></i>
-                      <i data-lucide="star" class="w-3.5 h-3.5 text-amber-400 fill-amber-400"></i>
-                    </div>
-                  </div>
-                  <p class="text-sm text-slate-400">&quot;Exceptional representation during my audit. Sarah's expertise saved me thousands.&quot;</p>
-                </div>
-                <div class="border-t border-slate-700 pt-3">
-                  <div class="flex items-center justify-between mb-1">
-                    <div class="font-medium">Michael R.</div>
-                    <div class="flex gap-0.5">
-                      <i data-lucide="star" class="w-3.5 h-3.5 text-amber-400 fill-amber-400"></i>
-                      <i data-lucide="star" class="w-3.5 h-3.5 text-amber-400 fill-amber-400"></i>
-                      <i data-lucide="star" class="w-3.5 h-3.5 text-amber-400 fill-amber-400"></i>
-                      <i data-lucide="star" class="w-3.5 h-3.5 text-amber-400 fill-amber-400"></i>
-                      <i data-lucide="star" class="w-3.5 h-3.5 text-amber-400 fill-amber-400"></i>
-                    </div>
-                  </div>
-                  <p class="text-sm text-slate-400">&quot;Highly recommended. Professional, knowledgeable, and results-oriented.&quot;</p>
-                </div>
-              </div>
+              <div class="space-y-3 max-h-96 overflow-y-auto pr-2" id="reviews-container"></div>
             </div>
 
             <div class="rounded-3xl border border-amber-500/20 bg-gradient-to-br from-amber-500/10 to-slate-900 p-6 shadow-soft">
@@ -458,10 +262,8 @@
                 <i data-lucide="calendar" class="w-6 h-6 text-amber-400 flex-shrink-0 mt-0.5"></i>
                 <div>
                   <h4 class="font-semibold mb-2">Ready to Schedule?</h4>
-                  <p class="text-sm text-slate-300 mb-4">Book a free 30-minute consultation to discuss your tax situation.</p>
-                  <button id="schedule-cta" class="w-full px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 rounded-lg text-sm font-semibold transition-colors">
-                    Schedule Now
-                  </button>
+                  <p id="schedule-description" class="text-sm text-slate-300 mb-4">Book a consultation to discuss your tax situation.</p>
+                  <button id="schedule-cta" class="w-full px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 rounded-lg text-sm font-semibold transition-colors">Schedule Now</button>
                 </div>
               </div>
             </div>
@@ -470,7 +272,7 @@
       </section>
     </main>
 
-        <!-- PARTIAL:footer -->
+    <!-- PARTIAL:footer -->
   </div>
 
   <div id="review-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
@@ -515,135 +317,463 @@
 
   <script>
     const defaultConfig = {
-      about_section_title: 'About',
       back_button_text: 'Back to Directory',
-      background_color: '#020617',
-      card_color: '#0f172a',
-      contact_button_text: 'Get in Touch',
-      credentials_section_title: 'Credentials & Experience',
-      accent_color: '#f59e0b',
-      schedule_button_text: 'Schedule Consultation',
-      services_section_title: 'Services Offered',
-      text_color: '#f8fafc'
+      background_color: '#020617'
+    };
+
+    const EMBEDDED_FALLBACK_PROFILE = {
+      profile: {
+        avatar: {
+          display_dimensions: { height: 128, width: 128 },
+          file: { file_type: 'png', height: 512, width: 512 },
+          initials_fallback: true,
+          upload_type: 'profile_photo'
+        },
+        initials: 'SM',
+        name: 'Sarah Mitchell',
+        profile_type: 'sample',
+        slug: 'sample-sarah-mitchell',
+        status: 'featured',
+        status_badge_label: 'Verified'
+      },
+      hero: {
+        credential_badges: [
+          { label: 'Attorney', style_key: 'attorney' },
+          { label: 'CPA', style_key: 'cpa' },
+          { label: 'Featured', style_key: 'featured' }
+        ],
+        headline: 'Tax Litigation and IRS Audit Defense Specialist',
+        location_label: 'Los Angeles, California',
+        rating_label: '4.9/5 (48 reviews)',
+        years_experience_label: '20+ Years Experience'
+      },
+      bio: {
+        bio_full_paragraphs: [
+          'Sarah Mitchell is a dual-credentialed tax professional with more than twenty years of experience in tax controversy, audit defense, and complex litigation support.',
+          'She has represented individuals and businesses before the IRS and state taxing authorities, combining legal strategy with deep accounting knowledge.',
+          'Her practice focuses on giving clients clear direction in high-pressure situations where timing, documentation, and advocacy matter.'
+        ],
+        bio_short: 'Dual-credentialed tax controversy professional serving audit defense and litigation clients.'
+      },
+      contact: {
+        availability_display: 'Mon-Fri, 9AM-6PM PT',
+        contact_email: 'sarah@mitchelltaxlaw.com',
+        languages: ['English', 'Spanish'],
+        phone: '(213) 555-1234',
+        timezone: 'America/Los_Angeles',
+        website: 'https://example.com/sarah-mitchell',
+        weekly_availability: [
+          { day: 'Monday', enabled: true, start_time: '09:00', end_time: '18:00' },
+          { day: 'Tuesday', enabled: true, start_time: '09:00', end_time: '18:00' },
+          { day: 'Wednesday', enabled: true, start_time: '09:00', end_time: '18:00' },
+          { day: 'Thursday', enabled: true, start_time: '09:00', end_time: '18:00' },
+          { day: 'Friday', enabled: true, start_time: '09:00', end_time: '18:00' },
+          { day: 'Saturday', enabled: false, start_time: null, end_time: null },
+          { day: 'Sunday', enabled: false, start_time: null, end_time: null }
+        ]
+      },
+      location: {
+        city: 'Los Angeles',
+        country: 'United States',
+        state: 'California',
+        zip: '90012'
+      },
+      professional: {
+        credentials: ['CPA (California)', 'Juris Doctor', 'Board Certified Tax Specialist'],
+        firm_name: 'Mitchell Tax Law',
+        profession: ['Attorney', 'CPA'],
+        years_experience: 20
+      },
+      credentials_experience: {
+        background_items: [
+          { date_label: '2008 - Present', description: 'Founder and principal of a practice focused on tax controversy, litigation, and audit defense.', title: 'Founder and Principal, Mitchell Tax Law' },
+          { date_label: '2003 - 2008', description: 'Led tax controversy matters for business and individual clients at a major accounting firm.', title: 'Senior Tax Attorney, Major Accounting Firm' },
+          { date_label: '2001 - 2003', description: 'Built firsthand knowledge of IRS examination procedures and enforcement workflows.', title: 'Revenue Agent, IRS' }
+        ],
+        licenses_certifications: [
+          { subtitle: 'California, active since 2003', title: 'CPA (Certified Public Accountant)' },
+          { subtitle: 'Licensed to practice in California', title: 'Juris Doctor (J.D.)' },
+          { subtitle: 'Authorized to represent clients before the IRS', title: 'IRS Form 2848 Power of Attorney' },
+          { subtitle: 'State Bar of California certification', title: 'Board Certified Tax Specialist' }
+        ]
+      },
+      services_offered: {
+        items: [
+          { description: 'Representation in Tax Court and federal district court proceedings.', icon: 'shield-check', title: 'Tax Litigation' },
+          { description: 'Comprehensive IRS audit representation and negotiation.', icon: 'file-check', title: 'Audit Defense' },
+          { description: 'Strategic tax planning to reduce liability and improve readiness.', icon: 'target', title: 'Tax Planning' },
+          { description: 'IRS Appeals Office and administrative review representation.', icon: 'scale-3', title: 'Appeals' },
+          { description: 'Tax compliance and audit readiness consulting.', icon: 'book-open', title: 'Compliance' },
+          { description: 'Expert witness and litigation support services.', icon: 'users', title: 'Consulting' }
+        ]
+      },
+      specializations: {
+        client_types: ['Individuals', 'Businesses', 'C Corporations', 'S Corporations', 'Partnerships', 'LLCs', 'Nonprofits', 'Executives']
+      },
+      quick_stats: [
+        { label: 'Years of Experience', value: '20+' },
+        { label: 'Cases Handled', value: '500+' },
+        { label: 'Success Rate', value: '98%' },
+        { label: 'Client Reviews', value: '48' }
+      ],
+      reviews: {
+        allow_submission: true,
+        enabled: true,
+        items: [
+          { name: 'John D.', rating: 5, text: 'Exceptional representation during my audit. Sarah\'s expertise saved me thousands.' },
+          { name: 'Michael R.', rating: 5, text: 'Highly recommended. Professional, knowledgeable, and results-oriented.' }
+        ],
+        summary: { average_rating: 4.9, review_count: 48 }
+      },
+      buttons: {
+        contact_button: {
+          active: true,
+          label: 'Get In Touch',
+          mode: 'email',
+          show: true,
+          url: 'mailto:sarah@mitchelltaxlaw.com'
+        },
+        review_button: {
+          active: true,
+          label: 'Add Your Review',
+          mode: 'modal',
+          show: true,
+          url: null
+        },
+        schedule_button: {
+          active: true,
+          behavior_phrase: 'Yes, I have created/connected my Cal.com account, use my Cal.com link',
+          description: 'Book a free 30-minute consultation to discuss your tax situation.',
+          description_mode: 'derived',
+          event_type_duration_minutes: 30,
+          event_type_label: 'Free Consultation',
+          label: 'Schedule Consultation',
+          mode: 'custom_booking_link',
+          provider_label: 'Custom',
+          show: true,
+          url: 'https://example.com/sarah-mitchell/schedule'
+        }
+      }
     };
 
     if (window.elementSdk) {
       window.elementSdk.init({
         defaultConfig,
-        onConfigChange: async (config) => {
+        onConfigChange: async function(config) {
           const backBtnText = document.getElementById('back-button-text');
           if (backBtnText) backBtnText.textContent = config.back_button_text || defaultConfig.back_button_text;
-
-          const contactBtn = document.getElementById('contact-button-text');
-          if (contactBtn) contactBtn.textContent = config.contact_button_text || defaultConfig.contact_button_text;
-
-          const scheduleBtn = document.getElementById('schedule-button-text');
-          if (scheduleBtn) scheduleBtn.textContent = config.schedule_button_text || defaultConfig.schedule_button_text;
-
-          const aboutTitle = document.getElementById('about-section-title');
-          if (aboutTitle) aboutTitle.textContent = config.about_section_title || defaultConfig.about_section_title;
-
-          const credentialsTitle = document.getElementById('credentials-section-title');
-          if (credentialsTitle) credentialsTitle.textContent = config.credentials_section_title || defaultConfig.credentials_section_title;
-
-          const servicesTitle = document.getElementById('services-section-title');
-          if (servicesTitle) servicesTitle.textContent = config.services_section_title || defaultConfig.services_section_title;
-
           document.body.style.backgroundColor = config.background_color || defaultConfig.background_color;
         },
-        mapToCapabilities: (config) => ({
-          recolorables: [
-            {
-              get: () => config.background_color || defaultConfig.background_color,
-              set: (value) => window.elementSdk.setConfig({ background_color: value })
-            },
-            {
-              get: () => config.card_color || defaultConfig.card_color,
-              set: (value) => window.elementSdk.setConfig({ card_color: value })
-            },
-            {
-              get: () => config.accent_color || defaultConfig.accent_color,
-              set: (value) => window.elementSdk.setConfig({ accent_color: value })
-            },
-            {
-              get: () => config.text_color || defaultConfig.text_color,
-              set: (value) => window.elementSdk.setConfig({ text_color: value })
-            }
-          ],
-          borderables: [],
-          fontEditable: undefined,
-          fontSizeable: undefined
-        }),
-        mapToEditPanelValues: (config) => new Map([
-          ['about_section_title', config.about_section_title || defaultConfig.about_section_title],
-          ['back_button_text', config.back_button_text || defaultConfig.back_button_text],
-          ['contact_button_text', config.contact_button_text || defaultConfig.contact_button_text],
-          ['credentials_section_title', config.credentials_section_title || defaultConfig.credentials_section_title],
-          ['schedule_button_text', config.schedule_button_text || defaultConfig.schedule_button_text],
-          ['services_section_title', config.services_section_title || defaultConfig.services_section_title]
-        ])
+        mapToCapabilities: function(config) {
+          return {
+            recolorables: [
+              {
+                get: function() { return config.background_color || defaultConfig.background_color; },
+                set: function(value) { window.elementSdk.setConfig({ background_color: value }); }
+              }
+            ],
+            borderables: [],
+            fontEditable: undefined,
+            fontSizeable: undefined
+          };
+        },
+        mapToEditPanelValues: function(config) {
+          return new Map([
+            ['back_button_text', config.back_button_text || defaultConfig.back_button_text]
+          ]);
+        }
       });
     }
 
-    lucide.createIcons();
+    let reviews = [];
+    let currentProfileData = null;
 
-    let reviews = [
-      { name: 'John D.', rating: 5, text: 'Exceptional representation during my audit. Sarah\'s expertise saved me thousands.' },
-      { name: 'Michael R.', rating: 5, text: 'Highly recommended. Professional, knowledgeable, and results-oriented.' }
-    ];
-
-    function calculateAverageRating() {
-      if (reviews.length === 0) return 0;
-      const total = reviews.reduce((sum, review) => sum + review.rating, 0);
-      return (total / reviews.length).toFixed(1);
+    function safeText(value, fallback) {
+      if (value === undefined || value === null || value === '') return fallback || '';
+      return value;
     }
 
-    function renderStars(rating, container, size = 'w-3.5 h-3.5') {
+    function buildMailTo(email) {
+      if (!email) return '#';
+      return 'mailto:' + email;
+    }
+
+    function buildTel(phone) {
+      if (!phone) return '#';
+      let cleaned = '';
+      for (let i = 0; i < phone.length; i += 1) {
+        const ch = phone[i];
+        if ((ch >= '0' && ch <= '9') || ch === '+') cleaned += ch;
+      }
+      return cleaned ? 'tel:' + cleaned : '#';
+    }
+
+    function badgeClass(styleKey) {
+      const map = {
+        attorney: 'badge-attorney',
+        cpa: 'badge-cpa',
+        ea: 'badge-ea',
+        featured: 'featured-badge',
+        custom: 'soft-card text-slate-100'
+      };
+      return map[styleKey] || 'soft-card text-slate-100';
+    }
+
+    function renderStars(rating, container, size) {
       container.innerHTML = '';
-      for (let i = 1; i <= 5; i++) {
+      const iconSize = size || 'w-3.5 h-3.5';
+      for (let i = 1; i <= 5; i += 1) {
         const starIcon = document.createElement('i');
         starIcon.setAttribute('data-lucide', 'star');
-        starIcon.className = `${size} ${i <= rating ? 'text-amber-400 fill-amber-400' : 'text-slate-600'}`;
+        starIcon.className = iconSize + ' ' + (i <= rating ? 'text-amber-400 fill-amber-400' : 'text-slate-600');
         container.appendChild(starIcon);
       }
       lucide.createIcons();
     }
 
     function updateReviewsDisplay() {
-      const average = calculateAverageRating();
+      const average = reviews.length ? (reviews.reduce(function(sum, review) { return sum + review.rating; }, 0) / reviews.length).toFixed(1) : '0.0';
       document.getElementById('review-average').textContent = average;
-      document.getElementById('review-count').textContent = reviews.length;
-      renderStars(Math.round(average), document.getElementById('review-stars-display'), 'w-4 h-4');
+      document.getElementById('review-count').textContent = String(reviews.length);
+      renderStars(Math.round(Number(average)), document.getElementById('review-stars-display'), 'w-4 h-4');
 
       const container = document.getElementById('reviews-container');
       container.innerHTML = '';
 
-      reviews.forEach(review => {
+      reviews.forEach(function(review) {
         const reviewDiv = document.createElement('div');
         reviewDiv.className = 'border-t border-slate-700 pt-3';
-
-        const headerDiv = document.createElement('div');
-        headerDiv.className = 'flex items-center justify-between mb-1';
-
-        const nameDiv = document.createElement('div');
-        nameDiv.className = 'font-medium';
-        nameDiv.textContent = review.name;
-
-        const starsDiv = document.createElement('div');
-        starsDiv.className = 'flex gap-0.5';
-        renderStars(review.rating, starsDiv);
-
-        headerDiv.appendChild(nameDiv);
-        headerDiv.appendChild(starsDiv);
-
-        const textDiv = document.createElement('p');
-        textDiv.className = 'text-sm text-slate-400';
-        textDiv.textContent = `"${review.text}"`;
-
-        reviewDiv.appendChild(headerDiv);
-        reviewDiv.appendChild(textDiv);
+        reviewDiv.innerHTML = '<div class="flex items-center justify-between mb-1"><div class="font-medium"></div><div class="review-stars flex gap-0.5"></div></div><p class="text-sm text-slate-400"></p>';
+        reviewDiv.querySelector('.font-medium').textContent = review.name;
+        reviewDiv.querySelector('p').textContent = '"' + review.text + '"';
+        renderStars(review.rating, reviewDiv.querySelector('.review-stars'));
         container.appendChild(reviewDiv);
       });
+    }
+
+    function renderAvatar(data) {
+      const avatar = document.getElementById('profile-avatar');
+      const initials = document.getElementById('profile-avatar-initials');
+      const avatarMeta = (data.profile && data.profile.avatar) || {};
+      const slug = safeText(data.profile && data.profile.slug, '');
+      const type = safeText(avatarMeta.upload_type, 'initials_only');
+      const fileType = avatarMeta.file && avatarMeta.file.file_type ? avatarMeta.file.file_type : 'png';
+      const src = '/assets/directory/' + slug + '/avatar.' + fileType;
+
+      // Clear any previous image
+      avatar.querySelectorAll('img').forEach(function(img) { img.remove(); });
+
+      // Always ensure initials text is correct
+      initials.textContent = safeText(data.profile && data.profile.initials, 'TM');
+
+      if (type !== 'initials_only' && slug) {
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = safeText(data.profile && data.profile.name, 'Profile image');
+        img.className = 'w-full h-full object-cover';
+
+        img.onload = function() {
+          initials.classList.add('hidden');
+        };
+
+        img.onerror = function() {
+          // Remove broken image and show initials fallback
+          img.remove();
+          initials.classList.remove('hidden');
+        };
+
+        avatar.prepend(img);
+      }
+
+      // If initials mode or image fails, initials remain visible (SM etc.)
+      if (type === 'initials_only' || !slug) {
+        initials.classList.remove('hidden');
+      }
+    }
+
+    function renderHeroBadges(items) {
+      const container = document.getElementById('hero-badges');
+      container.innerHTML = '';
+      items.forEach(function(item) {
+        const badge = document.createElement('span');
+        badge.className = badgeClass(item.style_key) + ' px-3 py-1 rounded-full text-sm font-semibold';
+        badge.textContent = item.label;
+        container.appendChild(badge);
+      });
+    }
+
+    function renderQuickStats(items) {
+      const container = document.getElementById('quick-stats');
+      container.innerHTML = '';
+      items.forEach(function(item) {
+        const card = document.createElement('div');
+        card.className = 'glass-card rounded-2xl p-4';
+        card.innerHTML = '<div class="text-2xl font-bold text-amber-400 mb-1"></div><div class="text-xs sm:text-sm text-slate-400"></div>';
+        const parts = card.querySelectorAll('div');
+        parts[0].textContent = item.value;
+        parts[1].textContent = item.label;
+        container.appendChild(card);
+      });
+    }
+
+    function renderAbout(paragraphs) {
+      const container = document.getElementById('about-paragraphs');
+      container.innerHTML = '';
+      paragraphs.forEach(function(text) {
+        const p = document.createElement('p');
+        p.textContent = text;
+        container.appendChild(p);
+      });
+    }
+
+    function renderLicenses(items) {
+      const container = document.getElementById('licenses-list');
+      container.innerHTML = '';
+      items.forEach(function(item) {
+        const row = document.createElement('div');
+        row.className = 'flex items-start gap-3';
+        row.innerHTML = '<i data-lucide="check-circle" class="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5"></i><div><div class="font-medium"></div><div class="text-sm text-slate-400"></div></div>';
+        row.querySelector('.font-medium').textContent = item.title;
+        row.querySelector('.text-sm').textContent = safeText(item.subtitle, '');
+        container.appendChild(row);
+      });
+    }
+
+    function renderBackground(items) {
+      const container = document.getElementById('background-list');
+      container.innerHTML = '';
+      items.forEach(function(item, index) {
+        const row = document.createElement('div');
+        row.className = 'flex gap-4';
+        const showLine = index < items.length - 1;
+        row.innerHTML = '<div class="flex flex-col items-center"><div class="w-3 h-3 rounded-full bg-amber-500 ' + (showLine ? 'mt-2' : '') + '"></div>' + (showLine ? '<div class="w-0.5 h-12 bg-slate-700"></div>' : '') + '</div><div><div class="font-medium"></div><div class="text-sm text-slate-400 mb-1"></div><p class="text-sm text-slate-300"></p></div>';
+        row.querySelector('.font-medium').textContent = item.title;
+        row.querySelector('.text-sm.text-slate-400').textContent = item.date_label;
+        row.querySelector('p').textContent = item.description;
+        container.appendChild(row);
+      });
+    }
+
+    function renderServices(items) {
+      const container = document.getElementById('services-grid');
+      container.innerHTML = '';
+      items.forEach(function(item) {
+        const card = document.createElement('div');
+        card.className = 'soft-card rounded-2xl p-4';
+        card.innerHTML = '<div class="flex items-start gap-3"><i data-lucide="' + item.icon + '" class="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5"></i><div><div class="font-semibold mb-1"></div><div class="text-sm text-slate-400"></div></div></div>';
+        card.querySelector('.font-semibold').textContent = item.title;
+        card.querySelector('.text-sm').textContent = item.description;
+        container.appendChild(card);
+      });
+    }
+
+    function renderSpecializations(items) {
+      const container = document.getElementById('specializations-grid');
+      container.innerHTML = '';
+      items.forEach(function(item) {
+        const chip = document.createElement('div');
+        chip.className = 'soft-card rounded-xl p-3 text-center text-sm font-medium';
+        chip.textContent = item;
+        container.appendChild(chip);
+      });
+    }
+
+    function disableButton(id) {
+      const btn = document.getElementById(id);
+      btn.disabled = true;
+      btn.classList.add('opacity-50', 'cursor-not-allowed');
+    }
+
+    function resetButtonState(id) {
+      const btn = document.getElementById(id);
+      btn.disabled = false;
+      btn.classList.remove('opacity-50', 'cursor-not-allowed');
+    }
+
+    function hydrateProfile(data) {
+      currentProfileData = data;
+      document.title = 'Tax Monitor Pro • ' + safeText(data.profile.name, 'Directory Profile');
+      document.getElementById('profile-name').textContent = safeText(data.profile.name, 'Unknown Profile');
+      document.getElementById('profile-avatar-initials').textContent = safeText(data.profile.initials, 'TM');
+      document.getElementById('profile-headline').textContent = safeText(data.hero.headline, 'Tax professional profile');
+      document.getElementById('hero-location').textContent = safeText(data.hero.location_label, safeText(data.location.city, '') + (data.location.state ? ', ' + data.location.state : ''));
+      document.getElementById('hero-experience').textContent = safeText(data.hero.years_experience_label, 'Experience available');
+      document.getElementById('hero-rating').textContent = safeText(data.hero.rating_label, 'No reviews yet');
+      const statusBadge = document.getElementById('profile-status-badge');
+      statusBadge.textContent = safeText(data.profile.status_badge_label, 'Verified');
+
+      // Sample profile indicator
+      if (data.profile && data.profile.profile_type === 'sample') {
+        const sampleBadge = document.createElement('span');
+        sampleBadge.className = 'px-3 py-1.5 rounded-full font-medium text-xs bg-amber-500/15 border border-amber-500/30 text-amber-300';
+        sampleBadge.textContent = 'Sample Profile';
+        statusBadge.parentElement.appendChild(sampleBadge);
+      }
+
+      renderAvatar(data);
+      renderHeroBadges(data.hero.credential_badges || []);
+      renderQuickStats(data.quick_stats || []);
+      renderAbout(data.bio.bio_full_paragraphs || []);
+      renderLicenses(data.credentials_experience.licenses_certifications || []);
+      renderBackground(data.credentials_experience.background_items || []);
+      renderServices(data.services_offered.items || []);
+      renderSpecializations((data.specializations && data.specializations.client_types) || []);
+
+      const email = document.getElementById('contact-email-link');
+      const phone = document.getElementById('contact-phone-link');
+      email.textContent = safeText(data.contact.contact_email, '');
+      email.href = buildMailTo(data.contact.contact_email);
+      phone.textContent = safeText(data.contact.phone, '');
+      phone.href = buildTel(data.contact.phone);
+      document.getElementById('contact-location').textContent = safeText(data.location.city, '') + (data.location.state ? ', ' + data.location.state : '') + (data.location.zip ? ' ' + data.location.zip : '');
+      document.getElementById('contact-availability').textContent = safeText(data.contact.availability_display, '');
+      document.getElementById('contact-languages').textContent = ((data.contact && data.contact.languages) || []).join(', ');
+
+      document.getElementById('contact-button-text').textContent = safeText(data.buttons.contact_button.label, 'Get In Touch');
+      document.getElementById('contact-sidebar-button').textContent = safeText(data.buttons.contact_button.label, 'Contact Now');
+      document.getElementById('review-button-text').textContent = safeText(data.buttons.review_button.label, 'Add Your Review');
+      document.getElementById('schedule-button-text').textContent = safeText(data.buttons.schedule_button.label, 'Schedule Consultation');
+      document.getElementById('schedule-cta').textContent = 'Schedule Now';
+      document.getElementById('schedule-description').textContent = safeText(data.buttons.schedule_button.description, 'Book a consultation to discuss your tax situation.');
+
+      reviews = (data.reviews && data.reviews.items) ? data.reviews.items.slice() : [];
+      updateReviewsDisplay();
+      lucide.createIcons();
+
+      resetButtonState('contact-button');
+      resetButtonState('contact-sidebar-button');
+      resetButtonState('schedule-button');
+      resetButtonState('schedule-cta');
+      resetButtonState('add-review-btn');
+
+      const contactAction = function() {
+        if (!data.buttons.contact_button.active || !data.buttons.contact_button.show) return;
+        if (data.buttons.contact_button.url) window.location.href = data.buttons.contact_button.url;
+      };
+
+      const scheduleAction = function() {
+        if (!data.buttons.schedule_button.active || !data.buttons.schedule_button.show) return;
+        if (data.buttons.schedule_button.url) window.open(data.buttons.schedule_button.url, '_blank', 'noopener');
+      };
+
+      document.getElementById('contact-button').onclick = contactAction;
+      document.getElementById('contact-sidebar-button').onclick = contactAction;
+      document.getElementById('schedule-button').onclick = scheduleAction;
+      document.getElementById('schedule-cta').onclick = scheduleAction;
+
+      if (!data.buttons.contact_button.active || !data.buttons.contact_button.show) {
+        disableButton('contact-button');
+        disableButton('contact-sidebar-button');
+      }
+
+      if (!data.buttons.schedule_button.active || !data.buttons.schedule_button.show) {
+        disableButton('schedule-button');
+        disableButton('schedule-cta');
+      }
+
+      if (!data.buttons.review_button.active || !data.buttons.review_button.show || !data.reviews.allow_submission) {
+        disableButton('add-review-btn');
+      }
     }
 
     const modal = document.getElementById('review-modal');
@@ -654,7 +784,8 @@
     const starButtons = document.querySelectorAll('.star-btn');
     const starCountInput = document.getElementById('star-count');
 
-    addReviewBtn.addEventListener('click', () => {
+    addReviewBtn.addEventListener('click', function() {
+      if (addReviewBtn.disabled) return;
       modal.classList.remove('hidden');
       document.body.style.overflow = 'hidden';
     });
@@ -664,23 +795,24 @@
       document.body.style.overflow = 'auto';
       reviewForm.reset();
       starCountInput.value = 0;
-      starButtons.forEach(btn => {
+      starButtons.forEach(function(btn) {
         const icon = btn.querySelector('i');
         icon.classList.remove('fill-amber-400', 'text-amber-400');
         icon.classList.add('text-slate-600');
       });
+      lucide.createIcons();
     }
 
     closeBtn.addEventListener('click', closeReviewModal);
     cancelBtn.addEventListener('click', closeReviewModal);
 
-    starButtons.forEach(btn => {
-      btn.addEventListener('click', (e) => {
+    starButtons.forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
         e.preventDefault();
         const rating = parseInt(btn.dataset.rating, 10);
         starCountInput.value = rating;
 
-        starButtons.forEach((button, index) => {
+        starButtons.forEach(function(button, index) {
           const icon = button.querySelector('i');
           if (index < rating) {
             icon.classList.remove('text-slate-600');
@@ -693,40 +825,127 @@
       });
     });
 
-    reviewForm.addEventListener('submit', (e) => {
+    reviewForm.addEventListener('submit', function(e) {
       e.preventDefault();
-
-      const name = document.getElementById('reviewer-name').value;
+      const name = document.getElementById('reviewer-name').value.trim();
       const rating = parseInt(starCountInput.value, 10);
-      const text = document.getElementById('reviewer-text').value;
-
-      if (rating === 0) {
-        alert('Please select a rating');
-        return;
-      }
-
-      reviews.push({ name, rating, text });
+      const text = document.getElementById('reviewer-text').value.trim();
+      if (!rating) return;
+      reviews.unshift({ name: name, rating: rating, text: text });
       updateReviewsDisplay();
       closeReviewModal();
     });
 
-    document.getElementById('back-button').addEventListener('click', () => {
-      window.history.back();
+    document.getElementById('back-button').addEventListener('click', function() {
+      if (document.referrer) window.history.back();
+      else window.location.href = '/directory/';
     });
 
-    document.getElementById('contact-button').addEventListener('click', () => {
-      alert('Contact functionality would open an email or contact form.');
+    function normalizeCandidate(url) {
+      try {
+        return new URL(url, window.location.href).toString();
+      } catch {
+        return null;
+      }
+    }
+
+    function buildDataCandidates() {
+      const params = new URLSearchParams(window.location.search);
+      const candidates = [];
+      const seen = new Set();
+
+      function add(url) {
+        const normalized = normalizeCandidate(url);
+        if (!normalized || seen.has(normalized)) return;
+        seen.add(normalized);
+        candidates.push(normalized);
+      }
+
+      const explicitData = params.get('data');
+      const explicitSlug = params.get('slug');
+      const pathname = window.location.pathname;
+      const parts = pathname.split('/').filter(Boolean);
+      const lastPart = parts.length ? parts[parts.length - 1] : '';
+      const secondLastPart = parts.length > 1 ? parts[parts.length - 2] : '';
+      const isHtmlFile = lastPart.endsWith('.html');
+      const folderSlug = isHtmlFile ? secondLastPart : lastPart;
+      const inDirectory = parts.indexOf('directory') !== -1;
+      const currentFile = pathname.split('/').pop() || '';
+
+      if (explicitData) add(explicitData);
+      if (explicitSlug) add('/directory/' + explicitSlug + '/data.json');
+
+      add('./data.json');
+      add('data.json');
+
+      if (inDirectory && folderSlug && folderSlug !== 'directory' && folderSlug !== 'profile-template.html') {
+        add('/directory/' + folderSlug + '/data.json');
+      }
+
+      if (currentFile === 'profile-template.html' || folderSlug === 'directory' || !folderSlug) {
+        add('/directory/sample-sarah-mitchell/data.json');
+      }
+
+      return candidates;
+    }
+
+    async function fetchFirstJson(candidates) {
+      let lastError = null;
+      for (let i = 0; i < candidates.length; i += 1) {
+        const url = candidates[i];
+        try {
+          const response = await fetch(url, { cache: 'no-store' });
+          if (!response.ok) {
+            lastError = new Error('Failed to load profile data: ' + response.status + ' (' + url + ')');
+            continue;
+          }
+          const data = await response.json();
+          return { data: data, source: 'remote', url: url };
+        } catch (error) {
+          lastError = error;
+        }
+      }
+      return { data: EMBEDDED_FALLBACK_PROFILE, source: 'embedded', url: null, error: lastError };
+    }
+
+    async function loadProfileData() {
+      const candidates = buildDataCandidates();
+      const result = await fetchFirstJson(candidates);
+      hydrateProfile(result.data);
+
+      if (result.source === 'embedded') {
+        const about = document.getElementById('about-paragraphs');
+        if (about) {
+          const note = document.createElement('p');
+          note.className = 'text-xs text-slate-500 pt-2';
+          note.textContent = 'You are viewing the fallback sample profile as no specific profile data could be found.';
+          about.appendChild(note);
+        }
+      }
+
+      return result;
+    }
+
+    loadProfileData().catch(function(error) {
+      console.error(error);
+      hydrateProfile(EMBEDDED_FALLBACK_PROFILE);
+      const about = document.getElementById('about-paragraphs');
+      if (about) {
+        const note = document.createElement('p');
+        note.className = 'text-xs text-slate-500 pt-2';
+        note.textContent = 'Template preview fell back to embedded sample data after a loading error.';
+        about.appendChild(note);
+      }
     });
 
-    document.getElementById('schedule-button').addEventListener('click', () => {
-      alert('Schedule functionality would open a calendar or booking system.');
-    });
+    if (window.location.search.indexOf('runTemplateSmokeTests=1') !== -1) {
+      console.assert(Array.isArray(buildDataCandidates()), 'Smoke test failed: candidates should be an array.');
+      console.assert(buildMailTo('test@example.com') === 'mailto:test@example.com', 'Smoke test failed: mailto builder incorrect.');
+      console.assert(buildTel('(213) 555-1234') === 'tel:2135551234', 'Smoke test failed: tel builder incorrect.');
+      console.assert(EMBEDDED_FALLBACK_PROFILE.profile.slug === 'sample-sarah-mitchell', 'Smoke test failed: embedded fallback slug incorrect.');
+    }
 
-    document.getElementById('schedule-cta').addEventListener('click', () => {
-      alert('Schedule functionality would open a calendar or booking system.');
-    });
-
-    updateReviewsDisplay();
+    lucide.createIcons();
   </script>
 </body>
 </html>
