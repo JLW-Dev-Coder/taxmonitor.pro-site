@@ -27,7 +27,7 @@
           }
         }
       }
-    }
+    };
   </script>
 
   <style>
@@ -55,11 +55,6 @@
       box-shadow: 0 0 0 1px rgba(148,163,184,.04), 0 35px 120px rgba(0,0,0,.30);
     }
 
-    .soft-card {
-      background: rgba(15, 23, 42, 0.42);
-      border: 1px solid rgba(51, 65, 85, 0.70);
-    }
-
     .featured-card {
       background: linear-gradient(135deg, rgba(245, 158, 11, 0.10) 0%, rgba(15, 23, 42, 0.72) 100%);
       border: 1px solid rgba(245, 158, 11, 0.22);
@@ -71,10 +66,10 @@
       color: #0f172a;
     }
 
+    .badge-actuary { background: linear-gradient(135deg, #ec4899, #db2777); }
     .badge-attorney { background: linear-gradient(135deg, #2563eb, #1d4ed8); }
     .badge-cpa { background: linear-gradient(135deg, #10b981, #059669); }
     .badge-ea { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
-    .badge-actuary { background: linear-gradient(135deg, #ec4899, #db2777); }
     .badge-erpa { background: linear-gradient(135deg, #14b8a6, #0d9488); }
 
     .animated-section {
@@ -124,8 +119,6 @@
     </header>
 
     <main class="flex-1">
-      
-
       <section class="animated-section max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="glass-card rounded-3xl p-4 sm:p-5 mb-8">
           <div class="relative mb-4">
@@ -142,7 +135,7 @@
             </span>
 
             <div class="relative">
-              <button onclick="toggleDropdown('profession-dropdown')" class="px-4 py-2 bg-slate-900/70 border border-slate-700 rounded-full text-sm font-medium hover:bg-slate-800 transition-all flex items-center gap-2">
+              <button type="button" data-dropdown-trigger="profession-dropdown" class="px-4 py-2 bg-slate-900/70 border border-slate-700 rounded-full text-sm font-medium hover:bg-slate-800 transition-all flex items-center gap-2">
                 Profession
                 <i data-lucide="chevron-down" class="w-4 h-4"></i>
               </button>
@@ -156,7 +149,7 @@
             </div>
 
             <div class="relative">
-              <button onclick="toggleDropdown('status-dropdown')" class="px-4 py-2 bg-slate-900/70 border border-slate-700 rounded-full text-sm font-medium hover:bg-slate-800 transition-all flex items-center gap-2">
+              <button type="button" data-dropdown-trigger="status-dropdown" class="px-4 py-2 bg-slate-900/70 border border-slate-700 rounded-full text-sm font-medium hover:bg-slate-800 transition-all flex items-center gap-2">
                 Status
                 <i data-lucide="chevron-down" class="w-4 h-4"></i>
               </button>
@@ -167,7 +160,7 @@
             </div>
 
             <div class="relative">
-              <button onclick="toggleDropdown('services-dropdown')" class="px-4 py-2 bg-slate-900/70 border border-slate-700 rounded-full text-sm font-medium hover:bg-slate-800 transition-all flex items-center gap-2">
+              <button type="button" data-dropdown-trigger="services-dropdown" class="px-4 py-2 bg-slate-900/70 border border-slate-700 rounded-full text-sm font-medium hover:bg-slate-800 transition-all flex items-center gap-2">
                 Services
                 <i data-lucide="chevron-down" class="w-4 h-4"></i>
               </button>
@@ -183,7 +176,7 @@
             </div>
 
             <div class="relative">
-              <button onclick="toggleDropdown('location-dropdown')" class="px-4 py-2 bg-slate-900/70 border border-slate-700 rounded-full text-sm font-medium hover:bg-slate-800 transition-all flex items-center gap-2">
+              <button type="button" data-dropdown-trigger="location-dropdown" class="px-4 py-2 bg-slate-900/70 border border-slate-700 rounded-full text-sm font-medium hover:bg-slate-800 transition-all flex items-center gap-2">
                 Location
                 <i data-lucide="chevron-down" class="w-4 h-4"></i>
               </button>
@@ -197,7 +190,7 @@
             </div>
 
             <div class="relative">
-              <button onclick="toggleDropdown('client-dropdown')" class="px-4 py-2 bg-slate-900/70 border border-slate-700 rounded-full text-sm font-medium hover:bg-slate-800 transition-all flex items-center gap-2">
+              <button type="button" data-dropdown-trigger="client-dropdown" class="px-4 py-2 bg-slate-900/70 border border-slate-700 rounded-full text-sm font-medium hover:bg-slate-800 transition-all flex items-center gap-2">
                 Client Type
                 <i data-lucide="chevron-down" class="w-4 h-4"></i>
               </button>
@@ -210,7 +203,7 @@
             </div>
 
             <div class="relative">
-              <button onclick="toggleDropdown('profile-type-dropdown')" class="px-4 py-2 bg-slate-900/70 border border-slate-700 rounded-full text-sm font-medium hover:bg-slate-800 transition-all flex items-center gap-2">
+              <button type="button" data-dropdown-trigger="profile-type-dropdown" class="px-4 py-2 bg-slate-900/70 border border-slate-700 rounded-full text-sm font-medium hover:bg-slate-800 transition-all flex items-center gap-2">
                 Profile Type
                 <i data-lucide="chevron-down" class="w-4 h-4"></i>
               </button>
@@ -220,7 +213,7 @@
               </div>
             </div>
 
-            <button onclick="clearFilters()" class="ml-auto px-4 py-2 text-sm font-medium text-amber-300 hover:text-amber-200 transition-colors flex items-center gap-2">
+            <button type="button" id="clear-filters-btn" class="ml-auto px-4 py-2 text-sm font-medium text-amber-300 hover:text-amber-200 transition-colors flex items-center gap-2">
               <i data-lucide="x" class="w-4 h-4"></i>
               Clear All
             </button>
@@ -263,8 +256,8 @@
             <div class="flex items-center justify-between pt-4 border-t border-slate-700/60">
               <div class="flex items-center gap-2 text-sm text-slate-400"><i data-lucide="map-pin" class="w-4 h-4 text-amber-400"></i><span>Los Angeles, CA</span></div>
               <div class="flex gap-2">
-                <button class="contact-btn px-3 py-1.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 rounded-lg text-sm font-medium transition-colors">Sample</button>
-                <button class="view-btn px-3 py-1.5 border border-slate-600 hover:border-amber-500 hover:text-amber-300 rounded-lg text-sm font-medium transition-colors flex items-center gap-1">View <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
+                <button type="button" class="contact-btn px-3 py-1.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 rounded-lg text-sm font-medium transition-colors">Sample</button>
+                <button type="button" class="view-btn px-3 py-1.5 border border-slate-600 hover:border-amber-500 hover:text-amber-300 rounded-lg text-sm font-medium transition-colors flex items-center gap-1">View <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
               </div>
             </div>
           </div>
@@ -291,8 +284,8 @@
             <div class="flex items-center justify-between pt-4 border-t border-slate-700/60">
               <div class="flex items-center gap-2 text-sm text-slate-400"><i data-lucide="map-pin" class="w-4 h-4 text-amber-400"></i><span>Miami, FL</span></div>
               <div class="flex gap-2">
-                <button class="contact-btn px-3 py-1.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 rounded-lg text-sm font-medium transition-colors">Sample</button>
-                <button class="view-btn px-3 py-1.5 border border-slate-600 hover:border-amber-500 hover:text-amber-300 rounded-lg text-sm font-medium transition-colors flex items-center gap-1">View <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
+                <button type="button" class="contact-btn px-3 py-1.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 rounded-lg text-sm font-medium transition-colors">Sample</button>
+                <button type="button" class="view-btn px-3 py-1.5 border border-slate-600 hover:border-amber-500 hover:text-amber-300 rounded-lg text-sm font-medium transition-colors flex items-center gap-1">View <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
               </div>
             </div>
           </div>
@@ -319,8 +312,8 @@
             <div class="flex items-center justify-between pt-4 border-t border-slate-700/60">
               <div class="flex items-center gap-2 text-sm text-slate-400"><i data-lucide="map-pin" class="w-4 h-4 text-amber-400"></i><span>San Francisco, CA</span></div>
               <div class="flex gap-2">
-                <button class="contact-btn px-3 py-1.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 rounded-lg text-sm font-medium transition-colors">Sample</button>
-                <button class="view-btn px-3 py-1.5 border border-slate-600 hover:border-amber-500 hover:text-amber-300 rounded-lg text-sm font-medium transition-colors flex items-center gap-1">View <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
+                <button type="button" class="contact-btn px-3 py-1.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 rounded-lg text-sm font-medium transition-colors">Sample</button>
+                <button type="button" class="view-btn px-3 py-1.5 border border-slate-600 hover:border-amber-500 hover:text-amber-300 rounded-lg text-sm font-medium transition-colors flex items-center gap-1">View <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
               </div>
             </div>
           </div>
@@ -344,7 +337,7 @@
             </div>
             <p class="text-slate-400 text-sm mb-3 line-clamp-2">Comprehensive tax preparation and planning for individuals and small businesses. 15+ years of experience.</p>
             <div class="flex flex-wrap gap-1.5 mb-3"><span class="px-2 py-0.5 bg-slate-900/70 rounded-full text-xs text-slate-300">Bookkeeping</span><span class="px-2 py-0.5 bg-slate-900/70 rounded-full text-xs text-slate-300">Planning</span><span class="px-2 py-0.5 bg-slate-900/70 rounded-full text-xs text-slate-300">Tax Prep</span></div>
-            <div class="flex items-center justify-between pt-3 border-t border-slate-700/60"><div class="flex items-center gap-1.5 text-xs text-slate-400"><i data-lucide="map-pin" class="w-3.5 h-3.5 text-amber-400"></i><span>New York, NY</span></div><button class="contact-btn px-3 py-1.5 bg-slate-900/70 hover:bg-slate-800 rounded-lg text-xs font-medium transition-colors">Sample</button></div>
+            <div class="flex items-center justify-between pt-3 border-t border-slate-700/60"><div class="flex items-center gap-1.5 text-xs text-slate-400"><i data-lucide="map-pin" class="w-3.5 h-3.5 text-amber-400"></i><span>New York, NY</span></div><button type="button" class="contact-btn px-3 py-1.5 bg-slate-900/70 hover:bg-slate-800 rounded-lg text-xs font-medium transition-colors">Sample</button></div>
           </div>
 
           <div class="glass-card rounded-3xl p-5 transition-all duration-300 hover:-translate-y-1" data-professional="5" data-profession="ea" data-status="standard" data-services="audit,tax-prep" data-location="tx" data-client="individual" data-profile-type="sample" data-profile-url="/directory/sample-lisa-park/">
@@ -354,7 +347,7 @@
             </div>
             <p class="text-slate-400 text-sm mb-3 line-clamp-2">IRS audit specialist with a 98% success rate. Former IRS examiner with inside knowledge of audit procedures.</p>
             <div class="flex flex-wrap gap-1.5 mb-3"><span class="px-2 py-0.5 bg-slate-900/70 rounded-full text-xs text-slate-300">Audit Defense</span><span class="px-2 py-0.5 bg-slate-900/70 rounded-full text-xs text-slate-300">Tax Prep</span></div>
-            <div class="flex items-center justify-between pt-3 border-t border-slate-700/60"><div class="flex items-center gap-1.5 text-xs text-slate-400"><i data-lucide="map-pin" class="w-3.5 h-3.5 text-amber-400"></i><span>Austin, TX</span></div><button class="contact-btn px-3 py-1.5 bg-slate-900/70 hover:bg-slate-800 rounded-lg text-xs font-medium transition-colors">Sample</button></div>
+            <div class="flex items-center justify-between pt-3 border-t border-slate-700/60"><div class="flex items-center gap-1.5 text-xs text-slate-400"><i data-lucide="map-pin" class="w-3.5 h-3.5 text-amber-400"></i><span>Austin, TX</span></div><button type="button" class="contact-btn px-3 py-1.5 bg-slate-900/70 hover:bg-slate-800 rounded-lg text-xs font-medium transition-colors">Sample</button></div>
           </div>
 
           <div class="glass-card rounded-3xl p-5 transition-all duration-300 hover:-translate-y-1" data-professional="6" data-profession="attorney" data-status="standard" data-services="estate,planning" data-location="ca" data-client="business,individual" data-profile-type="sample" data-profile-url="/directory/sample-david-chen/">
@@ -364,7 +357,7 @@
             </div>
             <p class="text-slate-400 text-sm mb-3 line-clamp-2">Tax attorney specializing in estate planning and wealth transfer strategies. JD/LLM in Taxation from NYU.</p>
             <div class="flex flex-wrap gap-1.5 mb-3"><span class="px-2 py-0.5 bg-slate-900/70 rounded-full text-xs text-slate-300">Estate Planning</span><span class="px-2 py-0.5 bg-slate-900/70 rounded-full text-xs text-slate-300">Tax Planning</span></div>
-            <div class="flex items-center justify-between pt-3 border-t border-slate-700/60"><div class="flex items-center gap-1.5 text-xs text-slate-400"><i data-lucide="map-pin" class="w-3.5 h-3.5 text-amber-400"></i><span>San Diego, CA</span></div><button class="contact-btn px-3 py-1.5 bg-slate-900/70 hover:bg-slate-800 rounded-lg text-xs font-medium transition-colors">Sample</button></div>
+            <div class="flex items-center justify-between pt-3 border-t border-slate-700/60"><div class="flex items-center gap-1.5 text-xs text-slate-400"><i data-lucide="map-pin" class="w-3.5 h-3.5 text-amber-400"></i><span>San Diego, CA</span></div><button type="button" class="contact-btn px-3 py-1.5 bg-slate-900/70 hover:bg-slate-800 rounded-lg text-xs font-medium transition-colors">Sample</button></div>
           </div>
 
           <div class="glass-card rounded-3xl p-5 transition-all duration-300 hover:-translate-y-1" data-professional="7" data-profession="erpa" data-status="standard" data-services="planning" data-location="fl" data-client="business" data-profile-type="sample" data-profile-url="/directory/sample-rachel-brooks/">
@@ -374,7 +367,7 @@
             </div>
             <p class="text-slate-400 text-sm mb-3 line-clamp-2">Retirement plan specialist helping businesses design and maintain compliant 401(k) and pension plans.</p>
             <div class="flex flex-wrap gap-1.5 mb-3"><span class="px-2 py-0.5 bg-slate-900/70 rounded-full text-xs text-slate-300">401(k) Plans</span><span class="px-2 py-0.5 bg-slate-900/70 rounded-full text-xs text-slate-300">Pension</span></div>
-            <div class="flex items-center justify-between pt-3 border-t border-slate-700/60"><div class="flex items-center gap-1.5 text-xs text-slate-400"><i data-lucide="map-pin" class="w-3.5 h-3.5 text-amber-400"></i><span>Tampa, FL</span></div><button class="contact-btn px-3 py-1.5 bg-slate-900/70 hover:bg-slate-800 rounded-lg text-xs font-medium transition-colors">Sample</button></div>
+            <div class="flex items-center justify-between pt-3 border-t border-slate-700/60"><div class="flex items-center gap-1.5 text-xs text-slate-400"><i data-lucide="map-pin" class="w-3.5 h-3.5 text-amber-400"></i><span>Tampa, FL</span></div><button type="button" class="contact-btn px-3 py-1.5 bg-slate-900/70 hover:bg-slate-800 rounded-lg text-xs font-medium transition-colors">Sample</button></div>
           </div>
 
           <div class="glass-card rounded-3xl p-5 transition-all duration-300 hover:-translate-y-1" data-professional="8" data-profession="actuary" data-status="standard" data-services="planning" data-location="ny" data-client="business" data-profile-type="sample" data-profile-url="/directory/sample-kevin-nakamura/">
@@ -384,7 +377,7 @@
             </div>
             <p class="text-slate-400 text-sm mb-3 line-clamp-2">Pension actuary with expertise in defined benefit plan funding and IRS compliance requirements.</p>
             <div class="flex flex-wrap gap-1.5 mb-3"><span class="px-2 py-0.5 bg-slate-900/70 rounded-full text-xs text-slate-300">Compliance</span><span class="px-2 py-0.5 bg-slate-900/70 rounded-full text-xs text-slate-300">Defined Benefit</span></div>
-            <div class="flex items-center justify-between pt-3 border-t border-slate-700/60"><div class="flex items-center gap-1.5 text-xs text-slate-400"><i data-lucide="map-pin" class="w-3.5 h-3.5 text-amber-400"></i><span>New York, NY</span></div><button class="contact-btn px-3 py-1.5 bg-slate-900/70 hover:bg-slate-800 rounded-lg text-xs font-medium transition-colors">Sample</button></div>
+            <div class="flex items-center justify-between pt-3 border-t border-slate-700/60"><div class="flex items-center gap-1.5 text-xs text-slate-400"><i data-lucide="map-pin" class="w-3.5 h-3.5 text-amber-400"></i><span>New York, NY</span></div><button type="button" class="contact-btn px-3 py-1.5 bg-slate-900/70 hover:bg-slate-800 rounded-lg text-xs font-medium transition-colors">Sample</button></div>
           </div>
 
           <div class="glass-card rounded-3xl p-5 transition-all duration-300 hover:-translate-y-1" data-professional="9" data-profession="cpa" data-status="standard" data-services="bookkeeping,international,tax-prep" data-location="remote" data-client="expat,individual" data-profile-type="sample" data-profile-url="/directory/sample-amanda-garcia/">
@@ -394,7 +387,7 @@
             </div>
             <p class="text-slate-400 text-sm mb-3 line-clamp-2">Remote-first practice serving US expats worldwide. Bilingual English/Spanish. FBAR and FATCA expert.</p>
             <div class="flex flex-wrap gap-1.5 mb-3"><span class="px-2 py-0.5 bg-slate-900/70 rounded-full text-xs text-slate-300">Expat Tax</span><span class="px-2 py-0.5 bg-slate-900/70 rounded-full text-xs text-slate-300">FATCA</span><span class="px-2 py-0.5 bg-slate-900/70 rounded-full text-xs text-slate-300">FBAR</span></div>
-            <div class="flex items-center justify-between pt-3 border-t border-slate-700/60"><div class="flex items-center gap-1.5 text-xs text-slate-400"><i data-lucide="globe" class="w-3.5 h-3.5 text-amber-400"></i><span>Remote/Virtual</span></div><button class="contact-btn px-3 py-1.5 bg-slate-900/70 hover:bg-slate-800 rounded-lg text-xs font-medium transition-colors">Sample</button></div>
+            <div class="flex items-center justify-between pt-3 border-t border-slate-700/60"><div class="flex items-center gap-1.5 text-xs text-slate-400"><i data-lucide="globe" class="w-3.5 h-3.5 text-amber-400"></i><span>Remote/Virtual</span></div><button type="button" class="contact-btn px-3 py-1.5 bg-slate-900/70 hover:bg-slate-800 rounded-lg text-xs font-medium transition-colors">Sample</button></div>
           </div>
 
           <div class="glass-card rounded-3xl p-5 transition-all duration-300 hover:-translate-y-1" data-professional="10" data-profession="ea" data-status="standard" data-services="bookkeeping,payroll,tax-prep" data-location="tx" data-client="business" data-profile-type="sample" data-profile-url="/directory/sample-thomas-wilson/">
@@ -404,7 +397,7 @@
             </div>
             <p class="text-slate-400 text-sm mb-3 line-clamp-2">Full-service tax and bookkeeping for small businesses. QuickBooks ProAdvisor. Payroll specialist.</p>
             <div class="flex flex-wrap gap-1.5 mb-3"><span class="px-2 py-0.5 bg-slate-900/70 rounded-full text-xs text-slate-300">Bookkeeping</span><span class="px-2 py-0.5 bg-slate-900/70 rounded-full text-xs text-slate-300">Payroll</span><span class="px-2 py-0.5 bg-slate-900/70 rounded-full text-xs text-slate-300">Tax Prep</span></div>
-            <div class="flex items-center justify-between pt-3 border-t border-slate-700/60"><div class="flex items-center gap-1.5 text-xs text-slate-400"><i data-lucide="map-pin" class="w-3.5 h-3.5 text-amber-400"></i><span>Houston, TX</span></div><button class="contact-btn px-3 py-1.5 bg-slate-900/70 hover:bg-slate-800 rounded-lg text-xs font-medium transition-colors">Sample</button></div>
+            <div class="flex items-center justify-between pt-3 border-t border-slate-700/60"><div class="flex items-center gap-1.5 text-xs text-slate-400"><i data-lucide="map-pin" class="w-3.5 h-3.5 text-amber-400"></i><span>Houston, TX</span></div><button type="button" class="contact-btn px-3 py-1.5 bg-slate-900/70 hover:bg-slate-800 rounded-lg text-xs font-medium transition-colors">Sample</button></div>
           </div>
 
           <div class="glass-card rounded-3xl p-5 transition-all duration-300 hover:-translate-y-1" data-professional="11" data-profession="attorney,cpa" data-status="standard" data-services="estate,international,planning" data-location="ca" data-client="business,individual,nonprofit" data-profile-type="sample" data-profile-url="/directory/sample-jennifer-lee/">
@@ -414,7 +407,7 @@
             </div>
             <p class="text-slate-400 text-sm mb-3 line-clamp-2">Dual-credentialed expert in complex wealth transfer and nonprofit tax law. Board-certified tax specialist.</p>
             <div class="flex flex-wrap gap-1.5 mb-3"><span class="px-2 py-0.5 bg-slate-900/70 rounded-full text-xs text-slate-300">Estate Planning</span><span class="px-2 py-0.5 bg-slate-900/70 rounded-full text-xs text-slate-300">Nonprofit</span></div>
-            <div class="flex items-center justify-between pt-3 border-t border-slate-700/60"><div class="flex items-center gap-1.5 text-xs text-slate-400"><i data-lucide="map-pin" class="w-3.5 h-3.5 text-amber-400"></i><span>Beverly Hills, CA</span></div><button class="contact-btn px-3 py-1.5 bg-slate-900/70 hover:bg-slate-800 rounded-lg text-xs font-medium transition-colors">Sample</button></div>
+            <div class="flex items-center justify-between pt-3 border-t border-slate-700/60"><div class="flex items-center gap-1.5 text-xs text-slate-400"><i data-lucide="map-pin" class="w-3.5 h-3.5 text-amber-400"></i><span>Beverly Hills, CA</span></div><button type="button" class="contact-btn px-3 py-1.5 bg-slate-900/70 hover:bg-slate-800 rounded-lg text-xs font-medium transition-colors">Sample</button></div>
           </div>
 
           <div class="glass-card rounded-3xl p-5 transition-all duration-300 hover:-translate-y-1" data-professional="12" data-profession="ea" data-status="standard" data-services="audit,tax-prep" data-location="fl" data-client="individual" data-profile-type="sample" data-profile-url="/directory/sample-steven-roberts/">
@@ -424,7 +417,7 @@
             </div>
             <p class="text-slate-400 text-sm mb-3 line-clamp-2">Specializing in individual returns with complex situations: rental properties, stock options, and crypto taxation.</p>
             <div class="flex flex-wrap gap-1.5 mb-3"><span class="px-2 py-0.5 bg-slate-900/70 rounded-full text-xs text-slate-300">Crypto Tax</span><span class="px-2 py-0.5 bg-slate-900/70 rounded-full text-xs text-slate-300">Rentals</span><span class="px-2 py-0.5 bg-slate-900/70 rounded-full text-xs text-slate-300">Stock Options</span></div>
-            <div class="flex items-center justify-between pt-3 border-t border-slate-700/60"><div class="flex items-center gap-1.5 text-xs text-slate-400"><i data-lucide="map-pin" class="w-3.5 h-3.5 text-amber-400"></i><span>Orlando, FL</span></div><button class="contact-btn px-3 py-1.5 bg-slate-900/70 hover:bg-slate-800 rounded-lg text-xs font-medium transition-colors">Sample</button></div>
+            <div class="flex items-center justify-between pt-3 border-t border-slate-700/60"><div class="flex items-center gap-1.5 text-xs text-slate-400"><i data-lucide="map-pin" class="w-3.5 h-3.5 text-amber-400"></i><span>Orlando, FL</span></div><button type="button" class="contact-btn px-3 py-1.5 bg-slate-900/70 hover:bg-slate-800 rounded-lg text-xs font-medium transition-colors">Sample</button></div>
           </div>
         </div>
 
@@ -432,12 +425,12 @@
           <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-slate-900/70 border border-slate-800 flex items-center justify-center"><i data-lucide="search-x" class="w-10 h-10 text-slate-600"></i></div>
           <h3 class="text-xl font-semibold mb-2">No professionals found</h3>
           <p class="text-slate-400 mb-4">Try adjusting your filters or search terms.</p>
-          <button onclick="clearFilters()" class="px-6 py-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 rounded-xl font-medium transition-colors">Clear All Filters</button>
+          <button type="button" id="clear-filters-empty-state-btn" class="px-6 py-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 rounded-xl font-medium transition-colors">Clear All Filters</button>
         </div>
       </section>
     </main>
 
-        <!-- PARTIAL:footer -->
+    <!-- PARTIAL:footer -->
   </div>
 
   <script>
@@ -453,7 +446,311 @@
       secondary_color: '#334155'
     };
 
-    if (window.elementSdk) {
+    let activeFilters = {
+      client: [],
+      location: [],
+      profession: [],
+      profileType: ['sample'],
+      search: '',
+      services: [],
+      status: []
+    };
+
+    function createIconsSafe() {
+      if (window.lucide && typeof window.lucide.createIcons === 'function') {
+        window.lucide.createIcons();
+      }
+    }
+
+    function getCards() {
+      return document.querySelectorAll('[data-professional]');
+    }
+
+    function getFilterLabel(type, value) {
+      const labels = {
+        client: { business: 'Business', expat: 'Expat', individual: 'Individual', nonprofit: 'Nonprofit' },
+        location: { ca: 'California', fl: 'Florida', ny: 'New York', remote: 'Remote', tx: 'Texas' },
+        profession: { actuary: 'Enrolled Actuary', attorney: 'Attorney', cpa: 'CPA', ea: 'Enrolled Agent', erpa: 'ERPA' },
+        profileType: { live: 'Live Professionals', sample: 'Sample Profiles' },
+        services: { audit: 'Audit Defense', bookkeeping: 'Bookkeeping', estate: 'Estate Planning', international: 'International Tax', payroll: 'Payroll', planning: 'Tax Planning', 'tax-prep': 'Tax Preparation' },
+        status: { featured: 'Featured', standard: 'Standard' }
+      };
+
+      return labels[type]?.[value] || value;
+    }
+
+    function updateFilters(type, value, add) {
+      if (!Array.isArray(activeFilters[type])) return;
+
+      if (add) {
+        if (!activeFilters[type].includes(value)) {
+          activeFilters[type].push(value);
+        }
+      } else {
+        activeFilters[type] = activeFilters[type].filter((entry) => entry !== value);
+      }
+
+      applyFilters();
+      updateActiveFiltersDisplay();
+    }
+
+    function applyFilters() {
+      const cards = getCards();
+      let visibleCount = 0;
+
+      cards.forEach((card) => {
+        const profession = card.dataset.profession || '';
+        const status = card.dataset.status || '';
+        const services = card.dataset.services || '';
+        const location = card.dataset.location || '';
+        const client = card.dataset.client || '';
+        const profileType = card.dataset.profileType || '';
+        const cardText = (card.textContent || '').toLowerCase();
+
+        let show = true;
+
+        if (activeFilters.search && !cardText.includes(activeFilters.search)) show = false;
+
+        if (show && activeFilters.profession.length > 0) {
+          const professions = profession.split(',').filter(Boolean);
+          if (!activeFilters.profession.some((item) => professions.includes(item))) show = false;
+        }
+
+        if (show && activeFilters.status.length > 0 && !activeFilters.status.includes(status)) {
+          show = false;
+        }
+
+        if (show && activeFilters.services.length > 0) {
+          const cardServices = services.split(',').filter(Boolean);
+          if (!activeFilters.services.some((item) => cardServices.includes(item))) show = false;
+        }
+
+        if (show && activeFilters.location.length > 0 && !activeFilters.location.includes(location)) {
+          show = false;
+        }
+
+        if (show && activeFilters.client.length > 0) {
+          const clients = client.split(',').filter(Boolean);
+          if (!activeFilters.client.some((item) => clients.includes(item))) show = false;
+        }
+
+        if (show && activeFilters.profileType.length > 0 && !activeFilters.profileType.includes(profileType)) {
+          show = false;
+        }
+
+        card.style.display = show ? '' : 'none';
+        if (show) visibleCount += 1;
+      });
+
+      const resultsCount = document.getElementById('results-count');
+      if (resultsCount) {
+        resultsCount.textContent = `Showing ${visibleCount} professionals`;
+      }
+
+      const noResults = document.getElementById('no-results');
+      const directoryGrid = document.getElementById('directory-grid');
+      const featuredCards = document.getElementById('featured-cards');
+
+      if (!noResults || !directoryGrid || !featuredCards) return;
+
+      if (visibleCount === 0) {
+        noResults.classList.remove('hidden');
+        directoryGrid.classList.add('hidden');
+        featuredCards.classList.add('hidden');
+      } else {
+        noResults.classList.add('hidden');
+        directoryGrid.classList.remove('hidden');
+        featuredCards.classList.remove('hidden');
+      }
+    }
+
+    function removeFilter(type, value) {
+      if (!Array.isArray(activeFilters[type])) return;
+
+      activeFilters[type] = activeFilters[type].filter((entry) => entry !== value);
+
+      const filterClassMap = {
+        client: '.client-filter',
+        location: '.location-filter',
+        profession: '.profession-filter',
+        profileType: '.profile-type-filter',
+        services: '.service-filter',
+        status: '.status-filter'
+      };
+
+      const selector = filterClassMap[type];
+      if (selector) {
+        const checkbox = document.querySelector(`${selector}[value="${value}"]`);
+        if (checkbox) checkbox.checked = false;
+      }
+
+      applyFilters();
+      updateActiveFiltersDisplay();
+    }
+
+    function updateActiveFiltersDisplay() {
+      const container = document.getElementById('active-filters');
+      const list = document.getElementById('active-filters-list');
+      if (!container || !list) return;
+
+      const allFilters = [
+        ...activeFilters.client.map((value) => ({ type: 'client', value, label: getFilterLabel('client', value) })),
+        ...activeFilters.location.map((value) => ({ type: 'location', value, label: getFilterLabel('location', value) })),
+        ...activeFilters.profession.map((value) => ({ type: 'profession', value, label: getFilterLabel('profession', value) })),
+        ...activeFilters.profileType.map((value) => ({ type: 'profileType', value, label: getFilterLabel('profileType', value) })),
+        ...activeFilters.services.map((value) => ({ type: 'services', value, label: getFilterLabel('services', value) })),
+        ...activeFilters.status.map((value) => ({ type: 'status', value, label: getFilterLabel('status', value) }))
+      ];
+
+      if (allFilters.length === 0) {
+        list.innerHTML = '';
+        container.classList.add('hidden');
+        return;
+      }
+
+      list.innerHTML = allFilters.map((filter) => `
+        <button type="button" data-remove-filter="${filter.type}:${filter.value}" class="px-3 py-1.5 bg-amber-500/10 border border-amber-500/25 rounded-full text-sm text-amber-300 hover:bg-amber-500/20 transition-colors flex items-center gap-2">
+          ${filter.label}
+          <i data-lucide="x" class="w-3.5 h-3.5"></i>
+        </button>
+      `).join('');
+
+      container.classList.remove('hidden');
+      createIconsSafe();
+    }
+
+    function clearFilters() {
+      activeFilters = {
+        client: [],
+        location: [],
+        profession: [],
+        profileType: ['sample'],
+        search: '',
+        services: [],
+        status: []
+      };
+
+      document.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
+        checkbox.checked = false;
+      });
+
+      document.querySelectorAll('.profile-type-filter[value="sample"]').forEach((checkbox) => {
+        checkbox.checked = true;
+      });
+
+      const searchInput = document.getElementById('search-input');
+      if (searchInput) searchInput.value = '';
+
+      applyFilters();
+      updateActiveFiltersDisplay();
+    }
+
+    function toggleDropdown(id) {
+      const target = document.getElementById(id);
+      if (!target) return;
+
+      document.querySelectorAll('[id$="-dropdown"]').forEach((dropdown) => {
+        if (dropdown.id !== id) {
+          dropdown.classList.add('hidden');
+        }
+      });
+
+      target.classList.toggle('hidden');
+    }
+
+    function goToProfileFromButton(button) {
+      const card = button.closest('[data-profile-url]');
+      const url = card?.getAttribute('data-profile-url');
+      if (url) {
+        window.location.href = url;
+      }
+    }
+
+    function bindFilterCheckboxes() {
+      const bindings = [
+        ['.client-filter', 'client'],
+        ['.location-filter', 'location'],
+        ['.profession-filter', 'profession'],
+        ['.profile-type-filter', 'profileType'],
+        ['.service-filter', 'services'],
+        ['.status-filter', 'status']
+      ];
+
+      bindings.forEach(([selector, type]) => {
+        document.querySelectorAll(selector).forEach((checkbox) => {
+          checkbox.addEventListener('change', () => updateFilters(type, checkbox.value, checkbox.checked));
+        });
+      });
+    }
+
+    function bindUI() {
+      document.querySelectorAll('[data-dropdown-trigger]').forEach((button) => {
+        button.addEventListener('click', (event) => {
+          event.stopPropagation();
+          const dropdownId = button.getAttribute('data-dropdown-trigger');
+          toggleDropdown(dropdownId);
+        });
+      });
+
+      document.addEventListener('click', (event) => {
+        const clickedInsideDropdown = event.target.closest('[id$="-dropdown"]');
+        const clickedTrigger = event.target.closest('[data-dropdown-trigger]');
+        if (!clickedInsideDropdown && !clickedTrigger) {
+          document.querySelectorAll('[id$="-dropdown"]').forEach((dropdown) => dropdown.classList.add('hidden'));
+        }
+      });
+
+      const searchInput = document.getElementById('search-input');
+      if (searchInput) {
+        searchInput.addEventListener('input', (event) => {
+          activeFilters.search = event.target.value.toLowerCase();
+          applyFilters();
+        });
+      }
+
+      const clearButtons = [
+        document.getElementById('clear-filters-btn'),
+        document.getElementById('clear-filters-empty-state-btn')
+      ].filter(Boolean);
+
+      clearButtons.forEach((button) => {
+        button.addEventListener('click', clearFilters);
+      });
+
+      document.addEventListener('click', (event) => {
+        const removeButton = event.target.closest('[data-remove-filter]');
+        if (!removeButton) return;
+
+        const payload = removeButton.getAttribute('data-remove-filter') || '';
+        const separatorIndex = payload.indexOf(':');
+        if (separatorIndex === -1) return;
+
+        const type = payload.slice(0, separatorIndex);
+        const value = payload.slice(separatorIndex + 1);
+        removeFilter(type, value);
+      });
+
+      document.querySelectorAll('.contact-btn, .view-btn').forEach((button) => {
+        button.addEventListener('click', (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          goToProfileFromButton(event.currentTarget);
+        });
+      });
+
+      document.querySelectorAll('[data-profile-url]').forEach((card) => {
+        card.addEventListener('dblclick', () => {
+          const url = card.dataset.profileUrl;
+          if (url) {
+            window.location.href = url;
+          }
+        });
+      });
+    }
+
+    function initElementSdk() {
+      if (!window.elementSdk) return;
+
       window.elementSdk.init({
         defaultConfig,
         onConfigChange: async (config) => {
@@ -472,8 +769,8 @@
             featuredTitleEl.textContent = config.featured_section_title || defaultConfig.featured_section_title;
           }
 
-          document.querySelectorAll('.contact-btn').forEach(btn => {
-            btn.textContent = config.cta_button_text || defaultConfig.cta_button_text;
+          document.querySelectorAll('.contact-btn').forEach((button) => {
+            button.textContent = config.cta_button_text || defaultConfig.cta_button_text;
           });
 
           document.body.style.backgroundColor = config.background_color || defaultConfig.background_color;
@@ -506,244 +803,37 @@
           fontSizeable: undefined
         }),
         mapToEditPanelValues: (config) => new Map([
-          ['page_title', config.page_title || defaultConfig.page_title],
-          ['page_subtitle', config.page_subtitle || defaultConfig.page_subtitle],
+          ['cta_button_text', config.cta_button_text || defaultConfig.cta_button_text],
           ['featured_section_title', config.featured_section_title || defaultConfig.featured_section_title],
-          ['cta_button_text', config.cta_button_text || defaultConfig.cta_button_text]
+          ['page_subtitle', config.page_subtitle || defaultConfig.page_subtitle],
+          ['page_title', config.page_title || defaultConfig.page_title]
         ])
       });
     }
 
-    let activeFilters = {
-      client: [],
-      location: [],
-      profession: [],
-      profileType: ['sample'],
-      search: '',
-      services: [],
-      status: []
-    };
-
-    function toggleDropdown(id) {
-      const dropdown = document.getElementById(id);
-      const allDropdowns = document.querySelectorAll('[id$="-dropdown"]');
-      allDropdowns.forEach(d => {
-        if (d.id !== id) d.classList.add('hidden');
-      });
-      dropdown.classList.toggle('hidden');
+    function runDevTests() {
+      console.assert(typeof toggleDropdown === 'function', 'toggleDropdown should exist');
+      console.assert(typeof goToProfileFromButton === 'function', 'goToProfileFromButton should exist');
+      console.assert(Array.isArray(activeFilters.profileType), 'profileType filter should be an array');
+      console.assert(activeFilters.profileType.includes('sample'), 'sample profiles should be enabled by default');
+      console.assert(getCards().length === 12, 'expected 12 profile cards in the directory');
+      console.assert(document.querySelector('[data-profile-url="/directory/sample-emily-wong/"]') !== null, 'Emily Wong card should exist');
     }
 
-    document.addEventListener('click', (e) => {
-      if (!e.target.closest('[id$="-dropdown"]') && !e.target.closest('button')) {
-        document.querySelectorAll('[id$="-dropdown"]').forEach(d => d.classList.add('hidden'));
-      }
-    });
-
-    document.querySelectorAll('.profession-filter').forEach(cb => {
-      cb.addEventListener('change', () => updateFilters('profession', cb.value, cb.checked));
-    });
-
-    document.querySelectorAll('.status-filter').forEach(cb => {
-      cb.addEventListener('change', () => updateFilters('status', cb.value, cb.checked));
-    });
-
-    document.querySelectorAll('.service-filter').forEach(cb => {
-      cb.addEventListener('change', () => updateFilters('services', cb.value, cb.checked));
-    });
-
-    document.querySelectorAll('.location-filter').forEach(cb => {
-      cb.addEventListener('change', () => updateFilters('location', cb.value, cb.checked));
-    });
-
-    document.querySelectorAll('.client-filter').forEach(cb => {
-      cb.addEventListener('change', () => updateFilters('client', cb.value, cb.checked));
-    });
-
-    document.querySelectorAll('.profile-type-filter').forEach(cb => {
-      cb.addEventListener('change', () => updateFilters('profileType', cb.value, cb.checked));
-    });
-
-    document.getElementById('search-input').addEventListener('input', (e) => {
-      activeFilters.search = e.target.value.toLowerCase();
-      applyFilters();
-    });
-
-    function updateFilters(type, value, add) {
-      if (add) {
-        if (!activeFilters[type].includes(value)) activeFilters[type].push(value);
-      } else {
-        activeFilters[type] = activeFilters[type].filter(v => v !== value);
-      }
+    document.addEventListener('DOMContentLoaded', () => {
+      createIconsSafe();
+      bindFilterCheckboxes();
+      bindUI();
+      initElementSdk();
       applyFilters();
       updateActiveFiltersDisplay();
-    }
+      runDevTests();
 
-    function applyFilters() {
-      const cards = document.querySelectorAll('[data-professional]');
-      let visibleCount = 0;
-
-      cards.forEach(card => {
-        const profession = card.dataset.profession || '';
-        const status = card.dataset.status || '';
-        const services = card.dataset.services || '';
-        const location = card.dataset.location || '';
-        const client = card.dataset.client || '';
-        const profileType = card.dataset.profileType || '';
-        const cardText = card.textContent.toLowerCase();
-
-        let show = true;
-
-        if (activeFilters.search && !cardText.includes(activeFilters.search)) show = false;
-
-        if (show && activeFilters.profession.length > 0) {
-          const professions = profession.split(',');
-          if (!activeFilters.profession.some(p => professions.includes(p))) show = false;
-        }
-
-        if (show && activeFilters.status.length > 0) {
-          if (!activeFilters.status.includes(status)) show = false;
-        }
-
-        if (show && activeFilters.services.length > 0) {
-          const cardServices = services.split(',');
-          if (!activeFilters.services.some(s => cardServices.includes(s))) show = false;
-        }
-
-        if (show && activeFilters.location.length > 0) {
-          if (!activeFilters.location.includes(location)) show = false;
-        }
-
-        if (show && activeFilters.client.length > 0) {
-          const clients = client.split(',');
-          if (!activeFilters.client.some(c => clients.includes(c))) show = false;
-        }
-
-        if (show && activeFilters.profileType.length > 0) {
-          if (!activeFilters.profileType.includes(profileType)) show = false;
-        }
-
-        card.style.display = show ? '' : 'none';
-        if (show) visibleCount++;
-      });
-
-      document.getElementById('results-count').textContent = `Showing ${visibleCount} professionals`;
-
-      const noResults = document.getElementById('no-results');
-      const directoryGrid = document.getElementById('directory-grid');
-      const featuredCards = document.getElementById('featured-cards');
-
-      if (visibleCount === 0) {
-        noResults.classList.remove('hidden');
-        directoryGrid.classList.add('hidden');
-        featuredCards.classList.add('hidden');
-      } else {
-        noResults.classList.add('hidden');
-        directoryGrid.classList.remove('hidden');
-        featuredCards.classList.remove('hidden');
+      const footerYearEl = document.getElementById('footer-year');
+      if (footerYearEl) {
+        footerYearEl.textContent = String(new Date().getFullYear());
       }
-    }
-
-    function updateActiveFiltersDisplay() {
-      const container = document.getElementById('active-filters');
-      const list = document.getElementById('active-filters-list');
-
-      const allFilters = [
-        ...activeFilters.client.map(f => ({ type: 'client', value: f, label: getFilterLabel('client', f) })),
-        ...activeFilters.profileType.map(f => ({ type: 'profileType', value: f, label: getFilterLabel('profileType', f) })),
-        ...activeFilters.location.map(f => ({ type: 'location', value: f, label: getFilterLabel('location', f) })),
-        ...activeFilters.profession.map(f => ({ type: 'profession', value: f, label: getFilterLabel('profession', f) })),
-        ...activeFilters.services.map(f => ({ type: 'services', value: f, label: getFilterLabel('services', f) })),
-        ...activeFilters.status.map(f => ({ type: 'status', value: f, label: getFilterLabel('status', f) }))
-      ];
-
-      if (allFilters.length === 0) {
-        container.classList.add('hidden');
-        return;
-      }
-
-      container.classList.remove('hidden');
-      list.innerHTML = allFilters.map(f => `
-        <button onclick="removeFilter('${f.type}', '${f.value}')" class="px-3 py-1.5 bg-amber-500/10 border border-amber-500/25 rounded-full text-sm text-amber-300 hover:bg-amber-500/20 transition-colors flex items-center gap-2">
-          ${f.label}
-          <i data-lucide="x" class="w-3.5 h-3.5"></i>
-        </button>
-      `).join('');
-
-      lucide.createIcons();
-    }
-
-    function getFilterLabel(type, value) {
-      const labels = {
-        profession: { actuary: 'Enrolled Actuary', attorney: 'Attorney', cpa: 'CPA', ea: 'Enrolled Agent', erpa: 'ERPA' },
-        status: { featured: 'Featured', standard: 'Standard' },
-        services: { audit: 'Audit Defense', bookkeeping: 'Bookkeeping', estate: 'Estate Planning', international: 'International Tax', payroll: 'Payroll', planning: 'Tax Planning', 'tax-prep': 'Tax Preparation' },
-        location: { ca: 'California', fl: 'Florida', ny: 'New York', remote: 'Remote', tx: 'Texas' },
-        client: { business: 'Business', expat: 'Expat', individual: 'Individual', nonprofit: 'Nonprofit' },
-        profileType: { live: 'Live Professionals', sample: 'Sample Profiles' }
-      };
-      return labels[type]?.[value] || value;
-    }
-
-    function removeFilter(type, value) {
-      activeFilters[type] = activeFilters[type].filter(v => v !== value);
-      const filterClassMap = {
-        client: '.client-filter',
-        location: '.location-filter',
-        profession: '.profession-filter',
-        profileType: '.profile-type-filter',
-        services: '.service-filter',
-        status: '.status-filter'
-      };
-      const checkbox = document.querySelector(`${filterClassMap[type]}[value="${value}"]`);
-      if (checkbox) checkbox.checked = false;
-      applyFilters();
-      updateActiveFiltersDisplay();
-    }
-
-    function clearFilters() {
-      activeFilters = {
-        client: [],
-        location: [],
-        profession: [],
-        profileType: ['sample'],
-        search: '',
-        services: [],
-        status: []
-      };
-
-      document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
-      document.querySelectorAll('.profile-type-filter[value="sample"]').forEach(cb => cb.checked = true);
-      document.getElementById('search-input').value = '';
-
-      applyFilters();
-      updateActiveFiltersDisplay();
-    }
-
-    lucide.createIcons();
-
-    function goToProfileFromButton(button) {
-      const card = button.closest('[data-profile-url]');
-      const url = card && card.dataset.profileUrl;
-      if (url) window.location.href = url;
-    }
-
-    document.querySelectorAll('.contact-btn, .view-btn').forEach(button => {
-      button.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        goToProfileFromButton(button);
-      });
     });
-
-    document.querySelectorAll('[data-profile-url]').forEach(card => {
-      card.addEventListener('dblclick', () => {
-        const url = card.dataset.profileUrl;
-        if (url) window.location.href = url;
-      });
-    });
-
-    const footerYearEl = document.getElementById('footer-year');
-    if (footerYearEl) footerYearEl.textContent = String(new Date().getFullYear());
   </script>
 </body>
 </html>
