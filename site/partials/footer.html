@@ -1,4 +1,3 @@
-<!-- /site/partials/footer.html -->
 <footer class="border-t border-slate-800/60 bg-slate-950">
   <div class="mx-auto max-w-7xl px-6 py-12">
     <div class="grid gap-10 md:grid-cols-[1.35fr_1fr_1fr_1fr] md:items-start md:gap-x-16">
@@ -30,6 +29,7 @@
           >
             Start Intake →
           </a>
+
           <a
             href="/pricing.html"
             class="inline-flex items-center justify-center rounded-lg border border-slate-800/70 bg-slate-950/40 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:bg-slate-900"
@@ -42,9 +42,11 @@
       <!-- Links -->
       <div class="flex flex-col gap-4">
         <h3 class="text-sm font-semibold text-white">Links</h3>
+
         <nav class="grid gap-2 text-sm">
           <a href="/about.html" class="text-slate-300 transition hover:text-white">About</a>
           <a href="/contact.html" class="text-slate-300 transition hover:text-white">Contact</a>
+          <a href="/directory.html" class="text-slate-300 transition hover:text-white">Directory</a>
           <a href="/index.html#features" class="text-slate-300 transition hover:text-white">Features</a>
           <a href="/index.html#how-it-works" class="text-slate-300 transition hover:text-white">How It Works</a>
           <a href="/app/login.html" class="text-slate-300 transition hover:text-white">Log In</a>
@@ -82,13 +84,16 @@
       <!-- Legal -->
       <div class="flex flex-col gap-4">
         <h3 class="text-sm font-semibold text-white">Legal</h3>
+
         <div class="grid gap-2 text-sm">
           <a href="/legal/privacy.html" class="text-slate-300 transition hover:text-white">Privacy</a>
           <a href="/legal/refund.html" class="text-slate-300 transition hover:text-white">Refund Policy</a>
           <a href="/legal/terms.html" class="text-slate-300 transition hover:text-white">Terms</a>
         </div>
 
-        <p class="mt-4 text-sm text-slate-500">© <span id="footer-year"></span> Tax Monitor Pro</p>
+        <p class="mt-4 text-sm text-slate-500">
+          © <span id="footer-year"></span> Tax Monitor Pro
+        </p>
       </div>
 
     </div>
@@ -96,8 +101,8 @@
 </footer>
 
 <script>
-  (function () {
-    var el = document.getElementById('footer-year');
-    if (el) el.textContent = String(new Date().getFullYear());
-  })();
+(function () {
+  var el = document.getElementById('footer-year');
+  if (el) el.textContent = String(new Date().getFullYear());
+})();
 </script>
