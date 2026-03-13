@@ -658,11 +658,20 @@
       target.classList.toggle('hidden');
     }
 
+    function getProfileUrlForElement(element) {
+      if (!element) return '';
+
+      const ownUrl = element.getAttribute('data-profile-url');
+      if (ownUrl) return ownUrl;
+
+      const card = element.closest('[data-profile-url]');
+      return card?.getAttribute('data-profile-url') || '';
+    }
+
     function goToProfileFromButton(button) {
-      const card = button.closest('[data-profile-url]');
-      const url = card?.getAttribute('data-profile-url');
+      const url = getProfileUrlForElement(button);
       if (url) {
-        window.location.href = url;
+        window.location.assign(url);
       }
     }
 
@@ -730,21 +739,48 @@
         removeFilter(type, value);
       });
 
-      document.querySelectorAll('.contact-btn, .view-btn').forEach((button) => {
-        button.addEventListener('click', (event) => {
-          event.preventDefault();
-          event.stopPropagation();
-          goToProfileFromButton(event.currentTarget);
-        });
-      });
-
       document.querySelectorAll('[data-profile-url]').forEach((card) => {
-        card.addEventListener('dblclick', () => {
-          const url = card.dataset.profileUrl;
+        const cardUrl = card.getAttribute('data-profile-url') || '';
+        card.style.cursor = cardUrl ? 'pointer' : '';
+
+        card.querySelectorAll('.contact-btn, .view-btn').forEach((button) => {
+          if (cardUrl) {
+            button.setAttribute('data-profile-url', cardUrl);
+          }
+
+          button.addEventListener('click', (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            goToProfileFromButton(event.currentTarget);
+          });
+        });
+
+        card.addEventListener('click', (event) => {
+          if (event.target.closest('.contact-btn, .view-btn')) return;
+          const url = getProfileUrlForElement(card);
           if (url) {
-            window.location.href = url;
+            window.location.assign(url);
           }
         });
+
+        card.addEventListener('keydown', (event) => {
+          if (event.key !== 'Enter' && event.key !== ' ') return;
+          if (event.target.closest('.contact-btn, .view-btn')) return;
+          event.preventDefault();
+          const url = getProfileUrlForElement(card);
+          if (url) {
+            window.location.assign(url);
+          }
+        });
+
+        card.addEventListener('dblclick', () => {
+          const url = getProfileUrlForElement(card);
+          if (url) {
+            window.location.assign(url);
+          }
+        });
+
+        card.setAttribute('tabindex', '0');
       });
     }
 
@@ -812,12 +848,21 @@
     }
 
     function runDevTests() {
+      console.assert(typeof getProfileUrlForElement === 'function', 'getProfileUrlForElement should exist');
       console.assert(typeof toggleDropdown === 'function', 'toggleDropdown should exist');
       console.assert(typeof goToProfileFromButton === 'function', 'goToProfileFromButton should exist');
       console.assert(Array.isArray(activeFilters.profileType), 'profileType filter should be an array');
       console.assert(activeFilters.profileType.includes('sample'), 'sample profiles should be enabled by default');
       console.assert(getCards().length === 12, 'expected 12 profile cards in the directory');
       console.assert(document.querySelector('[data-profile-url="/directory/sample-emily-wong/"]') !== null, 'Emily Wong card should exist');
+
+      const featuredButtons = Array.from(document.querySelectorAll('#featured-cards .contact-btn'));
+      const featuredUrls = featuredButtons.map((button) => getProfileUrlForElement(button));
+      console.assert(featuredUrls.length === 3, 'expected 3 featured contact buttons');
+      console.assert(new Set(featuredUrls).size === featuredUrls.length, 'featured buttons should each point to a unique profile URL');
+      console.assert(featuredUrls.includes('/directory/sample-sarah-mitchell/'), 'Sarah Mitchell button URL should be assigned');
+      console.assert(featuredUrls.includes('/directory/sample-james-rodriguez/'), 'James Rodriguez button URL should be assigned');
+      console.assert(featuredUrls.includes('/directory/sample-emily-wong/'), 'Emily Wong button URL should be assigned');
     }
 
     document.addEventListener('DOMContentLoaded', () => {
