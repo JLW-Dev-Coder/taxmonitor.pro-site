@@ -1,0 +1,1243 @@
+<!-- app/pages/tax-pro/dashboard.html -->
+<!doctype html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Virtual Launch Pro - Advanced — Pro Workspace Mocks</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            amber: {
+              400: '#fbbf24',
+              500: '#f59e0b',
+              600: '#d97706'
+            },
+            slate: {
+              850: '#1a1f2e',
+              900: '#0f1219',
+              950: '#080a0f'
+            }
+          },
+          fontFamily: {
+            sans: ['DM Sans', 'system-ui', 'sans-serif']
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    * {
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: linear-gradient(135deg, #0f172a 0%, #1a1f35 50%, #0d1727 100%);
+      background-attachment: fixed;
+      box-sizing: border-box;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        radial-gradient(circle at 20% 50%, rgba(15, 23, 42, 0.4) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(30, 41, 59, 0.4) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .glass-card {
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    .gradient-text-amber {
+      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .gradient-btn-amber {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+      color: #0f172a;
+    }
+
+    .gradient-btn-amber:hover {
+      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+      box-shadow: 0 6px 16px rgba(245, 158, 11, 0.4);
+    }
+
+    .badge {
+      padding: 4px 12px;
+      border-radius: 20px;
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .badge-amber {
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: #fbbf24;
+    }
+
+    .badge-emerald {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: #10b981;
+    }
+
+    .badge-red {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #fca5a5;
+    }
+
+    .icon-bg {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .icon-bg svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .icon-amber {
+      background: rgba(245, 158, 11, 0.15);
+      color: #fbbf24;
+    }
+
+    .icon-emerald {
+      background: rgba(16, 185, 129, 0.15);
+      color: #10b981;
+    }
+
+    .icon-red {
+      background: rgba(239, 68, 68, 0.15);
+      color: #fca5a5;
+    }
+
+    .icon-blue {
+      background: rgba(59, 130, 246, 0.15);
+      color: #60a5fa;
+    }
+
+    .stat-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .stat-value {
+      font-size: 28px;
+      font-weight: 700;
+      color: #f1f5f9;
+      margin: 8px 0 4px 0;
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: #94a3b8;
+      text-align: center;
+    }
+
+    .btn-small {
+      padding: 6px 12px;
+      font-size: 12px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      color: #f1f5f9;
+    }
+
+    .btn-outline {
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      background: transparent;
+      color: #fbbf24;
+    }
+
+    .btn-outline:hover {
+      background: rgba(245, 158, 11, 0.1);
+      border-color: rgba(245, 158, 11, 0.6);
+    }
+
+    .btn-ghost-disabled {
+      border: 1px dashed rgba(148, 163, 184, 0.28);
+      background: rgba(15, 23, 42, 0.18);
+      color: #64748b;
+      cursor: not-allowed;
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 13px;
+      color: white;
+      flex-shrink: 0;
+    }
+
+    .chart-container {
+      width: 100%;
+      height: 220px;
+      position: relative;
+      margin-top: 12px;
+      overflow: hidden;
+    }
+
+    .chart-toggle {
+      background: rgba(15, 23, 42, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 999px;
+      display: inline-flex;
+      gap: 6px;
+      padding: 4px;
+    }
+
+    .chart-toggle-btn {
+      background: transparent;
+      border: 0;
+      border-radius: 999px;
+      color: #94a3b8;
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      padding: 7px 12px;
+      text-transform: uppercase;
+      transition: all 0.2s ease;
+    }
+
+    .chart-toggle-btn:hover {
+      color: #e2e8f0;
+    }
+
+    .chart-toggle-btn.active {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      color: #0f172a;
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.28);
+    }
+
+    .nav-item {
+      transition: all 0.2s ease;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      color: #cbd5e1;
+      text-decoration: none;
+    }
+
+    .nav-item:hover {
+      background: rgba(148, 163, 184, 0.08);
+    }
+
+    .nav-item.active {
+      background: rgba(148, 163, 184, 0.12);
+      border-left: 2px solid rgba(148, 163, 184, 0.45);
+      color: #fff;
+    }
+
+    .nav-icon {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+
+    .sidebar-section-label {
+      color: #64748b;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      margin: 18px 0 10px 0;
+      text-transform: uppercase;
+    }
+
+    .topbar-search {
+      background: rgba(15, 23, 42, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      color: #e2e8f0;
+      min-width: 260px;
+      outline: none;
+      padding: 12px 14px 12px 42px;
+      width: 100%;
+    }
+
+    .topbar-search::placeholder {
+      color: #64748b;
+    }
+
+    .topbar-search-wrap {
+      position: relative;
+      width: 100%;
+    }
+
+    .topbar-search-icon {
+      color: #64748b;
+      left: 14px;
+      pointer-events: none;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+    }
+
+    .mock-input, .mock-select, .mock-textarea {
+      width: 100%;
+      margin-top: 8px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(2, 6, 23, 0.4);
+      color: #f1f5f9;
+      outline: none;
+      padding: 12px 14px;
+    }
+
+    .mock-textarea {
+      min-height: 128px;
+      resize: vertical;
+    }
+
+    .filter-select {
+      appearance: none;
+      -webkit-appearance: none;
+      background-color: rgba(2, 6, 23, 0.52);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%2394a3b8' stroke-width='1.8'%3E%3Cpath d='M5 7.5l5 5 5-5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-position: right 12px center;
+      background-repeat: no-repeat;
+      background-size: 16px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      color: #e2e8f0;
+      font-size: 12px;
+      font-weight: 600;
+      min-width: 160px;
+      padding: 10px 38px 10px 12px;
+    }
+
+    .filter-select:focus {
+      border-color: rgba(245, 158, 11, 0.45);
+      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.12);
+    }
+
+    .filter-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .filter-toolbar-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .filter-toolbar-label {
+      color: #94a3b8;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .table-filter-input {
+      width: 100%;
+      background: rgba(2, 6, 23, 0.52);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      color: #e2e8f0;
+      font-size: 12px;
+      font-weight: 600;
+      outline: none;
+      padding: 10px 12px;
+    }
+
+    .table-filter-input::placeholder {
+      color: #64748b;
+    }
+
+    .table-filter-input:focus {
+      border-color: rgba(245, 158, 11, 0.45);
+      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.12);
+    }
+
+    .due-client-card {
+      cursor: pointer;
+      transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+    }
+
+    .due-client-card:hover {
+      background: rgba(30, 41, 59, 0.62);
+      border-color: rgba(245, 158, 11, 0.28);
+      transform: translateY(-1px);
+    }
+
+    .due-client-card.active {
+      border-color: rgba(245, 158, 11, 0.45);
+      box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.15) inset;
+      background: rgba(245, 158, 11, 0.08);
+    }
+
+    .profile-toggle {
+      align-items: center;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 999px;
+      cursor: pointer;
+      display: inline-flex;
+      height: 28px;
+      justify-content: flex-start;
+      padding: 2px;
+      position: relative;
+      transition: all 0.2s ease;
+      width: 52px;
+    }
+
+    .profile-toggle::after {
+      background: #ffffff;
+      border-radius: 999px;
+      content: '';
+      display: block;
+      height: 22px;
+      transition: transform 0.2s ease;
+      width: 22px;
+    }
+
+    .profile-toggle.active {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      border-color: rgba(245, 158, 11, 0.35);
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.22);
+    }
+
+    .profile-toggle.active::after {
+      transform: translateX(24px);
+    }
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    @media (max-width: 1024px) {
+      .tm-pro-sidebar {
+        display: none;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr !important;
+      }
+
+      .topbar-search {
+        min-width: 0;
+      }
+    }
+  </style>
+</head>
+<body class="h-full text-slate-100 overflow-hidden">
+  <div class="relative z-10 flex h-full">
+    <aside class="tm-pro-sidebar w-[290px] border-r border-white/5 bg-slate-950/70 backdrop-blur-xl">
+      <div class="flex h-full flex-col px-4 py-4">
+        <div class="glass-card mb-4 px-4 py-4">
+          <div class="flex items-center gap-3">
+            <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-emerald-500 text-sm font-bold text-white">TM</div>
+            <div>
+              <div class="text-sm font-semibold text-slate-100">Tax Monitor Pro</div>
+              <div class="text-xs text-slate-400">Pro workspace</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-4 rounded-2xl border border-white/5 bg-slate-900/50 px-4 py-3">
+          <div class="text-xs uppercase tracking-wide text-slate-500">Logged in as</div>
+          <div id="sidebar-user-name" class="mt-1 text-sm font-semibold text-slate-100">Jane Doe</div>
+          <div id="sidebar-account-label" class="mt-1 text-xs text-slate-400">Account: Monitoring</div>
+        </div>
+
+        <div class="flex-1 overflow-auto pr-1">
+          <div class="sidebar-section-label">Overview</div>
+          <nav class="space-y-2">
+            <a href="#dashboard" class="nav-item active" data-page="dashboard"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l9-8 9 8"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 21V9h6v12"></path></svg><span>Dashboard</span></a>
+            <a href="#clients" class="nav-item" data-page="clients"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 21v-2a4 4 0 00-4-4H7a4 4 0 00-4 4v2"></path><circle cx="9" cy="7" r="4" stroke-width="2"></circle><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M23 21v-2a4 4 0 00-3-3.87"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 3.13a4 4 0 010 7.75"></path></svg><span>Clients</span></a>
+            <a href="#payouts" class="nav-item" data-page="payouts"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2" ry="2" stroke-width="2"></rect><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 14h3"></path></svg><span>Payouts</span></a>
+            <a href="#tm-pool" class="nav-item" data-page="tm-pool"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v12"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 12h12"></path><circle cx="12" cy="12" r="9" stroke-width="2"></circle></svg><span>Client Pool</span></a>
+            <a href="#tokens" class="nav-item" data-page="tokens"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-10V6m0 12v-2"></path><circle cx="12" cy="12" r="9" stroke-width="2"></circle></svg><span>Tokens</span></a>
+          </nav>
+
+          <div class="sidebar-section-label">Client Workflows</div>
+          <nav class="space-y-2">
+            <a href="#active-alerts" class="nav-item" data-page="active-alerts"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.4-1.4A2 2 0 0118 14.2V11a6 6 0 10-12 0v3.2a2 2 0 01-.6 1.4L4 17h5m6 0a3 3 0 11-6 0m6 0H9"></path></svg><span>Active Alerts</span><span class="ml-auto inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-amber-500/20 px-1.5 text-[10px] font-bold text-amber-300">3</span></a>
+            <a href="#esign-2848" class="nav-item" data-page="esign-2848"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 20h9"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16.5 3.5a2.12 2.12 0 113 3L7 19l-4 1 1-4 12.5-12.5z"></path></svg><span>eSign 2848</span><span class="ml-auto inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-amber-500/20 px-1.5 text-[10px] font-bold text-amber-300">12</span></a>
+            <a href="#compliance-report-form" class="nav-item" data-page="compliance-report-form"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5h6"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3h6a2 2 0 012 2v1H7V5a2 2 0 012-2z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 6H6a2 2 0 00-2 2v11a2 2 0 002 2h12a2 2 0 002-2V8a2 2 0 00-2-2h-1"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 16h4"></path></svg><span>Compliance Report</span><span class="ml-auto inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500/20 px-1.5 text-[10px] font-bold text-red-300">5</span></a>
+          </nav>
+
+          <div class="sidebar-section-label">Monitoring</div>
+          <nav class="space-y-2">
+            <a href="#monitored-clients" class="nav-item" data-page="monitored-clients"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 21v-2a4 4 0 00-4-4H7a4 4 0 00-4 4v2"></path><circle cx="9" cy="7" r="4" stroke-width="2"></circle><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M23 21v-2a4 4 0 00-3-3.87"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 3.13a4 4 0 010 7.75"></path></svg><span>Monitored Clients</span></a>
+            <a href="#transcript-changes" class="nav-item" data-page="transcript-changes"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 14l3-3 2 2 5-5"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h10"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 17h3"></path></svg><span>Recent Transcript Changes</span></a>
+            <a href="#client-report-access" class="nav-item" data-page="client-report-access"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 19h16"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 15l3-3 3 2 4-5"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 19V9"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19v-4"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 19V7"></path></svg><span>Client Report Access</span></a>
+          </nav>
+        </div>
+      </div>
+    </aside>
+
+    <div class="flex min-w-0 flex-1 flex-col">
+      <header class="h-16 shrink-0 border-b border-slate-800/50 bg-slate-900/50 px-6 flex items-center justify-between">
+        <div class="flex-1 max-w-xl">
+          <div class="topbar-search-wrap">
+            <svg class="topbar-search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            <input class="topbar-search" type="search" placeholder="Search clients, reports, transcript changes, or authorizations">
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 pl-4">
+          <a href="#active-alerts" class="p-2 text-slate-400 hover:text-white transition-colors relative" aria-label="Messages" data-page-link="active-alerts"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg><span id="notif-dot" class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-amber-500"></span></a>
+          <a href="#help-center" class="p-2 text-slate-400 hover:text-white transition-colors" aria-label="Help" data-page-link="help-center"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></a>
+          <a href="#receipts" class="p-2 text-slate-400 hover:text-white transition-colors" aria-label="Receipts" data-page-link="receipts"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2" ry="2" stroke-width="1.5"></rect><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 10h18"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 14h3"></path></svg></a>
+          <a href="#profile" aria-label="Profile" data-page-link="profile"><div class="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-gradient-to-br from-slate-600 to-slate-700 text-sm font-medium text-slate-300 transition-all hover:ring-2 hover:ring-amber-500/50">TM</div></a>
+          <span id="topbar-user-name" class="sr-only">Jane Doe</span>
+        </div>
+      </header>
+
+      <main class="flex-1 overflow-auto">
+        <div id="tm-page-root" class="mx-auto max-w-7xl px-4 pb-8 pt-6"></div>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    const PAYOUT_TREND_SERIES = {
+      monthly: { labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], values: [450, 620, 790, 980, 1220, 1480, 1670, 1860, 2020, 2240, 2480, 2760] },
+      quarterly: { labels: ['Q1', 'Q2', 'Q3', 'Q4'], values: [790, 1480, 1860, 2760] },
+      yearly: { labels: ['2024', '2025', '2026'], values: [8420, 19760, 29235] }
+    };
+
+    const defaultConfig = {
+      account_label: 'Account: Monitoring',
+      greeting_subheadline: 'This is your command center — where monitoring stays visible.',
+      helper_text: 'Track client activity, review alerts, and monitor transcript changes from one place.',
+      user_name: 'Jane Doe'
+    };
+
+    const TM_STATE = {
+      alerts: [
+        { id: 'a1', clientName: 'Jordan Taylor', severity: 'amber', summary: 'Refund Delayed', subtext: 'No movement after expected issue window.', href: '#' },
+        { id: 'a2', clientName: 'Susan Mitchell', severity: 'red', summary: 'Balance Due Increased', subtext: 'Parsed transcript shows new balance growth.', href: '#' },
+        { id: 'a3', clientName: 'Michael Carter', severity: 'blue', summary: 'Levy Issued', subtext: 'Collection action appeared in the latest transcript.', href: '#' }
+      ],
+      changes: [
+        { id: 'c1', clientName: 'Susan Mitchell', dateLabel: 'Apr 9', detail: 'Balance Due Increase', severity: 'amber', valueLabel: '$9,652', widthClass: 'w-2/3' },
+        { id: 'c2', clientName: 'Michael Carter', dateLabel: 'Apr 5', detail: 'Levy Issued', severity: 'red', valueLabel: 'Critical', widthClass: 'w-full' }
+      ],
+      clients: [
+        { id: 'u1', ageLabel: '1 day ago', clientName: 'Jordan Taylor', initials: 'JT', badgeClass: 'badge-amber', badgeLabel: 'Refund Delayed', gradient: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)', monitoring: 'Weekly', report: 'Due Apr 19', status: 'Active Alert', tier: 'Bronze' },
+        { id: 'u2', ageLabel: '4 days ago', clientName: 'Susan Mitchell', initials: 'SM', badgeClass: 'badge-red', badgeLabel: 'Balance Due Inc.', gradient: 'linear-gradient(135deg, #ec4899 0%, #db2777 100%)', monitoring: 'Daily', report: 'Due today', status: 'Compliance Report', tier: 'Advanced' },
+        { id: 'u3', ageLabel: '6 days ago', clientName: 'Emily Davis', initials: 'ED', badgeClass: 'badge-emerald', badgeLabel: 'In Compliance', gradient: 'linear-gradient(135deg, #06b6d4 0%, #0891b2 100%)', monitoring: 'Biweekly', report: 'Due Apr 23', status: 'eSign 2848', tier: 'Silver' },
+        { id: 'u4', ageLabel: '1 week ago', clientName: 'Michael Carter', initials: 'MC', badgeClass: 'badge-red', badgeLabel: 'Levy Issued', gradient: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)', monitoring: 'Daily', report: 'Due Apr 16', status: 'Active Alert', tier: 'Gold' },
+        { id: 'u5', ageLabel: '2 weeks ago', clientName: 'Natalie Perez', initials: 'NP', badgeClass: 'badge-amber', badgeLabel: 'Unfiled Tax Year', gradient: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)', monitoring: 'Weekly', report: 'Due Apr 30', status: 'Compliance Report', tier: 'Bronze' },
+        { id: 'u6', ageLabel: '2 days ago', clientName: 'Angela Brooks', initials: 'AB', badgeClass: 'badge-red', badgeLabel: 'Mailing Code', gradient: 'linear-gradient(135deg, #14b8a6 0%, #0f766e 100%)', monitoring: 'Monthly', report: 'Due Apr 20', status: 'Compliance Report', tier: 'Gold' },
+        { id: 'u7', ageLabel: '3 days ago', clientName: 'Carlos Vega', initials: 'CV', badgeClass: 'badge-amber', badgeLabel: 'Review Needed', gradient: 'linear-gradient(135deg, #6366f1 0%, #4338ca 100%)', monitoring: 'Weekly', report: 'Due Apr 26', status: 'eSign 2848', tier: 'Silver' },
+        { id: 'u8', ageLabel: '5 days ago', clientName: 'David Ramirez', initials: 'DR', badgeClass: 'badge-emerald', badgeLabel: 'In Compliance', gradient: 'linear-gradient(135deg, #22c55e 0%, #15803d 100%)', monitoring: 'Quarterly', report: 'Due Jun 30', status: 'Compliance Report', tier: 'Bronze' },
+        { id: 'u9', ageLabel: '1 week ago', clientName: 'Olivia Brooks', initials: 'OB', badgeClass: 'badge-amber', badgeLabel: 'Pool Ready', gradient: 'linear-gradient(135deg, #f43f5e 0%, #be123c 100%)', monitoring: 'Monthly', report: 'Due Apr 18', status: 'eSign 2848', tier: 'Bronze' },
+        { id: 'u10', ageLabel: '1 week ago', clientName: 'Patricia Gomez', initials: 'PG', badgeClass: 'badge-red', badgeLabel: 'Monthly Check', gradient: 'linear-gradient(135deg, #0ea5e9 0%, #0369a1 100%)', monitoring: 'Monthly', report: 'Due Apr 24', status: 'Compliance Report', tier: 'Gold' },
+        { id: 'u11', ageLabel: '8 days ago', clientName: 'Rachel Kim', initials: 'RK', badgeClass: 'badge-amber', badgeLabel: 'Refund Hold', gradient: 'linear-gradient(135deg, #eab308 0%, #a16207 100%)', monitoring: 'Weekly', report: 'Due Apr 27', status: 'Active Alert', tier: 'Silver' },
+        { id: 'u12', ageLabel: '9 days ago', clientName: 'Thomas Reed', initials: 'TR', badgeClass: 'badge-amber', badgeLabel: 'Rep Sign Ready', gradient: 'linear-gradient(135deg, #10b981 0%, #047857 100%)', monitoring: 'Biweekly', report: 'Due May 02', status: 'eSign 2848', tier: 'Silver' },
+        { id: 'u13', ageLabel: '10 days ago', clientName: 'Vanessa Cole', initials: 'VC', badgeClass: 'badge-red', badgeLabel: 'Levy Review', gradient: 'linear-gradient(135deg, #a855f7 0%, #6d28d9 100%)', monitoring: 'Daily', report: 'Due Apr 17', status: 'Active Alert', tier: 'Gold' },
+        { id: 'u14', ageLabel: '11 days ago', clientName: 'William Foster', initials: 'WF', badgeClass: 'badge-amber', badgeLabel: 'Auth Needed', gradient: 'linear-gradient(135deg, #fb7185 0%, #e11d48 100%)', monitoring: 'Weekly', report: 'Due Apr 29', status: 'eSign 2848', tier: 'Bronze' },
+        { id: 'u15', ageLabel: '12 days ago', clientName: 'Yvonne Price', initials: 'YP', badgeClass: 'badge-emerald', badgeLabel: 'Filed', gradient: 'linear-gradient(135deg, #2dd4bf 0%, #0f766e 100%)', monitoring: 'Quarterly', report: 'Due Jul 01', status: 'Compliance Report', tier: 'Bronze' },
+        { id: 'u16', ageLabel: '13 days ago', clientName: 'Aaron Mills', initials: 'AM', badgeClass: 'badge-red', badgeLabel: 'Balance Review', gradient: 'linear-gradient(135deg, #f97316 0%, #c2410c 100%)', monitoring: 'Daily', report: 'Due Apr 18', status: 'Active Alert', tier: 'Gold' },
+        { id: 'u17', ageLabel: '2 weeks ago', clientName: 'Brenda Stone', initials: 'BS', badgeClass: 'badge-amber', badgeLabel: 'Signature Pending', gradient: 'linear-gradient(135deg, #8b5cf6 0%, #5b21b6 100%)', monitoring: 'Monthly', report: 'Due May 05', status: 'eSign 2848', tier: 'Silver' },
+        { id: 'u18', ageLabel: '2 weeks ago', clientName: 'Caleb Turner', initials: 'CT', badgeClass: 'badge-emerald', badgeLabel: 'Clear', gradient: 'linear-gradient(135deg, #34d399 0%, #059669 100%)', monitoring: 'Biweekly', report: 'Due May 03', status: 'Compliance Report', tier: 'Silver' },
+        { id: 'u19', ageLabel: '2 weeks ago', clientName: 'Diana Lopez', initials: 'DL', badgeClass: 'badge-red', badgeLabel: 'Urgent Notice', gradient: 'linear-gradient(135deg, #ef4444 0%, #991b1b 100%)', monitoring: 'Daily', report: 'Due Apr 19', status: 'Active Alert', tier: 'Gold' },
+        { id: 'u20', ageLabel: '2 weeks ago', clientName: 'Ethan Ward', initials: 'EW', badgeClass: 'badge-amber', badgeLabel: '2848 Needed', gradient: 'linear-gradient(135deg, #f59e0b 0%, #b45309 100%)', monitoring: 'Weekly', report: 'Due May 01', status: 'eSign 2848', tier: 'Bronze' },
+        { id: 'u21', ageLabel: '2 weeks ago', clientName: 'Felicia Hart', initials: 'FH', badgeClass: 'badge-emerald', badgeLabel: 'On Track', gradient: 'linear-gradient(135deg, #06b6d4 0%, #155e75 100%)', monitoring: 'Quarterly', report: 'Due Jul 15', status: 'Compliance Report', tier: 'Bronze' },
+        { id: 'u22', ageLabel: '3 weeks ago', clientName: 'George Allen', initials: 'GA', badgeClass: 'badge-red', badgeLabel: 'Transcript Delta', gradient: 'linear-gradient(135deg, #dc2626 0%, #7f1d1d 100%)', monitoring: 'Daily', report: 'Due Apr 21', status: 'Active Alert', tier: 'Gold' },
+        { id: 'u23', ageLabel: '3 weeks ago', clientName: 'Hannah Scott', initials: 'HS', badgeClass: 'badge-amber', badgeLabel: 'Pending Pro Sign', gradient: 'linear-gradient(135deg, #facc15 0%, #ca8a04 100%)', monitoring: 'Monthly', report: 'Due May 07', status: 'eSign 2848', tier: 'Silver' },
+        { id: 'u24', ageLabel: '3 weeks ago', clientName: 'Isaac Bennett', initials: 'IB', badgeClass: 'badge-emerald', badgeLabel: 'Compliant', gradient: 'linear-gradient(135deg, #4ade80 0%, #166534 100%)', monitoring: 'Biweekly', report: 'Due May 04', status: 'Compliance Report', tier: 'Silver' },
+        { id: 'u25', ageLabel: '3 weeks ago', clientName: 'Jasmine Rivera', initials: 'JR', badgeClass: 'badge-red', badgeLabel: 'Refund Stalled', gradient: 'linear-gradient(135deg, #ec4899 0%, #9d174d 100%)', monitoring: 'Weekly', report: 'Due Apr 22', status: 'Active Alert', tier: 'Gold' },
+        { id: 'u26', ageLabel: '3 weeks ago', clientName: 'Kevin Brooks', initials: 'KB', badgeClass: 'badge-amber', badgeLabel: 'Auth Queue', gradient: 'linear-gradient(135deg, #a78bfa 0%, #6d28d9 100%)', monitoring: 'Weekly', report: 'Due May 06', status: 'eSign 2848', tier: 'Bronze' },
+        { id: 'u27', ageLabel: '3 weeks ago', clientName: 'Lena Murphy', initials: 'LM', badgeClass: 'badge-emerald', badgeLabel: 'Reviewed', gradient: 'linear-gradient(135deg, #14b8a6 0%, #134e4a 100%)', monitoring: 'Quarterly', report: 'Due Jul 20', status: 'Compliance Report', tier: 'Bronze' },
+        { id: 'u28', ageLabel: '3 weeks ago', clientName: 'Marcus Hill', initials: 'MH', badgeClass: 'badge-red', badgeLabel: 'Balance Up', gradient: 'linear-gradient(135deg, #fb7185 0%, #9f1239 100%)', monitoring: 'Daily', report: 'Due Apr 23', status: 'Active Alert', tier: 'Gold' },
+        { id: 'u29', ageLabel: '4 weeks ago', clientName: 'Nina Patel', initials: 'NP', badgeClass: 'badge-amber', badgeLabel: 'eSign Needed', gradient: 'linear-gradient(135deg, #fbbf24 0%, #d97706 100%)', monitoring: 'Monthly', report: 'Due May 08', status: 'eSign 2848', tier: 'Silver' },
+        { id: 'u30', ageLabel: '4 weeks ago', clientName: 'Omar Sanchez', initials: 'OS', badgeClass: 'badge-emerald', badgeLabel: 'No Issues', gradient: 'linear-gradient(135deg, #22c55e 0%, #166534 100%)', monitoring: 'Biweekly', report: 'Due May 09', status: 'Compliance Report', tier: 'Silver' },
+        { id: 'u31', ageLabel: '4 weeks ago', clientName: 'Paula Green', initials: 'PG', badgeClass: 'badge-red', badgeLabel: 'Levy Watch', gradient: 'linear-gradient(135deg, #f43f5e 0%, #881337 100%)', monitoring: 'Daily', report: 'Due Apr 24', status: 'Active Alert', tier: 'Gold' },
+        { id: 'u32', ageLabel: '4 weeks ago', clientName: 'Quentin Ross', initials: 'QR', badgeClass: 'badge-amber', badgeLabel: 'Signature Pending', gradient: 'linear-gradient(135deg, #818cf8 0%, #3730a3 100%)', monitoring: 'Weekly', report: 'Due May 10', status: 'eSign 2848', tier: 'Bronze' },
+        { id: 'u33', ageLabel: '4 weeks ago', clientName: 'Rosa Diaz', initials: 'RD', badgeClass: 'badge-emerald', badgeLabel: 'Current', gradient: 'linear-gradient(135deg, #2dd4bf 0%, #115e59 100%)', monitoring: 'Quarterly', report: 'Due Aug 01', status: 'Compliance Report', tier: 'Bronze' },
+        { id: 'u34', ageLabel: '1 month ago', clientName: 'Samuel Young', initials: 'SY', badgeClass: 'badge-red', badgeLabel: 'IRS Notice', gradient: 'linear-gradient(135deg, #ef4444 0%, #7f1d1d 100%)', monitoring: 'Daily', report: 'Due Apr 25', status: 'Active Alert', tier: 'Gold' },
+        { id: 'u35', ageLabel: '1 month ago', clientName: 'Tina Morris', initials: 'TM', badgeClass: 'badge-amber', badgeLabel: 'Awaiting Sign', gradient: 'linear-gradient(135deg, #f59e0b 0%, #92400e 100%)', monitoring: 'Monthly', report: 'Due May 11', status: 'eSign 2848', tier: 'Silver' },
+        { id: 'u36', ageLabel: '1 month ago', clientName: 'Uriel Flores', initials: 'UF', badgeClass: 'badge-emerald', badgeLabel: 'Monitored', gradient: 'linear-gradient(135deg, #0ea5e9 0%, #075985 100%)', monitoring: 'Biweekly', report: 'Due May 12', status: 'Compliance Report', tier: 'Silver' },
+        { id: 'u37', ageLabel: '1 month ago', clientName: 'Victoria Lane', initials: 'VL', badgeClass: 'badge-red', badgeLabel: 'Refund Review', gradient: 'linear-gradient(135deg, #d946ef 0%, #86198f 100%)', monitoring: 'Weekly', report: 'Due Apr 28', status: 'Active Alert', tier: 'Gold' }
+      ],
+      complianceDue: [
+        { id: 'cd1', clientName: 'Susan Mitchell', tier: 'Gold', monitoring: 'Daily', reportType: 'Initial Report Due', dueDate: 'Due today', transcriptSummary: 'Balance due increased since the last parsed transcript. Follow-up recommended.', nextMonitoringDate: '2026-04-19', status: 'Needs follow-up' },
+        { id: 'cd2', clientName: 'David Ramirez', tier: 'Bronze', monitoring: 'Quarterly', reportType: 'Scheduled Report Due', dueDate: 'Due Apr 18', transcriptSummary: 'No fresh refund activity. Quarterly checkpoint needs confirmation and notes.', nextMonitoringDate: '2026-06-30', status: 'In compliance' },
+        { id: 'cd3', clientName: 'Angela Brooks', tier: 'Gold', monitoring: 'Monthly', reportType: 'Scheduled Report Due', dueDate: 'Due Apr 20', transcriptSummary: 'Recent mailing code posted. Review whether any collection action needs escalation.', nextMonitoringDate: '2026-05-20', status: 'Escalated' },
+        { id: 'cd4', clientName: 'Michael Chen', tier: 'Silver', monitoring: 'Quarterly', reportType: 'Initial Report Due', dueDate: 'Due Apr 21', transcriptSummary: 'Initial review pending. Verify filing history and confirm current compliance baseline.', nextMonitoringDate: '2026-07-21', status: 'Needs follow-up' },
+        { id: 'cd5', clientName: 'Patricia Gomez', tier: 'Gold', monitoring: 'Monthly', reportType: 'Scheduled Report Due', dueDate: 'Due Apr 24', transcriptSummary: 'Monthly monitoring check queued. Confirm no new balance movement before publishing.', nextMonitoringDate: '2026-05-24', status: 'In compliance' }
+      ],
+      deadlines: [
+        { id: 'd1', dateLabel: 'Mon, Apr 15', iconKey: 'calendar', title: 'Estimated Tax Payment (Federal)' },
+        { id: 'd2', dateLabel: 'Fri, Apr 19', iconKey: 'users', title: 'Client Compliance Report Due' },
+        { id: 'd3', dateLabel: 'Tue, Apr 20', iconKey: 'clipboard', title: 'Q1 Filing Deadline (Form 941)' },
+        { id: 'd4', dateLabel: 'Tue, Apr 30', iconKey: 'chart', title: 'Scheduled Monitoring Refresh' }
+      ],
+      mockPool: [
+        { clientName: 'Olivia Brooks', onboarding: 'Completed', readyForEsign: true, reportDue: 'Apr 18', transcriptReady: true },
+        { clientName: 'Carlos Vega', onboarding: 'Completed', readyForEsign: true, reportDue: 'Apr 22', transcriptReady: true },
+        { clientName: 'Mia Thompson', onboarding: 'Awaiting taxpayer signature', readyForEsign: false, reportDue: 'Pending', transcriptReady: false }
+      ],
+      payoutQueue: [
+        { id: 'p1', clientName: 'Angela Brooks', service: 'Tax Monitoring - Gold', amount: 510, status: 'SUCCESS', actionLabel: 'Open' },
+        { id: 'p2', clientName: 'Carlos Vega', service: 'Tax Monitoring - Silver', amount: 450, status: 'SUCCESS', actionLabel: 'Open' },
+        { id: 'p3', clientName: 'Olivia Brooks', service: 'Tax Monitoring - Bronze', amount: 300, status: 'SUCCESS', actionLabel: 'Review' },
+        { id: 'p4', clientName: 'Susan Mitchell', service: 'Tax Monitoring - Gold', amount: 600, status: 'SUCCESS', actionLabel: 'Resolve' },
+        { id: 'p5', clientName: 'David Ramirez', service: 'Tax Monitoring - Bronze', amount: 240, status: 'PENDING', actionLabel: 'Review' },
+        { id: 'p6', clientName: 'Emily Davis', service: 'Tax Monitoring - Silver', amount: 270, status: 'ONHOLD', actionLabel: 'Review' },
+        { id: 'p7', clientName: 'Patricia Gomez', service: 'Tax Monitoring - Gold', amount: 300, status: 'RETURNED', actionLabel: 'Resolve' },
+        { id: 'p8', clientName: 'Rachel Kim', service: 'Tax Monitoring - Silver', amount: 330, status: 'BLOCKED', actionLabel: 'Resolve' }
+      ],
+      receipts: [
+        { id: 'r1', amount: 199, date: '2026-03-01', invoice: 'VLP-1024', plan: 'Virtual Launch Pro - Advanced', status: 'Paid' },
+        { id: 'r2', amount: 199, date: '2026-02-01', invoice: 'VLP-1011', plan: 'Virtual Launch Pro - Advanced', status: 'Paid' },
+        { id: 'r3', amount: 199, date: '2026-01-01', invoice: 'VLP-1002', plan: 'Virtual Launch Pro - Advanced', status: 'Paid' }
+      ],
+      stats: {
+        activeClients: 37,
+        complianceDue: 5,
+        deadlines: 4,
+        esign2848: 12,
+        nextPayoutDate: 'Apr 22, 2026',
+        payoutMethod: 'PayPal connected'
+      }
+    };
+
+    function setText(id, value) {
+      const el = document.getElementById(id);
+      if (!el) return false;
+      el.textContent = String(value ?? '');
+      return true;
+    }
+
+    function safeFirstName(fullName) {
+      const s = String(fullName || '').trim();
+      if (!s) return 'there';
+      return s.split(/\s+/)[0] || 'there';
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function serviceLabel(client) {
+      return `Tax Monitoring - ${client.tier || 'Bronze'}`;
+    }
+
+    function formatCurrency(amount) {
+      return `$${Number(amount || 0).toLocaleString('en-US')}`;
+    }
+
+    function payoutEntries() {
+      return TM_STATE.payoutQueue.slice().sort((a, b) => a.clientName.localeCompare(b.clientName));
+    }
+
+    function currentFilters() {
+      return window.TM_FILTERS || {
+        activeAlertsSeverity: 'all',
+        clientPoolReady: 'all',
+        clientReportStatus: 'all',
+        clientsComplianceDue: 'all',
+        clientsMonitoring: 'all',
+        clientsNameQuery: '',
+        clientsPage: 1,
+        clientsStatus: 'all',
+        complianceDueStatus: 'all',
+        complianceDueType: 'all',
+        monitoredClientsCadence: 'all',
+        monitoredClientsStatus: 'all',
+        payoutsService: 'all',
+        payoutsStatus: 'all',
+        receiptsDateQuery: '',
+        receiptsInvoiceQuery: '',
+        receiptsPlan: 'all',
+        receiptsStatus: 'all',
+        tokensProduct: 'all',
+        tokensRemainingQuery: '',
+        tokensResetWindow: 'all',
+        tokensUsedQuery: '',
+        transcriptChangesSeverity: 'all'
+      };
+    }
+
+    function profileToggles() {
+      return window.TM_PROFILE_TOGGLES || {
+        emailNotifications: true,
+        inAppNotifications: true,
+        smsNotifications: false,
+        twoFactorAuthentication: false
+      };
+    }
+
+    function setProfileToggle(key, value) {
+      window.TM_PROFILE_TOGGLES = Object.assign({}, profileToggles(), { [key]: !!value });
+    }
+
+    function toggleProfileSetting(key) {
+      const current = profileToggles();
+      setProfileToggle(key, !current[key]);
+    }
+
+    function setFilter(key, value) {
+      const nextFilters = Object.assign({}, currentFilters(), { [key]: value });
+      if (key === 'clientsMonitoring' || key === 'clientsNameQuery' || key === 'clientsStatus') nextFilters.clientsPage = 1;
+      window.TM_FILTERS = nextFilters;
+    }
+
+    function setClientsPage(page) {
+      window.TM_FILTERS = Object.assign({}, currentFilters(), { clientsPage: Math.max(1, Number(page || 1)) });
+    }
+
+    function filteredAlerts() {
+      const filters = currentFilters();
+      return TM_STATE.alerts.filter((item) => filters.activeAlertsSeverity === 'all' || item.severity === filters.activeAlertsSeverity);
+    }
+
+    function filteredClientPool() {
+      const filters = currentFilters();
+      return TM_STATE.mockPool.filter((item) => {
+        if (filters.clientPoolReady === 'ready') return item.readyForEsign;
+        if (filters.clientPoolReady === 'inactive') return !item.readyForEsign;
+        return true;
+      });
+    }
+
+    function filteredClients() {
+      const filters = currentFilters();
+      const nameQuery = String(filters.clientsNameQuery || '').trim().toLowerCase();
+      return TM_STATE.clients.filter((item) => {
+        const monitoringMatch = filters.clientsMonitoring === 'all' || item.monitoring === filters.clientsMonitoring;
+        const statusMatch = filters.clientsStatus === 'all' || item.status === filters.clientsStatus;
+        const nameMatch = !nameQuery || item.clientName.toLowerCase().includes(nameQuery);
+        return monitoringMatch && statusMatch && nameMatch;
+      });
+    }
+
+    function paginatedClients() {
+      const items = filteredClients();
+      const pageSize = 20;
+      const totalPages = Math.max(1, Math.ceil(items.length / pageSize));
+      const currentPage = Math.min(Math.max(1, Number(currentFilters().clientsPage || 1)), totalPages);
+      const startIndex = (currentPage - 1) * pageSize;
+      return { currentPage, items: items.slice(startIndex, startIndex + pageSize), totalItems: items.length, totalPages };
+    }
+
+    function renderClientsPagination(currentPage, totalPages, totalItems) {
+      if (totalPages <= 1) return `<div class="flex items-center justify-between gap-4 border-t border-slate-800/60 px-6 py-4"><div class="text-xs text-slate-500">Showing ${totalItems} client${totalItems === 1 ? '' : 's'}</div><div class="text-xs text-slate-500">Page 1 of 1</div></div>`;
+      const pageButtons = Array.from({ length: totalPages }, (_, index) => {
+        const page = index + 1;
+        const active = page === currentPage;
+        return `<button class="btn-small ${active ? 'gradient-btn-amber text-slate-950' : 'btn-outline'} px-3 py-2 text-xs font-semibold" data-clients-page="${page}" type="button">${page}</button>`;
+      }).join('');
+      return `<div class="flex flex-col gap-4 border-t border-slate-800/60 px-6 py-4 md:flex-row md:items-center md:justify-between"><div class="text-xs text-slate-500">Showing page ${currentPage} of ${totalPages} · ${totalItems} clients</div><div class="flex flex-wrap items-center gap-2"><button class="btn-small btn-outline px-3 py-2 text-xs font-semibold" data-clients-page="${Math.max(1, currentPage - 1)}" type="button" ${currentPage === 1 ? 'disabled style="opacity:.45;cursor:not-allowed;"' : ''}>Previous</button>${pageButtons}<button class="btn-small btn-outline px-3 py-2 text-xs font-semibold" data-clients-page="${Math.min(totalPages, currentPage + 1)}" type="button" ${currentPage === totalPages ? 'disabled style="opacity:.45;cursor:not-allowed;"' : ''}>Next</button></div></div>`;
+    }
+
+    function filteredComplianceDue() {
+      const filters = currentFilters();
+      return TM_STATE.complianceDue.filter((item) => (filters.complianceDueStatus === 'all' || item.status === filters.complianceDueStatus) && (filters.complianceDueType === 'all' || item.reportType === filters.complianceDueType));
+    }
+
+    function filteredMonitoredClients() {
+      const filters = currentFilters();
+      return TM_STATE.clients.filter((item) => (filters.monitoredClientsCadence === 'all' || item.monitoring === filters.monitoredClientsCadence) && (filters.monitoredClientsStatus === 'all' || item.status === filters.monitoredClientsStatus));
+    }
+
+    function filteredPayoutEntries() {
+      const filters = currentFilters();
+      return payoutEntries().filter((entry) => {
+        const serviceMatch = filters.payoutsService === 'all' || entry.service === filters.payoutsService;
+        const statusMatch = filters.payoutsStatus === 'all' || entry.status === filters.payoutsStatus;
+        return serviceMatch && statusMatch;
+      });
+    }
+
+    function filteredReceipts() {
+      const filters = currentFilters();
+      const dateQuery = String(filters.receiptsDateQuery || '').trim().toLowerCase();
+      const invoiceQuery = String(filters.receiptsInvoiceQuery || '').trim().toLowerCase();
+      return TM_STATE.receipts.filter((item) => {
+        const dateMatch = !dateQuery || item.date.toLowerCase().includes(dateQuery);
+        const invoiceMatch = !invoiceQuery || item.invoice.toLowerCase().includes(invoiceQuery);
+        const planMatch = filters.receiptsPlan === 'all' || item.plan === filters.receiptsPlan;
+        const statusMatch = filters.receiptsStatus === 'all' || item.status === filters.receiptsStatus;
+        return dateMatch && invoiceMatch && planMatch && statusMatch;
+      });
+    }
+
+    function filteredReportAccessClients() {
+      const filters = currentFilters();
+      return TM_STATE.clients.filter((item) => filters.clientReportStatus === 'all' || item.status === filters.clientReportStatus);
+    }
+
+    function filteredTranscriptChanges() {
+      const filters = currentFilters();
+      return TM_STATE.changes.filter((item) => filters.transcriptChangesSeverity === 'all' || item.severity === filters.transcriptChangesSeverity);
+    }
+
+    function payoutChartView() { return window.TM_PAYOUT_CHART_VIEW || 'monthly'; }
+    function payoutChartSeries() { return PAYOUT_TREND_SERIES[payoutChartView()] || PAYOUT_TREND_SERIES.monthly; }
+    function payoutStatusBadgeClass(status) { if (status === 'SUCCESS') return 'badge badge-emerald'; if (status === 'PENDING' || status === 'UNCLAIMED' || status === 'ONHOLD') return 'badge badge-amber'; return 'badge badge-red'; }
+    function dashboardRevenueTotal() { return payoutEntries().filter((entry) => entry.status === 'SUCCESS').reduce((sum, entry) => sum + entry.amount, 0); }
+    function pendingPayoutTotal() { return payoutEntries().filter((entry) => entry.status !== 'SUCCESS').reduce((sum, entry) => sum + entry.amount, 0); }
+    function paidOrdersCount() { return payoutEntries().filter((entry) => entry.status === 'SUCCESS').length; }
+    function initialsFromName(name) { return String(name || '').split(/\s+/).filter(Boolean).slice(0, 2).map((part) => part[0]).join('').toUpperCase() || 'TM'; }
+    function selectedClient() { return TM_STATE.clients.find((c) => c.id === window.TM_SELECTED_CLIENT_ID) || TM_STATE.clients[1] || TM_STATE.clients[0]; }
+    function selectedComplianceRecord() { return TM_STATE.complianceDue.find((c) => c.id === window.TM_SELECTED_COMPLIANCE_ID) || TM_STATE.complianceDue[0]; }
+    function activePageKey() { return window.TM_ACTIVE_PAGE || 'dashboard'; }
+    function applyNavActive() { const current = activePageKey(); document.querySelectorAll('a.nav-item[data-page]').forEach((a) => a.classList.toggle('active', a.getAttribute('data-page') === current)); }
+    function alertIconClass(severity) { if (severity === 'amber') return 'icon-bg icon-amber'; if (severity === 'blue') return 'icon-bg icon-blue'; if (severity === 'red') return 'icon-bg icon-red'; return 'icon-bg icon-amber'; }
+    function alertIconSvg(severity) { if (severity === 'amber') return '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.4-1.4A2 2 0 0118 14.2V11a6 6 0 10-12 0v3.2a2 2 0 01-.6 1.4L4 17h5m6 0a3 3 0 11-6 0m6 0H9"></path></svg>'; if (severity === 'blue') return '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 16h6"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 8h6"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4h10a2 2 0 012 2v12a2 2 0 01-2 2H7a2 2 0 01-2-2V6a2 2 0 012-2z"></path></svg>'; return '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 14l3-3 2 2 5-5"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h10"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 17h3"></path></svg>'; }
+    function deadlineIconClass(iconKey) { if (iconKey === 'calendar') return 'icon-bg icon-amber'; if (iconKey === 'users') return 'icon-bg icon-emerald'; if (iconKey === 'clipboard') return 'icon-bg icon-blue'; if (iconKey === 'chart') return 'icon-bg icon-red'; return 'icon-bg icon-amber'; }
+    function deadlineIconSvg(iconKey) { if (iconKey === 'calendar') return '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 2v4"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 2v4"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 6h14a2 2 0 012 2v11a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2z"></path></svg>'; if (iconKey === 'users') return '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 21v-2a4 4 0 00-4-4H7a4 4 0 00-4 4v2"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 11a4 4 0 100-8 4 4 0 000 8"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M23 21v-2a4 4 0 00-3-3.87"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 3.13a4 4 0 010 7.75"></path></svg>'; if (iconKey === 'clipboard') return '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5h6"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3h6a2 2 0 012 2v1H7V5a2 2 0 012-2z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 6H6a2 2 0 00-2 2v11a2 2 0 002 2h12a2 2 0 002-2V8a2 2 0 00-2-2h-1"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 16h4"></path></svg>'; return '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 19h16"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 15l3-3 3 2 4-5"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 19V9"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19v-4"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 19V7"></path></svg>'; }
+
+    function renderHero() {
+      const firstName = safeFirstName(defaultConfig.user_name);
+      return `<div class="mb-8 text-center"><h1 class="mb-2 text-3xl font-semibold tracking-tight text-slate-100 md:text-4xl"><span>Good evening, </span><span class="gradient-text-amber">${escapeHtml(firstName)}</span></h1><p class="mx-auto max-w-2xl text-base text-slate-400 md:text-lg">This is your command center — where monitoring stays visible.</p><p class="mx-auto mt-2 max-w-2xl text-sm text-slate-500">Track client activity, review alerts, and monitor transcript changes from one place.</p></div>`;
+    }
+
+    function renderDashboard() {
+      return `${renderHero()}<div class="dashboard-grid mb-6 grid grid-cols-1 gap-6 lg:grid-cols-3"><div class="glass-card p-6"><h3 class="mb-6 text-sm font-semibold uppercase tracking-wide text-slate-300">Client Overview</h3><div class="grid grid-cols-3 gap-4"><button class="stat-card w-full text-left hover:bg-white/5 transition" data-page-link="clients"><div class="icon-bg icon-emerald"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" d="M16 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"></path><circle cx="10" cy="7" r="4" stroke-width="1.9"></circle><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" d="M20 8v6"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" d="M17 11h6"></path></svg></div><div class="stat-value">37</div><div class="stat-label">Active Clients</div></button><button class="stat-card w-full text-left hover:bg-white/5 transition" data-page-link="esign-2848"><div class="icon-bg icon-amber"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" d="M12 20h9"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" d="M16.5 3.5a2.12 2.12 0 113 3L7 19l-4 1 1-4 12.5-12.5z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" d="M13.5 6.5l4 4"></path></svg></div><div class="stat-value">12</div><div class="stat-label">eSign 2848</div></button><button class="stat-card w-full text-left hover:bg-white/5 transition" data-page-link="compliance-report-form"><div class="icon-bg icon-red"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" d="M9 5h6"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" d="M9 3h6a2 2 0 012 2v1H7V5a2 2 0 012-2z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" d="M7 6H6a2 2 0 00-2 2v11a2 2 0 002 2h12a2 2 0 002-2V8a2 2 0 00-2-2h-1"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" d="M9 12h6"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" d="M9 16h4"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" d="M16.5 14.5l1.5 1.5 3-3"></path></svg></div><div class="stat-value">5</div><div class="stat-label">Compliance Due</div></button></div><div class="mt-6 border-t border-slate-700/30 pt-6"><div class="mb-2 text-xs text-slate-400">Monthly Recurring Revenue</div><div class="flex items-baseline gap-2"><span class="gradient-text-amber text-2xl font-bold">${escapeHtml(formatCurrency(dashboardRevenueTotal()))}</span></div><div class="mt-4 flex flex-wrap items-center justify-between gap-3"><div class="chart-toggle" role="tablist" aria-label="Revenue chart range"><button class="chart-toggle-btn ${payoutChartView() === 'monthly' ? 'active' : ''}" data-chart-view="monthly" type="button">Monthly</button><button class="chart-toggle-btn ${payoutChartView() === 'quarterly' ? 'active' : ''}" data-chart-view="quarterly" type="button">Quarterly</button><button class="chart-toggle-btn ${payoutChartView() === 'yearly' ? 'active' : ''}" data-chart-view="yearly" type="button">Yearly</button></div></div><div class="chart-container"><canvas id="revenue-chart" height="220"></canvas></div><div class="mt-4"><button class="btn-small btn-outline px-4 py-2 text-sm font-semibold" data-page-link="payouts">View Payouts</button></div></div></div><div class="glass-card p-6"><div class="mb-6 flex items-center justify-between gap-4"><h3 class="text-sm font-semibold uppercase tracking-wide text-slate-300">Active Alerts</h3><span class="badge badge-amber">3 open</span></div><div id="alerts-list" class="space-y-4"></div></div><div class="glass-card p-6"><div class="mb-6 flex items-center justify-between gap-4"><h3 class="text-sm font-semibold uppercase tracking-wide text-slate-300">Upcoming Deadlines</h3><span class="badge badge-amber">4 items</span></div><div id="deadlines-list" class="space-y-3"></div></div></div><div class="grid grid-cols-1 gap-6 lg:grid-cols-2"><div class="glass-card p-6"><div class="mb-6 flex items-center justify-between gap-4"><h3 class="text-sm font-semibold uppercase tracking-wide text-slate-300">Compliance Report</h3><span class="badge badge-red">5 due</span></div><div id="clients-list" class="space-y-3"></div></div><div class="glass-card p-6"><div class="mb-6 flex items-center justify-between gap-4"><h3 class="text-sm font-semibold uppercase tracking-wide text-slate-300">Recent Transcript Changes</h3><span class="badge badge-amber">2 recent</span></div><div id="changes-list" class="space-y-4"></div></div></div>`;
+    }
+
+    function renderMockShell(title, subtitle, body) { return `<div class="mb-8 text-center"><h1 class="mb-2 text-3xl font-semibold tracking-tight text-slate-100 md:text-4xl">${escapeHtml(title)}</h1><p class="mx-auto max-w-2xl text-base text-slate-400 md:text-lg">${escapeHtml(subtitle)}</p></div>${body}`; }
+
+    function renderClientsPage() {
+      const filters = currentFilters();
+      const clientPage = paginatedClients();
+      const rows = clientPage.items.map((c) => `<tr class="border-b border-slate-800/60"><td class="px-4 py-4 text-sm font-medium text-slate-200">${escapeHtml(c.clientName)}</td><td class="px-4 py-4 text-sm text-slate-400">${escapeHtml(c.monitoring)}</td><td class="px-4 py-4 text-sm text-slate-400">${escapeHtml(c.report)}</td><td class="px-4 py-4 text-sm text-slate-300">${escapeHtml(c.status)}</td><td class="px-4 py-4 text-right"><button class="btn-small btn-outline" data-client-open="${escapeHtml(c.id)}">Open Client</button></td></tr>`).join('');
+      return renderMockShell('Clients', 'Mini-CRM for monitored taxpayers, compliance timing, and transcript status.', `<div class="glass-card overflow-hidden"><div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800/60 px-6 py-4"><div><div class="text-sm font-semibold text-slate-100">Client Pipeline</div><div class="mt-1 text-xs text-slate-500">37 active clients aligned with the dashboard total.</div></div><button class="gradient-btn-amber rounded-xl px-4 py-2 text-sm font-semibold">Add client</button></div><div class="overflow-x-auto"><table class="min-w-full" id="clientsTable"><thead class="bg-slate-950/30 text-left text-xs uppercase tracking-wide text-slate-500"><tr><th class="px-4 py-3 align-top"><div class="space-y-2"><div>Client</div><input class="table-filter-input normal-case tracking-normal" data-filter-input="clientsNameQuery" id="clientFilter" type="text" placeholder="Search client..." value="${escapeHtml(filters.clientsNameQuery || '')}"></div></th><th class="px-4 py-3 align-top"><div class="space-y-2"><div>Monitoring</div><select class="filter-select w-full min-w-0 normal-case tracking-normal" data-filter-key="clientsMonitoring"><option value="all" ${filters.clientsMonitoring === 'all' ? 'selected' : ''}>All cadences</option><option value="Biweekly" ${filters.clientsMonitoring === 'Biweekly' ? 'selected' : ''}>Biweekly</option><option value="Daily" ${filters.clientsMonitoring === 'Daily' ? 'selected' : ''}>Daily</option><option value="Monthly" ${filters.clientsMonitoring === 'Monthly' ? 'selected' : ''}>Monthly</option><option value="Quarterly" ${filters.clientsMonitoring === 'Quarterly' ? 'selected' : ''}>Quarterly</option><option value="Weekly" ${filters.clientsMonitoring === 'Weekly' ? 'selected' : ''}>Weekly</option></select></div></th><th class="px-4 py-3 align-top"><div class="space-y-2"><div>Compliance Due</div><select class="filter-select w-full min-w-0 normal-case tracking-normal" data-filter-key="clientsComplianceDue"><option value="all" selected>All due dates</option><option value="due-soon">Due soon</option><option value="due-today">Due today</option><option value="overdue">Overdue</option></select></div></th><th class="px-4 py-3 align-top"><div class="space-y-2"><div>Status</div><select class="filter-select w-full min-w-0 normal-case tracking-normal" data-filter-key="clientsStatus"><option value="all" ${filters.clientsStatus === 'all' ? 'selected' : ''}>All statuses</option><option value="Active Alert" ${filters.clientsStatus === 'Active Alert' ? 'selected' : ''}>Active Alert</option><option value="Compliance Report" ${filters.clientsStatus === 'Compliance Report' ? 'selected' : ''}>Compliance Report</option><option value="eSign 2848" ${filters.clientsStatus === 'eSign 2848' ? 'selected' : ''}>eSign 2848</option></select></div></th><th class="px-4 py-3 text-right align-top">Action</th></tr></thead><tbody>${rows}</tbody></table></div>${renderClientsPagination(clientPage.currentPage, clientPage.totalPages, clientPage.totalItems)}</div>`);
+    }
+
+    function renderClientDetailPage() {
+      const client = selectedClient();
+      const needsEsign2848 = ['u3', 'u7', 'u9'].includes(client.id);
+      const clientAlerts = TM_STATE.alerts.filter((a) => a.clientName === client.clientName);
+      const clientChanges = TM_STATE.changes.filter((c) => c.clientName === client.clientName);
+      const transcriptStatus = clientChanges.length ? clientChanges[0].detail : 'No new transcript deltas';
+      const nextReport = client.report.replace(/^Due\s*/, '');
+      const alertsHtml = (clientAlerts.length ? clientAlerts : [{ severity: 'blue', summary: 'No active alerts', subtext: 'This client currently has no active alert items.' }]).map((alert) => `<div class="rounded-xl bg-slate-950/40 p-4"><div class="flex items-start gap-3"><div class="${alertIconClass(alert.severity)}">${alertIconSvg(alert.severity)}</div><div><div class="text-sm font-semibold text-slate-200">${escapeHtml(alert.summary)}</div><div class="mt-1 text-xs text-slate-500">${escapeHtml(alert.subtext || '')}</div></div></div></div>`).join('');
+      const changesHtml = (clientChanges.length ? clientChanges : [{ detail: 'No transcript changes captured yet', valueLabel: 'Stable', dateLabel: 'No updates', severity: 'amber', widthClass: 'w-1/3' }]).map((change) => `<div class="rounded-xl bg-slate-950/40 p-4"><div class="flex items-start justify-between gap-3"><div><div class="text-sm font-semibold text-slate-200">${escapeHtml(change.detail)}</div><div class="mt-1 text-xs text-slate-500">${escapeHtml(change.dateLabel)}</div></div><div class="${change.severity === 'amber' ? 'text-sm font-bold gradient-text-amber' : 'text-sm font-bold text-red-400'}">${escapeHtml(change.valueLabel)}</div></div><div class="mt-3 h-1 w-full overflow-hidden rounded-full bg-slate-700/40"><div class="h-full ${escapeHtml(change.widthClass)} ${change.severity === 'amber' ? 'bg-gradient-to-r from-amber-500 to-amber-600' : 'bg-gradient-to-r from-red-500 to-red-600'}"></div></div></div>`).join('');
+      return `<div class="mb-6 flex items-start justify-between gap-4"><div><button class="mb-3 inline-flex items-center gap-2 text-sm text-slate-400 transition hover:text-slate-200" data-page-link="clients" type="button"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg><span>Back to Clients</span></button><div class="flex items-center gap-4"><div class="avatar h-14 w-14 text-base" style="background:${escapeHtml(client.gradient)};">${escapeHtml(client.initials)}</div><div><h1 class="text-3xl font-semibold tracking-tight text-slate-100">${escapeHtml(client.clientName)}</h1><p class="mt-1 text-sm text-slate-400">${escapeHtml(serviceLabel(client))} · Monitoring cadence: ${escapeHtml(client.monitoring)}</p></div></div></div><div class="flex flex-wrap items-center gap-3"><button class="btn-small btn-outline px-4 py-2 text-sm font-semibold">${needsEsign2848 ? 'eSign 2848' : 'View 2848'}</button></div></div><div class="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]"><div class="space-y-6"><div class="glass-card p-6"><div class="mb-5 flex items-center justify-between"><h2 class="text-sm font-semibold uppercase tracking-wide text-slate-300">CRM Snapshot</h2><span class="badge ${escapeHtml(client.badgeClass)}">${escapeHtml(client.badgeLabel)}</span></div><div class="grid gap-4 sm:grid-cols-3"><div class="stat-card"><div class="icon-bg icon-amber"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2" ry="2" stroke-width="2"></rect><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 14h3"></path></svg></div><div class="stat-value text-[20px]">${escapeHtml(client.tier)}</div><div class="stat-label">TM Plan</div></div><div class="stat-card"><div class="icon-bg ${needsEsign2848 ? 'icon-red' : 'icon-emerald'}"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 20h9"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16.5 3.5a2.12 2.12 0 113 3L7 19l-4 1 1-4 12.5-12.5z"></path></svg></div><div class="stat-value text-[18px]">${needsEsign2848 ? 'Pending' : 'Signed'}</div><div class="stat-label">2848 Status</div></div><div class="stat-card"><div class="icon-bg icon-blue"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 2v4"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 2v4"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 6h14a2 2 0 012 2v11a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2z"></path></svg></div><div class="stat-value text-[18px]">${escapeHtml(nextReport)}</div><div class="stat-label">Next Report</div></div></div></div><div class="glass-card p-6"><div class="mb-4 flex items-center justify-between"><h2 class="text-sm font-semibold uppercase tracking-wide text-slate-300">Client Details</h2><button class="btn-small btn-outline">Edit client</button></div><div class="grid gap-4 md:grid-cols-2"><div class="rounded-2xl bg-slate-950/40 p-4"><div class="text-xs uppercase tracking-wide text-slate-500">Contact</div><div class="mt-2 text-sm text-slate-200">${escapeHtml(client.clientName.toLowerCase().replace(/\s+/g, '.'))}@example.com</div><div class="mt-1 text-xs text-slate-500">(555) 010-${escapeHtml(client.id.slice(-1).repeat(4))}</div></div><div class="rounded-2xl bg-slate-950/40 p-4"><div class="text-xs uppercase tracking-wide text-slate-500">Account Notes</div><div class="mt-2 text-sm text-slate-200">Client is enrolled in ${escapeHtml(serviceLabel(client))} with ${escapeHtml(client.monitoring.toLowerCase())} transcript review cadence.</div></div><div class="rounded-2xl bg-slate-950/40 p-4"><div class="text-xs uppercase tracking-wide text-slate-500">Transcript Status</div><div class="mt-2 text-sm text-slate-200">${escapeHtml(transcriptStatus)}</div><div class="mt-1 text-xs text-slate-500">Latest parsed status from monitored transcript activity.</div></div><div class="rounded-2xl bg-slate-950/40 p-4"><div class="text-xs uppercase tracking-wide text-slate-500">Internal Owner</div><div class="mt-2 text-sm text-slate-200">Jane Doe</div><div class="mt-1 text-xs text-slate-500">Practice lead managing this monitoring account.</div></div></div></div><div class="glass-card p-6"><div class="mb-4 flex items-center justify-between"><h2 class="text-sm font-semibold uppercase tracking-wide text-slate-300">Timeline</h2><button class="btn-small btn-outline">Add note</button></div><div class="space-y-4"><div class="rounded-2xl border border-white/5 bg-slate-950/30 p-4"><div class="flex items-center justify-between gap-3"><div class="text-sm font-semibold text-slate-200">Client added to CRM</div><div class="text-xs text-slate-500">${escapeHtml(client.ageLabel)}</div></div><div class="mt-1 text-xs text-slate-500">Monitoring cadence set to ${escapeHtml(client.monitoring.toLowerCase())}.</div></div><div class="rounded-2xl border border-white/5 bg-slate-950/30 p-4"><div class="flex items-center justify-between gap-3"><div class="text-sm font-semibold text-slate-200">Compliance report scheduled</div><div class="text-xs text-slate-500">Next due ${escapeHtml(nextReport)}</div></div><div class="mt-1 text-xs text-slate-500">Reminder tied to active monitoring workflow.</div></div><div class="rounded-2xl border border-white/5 bg-slate-950/30 p-4"><div class="flex items-center justify-between gap-3"><div class="text-sm font-semibold text-slate-200">2848 ${needsEsign2848 ? 'awaiting pro signature' : 'completed'}</div><div class="text-xs text-slate-500">Authorization workflow</div></div><div class="mt-1 text-xs text-slate-500">${needsEsign2848 ? 'Client is ready for signature from the pro workspace.' : 'Signed authorization is available in the client file.'}</div></div></div></div></div><div class="space-y-6"><div class="glass-card p-6"><div class="text-sm font-semibold text-slate-100">Open Alerts</div><div class="mt-4 space-y-3">${alertsHtml}</div></div><div class="glass-card p-6"><div class="text-sm font-semibold text-slate-100">Recent Transcript Changes</div><div class="mt-4 space-y-3">${changesHtml}</div></div><div class="glass-card p-6"><div class="text-sm font-semibold text-slate-100">Quick Actions</div><div class="mt-4 grid gap-3"><button class="btn-small btn-outline px-4 py-3 text-left">Open compliance report form</button><button class="btn-small btn-outline px-4 py-3 text-left">Review payout eligibility</button><button class="btn-small btn-outline px-4 py-3 text-left">Adjust monitoring cadence</button><button class="btn-small btn-outline px-4 py-3 text-left">View client report access</button></div></div></div></div>`;
+    }
+
+    function renderPoolPage() {
+      const filters = currentFilters();
+      const cards = filteredClientPool().map((c) => {
+        const buttonMarkup = c.readyForEsign ? '<button class="gradient-btn-amber mt-4 rounded-xl px-4 py-2 text-sm font-semibold">Add to practice</button>' : '<button class="btn-small btn-ghost-disabled mt-4 rounded-xl px-4 py-2 text-sm font-semibold">Add to practice (Inactive)</button>';
+        return `<div class="rounded-2xl border border-white/5 bg-slate-900/40 p-5"><div class="flex items-start justify-between gap-3"><div><div class="text-sm font-semibold text-slate-100">${escapeHtml(c.clientName)}</div><div class="mt-1 text-xs text-slate-500">Onboarding: ${escapeHtml(c.onboarding)}</div></div><span class="badge ${c.readyForEsign ? 'badge-amber' : 'badge-emerald'}">${c.readyForEsign ? 'Ready for pro eSign' : 'Still onboarding'}</span></div><div class="mt-4 grid grid-cols-2 gap-3 text-xs text-slate-400"><div class="rounded-xl bg-slate-950/40 px-3 py-3">Compliance due<br><span class="mt-1 block text-sm text-slate-200">${escapeHtml(c.reportDue)}</span></div><div class="rounded-xl bg-slate-950/40 px-3 py-3">Transcript ready<br><span class="mt-1 block text-sm text-slate-200">${c.transcriptReady ? 'Available' : 'Not ready'}</span></div></div>${buttonMarkup}</div>`;
+      }).join('');
+      return renderMockShell('Client Pool', 'Clients appear here after they complete taxpayer onboarding and their side of the 2848 flow.', `<div class="mb-6 filter-toolbar"><label class="filter-toolbar-group"><span class="filter-toolbar-label">Readiness</span><select class="filter-select" data-filter-key="clientPoolReady"><option value="all" ${filters.clientPoolReady === 'all' ? 'selected' : ''}>All pool clients</option><option value="inactive" ${filters.clientPoolReady === 'inactive' ? 'selected' : ''}>Still onboarding</option><option value="ready" ${filters.clientPoolReady === 'ready' ? 'selected' : ''}>Ready for eSign</option></select></label></div><div class="grid gap-6 lg:grid-cols-3">${cards}</div>`);
+    }
+
+    function renderEsignPage() {
+      const esignClients = TM_STATE.clients.filter((client) => client.status === 'eSign 2848');
+      const rows = esignClients.map((client) => `<div class="rounded-2xl border border-amber-500/20 bg-amber-500/10 p-4"><div class="flex items-start justify-between gap-4"><div class="min-w-0"><div class="text-sm font-semibold text-amber-100">${escapeHtml(client.clientName)}</div><div class="mt-1 text-xs text-slate-400">Client eSigned 2848. The rep section is ready for your review/eSignature.</div><div class="mt-3 flex flex-wrap items-center gap-2 text-[11px] text-slate-500"><span class="badge badge-amber">${escapeHtml(serviceLabel(client))}</span><span class="badge badge-emerald">${escapeHtml(client.monitoring)}</span></div></div><button class="btn-small btn-outline px-4 py-2 text-sm font-semibold" data-client-open="${escapeHtml(client.id)}">Open Client</button></div></div>`).join('');
+      return renderMockShell('eSign 2848', 'Mock queue showing clients from the Client Pool who are ready for the tax pro signature step.', `<div class="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]"><div class="glass-card p-6"><div class="mb-5 flex items-center justify-between"><div><div class="text-sm font-semibold text-slate-100">Pending eSign Queue</div><div class="mt-1 text-xs text-slate-500">Triggered after the taxpayer completes onboarding and signature portion.</div></div><span class="badge badge-amber">${esignClients.length} waiting</span></div><div class="space-y-4">${rows}</div></div><div class="glass-card p-6"><div class="text-sm font-semibold text-slate-100">Notification Logic</div><ul class="mt-4 space-y-3 text-sm text-slate-400"><li class="rounded-xl bg-slate-950/40 px-4 py-3">1. Client completes full onboarding in Client Pool.</li><li class="rounded-xl bg-slate-950/40 px-4 py-3">2. Taxpayer eSigns their section of the 2848.</li><li class="rounded-xl bg-slate-950/40 px-4 py-3">3. Client moves into the pool-ready queue.</li><li class="rounded-xl bg-slate-950/40 px-4 py-3">4. Pro receives an eSign 2848 bell notification and queue item.</li></ul></div></div>`);
+    }
+
+    function renderComplianceDueCards(records) {
+      return records.map((record) => `<button class="due-client-card glass-card p-4 text-left ${record.id === window.TM_SELECTED_COMPLIANCE_ID ? 'active' : ''}" data-due-client="${escapeHtml(record.id)}" type="button"><div class="flex items-start justify-between gap-3"><div><div class="text-sm font-semibold text-slate-100">${escapeHtml(record.clientName)}</div><div class="mt-1 text-xs text-slate-400">Plan: ${escapeHtml(serviceLabel(record))}</div><div class="text-xs text-slate-400">Monitoring: ${escapeHtml(record.monitoring)}</div></div><span class="badge ${record.reportType.includes('Initial') ? 'badge-amber' : 'badge-red'}">${escapeHtml(record.dueDate)}</span></div><div class="mt-3 text-xs ${record.reportType.includes('Initial') ? 'text-amber-300' : 'text-red-300'}">${escapeHtml(record.reportType)}</div><div class="mt-2 text-xs text-slate-500">${escapeHtml(record.transcriptSummary)}</div></button>`).join('');
+    }
+
+    function renderComplianceFormPage() {
+      const filters = currentFilters();
+      const visibleRecords = filteredComplianceDue();
+      if (visibleRecords.length && !visibleRecords.some((item) => item.id === window.TM_SELECTED_COMPLIANCE_ID)) window.TM_SELECTED_COMPLIANCE_ID = visibleRecords[0].id;
+      const record = visibleRecords.find((item) => item.id === window.TM_SELECTED_COMPLIANCE_ID) || visibleRecords[0] || selectedComplianceRecord();
+      return renderMockShell('Compliance Report', 'Mock form for the initial compliance report and recurring scheduled compliance updates.', `<div class="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]"><div id="compliance-form-target" class="glass-card p-6"><div class="mb-5 flex items-center justify-between gap-4"><div><div class="text-sm font-semibold text-slate-100">${escapeHtml(record.reportType)} — ${escapeHtml(record.clientName)}</div><div class="mt-1 text-xs text-slate-500">Review the queued client, make adjustments, and save the report.</div></div><div class="flex items-center gap-3"><button class="btn-small btn-outline" data-client-name="${escapeHtml(record.clientName)}">View Client</button><span class="badge badge-red">${escapeHtml(record.dueDate)}</span></div></div><div class="mb-5 grid gap-3 sm:grid-cols-3"><div class="rounded-2xl bg-slate-950/40 p-4"><div class="text-xs uppercase tracking-wide text-slate-500">Plan</div><div class="mt-2 text-sm text-slate-200">${escapeHtml(serviceLabel(record))}</div></div><div class="rounded-2xl bg-slate-950/40 p-4"><div class="text-xs uppercase tracking-wide text-slate-500">Monitoring</div><div class="mt-2 text-sm text-slate-200">${escapeHtml(record.monitoring)}</div></div><div class="rounded-2xl bg-slate-950/40 p-4"><div class="text-xs uppercase tracking-wide text-slate-500">Due</div><div class="mt-2 text-sm text-slate-200">${escapeHtml(record.dueDate)}</div></div></div><div class="grid gap-4 md:grid-cols-2"><label class="text-sm text-slate-400">Client Name<input class="mock-input" value="${escapeHtml(record.clientName)}"></label><label class="text-sm text-slate-400">Report Type<select class="mock-select"><option ${record.reportType.includes('Scheduled') ? 'selected' : ''}>Scheduled monitoring</option><option ${record.reportType.includes('Initial') ? 'selected' : ''}>Initial report</option></select></label><label class="text-sm text-slate-400 md:col-span-2">Transcript Summary<textarea class="mock-textarea">${escapeHtml(record.transcriptSummary)}</textarea></label><label class="text-sm text-slate-400">Next Monitoring Date<input class="mock-input" value="${escapeHtml(record.nextMonitoringDate)}"></label><label class="text-sm text-slate-400">Client Status<select class="mock-select"><option ${record.status === 'Needs follow-up' ? 'selected' : ''}>Needs follow-up</option><option ${record.status === 'In compliance' ? 'selected' : ''}>In compliance</option><option ${record.status === 'Escalated' ? 'selected' : ''}>Escalated</option></select></label></div><div class="mt-5 flex gap-3"><button class="gradient-btn-amber rounded-xl px-5 py-3 text-sm font-semibold">Save report</button><button class="btn-small btn-outline">Preview PDF</button></div></div><div class="glass-card p-6"><div class="mb-5 flex items-center justify-between"><div><div class="text-sm font-semibold text-slate-100">Due Compliance Reports</div><div class="mt-1 text-xs text-slate-500">Select a due client to load the report into the editor on the left.</div></div><span class="badge badge-red">${visibleRecords.length} due</span></div><div class="mb-5 filter-toolbar"><label class="filter-toolbar-group"><span class="filter-toolbar-label">Report Type</span><select class="filter-select" data-filter-key="complianceDueType"><option value="all" ${filters.complianceDueType === 'all' ? 'selected' : ''}>All due reports</option><option value="Initial Report Due" ${filters.complianceDueType === 'Initial Report Due' ? 'selected' : ''}>Initial Report Due</option><option value="Scheduled Report Due" ${filters.complianceDueType === 'Scheduled Report Due' ? 'selected' : ''}>Scheduled Report Due</option></select></label><label class="filter-toolbar-group"><span class="filter-toolbar-label">Client Status</span><select class="filter-select" data-filter-key="complianceDueStatus"><option value="all" ${filters.complianceDueStatus === 'all' ? 'selected' : ''}>All statuses</option><option value="Escalated" ${filters.complianceDueStatus === 'Escalated' ? 'selected' : ''}>Escalated</option><option value="In compliance" ${filters.complianceDueStatus === 'In compliance' ? 'selected' : ''}>In compliance</option><option value="Needs follow-up" ${filters.complianceDueStatus === 'Needs follow-up' ? 'selected' : ''}>Needs follow-up</option></select></label></div><div class="space-y-4">${renderComplianceDueCards(visibleRecords)}</div></div></div>`);
+    }
+
+    function renderTokensPage() {
+      const filters = currentFilters();
+      const referenceDate = new Date('2026-04-15T00:00:00Z');
+      const tokenRows = [
+        { product: 'Tax Tools Arcade', reset: 'May 1', remaining: 220, used: 80 },
+        { product: 'Transcript', reset: 'May 1', remaining: 480, used: 120 }
+      ].filter((row) => {
+        const usedQuery = String(filters.tokensUsedQuery || '').trim();
+        const remainingQuery = String(filters.tokensRemainingQuery || '').trim();
+        const productMatch = filters.tokensProduct === 'all' || row.product === filters.tokensProduct;
+        const usedMatch = !usedQuery || String(row.used).includes(usedQuery);
+        const remainingMatch = !remainingQuery || String(row.remaining).includes(remainingQuery);
+
+        const resetDate = new Date(`2026-${row.reset}`);
+        const diffDays = Math.ceil((resetDate - referenceDate) / (1000 * 60 * 60 * 24));
+        const resetMatch =
+          filters.tokensResetWindow === 'all' ||
+          (filters.tokensResetWindow === '7' && diffDays <= 7) ||
+          (filters.tokensResetWindow === '30' && diffDays <= 30) ||
+          (filters.tokensResetWindow === '90' && diffDays <= 90);
+
+        return productMatch && usedMatch && remainingMatch && resetMatch;
+      });
+
+      const rowsMarkup = tokenRows.map((row, index) => `<tr class="${index < tokenRows.length - 1 ? 'border-b border-slate-800/60' : ''}"><td class="px-4 py-4 text-sm font-medium text-slate-200">${escapeHtml(row.product)}</td><td class="px-4 py-4 text-sm text-slate-400">${escapeHtml(String(row.used))}</td><td class="px-4 py-4 text-sm text-slate-200">${escapeHtml(String(row.remaining))}</td><td class="px-4 py-4 text-sm text-slate-400">${escapeHtml(row.reset)}</td></tr>`).join('');
+
+      return renderMockShell('Tokens', 'Mock membership perks page for Transcript and Tax Tools Arcade token access included with TM plans.', `<div class="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]"><div class="space-y-6"><div class="glass-card p-6"><div class="mb-5 flex items-center justify-between"><div><div class="text-sm font-semibold text-slate-100">Membership Token Balance</div><div class="mt-1 text-xs text-slate-500">Included usage perks tied to the pro membership tier.</div></div><span class="badge badge-amber">Plan perks active</span></div><div class="grid gap-4 sm:grid-cols-2"><div class="stat-card"><div class="icon-bg icon-amber"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-10V6m0 12v-2"></path><circle cx="12" cy="12" r="9" stroke-width="2"></circle></svg></div><div class="stat-value">480</div><div class="stat-label">Transcript Tokens</div></div><div class="stat-card"><div class="icon-bg icon-blue"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 16h6"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 8h6"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4h10a2 2 0 012 2v12a2 2 0 01-2 2H7a2 2 0 01-2-2V6a2 2 0 012-2z"></path></svg></div><div class="stat-value">220</div><div class="stat-label">Tax Tools Arcade Tokens</div></div></div></div><div class="glass-card overflow-hidden"><div class="flex items-center justify-between border-b border-slate-800/60 px-6 py-4"><div><div class="text-sm font-semibold text-slate-100">Token Usage</div><div class="mt-1 text-xs text-slate-500">Mock breakdown of where membership perks are being used.</div></div><button class="btn-small btn-outline">Export usage</button></div><div class="overflow-x-auto"><table class="min-w-full"><thead class="bg-slate-950/30 text-left text-xs uppercase tracking-wide text-slate-500"><tr><th class="px-4 py-3 align-top"><div class="space-y-2"><div>Product</div><select class="filter-select w-full min-w-0 normal-case tracking-normal" data-filter-key="tokensProduct"><option value="all" ${filters.tokensProduct === 'all' ? 'selected' : ''}>All products</option><option value="Tax Tools Arcade" ${filters.tokensProduct === 'Tax Tools Arcade' ? 'selected' : ''}>Tax Tools Arcade</option><option value="Transcript" ${filters.tokensProduct === 'Transcript' ? 'selected' : ''}>Transcript</option></select></div></th><th class="px-4 py-3 align-top"><div class="space-y-2"><div>Used</div><input class="table-filter-input normal-case tracking-normal" data-filter-input="tokensUsedQuery" type="text" placeholder="Filter used..." value="${escapeHtml(filters.tokensUsedQuery || '')}"></div></th><th class="px-4 py-3 align-top"><div class="space-y-2"><div>Remaining</div><input class="table-filter-input normal-case tracking-normal" data-filter-input="tokensRemainingQuery" type="text" placeholder="Filter remaining..." value="${escapeHtml(filters.tokensRemainingQuery || '')}"></div></th><th class="px-4 py-3 align-top"><div class="space-y-2"><div>Reset</div><select class="filter-select w-full min-w-0 normal-case tracking-normal" data-filter-key="tokensResetWindow"><option value="all" ${filters.tokensResetWindow === 'all' ? 'selected' : ''}>All</option><option value="7" ${filters.tokensResetWindow === '7' ? 'selected' : ''}>Next 7 days</option><option value="30" ${filters.tokensResetWindow === '30' ? 'selected' : ''}>Next 30 days</option><option value="90" ${filters.tokensResetWindow === '90' ? 'selected' : ''}>Next 90 days</option></select></div></th></tr></thead><tbody>${rowsMarkup}</tbody></table></div></div></div><div class="space-y-6"><div class="glass-card p-6"><div class="text-sm font-semibold text-slate-100">Membership Perks</div><div class="mt-4 space-y-3 text-sm text-slate-400"><div class="rounded-xl bg-slate-950/40 px-4 py-3">Transcript tokens can be used for transcript pulls, parses, and report prep workflows.</div><div class="rounded-xl bg-slate-950/40 px-4 py-3">Tax Tools Arcade tokens can be used across supported calculators and tax utility tools.</div><div class="rounded-xl bg-slate-950/40 px-4 py-3">Higher TM tiers can unlock larger token pools and more monthly rollover flexibility.</div></div></div><div class="glass-card p-6"><div class="text-sm font-semibold text-slate-100">Current Tier Benefit</div><div class="mt-4 rounded-2xl border border-amber-500/20 bg-amber-500/10 p-4"><div class="text-sm font-semibold text-amber-100">Advanced plan shown</div><div class="mt-1 text-xs text-slate-400">Includes a larger monthly bundle of transcript and arcade tokens for monitoring work.</div></div></div></div></div>`);
+    }
+
+    function renderHelpCenterPage() { return renderMockShell('Help Center', 'Find answers for onboarding, monitoring workflows, transcript changes, and support requests.', `<div class="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]"><div class="space-y-6"><div class="glass-card p-6"><div class="mb-5 flex items-center justify-between"><div><div class="text-sm font-semibold text-slate-100">Popular Topics</div><div class="mt-1 text-xs text-slate-500">Quick-start help for the pro workspace.</div></div><span class="badge badge-amber">6 guides</span></div><div class="grid gap-4 md:grid-cols-2"><div class="rounded-2xl border border-white/5 bg-slate-950/30 p-5"><div class="text-sm font-semibold text-slate-100">Getting Started</div><div class="mt-2 text-sm text-slate-400">Learn the dashboard, client routing, and where compliance work shows up first.</div><button class="btn-small btn-outline mt-4">Open guide</button></div><div class="rounded-2xl border border-white/5 bg-slate-950/30 p-5"><div class="text-sm font-semibold text-slate-100">eSign 2848</div><div class="mt-2 text-sm text-slate-400">See how pool-ready clients move into the pro signature queue.</div><button class="btn-small btn-outline mt-4">Open guide</button></div><div class="rounded-2xl border border-white/5 bg-slate-950/30 p-5"><div class="text-sm font-semibold text-slate-100">Compliance Reports</div><div class="mt-2 text-sm text-slate-400">Understand due records, report editor behavior, and recurring monitoring steps.</div><button class="btn-small btn-outline mt-4">Open guide</button></div><div class="rounded-2xl border border-white/5 bg-slate-950/30 p-5"><div class="text-sm font-semibold text-slate-100">Transcript Changes</div><div class="mt-2 text-sm text-slate-400">Review parsed deltas before opening the client record or compliance report.</div><button class="btn-small btn-outline mt-4">Open guide</button></div></div></div><div class="glass-card p-6"><div class="text-sm font-semibold text-slate-100">Support Channels</div><div class="mt-4 space-y-3 text-sm text-slate-400"><div class="rounded-xl bg-slate-950/40 px-4 py-3"><div class="text-slate-200 font-medium">Operator Support</div><div class="mt-1 text-xs text-slate-500">Submit questions about account access, billing, or setup issues.</div></div><div class="rounded-xl bg-slate-950/40 px-4 py-3"><div class="text-slate-200 font-medium">Compliance Workflow Help</div><div class="mt-1 text-xs text-slate-500">Get help understanding when initial and scheduled compliance reports are due.</div></div><div class="rounded-xl bg-slate-950/40 px-4 py-3"><div class="text-slate-200 font-medium">Transcript Monitoring Help</div><div class="mt-1 text-xs text-slate-500">Ask about monitoring cadence, alert meanings, and transcript change interpretation.</div></div></div></div></div><div class="space-y-6"><div class="glass-card p-6"><div class="text-sm font-semibold text-slate-100">Frequently Asked Questions</div><div class="mt-4 space-y-4 text-sm text-slate-400"><div class="rounded-xl bg-slate-950/40 px-4 py-4"><div class="text-slate-200 font-medium">When does a client appear in eSign 2848?</div><div class="mt-1 text-xs text-slate-500">After the taxpayer completes onboarding and their signature-side steps in the client pool.</div></div><div class="rounded-xl bg-slate-950/40 px-4 py-4"><div class="text-slate-200 font-medium">What triggers a compliance report?</div><div class="mt-1 text-xs text-slate-500">New client intake, scheduled cadence checkpoints, and flagged transcript events.</div></div><div class="rounded-xl bg-slate-950/40 px-4 py-4"><div class="text-slate-200 font-medium">Where do I view receipts?</div><div class="mt-1 text-xs text-slate-500">Use the credit card icon in the topbar to open monthly Stripe receipts.</div></div></div></div><div class="glass-card p-6"><div class="text-sm font-semibold text-slate-100">Need more help?</div><div class="mt-4 rounded-2xl border border-amber-500/20 bg-amber-500/10 p-4"><div class="text-sm font-semibold text-amber-100">Support request queue</div><div class="mt-1 text-xs text-slate-400">Mock contact flow for direct help with billing, setup, and monitoring operations.</div><button class="gradient-btn-amber mt-4 rounded-xl px-4 py-2 text-sm font-semibold">Contact Support</button></div></div></div></div>`); }
+
+    function renderReceiptsPage() {
+      const filters = currentFilters();
+      const rows = filteredReceipts().map((receipt) => `<tr class="border-b border-slate-800/60"><td class="px-4 py-4 text-sm text-slate-300">${escapeHtml(receipt.date)}</td><td class="px-4 py-4 text-sm font-medium text-slate-200">${escapeHtml(receipt.invoice)}</td><td class="px-4 py-4 text-sm text-slate-400">${escapeHtml(receipt.plan)}</td><td class="px-4 py-4 text-sm text-slate-200">${escapeHtml(formatCurrency(receipt.amount))}</td><td class="px-4 py-4"><span class="badge badge-emerald">${escapeHtml(receipt.status)}</span></td><td class="px-4 py-4 text-right"><button class="btn-small btn-outline">Download PDF</button></td></tr>`).join('');
+      return renderMockShell('Receipts', 'Monthly Stripe subscription receipts for the active workspace subscription.', `<div class="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]"><div class="glass-card overflow-hidden"><div class="flex items-center justify-between border-b border-slate-800/60 px-6 py-4"><div><div class="text-sm font-semibold text-slate-100">Subscription Receipts</div><div class="mt-1 text-xs text-slate-500">Filter monthly Stripe receipts directly from the table header row.</div></div><span class="badge badge-emerald">Auto-paid</span></div><div class="overflow-x-auto"><table class="min-w-full"><thead class="bg-slate-950/30 text-left text-xs uppercase tracking-wide text-slate-500"><tr><th class="px-4 py-3 align-top"><div class="space-y-2"><div>Date</div><input class="table-filter-input normal-case tracking-normal" data-filter-input="receiptsDateQuery" type="text" placeholder="YYYY-MM-DD" value="${escapeHtml(filters.receiptsDateQuery || '')}"></div></th><th class="px-4 py-3 align-top"><div class="space-y-2"><div>Invoice</div><input class="table-filter-input normal-case tracking-normal" data-filter-input="receiptsInvoiceQuery" type="text" placeholder="Search invoice..." value="${escapeHtml(filters.receiptsInvoiceQuery || '')}"></div></th><th class="px-4 py-3 align-top"><div class="space-y-2"><div>Plan</div><select class="filter-select w-full min-w-0 normal-case tracking-normal" data-filter-key="receiptsPlan"><option value="all" ${filters.receiptsPlan === 'all' ? 'selected' : ''}>All plans</option><option value="Virtual Launch Pro - Advanced" ${filters.receiptsPlan === 'Virtual Launch Pro - Advanced' ? 'selected' : ''}>Virtual Launch Pro - Advanced</option></select></div></th><th class="px-4 py-3">Amount</th><th class="px-4 py-3 align-top"><div class="space-y-2"><div>Status</div><select class="filter-select w-full min-w-0 normal-case tracking-normal" data-filter-key="receiptsStatus"><option value="all" ${filters.receiptsStatus === 'all' ? 'selected' : ''}>All statuses</option><option value="Paid" ${filters.receiptsStatus === 'Paid' ? 'selected' : ''}>Paid</option></select></div></th><th class="px-4 py-3 text-right">Action</th></tr></thead><tbody>${rows}</tbody></table></div></div><div class="space-y-6"><div class="glass-card p-6"><div class="text-sm font-semibold text-slate-100">Billing Summary</div><div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-1"><div class="rounded-2xl bg-slate-950/40 p-4"><div class="text-xs uppercase tracking-wide text-slate-500">Current Plan</div><div class="mt-2 text-sm text-slate-200">Virtual Launch Pro - Advanced</div></div><div class="rounded-2xl bg-slate-950/40 p-4"><div class="text-xs uppercase tracking-wide text-slate-500">Billing Cycle</div><div class="mt-2 text-sm text-slate-200">Monthly</div></div><div class="rounded-2xl bg-slate-950/40 p-4"><div class="text-xs uppercase tracking-wide text-slate-500">Next Renewal</div><div class="mt-2 text-sm text-slate-200">Apr 1, 2026</div></div></div></div><div class="glass-card p-6"><div class="text-sm font-semibold text-slate-100">Stripe Subscription Notes</div><div class="mt-4 space-y-3 text-sm text-slate-400"><div class="rounded-xl bg-slate-950/40 px-4 py-3">Receipts reflect the active monthly subscription for this workspace.</div><div class="rounded-xl bg-slate-950/40 px-4 py-3">Paid invoices remain available for download from this receipts area.</div><div class="rounded-xl bg-slate-950/40 px-4 py-3">Failed or past-due subscription states would appear here before access changes.</div></div></div></div></div>`);
+    }
+
+    function renderProfilePage() {
+      const toggles = profileToggles();
+      const twoFactorLabel = toggles.twoFactorAuthentication ? 'Enabled' : 'Not enabled';
+      return renderMockShell('Account Profile', 'Manage and maintain this account record.', `<div class="space-y-6"><section class="glass-card rounded-2xl p-6 md:p-8"><div class="mb-8 flex flex-col items-center gap-6 border-b border-white/10 pb-8 sm:flex-row sm:justify-between"><div class="flex items-center gap-6"><div class="flex h-24 w-24 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-400 via-orange-600 to-emerald-500 text-3xl font-bold text-white shadow-lg">JD</div><div class="text-center sm:text-left"><h3 class="text-xl font-semibold text-slate-100">Jane Doe</h3><p class="text-sm text-slate-400">Your profile has been launched. To match changes, use the profile builder.
+
+<div class="flex items-center gap-3 mt-3">
+  <button class="px-3 py-1.5 text-sm rounded-lg border border-slate-600 text-slate-300 hover:bg-slate-700" onclick="navigator.clipboard.writeText(window.location.origin + '/directory/profile/jane-doe')">Copy Profile Link</button>
+  <a href="/directory/profile/jane-doe" class="px-3 py-1.5 text-sm rounded-lg bg-amber-500 text-slate-900 font-semibold hover:bg-amber-400">Go to Profile</a>
+</div></p><div class="mt-2 flex items-center justify-center gap-2 sm:justify-start"><span class="rounded-full bg-emerald-500/20 px-2 py-1 text-xs font-medium text-emerald-400">Verified</span><span class="rounded-full bg-amber-500/20 px-2 py-1 text-xs font-medium text-amber-400">In service</span></div></div></div><div class="w-full sm:w-auto sm:pl-6"><a href="directory/profile-builder.html" class="gradient-btn-amber inline-flex w-full items-center justify-center rounded-xl px-5 py-3 text-sm font-semibold sm:w-auto">Open Profile Builder</a></div></div><div class="space-y-6"><h3 class="flex items-center gap-2 text-lg font-semibold text-slate-100"><svg class="h-5 w-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>Personal Information</h3><div class="grid grid-cols-1 gap-4 sm:grid-cols-2"><div><label class="mb-2 block text-sm font-medium text-slate-300">First Name</label><input class="mock-input" value="Jane"></div><div><label class="mb-2 block text-sm font-medium text-slate-300">Last Name</label><input class="mock-input" value="Doe"></div><div class="sm:col-span-2"><label class="mb-2 block text-sm font-medium text-slate-300">Email Address</label><input class="mock-input" value="jane.doe@example.com"></div><div><label class="mb-2 block text-sm font-medium text-slate-300">Phone Number</label><input class="mock-input" value="(555) 010-2244"></div><div><label class="mb-2 block text-sm font-medium text-slate-300">Organization/Company</label><input class="mock-input" value="Tax Monitor Pro"></div></div><div class="flex flex-col gap-4 pt-2 sm:flex-row sm:items-center sm:justify-between"><button class="rounded-xl border border-red-500/35 bg-red-500/12 px-6 py-3 font-medium text-red-200">Delete Account</button><button class="gradient-btn-amber rounded-xl px-8 py-3 font-semibold">Save Changes</button></div></div></section><section class="glass-card rounded-2xl p-6 md:p-8"><h3 class="mb-6 flex items-center gap-2 text-lg font-semibold text-slate-100"><svg class="h-5 w-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>Account Security</h3><div class="space-y-4"><div class="rounded-xl border border-white/10 bg-slate-950/35 p-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"><div><h4 class="font-medium text-white">Password</h4><p class="text-sm text-slate-400">Request a password update</p></div><button class="btn-small btn-outline px-4 py-2 text-sm">Change Password</button></div><div class="rounded-xl border border-white/10 bg-slate-950/35 p-4 flex items-center justify-between"><div><h4 class="font-medium text-white">Two-Factor Authentication</h4><p class="text-sm ${toggles.twoFactorAuthentication ? 'text-emerald-400' : 'text-slate-400'}">${escapeHtml(twoFactorLabel)}</p></div><button class="profile-toggle ${toggles.twoFactorAuthentication ? 'active' : ''}" data-profile-toggle="twoFactorAuthentication" type="button" aria-pressed="${toggles.twoFactorAuthentication ? 'true' : 'false'}" aria-label="Toggle Two-Factor Authentication"></button></div><div class="rounded-xl border border-white/10 bg-slate-950/35 p-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"><div><h4 class="font-medium text-white">Active Sessions</h4><p class="text-sm text-slate-400">Request logout across all devices</p></div><button class="btn-small btn-outline px-4 py-2 text-sm">Logout All Devices</button></div></div></section><section class="glass-card rounded-2xl p-6 md:p-8"><h3 class="mb-6 flex items-center gap-2 text-lg font-semibold text-slate-100"><svg class="h-5 w-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>Preferences</h3><div class="space-y-4"><div class="rounded-xl border border-white/10 bg-slate-950/35 p-4 flex items-center justify-between"><div><h4 class="font-medium text-white">Email Notifications</h4><p class="text-sm text-slate-400">Receive updates via email</p></div><button class="profile-toggle ${toggles.emailNotifications ? 'active' : ''}" data-profile-toggle="emailNotifications" type="button" aria-pressed="${toggles.emailNotifications ? 'true' : 'false'}" aria-label="Toggle Email Notifications"></button></div><div class="rounded-xl border border-white/10 bg-slate-950/35 p-4 flex items-center justify-between"><div><h4 class="font-medium text-white">In-App Notifications</h4><p class="text-sm text-slate-400">Show notifications in dashboard</p></div><button class="profile-toggle ${toggles.inAppNotifications ? 'active' : ''}" data-profile-toggle="inAppNotifications" type="button" aria-pressed="${toggles.inAppNotifications ? 'true' : 'false'}" aria-label="Toggle In-App Notifications"></button></div><div class="rounded-xl border border-white/10 bg-slate-950/35 p-4 flex items-center justify-between"><div><h4 class="font-medium text-white">SMS Notifications</h4><p class="text-sm text-slate-400">Receive updates via text message</p></div><button class="profile-toggle ${toggles.smsNotifications ? 'active' : ''}" data-profile-toggle="smsNotifications" type="button" aria-pressed="${toggles.smsNotifications ? 'true' : 'false'}" aria-label="Toggle SMS Notifications"></button></div><div class="rounded-xl border border-white/10 bg-slate-950/35 p-4"><h4 class="mb-3 font-medium text-white">Theme Preference</h4><div class="flex flex-wrap gap-3"><button class="rounded-lg border border-amber-500/50 bg-amber-500/20 px-4 py-2 text-sm font-medium text-amber-300">Dark</button><button class="rounded-lg border border-white/10 bg-slate-950/30 px-4 py-2 text-sm font-medium text-slate-300">Light</button><button class="rounded-lg border border-white/10 bg-slate-950/30 px-4 py-2 text-sm font-medium text-slate-300">System</button></div></div></div></section><footer class="py-6 text-center"><p class="text-xs text-slate-600">Your updates are securely stored and applied to your account record.</p></footer></div>`);
+    }
+
+    function renderPayoutsPage() {
+      const filters = currentFilters();
+      const rows = filteredPayoutEntries().map((entry) => `<tr class="border-b border-slate-800/60"><td class="px-4 py-4 text-sm font-medium text-slate-200">${escapeHtml(entry.clientName)}</td><td class="px-4 py-4 text-sm text-slate-400">${escapeHtml(entry.service)}</td><td class="px-4 py-4 text-sm text-slate-200">${escapeHtml(formatCurrency(entry.amount))}</td><td class="px-4 py-4"><span class="${payoutStatusBadgeClass(entry.status)}">${escapeHtml(entry.status)}</span></td><td class="px-4 py-4 text-right"><button class="btn-small btn-outline">${escapeHtml(entry.actionLabel)}</button></td></tr>`).join('');
+      return renderMockShell('Payouts', 'Mock payout workspace for upcoming disbursements, payout history, and payout method status.', `<div class="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]"><div class="space-y-6"><div class="glass-card p-6"><div class="mb-6 flex items-center justify-between gap-4"><div><div class="text-sm font-semibold text-slate-100">Payout Overview</div><div class="mt-1 text-xs text-slate-500">Track PayPal payout statuses, what cleared, and what still needs attention.</div></div><span class="badge badge-emerald">${escapeHtml(TM_STATE.stats.payoutMethod)}</span></div><div class="grid grid-cols-1 gap-4 sm:grid-cols-3"><div class="stat-card"><div class="icon-bg icon-amber"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-10V6m0 12v-2"></path><circle cx="12" cy="12" r="9" stroke-width="2"></circle></svg></div><div class="stat-value">${escapeHtml(formatCurrency(pendingPayoutTotal()))}</div><div class="stat-label">Non-SUCCESS Total</div></div><div class="stat-card"><div class="icon-bg icon-blue"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7V3"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 11h16"></path><rect x="3" y="5" width="18" height="16" rx="2" ry="2" stroke-width="2"></rect></svg></div><div class="stat-value text-[22px]">${escapeHtml(TM_STATE.stats.nextPayoutDate)}</div><div class="stat-label">Next Payout Date</div></div><div class="stat-card"><div class="icon-bg icon-emerald"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z"></path></svg></div><div class="stat-value text-[22px]">${escapeHtml(String(paidOrdersCount()))}</div><div class="stat-label">SUCCESS Payouts</div></div></div></div><div class="glass-card overflow-hidden"><div class="flex items-center justify-between border-b border-slate-800/60 px-6 py-4"><div><div class="text-sm font-semibold text-slate-100">Upcoming Payout Queue</div><div class="mt-1 text-xs text-slate-500">Mock queue grouped by client work that has cleared internal review.</div></div><button class="btn-small btn-outline">Export CSV</button></div><div class="border-b border-slate-800/60 px-6 py-4"><div class="filter-toolbar"><label class="filter-toolbar-group"><span class="filter-toolbar-label">Service</span><select class="filter-select" data-filter-key="payoutsService"><option value="all" ${filters.payoutsService === 'all' ? 'selected' : ''}>All services</option><option value="Tax Monitoring - Bronze" ${filters.payoutsService === 'Tax Monitoring - Bronze' ? 'selected' : ''}>Tax Monitoring - Bronze</option><option value="Tax Monitoring - Gold" ${filters.payoutsService === 'Tax Monitoring - Gold' ? 'selected' : ''}>Tax Monitoring - Gold</option><option value="Tax Monitoring - Silver" ${filters.payoutsService === 'Tax Monitoring - Silver' ? 'selected' : ''}>Tax Monitoring - Silver</option></select></label><label class="filter-toolbar-group"><span class="filter-toolbar-label">Payout Status</span><select class="filter-select" data-filter-key="payoutsStatus"><option value="all" ${filters.payoutsStatus === 'all' ? 'selected' : ''}>All statuses</option><option value="BLOCKED" ${filters.payoutsStatus === 'BLOCKED' ? 'selected' : ''}>BLOCKED</option><option value="ONHOLD" ${filters.payoutsStatus === 'ONHOLD' ? 'selected' : ''}>ONHOLD</option><option value="PENDING" ${filters.payoutsStatus === 'PENDING' ? 'selected' : ''}>PENDING</option><option value="RETURNED" ${filters.payoutsStatus === 'RETURNED' ? 'selected' : ''}>RETURNED</option><option value="SUCCESS" ${filters.payoutsStatus === 'SUCCESS' ? 'selected' : ''}>SUCCESS</option></select></label></div></div><div class="overflow-x-auto"><table class="min-w-full"><thead class="bg-slate-950/30 text-left text-xs uppercase tracking-wide text-slate-500"><tr><th class="px-4 py-3">Client</th><th class="px-4 py-3">Service</th><th class="px-4 py-3">Amount</th><th class="px-4 py-3">Status</th><th class="px-4 py-3 text-right">Action</th></tr></thead><tbody>${rows}</tbody></table></div></div></div><div class="space-y-6"><div class="glass-card p-6"><div class="text-sm font-semibold text-slate-100">Payout Method</div><div class="mt-4 rounded-2xl border border-emerald-500/20 bg-emerald-500/10 p-4"><div class="text-sm font-semibold text-emerald-200">PayPal Connected</div><div class="mt-1 text-xs text-slate-400">Primary disbursement route for released payouts.</div></div><div class="mt-4 rounded-2xl border border-white/5 bg-slate-950/40 p-4"><div class="text-xs uppercase tracking-wide text-slate-500">Fallback</div><div class="mt-2 text-sm text-slate-200">Manual review queue</div><div class="mt-1 text-xs text-slate-500">Used when payout details are incomplete or a compliance report is still under review.</div></div></div><div class="glass-card p-6"><div class="text-sm font-semibold text-slate-100">Recent Payout History</div><div class="mt-4 space-y-3 text-sm text-slate-400"><div class="rounded-xl bg-slate-950/40 px-4 py-3"><div class="flex items-center justify-between gap-3"><span class="text-slate-200">Apr 8 payout batch</span><span class="badge badge-emerald">SUCCESS</span></div><div class="mt-1 text-xs text-slate-500">SUCCESS batch released to PayPal.</div></div><div class="rounded-xl bg-slate-950/40 px-4 py-3"><div class="flex items-center justify-between gap-3"><span class="text-slate-200">Apr 1 payout batch</span><span class="badge badge-emerald">SUCCESS</span></div><div class="mt-1 text-xs text-slate-500">SUCCESS batch released to PayPal.</div></div><div class="rounded-xl bg-slate-950/40 px-4 py-3"><div class="flex items-center justify-between gap-3"><span class="text-slate-200">Mar 25 payout batch</span><span class="badge badge-red">RETURNED</span></div><div class="mt-1 text-xs text-slate-500">Returned payout sent back instead of clearing.</div></div></div></div></div></div>`);
+    }
+
+    function renderActiveAlertsPage() { const filters = currentFilters(); return renderMockShell('Active Alerts', 'Mock alert center for refund issues, balance changes, levy events, and monitored triggers.', `<div class="mb-6 filter-toolbar"><label class="filter-toolbar-group"><span class="filter-toolbar-label">Severity</span><select class="filter-select" data-filter-key="activeAlertsSeverity"><option value="all" ${filters.activeAlertsSeverity === 'all' ? 'selected' : ''}>All alerts</option><option value="amber" ${filters.activeAlertsSeverity === 'amber' ? 'selected' : ''}>Amber</option><option value="blue" ${filters.activeAlertsSeverity === 'blue' ? 'selected' : ''}>Blue</option><option value="red" ${filters.activeAlertsSeverity === 'red' ? 'selected' : ''}>Red</option></select></label></div><div class="glass-card p-6"><div id="page-alerts-list" class="space-y-4"></div></div>`); }
+
+    function renderMonitoredClientsPage() {
+      const filters = currentFilters();
+      const cards = filteredMonitoredClients().map((c) => `<div class="glass-card p-5"><div class="flex items-start justify-between gap-3"><div class="flex items-center gap-3"><div class="avatar" style="background:${escapeHtml(c.gradient)};">${escapeHtml(c.initials)}</div><div><div class="text-sm font-semibold text-slate-100">${escapeHtml(c.clientName)}</div><div class="mt-1 text-xs text-slate-500">Monitoring cadence: ${escapeHtml(c.monitoring)}</div></div></div><span class="badge ${escapeHtml(c.badgeClass)}">${escapeHtml(c.badgeLabel)}</span></div><div class="mt-4 grid grid-cols-2 gap-3 text-xs text-slate-400"><div class="rounded-xl bg-slate-950/40 px-3 py-3">Next report<br><span class="mt-1 block text-sm text-slate-200">${escapeHtml(c.report)}</span></div><div class="rounded-xl bg-slate-950/40 px-3 py-3">Current status<br><span class="mt-1 block text-sm text-slate-200">${escapeHtml(c.status)}</span></div></div><div class="mt-4 flex gap-2"><button class="btn-small btn-outline" data-client-open="${escapeHtml(c.id)}">Open client</button><button class="btn-small btn-outline">View report</button></div></div>`).join('');
+      return renderMockShell('Monitored Clients', 'Mock monitoring roster with report timing, status, and cadence.', `<div class="mb-6 filter-toolbar"><label class="filter-toolbar-group"><span class="filter-toolbar-label">Cadence</span><select class="filter-select" data-filter-key="monitoredClientsCadence"><option value="all" ${filters.monitoredClientsCadence === 'all' ? 'selected' : ''}>All cadences</option><option value="Biweekly" ${filters.monitoredClientsCadence === 'Biweekly' ? 'selected' : ''}>Biweekly</option><option value="Daily" ${filters.monitoredClientsCadence === 'Daily' ? 'selected' : ''}>Daily</option><option value="Monthly" ${filters.monitoredClientsCadence === 'Monthly' ? 'selected' : ''}>Monthly</option><option value="Quarterly" ${filters.monitoredClientsCadence === 'Quarterly' ? 'selected' : ''}>Quarterly</option><option value="Weekly" ${filters.monitoredClientsCadence === 'Weekly' ? 'selected' : ''}>Weekly</option></select></label><label class="filter-toolbar-group"><span class="filter-toolbar-label">Workflow</span><select class="filter-select" data-filter-key="monitoredClientsStatus"><option value="all" ${filters.monitoredClientsStatus === 'all' ? 'selected' : ''}>All workflows</option><option value="Active Alert" ${filters.monitoredClientsStatus === 'Active Alert' ? 'selected' : ''}>Active Alert</option><option value="Compliance Report" ${filters.monitoredClientsStatus === 'Compliance Report' ? 'selected' : ''}>Compliance Report</option><option value="eSign 2848" ${filters.monitoredClientsStatus === 'eSign 2848' ? 'selected' : ''}>eSign 2848</option></select></label></div><div class="grid gap-4 lg:grid-cols-2">${cards}</div>`);
+    }
+
+    function renderTranscriptChangesPage() { const filters = currentFilters(); return renderMockShell('Recent Transcript Changes', 'Mock review page for parsed deltas before you open a client compliance report.', `<div class="mb-6 filter-toolbar"><label class="filter-toolbar-group"><span class="filter-toolbar-label">Severity</span><select class="filter-select" data-filter-key="transcriptChangesSeverity"><option value="all" ${filters.transcriptChangesSeverity === 'all' ? 'selected' : ''}>All changes</option><option value="amber" ${filters.transcriptChangesSeverity === 'amber' ? 'selected' : ''}>Amber</option><option value="red" ${filters.transcriptChangesSeverity === 'red' ? 'selected' : ''}>Red</option></select></label></div><div class="glass-card p-6"><div id="page-changes-list" class="space-y-4"></div></div>`); }
+    function renderClientReportAccessPage() { const filters = currentFilters(); const items = filteredReportAccessClients(); return renderMockShell('Client Report Access', 'Mock access page for opening the most recent compliance report tied to each monitored client.', `<div class="glass-card overflow-hidden"><div class="border-b border-slate-800/60 px-6 py-4"><div class="filter-toolbar"><label class="filter-toolbar-group"><span class="filter-toolbar-label">Workflow</span><select class="filter-select" data-filter-key="clientReportStatus"><option value="all" ${filters.clientReportStatus === 'all' ? 'selected' : ''}>All workflows</option><option value="Active Alert" ${filters.clientReportStatus === 'Active Alert' ? 'selected' : ''}>Active Alert</option><option value="Compliance Report" ${filters.clientReportStatus === 'Compliance Report' ? 'selected' : ''}>Compliance Report</option><option value="eSign 2848" ${filters.clientReportStatus === 'eSign 2848' ? 'selected' : ''}>eSign 2848</option></select></label></div></div><div class="grid grid-cols-1 divide-y divide-slate-800/60">${items.map((c) => `<div class="flex items-center justify-between px-6 py-4"><div><div class="text-sm font-semibold text-slate-100">${escapeHtml(c.clientName)}</div><div class="mt-1 text-xs text-slate-500">Latest report ${escapeHtml(c.report)}</div></div><div class="flex gap-2"><button class="btn-small btn-outline">Compliance report</button><button class="btn-small btn-outline" data-client-open="${escapeHtml(c.id)}">Client view</button></div></div>`).join('')}</div></div>`); }
+
+    function renderAlerts(items, targetId) { const container = document.getElementById(targetId); if (!container) return; container.innerHTML = items.map((item, index) => `<div class="flex items-start justify-between ${index < items.length - 1 ? 'pb-4 border-b border-slate-700/30' : ''}"><div class="flex flex-1 items-start gap-3"><div class="${alertIconClass(item.severity)}">${alertIconSvg(item.severity)}</div><div class="min-w-0 flex-1"><div class="text-sm font-semibold text-slate-200">${escapeHtml(item.clientName)}</div><div class="mt-1 text-xs text-slate-400">${escapeHtml(item.summary)}</div>${item.subtext ? `<div class="mt-1 text-xs text-slate-500">${escapeHtml(item.subtext)}</div>` : ''}</div></div><button class="btn-small btn-outline ml-2" data-client-name="${escapeHtml(item.clientName)}">Open Client</button></div>`).join(''); }
+    function renderChanges(items, targetId) { const container = document.getElementById(targetId); if (!container) return; container.innerHTML = items.map((item) => `<div class="rounded-[12px] border border-slate-700/30 bg-slate-800/30 p-4"><div class="mb-2 flex items-start justify-between"><div><div class="text-sm font-semibold text-slate-200">${escapeHtml(item.clientName)}</div><div class="mt-1 text-xs text-slate-400">${escapeHtml(item.detail)}</div></div><div class="text-right"><div class="${item.severity === 'amber' ? 'text-sm font-bold gradient-text-amber' : 'text-sm font-bold text-red-400'}">${escapeHtml(item.valueLabel)}</div><div class="text-xs text-slate-500">${escapeHtml(item.dateLabel)}</div></div></div><div class="mt-2 h-1 w-full overflow-hidden rounded-full bg-slate-700/40"><div class="h-full ${escapeHtml(item.widthClass)} ${item.severity === 'amber' ? 'bg-gradient-to-r from-amber-500 to-amber-600' : 'bg-gradient-to-r from-red-500 to-red-600'}"></div></div></div>`).join(''); }
+    function renderClients(items, targetId) { const container = document.getElementById(targetId); if (!container) return; container.innerHTML = items.map((item, index) => `<div class="flex items-center justify-between ${index < items.length - 1 ? 'pb-3 border-b border-slate-700/30' : ''}"><div class="flex min-w-0 flex-1 items-center gap-3"><div class="avatar" style="background:${escapeHtml(item.gradient)};">${escapeHtml(item.initials)}</div><div class="min-w-0 flex-1"><div class="text-sm font-semibold text-slate-200">${escapeHtml(item.clientName)}</div><div class="text-xs text-slate-500">${escapeHtml(item.ageLabel)}</div></div></div><div class="flex flex-shrink-0 items-center gap-2"><span class="badge ${escapeHtml(item.badgeClass)}">${escapeHtml(item.badgeLabel)}</span><button class="btn-small btn-outline" data-client-open="${escapeHtml(item.id)}">Open Client</button></div></div>`).join(''); }
+    function renderDeadlines(items, targetId) { const container = document.getElementById(targetId); if (!container) return; container.innerHTML = items.map((item, index) => `<div class="flex items-start gap-3 ${index < items.length - 1 ? 'pb-3 border-b border-slate-700/30' : ''}"><div class="${deadlineIconClass(item.iconKey)}">${deadlineIconSvg(item.iconKey)}</div><div class="flex-1 pt-1"><div class="text-sm text-slate-300">${escapeHtml(item.title)}</div><div class="mt-1 text-xs text-slate-500">${escapeHtml(item.dateLabel)}</div></div></div>`).join(''); }
+
+    function drawRevenueChart() {
+      const canvas = document.getElementById('revenue-chart');
+      if (!canvas) return false;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return false;
+      const displayWidth = Math.max(320, Math.floor((canvas.parentElement ? canvas.parentElement.clientWidth : 320)));
+      const displayHeight = 220;
+      const dpr = Math.max(window.devicePixelRatio || 1, 1);
+      canvas.style.width = displayWidth + 'px';
+      canvas.style.height = displayHeight + 'px';
+      canvas.width = Math.floor(displayWidth * dpr);
+      canvas.height = Math.floor(displayHeight * dpr);
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.scale(dpr, dpr);
+      ctx.clearRect(0, 0, displayWidth, displayHeight);
+      const series = payoutChartSeries();
+      const data = series.values.slice();
+      const labels = series.labels.slice();
+      const max = Math.max(...data, 1);
+      const chartLeft = 18, chartRight = displayWidth - 18, chartTop = 18, chartBottom = 162;
+      const chartWidth = chartRight - chartLeft, chartHeight = chartBottom - chartTop, slotWidth = chartWidth / data.length, barWidth = Math.min(42, slotWidth * 0.58), radius = 12;
+      function roundedRect(x, y, width, height, r) { const safeR = Math.min(r, width / 2, height / 2); ctx.beginPath(); ctx.moveTo(x + safeR, y); ctx.lineTo(x + width - safeR, y); ctx.quadraticCurveTo(x + width, y, x + width, y + safeR); ctx.lineTo(x + width, y + height - safeR); ctx.quadraticCurveTo(x + width, y + height, x + width - safeR, y + height); ctx.lineTo(x + safeR, y + height); ctx.quadraticCurveTo(x, y + height, x, y + height - safeR); ctx.lineTo(x, y + safeR); ctx.quadraticCurveTo(x, y, x + safeR, y); ctx.closePath(); }
+      ctx.strokeStyle = 'rgba(148, 163, 184, 0.10)'; ctx.lineWidth = 1;
+      for (let i = 0; i < 4; i += 1) { const y = chartTop + (chartHeight / 3) * i; ctx.beginPath(); ctx.moveTo(chartLeft, y); ctx.lineTo(chartRight, y); ctx.stroke(); }
+      ctx.fillStyle = 'rgba(148, 163, 184, 0.72)'; ctx.font = '11px "DM Sans", sans-serif'; ctx.textAlign = 'left'; ctx.fillText(formatCurrency(max), chartLeft, 12);
+      data.forEach((value, index) => {
+        const barHeight = Math.max(18, (value / max) * chartHeight);
+        const x = chartLeft + slotWidth * index + (slotWidth - barWidth) / 2;
+        const y = chartBottom - barHeight;
+        const glowGradient = ctx.createLinearGradient(0, y, 0, chartBottom); glowGradient.addColorStop(0, 'rgba(251, 191, 36, 0.35)'); glowGradient.addColorStop(1, 'rgba(217, 119, 6, 0.02)');
+        ctx.fillStyle = glowGradient; roundedRect(x, y, barWidth, barHeight, radius); ctx.fill();
+        const barGradient = ctx.createLinearGradient(0, y, 0, chartBottom); barGradient.addColorStop(0, '#fbbf24'); barGradient.addColorStop(0.55, '#f59e0b'); barGradient.addColorStop(1, '#d97706');
+        ctx.fillStyle = barGradient; roundedRect(x, y + 2, barWidth, Math.max(12, barHeight - 2), radius - 2); ctx.fill();
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.10)'; roundedRect(x + 2, y + 4, Math.max(4, barWidth - 4), Math.max(6, barHeight * 0.18), Math.max(3, radius - 5)); ctx.fill();
+        ctx.fillStyle = 'rgba(148, 163, 184, 0.78)'; ctx.font = '11px "DM Sans", sans-serif'; ctx.textAlign = 'center'; ctx.fillText(labels[index], x + barWidth / 2, displayHeight - 18);
+        ctx.fillStyle = 'rgba(226, 232, 240, 0.88)'; ctx.font = '10px "DM Sans", sans-serif'; ctx.fillText(formatCurrency(value), x + barWidth / 2, y - 8);
+      });
+      return true;
+    }
+
+    function findClientIdByName(clientName) { const match = TM_STATE.clients.find((client) => client.clientName === clientName); return match ? match.id : null; }
+
+    function renderCurrentPage() {
+      const root = document.getElementById('tm-page-root');
+      if (!root) return;
+      const page = activePageKey();
+      const pages = { dashboard: renderDashboard, clients: renderClientsPage, 'client-detail': renderClientDetailPage, 'tm-pool': renderPoolPage, 'esign-2848': renderEsignPage, 'compliance-report-form': renderComplianceFormPage, 'help-center': renderHelpCenterPage, profile: renderProfilePage, receipts: renderReceiptsPage, tokens: renderTokensPage, payouts: renderPayoutsPage, 'active-alerts': renderActiveAlertsPage, 'monitored-clients': renderMonitoredClientsPage, 'transcript-changes': renderTranscriptChangesPage, 'client-report-access': renderClientReportAccessPage };
+      root.innerHTML = (pages[page] || renderDashboard)();
+      if (page === 'dashboard') { renderAlerts(TM_STATE.alerts, 'alerts-list'); renderDeadlines(TM_STATE.deadlines, 'deadlines-list'); renderClients(TM_STATE.complianceDue.map((c) => ({ clientName: c.clientName, initials: initialsFromName(c.clientName), gradient: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)', ageLabel: c.dueDate, badgeClass: 'badge-red', badgeLabel: 'Compliance Due', id: findClientIdByName(c.clientName) || c.id })), 'clients-list'); renderChanges(TM_STATE.changes, 'changes-list'); drawRevenueChart(); }
+      if (page === 'active-alerts') renderAlerts(filteredAlerts(), 'page-alerts-list');
+      if (page === 'transcript-changes') renderChanges(filteredTranscriptChanges(), 'page-changes-list');
+      applyNavActive();
+    }
+
+    function runSmokeTests() {
+      console.assert(typeof setText === 'function', 'setText should be defined');
+      console.assert(typeof filteredPayoutEntries === 'function', 'filteredPayoutEntries should be defined');
+      console.assert(typeof renderActiveAlertsPage === 'function', 'renderActiveAlertsPage should be defined');
+      console.assert(typeof renderClientDetailPage === 'function', 'renderClientDetailPage should be defined');
+      console.assert(typeof renderComplianceFormPage === 'function', 'renderComplianceFormPage should be defined');
+      console.assert(typeof drawRevenueChart === 'function', 'drawRevenueChart should be defined');
+      console.assert(typeof payoutChartSeries === 'function', 'payoutChartSeries should be defined');
+      console.assert(safeFirstName('Jane Doe') === 'Jane', 'safeFirstName should return first token');
+      console.assert(safeFirstName('   ') === 'there', 'safeFirstName should handle blank input');
+      console.assert(escapeHtml('<script>') === '&lt;script&gt;', 'escapeHtml should escape angle brackets');
+      console.assert(serviceLabel(TM_STATE.clients[0]) === 'Tax Monitoring - Bronze', 'serviceLabel should format Bronze plan');
+      console.assert(setText('sidebar-user-name', 'QA User') === true, 'setText should update existing element');
+      console.assert(document.getElementById('sidebar-user-name').textContent === 'QA User', 'setText should set textContent');
+      console.assert(setText('missing-element-id', 'noop') === false, 'setText should safely fail for missing element');
+      console.assert(renderActiveAlertsPage().includes('Active Alerts'), 'renderActiveAlertsPage should return alert page markup');
+      console.assert(renderPoolPage().includes('Add to practice (Inactive)'), 'pool page should show inactive action for still-onboarding clients');
+      console.assert(renderPoolPage().includes('Add to practice'), 'pool page should still show active action for ready clients');
+      console.assert(renderClientDetailPage().includes('CRM Snapshot'), 'client detail page should render CRM snapshot section');
+      console.assert(renderClientDetailPage().includes('Back to Clients'), 'client detail page should include back navigation');
+      console.assert(renderPayoutsPage().includes('Tax Monitoring - Gold'), 'payouts page should use TM service labels');
+      console.assert(renderMonitoredClientsPage().includes('View report'), 'monitored clients page should include view report button');
+      console.assert(renderTokensPage().includes('Transcript Tokens'), 'tokens page should render transcript token perks');
+      console.assert(renderTokensPage().includes('data-filter-key="tokensProduct"'), 'tokens page should include product dropdown filter');
+      console.assert(renderTokensPage().includes('data-filter-input="tokensUsedQuery"'), 'tokens page should include used filter');
+      console.assert(renderTokensPage().includes('data-filter-input="tokensRemainingQuery"'), 'tokens page should include remaining filter');
+      console.assert(renderTokensPage().includes('data-filter-key="tokensResetWindow"'), 'tokens page should include reset dropdown filter');
+      console.assert(renderHelpCenterPage().includes('Help Center'), 'help center page should render');
+      console.assert(renderReceiptsPage().includes('Subscription Receipts'), 'receipts page should render Stripe receipt list');
+      console.assert(renderReceiptsPage().includes('data-filter-input="receiptsDateQuery"'), 'receipts page should include date filter input');
+      console.assert(renderReceiptsPage().includes('data-filter-input="receiptsInvoiceQuery"'), 'receipts page should include invoice filter input');
+      console.assert(renderReceiptsPage().includes('data-filter-key="receiptsStatus"'), 'receipts page should include status filter');
+      console.assert(renderReceiptsPage().includes('Virtual Launch Pro - Advanced'), 'receipts page should show the updated plan label');
+      console.assert(renderProfilePage().includes('Account Profile'), 'profile page should render account profile shell');
+      console.assert(renderProfilePage().includes('data-profile-toggle="twoFactorAuthentication"'), 'profile page should include two-factor toggle');
+      console.assert(renderProfilePage().includes('data-profile-toggle="emailNotifications"'), 'profile page should include email notification toggle');
+      console.assert(renderProfilePage().includes('data-profile-toggle="inAppNotifications"'), 'profile page should include in-app notification toggle');
+      console.assert(renderProfilePage().includes('data-profile-toggle="smsNotifications"'), 'profile page should include SMS notification toggle');
+      console.assert(renderProfilePage().includes('directory/profile-builder.html'), 'profile page should include direct link to profile builder');
+      console.assert(renderProfilePage().includes('Open Profile Builder'), 'profile page should include profile builder CTA');
+      setProfileToggle('twoFactorAuthentication', true);
+      console.assert(renderProfilePage().includes('Enabled'), 'profile page should reflect enabled two-factor state');
+      setProfileToggle('twoFactorAuthentication', false);
+      console.assert(TM_STATE.complianceDue.length === 5, 'compliance form should have five due records');
+      console.assert(renderComplianceFormPage().includes('Due Compliance Reports'), 'compliance form should render due records panel');
+      console.assert(renderComplianceFormPage().includes('space-y-4'), 'compliance due cards should be stacked vertically');
+      console.assert(renderComplianceFormPage().includes('Susan Mitchell'), 'compliance form should render selected due client');
+      console.assert(document.querySelector('.tm-pro-sidebar').textContent.includes('Client Pool'), 'sidebar should include Client Pool label');
+      console.assert(document.querySelector('.tm-pro-sidebar').textContent.includes('Compliance Report'), 'sidebar should include Compliance Report label');
+      console.assert(document.querySelector('.tm-pro-sidebar').textContent.includes('3'), 'sidebar should reflect 3 active alerts');
+      console.assert(renderDashboard().includes('3 open'), 'dashboard should reflect 3 open alerts');
+      console.assert(renderDashboard().includes('View Payouts'), 'dashboard should include View Payouts button');
+      console.assert(dashboardRevenueTotal() === 1860, 'dashboard revenue total should use SUCCESS payouts only');
+      console.assert(payoutEntries().length === 8, 'payout queue should include added client payouts');
+      console.assert(renderPayoutsPage().includes('Angela Brooks'), 'payouts page should render payout queue entries');
+      console.assert(renderDashboard().includes('$1,860'), 'dashboard should reflect SUCCESS-only payout total');
+      console.assert(renderDashboard().includes('Compliance Report'), 'dashboard should include compliance report card title');
+      console.assert(renderActiveAlertsPage().includes('Active Alerts'), 'active alerts page should still render');
+      console.assert(renderComplianceFormPage().includes('View Client'), 'compliance report should include view client action');
+      console.assert(renderClientsPage().includes('Active Alert'), 'clients page should include Active Alert status');
+      console.assert(renderClientsPage().includes('Compliance Report'), 'clients page should include Compliance Report status');
+      console.assert(renderClientsPage().includes('eSign 2848'), 'clients page should include eSign 2848 status');
+      window.TM_SELECTED_CLIENT_ID = 'u3';
+      console.assert(renderClientDetailPage().includes('eSign 2848'), 'Emily Davis should show eSign 2848');
+      window.TM_SELECTED_CLIENT_ID = 'u2';
+      console.assert(renderClientDetailPage().includes('View 2848'), 'other clients should show View 2848');
+      console.assert(renderClientsPage().includes('Open Client'), 'clients page actions should say Open Client');
+      console.assert(renderClientsPage().includes('data-filter-key="clientsStatus"'), 'clients page should include dropdown filters');
+      console.assert(renderClientsPage().includes('data-filter-input="clientsNameQuery"'), 'clients page should include client text filter input');
+      console.assert(renderClientsPage().includes('data-clients-page="2"'), 'clients page should render pagination controls');
+      console.assert(paginatedClients().items.length === 20, 'clients page should limit visible rows to 20 per page');
+      console.assert(paginatedClients().totalPages === 2, 'clients page should split 37 clients into 2 pages');
+      console.assert(renderPayoutsPage().includes('data-filter-key="payoutsStatus"'), 'payouts page should include dropdown filters');
+      console.assert(renderActiveAlertsPage().includes('data-filter-key="activeAlertsSeverity"'), 'active alerts page should include dropdown filters');
+      console.assert(renderTranscriptChangesPage().includes('data-filter-key="transcriptChangesSeverity"'), 'transcript changes page should include dropdown filters');
+      window.TM_SELECTED_CLIENT_ID = 'u9';
+      console.assert(renderClientDetailPage().includes('eSign 2848'), 'Olivia Brooks should show eSign 2848');
+      window.TM_SELECTED_CLIENT_ID = 'u7';
+      console.assert(renderClientDetailPage().includes('eSign 2848'), 'Carlos Vega should show eSign 2848');
+      console.assert(renderEsignPage().includes('data-client-open="u9"'), 'eSign page should open Olivia Brooks CRM record');
+      console.assert(renderEsignPage().includes('data-client-open="u7"'), 'eSign page should open Carlos Vega CRM record');
+      console.assert(TM_STATE.clients.filter((client) => client.status === 'eSign 2848').length === 12, 'eSign queue should include 12 clients to match dashboard stats');
+      console.assert(renderEsignPage().includes('12 waiting'), 'eSign page should show 12 waiting clients');
+      console.assert(renderEsignPage().includes('Client eSigned 2848. The rep section is ready for your review/eSignature.'), 'eSign page should show unified rep-ready message');
+      console.assert(TM_STATE.clients.length === 37, 'clients list should match dashboard active client total');
+      console.assert(TM_STATE.clients.some((c) => c.clientName === 'Carlos Vega'), 'client list should include Carlos Vega');
+      console.assert(TM_STATE.clients.some((c) => c.clientName === 'Olivia Brooks'), 'client list should include Olivia Brooks');
+      console.assert(renderClientsPage().includes('37 active clients aligned with the dashboard total.'), 'clients page should reference 37 active clients');
+      console.assert(renderDashboard().includes('canvas id="revenue-chart"'), 'dashboard should render revenue chart canvas');
+      console.assert(renderDashboard().includes('Monthly'), 'dashboard should render monthly chart toggle');
+      console.assert(renderDashboard().includes('Quarterly'), 'dashboard should render quarterly chart toggle');
+      console.assert(renderDashboard().includes('Yearly'), 'dashboard should render yearly chart toggle');
+      console.assert(document.querySelector('[data-page-link="help-center"]'), 'topbar should link help icon to help center');
+      console.assert(document.querySelector('[data-page-link="receipts"]'), 'topbar should link credit card icon to receipts');
+      console.assert(document.querySelector('[data-page-link="profile"]'), 'topbar should link profile icon to profile page');
+      console.assert(payoutChartSeries().labels.length === 12, 'monthly chart should default to 12 labels');
+      window.TM_PAYOUT_CHART_VIEW = 'quarterly';
+      console.assert(payoutChartSeries().labels.length === 4, 'quarterly chart should use 4 labels');
+      window.TM_PAYOUT_CHART_VIEW = 'yearly';
+      console.assert(payoutChartSeries().labels.length === 3, 'yearly chart should use yearly labels');
+      window.TM_PAYOUT_CHART_VIEW = 'monthly';
+      console.assert(drawRevenueChart() === true, 'drawRevenueChart should render successfully when canvas exists');
+      console.assert(TM_STATE.mockPool.length === 3, 'client pool should have three mock records');
+      console.assert(renderPayoutsPage().includes('$510'), 'payouts page should render queue-derived amounts');
+      console.assert(renderPayoutsPage().includes('SUCCESS'), 'payouts page should use actual PayPal statuses');
+      console.assert(renderPayoutsPage().includes('PENDING'), 'payouts page should show actual non-success statuses');
+      console.assert(payoutEntries().some((entry) => entry.status === 'SUCCESS'), 'payout queue should include SUCCESS statuses');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      setText('sidebar-user-name', defaultConfig.user_name);
+      setText('sidebar-account-label', defaultConfig.account_label);
+      setText('topbar-user-name', defaultConfig.user_name);
+
+      document.querySelectorAll('a.nav-item[data-page], a[data-page-link]').forEach((el) => {
+        el.addEventListener('click', (event) => {
+          event.preventDefault();
+          const page = el.getAttribute('data-page') || el.getAttribute('data-page-link');
+          if (!page) return;
+          window.TM_ACTIVE_PAGE = page;
+          renderCurrentPage();
+        });
+      });
+
+      document.addEventListener('change', (event) => {
+        const filterSelect = event.target.closest('select[data-filter-key]');
+        if (!filterSelect) return;
+        const filterKey = filterSelect.getAttribute('data-filter-key');
+        if (filterKey === 'clientsComplianceDue') return;
+        setFilter(filterKey, filterSelect.value);
+        renderCurrentPage();
+      });
+
+      document.addEventListener('input', (event) => {
+        const filterInput = event.target.closest('input[data-filter-input]');
+        if (!filterInput) return;
+        setFilter(filterInput.getAttribute('data-filter-input'), filterInput.value);
+        renderCurrentPage();
+      });
+
+      document.addEventListener('click', (event) => {
+        const openBtn = event.target.closest('[data-client-open]');
+        if (openBtn) {
+          event.preventDefault();
+          window.TM_SELECTED_CLIENT_ID = openBtn.getAttribute('data-client-open');
+          window.TM_ACTIVE_PAGE = 'client-detail';
+          renderCurrentPage();
+          return;
+        }
+        const nameBtn = event.target.closest('[data-client-name]');
+        if (nameBtn) {
+          event.preventDefault();
+          const clientId = findClientIdByName(nameBtn.getAttribute('data-client-name'));
+          if (!clientId) return;
+          window.TM_SELECTED_CLIENT_ID = clientId;
+          window.TM_ACTIVE_PAGE = 'client-detail';
+          renderCurrentPage();
+          return;
+        }
+        const dueBtn = event.target.closest('[data-due-client]');
+        if (dueBtn) {
+          event.preventDefault();
+          window.TM_SELECTED_COMPLIANCE_ID = dueBtn.getAttribute('data-due-client');
+          window.TM_ACTIVE_PAGE = 'compliance-report-form';
+          renderCurrentPage();
+          return;
+        }
+        const profileToggleButton = event.target.closest('button[data-profile-toggle]');
+        if (profileToggleButton) {
+          event.preventDefault();
+          const key = profileToggleButton.getAttribute('data-profile-toggle');
+          if (!key) return;
+          toggleProfileSetting(key);
+          renderCurrentPage();
+          return;
+        }
+        const pageButton = event.target.closest('button[data-page-link]');
+        if (pageButton) {
+          event.preventDefault();
+          const page = pageButton.getAttribute('data-page-link');
+          if (!page) return;
+          window.TM_ACTIVE_PAGE = page;
+          renderCurrentPage();
+          return;
+        }
+        const chartToggle = event.target.closest('button[data-chart-view]');
+        if (chartToggle) {
+          event.preventDefault();
+          const view = chartToggle.getAttribute('data-chart-view');
+          if (!view) return;
+          window.TM_PAYOUT_CHART_VIEW = view;
+          renderCurrentPage();
+          return;
+        }
+        const pageNavButton = event.target.closest('button[data-clients-page]');
+        if (pageNavButton) {
+          event.preventDefault();
+          if (pageNavButton.disabled) return;
+          setClientsPage(pageNavButton.getAttribute('data-clients-page'));
+          window.TM_ACTIVE_PAGE = 'clients';
+          renderCurrentPage();
+        }
+      });
+
+      window.TM_ACTIVE_PAGE = 'dashboard';
+      window.TM_PAYOUT_CHART_VIEW = 'monthly';
+      window.TM_SELECTED_CLIENT_ID = 'u2';
+      window.TM_SELECTED_COMPLIANCE_ID = 'cd1';
+      renderCurrentPage();
+      runSmokeTests();
+    });
+  </script>
+</body>
+</html>
