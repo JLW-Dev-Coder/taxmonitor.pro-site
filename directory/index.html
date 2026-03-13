@@ -1,4 +1,3 @@
-<!-- directory/index.html -->
 <!doctype html>
 <html lang="en" class="h-full">
 <head>
@@ -209,6 +208,17 @@
               </div>
             </div>
 
+            <div class="relative">
+              <button onclick="toggleDropdown('profile-type-dropdown')" class="px-4 py-2 bg-slate-900/70 border border-slate-700 rounded-full text-sm font-medium hover:bg-slate-800 transition-all flex items-center gap-2">
+                Profile Type
+                <i data-lucide="chevron-down" class="w-4 h-4"></i>
+              </button>
+              <div id="profile-type-dropdown" class="hidden absolute top-full left-0 mt-2 w-56 bg-slate-900 border border-slate-700 rounded-2xl shadow-soft z-50 p-2">
+                <label class="flex items-center gap-2 px-3 py-2 hover:bg-slate-800 rounded-lg cursor-pointer"><input type="checkbox" value="live" class="profile-type-filter rounded border-slate-600 text-amber-500 focus:ring-amber-500"><span class="text-sm">Live Professionals</span></label>
+                <label class="flex items-center gap-2 px-3 py-2 hover:bg-slate-800 rounded-lg cursor-pointer"><input type="checkbox" value="sample" class="profile-type-filter rounded border-slate-600 text-amber-500 focus:ring-amber-500" checked><span class="text-sm">Sample Profiles</span></label>
+              </div>
+            </div>
+
             <button onclick="clearFilters()" class="ml-auto px-4 py-2 text-sm font-medium text-amber-300 hover:text-amber-200 transition-colors flex items-center gap-2">
               <i data-lucide="x" class="w-4 h-4"></i>
               Clear All
@@ -229,7 +239,7 @@
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6" id="featured-cards">
-          <div class="featured-card rounded-3xl p-6 transition-all duration-300 hover:-translate-y-1" data-professional="1" data-profession="attorney,cpa" data-status="featured" data-services="audit,planning" data-location="ca" data-client="business,individual">
+          <div class="featured-card rounded-3xl p-6 transition-all duration-300 hover:-translate-y-1" data-professional="1" data-profession="attorney,cpa" data-status="featured" data-services="audit,planning" data-location="ca" data-client="business,individual" data-profile-type="sample" data-profile-url="/directory/sample-sarah-mitchell/">
             <div class="flex items-start gap-4 mb-4">
               <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center text-2xl font-bold text-slate-950 flex-shrink-0">SM</div>
               <div class="flex-1 min-w-0">
@@ -258,7 +268,7 @@
             </div>
           </div>
 
-          <div class="featured-card rounded-3xl p-6 transition-all duration-300 hover:-translate-y-1" data-professional="2" data-profession="ea" data-status="featured" data-services="audit,international" data-location="fl" data-client="expat,individual">
+          <div class="featured-card rounded-3xl p-6 transition-all duration-300 hover:-translate-y-1" data-professional="2" data-profession="ea" data-status="featured" data-services="audit,international" data-location="fl" data-client="expat,individual" data-profile-type="sample" data-profile-url="/directory/sample-james-rodriguez/">
             <div class="flex items-start gap-4 mb-4">
               <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center text-2xl font-bold flex-shrink-0">JR</div>
               <div class="flex-1 min-w-0">
@@ -286,7 +296,7 @@
             </div>
           </div>
 
-          <div class="featured-card rounded-3xl p-6 transition-all duration-300 hover:-translate-y-1" data-professional="3" data-profession="cpa" data-status="featured" data-services="planning,tax-prep" data-location="ca" data-client="business,individual">
+          <div class="featured-card rounded-3xl p-6 transition-all duration-300 hover:-translate-y-1" data-professional="3" data-profession="cpa" data-status="featured" data-services="planning,tax-prep" data-location="ca" data-client="business,individual" data-profile-type="sample" data-profile-url="/directory/sample-emily-wong/">
             <div class="flex items-start gap-4 mb-4">
               <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center text-2xl font-bold flex-shrink-0">EW</div>
               <div class="flex-1 min-w-0">
@@ -326,7 +336,7 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="directory-grid">
-          <div class="glass-card rounded-3xl p-5 transition-all duration-300 hover:-translate-y-1" data-professional="4" data-profession="cpa" data-status="standard" data-services="bookkeeping,planning,tax-prep" data-location="ny" data-client="business,individual">
+          <div class="glass-card rounded-3xl p-5 transition-all duration-300 hover:-translate-y-1" data-professional="4" data-profession="cpa" data-status="standard" data-services="bookkeeping,planning,tax-prep" data-location="ny" data-client="business,individual" data-profile-type="sample" data-profile-url="/directory/sample-michael-johnson/">
             <div class="flex items-start gap-3 mb-3">
               <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center text-lg font-bold flex-shrink-0">MJ</div>
               <div class="flex-1 min-w-0"><h3 class="font-semibold truncate">Michael Johnson</h3><span class="badge-cpa px-2 py-0.5 rounded-full text-xs font-semibold inline-block mt-1">CPA</span></div>
@@ -336,7 +346,7 @@
             <div class="flex items-center justify-between pt-3 border-t border-slate-700/60"><div class="flex items-center gap-1.5 text-xs text-slate-400"><i data-lucide="map-pin" class="w-3.5 h-3.5 text-amber-400"></i><span>New York, NY</span></div><button class="contact-btn px-3 py-1.5 bg-slate-900/70 hover:bg-slate-800 rounded-lg text-xs font-medium transition-colors">Sample</button></div>
           </div>
 
-          <div class="glass-card rounded-3xl p-5 transition-all duration-300 hover:-translate-y-1" data-professional="5" data-profession="ea" data-status="standard" data-services="audit,tax-prep" data-location="tx" data-client="individual">
+          <div class="glass-card rounded-3xl p-5 transition-all duration-300 hover:-translate-y-1" data-professional="5" data-profession="ea" data-status="standard" data-services="audit,tax-prep" data-location="tx" data-client="individual" data-profile-type="sample" data-profile-url="/directory/sample-lisa-park/">
             <div class="flex items-start gap-3 mb-3">
               <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center text-lg font-bold flex-shrink-0">LP</div>
               <div class="flex-1 min-w-0"><h3 class="font-semibold truncate">Lisa Park</h3><span class="badge-ea px-2 py-0.5 rounded-full text-xs font-semibold inline-block mt-1">Enrolled Agent</span></div>
@@ -346,7 +356,7 @@
             <div class="flex items-center justify-between pt-3 border-t border-slate-700/60"><div class="flex items-center gap-1.5 text-xs text-slate-400"><i data-lucide="map-pin" class="w-3.5 h-3.5 text-amber-400"></i><span>Austin, TX</span></div><button class="contact-btn px-3 py-1.5 bg-slate-900/70 hover:bg-slate-800 rounded-lg text-xs font-medium transition-colors">Sample</button></div>
           </div>
 
-          <div class="glass-card rounded-3xl p-5 transition-all duration-300 hover:-translate-y-1" data-professional="6" data-profession="attorney" data-status="standard" data-services="estate,planning" data-location="ca" data-client="business,individual">
+          <div class="glass-card rounded-3xl p-5 transition-all duration-300 hover:-translate-y-1" data-professional="6" data-profession="attorney" data-status="standard" data-services="estate,planning" data-location="ca" data-client="business,individual" data-profile-type="sample" data-profile-url="/directory/sample-david-chen/">
             <div class="flex items-start gap-3 mb-3">
               <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-lg font-bold flex-shrink-0">DC</div>
               <div class="flex-1 min-w-0"><h3 class="font-semibold truncate">David Chen</h3><span class="badge-attorney px-2 py-0.5 rounded-full text-xs font-semibold inline-block mt-1">Attorney</span></div>
@@ -356,7 +366,7 @@
             <div class="flex items-center justify-between pt-3 border-t border-slate-700/60"><div class="flex items-center gap-1.5 text-xs text-slate-400"><i data-lucide="map-pin" class="w-3.5 h-3.5 text-amber-400"></i><span>San Diego, CA</span></div><button class="contact-btn px-3 py-1.5 bg-slate-900/70 hover:bg-slate-800 rounded-lg text-xs font-medium transition-colors">Sample</button></div>
           </div>
 
-          <div class="glass-card rounded-3xl p-5 transition-all duration-300 hover:-translate-y-1" data-professional="7" data-profession="erpa" data-status="standard" data-services="planning" data-location="fl" data-client="business">
+          <div class="glass-card rounded-3xl p-5 transition-all duration-300 hover:-translate-y-1" data-professional="7" data-profession="erpa" data-status="standard" data-services="planning" data-location="fl" data-client="business" data-profile-type="sample" data-profile-url="/directory/sample-rachel-brooks/">
             <div class="flex items-start gap-3 mb-3">
               <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-teal-500 to-teal-600 flex items-center justify-center text-lg font-bold flex-shrink-0">RB</div>
               <div class="flex-1 min-w-0"><h3 class="font-semibold truncate">Rachel Brooks</h3><span class="badge-erpa px-2 py-0.5 rounded-full text-xs font-semibold inline-block mt-1">ERPA</span></div>
@@ -366,7 +376,7 @@
             <div class="flex items-center justify-between pt-3 border-t border-slate-700/60"><div class="flex items-center gap-1.5 text-xs text-slate-400"><i data-lucide="map-pin" class="w-3.5 h-3.5 text-amber-400"></i><span>Tampa, FL</span></div><button class="contact-btn px-3 py-1.5 bg-slate-900/70 hover:bg-slate-800 rounded-lg text-xs font-medium transition-colors">Sample</button></div>
           </div>
 
-          <div class="glass-card rounded-3xl p-5 transition-all duration-300 hover:-translate-y-1" data-professional="8" data-profession="actuary" data-status="standard" data-services="planning" data-location="ny" data-client="business">
+          <div class="glass-card rounded-3xl p-5 transition-all duration-300 hover:-translate-y-1" data-professional="8" data-profession="actuary" data-status="standard" data-services="planning" data-location="ny" data-client="business" data-profile-type="sample" data-profile-url="/directory/sample-kevin-nakamura/">
             <div class="flex items-start gap-3 mb-3">
               <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center text-lg font-bold flex-shrink-0">KN</div>
               <div class="flex-1 min-w-0"><h3 class="font-semibold truncate">Kevin Nakamura</h3><span class="badge-actuary px-2 py-0.5 rounded-full text-xs font-semibold inline-block mt-1">Enrolled Actuary</span></div>
@@ -376,7 +386,7 @@
             <div class="flex items-center justify-between pt-3 border-t border-slate-700/60"><div class="flex items-center gap-1.5 text-xs text-slate-400"><i data-lucide="map-pin" class="w-3.5 h-3.5 text-amber-400"></i><span>New York, NY</span></div><button class="contact-btn px-3 py-1.5 bg-slate-900/70 hover:bg-slate-800 rounded-lg text-xs font-medium transition-colors">Sample</button></div>
           </div>
 
-          <div class="glass-card rounded-3xl p-5 transition-all duration-300 hover:-translate-y-1" data-professional="9" data-profession="cpa" data-status="standard" data-services="bookkeeping,international,tax-prep" data-location="remote" data-client="expat,individual">
+          <div class="glass-card rounded-3xl p-5 transition-all duration-300 hover:-translate-y-1" data-professional="9" data-profession="cpa" data-status="standard" data-services="bookkeeping,international,tax-prep" data-location="remote" data-client="expat,individual" data-profile-type="sample" data-profile-url="/directory/sample-amanda-garcia/">
             <div class="flex items-start gap-3 mb-3">
               <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center text-lg font-bold text-slate-950 flex-shrink-0">AG</div>
               <div class="flex-1 min-w-0"><h3 class="font-semibold truncate">Amanda Garcia</h3><span class="badge-cpa px-2 py-0.5 rounded-full text-xs font-semibold inline-block mt-1">CPA</span></div>
@@ -386,7 +396,7 @@
             <div class="flex items-center justify-between pt-3 border-t border-slate-700/60"><div class="flex items-center gap-1.5 text-xs text-slate-400"><i data-lucide="globe" class="w-3.5 h-3.5 text-amber-400"></i><span>Remote/Virtual</span></div><button class="contact-btn px-3 py-1.5 bg-slate-900/70 hover:bg-slate-800 rounded-lg text-xs font-medium transition-colors">Sample</button></div>
           </div>
 
-          <div class="glass-card rounded-3xl p-5 transition-all duration-300 hover:-translate-y-1" data-professional="10" data-profession="ea" data-status="standard" data-services="bookkeeping,payroll,tax-prep" data-location="tx" data-client="business">
+          <div class="glass-card rounded-3xl p-5 transition-all duration-300 hover:-translate-y-1" data-professional="10" data-profession="ea" data-status="standard" data-services="bookkeeping,payroll,tax-prep" data-location="tx" data-client="business" data-profile-type="sample" data-profile-url="/directory/sample-thomas-wilson/">
             <div class="flex items-start gap-3 mb-3">
               <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500 to-indigo-600 flex items-center justify-center text-lg font-bold flex-shrink-0">TW</div>
               <div class="flex-1 min-w-0"><h3 class="font-semibold truncate">Thomas Wilson</h3><span class="badge-ea px-2 py-0.5 rounded-full text-xs font-semibold inline-block mt-1">Enrolled Agent</span></div>
@@ -396,7 +406,7 @@
             <div class="flex items-center justify-between pt-3 border-t border-slate-700/60"><div class="flex items-center gap-1.5 text-xs text-slate-400"><i data-lucide="map-pin" class="w-3.5 h-3.5 text-amber-400"></i><span>Houston, TX</span></div><button class="contact-btn px-3 py-1.5 bg-slate-900/70 hover:bg-slate-800 rounded-lg text-xs font-medium transition-colors">Sample</button></div>
           </div>
 
-          <div class="glass-card rounded-3xl p-5 transition-all duration-300 hover:-translate-y-1" data-professional="11" data-profession="attorney,cpa" data-status="standard" data-services="estate,international,planning" data-location="ca" data-client="business,individual,nonprofit">
+          <div class="glass-card rounded-3xl p-5 transition-all duration-300 hover:-translate-y-1" data-professional="11" data-profession="attorney,cpa" data-status="standard" data-services="estate,international,planning" data-location="ca" data-client="business,individual,nonprofit" data-profile-type="sample" data-profile-url="/directory/sample-jennifer-lee/">
             <div class="flex items-start gap-3 mb-3">
               <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-rose-500 to-rose-600 flex items-center justify-center text-lg font-bold flex-shrink-0">JL</div>
               <div class="flex-1 min-w-0"><h3 class="font-semibold truncate">Jennifer Lee</h3><div class="flex gap-1 mt-1"><span class="badge-attorney px-2 py-0.5 rounded-full text-xs font-semibold">Attorney</span><span class="badge-cpa px-2 py-0.5 rounded-full text-xs font-semibold">CPA</span></div></div>
@@ -406,7 +416,7 @@
             <div class="flex items-center justify-between pt-3 border-t border-slate-700/60"><div class="flex items-center gap-1.5 text-xs text-slate-400"><i data-lucide="map-pin" class="w-3.5 h-3.5 text-amber-400"></i><span>Beverly Hills, CA</span></div><button class="contact-btn px-3 py-1.5 bg-slate-900/70 hover:bg-slate-800 rounded-lg text-xs font-medium transition-colors">Sample</button></div>
           </div>
 
-          <div class="glass-card rounded-3xl p-5 transition-all duration-300 hover:-translate-y-1" data-professional="12" data-profession="ea" data-status="standard" data-services="audit,tax-prep" data-location="fl" data-client="individual">
+          <div class="glass-card rounded-3xl p-5 transition-all duration-300 hover:-translate-y-1" data-professional="12" data-profession="ea" data-status="standard" data-services="audit,tax-prep" data-location="fl" data-client="individual" data-profile-type="sample" data-profile-url="/directory/sample-steven-roberts/">
             <div class="flex items-start gap-3 mb-3">
               <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-cyan-500 to-cyan-600 flex items-center justify-center text-lg font-bold flex-shrink-0">SR</div>
               <div class="flex-1 min-w-0"><h3 class="font-semibold truncate">Steven Roberts</h3><span class="badge-ea px-2 py-0.5 rounded-full text-xs font-semibold inline-block mt-1">Enrolled Agent</span></div>
@@ -504,12 +514,13 @@
     }
 
     let activeFilters = {
-      profession: [],
-      status: [],
-      services: [],
-      location: [],
       client: [],
-      search: ''
+      location: [],
+      profession: [],
+      profileType: ['sample'],
+      search: '',
+      services: [],
+      status: []
     };
 
     function toggleDropdown(id) {
@@ -547,6 +558,10 @@
       cb.addEventListener('change', () => updateFilters('client', cb.value, cb.checked));
     });
 
+    document.querySelectorAll('.profile-type-filter').forEach(cb => {
+      cb.addEventListener('change', () => updateFilters('profileType', cb.value, cb.checked));
+    });
+
     document.getElementById('search-input').addEventListener('input', (e) => {
       activeFilters.search = e.target.value.toLowerCase();
       applyFilters();
@@ -572,6 +587,7 @@
         const services = card.dataset.services || '';
         const location = card.dataset.location || '';
         const client = card.dataset.client || '';
+        const profileType = card.dataset.profileType || '';
         const cardText = card.textContent.toLowerCase();
 
         let show = true;
@@ -601,6 +617,10 @@
           if (!activeFilters.client.some(c => clients.includes(c))) show = false;
         }
 
+        if (show && activeFilters.profileType.length > 0) {
+          if (!activeFilters.profileType.includes(profileType)) show = false;
+        }
+
         card.style.display = show ? '' : 'none';
         if (show) visibleCount++;
       });
@@ -628,6 +648,7 @@
 
       const allFilters = [
         ...activeFilters.client.map(f => ({ type: 'client', value: f, label: getFilterLabel('client', f) })),
+        ...activeFilters.profileType.map(f => ({ type: 'profileType', value: f, label: getFilterLabel('profileType', f) })),
         ...activeFilters.location.map(f => ({ type: 'location', value: f, label: getFilterLabel('location', f) })),
         ...activeFilters.profession.map(f => ({ type: 'profession', value: f, label: getFilterLabel('profession', f) })),
         ...activeFilters.services.map(f => ({ type: 'services', value: f, label: getFilterLabel('services', f) })),
@@ -656,14 +677,23 @@
         status: { featured: 'Featured', standard: 'Standard' },
         services: { audit: 'Audit Defense', bookkeeping: 'Bookkeeping', estate: 'Estate Planning', international: 'International Tax', payroll: 'Payroll', planning: 'Tax Planning', 'tax-prep': 'Tax Preparation' },
         location: { ca: 'California', fl: 'Florida', ny: 'New York', remote: 'Remote', tx: 'Texas' },
-        client: { business: 'Business', expat: 'Expat', individual: 'Individual', nonprofit: 'Nonprofit' }
+        client: { business: 'Business', expat: 'Expat', individual: 'Individual', nonprofit: 'Nonprofit' },
+        profileType: { live: 'Live Professionals', sample: 'Sample Profiles' }
       };
       return labels[type]?.[value] || value;
     }
 
     function removeFilter(type, value) {
       activeFilters[type] = activeFilters[type].filter(v => v !== value);
-      const checkbox = document.querySelector(`.${type}-filter[value="${value}"]`);
+      const filterClassMap = {
+        client: '.client-filter',
+        location: '.location-filter',
+        profession: '.profession-filter',
+        profileType: '.profile-type-filter',
+        services: '.service-filter',
+        status: '.status-filter'
+      };
+      const checkbox = document.querySelector(`${filterClassMap[type]}[value="${value}"]`);
       if (checkbox) checkbox.checked = false;
       applyFilters();
       updateActiveFiltersDisplay();
@@ -671,15 +701,17 @@
 
     function clearFilters() {
       activeFilters = {
-        profession: [],
-        status: [],
-        services: [],
-        location: [],
         client: [],
-        search: ''
+        location: [],
+        profession: [],
+        profileType: ['sample'],
+        search: '',
+        services: [],
+        status: []
       };
 
       document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+      document.querySelectorAll('.profile-type-filter[value="sample"]').forEach(cb => cb.checked = true);
       document.getElementById('search-input').value = '';
 
       applyFilters();
@@ -687,6 +719,27 @@
     }
 
     lucide.createIcons();
+
+    function goToProfileFromButton(button) {
+      const card = button.closest('[data-profile-url]');
+      const url = card && card.dataset.profileUrl;
+      if (url) window.location.href = url;
+    }
+
+    document.querySelectorAll('.contact-btn, .view-btn').forEach(button => {
+      button.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        goToProfileFromButton(button);
+      });
+    });
+
+    document.querySelectorAll('[data-profile-url]').forEach(card => {
+      card.addEventListener('dblclick', () => {
+        const url = card.dataset.profileUrl;
+        if (url) window.location.href = url;
+      });
+    });
 
     const footerYearEl = document.getElementById('footer-year');
     if (footerYearEl) footerYearEl.textContent = String(new Date().getFullYear());
