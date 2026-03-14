@@ -1,9 +1,10 @@
+<!-- app/intake.html -->
 <!doctype html>
 <html lang="en" class="h-full">
-<head>
+ <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tax Monitor Pro - Your Needs</title>
+  <title>Tax Monitor Pro - Tax Pro Network Matching Inquiry</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -353,14 +354,17 @@
     .select-wrap { position: relative; }
 
     .select-wrap::after {
-      color: rgba(245, 158, 11, 0.92);
-      content: '⌄';
-      font-size: 1.2rem;
+      color: rgba(245, 158, 11, 0.95);
+      content: '▾';
+      font-size: 1.6rem;
+      font-weight: 700;
+      line-height: 1;
       pointer-events: none;
       position: absolute;
       right: 1rem;
       top: 50%;
-      transform: translateY(-56%);
+      transform: translateY(-50%);
+      text-shadow: 0 0 6px rgba(245,158,11,0.35);
     }
 
     .glass-select {
@@ -455,6 +459,101 @@
       border-color: rgba(245, 158, 11, 0.5);
     }
 
+    .step-circle {
+      width: 2rem;
+      height: 2rem;
+      border-radius: 9999px;
+      align-items: center;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(51, 65, 85, 0.95);
+      box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.18);
+      display: inline-flex;
+      justify-content: center;
+      transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, color 0.25s ease;
+    }
+
+    .stepper-jump {
+      align-items: center;
+      background: transparent;
+      border: 0;
+      color: inherit;
+      cursor: pointer;
+      display: inline-flex;
+      gap: 0.5rem;
+      padding: 0;
+      text-align: left;
+    }
+
+    .stepper-jump:hover .step-circle {
+      border-color: rgba(245, 158, 11, 0.6);
+    }
+
+    .stepper-jump:hover .step-label,
+    .stepper-jump:hover .step-number {
+      color: #fbbf24;
+    }
+
+    .stepper-jump:focus-visible {
+      outline: none;
+    }
+
+    .stepper-jump:focus-visible .step-circle {
+      border-color: rgba(245, 158, 11, 0.95);
+      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.14), 0 0 18px rgba(245, 158, 11, 0.18);
+    }
+
+    .step-number {
+      color: #94a3b8;
+      font-size: 0.75rem;
+      font-weight: 700;
+      transition: color 0.25s ease;
+    }
+
+    .step-label {
+      color: #64748b;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: color 0.25s ease;
+    }
+
+    .step-connector {
+      width: 2rem;
+      height: 2px;
+      background: rgba(51, 65, 85, 0.9);
+      border-radius: 9999px;
+      transition: background 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    [data-stepper-item].is-current .step-circle {
+      border-color: rgba(245, 158, 11, 0.95);
+      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.14), 0 0 18px rgba(245, 158, 11, 0.18);
+    }
+
+    [data-stepper-item].is-current .step-number,
+    [data-stepper-item].is-current .step-label {
+      color: #fbbf24;
+      font-weight: 600;
+    }
+
+    [data-stepper-item].is-complete .step-circle {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.96), rgba(217, 119, 6, 0.96));
+      border-color: rgba(245, 158, 11, 1);
+      box-shadow: 0 8px 20px rgba(245, 158, 11, 0.2);
+    }
+
+    [data-stepper-item].is-complete .step-number {
+      color: #0f172a;
+    }
+
+    [data-stepper-item].is-complete .step-label {
+      color: #e2e8f0;
+    }
+
+    .step-connector.is-complete {
+      background: linear-gradient(90deg, rgba(245, 158, 11, 0.95), rgba(217, 119, 6, 0.95));
+      box-shadow: 0 0 12px rgba(245, 158, 11, 0.16);
+    }
+
     .progress-bar {
       height: 4px;
       background: rgba(51, 65, 85, 0.5);
@@ -522,675 +621,820 @@
       opacity: 1;
       filter: invert(0.8) brightness(1.1) drop-shadow(0 0 8px rgba(245, 158, 11, 0.4));
     }
+
+    .ts-wrapper {
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .ts-wrapper.single .ts-control,
+    .ts-wrapper.single.input-active .ts-control {
+      display: flex;
+      align-items: center;
+      min-height: 56px;
+      padding: 0 1rem;
+      line-height: 1.4;
+      background: rgba(15, 23, 42, 0.95) !important;
+      color: #e2e8f0;
+      border-radius: 0.75rem;
+    }
+
+    .ts-wrapper.single:hover .ts-control {
+      border-color: rgba(245, 158, 11, 0.42);
+    }
+
+    .ts-wrapper.focus .ts-control {
+      border-color: rgba(245, 158, 11, 0.64);
+      box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.12), 0 0 20px rgba(245, 158, 11, 0.16);
+    }
+
+    .ts-wrapper.single .ts-control input,
+    .ts-control .item {
+      color: #e2e8f0 !important;
+      background: transparent !important;
+    } {
+      color: #f8fafc;
+      font-size: 1rem;
+    }
+
+    .ts-wrapper.single .ts-control input::placeholder {
+      color: rgba(148, 163, 184, 0.7);
+    }
+
+    .ts-wrapper .ts-control > .item {
+      color: #f8fafc;
+      font-size: 1rem;
+      font-weight: 600;
+      line-height: 1.5rem;
+    }
+
+    .ts-wrapper.plugin-dropdown_input .ts-dropdown .dropdown-input,
+    .ts-dropdown .dropdown-input {
+      background: rgba(2, 6, 23, 0.92);
+      border: 1px solid rgba(100, 116, 139, 0.26);
+      border-radius: 0.85rem;
+      color: #f8fafc;
+      margin: 0.75rem;
+      padding: 0.75rem 0.9rem;
+      width: calc(100% - 1.5rem);
+    }
+
+    .ts-dropdown {
+      background: rgba(15, 23, 42, 0.98);
+      border: 1px solid rgba(100, 116, 139, 0.3);
+      border-radius: 1rem;
+      box-shadow: 0 20px 40px rgba(2, 6, 23, 0.55), 0 0 28px rgba(245, 158, 11, 0.08);
+      color: #f8fafc;
+      margin-top: 0.5rem;
+      overflow: hidden;
+      z-index: 40;
+    }
+
+    .ts-dropdown .option,
+    .ts-dropdown .create {
+      background: rgba(15, 23, 42, 0.98);
+      color: #cbd5e1;
+      padding: 0.8rem 1rem;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .ts-dropdown .active {
+      background: rgba(245, 158, 11, 0.14);
+      color: #fbbf24;
+    }
+
+    .ts-dropdown .option:hover,
+    .ts-dropdown .create:hover {
+      background: rgba(30, 41, 59, 0.98);
+      color: #f8fafc;
+    }
+
+    .ts-dropdown .option[data-value="__other__"] {
+      border-top: 1px solid rgba(100, 116, 139, 0.22);
+      color: #fbbf24;
+      font-weight: 600;
+    }
+
+    .ts-dropdown .no-results {
+      color: #94a3b8;
+      padding: 0.9rem 1rem 1rem;
+    }
   </style>
-</head>
-<body class="h-full bg-slate-950 text-slate-100">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js" type="text/javascript"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full bg-slate-950 text-slate-100">
   <div class="site-bg-effects" aria-hidden="true">
-    <div class="bg-blob bg-blob-1"></div>
-    <div class="bg-blob bg-blob-2"></div>
-    <div class="bg-blob bg-blob-3"></div>
-    <div class="bg-grid"></div>
-    <div class="bg-network"></div>
-    <div class="bg-beacon"></div>
-    <div class="bg-ring"></div>
-    <div class="bg-scan"></div>
-    <div class="bg-noise"></div>
-    <div class="bg-vignette"></div>
+   <div class="bg-blob bg-blob-1"></div>
+   <div class="bg-blob bg-blob-2"></div>
+   <div class="bg-blob bg-blob-3"></div>
+   <div class="bg-grid"></div>
+   <div class="bg-network"></div>
+   <div class="bg-beacon"></div>
+   <div class="bg-ring"></div>
+   <div class="bg-scan"></div>
+   <div class="bg-noise"></div>
+   <div class="bg-vignette"></div>
   </div>
-
   <div class="relative z-10 min-h-screen w-full flex flex-col">
-    <header class="sticky top-0 z-50 border-b border-slate-800/60 bg-slate-950/80 backdrop-blur">
-      <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4">
-        <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-          <a href="/index.html" class="flex items-center gap-3 group">
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center transition-transform group-hover:scale-105">
-              <span class="font-black text-slate-950">TM</span>
-            </div>
-            <div>
-              <div class="font-bold text-slate-100 group-hover:text-amber-300 transition-colors">Tax Monitor Pro</div>
-              <div class="text-xs text-slate-400">Intake</div>
-            </div>
-          </a>
-
-          <div class="flex items-center gap-2 sm:gap-4">
-            <div class="flex items-center gap-2">
-              <div class="w-8 h-8 rounded-full bg-amber-500 flex items-center justify-center shadow-lg shadow-amber-500/30"><span class="text-xs font-bold text-slate-950">1</span></div>
-              <span class="text-sm font-semibold text-amber-400">Your Needs</span>
-            </div>
-            <div class="w-8 h-0.5 bg-slate-700"></div>
-            <div class="flex items-center gap-2">
-              <div class="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center"><span class="text-xs text-slate-400">2</span></div>
-              <span class="text-sm text-slate-500 hidden sm:inline">Services</span>
-            </div>
-            <div class="w-8 h-0.5 bg-slate-700"></div>
-            <div class="flex items-center gap-2">
-              <div class="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center"><span class="text-xs text-slate-400">3</span></div>
-              <span class="text-sm text-slate-500 hidden sm:inline">Location</span>
-            </div>
-            <div class="w-8 h-0.5 bg-slate-700"></div>
-            <div class="flex items-center gap-2">
-              <div class="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center"><span class="text-xs text-slate-400">4</span></div>
-              <span class="text-sm text-slate-500 hidden sm:inline">Offers</span>
-            </div>
-            <div class="w-8 h-0.5 bg-slate-700"></div>
-            <div class="flex items-center gap-2">
-              <div class="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center"><span class="text-xs text-slate-400">5</span></div>
-              <span class="text-sm text-slate-500 hidden sm:inline">Your Matches</span>
-            </div>
-          </div>
-
-          <a href="/index.html" class="inline-flex items-center gap-2 rounded-full border border-slate-800/70 bg-black/20 px-3 py-1.5 text-xs font-semibold text-slate-300 hover:text-amber-300 hover:border-amber-500/30">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-            </svg>
-            Back
-          </a>
+   <header class="sticky top-0 z-50 border-b border-slate-800/60 bg-slate-950/80 backdrop-blur">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4">
+     <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+      <a href="/index.html" class="flex items-center gap-3 group">
+       <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center transition-transform group-hover:scale-105">
+        <span class="font-black text-slate-950">TM</span>
+       </div>
+       <div>
+        <div class="font-bold text-slate-100 group-hover:text-amber-300 transition-colors">
+         Tax Monitor Pro
         </div>
-        <div class="mt-4 h-1 bg-slate-900/60 rounded-full overflow-hidden">
-          <div id="shellProgressFill" class="h-full rounded-full" style="width: 20%; background: linear-gradient(90deg, #f59e0b, #d97706); box-shadow: 0 0 20px rgba(245,158,11,0.45);"></div>
+        <div class="text-xs text-slate-400">
+         Intake
         </div>
-      </div>
-    </header>
-
-    <main class="flex-1 flex flex-col px-4 sm:px-6 py-8 sm:py-10">
-      <div class="max-w-5xl mx-auto space-y-6">
-        <div class="text-center pt-6 sm:pt-8">
-          <h1 id="shellTitle" class="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">Tax Monitoring Intake</h1>
-          <p id="shellSubtitle" class="mt-3 text-lg sm:text-xl text-slate-400 max-w-2xl mx-auto">Visibility first. Decisions second.</p>
-          <div class="h-px w-full bg-gradient-to-r from-transparent via-slate-700 to-transparent mt-4"></div>
-          <div id="shellIntro" class="mt-4 text-sm text-slate-500">Fill out the form below to generate your monitoring offer.</div>
-        </div>
-
-        <section id="page-your-needs">
-          <form id="tm-intake" data-tm-form method="post" action="https://api.taxmonitor.pro/forms/intake" accept-charset="UTF-8" class="space-y-6">
-            <input id="tm_event_id" name="eventId" type="hidden" value="">
-            <input id="tm_session_token" name="sessionToken" type="hidden" value="">
-            <div>
-              <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width: 0%"></div></div>
-              <p class="text-xs text-slate-400 mt-2">Question <span id="currentQuestion">1</span> of <span id="totalQuestions">1</span></p>
-            </div>
-            <div id="chatContainer" class="min-h-24 max-h-96 overflow-y-auto"></div>
-            <div id="inputArea" class="space-y-4"></div>
-            <div id="tm_error" class="hidden rounded-2xl border border-red-500/30 bg-red-500/10 p-4 text-sm text-red-200"></div>
-            <div class="flex gap-3 pt-4 border-t border-slate-700/30">
-              <button id="prevBtn" type="button" class="button-secondary flex-1 py-2 px-4" style="display:none;">← Previous</button>
-              <button id="nextBtn" type="button" class="button-primary flex-1 py-2 px-4" disabled>Next →</button>
-              <button id="submitBtn" type="submit" class="button-primary flex-1 py-2 px-4" data-tm-submit style="display:none;">Continue →</button>
-            </div>
-          </form>
-        </section>
-
-        <section id="page-services" class="hidden space-y-6">
-          <div class="rounded-2xl border border-slate-800/70 bg-slate-900/40 p-6 sm:p-8">
-            <div class="text-xs uppercase tracking-[0.2em] text-amber-400 font-semibold">Step 2 of 5</div>
-            <h2 class="mt-3 text-2xl sm:text-3xl font-bold text-white">Services</h2>
-            <p class="mt-3 text-slate-400 max-w-2xl">Choose the kinds of help you want to see first in your results. Tax Monitoring stays visible at the top because apparently we are trying to stay on topic.</p>
-            <div id="servicesOptions" class="mt-6 grid gap-3 sm:grid-cols-2"></div>
-            <div class="mt-6 flex gap-3 border-t border-slate-700/30 pt-4">
-              <button id="servicesBackBtn" type="button" class="button-secondary flex-1 py-3 px-4">← Back</button>
-              <button id="servicesNextBtn" type="button" class="button-primary flex-1 py-3 px-4">Next →</button>
-            </div>
-          </div>
-        </section>
-
-        <section id="page-location" class="hidden space-y-6">
-          <div class="rounded-2xl border border-slate-800/70 bg-slate-900/40 p-6 sm:p-8">
-            <div class="text-xs uppercase tracking-[0.2em] text-amber-400 font-semibold">Step 3 of 5</div>
-            <h2 class="mt-3 text-2xl sm:text-3xl font-bold text-white">Location</h2>
-            <p class="mt-3 text-slate-400 max-w-2xl">Pick a preferred state if location matters for your match. Leave it open if you want the broadest pool.</p>
-            <div class="mt-6 grid gap-4 lg:grid-cols-2">
-              <div>
-                <label for="preferredState" class="block text-sm font-medium text-slate-300 mb-3">Preferred state</label>
-                <div class="select-wrap">
-                  <select id="preferredState" class="glass-select">
-                    <option value="">Any state</option>
-                  </select>
-                </div>
-                <p class="mt-2 text-sm text-slate-500">Pick a state first to unlock matching cities.</p>
-              </div>
-              <div>
-                <label for="preferredCity" class="block text-sm font-medium text-slate-300 mb-3">Preferred city</label>
-                <div class="select-wrap">
-                  <select id="preferredCity" class="glass-select">
-                    <option value="">Any city</option>
-                  </select>
-                </div>
-                <p class="mt-2 text-sm text-slate-500">Cities update based on the selected state.</p>
-              </div>
-            </div>
-            <div class="mt-6 flex gap-3 border-t border-slate-700/30 pt-4">
-              <button id="locationBackBtn" type="button" class="button-secondary flex-1 py-3 px-4">← Back</button>
-              <button id="locationNextBtn" type="button" class="button-primary flex-1 py-3 px-4">Next →</button>
-            </div>
-          </div>
-        </section>
-
-        <section id="page-offers" class="hidden space-y-6">
-          <div class="rounded-2xl border border-slate-800/70 bg-slate-900/40 p-6 sm:p-8">
-            <div class="text-xs uppercase tracking-[0.2em] text-amber-400 font-semibold">Step 4 of 5</div>
-            <h2 class="mt-3 text-2xl sm:text-3xl font-bold text-white">Offers</h2>
-            <p class="mt-3 text-slate-400 max-w-2xl">Keep this simple. Would you like to know more about the member offers tied to this experience?</p>
-            <div class="mt-6 grid gap-3 sm:grid-cols-2">
-              <button id="offersYesBtn" type="button" class="choice-card">
-                <span class="choice-card-title">Yes, show me more</span>
-                <span class="choice-card-copy">Open a clean overview of the available offer benefits before continuing.</span>
-              </button>
-              <button id="offersNoBtn" type="button" class="choice-card">
-                <span class="choice-card-title">No, keep going</span>
-                <span class="choice-card-copy">Skip the offer explainer and move to the next decision.</span>
-              </button>
-            </div>
-            <div class="mt-6 flex gap-3 border-t border-slate-700/30 pt-4">
-              <button id="offersBackBtn" type="button" class="button-secondary flex-1 py-3 px-4">← Back</button>
-            </div>
-          </div>
-        </section>
-
-        <section id="page-offer-detail" class="hidden space-y-6">
-          <div class="rounded-2xl border border-slate-800/70 bg-slate-900/28 p-6 sm:p-8">
-            <div class="text-xs uppercase tracking-[0.2em] text-amber-400 font-semibold">Offer details</div>
-            <div class="mt-4 flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
-              <div class="max-w-3xl">
-                <div id="offerDetailBadge" class="mini-kicker">Taxpayer memberships</div>
-                <h2 id="offerDetailTitle" class="mt-2 text-2xl sm:text-3xl font-bold text-white">A quick look at the membership layer</h2>
-                <p id="offerDetailLead" class="mt-3 text-slate-400 max-w-2xl">Click any card to see more detailed information about that feature.</p>
-              </div>
-              <div class="detail-icon" id="offerDetailIcon"></div>
-            </div>
-            <div class="mt-6">
-              <div class="mini-kicker">Monitoring memberships</div>
-              <ul class="mt-3 max-w-3xl space-y-2 text-sm leading-6 text-slate-400 list-disc pl-5">
-                <li>locate qualified tax professionals through a searchable directory</li>
-                <li>submit inquiries directly to professionals in the network</li>
-                <li>receive member discounts and tier-based priority responses to inquiries (via call, direct messaging, email, or ticket)</li>
-                <li>access educational tax tools and transcript analysis resources</li>
-              </ul>
-              <div class="mt-5 grid gap-6 md:grid-cols-3" id="membershipTierRow"></div>
-            </div>
-            <div class="mt-6 grid gap-4 lg:grid-cols-2" id="offerFeatureCards"></div>
-            <div class="mt-6 flex justify-start">
-              <button id="featureBackBtn" type="button" class="button-secondary px-4 py-2">← Back to Features</button>
-            </div>
-            <div class="mt-6 grid gap-4 lg:grid-cols-[1.05fr_0.95fr] feature-detail-pane" id="featureDetailPane">
-              <div class="space-y-4">
-                <div class="detail-stat">
-                  <div class="mini-kicker">Selected feature</div>
-                  <p id="offerDetailBody" class="mt-3 text-sm leading-7 text-slate-300"></p>
-                </div>
-                <div class="detail-stat">
-                  <div class="mini-kicker">Why it helps</div>
-                  <div id="offerDetailReasons" class="mt-3 grid gap-3"></div>
-                </div>
-              </div>
-              <div class="space-y-4">
-                <div class="detail-stat">
-                  <div class="mini-kicker">What to expect</div>
-                  <div id="offerDetailExpectations" class="mt-3 grid gap-3"></div>
-                </div>
-                <div class="detail-stat">
-                  <div class="mini-kicker">Next move</div>
-                  <p id="offerDetailNext" class="mt-3 text-sm leading-7 text-slate-300"></p>
-                </div>
-              </div>
-            </div>
-            <div class="mt-6 flex gap-3 border-t border-slate-700/30 pt-4">
-              <button id="offerDetailBackBtn" type="button" class="button-secondary flex-1 py-3 px-4">← Back</button>
-              <button id="offerDetailNextBtn" type="button" class="button-primary flex-1 py-3 px-4">Continue →</button>
-            </div>
-          </div>
-        </section>
-
-        <section id="page-contact-consent" class="hidden space-y-6">
-          <div class="rounded-2xl border border-slate-800/70 bg-slate-900/40 p-6 sm:p-8">
-            <div class="text-xs uppercase tracking-[0.2em] text-amber-400 font-semibold">Final preference</div>
-            <h2 class="mt-3 text-2xl sm:text-3xl font-bold text-white">Would you like matched tax professionals to contact you directly?</h2>
-            <p class="mt-3 text-slate-400 max-w-2xl">This tells the experience whether to simply show your matches or also frame them for direct outreach.</p>
-            <div class="mt-6 grid gap-3 sm:grid-cols-2">
-              <button id="contactYesBtn" type="button" class="choice-card">
-                <span class="choice-card-title">Yes, direct contact is fine</span>
-                <span class="choice-card-copy">Show matches with the expectation that the matched professionals may reach out directly.</span>
-              </button>
-              <button id="contactNoBtn" type="button" class="choice-card">
-                <span class="choice-card-title">No, just show my matches</span>
-                <span class="choice-card-copy">Keep it browse-first and let me decide who to contact on my own.</span>
-              </button>
-            </div>
-            <div class="mt-6 flex gap-3 border-t border-slate-700/30 pt-4">
-              <button id="contactBackBtn" type="button" class="button-secondary flex-1 py-3 px-4">← Back</button>
-              <button id="contactNextBtn" type="button" class="button-primary flex-1 py-3 px-4">See Matches →</button>
-            </div>
-          </div>
-        </section>
-
-        <section id="page-matches" class="hidden space-y-6">
-          <div class="rounded-2xl border border-slate-800/70 bg-slate-900/40 p-6 sm:p-8">
-            <div class="text-xs uppercase tracking-[0.2em] text-amber-400 font-semibold">Step 5 of 5</div>
-            <h2 class="mt-3 text-2xl sm:text-3xl font-bold text-white">Your Matches</h2>
-            <p id="matchesLead" class="mt-3 text-slate-400 max-w-2xl">These matches are ranked using your services, location, and offer preferences.</p>
-            <div id="matchesList" class="mt-6 grid gap-4"></div>
-            <div class="mt-6 flex gap-3 border-t border-slate-700/30 pt-4">
-              <button id="matchesBackBtn" type="button" class="button-secondary flex-1 py-3 px-4">← Back</button>
-              <a href="/index.html" class="button-primary flex-1 py-3 px-4 text-center">Done</a>
-            </div>
-          </div>
-        </section>
-      </div>
-    </main>
-  </div>
-
-  <div class="text-center text-sm text-slate-600 pt-2 mt-1 mb-2">Monitoring does not create IRS representation. Representation, filing, and resolution are separate engagements.</div>
-
-  <footer class="px-6 py-3 mt-1">
-    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-      <p class="text-slate-500 text-sm">© <span id="footer-year"></span> Tax Monitor Pro. All rights reserved.</p>
-      <div class="flex items-center gap-6">
-        <a href="/legal/privacy.html" class="text-slate-400 hover:text-amber-400 text-sm transition-colors">Privacy Policy</a>
-        <a href="/legal/terms.html" class="text-slate-400 hover:text-amber-400 text-sm transition-colors">Terms of Service</a>
-        <a href="/site/contact.html" class="text-slate-400 hover:text-amber-400 text-sm transition-colors">Contact Support</a>
-      </div>
+       </div></a>
+      <div class="flex items-center gap-2 sm:gap-4">
+       <div class="flex items-center gap-2" data-stepper-item data-step="1">
+        <button type="button" class="stepper-jump" data-step-jump="1">
+         <div class="step-circle"><span class="step-number">1</span>
+         </div><span class="step-label">Your Needs</span>
+        </button>
+       </div>
+       <div class="step-connector"></div>
+       <div class="flex items-center gap-2" data-stepper-item data-step="2">
+        <button type="button" class="stepper-jump" data-step-jump="2">
+         <div class="step-circle"><span class="step-number">2</span>
+         </div><span class="step-label hidden sm:inline">Services</span>
+        </button>
+       </div>
+       <div class="step-connector"></div>
+       <div class="flex items-center gap-2" data-stepper-item data-step="3">
+        <button type="button" class="stepper-jump" data-step-jump="3">
+         <div class="step-circle"><span class="step-number">3</span>
+         </div><span class="step-label hidden sm:inline">Location</span>
+        </button>
+       </div>
+       <div class="step-connector"></div>
+       <div class="flex items-center gap-2" data-stepper-item data-step="4">
+        <button type="button" class="stepper-jump" data-step-jump="4">
+         <div class="step-circle"><span class="step-number">4</span>
+         </div><span class="step-label hidden sm:inline">Offers</span>
+        </button>
+       </div>
+       <div class="step-connector"></div>
+       <div class="flex items-center gap-2" data-stepper-item data-step="5">
+        <button type="button" class="stepper-jump" data-step-jump="5">
+         <div class="step-circle"><span class="step-number">5</span>
+         </div><span class="step-label hidden sm:inline">Your Matches</span>
+        </button>
+       </div>
+      </div><a href="/index.html" class="inline-flex items-center gap-2 rounded-full border border-slate-800/70 bg-black/20 px-3 py-1.5 text-xs font-semibold text-slate-300 hover:text-amber-300 hover:border-amber-500/30">
+       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+       </svg> Back </a>
+     </div>
+     <div class="mt-4 h-1 bg-slate-900/60 rounded-full overflow-hidden">
+      <div id="shellProgressFill" class="h-full rounded-full" style="width: 20%; background: linear-gradient(90deg, #f59e0b, #d97706); box-shadow: 0 0 20px rgba(245,158,11,0.45);"></div>
+     </div>
     </div>
-  </footer>
-
+   </header>
+   <main class="flex-1 flex flex-col px-4 sm:px-6 py-8 sm:py-10">
+    <div class="max-w-5xl mx-auto space-y-6">
+     <div class="text-center pt-6 sm:pt-8">
+      <h1 id="shellTitle" class="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">Tax Monitor Pro Match</h1>
+      <p id="shellSubtitle" class="mt-3 text-lg sm:text-xl text-slate-400 max-w-2xl mx-auto">Visibility first. Decisions second.</p>
+      <div class="h-px w-full bg-gradient-to-r from-transparent via-slate-700 to-transparent mt-4"></div>
+      <div id="shellIntro" class="mt-4 text-sm text-slate-500">
+       Answer a few quick questions to get matched with the right tax professional.
+      </div>
+     </div>
+     <section id="page-your-needs">
+      <form id="tm-intake" data-tm-form method="post" action="https://api.taxmonitor.pro/forms/intake" accept-charset="UTF-8" class="space-y-6">
+       <input id="tm_event_id" name="eventId" type="hidden" value=""> <input id="tm_session_token" name="sessionToken" type="hidden" value="">
+       <div>
+        <div class="progress-bar">
+         <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+        </div>
+        <p class="text-xs text-slate-400 mt-2">Question <span id="currentQuestion">1</span> of <span id="totalQuestions">1</span></p>
+       </div>
+       <div id="chatContainer" class="min-h-24 max-h-96 overflow-y-auto"></div>
+       <div id="inputArea" class="space-y-4"></div>
+       <div id="tm_error" class="hidden rounded-2xl border border-red-500/30 bg-red-500/10 p-4 text-sm text-red-200"></div>
+       <div class="flex gap-3 pt-4 border-t border-slate-700/30">
+        <button id="prevBtn" type="button" class="button-secondary flex-1 py-2 px-4" style="display:none;">← Previous</button> <button id="nextBtn" type="button" class="button-primary flex-1 py-2 px-4" disabled>Next →</button> <button id="submitBtn" type="submit" class="button-primary flex-1 py-2 px-4" data-tm-submit style="display:none;">Continue →</button>
+       </div>
+      </form>
+     </section>
+     <section id="page-services" class="hidden space-y-6">
+      <div class="min-h-24 max-h-96 overflow-y-auto mb-6">
+       <div class="chat-bubble mb-6">
+        <div class="bg-slate-800/40 border border-slate-700/50 rounded-lg p-4">
+         <p class="text-slate-100 font-medium">Which services do you need?</p>
+        </div>
+       </div>
+      </div>
+      <div id="servicesOptions" class="grid gap-3 sm:grid-cols-2"></div>
+      <div class="mt-6 flex gap-3 border-t border-slate-700/30 pt-4">
+       <button id="servicesBackBtn" type="button" class="button-secondary flex-1 py-3 px-4">← Back</button> <button id="servicesNextBtn" type="button" class="button-primary flex-1 py-3 px-4">Next →</button>
+      </div>
+     </section>
+     <section id="page-location" class="hidden space-y-6">
+      <div class="min-h-24 max-h-96 overflow-y-auto mb-6">
+       <div class="chat-bubble mb-6">
+        <div class="bg-slate-800/40 border border-slate-700/50 rounded-lg p-4">
+         <p class="text-slate-100 font-medium">Where are you located?</p>
+        </div>
+       </div>
+      </div>
+      <div class="grid gap-4 lg:grid-cols-2">
+       <div>
+        <label for="preferredState" class="block text-sm font-medium text-slate-300 mb-3">Preferred state</label>
+        <div class="select-wrap">
+         <select id="preferredState" class="glass-select"> <option value="">Any state</option> </select>
+        </div>
+        <p class="mt-2 text-sm text-slate-500">Pick a state first to unlock matching cities.</p>
+       </div>
+       <div>
+        <label for="preferredCity" class="block text-sm font-medium text-slate-300 mb-3">Preferred city</label>
+        <select id="preferredCity" class="glass-select"> <option value="">Any city</option> </select>
+        <div id="customCityWrap" class="mt-3 hidden">
+         <label for="customCity" class="block text-xs font-medium uppercase tracking-[0.16em] text-slate-400 mb-2">My city is not listed</label>
+         <input id="customCity" type="text" class="glass-input w-full px-4 py-3 rounded-2xl" placeholder="Enter your city">
+        </div>
+        <p class="mt-2 text-sm text-slate-500">Start typing to search cities in your selected state. Choose <span class="text-amber-300">My city is not listed</span> if needed.</p>
+       </div>
+      </div>
+      <div class="mt-6 flex gap-3 border-t border-slate-700/30 pt-4">
+       <button id="locationBackBtn" type="button" class="button-secondary flex-1 py-3 px-4">← Back</button> <button id="locationNextBtn" type="button" class="button-primary flex-1 py-3 px-4">Next →</button>
+      </div>
+     </section>
+     <section id="page-offers" class="hidden space-y-6">
+      <div class="grid md:grid-cols-3 gap-6" id="offerPackagesGrid"></div>
+      <div class="mt-6 flex gap-3 border-t border-slate-700/30 pt-4">
+       <button id="offersBackBtn" type="button" class="button-secondary flex-1 py-3 px-4">← Back</button>
+      </div>
+     </section>
+     <section id="page-offer-detail" class="hidden space-y-6">
+      <div class="rounded-2xl border border-slate-800/70 bg-slate-900/28 p-6 sm:p-8">
+       <div id="selectedMembershipHero" class="membership-package-card active"></div>
+       <div class="mt-6 grid gap-4 lg:grid-cols-[1.05fr_0.95fr] feature-detail-pane" id="featureDetailPane">
+        <div class="space-y-4">
+         <div class="detail-stat">
+          <div class="mini-kicker">
+           Included in this membership
+          </div>
+          <div id="offerDetailReasons" class="mt-3 grid gap-3"></div>
+         </div>
+        </div>
+        <div class="space-y-4">
+         <div class="detail-stat">
+          <div class="mini-kicker">
+           How memberships compare
+          </div>
+          <div id="offerComparisonTable" class="mt-3 overflow-hidden rounded-2xl border border-slate-800/70"></div>
+         </div>
+         <div class="detail-stat">
+          <div class="mini-kicker">
+           Best fit
+          </div>
+          <p id="offerDetailNext" class="mt-3 text-sm leading-7 text-slate-300"></p>
+         </div>
+        </div>
+       </div>
+       <div class="mt-6 flex gap-3 border-t border-slate-700/30 pt-4">
+        <button id="offerDetailBackBtn" type="button" class="button-secondary flex-1 py-3 px-4">← Back</button> <button id="offerDetailNextBtn" type="button" class="button-primary flex-1 py-3 px-4">Continue →</button>
+       </div>
+      </div>
+     </section>
+     <section id="page-contact-consent" class="hidden space-y-6">
+      <div class="min-h-24 max-h-96 overflow-y-auto mb-6">
+       <div class="chat-bubble mb-6">
+        <div class="bg-slate-800/40 border border-slate-700/50 rounded-lg p-4">
+         <p class="text-slate-100 font-medium">How should professionals contact you?</p>
+        </div>
+       </div>
+      </div>
+      <div class="grid gap-3 sm:grid-cols-2">
+       <button id="contactYesBtn" type="button" class="choice-card"> <span class="choice-card-title">Yes, direct contact is fine</span> <span class="choice-card-copy">Show matches with the expectation that the matched professionals may reach out directly.</span> </button> <button id="contactNoBtn" type="button" class="choice-card"> <span class="choice-card-title">No, just show my matches</span> <span class="choice-card-copy">Keep it browse-first and let me decide who to contact on my own.</span> </button>
+      </div>
+      <div class="mt-6 flex gap-3 border-t border-slate-700/30 pt-4">
+       <button id="contactBackBtn" type="button" class="button-secondary flex-1 py-3 px-4">← Back</button> <button id="contactNextBtn" type="button" class="button-primary flex-1 py-3 px-4">See Matches →</button>
+      </div>
+     </section>
+     <section id="page-matches" class="hidden space-y-6">
+      <div class="min-h-24 max-h-96 overflow-y-auto mb-6">
+       <div class="chat-bubble mb-6">
+        <div class="bg-slate-800/40 border border-slate-700/50 rounded-lg p-4">
+         <p class="text-slate-100 font-medium">Here are your matches</p>
+        </div>
+       </div>
+      </div>
+      <div id="matchesList"></div>
+      <div class="mt-6 flex gap-3 border-t border-slate-700/30 pt-4">
+       <button id="matchesBackBtn" type="button" class="button-secondary flex-1 py-3 px-4">← Back</button>
+      </div>
+     </section>
+    </div>
+   </main>
+  </div>
   <script>
     (function () {
-      var y = document.getElementById('footer-year');
-      if (y) y.textContent = String(new Date().getFullYear());
-    })();
-  </script>
-
-  <script>
-    (function () {
-      window.tmCommon = window.tmCommon || {
-        previewMode: true,
-        disableSubmit: function (form) {
-          var btn = form.querySelector('[data-tm-submit]');
-          if (!btn) return;
-          btn.disabled = true;
-          btn.dataset.tmLabel = btn.textContent;
-          btn.textContent = 'Submitting…';
-          btn.classList.add('opacity-80', 'cursor-not-allowed');
-        },
-        ensureEventId: function () {
-          var el = document.getElementById('tm_event_id');
-          if (!el || el.value) return;
-          var id = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : (Date.now() + '-' + Math.random().toString(16).slice(2));
-          el.value = id;
-        },
-        restoreSubmit: function (form) {
-          var btn = form.querySelector('[data-tm-submit]');
-          if (!btn) return;
-          btn.disabled = false;
-          if (btn.dataset.tmLabel) btn.textContent = btn.dataset.tmLabel;
-          btn.classList.remove('opacity-80', 'cursor-not-allowed');
-        },
-        showError: function (msg) {
-          var el = document.getElementById('tm_error');
-          if (!el) return;
-          el.textContent = msg || 'Something went wrong.';
-          el.classList.remove('hidden');
-        },
-        syncSessionToken: function () {
-          var qs = new URLSearchParams(window.location.search || '');
-          var token = qs.get('sessionToken') || '';
-          var el = document.getElementById('tm_session_token');
-          if (el) el.value = token;
-        }
-      };
-
-      var questions = [
-        { autocomplete: 'given-name', id: 'crm_first_name', key: 'CRM First Name', label: 'What is your first name?', placeholder: 'First name', required: true, type: 'text' },
-        { autocomplete: 'family-name', id: 'crm_last_name', key: 'CRM Last Name', label: 'What is your last name?', placeholder: 'Last name', required: true, type: 'text' },
-        { autocomplete: 'email', id: 'crm_primary_email', key: 'CRM Primary Email', label: 'What is your primary email?', placeholder: 'you@company.com', required: true, type: 'email' },
-        { autocomplete: 'organization', id: 'crm_company_name', key: 'CRM Company Name', label: 'Company name (optional)', placeholder: 'Company', required: false, type: 'text' },
-        { id: 'urgency_level', key: 'Urgency Level', label: 'How urgent is your tax situation?', options: ['1 — Low', '2 — Medium', '3 — High', '4 — Critical'], required: true, type: 'radio' },
-        { id: 'irs_notice_received', key: 'IRS Notice Received', label: 'Have you received an IRS notice?', options: ['No', 'Not Sure', 'Yes'], required: true, type: 'radio' },
-        { conditionalOn: { key: 'IRS Notice Received', value: 'Yes' }, id: 'irs_notice_type', key: 'IRS Notice Type', label: 'What type of IRS notice? (optional)', options: ['CP', 'LT', 'Letter', 'Other'], required: false, type: 'radio' },
-        { conditionalOn: { key: 'IRS Notice Received', value: 'Yes' }, id: 'irs_notice_date', key: 'IRS Notice Date', label: 'What is the IRS notice date? (optional)', placeholder: 'YYYY-MM-DD', required: false, type: 'date' },
-        { id: 'primary_concern', key: 'Primary Concern', label: 'What is your primary concern? (select one)', options: ['Balance Due', 'IRS Notices', 'Transcript Monitoring', 'Unfiled Returns'], required: true, type: 'radio' },
-        { id: 'unfiled_returns_indicator', key: 'Unfiled Returns Indicator', label: 'Do you have unfiled returns?', options: ['No', 'Not Sure', 'Yes'], required: true, type: 'radio' },
-        { id: 'estimated_balance_due_range', key: 'Estimated Balance Due Range', label: 'Estimated balance due?', options: ['$0', '$1–$5,000', '$5,001–$10,000', '$10,001–$25,000', '$25,001–$50,000', '$50,001–$100,000', '$100,000+', 'Not Sure'], required: true, type: 'radio' },
-        { id: 'irs_monitoring_only_ack', key: 'IRS Monitoring Only Acknowledged', label: 'I understand this service is monitoring-only', required: true, type: 'checkbox' }
-      ];
-
-      var servicesCatalog = ['Audit Defense', 'Business Tax Advisory', 'Compliance', 'IRS Collections Defense', 'Offer in Compromise', 'Penalty Abatement', 'Tax Monitoring', 'Tax Planning', 'Tax Preparation', 'Tax Resolution'];
-      var locationCatalog = {
-        California: ['Los Angeles', 'Sacramento', 'San Diego', 'San Francisco', 'San Jose'],
-        Colorado: ['Aurora', 'Boulder', 'Colorado Springs', 'Denver', 'Fort Collins'],
-        Florida: ['Jacksonville', 'Miami', 'Orlando', 'Tampa', 'West Palm Beach'],
-        Illinois: ['Chicago', 'Naperville', 'Peoria', 'Rockford', 'Springfield'],
-        'New York': ['Albany', 'Brooklyn', 'Buffalo', 'Manhattan', 'Queens'],
-        Texas: ['Austin', 'Dallas', 'Fort Worth', 'Houston', 'San Antonio']
-      };
-
-      var offerFeatureCatalog = {
-        directory: {
-          body: 'Browse tax professionals through a structured directory designed for monitoring-first services. Filter by location, services, and monitoring capabilities.',
-          expectations: ['Directory access', 'Searchable filters', 'Cleaner discovery experience'],
-          icon: 'directory',
-          lead: 'Locate qualified tax professionals through a structured, searchable directory.',
-          next: 'Use the directory when you want control over who you review before making contact.',
-          reasons: ['Search by the help you actually need.', 'Reduce random outreach to bad-fit professionals.', 'Find monitoring-first professionals faster.'],
-          stats: ['Find pros', 'Filter faster', 'Browse cleanly'],
-          title: 'Searchable Professional Directory'
-        },
-        inquiries: {
-          body: 'Structured inquiries let taxpayers describe their needs cleanly so the first interaction starts with better context instead of confused back-and-forth.',
-          expectations: ['Structured outreach', 'Cleaner first contact', 'Better-fit replies'],
-          icon: 'inquiries',
-          lead: 'Send structured inquiries directly to professionals who match your needs.',
-          next: 'Use inquiries when you want the match experience to lead into outreach without chaos.',
-          reasons: ['Start conversations with relevant context.', 'Reduce repetitive explanation.', 'Make first contact more efficient.'],
-          stats: ['Direct outreach', 'Less friction', 'Better context'],
-          title: 'Submit Inquiries to Professionals'
-        },
-        monitoring: {
-          body: 'Monitoring memberships are for taxpayers who want proactive awareness of transcript changes, account movement, and signals that deserve attention before they become painful.',
-          expectations: ['Monitoring pathway', 'Visibility-first support', 'Transcript awareness'],
-          icon: 'monitoring',
-          lead: 'Enroll in transcript monitoring memberships for ongoing IRS visibility.',
-          next: 'Use memberships when ongoing visibility matters more than one-off reaction.',
-          reasons: ['Get earlier awareness of account changes.', 'Support a monitoring-first relationship.', 'Reduce expensive surprise moments.'],
-          stats: ['Ongoing visibility', 'Transcript watch', 'Proactive support'],
-          title: 'Monitoring Memberships'
-        },
-        tools: {
-          body: 'These resources help taxpayers understand their situation more clearly before or alongside professional help, so the overall experience feels smarter and less opaque.',
-          expectations: ['Learning tools', 'Transcript resources', 'Better self-understanding'],
-          icon: 'tools',
-          lead: 'Access educational tax tools and transcript analysis resources.',
-          next: 'Use tools when you want education and clarity alongside the professional search.',
-          reasons: ['Learn before committing.', 'Understand transcript-related concepts better.', 'Get more value from the match experience.'],
-          stats: ['Learn faster', 'Tools access', 'Better clarity'],
-          title: 'Educational Tools & Transcript Resources'
-        }
-      };
-
-      var proCatalog = [
-        {
-          city: 'San Diego',
-          location: 'California',
-          name: 'Alina Reyes',
-          offers: ['Member discounts', 'Tax Tools Arcade Tokens', 'Transcript Tokens'],
-          profileUrl: 'https://taxmonitor.pro/directory/profile-template?slug=alina-reyes-tax-monitor',
-          services: ['Compliance', 'Tax Monitoring', 'Tax Planning'],
-          subtitle: 'Reyes Tax Advisory · CPA',
-          summary: 'Strong for proactive monitoring, planning, and clean follow-through.'
-        },
-        {
-          city: 'Denver',
-          location: 'Colorado',
-          name: 'Devon Hale',
-          offers: ['Tax Tools Arcade Tokens'],
-          profileUrl: 'https://taxmonitor.pro/directory/profile-template?slug=devon-hale-resolution',
-          services: ['Compliance', 'IRS Collections Defense', 'Tax Preparation'],
-          subtitle: 'Hale Tax Works · Enrolled Agent',
-          summary: 'Strong for practical compliance help and broader tax support.'
-        },
-        {
-          city: 'Manhattan',
-          location: 'New York',
-          name: 'Marin Cole',
-          offers: ['Member discounts', 'Transcript Tokens'],
-          profileUrl: 'https://taxmonitor.pro/directory/profile-template?slug=marin-cole-tax-counsel',
-          services: ['Tax Monitoring', 'Tax Planning', 'Tax Resolution'],
-          subtitle: 'Cole Tax Counsel · Attorney',
-          summary: 'Strong for strategic advisory and higher-complexity matters.'
-        },
-        {
-          city: 'Chicago',
-          location: 'Illinois',
-          name: 'Soraya Lin',
-          offers: ['Member discounts', 'Tax Tools Arcade Tokens'],
-          profileUrl: 'https://taxmonitor.pro/directory/profile-template?slug=soraya-lin-financial',
-          services: ['Tax Monitoring', 'Tax Planning', 'Tax Preparation'],
-          subtitle: 'Lin Financial Studio · CPA',
-          summary: 'Strong for approachable monitoring and planning support.'
-        }
-      ];
-
+      var form = document.getElementById('tm-intake');
       var currentQuestionIndex = 0;
       var answers = {};
       var shellStep = 1;
+      var currentOfferFeature = 'appDashboard';
+      var selectedMembership = 'professional';
       var servicesSelected = [];
-      var wantsDirectContact = '';
-      var wantsOfferInfo = '';
       var preferredState = '';
       var preferredCity = '';
-      var selectedFeatureId = 'directory';
-      var selectedMembershipTier = 'Visibility';
-      var form = document.getElementById('tm-intake');
+      var customCity = '';
+      var wantsOfferInfo = null;
+      var wantsDirectContact = null;
+      var cityTom = null;
 
-      function byText(a, b) {
-        return String(a).localeCompare(String(b));
-      }
+      var questions = [
+        { id: 'q1', key: 'CRM First Name', type: 'text', label: 'What is your first name?', placeholder: 'John', required: true },
+        { id: 'q2', key: 'CRM Last Name', type: 'text', label: 'What is your last name?', placeholder: 'Doe', required: true },
+        { id: 'q3', key: 'Email', type: 'email', label: 'What is your email address?', placeholder: 'john@example.com', required: true },
+        { id: 'q4', key: 'Phone', type: 'text', label: 'What is your phone number?', placeholder: '(555) 123-4567', required: true },
+        { id: 'q5', key: 'Business Type', type: 'multi', label: 'What type of business(es) do you operate?', options: ['C-Corporation', 'LLC', 'Non-Profit', 'Partnership', 'S-Corporation', 'Sole Proprietor', 'I do not operate a business'], required: true },
+        { id: 'q6', key: 'IRS Notice Received', type: 'radio', label: 'Have you received an IRS notice?', options: ['Yes', 'No'], required: true },
+        { id: 'q7', key: 'IRS Notice Type', type: 'radio', label: 'What type of notice?', options: ['Audit', 'Notice of Deficiency', 'Other'], required: true, conditionalOn: { key: 'IRS Notice Received', value: 'Yes' } },
+        { id: 'q8', key: 'IRS Notice Date', type: 'date', label: 'When did you receive the notice?', required: true, conditionalOn: { key: 'IRS Notice Received', value: 'Yes' } },
+        { id: 'q9', key: 'Budget Preference', type: 'radio', label: 'What budget range feels right for the professional you want to work with?', options: ['Budget-friendly', 'Moderate', 'Premium'], required: true },
+        { id: 'q10', key: 'Tax Years Affected', type: 'radio', label: 'How many tax years are affected?', options: ['1', '2-3', '4 or more'], required: true },
+        { id: 'q11', key: 'Prior Audit Experience', type: 'checkbox', label: 'I have worked with a CPA or tax attorney on an audit before', required: false }
+      ];
 
-      function stepElements() {
-        return Array.prototype.slice.call(document.querySelectorAll('header .flex.items-center.gap-2'));
-      }
+      var locationCatalog = {
+        'Alabama': ['Birmingham', 'Huntsville', 'Mobile', 'Montgomery'],
+        'Alaska': ['Anchorage', 'Fairbanks', 'Juneau'],
+        'Arizona': ['Chandler', 'Mesa', 'Phoenix', 'Scottsdale', 'Tucson'],
+        'Arkansas': ['Fayetteville', 'Fort Smith', 'Little Rock'],
+        'California': ['Fresno', 'Long Beach', 'Los Angeles', 'Oakland', 'Sacramento', 'San Diego', 'San Francisco', 'San Jose'],
+        'Colorado': ['Aurora', 'Colorado Springs', 'Denver', 'Fort Collins'],
+        'Connecticut': ['Bridgeport', 'Hartford', 'New Haven', 'Stamford'],
+        'Delaware': ['Dover', 'Newark', 'Wilmington'],
+        'Florida': ['Jacksonville', 'Miami', 'Orlando', 'St. Petersburg', 'Tampa'],
+        'Georgia': ['Athens', 'Atlanta', 'Augusta', 'Savannah'],
+        'Hawaii': ['Hilo', 'Honolulu', 'Kailua'],
+        'Idaho': ['Boise', 'Idaho Falls', 'Meridian'],
+        'Illinois': ['Aurora', 'Chicago', 'Naperville', 'Rockford'],
+        'Indiana': ['Evansville', 'Fort Wayne', 'Indianapolis', 'South Bend'],
+        'Iowa': ['Cedar Rapids', 'Davenport', 'Des Moines'],
+        'Kansas': ['Kansas City', 'Olathe', 'Wichita'],
+        'Kentucky': ['Lexington', 'Louisville'],
+        'Louisiana': ['Baton Rouge', 'Lafayette', 'New Orleans'],
+        'Maine': ['Bangor', 'Lewiston', 'Portland'],
+        'Maryland': ['Annapolis', 'Baltimore', 'Rockville'],
+        'Massachusetts': ['Boston', 'Cambridge', 'Springfield', 'Worcester'],
+        'Michigan': ['Ann Arbor', 'Detroit', 'Grand Rapids', 'Lansing'],
+        'Minnesota': ['Duluth', 'Minneapolis', 'Rochester', 'St. Paul'],
+        'Mississippi': ['Biloxi', 'Gulfport', 'Jackson'],
+        'Missouri': ['Kansas City', 'Springfield', 'St. Louis'],
+        'Montana': ['Billings', 'Bozeman', 'Missoula'],
+        'Nebraska': ['Lincoln', 'Omaha'],
+        'Nevada': ['Henderson', 'Las Vegas', 'Reno'],
+        'New Hampshire': ['Concord', 'Manchester', 'Nashua'],
+        'New Jersey': ['Jersey City', 'Newark', 'Paterson'],
+        'New Mexico': ['Albuquerque', 'Las Cruces', 'Santa Fe'],
+        'New York': ['Albany', 'Buffalo', 'New York City', 'Rochester', 'Syracuse'],
+        'North Carolina': ['Charlotte', 'Durham', 'Greensboro', 'Raleigh'],
+        'North Dakota': ['Bismarck', 'Fargo'],
+        'Ohio': ['Akron', 'Cincinnati', 'Cleveland', 'Columbus', 'Toledo'],
+        'Oklahoma': ['Norman', 'Oklahoma City', 'Tulsa'],
+        'Oregon': ['Eugene', 'Portland', 'Salem'],
+        'Pennsylvania': ['Allentown', 'Harrisburg', 'Philadelphia', 'Pittsburgh'],
+        'Rhode Island': ['Providence', 'Warwick'],
+        'South Carolina': ['Charleston', 'Columbia', 'Greenville'],
+        'South Dakota': ['Rapid City', 'Sioux Falls'],
+        'Tennessee': ['Chattanooga', 'Knoxville', 'Memphis', 'Nashville'],
+        'Texas': ['Austin', 'Dallas', 'Fort Worth', 'Houston', 'San Antonio'],
+        'Utah': ['Provo', 'Salt Lake City', 'West Valley City'],
+        'Vermont': ['Burlington', 'Montpelier'],
+        'Virginia': ['Alexandria', 'Norfolk', 'Richmond', 'Virginia Beach'],
+        'Washington': ['Bellevue', 'Seattle', 'Spokane', 'Tacoma'],
+        'West Virginia': ['Charleston', 'Huntington'],
+        'Wisconsin': ['Green Bay', 'Madison', 'Milwaukee'],
+        'Wyoming': ['Casper', 'Cheyenne']
+      };
 
-      function iconMarkup(kind) {
-        if (kind === 'directory') {
-          return '<svg class="w-8 h-8 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 7h16M4 12h16M4 17h10M6 5h.01M6 10h.01M6 15h.01"/></svg>';
+      var offerFeatureCatalog = {
+        appDashboard: {
+          icon: 'layout-dashboard',
+          name: 'App Dashboard',
+          description: 'Keep your membership activity, saved results, and matching visibility in one place inside your dashboard.',
+          bullets: {
+            starter: ['Membership account access', 'Past request visibility', 'Saved results and activity history', 'Early discount notifications from matching professionals'],
+            professional: ['Membership account access', 'Past request visibility', 'Saved results and activity history', 'Early discount notifications from matching professionals'],
+            enterprise: ['Membership account access', 'Past request visibility', 'Saved results and activity history', 'Early discount notifications from matching professionals']
+          },
+          comparison: { starter: 'Included', professional: 'Included', enterprise: 'Included' },
+          fit: 'Best when you want one clean place to track prior requests, saved results, and matching activity without digging around like it is 2009.'
+        },
+        professionalMatching: {
+          icon: 'users',
+          name: 'Professional Matching',
+          description: 'Browse and match with professionals based on services, location, and budget-aware preferences.',
+          bullets: {
+            starter: ['Directory browsing and matching', 'Match by services and location', 'Budget-aware matching preferences', 'Inquiry submission to professionals'],
+            professional: ['Directory browsing and matching', 'Match by services and location', 'Budget-aware matching preferences', 'Inquiry submission to professionals'],
+            enterprise: ['Directory browsing and matching', 'Match by services and location', 'Budget-aware matching preferences', 'Inquiry submission to professionals']
+          },
+          comparison: { starter: 'Included', professional: 'Included', enterprise: 'Included' },
+          fit: 'Best when you want professionals filtered by fit instead of wasting time with random directory wandering and false hope.'
+        },
+        taxToolTokens: {
+          icon: 'wrench',
+          name: 'Tax Tool Tokens',
+          description: 'Use included token access for eligible tax tools and keep a record of what you used and what came back.',
+          bullets: {
+            starter: ['Member tax tool token balance', 'Access to eligible tax tools', 'Token usage visibility', 'Saved tool outputs in the dashboard'],
+            professional: ['Member tax tool token balance', 'Access to eligible tax tools', 'Token usage visibility', 'Saved tool outputs in the dashboard'],
+            enterprise: ['Member tax tool token balance', 'Access to eligible tax tools', 'Token usage visibility', 'Saved tool outputs in the dashboard']
+          },
+          comparison: { starter: 'Included', professional: 'Included', enterprise: 'Included' },
+          fit: 'Best when you want practical tool access tied to a visible token balance instead of mystery usage and vanishing outputs.'
+        },
+        transcriptTokens: {
+          icon: 'scroll-text',
+          name: 'Transcript Tokens',
+          description: 'Track transcript token access, transcript jobs, and saved results from the same member workflow.',
+          bullets: {
+            starter: ['Member transcript token balance', 'Transcript job access', 'Transcript job monitoring', 'Saved transcript results in the dashboard'],
+            professional: ['Member transcript token balance', 'Transcript job access', 'Transcript job monitoring', 'Saved transcript results in the dashboard'],
+            enterprise: ['Member transcript token balance', 'Transcript job access', 'Transcript job monitoring', 'Saved transcript results in the dashboard']
+          },
+          comparison: { starter: 'Included', professional: 'Included', enterprise: 'Included' },
+          fit: 'Best when transcripts are part of the workflow and you want job visibility without turning every status check into a scavenger hunt.'
         }
-        if (kind === 'inquiries') {
-          return '<svg class="w-8 h-8 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 10h8M8 14h5M5 19l1.5-3H19a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v11a2 2 0 002 2z"/></svg>';
-        }
-        if (kind === 'monitoring') {
-          return '<svg class="w-8 h-8 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 3l7 4v5c0 5-3.5 7.5-7 9-3.5-1.5-7-4-7-9V7l7-4zm-3 9l2 2 4-4"/></svg>';
-        }
-        return '<svg class="w-8 h-8 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 3h6v4h4v10a4 4 0 01-4 4H9a4 4 0 01-4-4V7h4V3zm0 8h.01M15 11h.01M9 15h6"/></svg>';
-      }
-
-      function largeFeatureIcon(kind) {
-        if (kind === 'directory') {
-          return '<svg class="w-12 h-12 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M4 7h16M4 12h16M4 17h10M6 5h.01M6 10h.01M6 15h.01"/><circle cx="18" cy="17" r="3.2" stroke-width="1.4"></circle><path stroke-linecap="round" stroke-width="1.4" d="M20.4 19.4L22 21"/></svg>';
-        }
-        if (kind === 'inquiries') {
-          return '<svg class="w-12 h-12 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M5 19l1.5-3H19a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v11a2 2 0 002 2z"/><path stroke-linecap="round" stroke-width="1.6" d="M8 10h8M8 14h5"/></svg>';
-        }
-        if (kind === 'monitoring') {
-          return '<svg class="w-12 h-12 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M12 3l7 4v5c0 5-3.5 7.5-7 9-3.5-1.5-7-4-7-9V7l7-4z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M9 12l2 2 4-4"/></svg>';
-        }
-        return '<svg class="w-12 h-12 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M9 3h6v4h4v10a4 4 0 01-4 4H9a4 4 0 01-4-4V7h4V3z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M9 11h6M9 15h4"/></svg>';
-      }
+      };
 
       function membershipCatalog() {
         return [
           {
+            id: 'essential',
             badgeClass: 'bg-slate-700 text-slate-300',
-            badgeLabel: 'VISIBILITY',
-            bullets: ['Searchable directory access', 'Educational tax tools', 'Transcript learning resources'],
-            copy: 'Locate professionals through a searchable directory and review educational resources before reaching out. Includes baseline member entitlements and visibility into participating discount offers.',
-            footer: 'Best for self-guided discovery',
-            label: 'Visibility',
-            price: '$19',
-            term: 'monthly'
+            badgeLabel: 'ESSENTIAL',
+            price: '$9 / month',
+            spotlight: '',
+            summary: 'Entry-level membership for taxpayers exploring tools, transcripts, and professional matching.',
+            term: 'Cancel anytime • tokens roll over 60 days',
+            toneClass: 'text-slate-400',
+            toneText: 'Best for exploring your tax situation'
           },
           {
+            id: 'plus',
             badgeClass: 'bg-amber-500/20 text-amber-400',
-            badgeLabel: 'RESPONSE',
-            bullets: ['Everything in Visibility', 'Submit inquiries to professionals', 'Priority match flow'],
-            copy: 'Everything in Visibility plus structured inquiries so taxpayers can reach matched professionals faster, with stronger member access and participating offer visibility.',
-            featured: true,
-            footer: 'Recommended for most taxpayers',
-            label: 'Response',
-            price: '$49',
-            term: 'monthly'
+            badgeLabel: 'PLUS',
+            price: '$19 / month',
+            spotlight: 'MOST POPULAR',
+            summary: 'Balanced access for taxpayers actively reviewing transcripts, tools, and professional options.',
+            term: 'Cancel anytime • tokens roll over 60 days',
+            toneClass: 'text-amber-400 font-medium',
+            toneText: 'Recommended for most members'
           },
           {
+            id: 'premier',
             badgeClass: 'bg-emerald-500/20 text-emerald-400',
-            badgeLabel: 'ADVANTAGE',
-            bullets: ['Everything in Response', 'Enroll in monitoring memberships', 'Full product-system access'],
-            copy: 'Everything in Response plus monitoring memberships for ongoing transcript visibility, deeper awareness, and the fullest member-entitlement access in the experience.',
-            footer: 'Best for ongoing visibility',
-            label: 'Advantage',
-            price: '$99',
-            term: 'monthly'
+            badgeLabel: 'PREMIER',
+            price: '$39 / month',
+            spotlight: '',
+            summary: 'Expanded tokens and priority matching for more complex tax situations.',
+            term: 'Cancel anytime • tokens roll over 60 days',
+            toneClass: 'text-emerald-400 font-medium',
+            toneText: 'Best for advanced users'
           }
         ];
       }
 
-      function updateStepperUi() {
-        var titles = {
-          1: ['Tax Monitoring Intake', 'Visibility first. Decisions second.', 'Fill out the form below to generate your monitoring offer.'],
-          2: ['Choose Services', 'Select what kind of help you want first.', 'This keeps the experience simple while still shaping the shortlist.'],
-          3: ['Choose Location', 'Location can narrow the fit when it matters.', 'Leave it open if you want the broadest possible pool.'],
-          4: ['Choose Offers', 'A simple detour for anyone who wants more context.', 'You can learn more, skip it, and then decide whether direct contact should happen.'],
-          5: ['Your Matches', 'Here is your current shortlist.', 'These results are based on your intake, services, location, city, and your contact preference.'],
-          'offer-detail': ['Offer Details', 'A quick look at the membership layer.', 'Click any feature card to view more detail.'],
-          'contact-consent': ['Contact Preference', 'Choose whether matched professionals can contact you directly.', 'One more decision, then the shortlist appears.']
-        };
-        var config = titles[shellStep];
-        document.getElementById('shellTitle').textContent = config[0];
-        document.getElementById('shellSubtitle').textContent = config[1];
-        document.getElementById('shellIntro').textContent = config[2];
+      function byText(a, b) {
+        return String(a || '').localeCompare(String(b || ''));
+      }
 
-        stepElements().forEach(function (el, index) {
-          var active = typeof shellStep === 'number' && index + 1 === shellStep;
-          var circle = el.querySelector('div.w-8');
-          var label = el.querySelector('span:last-child');
-          if (!circle || !label) return;
-          if (active) {
-            circle.className = 'w-8 h-8 rounded-full bg-amber-500 flex items-center justify-center shadow-lg shadow-amber-500/30';
-            label.className = label.className.indexOf('hidden sm:inline') >= 0 ? 'text-sm font-semibold text-amber-400 hidden sm:inline' : 'text-sm font-semibold text-amber-400';
-          } else {
-            circle.className = 'w-8 h-8 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center';
-            label.className = label.className.indexOf('hidden sm:inline') >= 0 ? 'text-sm text-slate-500 hidden sm:inline' : 'text-sm text-slate-500';
+      function updateStepperUi() {
+        var pages = ['page-your-needs', 'page-services', 'page-location', 'page-offers', 'page-offer-detail', 'page-contact-consent', 'page-matches'];
+        pages.forEach(function (pageId) {
+          var el = document.getElementById(pageId);
+          if (!el) return;
+          el.classList.add('hidden');
+        });
+
+        var visibleStep = shellStep === 'offer-detail' || shellStep === 'contact-consent' ? 4 : shellStep;
+        var targetPage = shellStep === 'offer-detail' ? 'page-offer-detail' : shellStep === 'contact-consent' ? 'page-contact-consent' : shellStep === 5 ? 'page-matches' : 'page-' + ['your-needs', 'your-needs', 'services', 'location', 'offers'][shellStep];
+        if (shellStep === 1) targetPage = 'page-your-needs';
+        var target = document.getElementById(targetPage);
+        if (target) target.classList.remove('hidden');
+
+        var stepItems = Array.prototype.slice.call(document.querySelectorAll('[data-stepper-item]'));
+        stepItems.forEach(function (item) {
+          var stepValue = Number(item.getAttribute('data-step'));
+          item.classList.remove('is-current', 'is-complete');
+          if (stepValue < visibleStep) {
+            item.classList.add('is-complete');
+          } else if (stepValue === visibleStep) {
+            item.classList.add('is-current');
           }
         });
 
-        var progressPercent = (shellStep === 'offer-detail' || shellStep === 'contact-consent') ? 80 : Number(shellStep) * 20;
-        document.getElementById('shellProgressFill').style.width = String(progressPercent) + '%';
-        document.getElementById('page-your-needs').classList.toggle('hidden', shellStep !== 1);
-        document.getElementById('page-services').classList.toggle('hidden', shellStep !== 2);
-        document.getElementById('page-location').classList.toggle('hidden', shellStep !== 3);
-        document.getElementById('page-offers').classList.toggle('hidden', shellStep !== 4);
-        document.getElementById('page-offer-detail').classList.toggle('hidden', shellStep !== 'offer-detail');
-        document.getElementById('page-contact-consent').classList.toggle('hidden', shellStep !== 'contact-consent');
-        document.getElementById('page-matches').classList.toggle('hidden', shellStep !== 5);
+        var connectors = Array.prototype.slice.call(document.querySelectorAll('.step-connector'));
+        connectors.forEach(function (connector, index) {
+          connector.classList.toggle('is-complete', index < visibleStep - 1);
+        });
+
+        var shellProgressFill = document.getElementById('shellProgressFill');
+        if (shellProgressFill) {
+          shellProgressFill.style.width = (visibleStep / 5) * 100 + '%';
+        }
       }
 
       function renderServiceCards() {
-        var wrap = document.getElementById('servicesOptions');
-        if (!wrap) return;
-        wrap.innerHTML = servicesCatalog.slice().sort(byText).map(function (service) {
-          var active = servicesSelected.indexOf(service) >= 0;
-          var copy = service === 'Tax Monitoring' ? 'Monitoring-first visibility, alerts, and proactive account awareness.' : 'Add ' + service + ' to shape the shortlist.';
-          return '<button type="button" data-service="' + service.replace(/"/g, '&quot;') + '" class="choice-card ' + (active ? 'active' : '') + '"><span class="choice-card-title">' + service + '</span><span class="choice-card-copy">' + copy + '</span></button>';
-        }).join('');
+        var options = ['Appeals', 'Audit Defense', 'Business Tax Advisory', 'Compliance', 'Consulting', 'Estate & Trust Tax', 'Expert Witness', 'Foreign Reporting (FBAR/FATCA)', 'IRS Collections Defense', 'Offer in Compromise', 'Payroll Tax Defense', 'Penalty Abatement', 'Tax Litigation', 'Tax Monitoring', 'Tax Planning', 'Tax Preparation', 'Tax Resolution', 'Trust Fund Recovery Defense'];
+        var container = document.getElementById('servicesOptions');
+        if (!container) return;
+        container.innerHTML = '';
+        options.forEach(function (service) {
+          var btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'choice-card' + (servicesSelected.indexOf(service) >= 0 ? ' active' : '');
+          btn.setAttribute('data-service', service);
+          btn.innerHTML = '<span class="choice-card-title">' + service + '</span>';
+          container.appendChild(btn);
+        });
       }
 
       function renderStateOptions() {
+        var states = Object.keys(locationCatalog).sort(byText);
         var stateSelect = document.getElementById('preferredState');
-        var citySelect = document.getElementById('preferredCity');
-        if (!stateSelect || !citySelect) return;
-        var statesCatalog = Object.keys(locationCatalog).sort(byText);
-        stateSelect.innerHTML = '<option value="">Any state</option>' + statesCatalog.map(function (stateName) {
-          return '<option value="' + stateName.replace(/"/g, '&quot;') + '" ' + (preferredState === stateName ? 'selected' : '') + '>' + stateName + '</option>';
-        }).join('');
-        var cities = preferredState && locationCatalog[preferredState] ? locationCatalog[preferredState].slice().sort(byText) : [];
-        citySelect.innerHTML = '<option value="">Any city</option>' + cities.map(function (cityName) {
-          return '<option value="' + cityName.replace(/"/g, '&quot;') + '" ' + (preferredCity === cityName ? 'selected' : '') + '>' + cityName + '</option>';
-        }).join('');
-        citySelect.disabled = !preferredState;
+        if (stateSelect) {
+          stateSelect.innerHTML = '<option value="">Any state</option>';
+          states.forEach(function (state) {
+            var opt = document.createElement('option');
+            opt.value = state;
+            opt.textContent = state;
+            stateSelect.appendChild(opt);
+          });
+          stateSelect.value = preferredState;
+        }
+
+        rebuildCityOptions();
+        syncCustomCityUi();
       }
 
-      function renderOfferDetailContent(featureId) {
-        var data = offerFeatureCatalog[featureId];
-        if (!data) return;
-        selectedFeatureId = featureId;
-        var tier = membershipCatalog().find(function (item) { return item.label === selectedMembershipTier; });
-        document.getElementById('offerDetailBadge').textContent = 'Taxpayer memberships · ' + selectedMembershipTier;
-        document.getElementById('offerDetailTitle').textContent = data.title;
-        document.getElementById('offerDetailLead').textContent = data.lead + (tier ? ' Included in the ' + tier.label + ' membership experience.' : '');
-        document.getElementById('offerDetailIcon').innerHTML = largeFeatureIcon(data.icon);
-        document.getElementById('offerDetailBody').textContent = data.body;
-        document.getElementById('offerDetailNext').textContent = tier ? data.next + ' Current membership view: ' + tier.label + '.' : data.next;
-        document.getElementById('offerDetailReasons').innerHTML = data.reasons.map(function (reason) {
-          return '<div class="rounded-xl border border-slate-800 bg-slate-950/45 px-4 py-3 text-sm leading-7 text-slate-300">' + reason + '</div>';
-        }).join('');
-        document.getElementById('offerDetailExpectations').innerHTML = data.expectations.map(function (item) {
-          return '<div class="rounded-xl border border-slate-800 bg-slate-950/45 px-4 py-3 text-sm leading-7 text-slate-300">' + item + '</div>';
-        }).join('');
-        document.getElementById('offerFeatureCards').querySelectorAll('[data-feature-card]').forEach(function (card) {
-          card.classList.toggle('active', card.getAttribute('data-feature-card') === featureId);
+      function cityOptionsForState() {
+        var options = [{ value: '', text: preferredState ? 'Any city' : 'Select a state first', disabled: false }];
+        if (!preferredState || !locationCatalog[preferredState]) return options;
+        locationCatalog[preferredState].forEach(function (city) {
+          options.push({ value: city, text: city });
+        });
+        options.push({ value: '__other__', text: 'My city is not listed' });
+        return options;
+      }
+
+      function rebuildCityOptions() {
+        var citySelect = document.getElementById('preferredCity');
+        if (!citySelect) return;
+
+        var options = cityOptionsForState();
+        citySelect.innerHTML = '';
+        options.forEach(function (entry) {
+          var opt = document.createElement('option');
+          opt.value = entry.value;
+          opt.textContent = entry.text;
+          if (entry.disabled) opt.disabled = true;
+          citySelect.appendChild(opt);
+        });
+
+        if (cityTom) {
+          cityTom.clear(true);
+          cityTom.clearOptions();
+          cityTom.addOptions(options);
+          cityTom.refreshOptions(false);
+          cityTom.setTextboxValue('');
+        }
+
+        var selectedValue = customCity ? '__other__' : (preferredCity || '');
+        if (cityTom) {
+          cityTom.setValue(selectedValue, true);
+          cityTom.sync();
+        } else {
+          citySelect.value = selectedValue;
+        }
+      }
+
+      function syncCustomCityUi() {
+        var wrap = document.getElementById('customCityWrap');
+        var input = document.getElementById('customCity');
+        var showCustom = !!customCity || preferredCity === '__other__';
+        if (wrap) wrap.classList.toggle('hidden', !showCustom);
+        if (input) input.value = customCity;
+      }
+
+      function initCityAutocomplete() {
+        var citySelect = document.getElementById('preferredCity');
+        if (!citySelect || typeof TomSelect === 'undefined') return;
+
+        cityTom = new TomSelect(citySelect, {
+          allowEmptyOption: true,
+          closeAfterSelect: true,
+          create: false,
+          dropdownInput: true,
+          maxItems: 1,
+          placeholder: preferredState ? 'Start typing a city...' : 'Select a state first',
+          searchField: ['text'],
+          sortField: [{ field: 'text', direction: 'asc' }]
+        });
+
+        cityTom.on('change', function (value) {
+          if (value === '__other__') {
+            preferredCity = '__other__';
+            customCity = '';
+          } else {
+            preferredCity = value || '';
+            if (preferredCity) customCity = '';
+          }
+          syncCustomCityUi();
+
+          if (value) {
+            cityTom.close();
+            setTimeout(function () {
+              cityTom.blur();
+            }, 0);
+          }
         });
       }
 
-      function renderMembershipTierRow() {
-        var row = document.getElementById('membershipTierRow');
-        if (!row) return;
-        row.innerHTML = membershipCatalog().map(function (tier) {
-          var tone = tier.label === 'Response' ? 'text-amber-400 font-medium' : (tier.label === 'Advantage' ? 'text-emerald-400 font-medium' : 'text-slate-500');
-          var featuredRibbon = tier.featured ? '<div class="-mt-7 mb-2 flex justify-center"><span class="px-4 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-lg">MOST POPULAR</span></div>' : '';
-          var featuredMargin = tier.featured ? ' mt-2' : '';
-          var bulletsHtml = tier.bullets.map(function (bullet) {
-            return '<li class="flex items-start gap-3 text-sm text-slate-300"><svg class="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg><span>' + bullet + '</span></li>';
-          }).join('');
-          return '<button type="button" data-membership-tier="' + tier.label + '" class="membership-package-card ' + (selectedMembershipTier === tier.label ? 'active' : '') + '">'
-            + featuredRibbon
-            + '<div class="text-center' + featuredMargin + '">'
-            + '<span class="membership-badge ' + tier.badgeClass + '">' + tier.badgeLabel + '</span>'
+      function renderOfferCards() {
+        var grid = document.getElementById('offerPackagesGrid');
+        if (!grid) return;
+        grid.innerHTML = '';
+
+        var features = {
+          essential: [
+            'App Dashboard access',
+            'Professional Matching + inquiry submission',
+            '2 transcript tokens / month',
+            '5 tax tool tokens / month',
+            'Discount notifications from professionals'
+          ],
+          plus: [
+            'App Dashboard access',
+            'Professional Matching',
+            '5 transcript tokens / month',
+            '15 tax tool tokens / month',
+            'Saved tool results and activity history'
+          ],
+          premier: [
+            'App Dashboard access',
+            'Priority professional matching',
+            '10 transcript tokens / month',
+            '40 tax tool tokens / month',
+            'Monitoring records in the dashboard'
+          ]
+        };
+
+        membershipCatalog().forEach(function (tier) {
+          var card = document.createElement('button');
+          card.type = 'button';
+          card.className = 'membership-package-card text-left relative';
+          card.setAttribute('data-membership-id', tier.id);
+
+          var bullets = features[tier.id]
+            .map(function (line) {
+              return '<li class="flex items-start gap-3"><svg class="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg><span>' + line + '</span></li>';
+            })
+            .join('');
+
+          card.innerHTML = ''
+            + (tier.spotlight ? '<div class="absolute -top-3 left-1/2 -translate-x-1/2"><span class="px-4 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-lg">' + tier.spotlight + '</span></div>' : '')
+            + '<div class="text-center mb-6' + (tier.spotlight ? ' mt-2' : '') + '">'
+            + '<span class="inline-block px-3 py-1 rounded-full text-xs font-medium ' + tier.badgeClass + ' mb-3">' + tier.badgeLabel + '</span>'
             + '<div class="text-4xl font-bold text-white mb-1">' + tier.price + '</div>'
             + '<div class="text-slate-400 text-sm">' + tier.term + '</div>'
             + '</div>'
-            + '<div class="mt-5 text-left">'
-            + '<div class="text-lg font-bold text-white">' + tier.label + '</div>'
-            + '<div class="mt-2 text-sm text-slate-400 leading-6">' + tier.copy + '</div>'
-            + '<ul class="mt-5 space-y-3">' + bulletsHtml + '</ul>'
-            + '</div>'
-            + '<div class="mt-5 text-center"><span class="text-sm ' + tone + '">' + tier.footer + '</span></div>'
-            + '</button>';
-        }).join('');
-        row.querySelectorAll('[data-membership-tier]').forEach(function (btn) {
-          btn.addEventListener('click', function () {
-            selectedMembershipTier = btn.getAttribute('data-membership-tier');
-            renderMembershipTierRow();
-            renderOfferDetailContent(selectedFeatureId || 'directory');
+            + '<ul class="space-y-3 mb-6 text-sm text-slate-300">'
+            + bullets
+            + '</ul>'
+            + '<div class="text-center"><span class="text-sm ' + tier.toneClass + '">' + tier.toneText + '</span></div>';
+
+          card.addEventListener('click', function () {
+            selectedMembership = tier.id;
+            shellStep = 'offer-detail';
+            renderOfferDetail(tier.id, currentOfferFeature || 'appDashboard');
+            updateStepperUi();
           });
+
+          grid.appendChild(card);
         });
       }
 
-      function renderOfferDetail() {
-        var featureOrder = ['directory', 'inquiries', 'monitoring', 'tools'];
-        var container = document.getElementById('offerFeatureCards');
-        if (!container) return;
-        renderMembershipTierRow();
-        container.innerHTML = featureOrder.map(function (id) {
-          var feature = offerFeatureCatalog[id];
-          return '<button type="button" data-feature-card="' + id + '" class="feature-card"><div class="feature-icon-shell">' + iconMarkup(feature.icon) + '</div><span class="choice-card-title mt-4">' + feature.title + '</span><span class="choice-card-copy">' + feature.lead + '</span></button>';
-        }).join('');
-        container.querySelectorAll('[data-feature-card]').forEach(function (btn) {
-          btn.addEventListener('click', function () {
-            renderOfferDetailContent(btn.getAttribute('data-feature-card'));
-            document.getElementById('featureDetailPane').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      function membershipLine(membershipId, featureKey) {
+        var feature = offerFeatureCatalog[featureKey];
+        if (!feature || !feature.comparison) return '';
+        return feature.name + ': ' + feature.comparison[membershipId];
+      }
+
+      function renderOfferDetail(membershipId, featureKey) {
+        var selected = membershipCatalog().filter(function (tier) { return tier.id === membershipId; })[0] || membershipCatalog()[0];
+        selectedMembership = selected.id;
+        currentOfferFeature = featureKey || currentOfferFeature || 'directory';
+
+        var hero = document.getElementById('selectedMembershipHero');
+        if (hero) {
+          hero.innerHTML = ''
+            + '<div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">'
+            + '<div>'
+            + '<span class="inline-block px-3 py-1 rounded-full text-xs font-medium ' + selected.badgeClass + ' mb-3">' + selected.badgeLabel + '</span>'
+            + '<h2 class="text-3xl font-bold text-white">' + selected.price + '</h2>'
+            + '<p class="mt-2 text-slate-400">' + selected.term + '</p>'
+            + '<p class="mt-4 max-w-2xl text-sm leading-7 text-slate-300">' + selected.summary + '</p>'
+            + '</div>'
+            + '<div class="rounded-2xl border border-slate-800/70 bg-slate-950/40 px-5 py-4 text-left lg:min-w-[240px]">'
+            + '<div class="mini-kicker">Membership fit</div>'
+            + '<p class="mt-3 text-sm leading-7 ' + selected.toneClass.replace('font-medium', '').trim() + '">' + selected.toneText + '</p>'
+            + '</div>'
+            + '</div>';
+        }
+
+        renderOfferDetailContent(selected.id);
+      }
+
+      function featureIconSvg(iconKey) {
+        var icons = {
+          'briefcase': '<svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V7a2 2 0 00-2-2h-3V4a2 2 0 00-2-2h-2a2 2 0 00-2 2v1H6a2 2 0 00-2 2v6m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0H4" /></svg>',
+          'file-check': '<svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m4 9H7a2 2 0 01-2-2V5a2 2 0 012-2h6l6 6v8a2 2 0 01-2 2z" /></svg>',
+          'layout-dashboard': '<svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 13h8V3H3v10zm10 8h8V11h-8v10zM3 21h8v-6H3v6zm10-10h8V3h-8v8z" /></svg>',
+          'scroll-text': '<svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 6h10M8 10h8M8 14h8M6 18h10a2 2 0 002-2V4a2 2 0 00-2-2H8a4 4 0 00-4 4v10a2 2 0 002 2zm0 0a2 2 0 100 4h12" /></svg>',
+          'shield-check': '<svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5-3c0 7-3.5 11-8 13-4.5-2-8-6-8-13l8-3 8 3z" /></svg>',
+          'users': '<svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a4 4 0 00-5-3.87M9 20H4v-2a4 4 0 015-3.87m8-6.13a4 4 0 11-8 0 4 4 0 018 0zM7 8a4 4 0 118 0 4 4 0 01-8 0z" /></svg>',
+          'wrench': '<svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.7 6.3a4 4 0 01-5.66 5.66L3 18l3 3 6.04-6.04a4 4 0 005.66-5.66l-3 3-2-2 3-3z" /></svg>'
+        };
+        return icons[iconKey] || icons['shield-check'];
+      }
+
+      function renderOfferDetailContent(membershipId) {
+        var selected = membershipCatalog().filter(function (tier) { return tier.id === membershipId; })[0] || membershipCatalog()[0];
+        var next = document.getElementById('offerDetailNext');
+        if (next) next.textContent = selected.summary;
+
+        var reasonsDiv = document.getElementById('offerDetailReasons');
+        if (reasonsDiv) {
+          reasonsDiv.innerHTML = '';
+          Object.keys(offerFeatureCatalog).sort(byText).forEach(function (featureKey) {
+            var feature = offerFeatureCatalog[featureKey];
+            var level = feature.comparison[membershipId];
+            var row = document.createElement('div');
+            row.className = 'rounded-xl border border-slate-800/70 bg-slate-950/35 px-4 py-4';
+            row.innerHTML = '<div class="flex items-start gap-3">'
+              + '<div class="feature-icon-shell !h-10 !w-10 !rounded-xl">' + featureIconSvg(feature.icon) + '</div>'
+              + '<div>'
+              + '<div class="flex flex-wrap items-center gap-2">'
+              + '<h3 class="text-sm font-semibold text-white">' + feature.name + '</h3>'
+              + '<span class="rounded-full border border-amber-500/30 bg-amber-500/10 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-amber-300">' + level + '</span>'
+              + '</div>'
+              + '<p class="mt-2 text-sm leading-6 text-slate-300">' + feature.description + '</p>'
+              + '</div>'
+              + '</div>';
+            reasonsDiv.appendChild(row);
           });
-        });
-        renderOfferDetailContent(selectedFeatureId || 'directory');
+        }
+
+        var compare = document.getElementById('offerComparisonTable');
+        if (compare) {
+          var featureKeys = Object.keys(offerFeatureCatalog).sort(byText);
+          compare.innerHTML = '<table class="min-w-full text-sm"><thead class="bg-slate-950/70"><tr><th class="px-4 py-3 text-left text-slate-400 font-semibold">Feature</th>'
+            + membershipCatalog().map(function (tier) {
+              var label = tier.badgeLabel === 'STARTER' ? 'Starter' : tier.badgeLabel === 'PROFESSIONAL' ? 'Professional' : 'Enterprise';
+              var labelClass = tier.id === membershipId ? ' text-amber-300' : ' text-slate-300';
+              return '<th class="px-4 py-3 text-left font-semibold' + labelClass + '">' + label + '</th>';
+            }).join('')
+            + '</tr></thead><tbody>'
+            + featureKeys.map(function (featureKey) {
+              var feature = offerFeatureCatalog[featureKey];
+              return '<tr class="border-t border-slate-800/70">'
+                + '<td class="px-4 py-3 text-white font-medium">' + feature.name + '</td>'
+                + membershipCatalog().map(function (tier) {
+                  var cellClass = tier.id === membershipId ? ' bg-amber-500/10 text-amber-200 font-semibold' : ' bg-slate-950/30 text-slate-300';
+                  return '<td class="px-4 py-3' + cellClass + '">' + feature.comparison[tier.id] + '</td>';
+                }).join('')
+                + '</tr>';
+            }).join('')
+            + '</tbody></table>';
+        }
       }
 
       function renderMatches() {
         var list = document.getElementById('matchesList');
         if (!list) return;
-        var matches = proCatalog.map(function (pro) {
-          var score = 0;
-          if (preferredState && pro.location === preferredState) score += 16;
-          if (preferredCity && pro.city === preferredCity) score += 18;
-          score += pro.services.filter(function (item) { return servicesSelected.indexOf(item) >= 0; }).length * 12;
-          if (wantsOfferInfo === 'yes' && pro.offers.length) score += 8;
-          if ((answers['Primary Concern'] || '') === 'Transcript Monitoring' && pro.services.indexOf('Tax Monitoring') >= 0) score += 18;
-          return { pro: pro, score: score };
-        }).sort(function (a, b) {
-          return b.score - a.score || a.pro.name.localeCompare(b.pro.name);
-        });
 
-        document.getElementById('matchesLead').textContent = matches.length
-          ? 'Top fit right now: ' + matches.slice(0, 3).map(function (entry) { return entry.pro.name; }).join(', ') + (wantsDirectContact === 'yes' ? '. Direct contact is enabled for matched professionals.' : '. Direct contact is off. Browse at your own pace.')
-          : 'No matches yet.';
+        var matches = [
+          { score: '95%', pro: { name: 'Sarah Chen', subtitle: 'CPA, Tax Specialist', city: 'Los Angeles', location: 'CA', summary: 'Expert in corporate tax strategy with 15 years of experience.', services: ['Tax Planning', 'Audit'], profileUrl: '#' } },
+          { score: '88%', pro: { name: 'James Mitchell', subtitle: 'Tax Attorney', city: 'San Francisco', location: 'CA', summary: 'Specializes in IRS disputes and complex tax matters.', services: ['Tax Audit', 'Compliance'], profileUrl: '#' } }
+        ];
 
         list.innerHTML = matches.map(function (entry) {
           var pro = entry.pro;
-          var tags = pro.services.slice().sort(byText).map(function (service) {
+          var tags = pro.services.sort(byText).map(function (service) {
             return '<span class="rounded-full border border-slate-700 bg-slate-900/60 px-3 py-1 text-xs text-slate-300">' + service + '</span>';
           }).join('');
           return '<article class="rounded-2xl border border-slate-800 bg-slate-950/35 p-5">'
@@ -1244,6 +1488,7 @@
         if (!q.required) return true;
         var v = answers[q.key];
         if (q.type === 'checkbox') return v === true;
+        if (q.type === 'multi') return Array.isArray(v) && v.length > 0;
         return String(v || '').trim() !== '';
       }
 
@@ -1301,7 +1546,7 @@
         } else if (q.type === 'radio') {
           var optionsDiv = document.createElement('div');
           optionsDiv.className = 'space-y-3';
-          var opts = (q.options || []).slice().sort(byText);
+          var opts = (q.key === 'Business Type' ? (q.options || []).slice() : (q.options || []).slice().sort(byText));
           opts.forEach(function (option) {
             var labelEl = document.createElement('label');
             labelEl.className = 'flex items-center gap-3 p-3 rounded-lg cursor-pointer transition hover:bg-slate-800/40';
@@ -1313,14 +1558,41 @@
                 answers['IRS Notice Date'] = '';
               }
               updateButtons(getVisibleQuestions());
-              renderQuestion();
             });
             optionsDiv.appendChild(labelEl);
           });
           inputArea.appendChild(optionsDiv);
+        } else if (q.type === 'multi') {
+          var multiOptionsDiv = document.createElement('div');
+          multiOptionsDiv.className = 'space-y-3';
+          var selectedOptions = Array.isArray(answers[q.key]) ? answers[q.key].slice() : [];
+          var multiOpts = (q.options || []).slice();
+          multiOpts.forEach(function (option) {
+            var multiLabelEl = document.createElement('label');
+            multiLabelEl.className = 'flex items-center gap-3 p-3 rounded-lg cursor-pointer transition hover:bg-slate-800/40';
+            multiLabelEl.innerHTML = '<input type="checkbox" name="' + q.id + '[]" value="' + option + '" class="w-4 h-4" ' + (selectedOptions.indexOf(option) >= 0 ? 'checked' : '') + '><span class="text-slate-100">' + option + '</span>';
+            multiLabelEl.querySelector('input').addEventListener('change', function (e) {
+              var currentValues = Array.isArray(answers[q.key]) ? answers[q.key].slice() : [];
+              if (option === 'I do not operate a business') {
+                answers[q.key] = e.target.checked ? ['I do not operate a business'] : [];
+              } else {
+                currentValues = currentValues.filter(function (item) { return item !== 'I do not operate a business'; });
+                if (e.target.checked) {
+                  if (currentValues.indexOf(option) === -1) currentValues.push(option);
+                } else {
+                  currentValues = currentValues.filter(function (item) { return item !== option; });
+                }
+                currentValues.sort(byText);
+                answers[q.key] = currentValues;
+              }
+              renderQuestion();
+            });
+            multiOptionsDiv.appendChild(multiLabelEl);
+          });
+          inputArea.appendChild(multiOptionsDiv);
         } else if (q.type === 'checkbox') {
           var wrap = document.createElement('label');
-          wrap.className = 'flex items-center gap-3 p-4 bg-slate-800/30 rounded-lg cursor-pointer border border-slate-700/50';
+          wrap.className = 'flex items-center gap-3 p-4 bg-slate-800/30 rounded-lg cursor-pointer border border-slate-700/50 max-w-2xl';
           var cb = document.createElement('input');
           cb.type = 'checkbox';
           cb.className = 'checkbox-custom';
@@ -1358,43 +1630,6 @@
         }
       }
 
-      function buildContractFormData() {
-        var fd = new FormData();
-        fd.append('eventId', document.getElementById('tm_event_id').value || '');
-        fd.append('sessionToken', document.getElementById('tm_session_token').value || '');
-        questions.forEach(function (q) {
-          if (!shouldShow(q)) return;
-          var v = answers[q.key];
-          if (q.type === 'checkbox') {
-            fd.append(q.key, v === true ? 'true' : 'false');
-          } else {
-            fd.append(q.key, String(v || ''));
-          }
-        });
-        return fd;
-      }
-
-      function persistPreviewPayload() {
-        try {
-          var payload = {};
-          Object.keys(answers).sort(byText).forEach(function (key) {
-            payload[key] = answers[key];
-          });
-          payload.eventId = document.getElementById('tm_event_id').value || '';
-          payload.sessionToken = document.getElementById('tm_session_token').value || '';
-          window.sessionStorage.setItem('tmIntakePreviewPayload', JSON.stringify(payload));
-        } catch (err) {}
-      }
-
-      function goToServicesStep() {
-        window.tmCommon.restoreSubmit(form);
-        persistPreviewPayload();
-        shellStep = 2;
-        renderServiceCards();
-        renderStateOptions();
-        updateStepperUi();
-      }
-
       document.getElementById('nextBtn').addEventListener('click', nextQuestion);
       document.getElementById('prevBtn').addEventListener('click', previousQuestion);
 
@@ -1415,11 +1650,28 @@
       document.getElementById('preferredState').addEventListener('change', function (e) {
         preferredState = e.target.value || '';
         preferredCity = '';
+        customCity = '';
+        if (cityTom) cityTom.settings.placeholder = preferredState ? 'Start typing a city...' : 'Select a state first';
         renderStateOptions();
       });
 
       document.getElementById('preferredCity').addEventListener('change', function (e) {
-        preferredCity = e.target.value || '';
+        if (cityTom) return;
+        var value = e.target.value || '';
+        if (value === '__other__') {
+          preferredCity = '__other__';
+          customCity = '';
+        } else {
+          preferredCity = value;
+          if (preferredCity) customCity = '';
+        }
+        syncCustomCityUi();
+      });
+
+      document.getElementById('customCity').addEventListener('input', function (e) {
+        customCity = String(e.target.value || '').trim();
+        preferredCity = customCity ? '__other__' : '';
+        syncCustomCityUi();
       });
 
       document.getElementById('servicesBackBtn').addEventListener('click', function () {
@@ -1447,22 +1699,7 @@
         updateStepperUi();
       });
 
-      document.getElementById('offersYesBtn').addEventListener('click', function () {
-        wantsOfferInfo = 'yes';
-        shellStep = 'offer-detail';
-        renderOfferDetail();
-        updateStepperUi();
-      });
-
-      document.getElementById('offersNoBtn').addEventListener('click', function () {
-        wantsOfferInfo = 'no';
-        shellStep = 'contact-consent';
-        updateStepperUi();
-      });
-
-      document.getElementById('featureBackBtn').addEventListener('click', function () {
-        document.getElementById('offerFeatureCards').scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
+      
 
       document.getElementById('offerDetailBackBtn').addEventListener('click', function () {
         shellStep = 4;
@@ -1503,75 +1740,110 @@
         updateStepperUi();
       });
 
+      document.querySelector('a[href="/index.html"]').addEventListener('click', function (e) {
+        if (shellStep === 1 && currentQuestionIndex === 0) return;
+        e.preventDefault();
+        if (shellStep === 1) {
+          currentQuestionIndex = 0;
+          renderQuestion();
+        } else if (shellStep === 2) {
+          shellStep = 1;
+          currentQuestionIndex = getVisibleQuestions().length - 1;
+          renderQuestion();
+        } else if (shellStep === 3) {
+          shellStep = 2;
+          updateStepperUi();
+        } else if (shellStep === 4) {
+          shellStep = 3;
+          updateStepperUi();
+        } else if (shellStep === 'offer-detail') {
+          shellStep = 4;
+          updateStepperUi();
+        } else if (shellStep === 'contact-consent') {
+          shellStep = wantsOfferInfo === 'yes' ? 'offer-detail' : 4;
+          updateStepperUi();
+        } else if (shellStep === 5) {
+          shellStep = 'contact-consent';
+          updateStepperUi();
+        }
+      });
+
       if (form) {
-        form.addEventListener('submit', async function (e) {
+        form.addEventListener('submit', function (e) {
           e.preventDefault();
           setError('');
-          window.tmCommon.ensureEventId();
-          window.tmCommon.syncSessionToken();
-
           var visible = getVisibleQuestions();
           var current = visible[currentQuestionIndex];
           if (!isAnswered(current)) {
-            window.tmCommon.showError('Please answer the question before continuing.');
+            setError('Please answer the question before continuing.');
             return;
           }
-
           for (var i = 0; i < visible.length; i += 1) {
             if (!isAnswered(visible[i])) {
               currentQuestionIndex = i;
               renderQuestion();
-              window.tmCommon.showError('Please complete all required questions.');
+              setError('Please complete all required questions.');
               return;
             }
           }
-
-          if (window.tmCommon.previewMode) {
-            goToServicesStep();
-            return;
-          }
-
-          window.tmCommon.disableSubmit(form);
-          try {
-            var res = await fetch(form.action, { method: 'POST', body: buildContractFormData() });
-            var data = {};
-            try { data = await res.json(); } catch (err) {}
-            if (res.ok && data && data.ok) {
-              goToServicesStep();
-              return;
-            }
-            var msg = (data && (data.error || data.details)) ? (data.error || data.details) : 'Submission failed.';
-            window.tmCommon.showError(msg);
-            window.tmCommon.restoreSubmit(form);
-          } catch (err) {
-            window.tmCommon.showError(String(err && err.message ? err.message : err));
-            window.tmCommon.restoreSubmit(form);
-          }
+          goToServicesStep();
         });
       }
 
-      function runSelfTests() {
-        console.assert(typeof renderServiceCards === 'function', 'renderServiceCards should exist');
-        console.assert(typeof renderStateOptions === 'function', 'renderStateOptions should exist');
-        console.assert(typeof renderOfferDetail === 'function', 'renderOfferDetail should exist');
-        console.assert(typeof renderOfferDetailContent === 'function', 'renderOfferDetailContent should exist');
-        console.assert(Object.keys(locationCatalog).length > 0, 'locationCatalog should have states');
-        console.assert(Object.keys(offerFeatureCatalog).length === 4, 'offer feature catalog should have 4 features');
-        console.assert(Array.isArray(offerFeatureCatalog.directory.stats), 'directory stats should be an array');
-        console.assert(document.getElementById('page-contact-consent'), 'contact consent page should exist');
-        console.assert(document.getElementById('membershipTierRow'), 'membership tier row should exist');
-        console.assert(membershipCatalog().length === 3, 'membership catalog should have 3 cards');
-        console.assert(membershipCatalog().every(function (item) { return typeof item.label === 'string' && item.label.length > 0; }), 'membership labels should all be valid strings');
+      function goToServicesStep() {
+        shellStep = 2;
+        renderServiceCards();
+        renderStateOptions();
+        renderOfferCards();
+        updateStepperUi();
       }
 
-      window.tmCommon.ensureEventId();
-      window.tmCommon.syncSessionToken();
+      function navigateToStep(step) {
+        var targetStep = Number(step);
+        if (!targetStep || targetStep < 1 || targetStep > 5) return;
+
+        if (targetStep === 1) {
+          shellStep = 1;
+          updateStepperUi();
+          return;
+        }
+
+        if (targetStep === 2) {
+          shellStep = 2;
+          renderServiceCards();
+          updateStepperUi();
+          return;
+        }
+
+        if (targetStep === 3) {
+          shellStep = 3;
+          renderStateOptions();
+          updateStepperUi();
+          return;
+        }
+
+        if (targetStep === 4) {
+          shellStep = 4;
+          renderOfferCards();
+          updateStepperUi();
+          return;
+        }
+
+        if (targetStep === 5) {
+          shellStep = 5;
+          renderMatches();
+          updateStepperUi();
+        }
+      }
+
       renderQuestion();
       renderServiceCards();
+      initCityAutocomplete();
       renderStateOptions();
+      renderOfferCards();
+      renderOfferDetail(selectedMembership, currentOfferFeature || 'appDashboard');
       updateStepperUi();
-      runSelfTests();
     })();
   </script>
-</body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9dc537ae46f727cf',t:'MTc3MzUxMTY0MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
