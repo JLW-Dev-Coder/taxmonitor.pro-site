@@ -48,6 +48,7 @@ async function cleanDist() {
   if (await exists(DIST_DIR)) {
     await rm(DIST_DIR, { force: true, recursive: true });
   }
+
   await mkdir(DIST_DIR, { recursive: true });
 }
 
@@ -55,9 +56,10 @@ async function copyDirContentsToDistRoot(srcDir) {
   if (!(await exists(srcDir))) return;
 
   const entries = await readdir(srcDir, { withFileTypes: true });
+
   for (const e of entries) {
-    const src = path.join(srcDir, e.name);
     const dest = path.join(DIST_DIR, e.name);
+    const src = path.join(srcDir, e.name);
     await cp(src, dest, { recursive: e.isDirectory() });
   }
 }
@@ -88,10 +90,10 @@ function injectPagePartials(html, pagePartials) {
   return html;
 }
 
-function injectSite(html, header, footer) {
+function injectSite(html, footer, header) {
   return html
-    .replace(/<!--\s*PARTIAL:header\s*-->/g, header)
-    .replace(/<!--\s*PARTIAL:footer\s*-->/g, footer);
+    .replace(/<!--\s*PARTIAL:footer\s*-->/g, footer)
+    .replace(/<!--\s*PARTIAL:header\s*-->/g, header);
 }
 
 async function loadPagePartials() {
@@ -100,13 +102,15 @@ async function loadPagePartials() {
   if (!(await exists(PAGES_PARTIALS_DIR))) return map;
 
   const entries = await readdir(PAGES_PARTIALS_DIR, { withFileTypes: true });
+
   for (const e of entries) {
     if (!e.isFile()) continue;
     if (!e.name.endsWith(".html")) continue;
 
     const full = path.join(PAGES_PARTIALS_DIR, e.name);
-    const key = path.basename(e.name, ".html");
     const html = await readFile(full, "utf8");
+    const key = path.basename(e.name, ".html");
+
     map.set(key, html);
   }
 
@@ -121,9 +125,9 @@ async function injectAppPartialsIntoTree({ distBaseDir, pagePartials, skipPartia
 
   if (!(await exists(sidebarPath)) || !(await exists(topbarPath))) return;
 
+  const files = (await walk(sourceDir)).filter((f) => f.endsWith(".html"));
   const sidebar = await readFile(sidebarPath, "utf8");
   const topbar = await readFile(topbarPath, "utf8");
-  const files = (await walk(sourceDir)).filter((f) => f.endsWith(".html"));
 
   for (const filePath of files) {
     if (skipPartialsDirName && filePath.includes(`${path.sep}${skipPartialsDirName}${path.sep}`)) {
@@ -131,9 +135,7 @@ async function injectAppPartialsIntoTree({ distBaseDir, pagePartials, skipPartia
     }
 
     const html = await readFile(filePath, "utf8");
-    const withApp = injectApp(html, sidebar, topbar);
-    const out = injectPagePartials(withApp, pagePartials);
-
+    const out = injectPagePartials(injectApp(html, sidebar, topbar), pagePartials);
     const relative = path.relative(sourceDir, filePath);
     const destPath = path.join(distBaseDir, relative);
 
@@ -150,9 +152,9 @@ async function injectSitePartialsIntoTree({ distBaseDir, pagePartials, skipParti
 
   if (!(await exists(footerPath)) || !(await exists(headerPath))) return;
 
+  const files = (await walk(sourceDir)).filter((f) => f.endsWith(".html"));
   const footer = await readFile(footerPath, "utf8");
   const header = await readFile(headerPath, "utf8");
-  const files = (await walk(sourceDir)).filter((f) => f.endsWith(".html"));
 
   for (const filePath of files) {
     if (skipPartialsDirName && filePath.includes(`${path.sep}${skipPartialsDirName}${path.sep}`)) {
@@ -160,9 +162,7 @@ async function injectSitePartialsIntoTree({ distBaseDir, pagePartials, skipParti
     }
 
     const html = await readFile(filePath, "utf8");
-    const withSite = injectSite(html, header, footer);
-    const out = injectPagePartials(withSite, pagePartials);
-
+    const out = injectPagePartials(injectSite(html, footer, header), pagePartials);
     const relative = path.relative(sourceDir, filePath);
     const destPath = path.join(distBaseDir, relative);
 
@@ -175,11 +175,12 @@ async function copySiteNonHtmlToDistRoot() {
   if (!(await exists(SITE_DIR))) return;
 
   const entries = await readdir(SITE_DIR, { withFileTypes: true });
+
   for (const e of entries) {
     if (e.name === "partials") continue;
 
-    const src = path.join(SITE_DIR, e.name);
     const dest = path.join(DIST_DIR, e.name);
+    const src = path.join(SITE_DIR, e.name);
 
     if (e.isFile() && e.name.endsWith(".html")) continue;
 
@@ -192,7 +193,8 @@ async function main() {
 
   const pagePartials = await loadPagePartials();
 
-  // Always copy shared root-level/public assets
+  // Always copy shared root/public assets.
+  // This includes the full /assets tree recursively, including /assets/images/*
   await copyDirContentsToDistRoot(PUBLIC_DIR);
   await copyDirIfExists(ASSETS_DIR, "assets");
   await copyDirIfExists(CONTRACTS_DIR, "contracts");
@@ -204,7 +206,7 @@ async function main() {
   }
 
   if (BUILD_TARGET === "app") {
-    // Build APP into dist root
+    // Build /app into dist root
     await copyDirIfExists(APP_DIR, null);
 
     await injectAppPartialsIntoTree({
