@@ -26,7 +26,7 @@ The system allows taxpayers to:
 
 * locate professionals through a searchable directory
 * submit inquiries to professionals
-* enroll in monitoring memberships
+* member discounts and priority responses to inquiries (by tier via call, direct messaging, email, or ticket)
 * access educational tax tools and transcript analysis resources
 
 TMP separates the **consumer experience** from the **professional infrastructure layer**, ensuring that public discovery functions remain lightweight while professional data and membership management remain centralized in Virtual Launch Pro.
