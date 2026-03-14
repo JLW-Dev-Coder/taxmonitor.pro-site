@@ -100,7 +100,7 @@
       left: -12rem;
       opacity: 0.18;
       background: radial-gradient(circle, rgba(245, 158, 11, 0.24) 0%, rgba(245, 158, 11, 0) 70%);
-      animation: driftOne 24s ease-in-out infinite alternate;
+      animation: blobEdgeOne 32s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite alternate;
     }
 
     .bg-blob-2 {
@@ -110,7 +110,7 @@
       right: -14rem;
       opacity: 0.14;
       background: radial-gradient(circle, rgba(59, 130, 246, 0.16) 0%, rgba(59, 130, 246, 0) 72%);
-      animation: driftTwo 30s ease-in-out infinite alternate;
+      animation: blobEdgeTwo 36s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite alternate;
     }
 
     .bg-blob-3 {
@@ -120,7 +120,7 @@
       left: 24%;
       opacity: 0.12;
       background: radial-gradient(circle, rgba(148, 163, 184, 0.14) 0%, rgba(148, 163, 184, 0) 72%);
-      animation: driftThree 26s ease-in-out infinite alternate;
+      animation: blobEdgeThree 34s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite alternate;
     }
 
     .bg-noise {
@@ -316,18 +316,29 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    @keyframes driftOne {
-      0% { transform: translate3d(0, 0, 0) scale(1); }
-      100% { transform: translate3d(8rem, 4rem, 0) scale(1.08); }
+    @keyframes blobEdgeOne {
+      0% { transform: translate3d(0, 0, 0) scale(1); opacity: 0.14; }
+      25% { transform: translate3d(3rem, 2rem, 0) scale(1.04); opacity: 0.18; }
+      50% { transform: translate3d(7rem, 4rem, 0) scale(1.08); opacity: 0.22; }
+      75% { transform: translate3d(4rem, 7rem, 0) scale(1.03); opacity: 0.17; }
+      100% { transform: translate3d(9rem, 5rem, 0) scale(1.1); opacity: 0.2; }
     }
 
-    @keyframes driftTwo {
-      0% { transform: translate3d(0, 0, 0) scale(1); }
-      100% { transform: translate3d(-7rem, -3rem, 0) scale(1.06); }
+    @keyframes blobEdgeTwo {
+      0% { transform: translate3d(0, 0, 0) scale(1); opacity: 0.11; }
+      25% { transform: translate3d(-3rem, -2rem, 0) scale(1.03); opacity: 0.14; }
+      50% { transform: translate3d(-7rem, -4rem, 0) scale(1.07); opacity: 0.18; }
+      75% { transform: translate3d(-5rem, 1rem, 0) scale(1.04); opacity: 0.13; }
+      100% { transform: translate3d(-9rem, -3rem, 0) scale(1.09); opacity: 0.16; }
     }
 
-    @keyframes driftThree {
-      0% { transform: translate3d(0, 0, 0) scale(1); }
+    @keyframes blobEdgeThree {
+      0% { transform: translate3d(0, 0, 0) scale(1); opacity: 0.1; }
+      25% { transform: translate3d(2rem, -2rem, 0) scale(1.03); opacity: 0.13; }
+      50% { transform: translate3d(5rem, -5rem, 0) scale(1.06); opacity: 0.16; }
+      75% { transform: translate3d(1rem, -3rem, 0) scale(1.02); opacity: 0.12; }
+      100% { transform: translate3d(6rem, -6rem, 0) scale(1.08); opacity: 0.15; }
+    }
       100% { transform: translate3d(4rem, -5rem, 0) scale(1.04); }
     }
 
