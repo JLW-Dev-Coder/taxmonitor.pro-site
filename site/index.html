@@ -17,8 +17,47 @@
 
   <style>
     html, body { height: 100%; }
-    body { box-sizing: border-box; overflow-x: hidden; }
+    body {
+      box-sizing: border-box;
+      overflow-x: hidden;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
     * { font-family: 'DM Sans', sans-serif; }
+
+    .future-eyebrow {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+    }
+
+    .future-headline {
+      font-weight: 600;
+      letter-spacing: -0.045em;
+      line-height: 0.96;
+    }
+
+    .future-kicker {
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+    }
+
+    .future-section-title {
+      font-weight: 600;
+      letter-spacing: -0.035em;
+      line-height: 1.02;
+    }
+
+    .future-micro {
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
 
     .gradient-text {
       background: linear-gradient(135deg, #F59E0B, #D97706);
@@ -269,10 +308,6 @@
       .bg-network { opacity: 0.16; }
       .bg-grid { opacity: 0.06; background-size: 52px 52px; }
     }
-      .hero-bg-art { width: 170%; bottom: -0.5rem; opacity: 0.28; }
-      .hero-man-art { width: min(98%, 24rem); }
-      .bg-blob-1, .bg-blob-2, .bg-blob-3 { filter: blur(70px); }
-    }
 
     @keyframes fadeInUp {
       from { opacity: 0; transform: translateY(20px); }
@@ -346,8 +381,6 @@
       70% { opacity: 0.20; }
       100% { transform: translateY(170%); opacity: 0; }
     }
-      50% { opacity: 1; transform: scale(1.03); }
-    }
 
     .pulsing-aura {
       animation: pulseAura 6s ease-in-out infinite;
@@ -397,10 +430,10 @@
               <svg class="w-4 h-4 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
               </svg>
-              <span id="trust-line" class="text-sm text-slate-300">Monitoring-first tax support from professionals. Intake does not create IRS representation.</span>
+              <span id="trust-line" class="text-sm text-slate-300 tracking-[0.01em]">Monitoring-first tax support from professionals. Intake does not create IRS representation.</span>
             </div>
 
-            <h1 id="hero-headline" class="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6">
+            <h1 id="hero-headline" class="future-headline text-4xl md:text-6xl lg:text-7xl mb-6">
               Real Heroes When <span class="gradient-text">Tax Trouble</span> Shows Up
             </h1>
 
@@ -422,15 +455,15 @@
 
             <div class="grid sm:grid-cols-3 gap-4 mt-10 text-left">
               <div class="rounded-2xl border border-slate-800 bg-slate-900/45 p-4">
-                <div class="text-sm text-slate-500">Lead story</div>
+                <div class="future-micro text-slate-500">Lead story</div>
                 <div class="mt-1 text-base font-semibold text-slate-100">Monitoring first</div>
               </div>
               <div class="rounded-2xl border border-slate-800 bg-slate-900/45 p-4">
-                <div class="text-sm text-slate-500">Built for</div>
+                <div class="future-micro text-slate-500">Built for</div>
                 <div class="mt-1 text-base font-semibold text-slate-100">Early awareness</div>
               </div>
               <div class="rounded-2xl border border-slate-800 bg-slate-900/45 p-4">
-                <div class="text-sm text-slate-500">What users get</div>
+                <div class="future-micro text-slate-500">What users get</div>
                 <div class="mt-1 text-base font-semibold text-slate-100">Clear reports and alerts</div>
               </div>
             </div>
@@ -457,7 +490,7 @@
                   />
                 </div>
                 <div class="absolute inset-x-0 bottom-0 p-5 bg-gradient-to-t from-slate-950 via-slate-950/85 to-transparent">
-                  <div class="inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-amber-300">Tax Pro Hero Concept</div>
+                  <div class="future-kicker inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 text-amber-300">Tax Pro Hero Concept</div>
                   <p class="mt-3 max-w-md text-sm leading-relaxed text-slate-300">Offering more cape appeal with structured monitoring.</p>
                 </div>
               </div>
@@ -510,7 +543,7 @@
       <section class="px-6 py-20">
         <div class="max-w-4xl mx-auto">
           <div class="text-center mb-16">
-            <h2 class="text-3xl md:text-5xl font-bold mb-6">What Tax Pros <span class="gradient-text">Do Here</span></h2>
+            <h2 class="future-section-title text-3xl md:text-5xl mb-6">What Tax Pros <span class="gradient-text">Do Here</span></h2>
             <p class="text-xl text-slate-400 max-w-2xl mx-auto">They monitor, translate, alert, and keep people from learning about IRS trouble the hard way.</p>
           </div>
 
@@ -570,7 +603,7 @@
       <section class="px-6 py-20 bg-slate-900/50">
         <div class="max-w-4xl mx-auto">
           <div class="text-center mb-16">
-            <h2 class="text-3xl md:text-5xl font-bold mb-6">Who This Helps <span class="gradient-text">Most</span></h2>
+            <h2 class="future-section-title text-3xl md:text-5xl mb-6">Who This Helps <span class="gradient-text">Most</span></h2>
             <p class="text-xl text-slate-400 max-w-2xl mx-auto">Not everyone needs monitoring. The people below usually do, which is why the right tax pro matters.</p>
           </div>
 
@@ -629,7 +662,7 @@
       <section class="px-6 py-20 scroll-mt-16" id="how-it-works">
         <div class="max-w-4xl mx-auto">
           <div class="text-center mb-16">
-            <h2 class="text-3xl md:text-5xl font-bold mb-6">How The Hero Part <span class="gradient-text">Actually Works</span></h2>
+            <h2 class="future-section-title text-3xl md:text-5xl mb-6">How The Hero Part <span class="gradient-text">Actually Works</span></h2>
             <p class="text-xl text-slate-400">More cape appeal, backed by structured monitoring.</p>
           </div>
 
@@ -678,7 +711,7 @@
       <section class="px-6 py-20 scroll-mt-16 bg-slate-900/50" id="transcript-sample">
         <div class="max-w-5xl mx-auto">
           <div class="text-center mb-12">
-            <h2 class="text-3xl md:text-5xl font-bold mb-6">Transcript <span class="gradient-text">Sample</span></h2>
+            <h2 class="future-section-title text-3xl md:text-5xl mb-6">Transcript <span class="gradient-text">Sample</span></h2>
             <p class="text-xl text-slate-400">A transcript is readable once you know what to look for. Tax Monitor translates it.</p>
           </div>
 
@@ -764,7 +797,7 @@
       <section class="px-6 py-20 bg-slate-900/50" id="inside-portal">
         <div class="max-w-4xl mx-auto">
           <div class="text-center mb-12">
-            <h2 class="text-3xl md:text-5xl font-bold mb-6">Inside Your <span class="gradient-text">Portal</span></h2>
+            <h2 class="future-section-title text-3xl md:text-5xl mb-6">Inside Your <span class="gradient-text">Portal</span></h2>
             <p class="text-xl text-slate-400">Member access built around monitoring, tools, and savings.</p>
           </div>
 
@@ -805,7 +838,7 @@
       <section class="px-6 py-20 scroll-mt-16" id="report-sample">
         <div class="max-w-7xl mx-auto">
           <div class="text-center mb-12">
-            <h2 class="text-3xl md:text-5xl font-bold mb-4">Report <span class="gradient-text">Sample</span></h2>
+            <h2 class="future-section-title text-3xl md:text-5xl mb-4">Report <span class="gradient-text">Sample</span></h2>
             <p class="text-lg md:text-xl text-slate-400 max-w-3xl mx-auto">This is what your monitoring buys: a clean story of what the IRS shows, what changed, and what happens next.</p>
           </div>
 
@@ -936,7 +969,7 @@
 
       <section class="px-6 py-24" id="conversion-cta">
         <div class="max-w-3xl mx-auto text-center">
-          <h2 class="text-3xl md:text-5xl font-bold mb-6">Find The Tax Pro Who <span class="gradient-text">Watches Before Trouble Lands</span></h2>
+          <h2 class="future-section-title text-3xl md:text-5xl mb-6">Find The Tax Pro Who <span class="gradient-text">Watches Before Trouble Lands</span></h2>
           <p class="text-xl text-slate-400 mb-10 max-w-2xl mx-auto">Tax Monitor Pro is the discovery layer for monitoring-first professionals. The broader directory can still filter other services, but this page should lead with monitoring.</p>
           <a href="/app/intake.html" class="inline-block px-10 py-5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-semibold text-xl rounded-lg transition-all duration-200 transform hover:scale-105 shadow-xl shadow-amber-500/30">Start Intake →</a>
           <p class="mt-6 text-sm text-slate-500">No IRS representation created by intake. No obligation until you sign.</p>
