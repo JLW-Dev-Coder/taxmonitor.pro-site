@@ -1,431 +1,376 @@
-# README.md (Authoritative Spec — v2)
+# Tax Monitor Pro (TMP)
 
-# Tax Monitor Pro
+Tax Monitor Pro (TMP) is the **taxpayer discovery and monitoring platform** within the Virtual Launch ecosystem.
 
-**Serverless · Contract-Driven · Idempotent · Event-Driven · R2-Authoritative**
+It connects taxpayers with qualified tax professionals while providing infrastructure for **tax monitoring memberships, professional discovery, and inquiry routing**.
 
----
+The platform focuses on **proactive monitoring services rather than reactive tax resolution**, allowing taxpayers to identify issues early and professionals to build recurring service relationships.
 
-## Table of Contents (Alphabetical)
-
-* 2848 Two-Signature Sequence
-* Authentication Model
-* ClickUp Projection Layer
-* Contracts (Mutation Ingress Only)
-* Core Stack
-* Data Model (R2 Canonical Authority)
-* Domains & Routing
-* Event Trigger System
-* Idempotency & Safety
-* Lifecycle State Model (Order StepBooleans)
-* Operational Checklist
-* Processing Contract (Write Order)
-* Read Models (Worker GET Endpoints)
-* Report Rendering Contract
-* Repository Structure (Exact Tree)
-* Security & Legal Controls
-* Staff Compliance Records Gate
-* System Architecture
-* What Tax Monitor Pro Is
-* Worker Environment Variables
+TMP operates as the **public discovery layer** of the ecosystem while relying on Virtual Launch Pro for professional infrastructure and account management.
 
 ---
 
-# What Tax Monitor Pro Is
+# Table of Contents
 
-Tax Monitor Pro is a **serverless CRM + delivery system for tax monitoring services**.
-
-It is:
-
-* Contract-driven
-* Event-driven
-* Idempotent
-* R2-authoritative
-* Worker-orchestrated
-
-HTML never defines valid data.
-JSON contracts define valid data.
-
----
-
-# System Architecture
-
-## Presentation Layer
-
-Cloudflare Pages serves:
-
-* `/app/*`
-* `/site/*`
-
-UI never mutates canonical state directly.
-All mutations go through Worker endpoints.
+* [Overview](#overview)
+* [Key Features](#key-features)
+* [Architecture Overview](#architecture-overview)
+* [Ecosystem Overview](#ecosystem-overview)
+* [Repository Structure](#repository-structure)
+* [Environment Setup](#environment-setup)
+* [Deployment](#deployment)
+* [Contracts or Data Model](#contracts-or-data-model)
+* [Development Standards](#development-standards)
+* [Integrations](#integrations)
+* [Security and Secrets](#security-and-secrets)
+* [Contribution Guidelines](#contribution-guidelines)
+* [License](#license)
 
 ---
 
-## Logic Layer
+# Overview
 
-Cloudflare Worker (`api.taxmonitor.pro`):
+Tax Monitor Pro provides a **taxpayer-facing discovery and monitoring system** designed to connect individuals with qualified tax professionals while enabling proactive compliance monitoring.
 
-* Validates inbound events
-* Writes append-only receipts
-* Upserts canonical state
-* Enforces lifecycle gating
-* Projects to ClickUp
-* Sends email (after canonical update only)
-* Serves read-only GET endpoints
+The system allows taxpayers to:
 
----
+* locate professionals through a searchable directory
+* submit inquiries to professionals
+* enroll in monitoring memberships
+* access educational tax tools and transcript analysis resources
 
-## Storage Layer
-
-Cloudflare R2:
-
-* Canonical objects (mutable state)
-* Append-only receipt ledger (immutable)
-* Generated artifacts (PDFs)
-
-R2 is authority.
-Nothing else is authoritative.
+TMP separates the **consumer experience** from the **professional infrastructure layer**, ensuring that public discovery functions remain lightweight while professional data and membership management remain centralized in Virtual Launch Pro.
 
 ---
 
-## Execution Layer
+# Key Features
 
-ClickUp:
+Core capabilities include:
 
-* Accounts list
-* Orders list
-* Support list
+* directory search for tax professionals
+* inquiry routing to professional profiles
+* taxpayer monitoring memberships
+* token access for tax tools
+* integration with transcript diagnostics
+* public discovery interface for professional services
+* contract-driven API architecture
+* R2-based canonical data storage
 
-ClickUp is projection only.
-Worker writes to R2 first, then projects.
-
----
-
-# Domains & Routing
-
-## UI Domain
-
-```
-https://taxmonitor.pro
-```
-
-Serves:
-
-* `/app/*`
-* `/site/*`
+The platform emphasizes **proactive tax monitoring and early problem detection** rather than reactive resolution work.
 
 ---
 
-## API Domain
+# Architecture Overview
 
-```
-https://api.taxmonitor.pro
-```
+Tax Monitor Pro is built using a **Cloudflare Worker–centric architecture** where API logic runs at the edge and static front-end interfaces are served through Cloudflare Pages.
 
-Worker route:
+Core architectural principles include:
 
-```
-api.taxmonitor.pro/*
-```
+* canonical storage in R2
+* contract-driven API validation
+* stateless worker design
+* deny-by-default routing
+* cross-platform API communication
 
-Rules:
+Primary system components include:
 
-* All forms must POST absolute URLs
-* No relative form actions
-* No UI → ClickUp direct calls
-* No UI → Stripe direct calls
-* No SMTP ever
+* Cloudflare Workers for API execution
+* static front-end applications
+* R2 canonical data storage
+* D1 query indexes for search and filtering
+* webhook ingestion pipelines
 
----
+All write operations follow the canonical pipeline:
 
-# Event Trigger System
+1. request received
+2. contract validation
+3. receipt stored in R2
+4. canonical record written to R2
+5. query indexes updated
+6. response returned
 
-## Final Trigger Set (Alphabetical)
-
-* Appt
-* Email
-* Form
-* Login
-* Message
-* Payment
-* Task
-* Visit
-
-## Trigger Sources
-
-Appt → Cal webhook
-Email → Google Workspace (post-canonical only)
-Form → Portal + staff submissions
-Login → Auth endpoints
-Message → In-app + logged outbound
-Payment → Stripe webhook
-Task → ClickUp webhook
-Visit → Client-side beacon (logged, not client-visible)
+This architecture ensures consistent contract enforcement and reliable data ownership.
 
 ---
 
-# Processing Contract (Write Order)
+# Ecosystem Overview
 
-For every inbound event:
+Tax Monitor Pro operates as part of a **four-platform ecosystem** designed to provide both taxpayer discovery and professional infrastructure.
 
-1. Validate signature (if webhook)
-2. Validate payload against JSON contract
-3. Append receipt (immutable)
-4. Upsert canonical object
-5. Project to ClickUp
-6. Send email (if required)
+Each platform performs a specific role.
 
-If receipt exists → exit safely.
+| Platform               | Role                                              |
+| ---------------------- | ------------------------------------------------- |
+| Tax Monitor Pro        | taxpayer discovery and professional directory     |
+| Tax Tools Arcade       | taxpayer education and discovery traffic          |
+| Transcript Tax Monitor | transcript diagnostics and analysis               |
+| Virtual Launch Pro     | professional infrastructure and membership system |
 
-Receipt append always precedes canonical mutation.
+Data ownership is centralized using **R2 canonical storage**, while query-optimized datasets are maintained in **D1**.
 
----
-
-# Data Model (R2 Canonical Authority)
-
-```
-accounts/{accountId}.json
-orders/{orderId}.json
-support/{supportId}.json
-receipts/{source}/{eventId}.json
-```
-
-Receipts are immutable ledger entries.
-Canonical objects are mutable state.
+Cross-platform communication occurs through **Cloudflare Worker APIs**.
 
 ---
 
-# Lifecycle State Model (Order StepBooleans)
+# TMP Responsibilities
 
-Each order tracks progression via strict booleans:
+Tax Monitor Pro is responsible for:
 
-```
-intakeComplete
-offerAccepted
-agreementAccepted
-paymentCompleted
-welcomeConfirmed
-filingStatusSubmitted
-addressUpdateSubmitted
-esign2848Submitted
-complianceSubmitted
-reportReady
-```
+* public professional directory
+* taxpayer inquiry routing
+* taxpayer memberships
+* discovery traffic from educational tools
+* connecting taxpayers with monitoring professionals
 
-Worker enforces:
-
-* No forward step without prior completion
-* No projection before canonical update
-* No report rendering unless `reportReady = true`
+Professional profiles displayed in TMP originate from **Virtual Launch Pro canonical records**.
 
 ---
 
-# Report Rendering Contract
+# TMP Worker Routes
 
-Report rendering follows strict priority:
-
-1. orders object (primary)
-2. accounts object (secondary)
-
-If `reportReady = false`:
-
-* Render placeholders
-* Do not render compliance artifacts
-
-Rendering logic never infers state from UI.
-
----
-
-# 2848 Two-Signature Sequence
-
-Both signatures occur on Page 2.
-
-Sequence:
-
-1. Generate Page 1 + Page 2
-2. Taxpayer signs Page 2
-3. Representative signs Page 2
-4. Store final signed PDF in R2
-5. Update canonical fields
-6. Project to ClickUp
-
-Canonical fields:
+## Directory Routes
 
 ```
-esign2848Status (draft | taxpayer_signed | fully_signed)
-esign2848TaxpayerSignedAt
-esign2848RepresentativeSignedAt
-esign2848UrlTaxpayerSignedPdf
-esign2848UrlFinalPdf
-```
-
----
-
-# Staff Compliance Records Gate
-
-Endpoint:
-
-```
-POST https://api.taxmonitor.pro/forms/staff/compliance-records
-```
-
-On final submission:
-
-* `complianceSubmitted = true`
-* `reportReady = true`
-
-ClickUp status updated to:
-
-```
-10 Compliance Records
-```
-
-Artifact storage:
-
-```
-reports/{accountId}/{taxYear}/compliance.pdf
-```
-
-Stored in R2.
-
----
-
-# Read Models (Worker GET Endpoints)
-
-Read models:
-
-* Do not append receipts
-* Do not mutate canonical R2
-* Do not project to ClickUp
-* Are not included in contract-registry.json
-
-Example:
-
-```
-GET /app/payments
+GET /v1/directory/profiles
+GET /v1/directory/profiles/{professional_id}
 ```
 
 Purpose:
 
-Return Stripe-derived payment data derived from canonical R2 objects.
-
-Read models are documented here, not registered as mutation contracts.
+* retrieve professional listings
+* support filtering and search
+* power directory UI components
 
 ---
 
-# Contracts (Mutation Ingress Only)
-
-Registry file:
+## Inquiry Routes
 
 ```
-app/contracts/contract-registry.json
+GET  /v1/inquiries/{inquiry_id}
+GET  /v1/inquiries/by-professional/{professional_id}
+POST /v1/inquiries
 ```
 
-Contracts exist only when:
+Purpose:
 
-* Endpoint receives POST
-* Worker appends receipt
-* Worker mutates canonical R2
-* Worker updates lifecycle state
-* Worker triggers ClickUp projection
-
-Validation rules:
-
-* enumStrict = true
-* normalizeCheckboxToBoolean = true
-* rejectUnknownValues = true
-* No hardcoded dropdown enums in HTML
-* No business logic inferred from UI
+* create taxpayer inquiries
+* retrieve inquiry history
+* route inquiries to the selected professional
+* provide inquiry data for analytics and dashboards
 
 ---
 
-# ClickUp Projection Layer
+## Membership Routes
 
-List IDs:
+```
+GET  /v1/memberships/{account_id}
+POST /v1/memberships
+```
 
-* Accounts — 901710909567
-* Orders — 901710818340
-* Support — 901710818377
+Purpose:
 
-ClickUp is never authoritative.
-
----
-
-# Idempotency & Safety
-
-* Every event includes `eventId`
-* Stripe dedupe key = Stripe Session ID
-* Cal dedupe key = Cal event ID
-* Receipt written before canonical change
-* No duplicate tasks
-* No duplicate emails
-* Retry-safe processing
+* create taxpayer memberships
+* determine monitoring entitlements
+* verify membership access to services
 
 ---
 
-# Core Stack (Alphabetical)
+# Canonical Storage
 
-* Cal.com — Appointment webhooks
-* ClickUp — Projection layer
-* Cloudflare Pages — UI hosting
-* Cloudflare R2 — Canonical storage + artifacts
-* Cloudflare Worker — API orchestration
-* Google Workspace — Transactional email
-* Stripe — Payment webhooks
+TMP records are stored in R2 using structured object paths.
 
----
+Examples:
 
-# Worker Environment Variables
+```
+/r2/inquiries/{inquiry_id}.json
+/r2/taxpayer_memberships/{membership_id}.json
+```
 
-## Secrets
+R2 serves as the **authoritative data layer** for canonical records.
 
-* CAL_WEBHOOK_SECRET
-* CLICKUP_API_KEY
-* GOOGLE_PRIVATE_KEY
-* STRIPE_SECRET_KEY
-* STRIPE_WEBHOOK_SECRET
-
-## Plaintext
-
-* CLICKUP_ACCOUNTS_LIST_ID
-* CLICKUP_ORDERS_LIST_ID
-* CLICKUP_SUPPORT_LIST_ID
-* GOOGLE_CLIENT_EMAIL
-* GOOGLE_TOKEN_URI
-* GOOGLE_WORKSPACE_USER_INFO
-* GOOGLE_WORKSPACE_USER_NO_REPLY
-* GOOGLE_WORKSPACE_USER_SUPPORT
-* MY_ORGANIZATION_ADDRESS
-* MY_ORGANIZATION_BUSINESS_LOGO
-* MY_ORGANIZATION_CITY
-* MY_ORGANIZATION_NAME
-* MY_ORGANIZATION_STATE_PROVINCE
-* MY_ORGANIZATION_ZIP
+Query-optimized data may be mirrored into D1 for search and analytics.
 
 ---
 
-# Operational Checklist
+# Cross-Platform Data Flow
 
-* All forms POST absolute Worker URLs
-* Every event includes `eventId`
-* Receipt written before state change
-* Canonical upsert before ClickUp update
-* Emails sent only after canonical update
-* Lifecycle booleans strictly enforced
-* Login writes receipt
-* 2848 state machine enforced
-* Read models never mutate state
+The ecosystem operates as a discovery and infrastructure loop.
+
+```
+Tax Tools Arcade
+→ generates discovery traffic
+
+Transcript Tax Monitor
+→ provides transcript diagnostics
+
+Tax Monitor Pro
+→ connects taxpayers with professionals
+
+Virtual Launch Pro
+→ manages professional infrastructure
+```
+
+This structure allows each platform to remain specialized while sharing canonical records across the ecosystem.
 
 ---
 
-# Final Authority
+# Repository Structure
 
-R2 is authority.
-Worker enforces contracts.
-ClickUp is projection.
-Registry governs mutation ingress only.
-Read models are documented in README.
+Typical repository layout:
 
+```
+/app
+/assets
+/contracts
+/pages
+/partials
+/site
+/workers
+```
 
-Architecture is locked.
+Directory purposes:
+
+| Directory    | Description                          |
+| ------------ | ------------------------------------ |
+| `/app`       | authenticated application interfaces |
+| `/assets`    | shared images, scripts, and styles   |
+| `/contracts` | JSON API contracts                   |
+| `/pages`     | workflow and onboarding pages        |
+| `/partials`  | reusable UI components               |
+| `/site`      | public marketing pages               |
+| `/workers`   | Cloudflare Worker APIs               |
+
+---
+
+# Environment Setup
+
+Required software:
+
+* Git
+* Node.js
+* Wrangler CLI
+
+Typical setup process:
+
+1. clone the repository
+2. install dependencies
+3. configure environment variables
+4. run local worker environment
+5. test API endpoints
+
+---
+
+# Deployment
+
+Deployment occurs through **Cloudflare Workers** using Wrangler.
+
+Example command:
+
+```
+wrangler deploy
+```
+
+The `wrangler.toml` configuration defines:
+
+* compatibility date
+* environment bindings
+* R2 bucket access
+* worker settings
+
+---
+
+# Contracts or Data Model
+
+TMP uses **contract-driven APIs**.
+
+Contracts define the relationship between:
+
+* UI forms
+* worker routes
+* R2 canonical storage
+* query indexes
+
+Typical write lifecycle:
+
+```
+client request
+→ contract validation
+→ receipt written to R2
+→ canonical record written
+→ query indexes updated
+→ response returned
+```
+
+This approach ensures predictable API behavior and stable integrations.
+
+---
+
+# Development Standards
+
+Repository development standards include:
+
+* alphabetical route documentation
+* canonical Worker header structure
+* contract-first API design
+* deny-by-default routing
+* R2 as the authoritative data source
+
+Workers should use the standardized header format documenting inbound routes and invariants. 
+
+---
+
+# Integrations
+
+External integrations include:
+
+* Cloudflare infrastructure
+* Google Workspace email services
+* Stripe billing services
+* Virtual Launch Pro APIs
+* transcript diagnostic services
+
+These integrations support authentication, billing, notifications, and professional infrastructure.
+
+---
+
+# Security and Secrets
+
+Secrets must never be stored in the repository.
+
+Sensitive configuration is handled through:
+
+* Wrangler secret management
+* environment variables
+* webhook signing secrets
+* OAuth credentials
+
+Example secrets include:
+
+* Stripe webhook signing secret
+* API access tokens
+* OAuth client secrets
+
+---
+
+# Contribution Guidelines
+
+Recommended workflow:
+
+1. create a feature branch
+2. implement changes
+3. test locally
+4. verify contracts and routes
+5. submit pull request
+6. deploy after review
+
+Changes that affect contracts or worker routes should be documented before merging.
+
+---
+
+# License
+
+This repository is **proprietary software** owned by Tax Monitor Pro / Virtual Launch Pro.
+
+Unauthorized distribution, modification, or commercial use is not permitted.
+
+---
