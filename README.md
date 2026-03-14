@@ -24,9 +24,9 @@ Tax Monitor Pro provides a **taxpayer-facing discovery and monitoring system** d
 
 The system allows taxpayers to:
 
-* locate professionals through a searchable directory
-* submit inquiries to professionals
-* member discounts and priority responses to inquiries (by tier via call, direct messaging, email, or ticket)
+* locate qualified tax professionals through a searchable directory
+* submit inquiries directly to professionals in the network
+* receive member discounts and tier-based priority responses to inquiries (via call, direct messaging, email, or ticket)
 * access educational tax tools and transcript analysis resources
 
 TMP separates the **consumer experience** from the **professional infrastructure layer**, ensuring that public discovery functions remain lightweight while professional data and membership management remain centralized in Virtual Launch Pro.
