@@ -1,16 +1,6 @@
 # Tax Monitor Pro (TMP)
 
-Tax Monitor Pro (TMP) is the **taxpayer discovery and monitoring platform** within the Virtual Launch ecosystem.
-
-It connects taxpayers with qualified tax professionals while providing infrastructure for **tax monitoring memberships, professional discovery, and inquiry routing**.
-
-The platform focuses on **proactive monitoring services rather than reactive tax resolution**, allowing taxpayers to identify issues early and professionals to build recurring service relationships.
-
-TMP operates as the **public discovery layer** of the ecosystem while relying on Virtual Launch Pro for professional infrastructure and account management.
-
----
-
-# Table of Contents
+## Table of Contents
 
 * [Overview](#overview)
 * [Key Features](#key-features)
