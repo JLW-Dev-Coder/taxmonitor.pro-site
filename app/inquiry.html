@@ -1,0 +1,1891 @@
+<!-- app/inquiry.html -->
+ <!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tax Monitor Pro - Tax Pro Network Matching Inquiry</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="/_sdk/element_sdk.js" type="text/javascript"></script>
+  <style>
+    * { font-family: 'DM Sans', sans-serif; }
+    html, body { height: 100%; }
+    body {
+      background-color: #020617;
+      box-sizing: border-box;
+      overflow-x: hidden;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .site-bg-effects {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .site-bg-effects > * { position: absolute; }
+
+    .bg-blob {
+      border-radius: 9999px;
+      filter: blur(90px);
+      will-change: transform;
+    }
+
+    .bg-blob-1 {
+      width: 36rem;
+      height: 36rem;
+      top: -10rem;
+      left: -12rem;
+      opacity: 0.18;
+      background: radial-gradient(circle, rgba(245, 158, 11, 0.24) 0%, rgba(245, 158, 11, 0) 70%);
+      animation: blobEdgeOne 32s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite alternate;
+    }
+
+    .bg-blob-2 {
+      width: 42rem;
+      height: 42rem;
+      top: 24rem;
+      right: -14rem;
+      opacity: 0.14;
+      background: radial-gradient(circle, rgba(59, 130, 246, 0.16) 0%, rgba(59, 130, 246, 0) 72%);
+      animation: blobEdgeTwo 36s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite alternate;
+    }
+
+    .bg-blob-3 {
+      width: 30rem;
+      height: 30rem;
+      bottom: -8rem;
+      left: 24%;
+      opacity: 0.12;
+      background: radial-gradient(circle, rgba(148, 163, 184, 0.14) 0%, rgba(148, 163, 184, 0) 72%);
+      animation: blobEdgeThree 34s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite alternate;
+    }
+
+    .bg-noise {
+      inset: 0;
+      opacity: 0.045;
+      mix-blend-mode: soft-light;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.18) 0.6px, transparent 0.6px);
+      background-size: 8px 8px;
+    }
+
+    .bg-vignette {
+      inset: 0;
+      background: radial-gradient(circle at center, transparent 35%, rgba(2, 6, 23, 0.34) 100%);
+    }
+
+    .bg-grid {
+      inset: 0;
+      opacity: 0.10;
+      background-image:
+        linear-gradient(rgba(148, 163, 184, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(148, 163, 184, 0.08) 1px, transparent 1px);
+      background-size: 72px 72px;
+      mask-image: radial-gradient(circle at center, black 18%, transparent 85%);
+      -webkit-mask-image: radial-gradient(circle at center, black 18%, transparent 85%);
+    }
+
+    .bg-network {
+      inset: 0;
+      opacity: 0.22;
+      background-repeat: no-repeat;
+      background-position:
+        8% 18%, 18% 26%, 28% 21%, 78% 17%, 86% 25%, 72% 31%, 50% 12%,
+        13% 22%, 23% 23%, 82% 21%, 76% 27%, 50% 17%;
+      background-size:
+        8px 8px, 6px 6px, 7px 7px, 8px 8px, 6px 6px, 7px 7px, 8px 8px,
+        180px 2px, 140px 2px, 120px 2px, 160px 2px, 220px 2px;
+      background-image:
+        radial-gradient(circle, rgba(125, 211, 252, 0.85) 0%, rgba(125, 211, 252, 0) 70%),
+        radial-gradient(circle, rgba(245, 158, 11, 0.80) 0%, rgba(245, 158, 11, 0) 70%),
+        radial-gradient(circle, rgba(255, 255, 255, 0.70) 0%, rgba(255, 255, 255, 0) 70%),
+        radial-gradient(circle, rgba(125, 211, 252, 0.75) 0%, rgba(125, 211, 252, 0) 70%),
+        radial-gradient(circle, rgba(245, 158, 11, 0.75) 0%, rgba(245, 158, 11, 0) 70%),
+        radial-gradient(circle, rgba(255, 255, 255, 0.58) 0%, rgba(255, 255, 255, 0) 70%),
+        radial-gradient(circle, rgba(125, 211, 252, 0.70) 0%, rgba(125, 211, 252, 0) 70%),
+        linear-gradient(90deg, rgba(125, 211, 252, 0.0), rgba(125, 211, 252, 0.34), rgba(255, 255, 255, 0.0)),
+        linear-gradient(90deg, rgba(245, 158, 11, 0.0), rgba(245, 158, 11, 0.30), rgba(255, 255, 255, 0.0)),
+        linear-gradient(90deg, rgba(125, 211, 252, 0.0), rgba(125, 211, 252, 0.26), rgba(255, 255, 255, 0.0)),
+        linear-gradient(90deg, rgba(245, 158, 11, 0.0), rgba(245, 158, 11, 0.22), rgba(255, 255, 255, 0.0)),
+        linear-gradient(90deg, rgba(125, 211, 252, 0.0), rgba(125, 211, 252, 0.20), rgba(255, 255, 255, 0.0));
+      animation: networkFloat 24s ease-in-out infinite alternate;
+    }
+
+    .bg-beacon {
+      left: 50%;
+      top: 7rem;
+      width: 32rem;
+      height: 32rem;
+      transform: translateX(-50%);
+      border-radius: 9999px;
+      background: radial-gradient(circle, rgba(245, 158, 11, 0.18) 0%, rgba(14, 165, 233, 0.10) 30%, rgba(2, 6, 23, 0) 68%);
+      filter: blur(18px);
+      opacity: 0.72;
+      animation: beaconPulse 8s ease-in-out infinite;
+    }
+
+    .bg-ring,
+    .bg-ring::before,
+    .bg-ring::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 14rem;
+      border-radius: 9999px;
+      border: 1px solid rgba(125, 211, 252, 0.14);
+      transform: translateX(-50%);
+    }
+
+    .bg-ring {
+      width: 38rem;
+      height: 38rem;
+      animation: ringRotate 34s linear infinite;
+    }
+
+    .bg-ring::before {
+      inset: 3.25rem;
+      border-color: rgba(245, 158, 11, 0.12);
+      animation: ringRotateReverse 26s linear infinite;
+    }
+
+    .bg-ring::after {
+      inset: 6.5rem;
+      border-color: rgba(255, 255, 255, 0.08);
+      animation: ringRotate 18s linear infinite;
+    }
+
+    .bg-scan {
+      inset: -20% 0 auto 0;
+      height: 32rem;
+      background: linear-gradient(180deg, rgba(125, 211, 252, 0.0), rgba(125, 211, 252, 0.08), rgba(245, 158, 11, 0.04), rgba(125, 211, 252, 0.0));
+      opacity: 0.34;
+      transform: translateY(-100%);
+      animation: scanSweep 12s linear infinite;
+      filter: blur(16px);
+    }
+
+    @media (max-width: 640px) {
+      .bg-blob-1, .bg-blob-2, .bg-blob-3 { filter: blur(70px); }
+      .bg-beacon { width: 24rem; height: 24rem; top: 9rem; }
+      .bg-ring { width: 28rem; height: 28rem; top: 15rem; }
+      .bg-network { opacity: 0.16; }
+      .bg-grid { opacity: 0.06; background-size: 52px 52px; }
+    }
+
+    @keyframes blobEdgeOne {
+      0% { transform: translate3d(0, 0, 0) scale(1); opacity: 0.14; }
+      25% { transform: translate3d(3rem, 2rem, 0) scale(1.04); opacity: 0.18; }
+      50% { transform: translate3d(7rem, 4rem, 0) scale(1.08); opacity: 0.22; }
+      75% { transform: translate3d(4rem, 7rem, 0) scale(1.03); opacity: 0.17; }
+      100% { transform: translate3d(9rem, 5rem, 0) scale(1.1); opacity: 0.2; }
+    }
+
+    @keyframes blobEdgeTwo {
+      0% { transform: translate3d(0, 0, 0) scale(1); opacity: 0.11; }
+      25% { transform: translate3d(-3rem, -2rem, 0) scale(1.03); opacity: 0.14; }
+      50% { transform: translate3d(-7rem, -4rem, 0) scale(1.07); opacity: 0.18; }
+      75% { transform: translate3d(-5rem, 1rem, 0) scale(1.04); opacity: 0.13; }
+      100% { transform: translate3d(-9rem, -3rem, 0) scale(1.09); opacity: 0.16; }
+    }
+
+    @keyframes blobEdgeThree {
+      0% { transform: translate3d(0, 0, 0) scale(1); opacity: 0.1; }
+      25% { transform: translate3d(2rem, -2rem, 0) scale(1.03); opacity: 0.13; }
+      50% { transform: translate3d(5rem, -5rem, 0) scale(1.06); opacity: 0.16; }
+      75% { transform: translate3d(1rem, -3rem, 0) scale(1.02); opacity: 0.12; }
+      100% { transform: translate3d(6rem, -6rem, 0) scale(1.08); opacity: 0.15; }
+    }
+
+    @keyframes networkFloat {
+      0% { transform: translate3d(0, 0, 0) scale(1); opacity: 0.18; }
+      100% { transform: translate3d(0, -1.25rem, 0) scale(1.02); opacity: 0.26; }
+    }
+
+    @keyframes beaconPulse {
+      0%, 100% { transform: translateX(-50%) scale(0.96); opacity: 0.48; }
+      50% { transform: translateX(-50%) scale(1.06); opacity: 0.78; }
+    }
+
+    @keyframes ringRotate {
+      from { transform: translateX(-50%) rotate(0deg); }
+      to { transform: translateX(-50%) rotate(360deg); }
+    }
+
+    @keyframes ringRotateReverse {
+      from { transform: rotate(360deg); }
+      to { transform: rotate(0deg); }
+    }
+
+    @keyframes scanSweep {
+      0% { transform: translateY(-115%); opacity: 0; }
+      10% { opacity: 0.34; }
+      70% { opacity: 0.20; }
+      100% { transform: translateY(170%); opacity: 0; }
+    }
+
+    .glass-input {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(100, 116, 139, 0.3);
+      color: #e2e8f0;
+      transition: all 0.3s ease;
+    }
+
+    .glass-input:focus {
+      background: rgba(30, 41, 59, 0.9);
+      border-color: rgba(245, 158, 11, 0.6);
+      outline: none;
+      box-shadow: 0 0 20px rgba(245, 158, 11, 0.2);
+    }
+
+    .glass-input::placeholder { color: rgba(148, 163, 176, 0.6); }
+
+    .choice-card {
+      background: rgba(15, 23, 42, 0.58);
+      border: 1px solid rgba(100, 116, 139, 0.26);
+      border-radius: 1rem;
+      cursor: pointer;
+      min-height: 5.25rem;
+      padding: 1rem;
+      text-align: left;
+      transition: all 0.25s ease;
+      width: 100%;
+    }
+
+    .choice-card:hover {
+      border-color: rgba(245, 158, 11, 0.42);
+      box-shadow: 0 10px 30px rgba(2, 6, 23, 0.28), 0 0 0 1px rgba(245, 158, 11, 0.16), 0 0 26px rgba(245, 158, 11, 0.12);
+      transform: translateY(-2px);
+    }
+
+    .choice-card.active {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.18), rgba(217, 119, 6, 0.14));
+      border-color: rgba(245, 158, 11, 0.64);
+      box-shadow: 0 12px 28px rgba(245, 158, 11, 0.18);
+    }
+
+    .feature-card {
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.74), rgba(15, 23, 42, 0.56));
+      border: 1px solid rgba(100, 116, 139, 0.24);
+      border-radius: 1.25rem;
+      cursor: pointer;
+      min-height: 12.5rem;
+      padding: 1.25rem;
+      position: relative;
+      text-align: left;
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+      width: 100%;
+    }
+
+    .feature-card:hover {
+      border-color: rgba(245, 158, 11, 0.46);
+      box-shadow: 0 16px 40px rgba(2, 6, 23, 0.32), 0 0 30px rgba(245, 158, 11, 0.14);
+      transform: translateY(-3px);
+    }
+
+    .feature-card.active {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.18), rgba(217, 119, 6, 0.14));
+      border-color: rgba(245, 158, 11, 0.64);
+      box-shadow: 0 14px 34px rgba(245, 158, 11, 0.14);
+    }
+
+    .feature-icon-shell {
+      align-items: center;
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.18), rgba(217, 119, 6, 0.12));
+      border: 1px solid rgba(245, 158, 11, 0.24);
+      border-radius: 1rem;
+      display: inline-flex;
+      height: 4.25rem;
+      justify-content: center;
+      width: 4.25rem;
+    }
+
+    .membership-package-card {
+      background: rgba(15, 23, 42, 0.55);
+      backdrop-filter: blur(18px);
+      border: 1px solid rgba(248, 250, 252, 0.10);
+      border-radius: 16px;
+      cursor: pointer;
+      padding: 1.5rem;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+    .membership-package-card:hover {
+      border-color: rgba(245, 158, 11, 0.36);
+      box-shadow: 0 14px 34px rgba(2, 6, 23, 0.55), 0 0 28px rgba(245, 158, 11, 0.10);
+      transform: translateY(-3px);
+    }
+
+    .membership-package-card.active {
+      border-color: rgba(245, 158, 11, 0.65);
+      box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.25), 0 18px 44px rgba(245, 158, 11, 0.15);
+    }
+
+    .membership-badge {
+      border-radius: 9999px;
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      padding: 0.25rem 0.75rem;
+    }
+
+    .choice-card-title {
+      color: #f8fafc;
+      display: block;
+      font-size: 1rem;
+      font-weight: 600;
+      line-height: 1.25rem;
+    }
+
+    .choice-card-copy {
+      color: #94a3b8;
+      display: block;
+      font-size: 0.875rem;
+      line-height: 1.35rem;
+      margin-top: 0.4rem;
+    }
+
+    .select-wrap { position: relative; }
+
+    .select-wrap::after {
+      color: rgba(245, 158, 11, 0.95);
+      content: '▾';
+      font-size: 1.6rem;
+      font-weight: 700;
+      line-height: 1;
+      pointer-events: none;
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      text-shadow: 0 0 6px rgba(245,158,11,0.35);
+    }
+
+    .glass-select {
+      appearance: none;
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.94), rgba(15, 23, 42, 0.82));
+      border: 1px solid rgba(100, 116, 139, 0.32);
+      border-radius: 1rem;
+      color: #f8fafc;
+      font-size: 1rem;
+      font-weight: 600;
+      min-height: 3.75rem;
+      padding: 0.95rem 3rem 0.95rem 1rem;
+      transition: all 0.25s ease;
+      width: 100%;
+    }
+
+    .glass-select:hover { border-color: rgba(245, 158, 11, 0.42); }
+
+    .glass-select:focus {
+      border-color: rgba(245, 158, 11, 0.64);
+      box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.12), 0 0 20px rgba(245, 158, 11, 0.16);
+      outline: none;
+    }
+
+    .glass-select option,
+    .glass-select optgroup {
+      background: #0f172a;
+      color: #f8fafc;
+    }
+
+    .mini-kicker {
+      color: #94a3b8;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .detail-icon {
+      align-items: center;
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.16), rgba(217, 119, 6, 0.14));
+      border: 1px solid rgba(245, 158, 11, 0.26);
+      border-radius: 1.25rem;
+      display: inline-flex;
+      height: 4rem;
+      justify-content: center;
+      width: 4rem;
+    }
+
+    .detail-stat {
+      background: rgba(15, 23, 42, 0.42);
+      border: 1px solid rgba(100, 116, 139, 0.2);
+      border-radius: 1rem;
+      padding: 1rem;
+    }
+
+    .feature-detail-pane { scroll-margin-top: 8rem; }
+
+    .button-primary {
+      background: linear-gradient(135deg, #F59E0B, #D97706);
+      color: #0f172a;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .button-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3);
+    }
+
+    .button-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .button-secondary {
+      background: rgba(51, 65, 85, 0.5);
+      color: #e2e8f0;
+      border: 1px solid rgba(100, 116, 139, 0.3);
+      font-weight: 500;
+      transition: all 0.3s ease;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .button-secondary:hover {
+      background: rgba(71, 85, 105, 0.6);
+      border-color: rgba(245, 158, 11, 0.5);
+    }
+
+    .step-circle {
+      width: 2rem;
+      height: 2rem;
+      border-radius: 9999px;
+      align-items: center;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(51, 65, 85, 0.95);
+      box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.18);
+      display: inline-flex;
+      justify-content: center;
+      transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, color 0.25s ease;
+    }
+
+    .stepper-jump {
+      align-items: center;
+      background: transparent;
+      border: 0;
+      color: inherit;
+      cursor: pointer;
+      display: inline-flex;
+      gap: 0.5rem;
+      padding: 0;
+      text-align: left;
+    }
+
+    .stepper-jump:hover .step-circle {
+      border-color: rgba(245, 158, 11, 0.6);
+    }
+
+    .stepper-jump:hover .step-label,
+    .stepper-jump:hover .step-number {
+      color: #fbbf24;
+    }
+
+    .stepper-jump:focus-visible {
+      outline: none;
+    }
+
+    .stepper-jump:focus-visible .step-circle {
+      border-color: rgba(245, 158, 11, 0.95);
+      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.14), 0 0 18px rgba(245, 158, 11, 0.18);
+    }
+
+    .step-number {
+      color: #94a3b8;
+      font-size: 0.75rem;
+      font-weight: 700;
+      transition: color 0.25s ease;
+    }
+
+    .step-label {
+      color: #64748b;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: color 0.25s ease;
+    }
+
+    .step-connector {
+      width: 2rem;
+      height: 2px;
+      background: rgba(51, 65, 85, 0.9);
+      border-radius: 9999px;
+      transition: background 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    [data-stepper-item].is-current .step-circle {
+      border-color: rgba(245, 158, 11, 0.95);
+      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.14), 0 0 18px rgba(245, 158, 11, 0.18);
+    }
+
+    [data-stepper-item].is-current .step-number,
+    [data-stepper-item].is-current .step-label {
+      color: #fbbf24;
+      font-weight: 600;
+    }
+
+    [data-stepper-item].is-complete .step-circle {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.96), rgba(217, 119, 6, 0.96));
+      border-color: rgba(245, 158, 11, 1);
+      box-shadow: 0 8px 20px rgba(245, 158, 11, 0.2);
+    }
+
+    [data-stepper-item].is-complete .step-number {
+      color: #0f172a;
+    }
+
+    [data-stepper-item].is-complete .step-label {
+      color: #e2e8f0;
+    }
+
+    .step-connector.is-complete {
+      background: linear-gradient(90deg, rgba(245, 158, 11, 0.95), rgba(217, 119, 6, 0.95));
+      box-shadow: 0 0 12px rgba(245, 158, 11, 0.16);
+    }
+
+    .progress-bar {
+      height: 4px;
+      background: rgba(51, 65, 85, 0.5);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #F59E0B, #D97706);
+      transition: width 0.4s ease;
+      border-radius: 2px;
+    }
+
+    .chat-bubble { animation: slideIn 0.3s ease-out; }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .checkbox-custom {
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border: 1px solid rgba(245, 158, 11, 0.5);
+      border-radius: 4px;
+      background: rgba(51, 65, 85, 0.3);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .checkbox-custom:checked {
+      background: linear-gradient(135deg, #F59E0B, #D97706);
+      border-color: #F59E0B;
+    }
+
+    .checkbox-custom:checked::after {
+      content: '✓';
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      color: #0f172a;
+      font-size: 0.75rem;
+      font-weight: bold;
+    }
+
+    input[type="date"] { color-scheme: dark; font-size: 16px; padding: 12px 16px; border-radius: 8px; }
+
+    input[type="date"]::-webkit-calendar-picker-indicator {
+      filter: invert(0.8) brightness(0.9);
+      cursor: pointer;
+      opacity: 0.7;
+      transition: opacity 0.3s ease;
+      width: 28px;
+      height: 28px;
+      margin-right: 8px;
+    }
+
+    input[type="date"]:hover::-webkit-calendar-picker-indicator { opacity: 1; }
+
+    input[type="date"]:focus::-webkit-calendar-picker-indicator {
+      opacity: 1;
+      filter: invert(0.8) brightness(1.1) drop-shadow(0 0 8px rgba(245, 158, 11, 0.4));
+    }
+
+    .ts-wrapper {
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .ts-wrapper.single .ts-control,
+    .ts-wrapper.single.input-active .ts-control {
+      display: flex;
+      align-items: center;
+      min-height: 56px;
+      padding: 0 1rem;
+      line-height: 1.4;
+      background: rgba(15, 23, 42, 0.95) !important;
+      color: #e2e8f0;
+      border-radius: 0.75rem;
+    }
+
+    .ts-wrapper.single:hover .ts-control {
+      border-color: rgba(245, 158, 11, 0.42);
+    }
+
+    .ts-wrapper.focus .ts-control {
+      border-color: rgba(245, 158, 11, 0.64);
+      box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.12), 0 0 20px rgba(245, 158, 11, 0.16);
+    }
+
+    .ts-wrapper.single .ts-control input,
+    .ts-control .item {
+      color: #e2e8f0 !important;
+      background: transparent !important;
+    } {
+      color: #f8fafc;
+      font-size: 1rem;
+    }
+
+    .ts-wrapper.single .ts-control input::placeholder {
+      color: rgba(148, 163, 184, 0.7);
+    }
+
+    .ts-wrapper .ts-control > .item {
+      color: #f8fafc;
+      font-size: 1rem;
+      font-weight: 600;
+      line-height: 1.5rem;
+    }
+
+    .ts-wrapper.plugin-dropdown_input .ts-dropdown .dropdown-input,
+    .ts-dropdown .dropdown-input {
+      background: rgba(2, 6, 23, 0.92);
+      border: 1px solid rgba(100, 116, 139, 0.26);
+      border-radius: 0.85rem;
+      color: #f8fafc;
+      margin: 0.75rem;
+      padding: 0.75rem 0.9rem;
+      width: calc(100% - 1.5rem);
+    }
+
+    .ts-dropdown {
+      background: rgba(15, 23, 42, 0.98);
+      border: 1px solid rgba(100, 116, 139, 0.3);
+      border-radius: 1rem;
+      box-shadow: 0 20px 40px rgba(2, 6, 23, 0.55), 0 0 28px rgba(245, 158, 11, 0.08);
+      color: #f8fafc;
+      margin-top: 0.5rem;
+      overflow: hidden;
+      z-index: 40;
+    }
+
+    .ts-dropdown .option,
+    .ts-dropdown .create {
+      background: rgba(15, 23, 42, 0.98);
+      color: #cbd5e1;
+      padding: 0.8rem 1rem;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .ts-dropdown .active {
+      background: rgba(245, 158, 11, 0.14);
+      color: #fbbf24;
+    }
+
+    .ts-dropdown .option:hover,
+    .ts-dropdown .create:hover {
+      background: rgba(30, 41, 59, 0.98);
+      color: #f8fafc;
+    }
+
+    .ts-dropdown .option[data-value="__other__"] {
+      border-top: 1px solid rgba(100, 116, 139, 0.22);
+      color: #fbbf24;
+      font-weight: 600;
+    }
+
+    .ts-dropdown .no-results {
+      color: #94a3b8;
+      padding: 0.9rem 1rem 1rem;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js" type="text/javascript"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full bg-slate-950 text-slate-100">
+  <div class="site-bg-effects" aria-hidden="true">
+   <div class="bg-blob bg-blob-1"></div>
+   <div class="bg-blob bg-blob-2"></div>
+   <div class="bg-blob bg-blob-3"></div>
+   <div class="bg-grid"></div>
+   <div class="bg-network"></div>
+   <div class="bg-beacon"></div>
+   <div class="bg-ring"></div>
+   <div class="bg-scan"></div>
+   <div class="bg-noise"></div>
+   <div class="bg-vignette"></div>
+  </div>
+  <div class="relative z-10 min-h-screen w-full flex flex-col">
+   <header class="sticky top-0 z-50 border-b border-slate-800/60 bg-slate-950/80 backdrop-blur">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4">
+     <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+      <a href="/index.html" class="flex items-center gap-3 group">
+       <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center transition-transform group-hover:scale-105">
+        <span class="font-black text-slate-950">TM</span>
+       </div>
+       <div>
+        <div class="font-bold text-slate-100 group-hover:text-amber-300 transition-colors">
+         Tax Monitor Pro
+        </div>
+        <div class="text-xs text-slate-400">
+         Intake
+        </div>
+       </div></a>
+      <div class="flex items-center gap-2 sm:gap-4">
+       <div class="flex items-center gap-2" data-stepper-item data-step="1">
+        <button type="button" class="stepper-jump" data-step-jump="1">
+         <div class="step-circle"><span class="step-number">1</span>
+         </div><span class="step-label">Your Needs</span>
+        </button>
+       </div>
+       <div class="step-connector"></div>
+       <div class="flex items-center gap-2" data-stepper-item data-step="2">
+        <button type="button" class="stepper-jump" data-step-jump="2">
+         <div class="step-circle"><span class="step-number">2</span>
+         </div><span class="step-label hidden sm:inline">Services</span>
+        </button>
+       </div>
+       <div class="step-connector"></div>
+       <div class="flex items-center gap-2" data-stepper-item data-step="3">
+        <button type="button" class="stepper-jump" data-step-jump="3">
+         <div class="step-circle"><span class="step-number">3</span>
+         </div><span class="step-label hidden sm:inline">Location</span>
+        </button>
+       </div>
+       <div class="step-connector"></div>
+       <div class="flex items-center gap-2" data-stepper-item data-step="4">
+        <button type="button" class="stepper-jump" data-step-jump="4">
+         <div class="step-circle"><span class="step-number">4</span>
+         </div><span class="step-label hidden sm:inline">Offers</span>
+        </button>
+       </div>
+       <div class="step-connector"></div>
+       <div class="flex items-center gap-2" data-stepper-item data-step="5">
+        <button type="button" class="stepper-jump" data-step-jump="5">
+         <div class="step-circle"><span class="step-number">5</span>
+         </div><span class="step-label hidden sm:inline">Your Matches</span>
+        </button>
+       </div>
+      </div><a href="/index.html" class="inline-flex items-center gap-2 rounded-full border border-slate-800/70 bg-black/20 px-3 py-1.5 text-xs font-semibold text-slate-300 hover:text-amber-300 hover:border-amber-500/30">
+       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+       </svg> Back </a>
+     </div>
+     <div class="mt-4 h-1 bg-slate-900/60 rounded-full overflow-hidden">
+      <div id="shellProgressFill" class="h-full rounded-full" style="width: 20%; background: linear-gradient(90deg, #f59e0b, #d97706); box-shadow: 0 0 20px rgba(245,158,11,0.45);"></div>
+     </div>
+    </div>
+   </header>
+   <main class="flex-1 flex flex-col px-4 sm:px-6 py-8 sm:py-10">
+    <div class="max-w-5xl mx-auto space-y-6">
+     <div class="text-center pt-6 sm:pt-8">
+      <h1 id="shellTitle" class="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">Tax Monitor Pro Match</h1>
+      <p id="shellSubtitle" class="mt-3 text-lg sm:text-xl text-slate-400 max-w-2xl mx-auto">Visibility first. Decisions second.</p>
+      <div class="h-px w-full bg-gradient-to-r from-transparent via-slate-700 to-transparent mt-4"></div>
+      <div id="shellIntro" class="mt-4 text-sm text-slate-500">
+       Answer a few quick questions to get matched with the right tax professional.
+      </div>
+     </div>
+     <section id="page-your-needs">
+      <form id="tm-intake" data-tm-form method="post" action="https://api.taxmonitor.pro/forms/intake" accept-charset="UTF-8" class="space-y-6">
+       <input id="tm_event_id" name="eventId" type="hidden" value=""> <input id="tm_session_token" name="sessionToken" type="hidden" value="">
+       <div>
+        <div class="progress-bar">
+         <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+        </div>
+        <p class="text-xs text-slate-400 mt-2">Question <span id="currentQuestion">1</span> of <span id="totalQuestions">1</span></p>
+       </div>
+       <div id="chatContainer" class="min-h-24 max-h-96 overflow-y-auto"></div>
+       <div id="inputArea" class="space-y-4"></div>
+       <div id="tm_error" class="hidden rounded-2xl border border-red-500/30 bg-red-500/10 p-4 text-sm text-red-200"></div>
+       <div class="flex gap-3 pt-4 border-t border-slate-700/30">
+        <button id="prevBtn" type="button" class="button-secondary flex-1 py-2 px-4" style="display:none;">← Previous</button> <button id="nextBtn" type="button" class="button-primary flex-1 py-2 px-4" disabled>Next →</button> <button id="submitBtn" type="submit" class="button-primary flex-1 py-2 px-4" data-tm-submit style="display:none;">Continue →</button>
+       </div>
+      </form>
+     </section>
+     <section id="page-services" class="hidden space-y-6">
+      <div class="min-h-24 max-h-96 overflow-y-auto mb-6">
+       <div class="chat-bubble mb-6">
+        <div class="bg-slate-800/40 border border-slate-700/50 rounded-lg p-4">
+         <p class="text-slate-100 font-medium">Which services do you need?</p>
+        </div>
+       </div>
+      </div>
+      <div id="servicesOptions" class="grid gap-3 sm:grid-cols-2"></div>
+      <div class="mt-6 flex gap-3 border-t border-slate-700/30 pt-4">
+       <button id="servicesBackBtn" type="button" class="button-secondary flex-1 py-3 px-4">← Back</button> <button id="servicesNextBtn" type="button" class="button-primary flex-1 py-3 px-4">Next →</button>
+      </div>
+     </section>
+     <section id="page-location" class="hidden space-y-6">
+      <div class="min-h-24 max-h-96 overflow-y-auto mb-6">
+       <div class="chat-bubble mb-6">
+        <div class="bg-slate-800/40 border border-slate-700/50 rounded-lg p-4">
+         <p class="text-slate-100 font-medium">Where are you located?</p>
+        </div>
+       </div>
+      </div>
+      <div class="grid gap-4 lg:grid-cols-2">
+       <div>
+        <label for="preferredState" class="block text-sm font-medium text-slate-300 mb-3">Preferred state</label>
+        <div class="select-wrap">
+         <select id="preferredState" class="glass-select"> <option value="">Any state</option> </select>
+        </div>
+        <p class="mt-2 text-sm text-slate-500">Pick a state first to unlock matching cities.</p>
+       </div>
+       <div>
+        <label for="preferredCity" class="block text-sm font-medium text-slate-300 mb-3">Preferred city</label>
+        <select id="preferredCity" class="glass-select"> <option value="">Any city</option> </select>
+        <div id="customCityWrap" class="mt-3 hidden">
+         <label for="customCity" class="block text-xs font-medium uppercase tracking-[0.16em] text-slate-400 mb-2">My city is not listed</label>
+         <input id="customCity" type="text" class="glass-input w-full px-4 py-3 rounded-2xl" placeholder="Enter your city">
+        </div>
+        <p class="mt-2 text-sm text-slate-500">Start typing to search cities in your selected state. Choose <span class="text-amber-300">My city is not listed</span> if needed.</p>
+       </div>
+      </div>
+      <div class="mt-6 flex gap-3 border-t border-slate-700/30 pt-4">
+       <button id="locationBackBtn" type="button" class="button-secondary flex-1 py-3 px-4">← Back</button> <button id="locationNextBtn" type="button" class="button-primary flex-1 py-3 px-4">Next →</button>
+      </div>
+     </section>
+     <section id="page-offers" class="hidden space-y-6">
+      <div class="grid md:grid-cols-3 gap-6" id="offerPackagesGrid"></div>
+      <div class="mt-6 flex gap-3 border-t border-slate-700/30 pt-4">
+       <button id="offersBackBtn" type="button" class="button-secondary flex-1 py-3 px-4">← Back</button>
+      </div>
+     </section>
+     <section id="page-offer-detail" class="hidden space-y-6">
+      <div class="rounded-2xl border border-slate-800/70 bg-slate-900/28 p-6 sm:p-8">
+       <div id="selectedMembershipHero" class="membership-package-card active"></div>
+       <div class="mt-6 grid gap-4 lg:grid-cols-[1.05fr_0.95fr] feature-detail-pane" id="featureDetailPane">
+        <div class="space-y-4">
+         <div class="detail-stat">
+          <div class="mini-kicker">
+           Included in this membership
+          </div>
+          <div id="offerDetailReasons" class="mt-3 grid gap-3"></div>
+         </div>
+        </div>
+        <div class="space-y-4">
+         <div class="detail-stat">
+          <div class="mini-kicker">
+           How memberships compare
+          </div>
+          <div id="offerComparisonTable" class="mt-3 overflow-hidden rounded-2xl border border-slate-800/70"></div>
+         </div>
+         <div class="detail-stat">
+          <div class="mini-kicker">
+           Best fit
+          </div>
+          <p id="offerDetailNext" class="mt-3 text-sm leading-7 text-slate-300"></p>
+         </div>
+        </div>
+       </div>
+       <div class="mt-6 flex gap-3 border-t border-slate-700/30 pt-4">
+        <button id="offerDetailBackBtn" type="button" class="button-secondary flex-1 py-3 px-4">← Back</button> <button id="offerDetailNextBtn" type="button" class="button-primary flex-1 py-3 px-4">Continue →</button>
+       </div>
+      </div>
+     </section>
+     <section id="page-contact-consent" class="hidden space-y-6">
+      <div class="min-h-24 max-h-96 overflow-y-auto mb-6">
+       <div class="chat-bubble mb-6">
+        <div class="bg-slate-800/40 border border-slate-700/50 rounded-lg p-4">
+         <p class="text-slate-100 font-medium">How should professionals contact you?</p>
+        </div>
+       </div>
+      </div>
+      <div class="grid gap-3 sm:grid-cols-2">
+       <button id="contactYesBtn" type="button" class="choice-card"> <span class="choice-card-title">Yes, direct contact is fine</span> <span class="choice-card-copy">Show matches with the expectation that the matched professionals may reach out directly.</span> </button> <button id="contactNoBtn" type="button" class="choice-card"> <span class="choice-card-title">No, just show my matches</span> <span class="choice-card-copy">Keep it browse-first and let me decide who to contact on my own.</span> </button>
+      </div>
+      <div class="mt-6 flex gap-3 border-t border-slate-700/30 pt-4">
+       <button id="contactBackBtn" type="button" class="button-secondary flex-1 py-3 px-4">← Back</button> <button id="contactNextBtn" type="button" class="button-primary flex-1 py-3 px-4">See Matches →</button>
+      </div>
+     </section>
+     <section id="page-matches" class="hidden space-y-6">
+      <div class="min-h-24 max-h-96 overflow-y-auto mb-6">
+       <div class="chat-bubble mb-6">
+        <div class="bg-slate-800/40 border border-slate-700/50 rounded-lg p-4">
+         <p class="text-slate-100 font-medium">Here are your matches</p>
+        </div>
+       </div>
+      </div>
+      <div id="matchesList"></div>
+      <div class="mt-6 flex gap-3 border-t border-slate-700/30 pt-4">
+       <button id="matchesBackBtn" type="button" class="button-secondary flex-1 py-3 px-4">← Back</button>
+      </div>
+     </section>
+    </div>
+   </main>
+  </div>
+  <script>
+    (function () {
+      var form = document.getElementById('tm-intake');
+      var currentQuestionIndex = 0;
+      var answers = {};
+      var shellStep = 1;
+      var currentOfferFeature = 'appDashboard';
+      var selectedMembership = 'plus';
+      var servicesSelected = [];
+      var preferredState = '';
+      var preferredCity = '';
+      var customCity = '';
+      var wantsOfferInfo = null;
+      var wantsDirectContact = null;
+      var cityTom = null;
+
+      var questions = [
+        { id: 'q1', key: 'CRM First Name', type: 'text', label: 'What is your first name?', placeholder: 'John', required: true },
+        { id: 'q2', key: 'CRM Last Name', type: 'text', label: 'What is your last name?', placeholder: 'Doe', required: true },
+        { id: 'q3', key: 'Email', type: 'email', label: 'What is your email address?', placeholder: 'john@example.com', required: true },
+        { id: 'q4', key: 'Phone', type: 'text', label: 'What is your phone number?', placeholder: '(555) 123-4567', required: true },
+        { id: 'q5', key: 'Business Type', type: 'multi', label: 'What type of business(es) do you operate?', options: ['C-Corporation', 'LLC', 'Non-Profit', 'Partnership', 'S-Corporation', 'Sole Proprietor', 'I do not operate a business'], required: true },
+        { id: 'q6', key: 'IRS Notice Received', type: 'radio', label: 'Have you received an IRS notice?', options: ['Yes', 'No'], required: true },
+        { id: 'q7', key: 'IRS Notice Type', type: 'radio', label: 'What type of notice?', options: ['Audit', 'Notice of Deficiency', 'Other'], required: true, conditionalOn: { key: 'IRS Notice Received', value: 'Yes' } },
+        { id: 'q8', key: 'IRS Notice Date', type: 'date', label: 'When did you receive the notice?', required: true, conditionalOn: { key: 'IRS Notice Received', value: 'Yes' } },
+        { id: 'q9', key: 'Budget Preference', type: 'radio', label: 'What budget range feels right for the professional you want to work with?', options: ['Budget-friendly', 'Moderate', 'Premium'], required: true },
+        { id: 'q10', key: 'Tax Years Affected', type: 'radio', label: 'How many tax years are affected?', options: ['1', '2-3', '4 or more'], required: true },
+        { id: 'q11', key: 'Prior Audit Experience', type: 'checkbox', label: 'I have worked with a CPA or tax attorney on an audit before', required: false }
+      ];
+
+      var locationCatalog = {
+        'Alabama': ['Birmingham', 'Huntsville', 'Mobile', 'Montgomery'],
+        'Alaska': ['Anchorage', 'Fairbanks', 'Juneau'],
+        'Arizona': ['Chandler', 'Mesa', 'Phoenix', 'Scottsdale', 'Tucson'],
+        'Arkansas': ['Fayetteville', 'Fort Smith', 'Little Rock'],
+        'California': ['Fresno', 'Long Beach', 'Los Angeles', 'Oakland', 'Sacramento', 'San Diego', 'San Francisco', 'San Jose'],
+        'Colorado': ['Aurora', 'Colorado Springs', 'Denver', 'Fort Collins'],
+        'Connecticut': ['Bridgeport', 'Hartford', 'New Haven', 'Stamford'],
+        'Delaware': ['Dover', 'Newark', 'Wilmington'],
+        'Florida': ['Jacksonville', 'Miami', 'Orlando', 'St. Petersburg', 'Tampa'],
+        'Georgia': ['Athens', 'Atlanta', 'Augusta', 'Savannah'],
+        'Hawaii': ['Hilo', 'Honolulu', 'Kailua'],
+        'Idaho': ['Boise', 'Idaho Falls', 'Meridian'],
+        'Illinois': ['Aurora', 'Chicago', 'Naperville', 'Rockford'],
+        'Indiana': ['Evansville', 'Fort Wayne', 'Indianapolis', 'South Bend'],
+        'Iowa': ['Cedar Rapids', 'Davenport', 'Des Moines'],
+        'Kansas': ['Kansas City', 'Olathe', 'Wichita'],
+        'Kentucky': ['Lexington', 'Louisville'],
+        'Louisiana': ['Baton Rouge', 'Lafayette', 'New Orleans'],
+        'Maine': ['Bangor', 'Lewiston', 'Portland'],
+        'Maryland': ['Annapolis', 'Baltimore', 'Rockville'],
+        'Massachusetts': ['Boston', 'Cambridge', 'Springfield', 'Worcester'],
+        'Michigan': ['Ann Arbor', 'Detroit', 'Grand Rapids', 'Lansing'],
+        'Minnesota': ['Duluth', 'Minneapolis', 'Rochester', 'St. Paul'],
+        'Mississippi': ['Biloxi', 'Gulfport', 'Jackson'],
+        'Missouri': ['Kansas City', 'Springfield', 'St. Louis'],
+        'Montana': ['Billings', 'Bozeman', 'Missoula'],
+        'Nebraska': ['Lincoln', 'Omaha'],
+        'Nevada': ['Henderson', 'Las Vegas', 'Reno'],
+        'New Hampshire': ['Concord', 'Manchester', 'Nashua'],
+        'New Jersey': ['Jersey City', 'Newark', 'Paterson'],
+        'New Mexico': ['Albuquerque', 'Las Cruces', 'Santa Fe'],
+        'New York': ['Albany', 'Buffalo', 'New York City', 'Rochester', 'Syracuse'],
+        'North Carolina': ['Charlotte', 'Durham', 'Greensboro', 'Raleigh'],
+        'North Dakota': ['Bismarck', 'Fargo'],
+        'Ohio': ['Akron', 'Cincinnati', 'Cleveland', 'Columbus', 'Toledo'],
+        'Oklahoma': ['Norman', 'Oklahoma City', 'Tulsa'],
+        'Oregon': ['Eugene', 'Portland', 'Salem'],
+        'Pennsylvania': ['Allentown', 'Harrisburg', 'Philadelphia', 'Pittsburgh'],
+        'Rhode Island': ['Providence', 'Warwick'],
+        'South Carolina': ['Charleston', 'Columbia', 'Greenville'],
+        'South Dakota': ['Rapid City', 'Sioux Falls'],
+        'Tennessee': ['Chattanooga', 'Knoxville', 'Memphis', 'Nashville'],
+        'Texas': ['Austin', 'Dallas', 'Fort Worth', 'Houston', 'San Antonio'],
+        'Utah': ['Provo', 'Salt Lake City', 'West Valley City'],
+        'Vermont': ['Burlington', 'Montpelier'],
+        'Virginia': ['Alexandria', 'Norfolk', 'Richmond', 'Virginia Beach'],
+        'Washington': ['Bellevue', 'Seattle', 'Spokane', 'Tacoma'],
+        'West Virginia': ['Charleston', 'Huntington'],
+        'Wisconsin': ['Green Bay', 'Madison', 'Milwaukee'],
+        'Wyoming': ['Casper', 'Cheyenne']
+      };
+
+      var offerFeatureCatalog = {
+        appDashboard: {
+          icon: 'layout-dashboard',
+          name: 'App Dashboard',
+          description: 'Keep your membership activity, saved results, and matching visibility in one place inside your dashboard.',
+          bullets: {
+            free: ['Membership account access', 'Professional directory browsing', 'Saved matches and professionals'],
+            essential: ['Membership account access', 'Past request visibility', 'Saved results and activity history', 'Discount notifications from professionals'],
+            plus: ['Membership account access', 'Past request visibility', 'Saved results and activity history', 'Discount notifications from professionals'],
+            premier: ['Membership account access', 'Past request visibility', 'Saved results and activity history', 'Monitoring records in the dashboard']
+          },
+          comparison: {
+            free: 'Browse access',
+            essential: 'Included',
+            plus: 'Included',
+            premier: 'Included'
+          },
+          fit: 'Best when you want one clean place to track membership activity, saved results, and matching visibility without rummaging through a digital junk drawer.'
+        },
+        professionalMatching: {
+          icon: 'users',
+          name: 'Professional Matching',
+          description: 'Browse and match with professionals based on services, location, and budget-aware preferences.',
+          bullets: {
+            free: ['Directory browsing', 'Saved matches and professionals'],
+            essential: ['Professional matching', 'Inquiry submission', 'Match by services and location', 'Budget-aware matching preferences'],
+            plus: ['Professional matching', 'Inquiry submission', 'Match by services and location', 'Budget-aware matching preferences'],
+            premier: ['Priority professional matching', 'Inquiry submission', 'Match by services and location', 'Budget-aware matching preferences']
+          },
+          comparison: {
+            free: 'Browse only',
+            essential: 'Included',
+            plus: 'Included',
+            premier: 'Priority'
+          },
+          fit: 'Best when you want professionals filtered by fit instead of random directory wandering and the usual internet nonsense.'
+        },
+        taxToolTokens: {
+          icon: 'wrench',
+          name: 'Tax Tool Tokens',
+          description: 'Use included token access for eligible tax tools and keep a record of what you used and what came back.',
+          bullets: {
+            free: ['Upgrade to unlock tax tool tokens'],
+            essential: ['5 tax tool tokens per month', 'Access to eligible tax tools', 'Token usage visibility'],
+            plus: ['15 tax tool tokens per month', 'Access to eligible tax tools', 'Token usage visibility', 'Saved tool outputs in the dashboard'],
+            premier: ['40 tax tool tokens per month', 'Access to eligible tax tools', 'Token usage visibility', 'Saved tool outputs in the dashboard']
+          },
+          comparison: {
+            free: '0 / month',
+            essential: '5 / month',
+            plus: '15 / month',
+            premier: '40 / month'
+          },
+          fit: 'Best when you want practical tool access tied to a visible token balance instead of mystery usage and disappearing outputs.'
+        },
+        transcriptTokens: {
+          icon: 'scroll-text',
+          name: 'Transcript Tokens',
+          description: 'Track transcript token access, transcript jobs, and saved results from the same member workflow.',
+          bullets: {
+            free: ['Upgrade to unlock transcript tokens'],
+            essential: ['2 transcript tokens per month', 'Transcript job access'],
+            plus: ['5 transcript tokens per month', 'Transcript job access', 'Saved transcript results in the dashboard'],
+            premier: ['10 transcript tokens per month', 'Transcript job access', 'Transcript job monitoring', 'Saved transcript results in the dashboard']
+          },
+          comparison: {
+            free: '0 / month',
+            essential: '2 / month',
+            plus: '5 / month',
+            premier: '10 / month'
+          },
+          fit: 'Best when transcripts are part of the workflow and you want job visibility without turning every status check into a scavenger hunt.'
+        }
+      };
+
+      function membershipCatalog() {
+        return [
+          {
+            id: 'free',
+            badgeClass: 'bg-slate-600/30 text-slate-300',
+            badgeLabel: 'FREE',
+            price: '$0 / month',
+            spotlight: '',
+            summary: 'Explore the Tax Monitor Pro ecosystem and browse professionals before committing to a paid plan.',
+            term: 'Upgrade anytime',
+            toneClass: 'text-slate-400',
+            toneText: 'Best for exploring the platform'
+          },
+          {
+            id: 'essential',
+            badgeClass: 'bg-slate-700 text-slate-300',
+            badgeLabel: 'ESSENTIAL',
+            price: '$9 / month',
+            spotlight: '',
+            summary: 'Entry-level membership for taxpayers exploring tools, transcripts, and professional matching.',
+            term: 'Cancel anytime • tokens roll over 60 days',
+            toneClass: 'text-slate-400',
+            toneText: 'Best for exploring your tax situation'
+          },
+          {
+            id: 'plus',
+            badgeClass: 'bg-amber-500/20 text-amber-400',
+            badgeLabel: 'PLUS',
+            price: '$19 / month',
+            spotlight: 'MOST POPULAR',
+            summary: 'Balanced access for taxpayers actively reviewing transcripts, tools, and professional options.',
+            term: 'Cancel anytime • tokens roll over 60 days',
+            toneClass: 'text-amber-400 font-medium',
+            toneText: 'Recommended for most members'
+          },
+          {
+            id: 'premier',
+            badgeClass: 'bg-emerald-500/20 text-emerald-400',
+            badgeLabel: 'PREMIER',
+            price: '$39 / month',
+            spotlight: '',
+            summary: 'Expanded tokens and priority matching for more complex tax situations.',
+            term: 'Cancel anytime • tokens roll over 60 days',
+            toneClass: 'text-emerald-400 font-medium',
+            toneText: 'Best for advanced users'
+          }
+        ];
+      }
+
+      function byText(a, b) {
+        return String(a || '').localeCompare(String(b || ''));
+      }
+
+      function updateStepperUi() {
+        var pages = ['page-your-needs', 'page-services', 'page-location', 'page-offers', 'page-offer-detail', 'page-contact-consent', 'page-matches'];
+        pages.forEach(function (pageId) {
+          var el = document.getElementById(pageId);
+          if (!el) return;
+          el.classList.add('hidden');
+        });
+
+        var visibleStep = shellStep === 'offer-detail' || shellStep === 'contact-consent' ? 4 : shellStep;
+        var targetPage = shellStep === 'offer-detail' ? 'page-offer-detail' : shellStep === 'contact-consent' ? 'page-contact-consent' : shellStep === 5 ? 'page-matches' : 'page-' + ['your-needs', 'your-needs', 'services', 'location', 'offers'][shellStep];
+        if (shellStep === 1) targetPage = 'page-your-needs';
+        var target = document.getElementById(targetPage);
+        if (target) target.classList.remove('hidden');
+
+        var stepItems = Array.prototype.slice.call(document.querySelectorAll('[data-stepper-item]'));
+        stepItems.forEach(function (item) {
+          var stepValue = Number(item.getAttribute('data-step'));
+          item.classList.remove('is-current', 'is-complete');
+          if (stepValue < visibleStep) {
+            item.classList.add('is-complete');
+          } else if (stepValue === visibleStep) {
+            item.classList.add('is-current');
+          }
+        });
+
+        var connectors = Array.prototype.slice.call(document.querySelectorAll('.step-connector'));
+        connectors.forEach(function (connector, index) {
+          connector.classList.toggle('is-complete', index < visibleStep - 1);
+        });
+
+        var shellProgressFill = document.getElementById('shellProgressFill');
+        if (shellProgressFill) {
+          shellProgressFill.style.width = (visibleStep / 5) * 100 + '%';
+        }
+      }
+
+      function renderServiceCards() {
+        var options = ['Appeals', 'Audit Defense', 'Business Tax Advisory', 'Compliance', 'Consulting', 'Estate & Trust Tax', 'Expert Witness', 'Foreign Reporting (FBAR/FATCA)', 'IRS Collections Defense', 'Offer in Compromise', 'Payroll Tax Defense', 'Penalty Abatement', 'Tax Litigation', 'Tax Monitoring', 'Tax Planning', 'Tax Preparation', 'Tax Resolution', 'Trust Fund Recovery Defense'];
+        var container = document.getElementById('servicesOptions');
+        if (!container) return;
+        container.innerHTML = '';
+        options.forEach(function (service) {
+          var btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'choice-card' + (servicesSelected.indexOf(service) >= 0 ? ' active' : '');
+          btn.setAttribute('data-service', service);
+          btn.innerHTML = '<span class="choice-card-title">' + service + '</span>';
+          container.appendChild(btn);
+        });
+      }
+
+      function renderStateOptions() {
+        var states = Object.keys(locationCatalog).sort(byText);
+        var stateSelect = document.getElementById('preferredState');
+        if (stateSelect) {
+          stateSelect.innerHTML = '<option value="">Any state</option>';
+          states.forEach(function (state) {
+            var opt = document.createElement('option');
+            opt.value = state;
+            opt.textContent = state;
+            stateSelect.appendChild(opt);
+          });
+          stateSelect.value = preferredState;
+        }
+
+        rebuildCityOptions();
+        syncCustomCityUi();
+      }
+
+      function cityOptionsForState() {
+        var options = [{ value: '', text: preferredState ? 'Any city' : 'Select a state first', disabled: false }];
+        if (!preferredState || !locationCatalog[preferredState]) return options;
+        locationCatalog[preferredState].forEach(function (city) {
+          options.push({ value: city, text: city });
+        });
+        options.push({ value: '__other__', text: 'My city is not listed' });
+        return options;
+      }
+
+      function rebuildCityOptions() {
+        var citySelect = document.getElementById('preferredCity');
+        if (!citySelect) return;
+
+        var options = cityOptionsForState();
+        citySelect.innerHTML = '';
+        options.forEach(function (entry) {
+          var opt = document.createElement('option');
+          opt.value = entry.value;
+          opt.textContent = entry.text;
+          if (entry.disabled) opt.disabled = true;
+          citySelect.appendChild(opt);
+        });
+
+        if (cityTom) {
+          cityTom.clear(true);
+          cityTom.clearOptions();
+          cityTom.addOptions(options);
+          cityTom.refreshOptions(false);
+          cityTom.setTextboxValue('');
+        }
+
+        var selectedValue = customCity ? '__other__' : (preferredCity || '');
+        if (cityTom) {
+          cityTom.setValue(selectedValue, true);
+          cityTom.sync();
+        } else {
+          citySelect.value = selectedValue;
+        }
+      }
+
+      function syncCustomCityUi() {
+        var wrap = document.getElementById('customCityWrap');
+        var input = document.getElementById('customCity');
+        var showCustom = !!customCity || preferredCity === '__other__';
+        if (wrap) wrap.classList.toggle('hidden', !showCustom);
+        if (input) input.value = customCity;
+      }
+
+      function initCityAutocomplete() {
+        var citySelect = document.getElementById('preferredCity');
+        if (!citySelect || typeof TomSelect === 'undefined') return;
+
+        cityTom = new TomSelect(citySelect, {
+          allowEmptyOption: true,
+          closeAfterSelect: true,
+          create: false,
+          dropdownInput: true,
+          maxItems: 1,
+          placeholder: preferredState ? 'Start typing a city...' : 'Select a state first',
+          searchField: ['text'],
+          sortField: [{ field: 'text', direction: 'asc' }]
+        });
+
+        cityTom.on('change', function (value) {
+          if (value === '__other__') {
+            preferredCity = '__other__';
+            customCity = '';
+          } else {
+            preferredCity = value || '';
+            if (preferredCity) customCity = '';
+          }
+          syncCustomCityUi();
+
+          if (value) {
+            cityTom.close();
+            setTimeout(function () {
+              cityTom.blur();
+            }, 0);
+          }
+        });
+      }
+
+      function renderOfferCards() {
+        var grid = document.getElementById('offerPackagesGrid');
+        if (!grid) return;
+        grid.innerHTML = '';
+
+        var features = {
+          free: [
+            'App Dashboard access',
+            'Professional directory browsing',
+            'Saved matches and professionals',
+            'Membership account access',
+            'Upgrade anytime to unlock tokens'
+          ],
+          essential: [
+            'App Dashboard access',
+            'Professional Matching + inquiry submission',
+            '2 transcript tokens / month',
+            '5 tax tool tokens / month',
+            'Discount notifications from professionals'
+          ],
+          plus: [
+            'App Dashboard access',
+            'Professional Matching',
+            '5 transcript tokens / month',
+            '15 tax tool tokens / month',
+            'Saved tool results and activity history'
+          ],
+          premier: [
+            'App Dashboard access',
+            'Priority professional matching',
+            '10 transcript tokens / month',
+            '40 tax tool tokens / month',
+            'Monitoring records in the dashboard'
+          ]
+        };
+
+        membershipCatalog().forEach(function (tier) {
+          var card = document.createElement('button');
+          card.type = 'button';
+          card.className = 'membership-package-card text-left relative';
+          card.setAttribute('data-membership-id', tier.id);
+
+          var bullets = features[tier.id]
+            .map(function (line) {
+              return '<li class="flex items-start gap-3"><svg class="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg><span>' + line + '</span></li>';
+            })
+            .join('');
+
+          card.innerHTML = ''
+            + (tier.spotlight ? '<div class="absolute -top-3 left-1/2 -translate-x-1/2"><span class="px-4 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-lg">' + tier.spotlight + '</span></div>' : '')
+            + '<div class="text-center mb-6' + (tier.spotlight ? ' mt-2' : '') + '">'
+            + '<span class="inline-block px-3 py-1 rounded-full text-xs font-medium ' + tier.badgeClass + ' mb-3">' + tier.badgeLabel + '</span>'
+            + '<div class="text-4xl font-bold text-white mb-1">' + tier.price + '</div>'
+            + '<div class="text-slate-400 text-sm">' + tier.term + '</div>'
+            + '</div>'
+            + '<ul class="space-y-3 mb-6 text-sm text-slate-300">'
+            + bullets
+            + '</ul>'
+            + '<div class="text-center"><span class="text-sm ' + tier.toneClass + '">' + tier.toneText + '</span></div>';
+
+          card.addEventListener('click', function () {
+            selectedMembership = tier.id;
+            shellStep = 'offer-detail';
+            renderOfferDetail(tier.id, currentOfferFeature || 'appDashboard');
+            updateStepperUi();
+          });
+
+          grid.appendChild(card);
+        });
+      }
+
+      function membershipLine(membershipId, featureKey) {
+        var feature = offerFeatureCatalog[featureKey];
+        if (!feature || !feature.comparison) return '';
+        return feature.name + ': ' + feature.comparison[membershipId];
+      }
+
+      function renderOfferDetail(membershipId, featureKey) {
+        var selected = membershipCatalog().filter(function (tier) { return tier.id === membershipId; })[0] || membershipCatalog()[0];
+        selectedMembership = selected.id;
+        currentOfferFeature = featureKey || currentOfferFeature || 'appDashboard';
+
+        var hero = document.getElementById('selectedMembershipHero');
+        if (hero) {
+          hero.innerHTML = ''
+            + '<div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">'
+            + '<div>'
+            + '<span class="inline-block px-3 py-1 rounded-full text-xs font-medium ' + selected.badgeClass + ' mb-3">' + selected.badgeLabel + '</span>'
+            + '<h2 class="text-3xl font-bold text-white">' + selected.price + '</h2>'
+            + '<p class="mt-2 text-slate-400">' + selected.term + '</p>'
+            + '<p class="mt-4 max-w-2xl text-sm leading-7 text-slate-300">' + selected.summary + '</p>'
+            + '</div>'
+            + '<div class="rounded-2xl border border-slate-800/70 bg-slate-950/40 px-5 py-4 text-left lg:min-w-[240px]">'
+            + '<div class="mini-kicker">Membership fit</div>'
+            + '<p class="mt-3 text-sm leading-7 ' + selected.toneClass.replace('font-medium', '').trim() + '">' + selected.toneText + '</p>'
+            + '</div>'
+            + '</div>';
+        }
+
+        renderOfferDetailContent(selected.id);
+      }
+
+      function featureIconSvg(iconKey) {
+        var icons = {
+          'briefcase': '<svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V7a2 2 0 00-2-2h-3V4a2 2 0 00-2-2h-2a2 2 0 00-2 2v1H6a2 2 0 00-2 2v6m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0H4" /></svg>',
+          'file-check': '<svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m4 9H7a2 2 0 01-2-2V5a2 2 0 012-2h6l6 6v8a2 2 0 01-2 2z" /></svg>',
+          'layout-dashboard': '<svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 13h8V3H3v10zm10 8h8V11h-8v10zM3 21h8v-6H3v6zm10-10h8V3h-8v8z" /></svg>',
+          'scroll-text': '<svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 6h10M8 10h8M8 14h8M6 18h10a2 2 0 002-2V4a2 2 0 00-2-2H8a4 4 0 00-4 4v10a2 2 0 002 2zm0 0a2 2 0 100 4h12" /></svg>',
+          'shield-check': '<svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5-3c0 7-3.5 11-8 13-4.5-2-8-6-8-13l8-3 8 3z" /></svg>',
+          'users': '<svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a4 4 0 00-5-3.87M9 20H4v-2a4 4 0 015-3.87m8-6.13a4 4 0 11-8 0 4 4 0 018 0zM7 8a4 4 0 118 0 4 4 0 01-8 0z" /></svg>',
+          'wrench': '<svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.7 6.3a4 4 0 01-5.66 5.66L3 18l3 3 6.04-6.04a4 4 0 005.66-5.66l-3 3-2-2 3-3z" /></svg>'
+        };
+        return icons[iconKey] || icons['shield-check'];
+      }
+
+      function renderOfferDetailContent(membershipId) {
+        var selected = membershipCatalog().filter(function (tier) { return tier.id === membershipId; })[0] || membershipCatalog()[0];
+        var next = document.getElementById('offerDetailNext');
+        if (next) next.textContent = selected.summary;
+
+        var reasonsDiv = document.getElementById('offerDetailReasons');
+        if (reasonsDiv) {
+          reasonsDiv.innerHTML = '';
+          Object.keys(offerFeatureCatalog).sort(byText).forEach(function (featureKey) {
+            var feature = offerFeatureCatalog[featureKey];
+            var level = feature.comparison[membershipId];
+            var row = document.createElement('div');
+            row.className = 'rounded-xl border border-slate-800/70 bg-slate-950/35 px-4 py-4';
+            row.innerHTML = '<div class="flex items-start gap-3">'
+              + '<div class="feature-icon-shell !h-10 !w-10 !rounded-xl">' + featureIconSvg(feature.icon) + '</div>'
+              + '<div>'
+              + '<div class="flex flex-wrap items-center gap-2">'
+              + '<h3 class="text-sm font-semibold text-white">' + feature.name + '</h3>'
+              + '<span class="rounded-full border border-amber-500/30 bg-amber-500/10 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-amber-300">' + level + '</span>'
+              + '</div>'
+              + '<p class="mt-2 text-sm leading-6 text-slate-300">' + feature.description + '</p>'
+              + '</div>'
+              + '</div>';
+            reasonsDiv.appendChild(row);
+          });
+        }
+
+        var compare = document.getElementById('offerComparisonTable');
+        if (compare) {
+          var featureKeys = Object.keys(offerFeatureCatalog).sort(byText);
+          compare.innerHTML = '<table class="min-w-full text-sm"><thead class="bg-slate-950/70"><tr><th class="px-4 py-3 text-left text-slate-400 font-semibold">Feature</th>'
+            + membershipCatalog().map(function (tier) {
+              var label = tier.badgeLabel.charAt(0) + tier.badgeLabel.slice(1).toLowerCase();
+              var labelClass = tier.id === membershipId ? ' text-amber-300' : ' text-slate-300';
+              return '<th class="px-4 py-3 text-left font-semibold' + labelClass + '">' + label + '</th>';
+            }).join('')
+            + '</tr></thead><tbody>'
+            + featureKeys.map(function (featureKey) {
+              var feature = offerFeatureCatalog[featureKey];
+              return '<tr class="border-t border-slate-800/70">'
+                + '<td class="px-4 py-3 text-white font-medium">' + feature.name + '</td>'
+                + membershipCatalog().map(function (tier) {
+                  var cellClass = tier.id === membershipId ? ' bg-amber-500/10 text-amber-200 font-semibold' : ' bg-slate-950/30 text-slate-300';
+                  return '<td class="px-4 py-3' + cellClass + '">' + feature.comparison[tier.id] + '</td>';
+                }).join('')
+                + '</tr>';
+            }).join('')
+            + '</tbody></table>';
+        }
+      }
+
+      function renderMatches() {
+        var list = document.getElementById('matchesList');
+        if (!list) return;
+
+        var matches = [
+          { score: '95%', pro: { name: 'Sarah Chen', subtitle: 'CPA, Tax Specialist', city: 'Los Angeles', location: 'CA', summary: 'Expert in corporate tax strategy with 15 years of experience.', services: ['Tax Planning', 'Audit'], profileUrl: '#' } },
+          { score: '88%', pro: { name: 'James Mitchell', subtitle: 'Tax Attorney', city: 'San Francisco', location: 'CA', summary: 'Specializes in IRS disputes and complex tax matters.', services: ['Tax Audit', 'Compliance'], profileUrl: '#' } }
+        ];
+
+        list.innerHTML = matches.map(function (entry) {
+          var pro = entry.pro;
+          var tags = pro.services.sort(byText).map(function (service) {
+            return '<span class="rounded-full border border-slate-700 bg-slate-900/60 px-3 py-1 text-xs text-slate-300">' + service + '</span>';
+          }).join('');
+          return '<article class="rounded-2xl border border-slate-800 bg-slate-950/35 p-5">'
+            + '<div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">'
+            + '<div>'
+            + '<h3 class="text-xl font-semibold text-white">' + pro.name + '</h3>'
+            + '<div class="mt-1 text-sm text-slate-400">' + pro.subtitle + ' · ' + pro.city + ', ' + pro.location + '</div>'
+            + '<p class="mt-3 text-sm leading-7 text-slate-300 max-w-2xl">' + pro.summary + '</p>'
+            + '</div>'
+            + '<div class="rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 text-xs font-semibold text-amber-300">Match ' + entry.score + '</div>'
+            + '</div>'
+            + '<div class="mt-4 flex flex-wrap gap-2">' + tags + '</div>'
+            + '<div class="mt-4 flex flex-wrap gap-3">'
+            + '<a href="' + pro.profileUrl + '" class="button-primary px-4 py-2 text-sm">View Profile</a>'
+            + '<a href="' + pro.profileUrl + '" class="button-secondary px-4 py-2 text-sm">Contact</a>'
+            + '</div>'
+            + '</article>';
+        }).join('');
+      }
+
+      function shouldShow(q) {
+        if (!q.conditionalOn) return true;
+        return (answers[q.conditionalOn.key] || '') === q.conditionalOn.value;
+      }
+
+      function getVisibleQuestions() {
+        return questions.filter(shouldShow);
+      }
+
+      function setError(msg) {
+        var el = document.getElementById('tm_error');
+        if (!el) return;
+        if (!msg) {
+          el.textContent = '';
+          el.classList.add('hidden');
+          return;
+        }
+        el.textContent = msg;
+        el.classList.remove('hidden');
+      }
+
+      function updateProgressBar(visible) {
+        var total = visible.length;
+        var progress = ((currentQuestionIndex + 1) / total) * 100;
+        document.getElementById('progressFill').style.width = progress + '%';
+        document.getElementById('currentQuestion').textContent = String(currentQuestionIndex + 1);
+        document.getElementById('totalQuestions').textContent = String(total);
+      }
+
+      function isAnswered(q) {
+        if (!q.required) return true;
+        var v = answers[q.key];
+        if (q.type === 'checkbox') return v === true;
+        if (q.type === 'multi') return Array.isArray(v) && v.length > 0;
+        return String(v || '').trim() !== '';
+      }
+
+      function updateButtons(visible) {
+        var q = visible[currentQuestionIndex];
+        var nextBtn = document.getElementById('nextBtn');
+        var prevBtn = document.getElementById('prevBtn');
+        var submitBtn = document.getElementById('submitBtn');
+        var last = currentQuestionIndex === visible.length - 1;
+        nextBtn.disabled = !isAnswered(q);
+        submitBtn.disabled = !isAnswered(q);
+        prevBtn.style.display = currentQuestionIndex > 0 ? 'block' : 'none';
+        nextBtn.style.display = last ? 'none' : 'block';
+        submitBtn.style.display = last ? 'block' : 'none';
+      }
+
+      function renderQuestion() {
+        setError('');
+        var visible = getVisibleQuestions();
+        if (currentQuestionIndex >= visible.length) currentQuestionIndex = visible.length - 1;
+        if (currentQuestionIndex < 0) currentQuestionIndex = 0;
+
+        var q = visible[currentQuestionIndex];
+        var chatContainer = document.getElementById('chatContainer');
+        var inputArea = document.getElementById('inputArea');
+        chatContainer.innerHTML = '';
+        inputArea.innerHTML = '';
+
+        var firstName = String(answers['CRM First Name'] || '').trim();
+        var questionText = q.label;
+        if (q.key === 'CRM Last Name' && firstName) questionText = 'Hello ' + firstName + ', what is your last name?';
+
+        var questionBubble = document.createElement('div');
+        questionBubble.className = 'chat-bubble mb-6';
+        questionBubble.innerHTML = '<div class="bg-slate-800/40 border border-slate-700/50 rounded-lg p-4"><p class="text-slate-100 font-medium">' + questionText + '</p></div>';
+        chatContainer.appendChild(questionBubble);
+
+        if (q.type === 'text' || q.type === 'email' || q.type === 'date') {
+          var input = document.createElement('input');
+          input.type = q.type;
+          input.className = 'glass-input w-full px-4 py-3 rounded-lg';
+          input.placeholder = q.placeholder || '';
+          input.autocomplete = q.autocomplete || 'off';
+          input.value = answers[q.key] || '';
+          input.id = 'currentInput';
+          input.addEventListener('input', function (e) {
+            answers[q.key] = e.target.value;
+            updateButtons(visible);
+          });
+          input.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter' && !document.getElementById('nextBtn').disabled) nextQuestion();
+          });
+          inputArea.appendChild(input);
+          setTimeout(function () { input.focus(); }, 50);
+        } else if (q.type === 'radio') {
+          var optionsDiv = document.createElement('div');
+          optionsDiv.className = 'space-y-3';
+          var opts = (q.key === 'Business Type' ? (q.options || []).slice() : (q.options || []).slice().sort(byText));
+          opts.forEach(function (option) {
+            var labelEl = document.createElement('label');
+            labelEl.className = 'flex items-center gap-3 p-3 rounded-lg cursor-pointer transition hover:bg-slate-800/40';
+            labelEl.innerHTML = '<input type="radio" name="' + q.id + '" value="' + option + '" class="w-4 h-4" ' + (answers[q.key] === option ? 'checked' : '') + '><span class="text-slate-100">' + option + '</span>';
+            labelEl.querySelector('input').addEventListener('change', function (e) {
+              answers[q.key] = e.target.value;
+              if (q.key === 'IRS Notice Received' && answers[q.key] !== 'Yes') {
+                answers['IRS Notice Type'] = '';
+                answers['IRS Notice Date'] = '';
+              }
+              updateButtons(getVisibleQuestions());
+            });
+            optionsDiv.appendChild(labelEl);
+          });
+          inputArea.appendChild(optionsDiv);
+        } else if (q.type === 'multi') {
+          var multiOptionsDiv = document.createElement('div');
+          multiOptionsDiv.className = 'space-y-3';
+          var selectedOptions = Array.isArray(answers[q.key]) ? answers[q.key].slice() : [];
+          var multiOpts = (q.options || []).slice();
+          multiOpts.forEach(function (option) {
+            var multiLabelEl = document.createElement('label');
+            multiLabelEl.className = 'flex items-center gap-3 p-3 rounded-lg cursor-pointer transition hover:bg-slate-800/40';
+            multiLabelEl.innerHTML = '<input type="checkbox" name="' + q.id + '[]" value="' + option + '" class="w-4 h-4" ' + (selectedOptions.indexOf(option) >= 0 ? 'checked' : '') + '><span class="text-slate-100">' + option + '</span>';
+            multiLabelEl.querySelector('input').addEventListener('change', function (e) {
+              var currentValues = Array.isArray(answers[q.key]) ? answers[q.key].slice() : [];
+              if (option === 'I do not operate a business') {
+                answers[q.key] = e.target.checked ? ['I do not operate a business'] : [];
+              } else {
+                currentValues = currentValues.filter(function (item) { return item !== 'I do not operate a business'; });
+                if (e.target.checked) {
+                  if (currentValues.indexOf(option) === -1) currentValues.push(option);
+                } else {
+                  currentValues = currentValues.filter(function (item) { return item !== option; });
+                }
+                currentValues.sort(byText);
+                answers[q.key] = currentValues;
+              }
+              renderQuestion();
+            });
+            multiOptionsDiv.appendChild(multiLabelEl);
+          });
+          inputArea.appendChild(multiOptionsDiv);
+        } else if (q.type === 'checkbox') {
+          var wrap = document.createElement('label');
+          wrap.className = 'flex items-center gap-3 p-4 bg-slate-800/30 rounded-lg cursor-pointer border border-slate-700/50 max-w-2xl';
+          var cb = document.createElement('input');
+          cb.type = 'checkbox';
+          cb.className = 'checkbox-custom';
+          cb.checked = answers[q.key] === true;
+          cb.addEventListener('change', function (e) {
+            answers[q.key] = !!e.target.checked;
+            updateButtons(getVisibleQuestions());
+          });
+          var text = document.createElement('span');
+          text.className = 'text-slate-100';
+          text.textContent = q.label;
+          wrap.appendChild(cb);
+          wrap.appendChild(text);
+          inputArea.appendChild(wrap);
+        }
+
+        updateProgressBar(visible);
+        updateButtons(visible);
+      }
+
+      function nextQuestion() {
+        var visible = getVisibleQuestions();
+        if (currentQuestionIndex < visible.length - 1) {
+          currentQuestionIndex += 1;
+          renderQuestion();
+          document.getElementById('chatContainer').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      }
+
+      function previousQuestion() {
+        if (currentQuestionIndex > 0) {
+          currentQuestionIndex -= 1;
+          renderQuestion();
+          document.getElementById('chatContainer').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      }
+
+      document.getElementById('nextBtn').addEventListener('click', nextQuestion);
+      document.getElementById('prevBtn').addEventListener('click', previousQuestion);
+
+      document.addEventListener('click', function (e) {
+        var serviceBtn = e.target.closest('[data-service]');
+        if (!serviceBtn) return;
+        var service = serviceBtn.getAttribute('data-service');
+        var serviceIndex = servicesSelected.indexOf(service);
+        if (serviceIndex >= 0) {
+          servicesSelected.splice(serviceIndex, 1);
+        } else {
+          servicesSelected.push(service);
+        }
+        servicesSelected.sort(byText);
+        renderServiceCards();
+      });
+
+      document.getElementById('preferredState').addEventListener('change', function (e) {
+        preferredState = e.target.value || '';
+        preferredCity = '';
+        customCity = '';
+        if (cityTom) cityTom.settings.placeholder = preferredState ? 'Start typing a city...' : 'Select a state first';
+        renderStateOptions();
+      });
+
+      document.getElementById('preferredCity').addEventListener('change', function (e) {
+        if (cityTom) return;
+        var value = e.target.value || '';
+        if (value === '__other__') {
+          preferredCity = '__other__';
+          customCity = '';
+        } else {
+          preferredCity = value;
+          if (preferredCity) customCity = '';
+        }
+        syncCustomCityUi();
+      });
+
+      document.getElementById('customCity').addEventListener('input', function (e) {
+        customCity = String(e.target.value || '').trim();
+        preferredCity = customCity ? '__other__' : '';
+        syncCustomCityUi();
+      });
+
+      document.getElementById('servicesBackBtn').addEventListener('click', function () {
+        shellStep = 1;
+        updateStepperUi();
+      });
+
+      document.getElementById('servicesNextBtn').addEventListener('click', function () {
+        shellStep = 3;
+        updateStepperUi();
+      });
+
+      document.getElementById('locationBackBtn').addEventListener('click', function () {
+        shellStep = 2;
+        updateStepperUi();
+      });
+
+      document.getElementById('locationNextBtn').addEventListener('click', function () {
+        shellStep = 4;
+        updateStepperUi();
+      });
+
+      document.getElementById('offersBackBtn').addEventListener('click', function () {
+        shellStep = 3;
+        updateStepperUi();
+      });
+
+      
+
+      document.getElementById('offerDetailBackBtn').addEventListener('click', function () {
+        shellStep = 4;
+        updateStepperUi();
+      });
+
+      document.getElementById('offerDetailNextBtn').addEventListener('click', function () {
+        shellStep = 'contact-consent';
+        updateStepperUi();
+      });
+
+      document.getElementById('contactBackBtn').addEventListener('click', function () {
+        shellStep = wantsOfferInfo === 'yes' ? 'offer-detail' : 4;
+        updateStepperUi();
+      });
+
+      document.getElementById('contactYesBtn').addEventListener('click', function () {
+        wantsDirectContact = 'yes';
+        document.getElementById('contactYesBtn').classList.add('active');
+        document.getElementById('contactNoBtn').classList.remove('active');
+      });
+
+      document.getElementById('contactNoBtn').addEventListener('click', function () {
+        wantsDirectContact = 'no';
+        document.getElementById('contactNoBtn').classList.add('active');
+        document.getElementById('contactYesBtn').classList.remove('active');
+      });
+
+      document.getElementById('contactNextBtn').addEventListener('click', function () {
+        if (!wantsDirectContact) wantsDirectContact = 'no';
+        shellStep = 5;
+        renderMatches();
+        updateStepperUi();
+      });
+
+      document.getElementById('matchesBackBtn').addEventListener('click', function () {
+        shellStep = 'contact-consent';
+        updateStepperUi();
+      });
+
+      document.querySelector('a[href="/index.html"]').addEventListener('click', function (e) {
+        if (shellStep === 1 && currentQuestionIndex === 0) return;
+        e.preventDefault();
+        if (shellStep === 1) {
+          currentQuestionIndex = 0;
+          renderQuestion();
+        } else if (shellStep === 2) {
+          shellStep = 1;
+          currentQuestionIndex = getVisibleQuestions().length - 1;
+          renderQuestion();
+        } else if (shellStep === 3) {
+          shellStep = 2;
+          updateStepperUi();
+        } else if (shellStep === 4) {
+          shellStep = 3;
+          updateStepperUi();
+        } else if (shellStep === 'offer-detail') {
+          shellStep = 4;
+          updateStepperUi();
+        } else if (shellStep === 'contact-consent') {
+          shellStep = wantsOfferInfo === 'yes' ? 'offer-detail' : 4;
+          updateStepperUi();
+        } else if (shellStep === 5) {
+          shellStep = 'contact-consent';
+          updateStepperUi();
+        }
+      });
+
+      if (form) {
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+          setError('');
+          var visible = getVisibleQuestions();
+          var current = visible[currentQuestionIndex];
+          if (!isAnswered(current)) {
+            setError('Please answer the question before continuing.');
+            return;
+          }
+          for (var i = 0; i < visible.length; i += 1) {
+            if (!isAnswered(visible[i])) {
+              currentQuestionIndex = i;
+              renderQuestion();
+              setError('Please complete all required questions.');
+              return;
+            }
+          }
+          goToServicesStep();
+        });
+      }
+
+      function goToServicesStep() {
+        shellStep = 2;
+        renderServiceCards();
+        renderStateOptions();
+        renderOfferCards();
+        updateStepperUi();
+      }
+
+      function navigateToStep(step) {
+        var targetStep = Number(step);
+        if (!targetStep || targetStep < 1 || targetStep > 5) return;
+
+        if (targetStep === 1) {
+          shellStep = 1;
+          updateStepperUi();
+          return;
+        }
+
+        if (targetStep === 2) {
+          shellStep = 2;
+          renderServiceCards();
+          updateStepperUi();
+          return;
+        }
+
+        if (targetStep === 3) {
+          shellStep = 3;
+          renderStateOptions();
+          updateStepperUi();
+          return;
+        }
+
+        if (targetStep === 4) {
+          shellStep = 4;
+          renderOfferCards();
+          updateStepperUi();
+          return;
+        }
+
+        if (targetStep === 5) {
+          shellStep = 5;
+          renderMatches();
+          updateStepperUi();
+        }
+      }
+
+      renderQuestion();
+      renderServiceCards();
+      initCityAutocomplete();
+      renderStateOptions();
+      renderOfferCards();
+      renderOfferDetail(selectedMembership, currentOfferFeature || 'appDashboard');
+      updateStepperUi();
+    })();
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9dc537ae46f727cf',t:'MTc3MzUxMTY0MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
