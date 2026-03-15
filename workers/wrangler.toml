@@ -140,12 +140,6 @@ TMP_PLAN_PREMIER_TRANSCRIPT_TOKENS = "10"
 TMP_PLAN_PREMIER_TAX_TOOL_TOKENS = "40"
 TMP_PLAN_PREMIER_YEARLY_PRICE = "23.4"
 
-# -------------------------
-# Transcript return origins
-# -------------------------
-
-TRANSCRIPT_RETURN_ORIGINS_JSON = "[\"https://transcript.taxmonitor.pro\"]"
-
 # ---------------------------------------
 # Secrets (set via wrangler secret put)
 # ---------------------------------------
