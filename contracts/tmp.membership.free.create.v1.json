@@ -1,24 +1,120 @@
 {
-  "contract_version": "v1",
-  "domain": "tmp",
-  "notes": [
-    "R2 is authoritative.",
-    "Projection happens after canonical write."
-  ],
-  "request": {
-    "auth": "",
-    "content_type": "application/json",
-    "params": {},
-    "query": {},
-    "body": {}
+  "auth": {
+    "required": false,
+    "trustClientIdentityFields": false,
+    "type": "none"
+  },
+  "contract": {
+    "authority": [
+      "R2_TMP_CANONICAL"
+    ],
+    "governs": "Creates a free TMP taxpayer membership record.",
+    "path": "/contracts/tmp.membership.free.create.v1.json",
+    "source": "Tax Monitor Pro",
+    "title": "Tax Monitor Pro — Membership Contract — Free Create",
+    "usedOnPages": [
+      "/site/pricing.html",
+      "/site/signup.html"
+    ],
+    "validation": {
+      "enumStrict": true,
+      "normalizeCheckboxToBoolean": true,
+      "rejectUnknownValues": true,
+      "requireJsonContentType": true
+    },
+    "version": 1
+  },
+  "delivery": {
+    "endpoint": "/v1/taxpayer-memberships/free",
+    "method": "POST",
+    "receiptKeyPattern": "receipts/tmp/taxpayer-memberships/free/{eventId}.json",
+    "receiptSource": "tmp_membership_free_create",
+    "signature": {
+      "header": null,
+      "required": false,
+      "secretEnvVar": null
+    }
+  },
+  "effects": {
+    "dedupeKey": "payload.eventId",
+    "eventIdFrom": "payload.eventId",
+    "receiptAppend": {
+      "to": "receipts/tmp/taxpayer-memberships/free/{eventId}.json"
+    },
+    "canonicalPatch": {
+      "accountId": "{payload.accountId}",
+      "createdAt": "{system.nowIso}",
+      "email": "{payload.email}",
+      "eventId": "{payload.eventId}",
+      "membershipId": "{payload.eventId}",
+      "sourcePage": "{payload.sourcePage}",
+      "status": "active",
+      "tier": "free",
+      "updatedAt": "{system.nowIso}"
+    },
+    "canonicalUpsert": {
+      "patchFrom": "effects.canonicalPatch",
+      "target": "taxpayer_memberships/{recordId}.json"
+    },
+    "writeOrder": [
+      "receiptAppend",
+      "canonicalUpsert"
+    ],
+    "writes": [
+      "taxpayer_memberships"
+    ]
+  },
+  "payload": {
+    "additionalProperties": false,
+    "properties": {
+      "accountId": {
+        "type": "string"
+      },
+      "email": {
+        "format": "email",
+        "minLength": 3,
+        "type": "string"
+      },
+      "eventId": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "sourcePage": {
+        "maxLength": 300,
+        "minLength": 1,
+        "type": "string"
+      }
+    },
+    "required": [
+      "email",
+      "eventId",
+      "sourcePage"
+    ],
+    "type": "object"
   },
   "response": {
-    "content_type": "application/json",
-    "shape": {}
+    "deduped": {
+      "deduped": true,
+      "eventId": "{effects.eventIdFrom}",
+      "membershipId": "{effects.eventIdFrom}",
+      "ok": true,
+      "status": "active",
+      "tier": "free"
+    },
+    "error": {
+      "error": "validation_failed",
+      "ok": false
+    },
+    "success": {
+      "eventId": "{effects.eventIdFrom}",
+      "membershipId": "{effects.eventIdFrom}",
+      "ok": true,
+      "status": "active",
+      "tier": "free"
+    }
   },
-  "storage": {
-    "canonical_r2": [],
-    "receipt_r2": "",
-    "d1_projection": []
+  "schema": {
+    "name": "tmp_membership_free_create",
+    "version": 1
   }
 }

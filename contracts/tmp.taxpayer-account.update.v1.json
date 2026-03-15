@@ -1,24 +1,118 @@
 {
-  "contract_version": "v1",
-  "domain": "tmp",
-  "notes": [
-    "R2 is authoritative.",
-    "Projection happens after canonical write."
-  ],
-  "request": {
-    "auth": "",
-    "content_type": "application/json",
-    "params": {},
-    "query": {},
-    "body": {}
+  "auth": {
+    "required": true,
+    "trustClientIdentityFields": false,
+    "type": "session"
+  },
+  "contract": {
+    "authority": [
+      "R2_TMP_CANONICAL"
+    ],
+    "governs": "Updates a TMP taxpayer account record by account ID.",
+    "path": "/contracts/tmp.taxpayer-account.update.v1.json",
+    "source": "Tax Monitor Pro",
+    "title": "Tax Monitor Pro — Taxpayer Account Contract — Update",
+    "usedOnPages": [
+      "/app/account.html",
+      "/app/settings.html"
+    ],
+    "validation": {
+      "enumStrict": true,
+      "normalizeCheckboxToBoolean": true,
+      "rejectUnknownValues": true,
+      "requireJsonContentType": true
+    },
+    "version": 1
+  },
+  "delivery": {
+    "endpoint": "/v1/taxpayer-accounts/{account_id}",
+    "method": "PATCH",
+    "receiptKeyPattern": "receipts/tmp/taxpayer-accounts/update/{eventId}.json",
+    "receiptSource": "tmp_taxpayer_account_update",
+    "signature": {
+      "header": null,
+      "required": false,
+      "secretEnvVar": null
+    }
+  },
+  "effects": {
+    "dedupeKey": "payload.eventId",
+    "eventIdFrom": "payload.eventId",
+    "receiptAppend": {
+      "to": "receipts/tmp/taxpayer-accounts/update/{eventId}.json"
+    },
+    "canonicalPatch": {
+      "accountId": "{params.account_id}",
+      "displayName": "{payload.displayName}",
+      "email": "{payload.email}",
+      "notificationEmail": "{payload.notificationEmail}",
+      "phone": "{payload.phone}",
+      "updatedAt": "{system.nowIso}"
+    },
+    "canonicalUpsert": {
+      "patchFrom": "effects.canonicalPatch",
+      "target": "taxpayer_accounts/{recordId}.json"
+    },
+    "writeOrder": [
+      "receiptAppend",
+      "canonicalUpsert"
+    ],
+    "writes": [
+      "taxpayer_accounts"
+    ]
+  },
+  "payload": {
+    "additionalProperties": false,
+    "properties": {
+      "displayName": {
+        "maxLength": 200,
+        "minLength": 1,
+        "type": "string"
+      },
+      "email": {
+        "format": "email",
+        "minLength": 3,
+        "type": "string"
+      },
+      "eventId": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "notificationEmail": {
+        "format": "email",
+        "type": "string"
+      },
+      "phone": {
+        "maxLength": 50,
+        "type": "string"
+      }
+    },
+    "required": [
+      "eventId"
+    ],
+    "type": "object"
   },
   "response": {
-    "content_type": "application/json",
-    "shape": {}
+    "deduped": {
+      "accountId": "{params.account_id}",
+      "deduped": true,
+      "eventId": "{effects.eventIdFrom}",
+      "ok": true,
+      "updated": true
+    },
+    "error": {
+      "error": "validation_failed",
+      "ok": false
+    },
+    "success": {
+      "accountId": "{params.account_id}",
+      "eventId": "{effects.eventIdFrom}",
+      "ok": true,
+      "updated": true
+    }
   },
-  "storage": {
-    "canonical_r2": [],
-    "receipt_r2": "",
-    "d1_projection": []
+  "schema": {
+    "name": "tmp_taxpayer_account_update",
+    "version": 1
   }
 }

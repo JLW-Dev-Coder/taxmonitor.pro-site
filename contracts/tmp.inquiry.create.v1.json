@@ -1,24 +1,143 @@
 {
-  "contract_version": "v1",
-  "domain": "tmp",
-  "notes": [
-    "R2 is authoritative.",
-    "Projection happens after canonical write."
-  ],
-  "request": {
-    "auth": "",
-    "content_type": "application/json",
-    "params": {},
-    "query": {},
-    "body": {}
+  "auth": {
+    "required": false,
+    "trustClientIdentityFields": false,
+    "type": "none"
+  },
+  "contract": {
+    "authority": [
+      "R2_TMP_CANONICAL"
+    ],
+    "governs": "Creates a TMP taxpayer inquiry for professional discovery and service routing.",
+    "path": "/contracts/tmp.inquiry.create.v1.json",
+    "source": "Tax Monitor Pro",
+    "title": "Tax Monitor Pro — Inquiry Contract — Create",
+    "usedOnPages": [
+      "/app/intake.html",
+      "/site/directory.html",
+      "/site/find-help.html"
+    ],
+    "validation": {
+      "enumStrict": true,
+      "normalizeCheckboxToBoolean": true,
+      "rejectUnknownValues": true,
+      "requireJsonContentType": true
+    },
+    "version": 1
+  },
+  "delivery": {
+    "endpoint": "/v1/inquiries",
+    "method": "POST",
+    "receiptKeyPattern": "receipts/tmp/inquiries/{eventId}.json",
+    "receiptSource": "tmp_inquiry_create",
+    "signature": {
+      "header": null,
+      "required": false,
+      "secretEnvVar": null
+    }
+  },
+  "effects": {
+    "dedupeKey": "payload.eventId",
+    "eventIdFrom": "payload.eventId",
+    "receiptAppend": {
+      "to": "receipts/tmp/inquiries/{eventId}.json"
+    },
+    "canonicalPatch": {
+      "accountId": "{payload.accountId}",
+      "createdAt": "{system.nowIso}",
+      "email": "{payload.email}",
+      "eventId": "{payload.eventId}",
+      "inquiryId": "{payload.eventId}",
+      "message": "{payload.message}",
+      "name": "{payload.name}",
+      "phone": "{payload.phone}",
+      "professionalId": "{payload.professionalId}",
+      "sourcePage": "{payload.sourcePage}",
+      "status": "submitted",
+      "updatedAt": "{system.nowIso}"
+    },
+    "canonicalUpsert": {
+      "patchFrom": "effects.canonicalPatch",
+      "target": "inquiries/{recordId}.json"
+    },
+    "writeOrder": [
+      "receiptAppend",
+      "canonicalUpsert"
+    ],
+    "writes": [
+      "inquiries"
+    ]
+  },
+  "payload": {
+    "additionalProperties": false,
+    "properties": {
+      "accountId": {
+        "type": "string"
+      },
+      "email": {
+        "format": "email",
+        "minLength": 3,
+        "type": "string"
+      },
+      "eventId": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "message": {
+        "maxLength": 5000,
+        "minLength": 1,
+        "type": "string"
+      },
+      "name": {
+        "maxLength": 200,
+        "minLength": 1,
+        "type": "string"
+      },
+      "phone": {
+        "maxLength": 50,
+        "type": "string"
+      },
+      "professionalId": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "sourcePage": {
+        "maxLength": 300,
+        "minLength": 1,
+        "type": "string"
+      }
+    },
+    "required": [
+      "email",
+      "eventId",
+      "message",
+      "name",
+      "professionalId",
+      "sourcePage"
+    ],
+    "type": "object"
   },
   "response": {
-    "content_type": "application/json",
-    "shape": {}
+    "deduped": {
+      "deduped": true,
+      "eventId": "{effects.eventIdFrom}",
+      "inquiryId": "{effects.eventIdFrom}",
+      "ok": true,
+      "status": "submitted"
+    },
+    "error": {
+      "error": "validation_failed",
+      "ok": false
+    },
+    "success": {
+      "eventId": "{effects.eventIdFrom}",
+      "inquiryId": "{effects.eventIdFrom}",
+      "ok": true,
+      "status": "submitted"
+    }
   },
-  "storage": {
-    "canonical_r2": [],
-    "receipt_r2": "",
-    "d1_projection": []
+  "schema": {
+    "name": "tmp_inquiry_create",
+    "version": 1
   }
 }

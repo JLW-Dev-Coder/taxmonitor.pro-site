@@ -1,24 +1,74 @@
 {
-  "contract_version": "v1",
-  "domain": "tmp",
-  "notes": [
-    "R2 is authoritative.",
-    "Projection happens after canonical write."
-  ],
-  "request": {
-    "auth": "",
-    "content_type": "application/json",
-    "params": {},
-    "query": {},
-    "body": {}
+  "auth": {
+    "required": false,
+    "trustClientIdentityFields": false,
+    "type": "none"
+  },
+  "contract": {
+    "authority": [
+      "TMP_PRICING_CONFIG"
+    ],
+    "governs": "Retrieves public TMP membership pricing tiers for taxpayer-facing pages.",
+    "path": "/contracts/tmp.membership.pricing.get.v1.json",
+    "source": "Tax Monitor Pro",
+    "title": "Tax Monitor Pro — Membership Contract — Pricing Get",
+    "usedOnPages": [
+      "/site/pricing.html",
+      "/site/signup.html"
+    ],
+    "validation": {
+      "enumStrict": true,
+      "rejectUnknownValues": true,
+      "requireJsonContentType": false
+    },
+    "version": 1
+  },
+  "delivery": {
+    "endpoint": "/v1/pricing",
+    "method": "GET",
+    "receiptKeyPattern": "receipts/tmp/pricing/{eventId}.json",
+    "receiptSource": "tmp_membership_pricing_get",
+    "signature": {
+      "header": null,
+      "required": false,
+      "secretEnvVar": null
+    }
+  },
+  "effects": {
+    "dedupeKey": "system.requestId",
+    "eventIdFrom": "system.requestId",
+    "receiptAppend": {
+      "to": "receipts/tmp/pricing/{eventId}.json"
+    },
+    "writeOrder": [
+      "receiptAppend"
+    ],
+    "writes": []
+  },
+  "payload": {
+    "additionalProperties": false,
+    "properties": {},
+    "required": [],
+    "type": "object"
   },
   "response": {
-    "content_type": "application/json",
-    "shape": {}
+    "deduped": {
+      "eventId": "{effects.eventIdFrom}",
+      "ok": true,
+      "plans": "{read.pricing}"
+    },
+    "error": {
+      "error": "pricing_unavailable",
+      "ok": false
+    },
+    "success": {
+      "eventId": "{effects.eventIdFrom}",
+      "ok": true,
+      "plans": "{read.pricing}"
+    }
   },
-  "storage": {
-    "canonical_r2": [],
-    "receipt_r2": "",
-    "d1_projection": []
+  "schema": {
+    "name": "tmp_membership_pricing_get",
+    "version": 1
   }
 }
