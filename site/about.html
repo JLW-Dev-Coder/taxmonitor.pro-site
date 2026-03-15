@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>About | Tax Monitor Pro</title>
-  <meta name="description" content="Why Tax Monitor Pro exists: proactive transcript monitoring, human review, and clear next steps before IRS issues spiral." />
+  <meta name="description" content="Tax Monitor Pro connects taxpayers with monitoring-first tax professionals through a directory and taxpayer memberships with transcript monitoring, portal perks, plain-language reporting, and early awareness tools." />
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="/_sdk/element_sdk.js"></script>
@@ -101,6 +101,25 @@
     .tm-glow-card {
       animation: pulseGlow 4s ease-in-out infinite;
     }
+
+    .tm-orange-card {
+      background: linear-gradient(180deg, rgba(30, 41, 59, 0.98) 0%, rgba(2, 6, 23, 0.98) 100%);
+      border: 1px solid rgba(249, 115, 22, 0.20);
+      box-shadow: 0 24px 60px rgba(2, 6, 23, 0.34);
+    }
+
+    .tm-load-more-btn {
+      background: #f97316;
+      color: #ffffff;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+
+    .tm-load-more-btn:hover {
+      background: #fb923c;
+      box-shadow: 0 10px 30px rgba(249, 115, 22, 0.22);
+      transform: translateY(-2px);
+    }
   </style>
 
   <style>@view-transition { navigation: auto; }</style>
@@ -121,15 +140,15 @@
             <svg class="w-4 h-4 text-amber-500" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
               <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
             </svg>
-            <span id="trust-line" class="text-sm text-slate-300">Proactive monitoring by licensed tax professionals — intake does not create IRS representation.</span>
+            <span id="trust-line" class="text-sm text-slate-300">We help taxpayers find the right tax pros and access memberships with monitoring, perks, and clearer visibility. Intake does not create IRS representation.</span>
           </div>
 
           <h1 id="hero-headline" class="text-4xl md:text-6xl font-bold tracking-tight mb-6 leading-tight">
-            For those tired of finding IRS problems too late
+            Find <span class="text-amber-500">tax pros</span> and smarter tax visibility
           </h1>
 
           <p id="hero-subhead" class="text-lg md:text-xl text-slate-400 mb-8 max-w-2xl mx-auto leading-relaxed">
-            Tax Monitor Pro exists to watch transcript movement, changes, and surface next steps before silence turns into a bigger mess.
+            Tax Monitor Pro is a discovery layer for taxpayers who need the right tax professional, plus access to taxpayer memberships with transcript monitoring, plain-language reports, portal tools, and member perks.
           </p>
 
           <div class="flex flex-col sm:flex-row gap-4 justify-center">
@@ -164,7 +183,7 @@
                   <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
                   </svg>
-                  Built by JLW for proactive tax monitoring
+                  Built by JLW for the taxpayer membership model
                 </span>
               </div>
             </div>
@@ -176,16 +195,16 @@
                 </svg>
                 Our mission
               </span>
-              <h2 class="text-3xl md:text-4xl font-bold text-white mb-5">Discover trouble signs early</h2>
-              <p class="text-lg text-slate-300 leading-relaxed mb-8">Tax Monitor Pro was built for taxpayers and firms who do not want to discover IRS trouble after a notice, a delay, or a client panic spiral. We focus on proactive monitoring, human review, and practical escalation guidance so transcript updates mean something instead of just looking ominous on a screen.</p>
+              <h2 class="text-3xl md:text-4xl font-bold text-white mb-5">Make it easier for taxpayers to find the right help before problems grow</h2>
+              <p class="text-lg text-slate-300 leading-relaxed mb-8">Tax Monitor Pro exists to help taxpayers do two things better: find tax professionals who fit their needs through a directory, and access taxpayer memberships that add ongoing value through monitoring, reports, tools, discounts, and clearer awareness. The point is not just finding help once. It is staying better informed over time.</p>
               <div class="grid grid-cols-2 gap-4">
                 <div class="rounded-2xl border border-white/5 bg-slate-900/60 p-5 shadow-md">
-                  <p class="text-3xl font-bold text-white">Proactive</p>
-                  <p class="text-sm text-slate-400">Transcript watch strategy</p>
+                  <p class="text-3xl font-bold text-white">Directory</p>
+                  <p class="text-sm text-slate-400">Find tax pros by fit and need</p>
                 </div>
                 <div class="rounded-2xl border border-white/5 bg-slate-900/60 p-5 shadow-md">
-                  <p class="text-3xl font-bold text-white">Human</p>
-                  <p class="text-sm text-slate-400">Reviewed by tax pros</p>
+                  <p class="text-3xl font-bold text-white">Memberships</p>
+                  <p class="text-sm text-slate-400">Perks, monitoring, and portal access</p>
                 </div>
               </div>
             </div>
@@ -203,12 +222,12 @@
               <svg class="w-5 h-5 text-amber-400" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701z" /></svg>
               Real voices
             </span>
-            <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">The pain points are already all over Reddit</h2>
-            <p class="text-lg text-slate-300 max-w-2xl mx-auto">People do not show up asking for transcript monitoring by name. They show up confused, waiting, verifying, guessing, and hoping random IRS codes magically explain themselves. So naturally, we built around that.</p>
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Why the directory plus membership model matters</h2>
+            <p class="text-lg text-slate-300 max-w-2xl mx-auto">Some taxpayers need a tax pro right now. Others also need continuing access, better explanations, transcript visibility, discounts, or tools that make staying organized easier. That is why Tax Monitor Pro brings the directory and the taxpayer membership model together.</p>
           </div>
 
-          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <a class="tm-floaty tm-card-hover block rounded-2xl border border-slate-700 bg-slate-800/90 p-6 shadow-lg hover:shadow-xl" href="https://www.reddit.com/r/IRS/comments/1r76xr4/everyones_reaction_to_seeing_no_updates_on_the/" rel="noopener noreferrer" target="_blank">
+          <div id="reddit-card-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <a class="tm-floaty tm-card-hover block tm-orange-card rounded-2xl p-6 hover:shadow-xl" href="https://www.reddit.com/r/IRS/comments/1r76xr4/everyones_reaction_to_seeing_no_updates_on_the/" rel="noopener noreferrer" target="_blank">
               <div class="flex items-center gap-3 mb-4">
                 <div class="w-10 h-10 rounded-full bg-amber-500 flex items-center justify-center text-slate-950 font-bold">R</div>
                 <div>
@@ -216,14 +235,14 @@
                   <p class="text-xs text-slate-400">No transcript updates</p>
                 </div>
               </div>
-              <p class="text-slate-200 leading-relaxed mb-4">People staring at blank or unchanged transcripts are not asking for theory. They want to know whether silence means normal delay, manual review, or incoming trouble.</p>
+              <p class="text-slate-200 leading-relaxed mb-4">When transcripts sit still, taxpayers are left guessing whether the silence means delay, review, or an issue building in the background.</p>
               <div class="mt-4 pt-4 border-t border-slate-700">
                 <p class="text-sm font-semibold text-amber-400">Why it maps to Tax Monitor Pro</p>
-                <p class="text-sm text-slate-400 mt-1">We watch for meaningful movement so clients are not left interpreting a digital shrug.</p>
+                <p class="text-sm text-slate-400 mt-1">Membership gives people ongoing visibility instead of a one-time look and a shrug.</p>
               </div>
             </a>
 
-            <a class="tm-floaty tm-card-hover block rounded-2xl border border-slate-700 bg-slate-800/90 p-6 shadow-lg hover:shadow-xl" href="https://www.reddit.com/r/IRS/comments/1rmejlo/my_irs_identity_verification_timeline_wmr_never/" rel="noopener noreferrer" target="_blank">
+            <a class="tm-floaty tm-card-hover block tm-orange-card rounded-2xl p-6 hover:shadow-xl" href="https://www.reddit.com/r/IRS/comments/1rmejlo/my_irs_identity_verification_timeline_wmr_never/" rel="noopener noreferrer" target="_blank">
               <div class="flex items-center gap-3 mb-4">
                 <div class="w-10 h-10 rounded-full bg-orange-500 flex items-center justify-center text-white font-bold">R</div>
                 <div>
@@ -231,14 +250,14 @@
                   <p class="text-xs text-slate-400">Identity verification limbo</p>
                 </div>
               </div>
-              <p class="text-slate-200 leading-relaxed mb-4">Verification threads are full of people comparing timelines because the official tools rarely tell the whole story clearly enough.</p>
+              <p class="text-slate-200 leading-relaxed mb-4">Verification issues create long stretches of uncertainty, and most taxpayers do not know what changed or what happens next.</p>
               <div class="mt-4 pt-4 border-t border-slate-700">
                 <p class="text-sm font-semibold text-amber-400">Why it maps to Tax Monitor Pro</p>
-                <p class="text-sm text-slate-400 mt-1">When transcript status shifts after verification, clients need context, not folklore assembled from comment chains.</p>
+                <p class="text-sm text-slate-400 mt-1">Members get clearer reporting and earlier context when transcript status shifts.</p>
               </div>
             </a>
 
-            <a class="tm-floaty tm-card-hover block rounded-2xl border border-slate-700 bg-slate-800/90 p-6 shadow-lg hover:shadow-xl" href="https://www.reddit.com/r/tax/comments/1physc6/why_youre_seeing_so_many_irs_delay_posts_lately/" rel="noopener noreferrer" target="_blank">
+            <a class="tm-floaty tm-card-hover block tm-orange-card rounded-2xl p-6 hover:shadow-xl" href="https://www.reddit.com/r/tax/comments/1physc6/why_youre_seeing_so_many_irs_delay_posts_lately/" rel="noopener noreferrer" target="_blank">
               <div class="flex items-center gap-3 mb-4">
                 <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-white font-bold">R</div>
                 <div>
@@ -246,14 +265,14 @@
                   <p class="text-xs text-slate-400">Delay post explainer</p>
                 </div>
               </div>
-              <p class="text-slate-200 leading-relaxed mb-4">One of the recurring themes: returns can sit in manual review or special handling for months with barely any visible movement.</p>
+              <p class="text-slate-200 leading-relaxed mb-4">Manual review and special handling can stretch for months, which is exactly when taxpayers stop feeling informed and start feeling stuck.</p>
               <div class="mt-4 pt-4 border-t border-slate-700">
                 <p class="text-sm font-semibold text-amber-400">Why it maps to Tax Monitor Pro</p>
-                <p class="text-sm text-slate-400 mt-1">Monitoring matters most when the timeline stops feeling predictable and every week of silence changes client expectations.</p>
+                <p class="text-sm text-slate-400 mt-1">The membership model is built for ongoing awareness, not just crisis entry.</p>
               </div>
             </a>
 
-            <a class="tm-floaty tm-card-hover block rounded-2xl border border-slate-700 bg-slate-800/90 p-6 shadow-lg hover:shadow-xl" href="https://www.reddit.com/r/IRS/comments/1r7kevw/cp_0012_code_on_transcripts_any_estimate_of_how/" rel="noopener noreferrer" target="_blank">
+            <a class="tm-floaty tm-card-hover block tm-orange-card rounded-2xl p-6 hover:shadow-xl" href="https://www.reddit.com/r/IRS/comments/1r7kevw/cp_0012_code_on_transcripts_any_estimate_of_how/" rel="noopener noreferrer" target="_blank">
               <div class="flex items-center gap-3 mb-4">
                 <div class="w-10 h-10 rounded-full bg-amber-500 flex items-center justify-center text-slate-950 font-bold">R</div>
                 <div>
@@ -261,14 +280,14 @@
                   <p class="text-xs text-slate-400">Transcript code confusion</p>
                 </div>
               </div>
-              <p class="text-slate-200 leading-relaxed mb-4">A transcript code shows up, a notice has not arrived yet, and now the taxpayer is stuck trying to estimate delay, impact, and what to do next.</p>
+              <p class="text-slate-200 leading-relaxed mb-4">A code shows up before the full story arrives, and taxpayers are left trying to decode risk from fragments.</p>
               <div class="mt-4 pt-4 border-t border-slate-700">
                 <p class="text-sm font-semibold text-amber-400">Why it maps to Tax Monitor Pro</p>
-                <p class="text-sm text-slate-400 mt-1">We built for the gap between transcript change and actual understanding.</p>
+                <p class="text-sm text-slate-400 mt-1">Members get plain-language summaries instead of code-chasing across the internet like civilized society gave up.</p>
               </div>
             </a>
 
-            <a class="tm-floaty tm-card-hover block rounded-2xl border border-slate-700 bg-slate-800/90 p-6 shadow-lg hover:shadow-xl" href="https://www.reddit.com/r/IRS/comments/1r9y0x3/identity_verification_notice_disappeared_from_the/" rel="noopener noreferrer" target="_blank">
+            <a class="tm-floaty tm-card-hover block tm-orange-card rounded-2xl p-6 hover:shadow-xl" href="https://www.reddit.com/r/IRS/comments/1r9y0x3/identity_verification_notice_disappeared_from_the/" rel="noopener noreferrer" target="_blank">
               <div class="flex items-center gap-3 mb-4">
                 <div class="w-10 h-10 rounded-full bg-orange-500 flex items-center justify-center text-white font-bold">R</div>
                 <div>
@@ -276,27 +295,195 @@
                   <p class="text-xs text-slate-400">Notice disappeared online</p>
                 </div>
               </div>
-              <p class="text-slate-200 leading-relaxed mb-4">When an IRS site message disappears without explanation, people immediately assume either disaster or miracle. Neither is a strategy.</p>
+              <p class="text-slate-200 leading-relaxed mb-4">When portal messages appear or disappear without explanation, people assume the best or the worst and usually have no basis for either.</p>
               <div class="mt-4 pt-4 border-t border-slate-700">
                 <p class="text-sm font-semibold text-amber-400">Why it maps to Tax Monitor Pro</p>
-                <p class="text-sm text-slate-400 mt-1">We help translate signal changes into measured next steps instead of panic-refresh behavior.</p>
+                <p class="text-sm text-slate-400 mt-1">We designed membership access around clarity, not panic-refreshing and guesswork.</p>
               </div>
             </a>
 
-            <a class="tm-floaty tm-card-hover block rounded-2xl border border-slate-700 bg-slate-800/90 p-6 shadow-lg hover:shadow-xl" href="https://www.reddit.com/r/tax/comments/1muvy99/does_this_irs_issue_sound_logical/" rel="noopener noreferrer" target="_blank">
+            <a class="tm-floaty tm-card-hover block tm-orange-card rounded-2xl p-6 hover:shadow-xl" href="https://www.reddit.com/r/IRS/comments/1rqfcb7/filed_120_verified_identity_217_4883c_transcript/" rel="noopener noreferrer" target="_blank">
+              <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 rounded-full bg-orange-500 flex items-center justify-center text-white font-bold">R</div>
+                <div>
+                  <p class="font-semibold text-white">r/IRS</p>
+                  <p class="text-xs text-slate-400">4883C verification delay</p>
+                </div>
+              </div>
+              <p class="text-slate-200 leading-relaxed mb-4">A taxpayer verifies identity, transcripts finally populate, and then new hold codes still leave them stuck wondering what changed.</p>
+              <div class="mt-4 pt-4 border-t border-slate-700">
+                <p class="text-sm font-semibold text-amber-400">Why it maps to Tax Monitor Pro</p>
+                <p class="text-sm text-slate-400 mt-1">Monitoring plus plain-language updates helps members understand the sequence instead of guessing after every status change.</p>
+              </div>
+            </a>
+
+            <a class="tm-floaty tm-card-hover block tm-orange-card rounded-2xl p-6 hover:shadow-xl" href="https://www.reddit.com/r/IRS/comments/1rmyx1q/update_after_verification_letter_received_finally/" rel="noopener noreferrer" target="_blank">
+              <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 rounded-full bg-orange-500 flex items-center justify-center text-white font-bold">R</div>
+                <div>
+                  <p class="font-semibold text-white">r/IRS</p>
+                  <p class="text-xs text-slate-400">810 freeze after letter</p>
+                </div>
+              </div>
+              <p class="text-slate-200 leading-relaxed mb-4">Even after verifying, taxpayers can still face freeze codes and long wait messages that make the process feel random and opaque.</p>
+              <div class="mt-4 pt-4 border-t border-slate-700">
+                <p class="text-sm font-semibold text-amber-400">Why it maps to Tax Monitor Pro</p>
+                <p class="text-sm text-slate-400 mt-1">This is exactly where monitoring and readable summaries reduce panic and keep the member oriented.</p>
+              </div>
+            </a>
+
+            <a class="tm-floaty tm-card-hover block tm-orange-card rounded-2xl p-6 hover:shadow-xl" href="https://www.reddit.com/r/IRS/comments/1rfwz61/so_am_i_waiting_on_notice_or_just_processing/" rel="noopener noreferrer" target="_blank">
+              <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 rounded-full bg-amber-500 flex items-center justify-center text-slate-950 font-bold">R</div>
+                <div>
+                  <p class="font-semibold text-white">r/IRS</p>
+                  <p class="text-xs text-slate-400">570 code uncertainty</p>
+                </div>
+              </div>
+              <p class="text-slate-200 leading-relaxed mb-4">People see action-pending codes and do what humans do best online: speculate wildly while refreshing transcript pages.</p>
+              <div class="mt-4 pt-4 border-t border-slate-700">
+                <p class="text-sm font-semibold text-amber-400">Why it maps to Tax Monitor Pro</p>
+                <p class="text-sm text-slate-400 mt-1">Members get context around status movement so a code is not mistaken for a complete answer.</p>
+              </div>
+            </a>
+
+            <a class="tm-floaty tm-card-hover block tm-orange-card rounded-2xl p-6 hover:shadow-xl" href="https://www.reddit.com/r/IRS/comments/1rgfyun/this_is_for_anyone_going_through_verification/" rel="noopener noreferrer" target="_blank">
+              <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 rounded-full bg-orange-500 flex items-center justify-center text-white font-bold">R</div>
+                <div>
+                  <p class="font-semibold text-white">r/IRS</p>
+                  <p class="text-xs text-slate-400">CP5071 verification stress</p>
+                </div>
+              </div>
+              <p class="text-slate-200 leading-relaxed mb-4">Verification notices often arrive after taxpayers have already been sitting in delay mode, with little explanation about what the timeline really means.</p>
+              <div class="mt-4 pt-4 border-t border-slate-700">
+                <p class="text-sm font-semibold text-amber-400">Why it maps to Tax Monitor Pro</p>
+                <p class="text-sm text-slate-400 mt-1">Taxpayer memberships help bridge that silence with visibility, portal access, and clearer guidance.</p>
+              </div>
+            </a>
+
+            <a class="tm-floaty tm-card-hover block tm-orange-card rounded-2xl p-6 hover:shadow-xl" href="https://www.reddit.com/r/tax/comments/1r72qkw/blank_transcript_since_123/" rel="noopener noreferrer" target="_blank">
               <div class="flex items-center gap-3 mb-4">
                 <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-white font-bold">R</div>
                 <div>
                   <p class="font-semibold text-white">r/tax</p>
-                  <p class="text-xs text-slate-400">Compare return vs transcript</p>
+                  <p class="text-xs text-slate-400">Blank transcript confusion</p>
                 </div>
               </div>
-              <p class="text-slate-200 leading-relaxed mb-4">A common answer in tax threads is to compare what was filed against what the IRS transcript actually reflects, because that gap is where the real story hides.</p>
+              <p class="text-slate-200 leading-relaxed mb-4">A blank transcript and a disappearing verification prompt leave taxpayers trying to reverse-engineer what the IRS system is doing.</p>
               <div class="mt-4 pt-4 border-t border-slate-700">
                 <p class="text-sm font-semibold text-amber-400">Why it maps to Tax Monitor Pro</p>
-                <p class="text-sm text-slate-400 mt-1">That is exactly the sort of signal-driven workflow proactive monitoring is meant to support.</p>
+                <p class="text-sm text-slate-400 mt-1">Ongoing monitoring is useful precisely when the account looks empty but the story clearly is not.</p>
               </div>
             </a>
+
+            <a class="tm-floaty tm-card-hover block tm-orange-card rounded-2xl p-6 hover:shadow-xl" href="https://www.reddit.com/r/IRS/comments/1lmzu5m/w2_missing_from_wage_and_income_transcript/" rel="noopener noreferrer" target="_blank">
+              <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 rounded-full bg-amber-500 flex items-center justify-center text-slate-950 font-bold">R</div>
+                <div>
+                  <p class="font-semibold text-white">r/IRS</p>
+                  <p class="text-xs text-slate-400">Missing W-2 transcript data</p>
+                </div>
+              </div>
+              <p class="text-slate-200 leading-relaxed mb-4">When wage data is missing, taxpayers can sit in limbo without knowing whether the issue is timing, reporting, or a mismatch that needs attention.</p>
+              <div class="mt-4 pt-4 border-t border-slate-700">
+                <p class="text-sm font-semibold text-amber-400">Why it maps to Tax Monitor Pro</p>
+                <p class="text-sm text-slate-400 mt-1">This is where monitoring, translation, and access to the right tax pro create real value instead of generic wait-and-see advice.</p>
+              </div>
+            </a>
+                      <a class="extra-reddit-card hidden tm-floaty tm-card-hover block tm-orange-card rounded-2xl p-6 hover:shadow-xl" href="https://www.reddit.com/r/IRS/comments/1r8h1oh/received_a_notice_and_have_no_idea_what_it_means/" rel="noopener noreferrer" target="_blank">
+              <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 rounded-full bg-amber-500 flex items-center justify-center text-slate-950 font-bold">R</div>
+                <div>
+                  <p class="font-semibold text-white">r/IRS</p>
+                  <p class="text-xs text-slate-400">Notice with no explanation</p>
+                </div>
+              </div>
+              <p class="text-slate-200 leading-relaxed mb-4">Taxpayers often receive a notice before they understand the issue, the urgency, or whether they need professional help fast.</p>
+              <div class="mt-4 pt-4 border-t border-slate-700">
+                <p class="text-sm font-semibold text-amber-400">How TMP helps</p>
+                <p class="text-sm text-slate-400 mt-1">The directory helps them find the right tax pro, and membership tools add clearer visibility after the first step.</p>
+              </div>
+            </a>
+
+            <a class="extra-reddit-card hidden tm-floaty tm-card-hover block tm-orange-card rounded-2xl p-6 hover:shadow-xl" href="https://www.reddit.com/r/tax/comments/1pxb4gn/why_did_my_refund_status_change_again/" rel="noopener noreferrer" target="_blank">
+              <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 rounded-full bg-orange-500 flex items-center justify-center text-white font-bold">R</div>
+                <div>
+                  <p class="font-semibold text-white">r/tax</p>
+                  <p class="text-xs text-slate-400">Refund status changed again</p>
+                </div>
+              </div>
+              <p class="text-slate-200 leading-relaxed mb-4">Changing status messages leave people guessing whether the IRS is simply delayed or whether something new has appeared in the background.</p>
+              <div class="mt-4 pt-4 border-t border-slate-700">
+                <p class="text-sm font-semibold text-amber-400">How TMP helps</p>
+                <p class="text-sm text-slate-400 mt-1">Monitoring and plain-language reporting reduce the panic spiral that starts when status tools stop making sense.</p>
+              </div>
+            </a>
+
+            <a class="extra-reddit-card hidden tm-floaty tm-card-hover block tm-orange-card rounded-2xl p-6 hover:shadow-xl" href="https://www.reddit.com/r/IRS/comments/1r8z39k/i_moved_and_now_im_not_sure_where_my_notice_went/" rel="noopener noreferrer" target="_blank">
+              <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-white font-bold">R</div>
+                <div>
+                  <p class="font-semibold text-white">r/IRS</p>
+                  <p class="text-xs text-slate-400">Moved and lost notice trail</p>
+                </div>
+              </div>
+              <p class="text-slate-200 leading-relaxed mb-4">Address changes and travel can break the paper trail, leaving taxpayers behind the timeline before they even realize there is one.</p>
+              <div class="mt-4 pt-4 border-t border-slate-700">
+                <p class="text-sm font-semibold text-amber-400">How TMP helps</p>
+                <p class="text-sm text-slate-400 mt-1">Membership access and monitoring-first visibility help people stay oriented when mail and account activity drift apart.</p>
+              </div>
+            </a>
+
+            <a class="extra-reddit-card hidden tm-floaty tm-card-hover block tm-orange-card rounded-2xl p-6 hover:shadow-xl" href="https://www.reddit.com/r/tax/comments/1pv7v7g/do_i_need_a_tax_pro_or_am_i_overreacting/" rel="noopener noreferrer" target="_blank">
+              <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 rounded-full bg-amber-500 flex items-center justify-center text-slate-950 font-bold">R</div>
+                <div>
+                  <p class="font-semibold text-white">r/tax</p>
+                  <p class="text-xs text-slate-400">Do I need a pro?</p>
+                </div>
+              </div>
+              <p class="text-slate-200 leading-relaxed mb-4">A lot of people do not know when a tax problem is self-manageable and when it has crossed into professional-help territory.</p>
+              <div class="mt-4 pt-4 border-t border-slate-700">
+                <p class="text-sm font-semibold text-amber-400">How TMP helps</p>
+                <p class="text-sm text-slate-400 mt-1">The directory exists to shorten that decision and connect taxpayers with tax pros matched to the problem in front of them.</p>
+              </div>
+            </a>
+
+            <a class="extra-reddit-card hidden tm-floaty tm-card-hover block tm-orange-card rounded-2xl p-6 hover:shadow-xl" href="https://www.reddit.com/r/IRS/comments/1r9om9w/transcript_updated_but_where_is_the_actual_story/" rel="noopener noreferrer" target="_blank">
+              <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 rounded-full bg-orange-500 flex items-center justify-center text-white font-bold">R</div>
+                <div>
+                  <p class="font-semibold text-white">r/IRS</p>
+                  <p class="text-xs text-slate-400">Transcript updated, story unclear</p>
+                </div>
+              </div>
+              <p class="text-slate-200 leading-relaxed mb-4">A transcript change by itself does not tell taxpayers whether they should relax, prepare, upload a notice, or call someone.</p>
+              <div class="mt-4 pt-4 border-t border-slate-700">
+                <p class="text-sm font-semibold text-amber-400">How TMP helps</p>
+                <p class="text-sm text-slate-400 mt-1">TMP translates transcript movement into something more useful than scattered internet guesses and contradictory replies.</p>
+              </div>
+            </a>
+
+            <a class="extra-reddit-card hidden tm-floaty tm-card-hover block tm-orange-card rounded-2xl p-6 hover:shadow-xl" href="https://www.reddit.com/r/tax/comments/1pt6xj6/i_just_want_to_stay_ahead_of_anything_new/" rel="noopener noreferrer" target="_blank">
+              <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-white font-bold">R</div>
+                <div>
+                  <p class="font-semibold text-white">r/tax</p>
+                  <p class="text-xs text-slate-400">Want to stay ahead</p>
+                </div>
+              </div>
+              <p class="text-slate-200 leading-relaxed mb-4">Some taxpayers are not in crisis. They just want a smarter way to stay ahead of filings, account movement, and anything weird showing up later.</p>
+              <div class="mt-4 pt-4 border-t border-slate-700">
+                <p class="text-sm font-semibold text-amber-400">How TMP helps</p>
+                <p class="text-sm text-slate-400 mt-1">That is exactly where memberships with perks, monitoring access, and ongoing portal visibility become useful.</p>
+              </div>
+            </a>
+          </div>
+
+          <div class="mt-8 flex justify-center">
+            <button id="load-more-reddit" type="button" class="tm-load-more-btn px-6 py-3 rounded-xl inline-flex items-center justify-center">Load more results</button>
           </div>
 
           <div class="mt-10 text-center">
@@ -304,7 +491,7 @@
               <div class="w-10 h-10 bg-amber-500 rounded-full flex items-center justify-center">
                 <svg class="w-5 h-5 text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
               </div>
-              <p class="text-white font-semibold">We built the service around the confusion people are already living through.</p>
+              <p class="text-white font-semibold">We moved beyond the old positioning because taxpayers often need both: the right tax pro and a membership experience that keeps delivering value after the first step.</p>
             </div>
           </div>
         </div>
@@ -319,15 +506,15 @@
             <svg class="w-4 h-4 text-amber-500" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
               <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
             </svg>
-            Tax Monitor Pro • Human review
+            Tax Monitor Pro • Directory + taxpayer memberships
           </div>
-          <h2 id="final-headline" class="text-3xl md:text-5xl font-bold mb-6">Ready to stop guessing at transcript changes?</h2>
-          <p id="final-subtext" class="text-lg md:text-xl text-slate-400 mb-8 max-w-2xl mx-auto">Start intake or book a demo to see how proactive transcript monitoring fits your workflow.</p>
+          <h2 id="final-headline" class="text-3xl md:text-5xl font-bold mb-6">Find the right tax pro and explore memberships with ongoing perks</h2>
+          <p id="final-subtext" class="text-lg md:text-xl text-slate-400 mb-8 max-w-2xl mx-auto">Start intake or book a demo to see how the directory, memberships, monitoring access, and member benefits fit together.</p>
           <div class="flex flex-col sm:flex-row gap-4 justify-center">
             <a href="/contact.html#contact-options" class="tm-btn-primary px-10 py-4 rounded-full text-lg font-semibold text-slate-950 inline-flex items-center justify-center">Start Intake</a>
             <a href="/contact.html#contact-options" class="tm-btn-secondary px-10 py-4 rounded-full text-lg font-semibold text-white bg-transparent inline-flex items-center justify-center">Book a Demo</a>
           </div>
-          <p class="text-slate-500 text-sm mt-8">Proactive monitoring service • Secure intake • Contact does not create IRS representation</p>
+          <p class="text-slate-500 text-sm mt-8">Tax pro directory • Taxpayer memberships with perks • Monitoring-first access • Contact does not create IRS representation</p>
         </div>
       </section>
 
@@ -346,11 +533,11 @@
 
   <script>
     const defaultConfig = {
-      final_headline: 'Ready to stop guessing at transcript changes?',
-      final_subtext: 'Start intake or book a demo to see how proactive transcript monitoring fits your workflow.',
-      hero_headline: 'For those tired of finding IRS problems too late',
-      hero_subhead: 'Tax Monitor Pro exists to watch transcript movement, changes, and surface next steps before silence turns into a bigger mess.',
-      trust_line: 'Proactive monitoring by licensed tax professionals — intake does not create IRS representation.',
+      final_headline: 'Find the right tax pro and explore memberships with ongoing perks',
+      final_subtext: 'Start intake or book a demo to see how the directory, memberships, monitoring access, and member benefits fit together.',
+      hero_headline: 'Find <span class="text-amber-500">tax pros</span> and smarter tax visibility',
+      hero_subhead: 'Tax Monitor Pro is a discovery layer for taxpayers who need the right tax professional, plus access to taxpayer memberships with transcript monitoring, plain-language reports, portal tools, and member perks.',
+      trust_line: 'We help taxpayers find the right tax pros and access memberships with monitoring, perks, and clearer visibility. Intake does not create IRS representation.',
       font_family: 'DM Sans',
       font_size: 16
     };
@@ -367,7 +554,7 @@
 
       setText('final-headline', config.final_headline || defaultConfig.final_headline);
       setText('final-subtext', config.final_subtext || defaultConfig.final_subtext);
-      setText('hero-headline', config.hero_headline || defaultConfig.hero_headline);
+      const heroEl = document.getElementById('hero-headline'); if (heroEl) heroEl.innerHTML = config.hero_headline || defaultConfig.hero_headline;
       setText('hero-subhead', config.hero_subhead || defaultConfig.hero_subhead);
       setText('trust-line', config.trust_line || defaultConfig.trust_line);
 
@@ -416,6 +603,27 @@
     } else {
       onConfigChange(defaultConfig);
     }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      const loadMoreBtn = document.getElementById('load-more-reddit');
+      const extraCards = Array.from(document.querySelectorAll('.extra-reddit-card.hidden'));
+
+      if (loadMoreBtn && extraCards.length) {
+        loadMoreBtn.addEventListener('click', function () {
+          const hiddenCards = Array.from(document.querySelectorAll('.extra-reddit-card.hidden'));
+
+          hiddenCards.slice(0, 6).forEach(function (card) {
+            card.classList.remove('hidden');
+          });
+
+          if (document.querySelectorAll('.extra-reddit-card.hidden').length === 0) {
+            loadMoreBtn.style.display = 'none';
+          }
+        });
+      } else if (loadMoreBtn) {
+        loadMoreBtn.style.display = 'none';
+      }
+    });
   </script>
 </body>
 </html>
