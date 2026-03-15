@@ -2,7 +2,6 @@
  * Tax Monitor Pro — Cloudflare Worker
  *
  * Routes:
- * - GET  /api/pricing
  * - GET  /health
  * - GET  /v1/pricing
  *
@@ -10,7 +9,7 @@
  * - This Worker is the main TMP Worker.
  * - Transcript TMP has its own separate Worker and routes.
  * - This file only exposes read-only TOML-backed pricing for the pricing page.
- * - /api/pricing is kept as a compatibility alias for the current frontend fetch.
+ * - The only pricing endpoint is /v1/pricing.
  */
 
 /* ------------------------------------------
@@ -153,13 +152,13 @@ export default {
     const url = new URL(request.url);
 
     const pre = handleCorsPreflight(request);
-    if (pre && (isPath(url, "/v1/pricing") || isPath(url, "/api/pricing"))) {
+    if (pre && (isPath(url, "/v1/pricing"))) {
       return pre;
     }
 
     if (
       request.method === "GET" &&
-      (isPath(url, "/v1/pricing") || isPath(url, "/api/pricing"))
+      (isPath(url, "/v1/pricing"))
     ) {
       return await handleGetTmpPricing(request, env);
     }
