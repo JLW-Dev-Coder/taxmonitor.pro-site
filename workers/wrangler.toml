@@ -36,7 +36,7 @@ new_sqlite_classes = ["TokenLedger"]
 
 [[migrations]]
 tag = "v2"
-delete_classes = ["TokenLedger"]
+deleted_classes = ["TokenLedger"]
 
 # ---------------------------------------
 # Vars (non-secret)
