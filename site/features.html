@@ -1,4 +1,3 @@
-<!-- site/features.html -->
 <!DOCTYPE html>
 <html lang="en" class="h-full">
   <head>
@@ -77,7 +76,7 @@
         background-clip: text;
       }
 
-      .site-bg-effects {
+            .site-bg-effects {
         inset: 0;
         overflow: hidden;
         pointer-events: none;
@@ -89,163 +88,182 @@
         position: absolute;
       }
 
-      .bg-blob {
+      .bg-ambient-left,
+      .bg-ambient-right {
         border-radius: 9999px;
-        filter: blur(90px);
-        will-change: transform;
+        filter: blur(88px);
       }
 
-      .bg-blob-1 {
-        animation: blobEdgeOne 32s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite alternate;
-        background: radial-gradient(circle, rgba(245, 158, 11, 0.24) 0%, rgba(245, 158, 11, 0) 70%);
-        height: 36rem;
-        left: -12rem;
-        opacity: 0.18;
-        top: -10rem;
-        width: 36rem;
-      }
-
-      .bg-blob-2 {
-        animation: blobEdgeTwo 36s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite alternate;
-        background: radial-gradient(circle, rgba(59, 130, 246, 0.16) 0%, rgba(59, 130, 246, 0) 72%);
-        height: 42rem;
+      .bg-ambient-left {
+        animation: ambientDriftLeft 18s ease-in-out infinite alternate;
+        background: radial-gradient(circle, rgba(245, 158, 11, 0.16) 0%, rgba(245, 158, 11, 0) 72%);
+        height: 22rem;
+        left: -6rem;
         opacity: 0.14;
-        right: -14rem;
-        top: 24rem;
-        width: 42rem;
+        top: 8rem;
+        width: 22rem;
       }
 
-      .bg-blob-3 {
-        animation: blobEdgeThree 34s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite alternate;
-        background: radial-gradient(circle, rgba(148, 163, 184, 0.14) 0%, rgba(148, 163, 184, 0) 72%);
-        bottom: -8rem;
-        height: 30rem;
-        left: 24%;
+      .bg-ambient-right {
+        animation: ambientDriftRight 20s ease-in-out infinite alternate;
+        background: radial-gradient(circle, rgba(56, 189, 248, 0.14) 0%, rgba(56, 189, 248, 0) 72%);
+        height: 24rem;
         opacity: 0.12;
-        width: 30rem;
-      }
-
-      .bg-noise {
-        background-image: radial-gradient(rgba(255, 255, 255, 0.18) 0.6px, transparent 0.6px);
-        background-size: 8px 8px;
-        inset: 0;
-        mix-blend-mode: soft-light;
-        opacity: 0.045;
-      }
-
-      .bg-vignette {
-        background: radial-gradient(circle at center, transparent 35%, rgba(2, 6, 23, 0.34) 100%);
-        inset: 0;
+        right: -7rem;
+        top: 10rem;
+        width: 24rem;
       }
 
       .bg-grid {
         background-image:
-          linear-gradient(rgba(148, 163, 184, 0.08) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(148, 163, 184, 0.08) 1px, transparent 1px);
+          linear-gradient(rgba(148, 163, 184, 0.05) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(148, 163, 184, 0.05) 1px, transparent 1px);
         background-size: 72px 72px;
         inset: 0;
-        mask-image: radial-gradient(circle at center, black 18%, transparent 85%);
-        opacity: 0.1;
-        -webkit-mask-image: radial-gradient(circle at center, black 18%, transparent 85%);
+        mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.92), transparent 92%);
+        opacity: 0.08;
+        -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.92), transparent 92%);
       }
 
-      .bg-network {
-        animation: networkFloat 24s ease-in-out infinite alternate;
-        background-image:
-          radial-gradient(circle, rgba(125, 211, 252, 0.85) 0%, rgba(125, 211, 252, 0) 70%),
-          radial-gradient(circle, rgba(245, 158, 11, 0.8) 0%, rgba(245, 158, 11, 0) 70%),
-          radial-gradient(circle, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0) 70%),
-          radial-gradient(circle, rgba(125, 211, 252, 0.75) 0%, rgba(125, 211, 252, 0) 70%),
-          radial-gradient(circle, rgba(245, 158, 11, 0.75) 0%, rgba(245, 158, 11, 0) 70%),
-          radial-gradient(circle, rgba(255, 255, 255, 0.58) 0%, rgba(255, 255, 255, 0) 70%),
-          radial-gradient(circle, rgba(125, 211, 252, 0.7) 0%, rgba(125, 211, 252, 0) 70%),
-          linear-gradient(90deg, rgba(125, 211, 252, 0), rgba(125, 211, 252, 0.34), rgba(255, 255, 255, 0)),
-          linear-gradient(90deg, rgba(245, 158, 11, 0), rgba(245, 158, 11, 0.3), rgba(255, 255, 255, 0)),
-          linear-gradient(90deg, rgba(125, 211, 252, 0), rgba(125, 211, 252, 0.26), rgba(255, 255, 255, 0)),
-          linear-gradient(90deg, rgba(245, 158, 11, 0), rgba(245, 158, 11, 0.22), rgba(255, 255, 255, 0)),
-          linear-gradient(90deg, rgba(125, 211, 252, 0), rgba(125, 211, 252, 0.2), rgba(255, 255, 255, 0));
-        background-position:
-          8% 18%,
-          18% 26%,
-          28% 21%,
-          78% 17%,
-          86% 25%,
-          72% 31%,
-          50% 12%,
-          13% 22%,
-          23% 23%,
-          82% 21%,
-          76% 27%,
-          50% 17%;
-        background-repeat: no-repeat;
-        background-size:
-          8px 8px,
-          6px 6px,
-          7px 7px,
-          8px 8px,
-          6px 6px,
-          7px 7px,
-          8px 8px,
-          180px 2px,
-          140px 2px,
-          120px 2px,
-          160px 2px,
-          220px 2px;
+      .bg-noise {
+        background-image: radial-gradient(rgba(255, 255, 255, 0.16) 0.6px, transparent 0.6px);
+        background-size: 8px 8px;
+        inset: 0;
+        mix-blend-mode: soft-light;
+        opacity: 0.025;
+      }
+
+      .bg-vignette {
+        background: radial-gradient(circle at center, transparent 32%, rgba(2, 6, 23, 0.48) 100%);
+        inset: 0;
+      }
+
+      .hero-searchlight-shell {
+        isolation: isolate;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .hero-searchlight-shell::before {
+        background: linear-gradient(180deg, rgba(15, 23, 42, 0.18), rgba(2, 6, 23, 0));
+        content: '';
+        inset: 0;
+        pointer-events: none;
+        position: absolute;
+        z-index: 0;
+      }
+
+      .hero-searchlight-overlay {
+        --beam-x: 50%;
+        --beam-y: 9.5rem;
+        --beam-size: 15rem;
+        inset: 0;
+        overflow: hidden;
+        pointer-events: none;
+        position: absolute;
+        z-index: 0;
+      }
+
+      .hero-searchlight-overlay::before {
+        background: radial-gradient(circle at var(--beam-x) var(--beam-y), rgba(251, 191, 36, 0.18) 0%, rgba(125, 211, 252, 0.08) 28%, rgba(2, 6, 23, 0) 65%);
+        content: '';
+        filter: blur(10px);
+        height: 28rem;
+        left: calc(var(--beam-x) - 14rem);
+        opacity: 0.7;
+        position: absolute;
+        top: calc(var(--beam-y) - 7rem);
+        transform: translateZ(0);
+        width: 28rem;
+      }
+
+      .hero-searchlight-beam {
+        background: linear-gradient(180deg, rgba(251, 191, 36, 0.18), rgba(125, 211, 252, 0.08) 38%, rgba(2, 6, 23, 0) 100%);
+        clip-path: polygon(50% 0%, 59% 0%, 77% 100%, 23% 100%, 41% 0%);
+        filter: blur(12px);
+        height: 23rem;
+        left: calc(var(--beam-x) - 6rem);
+        opacity: 0.32;
+        position: absolute;
+        top: 0;
+        transform-origin: top center;
+        width: 12rem;
+      }
+
+      .hero-transcript-field {
         inset: 0;
         opacity: 0.22;
-      }
-
-      .bg-beacon {
-        animation: beaconPulse 8s ease-in-out infinite;
-        background: radial-gradient(circle, rgba(245, 158, 11, 0.18) 0%, rgba(14, 165, 233, 0.1) 30%, rgba(2, 6, 23, 0) 68%);
-        border-radius: 9999px;
-        filter: blur(18px);
-        height: 32rem;
-        left: 50%;
-        opacity: 0.72;
-        top: 7rem;
-        transform: translateX(-50%);
-        width: 32rem;
-      }
-
-      .bg-ring,
-      .bg-ring::before,
-      .bg-ring::after {
-        border: 1px solid rgba(125, 211, 252, 0.14);
-        border-radius: 9999px;
-        content: '';
-        left: 50%;
         position: absolute;
-        top: 14rem;
-        transform: translateX(-50%);
       }
 
-      .bg-ring {
-        animation: ringRotate 34s linear infinite;
-        height: 38rem;
-        width: 38rem;
+      .hero-transcript-field::before,
+      .hero-transcript-field::after {
+        color: rgba(148, 163, 184, 0.08);
+        content: attr(data-transcript);
+        font-family: 'DM Sans', sans-serif;
+        font-size: 0.88rem;
+        font-weight: 600;
+        letter-spacing: 0.18em;
+        line-height: 1.9;
+        position: absolute;
+        text-transform: uppercase;
+        white-space: pre;
       }
 
-      .bg-ring::before {
-        animation: ringRotateReverse 26s linear infinite;
-        border-color: rgba(245, 158, 11, 0.12);
-        inset: 3.25rem;
+      .hero-transcript-field::before {
+        left: 7%;
+        top: 5.5rem;
       }
 
-      .bg-ring::after {
-        animation: ringRotate 18s linear infinite;
-        border-color: rgba(255, 255, 255, 0.08);
-        inset: 6.5rem;
+      .hero-transcript-field::after {
+        right: 6%;
+        text-align: left;
+        top: 8rem;
       }
 
-      .bg-scan {
-        animation: scanSweep 12s linear infinite;
-        background: linear-gradient(180deg, rgba(125, 211, 252, 0), rgba(125, 211, 252, 0.08), rgba(245, 158, 11, 0.04), rgba(125, 211, 252, 0));
-        filter: blur(16px);
-        height: 32rem;
-        inset: -20% 0 auto 0;
-        opacity: 0.34;
-        transform: translateY(-100%);
+      .hero-transcript-reveal {
+        -webkit-mask-image: radial-gradient(circle var(--beam-size) at var(--beam-x) var(--beam-y), rgba(0, 0, 0, 0.96) 0%, rgba(0, 0, 0, 0.74) 38%, transparent 72%);
+        inset: 0;
+        mask-image: radial-gradient(circle var(--beam-size) at var(--beam-x) var(--beam-y), rgba(0, 0, 0, 0.96) 0%, rgba(0, 0, 0, 0.74) 38%, transparent 72%);
+        opacity: 0.95;
+        position: absolute;
+      }
+
+      .hero-transcript-reveal::before,
+      .hero-transcript-reveal::after {
+        color: rgba(226, 232, 240, 0.62);
+        content: attr(data-transcript);
+        font-family: 'DM Sans', sans-serif;
+        font-size: 0.92rem;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        line-height: 1.85;
+        position: absolute;
+        text-shadow: 0 0 18px rgba(56, 189, 248, 0.1), 0 0 24px rgba(245, 158, 11, 0.08);
+        text-transform: uppercase;
+        white-space: pre;
+      }
+
+      .hero-transcript-reveal::before {
+        left: 7%;
+        top: 5.5rem;
+      }
+
+      .hero-transcript-reveal::after {
+        right: 6%;
+        text-align: left;
+        top: 8rem;
+      }
+
+      .hero-transcript-core {
+        background: radial-gradient(circle at var(--beam-x) var(--beam-y), rgba(255, 255, 255, 0.09) 0%, rgba(251, 191, 36, 0.04) 24%, rgba(255, 255, 255, 0) 56%);
+        inset: 0;
+        position: absolute;
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 1;
       }
 
       .feature-card,
@@ -371,130 +389,25 @@
         text-align: center;
       }
 
-      @keyframes blobEdgeOne {
-        0% {
-          opacity: 0.14;
-          transform: translate3d(0, 0, 0) scale(1);
-        }
-        25% {
-          opacity: 0.18;
-          transform: translate3d(3rem, 2rem, 0) scale(1.04);
-        }
-        50% {
-          opacity: 0.22;
-          transform: translate3d(7rem, 4rem, 0) scale(1.08);
-        }
-        75% {
-          opacity: 0.17;
-          transform: translate3d(4rem, 7rem, 0) scale(1.03);
-        }
-        100% {
-          opacity: 0.2;
-          transform: translate3d(9rem, 5rem, 0) scale(1.1);
-        }
-      }
-
-      @keyframes blobEdgeTwo {
-        0% {
-          opacity: 0.11;
-          transform: translate3d(0, 0, 0) scale(1);
-        }
-        25% {
-          opacity: 0.14;
-          transform: translate3d(-3rem, -2rem, 0) scale(1.03);
-        }
-        50% {
-          opacity: 0.18;
-          transform: translate3d(-7rem, -4rem, 0) scale(1.07);
-        }
-        75% {
-          opacity: 0.13;
-          transform: translate3d(-5rem, 1rem, 0) scale(1.04);
-        }
-        100% {
-          opacity: 0.16;
-          transform: translate3d(-9rem, -3rem, 0) scale(1.09);
-        }
-      }
-
-      @keyframes blobEdgeThree {
+      @keyframes ambientDriftLeft {
         0% {
           opacity: 0.1;
           transform: translate3d(0, 0, 0) scale(1);
         }
-        25% {
-          opacity: 0.13;
-          transform: translate3d(2rem, -2rem, 0) scale(1.03);
-        }
-        50% {
-          opacity: 0.16;
-          transform: translate3d(5rem, -5rem, 0) scale(1.06);
-        }
-        75% {
-          opacity: 0.12;
-          transform: translate3d(1rem, -3rem, 0) scale(1.02);
-        }
         100% {
-          opacity: 0.15;
-          transform: translate3d(6rem, -6rem, 0) scale(1.08);
+          opacity: 0.16;
+          transform: translate3d(2rem, -1rem, 0) scale(1.04);
         }
       }
 
-      @keyframes networkFloat {
+      @keyframes ambientDriftRight {
         0% {
-          opacity: 0.18;
+          opacity: 0.08;
           transform: translate3d(0, 0, 0) scale(1);
         }
         100% {
-          opacity: 0.26;
-          transform: translate3d(0, -1.25rem, 0) scale(1.02);
-        }
-      }
-
-      @keyframes beaconPulse {
-        0%,
-        100% {
-          opacity: 0.48;
-          transform: translateX(-50%) scale(0.96);
-        }
-        50% {
-          opacity: 0.78;
-          transform: translateX(-50%) scale(1.06);
-        }
-      }
-
-      @keyframes ringRotate {
-        from {
-          transform: translateX(-50%) rotate(0deg);
-        }
-        to {
-          transform: translateX(-50%) rotate(360deg);
-        }
-      }
-
-      @keyframes ringRotateReverse {
-        from {
-          transform: rotate(360deg);
-        }
-        to {
-          transform: rotate(0deg);
-        }
-      }
-
-      @keyframes scanSweep {
-        0% {
-          opacity: 0;
-          transform: translateY(-115%);
-        }
-        10% {
-          opacity: 0.34;
-        }
-        70% {
-          opacity: 0.2;
-        }
-        100% {
-          opacity: 0;
-          transform: translateY(170%);
+          opacity: 0.14;
+          transform: translate3d(-2rem, 1rem, 0) scale(1.05);
         }
       }
 
@@ -519,59 +432,54 @@
       }
 
       @media (max-width: 640px) {
-        .bg-blob-1,
-        .bg-blob-2,
-        .bg-blob-3 {
-          filter: blur(70px);
-        }
-
-        .bg-beacon {
-          height: 24rem;
-          top: 9rem;
-          width: 24rem;
-        }
-
-        .bg-ring {
-          height: 28rem;
-          top: 15rem;
-          width: 28rem;
-        }
-
-        .bg-network {
-          opacity: 0.16;
+        .bg-ambient-left,
+        .bg-ambient-right {
+          filter: blur(64px);
         }
 
         .bg-grid {
           background-size: 52px 52px;
           opacity: 0.06;
         }
+
+        .hero-transcript-field::before,
+        .hero-transcript-field::after,
+        .hero-transcript-reveal::before,
+        .hero-transcript-reveal::after {
+          font-size: 0.72rem;
+          letter-spacing: 0.12em;
+          line-height: 1.7;
+        }
+
+        .hero-transcript-field::before,
+        .hero-transcript-reveal::before {
+          left: 5%;
+          top: 6rem;
+        }
+
+        .hero-transcript-field::after,
+        .hero-transcript-reveal::after {
+          right: -2rem;
+          top: 11rem;
+        }
       }
 
       @media (prefers-reduced-motion: reduce) {
-        .bg-blob-1,
-        .bg-blob-2,
-        .bg-blob-3,
-        .bg-network,
-        .bg-beacon,
-        .bg-ring,
-        .bg-scan,
+        .bg-ambient-left,
+        .bg-ambient-right,
         .icon-float,
         .plan-popular {
           animation: none;
         }
       }
+      }
     </style>
   </head>
   <body class="h-full bg-slate-950 text-slate-100 antialiased">
     <div class="site-bg-effects" aria-hidden="true">
-      <div class="bg-blob bg-blob-1"></div>
-      <div class="bg-blob bg-blob-2"></div>
-      <div class="bg-blob bg-blob-3"></div>
+      <div class="bg-ambient-left"></div>
+      <div class="bg-ambient-right"></div>
       <div class="bg-grid"></div>
-      <div class="bg-network"></div>
-      <div class="bg-beacon"></div>
-      <div class="bg-ring"></div>
-      <div class="bg-scan"></div>
       <div class="bg-noise"></div>
       <div class="bg-vignette"></div>
     </div>
@@ -580,13 +488,13 @@
       <!-- PARTIAL:siteHeader -->
 
       <main id="top" class="flex-1">
-        <section class="mx-auto max-w-6-5xl px-4 pb-10 pt-16 md:pb-14 md:pt-24">
-          <div class="mx-auto max-w-5xl text-center">
+        <section class="hero-searchlight-shell mx-auto max-w-6-5xl px-4 pb-10 pt-16 md:pb-14 md:pt-24">
+          <div class="hero-content mx-auto max-w-5xl text-center">
             <div class="mb-8 inline-flex items-center gap-2 rounded-full border border-slate-700 bg-slate-900/50 px-4 py-2">
               <svg class="h-4 w-4 text-amber-500" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
               </svg>
-              <span class="text-sm text-slate-300">Four core taxpayer membership features, layered across plans built for visibility, tool access, and ongoing monitoring.</span>
+              <span class="text-sm text-slate-300">Memberships designed around early visibility and access to tax professionals before problems grow into monsters.</span>
             </div>
 
             <h1 class="mb-6 text-4xl font-bold tracking-tight md:text-6xl lg:text-7xl">
@@ -594,7 +502,7 @@
             </h1>
 
             <p class="mx-auto mb-12 max-w-3xl text-xl leading-relaxed text-slate-400 md:text-2xl">
-              Every taxpayer membership is built around the same core member experience. What changes is how much access, capacity, and monitoring support you unlock as your tax situation gets more serious.
+              Every taxpayer membership is built around the same core member experience. What changes is how much access, capacity, and monitoring support you unlock as your needs get more complex.
             </p>
 
             <div class="flex flex-col justify-center gap-4 sm:flex-row">
@@ -608,7 +516,7 @@
           <div class="mx-auto max-w-6xl px-4 py-16 md:py-20">
             <div class="mb-16 text-center">
               <h2 class="mb-6 text-3xl font-bold md:text-5xl">The 4 Core <span class="gradient-text">Membership Features</span></h2>
-              <p class="mx-auto max-w-3xl text-xl text-slate-400">These are the real operating layers behind TMP memberships. People love staring at pricing cards, then somehow miss that the actual value is the workflow underneath.</p>
+              <p class="mx-auto max-w-3xl text-xl text-slate-400">These sections explain the core operating features that support TMP memberships and how the system works for members.</p>
             </div>
 
             <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
@@ -626,7 +534,7 @@
                   <i data-lucide="users" class="h-7 w-7"></i>
                 </div>
                 <h3 class="mb-3 text-xl font-semibold">Professional matching</h3>
-                <p class="text-slate-400">Match with tax professionals by service type, location, and fit instead of wandering the internet like a confused raccoon.</p>
+                <p class="text-slate-400">Match with tax professionals by service type, location, and fit instead of searching across multiple sites without clear guidance.</p>
                 <div class="mt-5 text-sm font-semibold text-amber-300">View feature details →</div>
               </a>
 
@@ -713,7 +621,7 @@
                         <div class="mt-4 space-y-3 text-sm text-slate-400">
                           <div class="rounded-xl bg-slate-950/40 px-4 py-3">Members need one place to see what happened and what is available next.</div>
                           <div class="rounded-xl bg-slate-950/40 px-4 py-3">It reduces confusion when transcripts, tools, and matches all live under one roof.</div>
-                          <div class="rounded-xl bg-slate-950/40 px-4 py-3">It feels like an actual product, which is apparently still a competitive advantage.</div>
+                          <div class="rounded-xl bg-slate-950/40 px-4 py-3">It feels like an actual product, which helps members clearly understand how the system works.</div>
                         </div>
                       </div>
                     </div>
@@ -762,7 +670,7 @@
                       <div class="glass-card p-6">
                         <div class="text-sm font-semibold text-slate-100">Why this matters</div>
                         <div class="mt-4 space-y-3 text-sm text-slate-400">
-                          <div class="rounded-xl bg-slate-950/40 px-4 py-3">Members get relevance instead of a bloated directory and a prayer.</div>
+                          <div class="rounded-xl bg-slate-950/40 px-4 py-3">Members get relevance instead of an overwhelming directory with little guidance.</div>
                           <div class="rounded-xl bg-slate-950/40 px-4 py-3">The flow reflects the inquiry page, which keeps product and marketing aligned.</div>
                           <div class="rounded-xl bg-slate-950/40 px-4 py-3">Better fit improves trust before a taxpayer ever books or reaches out.</div>
                         </div>
@@ -777,7 +685,7 @@
                   <aside class="glass-card p-6">
                     <span class="badge badge-amber">Feature 03</span>
                     <h3 class="mt-4 text-3xl font-semibold text-slate-100">Tax tool tokens</h3>
-                    <p class="mt-3 text-sm leading-relaxed text-slate-400">Plan-based token access for supported tax tools with visible usage instead of vague perk language.</p>
+                    <p class="mt-3 text-sm leading-relaxed text-slate-400">Plan-based access to supported tax tools with clear usage visibility and defined limits.</p>
                     <div class="mt-6 grid gap-3">
                       <div class="rounded-2xl border border-white/5 bg-slate-950/40 px-4 py-3"><div class="text-xs uppercase tracking-wide text-slate-500">Free</div><div class="mt-1 text-sm font-semibold text-slate-100">0 monthly tokens</div></div>
                       <div class="rounded-2xl border border-white/5 bg-slate-950/40 px-4 py-3"><div class="text-xs uppercase tracking-wide text-slate-500">Essential</div><div class="mt-1 text-sm font-semibold text-slate-100">5 monthly tokens</div></div>
@@ -805,7 +713,7 @@
                       <div class="glass-card p-6">
                         <div class="text-sm font-semibold text-slate-100">What tokens support</div>
                         <div class="mt-4 space-y-3 text-sm text-slate-400">
-                          <div class="rounded-xl bg-slate-950/40 px-4 py-3">Access to eligible tax tools without ad hoc billing confusion.</div>
+                          <div class="rounded-xl bg-slate-950/40 px-4 py-3">Access to eligible tax tools with clear, predictable usage and straightforward billing.</div>
                           <div class="rounded-xl bg-slate-950/40 px-4 py-3">Visible token balances tied to membership tier.</div>
                           <div class="rounded-xl bg-slate-950/40 px-4 py-3">Saved outputs for members on higher tiers.</div>
                         </div>
@@ -815,7 +723,7 @@
                         <div class="mt-4 space-y-3 text-sm text-slate-400">
                           <div class="rounded-xl bg-slate-950/40 px-4 py-3">Members can see what is included before they start clicking around.</div>
                           <div class="rounded-xl bg-slate-950/40 px-4 py-3">The capacity increase from Essential to Premier is obvious and useful.</div>
-                          <div class="rounded-xl bg-slate-950/40 px-4 py-3">It turns tool access into a product system instead of a messy one-off privilege.</div>
+                          <div class="rounded-xl bg-slate-950/40 px-4 py-3">It turns tool access into a product system as a structured and predictable system for tool access.</div>
                         </div>
                       </div>
                     </div>
@@ -881,7 +789,7 @@
           <div class="mx-auto max-w-6xl px-4 py-16 md:py-20">
             <div class="mb-16 text-center">
               <h2 class="mb-6 text-3xl font-bold md:text-5xl">Choose the Right <span class="gradient-text">Membership</span></h2>
-              <p class="mx-auto max-w-3xl text-xl text-slate-400">Same core system. Different access levels. Because not every taxpayer needs the same support on day one, despite the human habit of waiting until things are on fire.</p>
+              <p class="mx-auto max-w-3xl text-xl text-slate-400">Same core system. Different access levels. Because not every taxpayer needs the same support on day one, since different taxpayers require different levels of support over time.</p>
             </div>
 
             <div class="grid gap-6 lg:grid-cols-4">
@@ -988,7 +896,7 @@
           <div class="mx-auto max-w-6xl px-4 py-16 md:py-20">
             <div class="mb-12 text-center">
               <h2 class="mb-6 text-3xl font-bold md:text-5xl">Feature Access by <span class="gradient-text">Membership</span></h2>
-              <p class="mx-auto max-w-3xl text-xl text-slate-400">A cleaner comparison of what changes as members move up the ladder. Clarity helps people decide, which remains shocking to absolutely no one.</p>
+              <p class="mx-auto max-w-3xl text-xl text-slate-400">A cleaner comparison of what changes as members move up the ladder. Clarity helps people decide, so members can easily understand the differences between plans.</p>
             </div>
 
             <div class="overflow-hidden rounded-3xl border border-slate-700/60 bg-slate-900/50 shadow-soft">
@@ -1048,6 +956,33 @@
         if (window.lucide && typeof window.lucide.createIcons === 'function') {
           window.lucide.createIcons();
         }
+
+        var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var overlay = document.getElementById('heroSearchlight');
+
+        if (!overlay || reducedMotion) {
+          return;
+        }
+
+        var start = null;
+        var duration = 9000;
+
+        function animateSearchlight(timestamp) {
+          if (!start) start = timestamp;
+          var progress = ((timestamp - start) % duration) / duration;
+          var eased = 0.5 - 0.5 * Math.cos(progress * Math.PI * 2);
+          var beamX = 16 + (68 * eased);
+          var beamY = 132 + (20 * Math.sin(progress * Math.PI * 2));
+          var beamSize = 220 + (22 * Math.sin(progress * Math.PI * 4));
+
+          overlay.style.setProperty('--beam-x', beamX + '%');
+          overlay.style.setProperty('--beam-y', beamY + 'px');
+          overlay.style.setProperty('--beam-size', beamSize + 'px');
+
+          window.requestAnimationFrame(animateSearchlight);
+        }
+
+        window.requestAnimationFrame(animateSearchlight);
       });
     </script>
   </body>

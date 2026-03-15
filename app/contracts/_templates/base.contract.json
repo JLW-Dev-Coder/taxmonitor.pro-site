@@ -1,0 +1,75 @@
+{
+  "auth": {
+    "required": false,
+    "trustClientIdentityFields": false,
+    "type": "none"
+  },
+  "contract": {
+    "authority": [
+      "R2_BUCKET"
+    ],
+    "governs": "",
+    "path": "",
+    "source": "Tax Monitor Pro",
+    "title": "",
+    "usedOnPages": [],
+    "validation": {
+      "enumStrict": true,
+      "rejectUnknownValues": true,
+      "requireJsonContentType": true
+    },
+    "version": 1
+  },
+  "delivery": {
+    "endpoint": "",
+    "method": "POST",
+    "receiptKeyPattern": "",
+    "receiptSource": "",
+    "signature": {
+      "header": null,
+      "required": false,
+      "secretEnvVar": null
+    }
+  },
+  "effects": {
+    "dedupeKey": "payload.eventId",
+    "eventIdFrom": "payload.eventId",
+    "receiptAppend": {
+      "to": ""
+    },
+    "canonicalUpsert": {
+      "target": ""
+    },
+    "writeOrder": [
+      "receiptAppend",
+      "canonicalUpsert"
+    ],
+    "writes": []
+  },
+  "payload": {
+    "additionalProperties": false,
+    "properties": {},
+    "required": [],
+    "type": "object"
+  },
+  "response": {
+    "deduped": {
+      "deduped": true,
+      "eventId": "{effects.eventIdFrom}",
+      "ok": true
+    },
+    "error": {
+      "error": "validation_failed",
+      "ok": false
+    },
+    "success": {
+      "eventId": "{effects.eventIdFrom}",
+      "ok": true,
+      "status": "submitted"
+    }
+  },
+  "schema": {
+    "name": "",
+    "version": 1
+  }
+}

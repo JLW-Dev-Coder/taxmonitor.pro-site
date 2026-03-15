@@ -1,0 +1,47 @@
+[
+  {
+    "endpoint": "/v1/forms/intake",
+    "file": "forms/intake/intake.contract.json",
+    "governs": "Tax Monitor intake submission",
+    "method": "POST",
+    "receiptSource": "tm_intake",
+    "schema": "tm_intake",
+    "title": "Tax Monitor Pro — Intake Contract",
+    "usedOnPages": [
+      "/app/pages/flows/intake/intake.html"
+    ],
+    "writes": [
+      "intake"
+    ]
+  },
+  {
+    "endpoint": "/v1/forms/intake/offer",
+    "file": "forms/intake/offer.contract.json",
+    "governs": "Tax Monitor offer submission",
+    "method": "POST",
+    "receiptSource": "tm_offer",
+    "schema": "tm_offer",
+    "title": "Tax Monitor Pro — Offer Contract",
+    "usedOnPages": [
+      "/app/pages/flows/intake/offer.html"
+    ],
+    "writes": [
+      "offers"
+    ]
+  },
+  {
+    "endpoint": "/v1/forms/post-payment/address-update",
+    "file": "forms/post-payment/address-update.contract.json",
+    "governs": "Address update submission",
+    "method": "POST",
+    "receiptSource": "tm_address_update",
+    "schema": "tm_address_update",
+    "title": "Tax Monitor Pro — Address Update",
+    "usedOnPages": [
+      "/app/pages/flows/post-payment/address-update.html"
+    ],
+    "writes": [
+      "address_updates"
+    ]
+  }
+]
