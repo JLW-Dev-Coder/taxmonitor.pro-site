@@ -462,8 +462,6 @@
 
       if (tone === 'error') {
         node.classList.add('border-rose-500/20', 'bg-rose-500/10', 'text-rose-200');
-      } else if (tone === 'success') {
-        node.classList.add('border-emerald-500/20', 'bg-emerald-500/10', 'text-emerald-200');
       } else {
         node.classList.add('border-amber-500/20', 'bg-amber-500/10', 'text-amber-200');
       }
@@ -645,15 +643,11 @@
     }
 
     initBillingToggles();
-    setPricingStatus('Loading live pricing…', 'info');
 
     loadPricingFromApi().then(function (result) {
       if (result.ok) {
         syncAllPlanCards(false);
-        setPricingStatus(`Live pricing loaded from ${result.endpoint}.`, 'success');
-        window.setTimeout(function () {
-          setPricingStatus('', '');
-        }, 1800);
+        setPricingStatus('', '');
         return;
       }
 
