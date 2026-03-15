@@ -1,61 +1,82 @@
 {
-  "clickupProjection": {
-    "list": "Orders",
-    "statusOnSuccess": null,
-    "updateFields": [
-      "address_line_1",
-      "address_line_2",
-      "city",
-      "country",
-      "state",
-      "zip_code",
-      "has_previous_address",
-      "previous_address_line_1",
-      "previous_address_line_2",
-      "previous_city",
-      "previous_country",
-      "previous_state",
-      "previous_zip_code"
-    ]
+  "auth": {
+    "required": false,
+    "trustClientIdentityFields": false,
+    "type": "none"
   },
   "contract": {
-    "authority": "r2",
-    "version": "v1"
+    "authority": [
+      "R2_BUCKET"
+    ],
+    "governs": "Address update submission",
+    "path": "forms/post-payment/address-update.contract.json",
+    "source": "Tax Monitor Pro",
+    "title": "Tax Monitor Pro — Address Update",
+    "usedOnPages": [
+      "/app/pages/flows/post-payment/address-update.html"
+    ],
+    "validation": {
+      "enumStrict": true,
+      "rejectUnknownValues": true,
+      "requireJsonContentType": true
+    },
+    "version": 1
   },
   "delivery": {
-    "endpoint": "/forms/post-payment/address-update",
+    "endpoint": "/v1/forms/post-payment/address-update",
     "method": "POST",
-    "receiptSource": "form",
-    "requiresSessionToken": true
-  },
-  "effects": {
-    "appendReceipt": "receipts/form/{eventId}.json",
-    "upsert": "orders/{orderId}.json"
-  },
-  "payload": {
-    "required": [
-      "eventId",
-      "sessionToken",
-      "address_line_1",
-      "city",
-      "country",
-      "state",
-      "zip_code",
-      "has_previous_address"
-    ],
-    "optional": [
-      "address_line_2",
-      "previous_address_line_1",
-      "previous_address_line_2",
-      "previous_city",
-      "previous_country",
-      "previous_state",
-      "previous_zip_code"
+    "receiptKeyPattern": "",
+    "receiptSource": "tm_address_update",
+    "signature": {
+      "header": null,
+      "required": false,
+      "secretEnvVar": null
+    },
+    "writes": [
+      "address_updates"
     ]
   },
+  "effects": {
+    "dedupeKey": "payload.eventId",
+    "eventIdFrom": "payload.eventId",
+    "receiptAppend": {
+      "to": ""
+    },
+    "canonicalUpsert": {
+      "target": ""
+    },
+    "writeOrder": [
+      "receiptAppend",
+      "canonicalUpsert"
+    ],
+    "writes": [
+      "address_updates"
+    ]
+  },
+  "payload": {
+    "additionalProperties": false,
+    "properties": {},
+    "required": [],
+    "type": "object"
+  },
+  "response": {
+    "deduped": {
+      "deduped": true,
+      "eventId": "{effects.eventIdFrom}",
+      "ok": true
+    },
+    "error": {
+      "error": "validation_failed",
+      "ok": false
+    },
+    "success": {
+      "eventId": "{effects.eventIdFrom}",
+      "ok": true,
+      "status": "submitted"
+    }
+  },
   "schema": {
-    "enumStrict": true,
-    "normalizeCheckboxToBoolean": true,
-    "rejectUnknownValues": true
+    "name": "tm_address_update",
+    "version": 1
   }
 }
