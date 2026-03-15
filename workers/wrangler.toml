@@ -7,8 +7,7 @@ compatibility_date = "2025-02-09"
 # ---------------------------------------
 
 routes = [
-  { pattern = "api.taxmonitor.pro/*", zone_name = "taxmonitor.pro" },
-  { pattern = "api.transcript.taxmonitor.pro/*", zone_name = "taxmonitor.pro" }
+  { pattern = "api.taxmonitor.pro/*", zone_name = "taxmonitor.pro" }
 ]
 
 # ---------------------------------------
@@ -29,6 +28,19 @@ bucket_name = "taxmonitor-pro"
 [[r2_buckets]]
 binding = "R2_TRANSCRIPT"
 bucket_name = "transcript-taxmonitor-pro"
+
+# ---------------------------------------
+# Durable Object migrations
+# (cleanup of old TokenLedger DO)
+# ---------------------------------------
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["TokenLedger"]
+
+[[migrations]]
+tag = "v2"
+delete_classes = ["TokenLedger"]
 
 # ---------------------------------------
 # Vars (non-secret)
@@ -55,16 +67,6 @@ CAL_PRO_OAUTH_REDIRECT_URI = "https://api.taxmonitor.pro/cal/pro/oauth/callback"
 CAL_PRO_OAUTH_TOKEN_URL = "https://api.cal.com/v2/auth/oauth2/token"
 
 # -------------------------
-# Stripe credit mapping
-# -------------------------
-
-CREDIT_MAP_JSON = "{\"price_1T4Ar2CMpIgwe61ZMzAI6yKa\":10,\"price_1T4AxzCMpIgwe61ZsWh7GGAb\":25,\"price_1T4B1gCMpIgwe61ZG12b5tjN\":100}"
-
-PRICE_10 = "price_1T4Ar2CMpIgwe61ZMzAI6yKa"
-PRICE_100 = "price_1T4B1gCMpIgwe61ZG12b5tjN"
-PRICE_25 = "price_1T4AxzCMpIgwe61ZsWh7GGAb"
-
-# -------------------------
 # Google Workspace
 # -------------------------
 
@@ -84,6 +86,16 @@ MY_ORGANIZATION_CITY = "El Cajon"
 MY_ORGANIZATION_NAME = "Tax Monitor Pro"
 MY_ORGANIZATION_STATE_PROVINCE = "CA"
 MY_ORGANIZATION_ZIP = "92020"
+
+# -------------------------
+# Stripe credit mapping
+# -------------------------
+
+CREDIT_MAP_JSON = "{\"price_1T4Ar2CMpIgwe61ZMzAI6yKa\":10,\"price_1T4AxzCMpIgwe61ZsWh7GGAb\":25,\"price_1T4B1gCMpIgwe61ZG12b5tjN\":100}"
+
+PRICE_10 = "price_1T4Ar2CMpIgwe61ZMzAI6yKa"
+PRICE_100 = "price_1T4B1gCMpIgwe61ZG12b5tjN"
+PRICE_25 = "price_1T4AxzCMpIgwe61ZsWh7GGAb"
 
 # -------------------------
 # STRIPE TMP memberships
@@ -110,23 +122,23 @@ STRIPE_TMP_PRODUCT_PREMIER = "prod_U9LakGL5MJfj1x"
 # (frontend display + backend tokens)
 # -------------------------
 
-TMP_PLAN_FREE_TRANSCRIPT_TOKENS = "0"
 TMP_PLAN_FREE_TAX_TOOL_TOKENS = "0"
+TMP_PLAN_FREE_TRANSCRIPT_TOKENS = "0"
 
 TMP_PLAN_ESSENTIAL_MONTHLY_PRICE = "9"
-TMP_PLAN_ESSENTIAL_YEARLY_PRICE = "5.4"
 TMP_PLAN_ESSENTIAL_TRANSCRIPT_TOKENS = "2"
 TMP_PLAN_ESSENTIAL_TAX_TOOL_TOKENS = "5"
+TMP_PLAN_ESSENTIAL_YEARLY_PRICE = "5.4"
 
 TMP_PLAN_PLUS_MONTHLY_PRICE = "19"
-TMP_PLAN_PLUS_YEARLY_PRICE = "11.4"
 TMP_PLAN_PLUS_TRANSCRIPT_TOKENS = "5"
 TMP_PLAN_PLUS_TAX_TOOL_TOKENS = "15"
+TMP_PLAN_PLUS_YEARLY_PRICE = "11.4"
 
 TMP_PLAN_PREMIER_MONTHLY_PRICE = "39"
-TMP_PLAN_PREMIER_YEARLY_PRICE = "23.4"
 TMP_PLAN_PREMIER_TRANSCRIPT_TOKENS = "10"
 TMP_PLAN_PREMIER_TAX_TOOL_TOKENS = "40"
+TMP_PLAN_PREMIER_YEARLY_PRICE = "23.4"
 
 # -------------------------
 # Transcript return origins
