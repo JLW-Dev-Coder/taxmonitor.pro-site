@@ -25,10 +25,6 @@ enabled = true
 binding = "R2_BUCKET"
 bucket_name = "taxmonitor-pro"
 
-[[r2_buckets]]
-binding = "R2_TRANSCRIPT"
-bucket_name = "transcript-taxmonitor-pro"
-
 # ---------------------------------------
 # Durable Object migrations
 # (cleanup of old TokenLedger DO)
