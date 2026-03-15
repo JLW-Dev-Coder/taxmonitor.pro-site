@@ -84,16 +84,6 @@ MY_ORGANIZATION_STATE_PROVINCE = "CA"
 MY_ORGANIZATION_ZIP = "92020"
 
 # -------------------------
-# Stripe credit mapping
-# -------------------------
-
-CREDIT_MAP_JSON = "{\"price_1T4Ar2CMpIgwe61ZMzAI6yKa\":10,\"price_1T4AxzCMpIgwe61ZsWh7GGAb\":25,\"price_1T4B1gCMpIgwe61ZG12b5tjN\":100}"
-
-PRICE_10 = "price_1T4Ar2CMpIgwe61ZMzAI6yKa"
-PRICE_100 = "price_1T4B1gCMpIgwe61ZG12b5tjN"
-PRICE_25 = "price_1T4AxzCMpIgwe61ZsWh7GGAb"
-
-# -------------------------
 # STRIPE TMP memberships
 # -------------------------
 
