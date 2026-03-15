@@ -942,7 +942,7 @@
       var answers = {};
       var shellStep = 1;
       var currentOfferFeature = 'appDashboard';
-      var selectedMembership = 'professional';
+      var selectedMembership = 'plus';
       var servicesSelected = [];
       var preferredState = '';
       var preferredCity = '';
@@ -1024,53 +1024,88 @@
           name: 'App Dashboard',
           description: 'Keep your membership activity, saved results, and matching visibility in one place inside your dashboard.',
           bullets: {
-            starter: ['Membership account access', 'Past request visibility', 'Saved results and activity history', 'Early discount notifications from matching professionals'],
-            professional: ['Membership account access', 'Past request visibility', 'Saved results and activity history', 'Early discount notifications from matching professionals'],
-            enterprise: ['Membership account access', 'Past request visibility', 'Saved results and activity history', 'Early discount notifications from matching professionals']
+            free: ['Membership account access', 'Professional directory browsing', 'Saved matches and professionals'],
+            essential: ['Membership account access', 'Past request visibility', 'Saved results and activity history', 'Discount notifications from professionals'],
+            plus: ['Membership account access', 'Past request visibility', 'Saved results and activity history', 'Discount notifications from professionals'],
+            premier: ['Membership account access', 'Past request visibility', 'Saved results and activity history', 'Monitoring records in the dashboard']
           },
-          comparison: { starter: 'Included', professional: 'Included', enterprise: 'Included' },
-          fit: 'Best when you want one clean place to track prior requests, saved results, and matching activity without digging around like it is 2009.'
+          comparison: {
+            free: 'Browse access',
+            essential: 'Included',
+            plus: 'Included',
+            premier: 'Included'
+          },
+          fit: 'Best when you want one clean place to track membership activity, saved results, and matching visibility without rummaging through a digital junk drawer.'
         },
         professionalMatching: {
           icon: 'users',
           name: 'Professional Matching',
           description: 'Browse and match with professionals based on services, location, and budget-aware preferences.',
           bullets: {
-            starter: ['Directory browsing and matching', 'Match by services and location', 'Budget-aware matching preferences', 'Inquiry submission to professionals'],
-            professional: ['Directory browsing and matching', 'Match by services and location', 'Budget-aware matching preferences', 'Inquiry submission to professionals'],
-            enterprise: ['Directory browsing and matching', 'Match by services and location', 'Budget-aware matching preferences', 'Inquiry submission to professionals']
+            free: ['Directory browsing', 'Saved matches and professionals'],
+            essential: ['Professional matching', 'Inquiry submission', 'Match by services and location', 'Budget-aware matching preferences'],
+            plus: ['Professional matching', 'Inquiry submission', 'Match by services and location', 'Budget-aware matching preferences'],
+            premier: ['Priority professional matching', 'Inquiry submission', 'Match by services and location', 'Budget-aware matching preferences']
           },
-          comparison: { starter: 'Included', professional: 'Included', enterprise: 'Included' },
-          fit: 'Best when you want professionals filtered by fit instead of wasting time with random directory wandering and false hope.'
+          comparison: {
+            free: 'Browse only',
+            essential: 'Included',
+            plus: 'Included',
+            premier: 'Priority'
+          },
+          fit: 'Best when you want professionals filtered by fit instead of random directory wandering and the usual internet nonsense.'
         },
         taxToolTokens: {
           icon: 'wrench',
           name: 'Tax Tool Tokens',
           description: 'Use included token access for eligible tax tools and keep a record of what you used and what came back.',
           bullets: {
-            starter: ['Member tax tool token balance', 'Access to eligible tax tools', 'Token usage visibility', 'Saved tool outputs in the dashboard'],
-            professional: ['Member tax tool token balance', 'Access to eligible tax tools', 'Token usage visibility', 'Saved tool outputs in the dashboard'],
-            enterprise: ['Member tax tool token balance', 'Access to eligible tax tools', 'Token usage visibility', 'Saved tool outputs in the dashboard']
+            free: ['Upgrade to unlock tax tool tokens'],
+            essential: ['5 tax tool tokens per month', 'Access to eligible tax tools', 'Token usage visibility'],
+            plus: ['15 tax tool tokens per month', 'Access to eligible tax tools', 'Token usage visibility', 'Saved tool outputs in the dashboard'],
+            premier: ['40 tax tool tokens per month', 'Access to eligible tax tools', 'Token usage visibility', 'Saved tool outputs in the dashboard']
           },
-          comparison: { starter: 'Included', professional: 'Included', enterprise: 'Included' },
-          fit: 'Best when you want practical tool access tied to a visible token balance instead of mystery usage and vanishing outputs.'
+          comparison: {
+            free: '0 / month',
+            essential: '5 / month',
+            plus: '15 / month',
+            premier: '40 / month'
+          },
+          fit: 'Best when you want practical tool access tied to a visible token balance instead of mystery usage and disappearing outputs.'
         },
         transcriptTokens: {
           icon: 'scroll-text',
           name: 'Transcript Tokens',
           description: 'Track transcript token access, transcript jobs, and saved results from the same member workflow.',
           bullets: {
-            starter: ['Member transcript token balance', 'Transcript job access', 'Transcript job monitoring', 'Saved transcript results in the dashboard'],
-            professional: ['Member transcript token balance', 'Transcript job access', 'Transcript job monitoring', 'Saved transcript results in the dashboard'],
-            enterprise: ['Member transcript token balance', 'Transcript job access', 'Transcript job monitoring', 'Saved transcript results in the dashboard']
+            free: ['Upgrade to unlock transcript tokens'],
+            essential: ['2 transcript tokens per month', 'Transcript job access'],
+            plus: ['5 transcript tokens per month', 'Transcript job access', 'Saved transcript results in the dashboard'],
+            premier: ['10 transcript tokens per month', 'Transcript job access', 'Transcript job monitoring', 'Saved transcript results in the dashboard']
           },
-          comparison: { starter: 'Included', professional: 'Included', enterprise: 'Included' },
+          comparison: {
+            free: '0 / month',
+            essential: '2 / month',
+            plus: '5 / month',
+            premier: '10 / month'
+          },
           fit: 'Best when transcripts are part of the workflow and you want job visibility without turning every status check into a scavenger hunt.'
         }
       };
 
       function membershipCatalog() {
         return [
+          {
+            id: 'free',
+            badgeClass: 'bg-slate-600/30 text-slate-300',
+            badgeLabel: 'FREE',
+            price: '$0 / month',
+            spotlight: '',
+            summary: 'Explore the Tax Monitor Pro ecosystem and browse professionals before committing to a paid plan.',
+            term: 'Upgrade anytime',
+            toneClass: 'text-slate-400',
+            toneText: 'Best for exploring the platform'
+          },
           {
             id: 'essential',
             badgeClass: 'bg-slate-700 text-slate-300',
@@ -1269,6 +1304,13 @@
         grid.innerHTML = '';
 
         var features = {
+          free: [
+            'App Dashboard access',
+            'Professional directory browsing',
+            'Saved matches and professionals',
+            'Membership account access',
+            'Upgrade anytime to unlock tokens'
+          ],
           essential: [
             'App Dashboard access',
             'Professional Matching + inquiry submission',
@@ -1336,7 +1378,7 @@
       function renderOfferDetail(membershipId, featureKey) {
         var selected = membershipCatalog().filter(function (tier) { return tier.id === membershipId; })[0] || membershipCatalog()[0];
         selectedMembership = selected.id;
-        currentOfferFeature = featureKey || currentOfferFeature || 'directory';
+        currentOfferFeature = featureKey || currentOfferFeature || 'appDashboard';
 
         var hero = document.getElementById('selectedMembershipHero');
         if (hero) {
@@ -1403,7 +1445,7 @@
           var featureKeys = Object.keys(offerFeatureCatalog).sort(byText);
           compare.innerHTML = '<table class="min-w-full text-sm"><thead class="bg-slate-950/70"><tr><th class="px-4 py-3 text-left text-slate-400 font-semibold">Feature</th>'
             + membershipCatalog().map(function (tier) {
-              var label = tier.badgeLabel === 'STARTER' ? 'Starter' : tier.badgeLabel === 'PROFESSIONAL' ? 'Professional' : 'Enterprise';
+              var label = tier.badgeLabel.charAt(0) + tier.badgeLabel.slice(1).toLowerCase();
               var labelClass = tier.id === membershipId ? ' text-amber-300' : ' text-slate-300';
               return '<th class="px-4 py-3 text-left font-semibold' + labelClass + '">' + label + '</th>';
             }).join('')
