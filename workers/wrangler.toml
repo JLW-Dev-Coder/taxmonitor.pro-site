@@ -31,18 +31,6 @@ binding = "R2_TRANSCRIPT"
 bucket_name = "transcript-taxmonitor-pro"
 
 # ---------------------------------------
-# Durable Object (consistent token ledger)
-# ---------------------------------------
-
-[[durable_objects.bindings]]
-name = "TOKEN_LEDGER"
-class_name = "TokenLedger"
-
-[[migrations]]
-tag = "v1"
-new_sqlite_classes = ["TokenLedger"]
-
-# ---------------------------------------
 # Vars (non-secret)
 # ---------------------------------------
 
