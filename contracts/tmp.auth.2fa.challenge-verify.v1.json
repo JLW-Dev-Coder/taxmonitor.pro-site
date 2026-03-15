@@ -1,0 +1,24 @@
+{
+  "contract_version": "v1",
+  "domain": "tmp",
+  "notes": [
+    "R2 is authoritative.",
+    "Projection happens after canonical write."
+  ],
+  "request": {
+    "auth": "",
+    "content_type": "application/json",
+    "params": {},
+    "query": {},
+    "body": {}
+  },
+  "response": {
+    "content_type": "application/json",
+    "shape": {}
+  },
+  "storage": {
+    "canonical_r2": [],
+    "receipt_r2": "",
+    "d1_projection": []
+  }
+}
