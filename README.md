@@ -1,22 +1,21 @@
 # Tax Monitor Pro (TMP)
 
-# Table of Contents
+## Table of Contents
 
-* [Overview](#overview)
-* [Key Features](#key-features)
 * [Architecture Overview](#architecture-overview)
-* [Ecosystem Role](#ecosystem-role)
-* [Worker Routes](#worker-routes)
 * [Canonical Storage](#canonical-storage)
-* [Repository Structure](#repository-structure)
-* [Environment Setup](#environment-setup)
-* [Deployment](#deployment)
 * [Contracts or Data Model](#contracts-or-data-model)
-* [Development Standards](#development-standards)
-* [Integrations](#integrations)
-* [Security and Secrets](#security-and-secrets)
 * [Contribution Guidelines](#contribution-guidelines)
+* [Deployment](#deployment)
+* [Development Standards](#development-standards)
+* [Environment Setup](#environment-setup)
+* [Integrations](#integrations)
+* [Key Features](#key-features)
 * [License](#license)
+* [Overview](#overview)
+* [Repository Structure](#repository-structure)
+* [Security and Secrets](#security-and-secrets)
+* [Worker API Surface](#worker-api-surface)
 
 ---
 
@@ -24,127 +23,68 @@
 
 Tax Monitor Pro (TMP) is the **taxpayer discovery and membership platform** within the Virtual Launch Pro ecosystem.
 
-The platform connects taxpayers with tax professionals and manages the taxpayer side of the system including:
+TMP connects taxpayers to tax professionals while providing a structured system for:
 
+* taxpayer discovery
+* professional directory browsing
+* service inquiry routing
 * taxpayer memberships
-* professional directory discovery
-* inquiry routing
 * taxpayer dashboards
-* transcript and tool access
 
-TMP is the **primary entry point for taxpayers** entering the ecosystem.
+Tax Monitor Pro is intentionally limited in scope.
+
+It **does not manage professional infrastructure or transcript diagnostics**. Those responsibilities belong to other platforms in the ecosystem. 
 
 ---
 
 # Key Features
 
-Major capabilities include:
+Core TMP capabilities include:
 
-* professional discovery directory
+* professional directory search
+* taxpayer discovery intake flows
+* inquiry routing to tax professionals
 * taxpayer account management
-* taxpayer membership subscriptions
-* inquiry routing to professionals
-* taxpayer dashboard interface
-* token balances for tools and transcripts
-* transcript job monitoring
-* tool usage history
+* taxpayer memberships (Free, Essential, Plus, Premier)
+* taxpayer dashboards
+* Stripe membership billing
+* notification preferences
+* support ticket handling
+
+TMP provides the **entry point for taxpayers** entering the broader tax service ecosystem.
 
 ---
 
 # Architecture Overview
 
-TMP runs on **Cloudflare edge infrastructure**.
+TMP operates on **Cloudflare edge infrastructure** using a contract-driven architecture.
 
-Core components include:
+Core architectural principles:
 
-* Cloudflare Workers
-* R2 canonical storage
-* D1 query database
-* static frontend dashboard
-* webhook processing pipelines
+* canonical storage in **R2**
+* contract-first API validation
+* stateless Cloudflare Workers
+* deny-by-default routing
+* write-first canonical storage
 
-Write pipeline:
+Canonical write pipeline:
 
 ```
 1 request received
 2 contract validation
 3 receipt stored in R2
 4 canonical record updated
-5 D1 index updated
+5 D1 index projection
 6 response returned
 ```
 
-Canonical storage always precedes projection.
-
----
-
-# Ecosystem Role
-
-TMP acts as the **taxpayer platform** within the ecosystem.
-
-System flow:
-
-```
-Tax Tools Arcade
-→ generates discovery traffic
-
-Transcript Tax Monitor
-→ provides transcript diagnostics
-
-Tax Monitor Pro
-→ connects taxpayers with professionals
-
-Virtual Launch Pro
-→ manages professional infrastructure
-```
-
-Professional profiles displayed in TMP originate from **VLP canonical records**.
-
----
-
-# Worker Routes
-
-Directory
-
-```
-GET /v1/directory/profiles
-GET /v1/directory/profiles/{professional_id}
-```
-
-Inquiries
-
-```
-GET  /v1/inquiries/{inquiry_id}
-GET  /v1/inquiries/by-professional/{professional_id}
-POST /v1/inquiries
-```
-
-Taxpayer Accounts
-
-```
-GET   /v1/taxpayers/{account_id}
-PATCH /v1/taxpayers/{account_id}
-POST  /v1/taxpayers
-```
-
-Taxpayer Membership
-
-```
-GET /v1/taxpayer-memberships/{membership_id}
-GET /v1/taxpayer-memberships/by-account/{account_id}
-```
-
-Token Access
-
-```
-GET /vlp/v1/tokens/{account_id}
-GET /vlp/v1/tokens/{account_id}/tools
-GET /vlp/v1/tokens/{account_id}/transcripts
-```
+This design ensures that **R2 remains the authoritative data source**.
 
 ---
 
 # Canonical Storage
+
+TMP owns a limited set of canonical records.
 
 ```
 /r2/inquiries/{inquiry_id}.json
@@ -152,17 +92,202 @@ GET /vlp/v1/tokens/{account_id}/transcripts
 /r2/taxpayer_memberships/{membership_id}.json
 ```
 
-R2 is the **authoritative storage layer**.
+These records represent the core TMP entities:
 
-D1 stores indexes for:
+| Entity               | Description                     |
+| -------------------- | ------------------------------- |
+| inquiries            | taxpayer service requests       |
+| taxpayer_accounts    | authenticated taxpayer profiles |
+| taxpayer_memberships | membership subscriptions        |
 
-* directory filtering
-* membership lookup
-* dashboard queries
+All write operations update these canonical objects before any projections occur.
+
+---
+
+# Worker API Surface
+
+TMP exposes taxpayer-facing APIs through a Cloudflare Worker.
+
+## Health
+
+```
+GET /health
+```
+
+---
+
+## Membership and Billing
+
+```
+GET  /v1/pricing
+GET  /v1/checkout/status
+POST /v1/checkout/sessions
+POST /v1/webhooks/stripe
+```
+
+These routes support TMP membership creation and Stripe billing.
+
+---
+
+## Authentication
+
+```
+GET  /v1/auth/google/callback
+GET  /v1/auth/google/start
+GET  /v1/auth/magic-link/verify
+GET  /v1/auth/session
+GET  /v1/auth/sso/oidc/callback
+GET  /v1/auth/sso/oidc/start
+GET  /v1/auth/sso/saml/start
+POST /v1/auth/logout
+POST /v1/auth/magic-link/request
+POST /v1/auth/sso/saml/acs
+```
+
+Authentication supports:
+
+* Google OAuth
+* magic links
+* SSO
+* session retrieval
+
+---
+
+## Two-Factor Authentication
+
+```
+GET  /v1/auth/2fa/status/{account_id}
+POST /v1/auth/2fa/challenge/verify
+POST /v1/auth/2fa/disable
+POST /v1/auth/2fa/enroll/init
+POST /v1/auth/2fa/enroll/verify
+```
+
+---
+
+## Directory
+
+```
+GET /v1/directory/professionals
+GET /v1/directory/professionals/{professional_id}
+```
+
+Directory data originates from **Virtual Launch Pro professional records**.
+
+---
+
+## Inquiries
+
+```
+GET  /v1/inquiries/{inquiry_id}
+GET  /v1/inquiries/by-account/{account_id}
+POST /v1/inquiries
+```
+
+These routes support taxpayer service requests routed to professionals.
+
+---
+
+## Taxpayer Accounts
+
+```
+GET   /v1/taxpayer-accounts/{account_id}
+PATCH /v1/taxpayer-accounts/{account_id}
+```
+
+These APIs manage the taxpayer profile used by TMP dashboards.
+
+---
+
+## Taxpayer Memberships
+
+```
+GET   /v1/taxpayer-memberships/{membership_id}
+GET   /v1/taxpayer-memberships/by-account/{account_id}
+POST  /v1/taxpayer-memberships/free
+PATCH /v1/taxpayer-memberships/{membership_id}
+```
+
+Membership records are stored in canonical R2 storage.
+
+---
+
+## Notifications
+
+```
+GET   /v1/notifications/in-app
+GET   /v1/notifications/preferences/{account_id}
+PATCH /v1/notifications/preferences/{account_id}
+POST  /v1/notifications/in-app
+POST  /v1/notifications/sms/send
+POST  /v1/webhooks/twilio
+```
+
+These routes support taxpayer communication preferences and alerts.
+
+---
+
+## Support
+
+```
+GET   /v1/support/tickets/{ticket_id}
+GET   /v1/support/tickets/by-account/{account_id}
+PATCH /v1/support/tickets/{ticket_id}
+POST  /v1/support/tickets
+```
+
+Support tickets allow taxpayers to contact the platform support team.
+
+---
+
+# Contracts or Data Model
+
+TMP uses **contract-driven API validation**.
+
+Each API route is backed by a JSON contract describing:
+
+* request structure
+* validation rules
+* response structure
+* canonical storage mapping
+
+Example contract inventory:
+
+```
+tmp.directory.search.v1.json
+tmp.inquiry.create.v1.json
+tmp.inquiry.get.v1.json
+tmp.inquiry.list-by-account.v1.json
+tmp.membership.checkout-session.create.v1.json
+tmp.membership.checkout-status.get.v1.json
+tmp.membership.free.create.v1.json
+tmp.membership.get.v1.json
+tmp.membership.list-by-account.v1.json
+tmp.taxpayer-account.get.v1.json
+tmp.taxpayer-account.update.v1.json
+tmp.auth.session.get.v1.json
+tmp.auth.magic-link.request.v1.json
+tmp.auth.magic-link.verify.v1.json
+tmp.auth.google.start.v1.json
+tmp.auth.google.callback.v1.json
+tmp.auth.logout.v1.json
+tmp.notifications.preferences.get.v1.json
+tmp.notifications.preferences.patch.v1.json
+tmp.notifications.in-app.list.v1.json
+tmp.notifications.in-app.create.v1.json
+tmp.support.ticket.create.v1.json
+tmp.support.ticket.get.v1.json
+tmp.support.ticket.list-by-account.v1.json
+tmp.support.ticket.patch.v1.json
+```
+
+Contracts enforce **data integrity before canonical records are modified**.
 
 ---
 
 # Repository Structure
+
+Typical TMP repository layout:
 
 ```
 /app
@@ -174,15 +299,17 @@ D1 stores indexes for:
 /workers
 ```
 
-Descriptions:
+Directory purposes:
 
-* `/app` taxpayer dashboard interface
-* `/assets` shared resources
-* `/contracts` API validation schemas
-* `/pages` workflow pages
-* `/partials` reusable UI components
-* `/site` marketing pages
-* `/workers` Cloudflare Worker APIs
+| Directory    | Purpose                    |
+| ------------ | -------------------------- |
+| `/app`       | taxpayer dashboard UI      |
+| `/assets`    | shared static assets       |
+| `/contracts` | API contract schemas       |
+| `/pages`     | intake and discovery flows |
+| `/partials`  | shared UI components       |
+| `/site`      | public marketing pages     |
+| `/workers`   | TMP Cloudflare Worker APIs |
 
 ---
 
@@ -194,84 +321,69 @@ Required tools:
 * Node.js
 * Wrangler CLI
 
-Setup:
+Setup process:
 
 ```
-git clone repo
-npm install
-wrangler dev
+1 clone repository
+2 configure environment variables
+3 install dependencies
+4 start local worker environment
 ```
-
-Configure required environment variables before running workers.
 
 ---
 
 # Deployment
 
-Deployment occurs through Cloudflare Workers.
+TMP APIs deploy through **Cloudflare Workers**.
+
+Deployment command:
 
 ```
 wrangler deploy
 ```
 
-The `wrangler.toml` file defines:
-
-* environment bindings
-* R2 bucket bindings
-* compatibility date
-* secrets configuration
-
----
-
-# Contracts or Data Model
-
-All APIs follow **contract-driven validation**.
-
-Contracts define:
-
-* request schemas
-* canonical R2 storage paths
-* D1 projection rules
-
-Every mutation request must pass contract validation.
-
----
-
-# Development Standards
-
-Standards include:
-
-* alphabetical route documentation
-* canonical Worker headers
-* deny-by-default routing
-* R2 canonical write-first rule
+Deployment configuration is defined in `wrangler.toml`.
 
 ---
 
 # Integrations
 
-External systems include:
+TMP integrates with several external services:
 
-* Virtual Launch Pro APIs
+* Cloudflare Workers
+* Cloudflare R2 storage
+* Cloudflare D1 database
+* Google OAuth
+* magic-link authentication
 * Stripe subscriptions
-* Cloudflare infrastructure
-* Google authentication
+* Twilio notifications
+
+---
+
+# Development Standards
+
+Development rules include:
+
+* contract-first API development
+* alphabetical route documentation
+* canonical worker headers
+* minimal changes to core contract surfaces
+* deny-by-default routing
+
+Workers should remain **stateless and contract-safe**.
 
 ---
 
 # Security and Secrets
 
-Secrets are managed through Wrangler:
+Sensitive values are managed through **Wrangler secret management**.
 
-```
-wrangler secret put
-```
+Examples include:
 
-Examples:
-
-* Stripe webhook secret
-* OAuth secrets
-* API tokens
+* Stripe webhook secrets
+* OAuth client secrets
+* email API tokens
+* session signing keys
 
 Secrets must never be committed to the repository.
 
@@ -283,15 +395,23 @@ Recommended workflow:
 
 ```
 1 create branch
-2 implement change
+2 implement changes
 3 test locally
 4 submit pull request
 ```
+
+All changes affecting APIs should update:
+
+* route documentation
+* relevant contracts
+* README sections if necessary
 
 ---
 
 # License
 
-Proprietary software owned by Virtual Launch Pro.
+This repository is proprietary software owned and maintained by **Virtual Launch Pro**.
+
+Unauthorized redistribution or modification is prohibited.
 
 ---
