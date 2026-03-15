@@ -30,7 +30,62 @@
       background-clip: text;
     }
 
-    /* Smooth page load animations */
+    .billing-switch {
+      position: relative;
+      width: 3.1rem;
+      height: 1.75rem;
+      border-radius: 9999px;
+      border: 1px solid rgba(148, 163, 184, 0.28);
+      background: rgba(15, 23, 42, 0.95);
+      transition: all 0.2s ease;
+    }
+
+    .billing-switch::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0.2rem;
+      width: 1.25rem;
+      height: 1.25rem;
+      border-radius: 9999px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(226,232,240,0.92));
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.45);
+      transform: translateY(-50%);
+      transition: transform 0.2s ease;
+    }
+
+    .billing-toggle:checked + .billing-switch {
+      background: rgba(30, 41, 59, 0.98);
+      border-color: rgba(245, 158, 11, 0.38);
+    }
+
+    .billing-toggle:checked + .billing-switch::after {
+      transform: translate(1.28rem, -50%);
+    }
+
+    .billing-badge {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid rgba(74, 222, 128, 0.24);
+      border-radius: 9999px;
+      background: rgba(34, 197, 94, 0.16);
+      color: rgb(134, 239, 172);
+      font-size: 0.75rem;
+      font-weight: 700;
+      line-height: 1;
+      padding: 0.45rem 0.65rem;
+      white-space: nowrap;
+    }
+
+    .price-fade {
+      transition: opacity 0.18s ease, transform 0.18s ease;
+    }
+
+    .price-fade.is-updating {
+      opacity: 0.45;
+      transform: translateY(2px);
+    }
+
     @keyframes fadeInUp {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
@@ -64,15 +119,15 @@
             <svg class="w-4 h-4 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
               <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
             </svg>
-            <span id="pricing-trust" class="text-sm text-slate-300">Choose your monitoring level — upgrades anytime.</span>
+            <span id="pricing-trust" class="text-sm text-slate-300">Choose your membership level — upgrade anytime.</span>
           </div>
 
           <h1 id="pricing-headline" class="text-4xl md:text-6xl font-bold tracking-tight mb-4">
-            Simple Plans. <span class="gradient-text">Serious Monitoring.</span>
+            Simple Plans. <span class="gradient-text">Serious Memberships.</span>
           </h1>
 
           <p id="pricing-subheadline" class="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed">
-            Start with intake. We confirm fit, pull your initial transcripts, and monitor for changes.
+            Start with the membership that fits your needs. Get dashboard access, matching, and monthly tokens for transcripts and tax tools.
           </p>
         </div>
       </section>
@@ -81,159 +136,144 @@
       <section class="px-6 pb-20">
         <div class="max-w-6xl mx-auto">
 
-          <div class="grid lg:grid-cols-3 gap-6 items-stretch">
-            <!-- Bronze -->
-            <div class="rounded-2xl bg-slate-900/40 border border-slate-800/80 p-6 flex flex-col">
-              <div class="flex items-center justify-between mb-4">
-                <h2 class="text-xl font-semibold">Bronze</h2>
-                <span class="px-3 py-1 rounded-full bg-slate-800/70 border border-slate-700 text-xs text-slate-300">Baseline</span>
-              </div>
+          <div class="grid md:grid-cols-2 xl:grid-cols-4 gap-6 items-stretch">
 
-              <div class="mb-4">
-                <div class="text-3xl font-bold">$275<span class="text-base text-slate-400 font-medium"> one-time</span></div>
-                <div class="text-sm text-slate-500">6-week term (monitoring period).</div>
-              </div>
-
-              <ul class="space-y-3 text-slate-300 text-sm mb-6 min-h-[156px]">
-                <li class="flex gap-2"><span class="text-amber-500">•</span><span>Transcript monitoring during the term</span></li>
-                <li class="flex gap-2"><span class="text-amber-500">•</span><span>Plain-English status summary</span></li>
-                <li class="flex gap-2"><span class="text-amber-500">•</span><span>Portal delivery + report access for easy review</span></li>
-                <li class="flex gap-2"><span class="text-amber-500">•</span><span>Escalation flags when activity appears</span></li>
-              </ul>
-
-              <div class="mt-auto">
-                <a
-                  href="/app/intake.html?item=bronze"
-                  class="w-full inline-flex items-center justify-center px-4 py-3 rounded-xl bg-slate-800/70 hover:bg-slate-800 text-slate-100 font-semibold transition border border-slate-700"
-                >Start intake →</a>
-                <p class="mt-3 text-xs text-slate-500">Best for stable accounts and ongoing peace of mind.</p>
-              </div>
-            </div>
-
-            <!-- Silver (Most Popular) -->
-            <div class="rounded-2xl bg-slate-900/40 border border-amber-500/35 p-6 flex flex-col relative overflow-hidden">
-              <div class="absolute -top-16 -right-16 w-48 h-48 rounded-full bg-amber-500/10 blur-2xl"></div>
+            <!-- Free -->
+            <div class="rounded-2xl bg-slate-900/50 border border-emerald-500/35 p-6 flex flex-col relative overflow-hidden" data-plan="free" data-monthly="0" data-yearly="0" data-tax-tools="0" data-transcripts="0">
+              <div class="absolute -top-12 -right-12 w-40 h-40 rounded-full bg-emerald-500/10 blur-2xl"></div>
               <div class="flex items-center justify-between mb-4 relative">
-                <h2 class="text-xl font-semibold">Silver</h2>
-                <span class="px-3 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-xs text-amber-200">Most popular</span>
+                <h2 class="text-xl font-semibold">Free</h2>
+                <span class="px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-xs text-emerald-200">Start here</span>
               </div>
 
               <div class="mb-4 relative">
-                <div class="text-3xl font-bold">$325<span class="text-base text-slate-400 font-medium"> one-time</span></div>
-                <div class="text-sm text-slate-500">8-week term (monitoring period).</div>
+                <div class="price-fade" data-price-wrap>
+                  <div class="text-3xl font-bold">$<span data-price>0</span><span class="text-base text-slate-400 font-medium"> / month</span></div>
+                  <div class="text-sm text-slate-400 mt-1" data-billing-note>No payment method required</div>
+                </div>
               </div>
 
-              <ul class="space-y-3 text-slate-300 text-sm mb-6 relative min-h-[156px]">
-                <li class="flex gap-2"><span class="text-amber-500">•</span><span>Transcript monitoring during the term</span></li>
-                <li class="flex gap-2"><span class="text-amber-500">•</span><span>Change timeline tracking</span></li>
-                <li class="flex gap-2"><span class="text-amber-500">•</span><span>Plain-English notes on updates</span></li>
-                <li class="flex gap-2"><span class="text-amber-500">•</span><span>Priority alerts when activity appears fast</span></li>
+              <ul class="space-y-3 text-slate-300 text-sm mb-6 min-h-[190px] relative">
+                <li class="flex gap-2"><span class="text-amber-500">•</span><span>App dashboard access</span></li>
+                <li class="flex gap-2"><span class="text-amber-500">•</span><span>Directory browsing</span></li>
+                <li class="flex gap-2"><span class="text-amber-500">•</span><span>Saved matches</span></li>
+                <li class="flex gap-2"><span class="text-amber-500">•</span><span><strong><span data-transcript-tokens>0</span> transcript tokens / month</strong></span></li>
+                <li class="flex gap-2"><span class="text-amber-500">•</span><span><strong><span data-tax-tool-tokens>0</span> tax tool tokens / month</strong></span></li>
               </ul>
 
               <div class="mt-auto relative">
-                <a
-                  href="/app/intake.html?item=silver"
-                  class="w-full inline-flex items-center justify-center px-4 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-semibold transition shadow-lg shadow-amber-500/20"
-                >Start intake →</a>
-                <p class="mt-3 text-xs text-slate-500">Best for accounts with prior issues or higher complexity.</p>
+                <a data-plan-cta href="/app/intake.html?plan=free&billing=monthly" class="w-full inline-flex items-center justify-center px-4 py-3 rounded-xl bg-gradient-to-r from-emerald-300 via-white to-emerald-200 text-slate-950 font-semibold border border-white/30 shadow-lg shadow-emerald-500/10">Start free →</a>
+                <p class="mt-3 text-xs text-slate-500">Great for exploring TMP before upgrading to tokens and inquiry access.</p>
               </div>
             </div>
 
-            <!-- Gold -->
-            <div class="rounded-2xl bg-slate-900/40 border border-slate-800/80 p-6 flex flex-col">
+            <!-- Essential -->
+            <div class="rounded-2xl bg-slate-900/40 border border-slate-800/80 p-6 flex flex-col" data-plan="essential" data-monthly="9" data-yearly="5.4" data-tax-tools="5" data-transcripts="2">
               <div class="flex items-center justify-between mb-4">
-                <h2 class="text-xl font-semibold">Gold</h2>
-                <span class="px-3 py-1 rounded-full bg-slate-800/70 border border-slate-700 text-xs text-slate-300">High-touch</span>
+                <h2 class="text-xl font-semibold">Essential</h2>
+                <span class="px-3 py-1 rounded-full bg-slate-800/70 border border-slate-700 text-xs text-slate-300">Entry</span>
               </div>
 
-              <div class="mb-4">
-                <div class="text-3xl font-bold">$425<span class="text-base text-slate-400 font-medium"> one-time</span></div>
-                <div class="text-sm text-slate-500">12-week term (monitoring period).</div>
+              <div class="flex items-center justify-between gap-4 mb-4">
+                <div class="price-fade" data-price-wrap>
+                  <div class="text-3xl font-bold">$<span data-price>9</span><span class="text-base text-slate-400 font-medium"> / month</span></div>
+                  <div class="text-sm text-slate-400 mt-1" data-billing-note>Billed monthly</div>
+                </div>
+                <label class="inline-flex items-center gap-2 text-sm text-slate-200 cursor-pointer">
+                  <input type="checkbox" class="billing-toggle sr-only" data-billing-toggle>
+                  <span class="billing-switch"></span>
+                  <span>Yearly</span>
+                  <span class="billing-badge">Save 40%</span>
+                </label>
               </div>
 
-              <ul class="space-y-3 text-slate-300 text-sm mb-6 min-h-[156px]">
-                <li class="flex gap-2"><span class="text-amber-500">•</span><span>Transcript monitoring during the term</span></li>
-                <li class="flex gap-2"><span class="text-amber-500">•</span><span>Proactive watchlist (balances, notices, holds)</span></li>
-                <li class="flex gap-2"><span class="text-amber-500">•</span><span>Priority escalation guidance (non-representation)</span></li>
-                <li class="flex gap-2"><span class="text-amber-500">•</span><span>Expanded reporting detail</span></li>
+              <ul class="space-y-3 text-slate-300 text-sm mb-6 min-h-[190px]">
+                <li class="flex gap-2"><span class="text-amber-500">•</span><span>App dashboard access</span></li>
+                <li class="flex gap-2"><span class="text-amber-500">•</span><span>Discount notifications from professionals</span></li>
+                <li class="flex gap-2"><span class="text-amber-500">•</span><span>Professional matching + inquiry submission</span></li>
+                <li class="flex gap-2"><span class="text-amber-500">•</span><span><strong><span data-transcript-tokens>2</span> transcript tokens / month</strong></span></li>
+                <li class="flex gap-2"><span class="text-amber-500">•</span><span><strong><span data-tax-tool-tokens>5</span> tax tool tokens / month</strong></span></li>
               </ul>
 
               <div class="mt-auto">
-                <a
-                  href="/app/intake.html?item=gold"
-                  class="w-full inline-flex items-center justify-center px-4 py-3 rounded-xl bg-slate-800/70 hover:bg-slate-800 text-slate-100 font-semibold transition border border-slate-700"
-                >Start intake →</a>
-                <p class="mt-3 text-xs text-slate-500">Best for active issues, notices, or fast-moving situations.</p>
+                <a data-plan-cta href="/app/intake.html?plan=essential&billing=monthly" class="w-full inline-flex items-center justify-center px-4 py-3 rounded-xl bg-slate-800/70 hover:bg-slate-800 text-slate-100 font-semibold border border-slate-700">Start membership →</a>
+                <p class="mt-3 text-xs text-slate-500">Entry-level access for taxpayers exploring help.</p>
               </div>
             </div>
+
+            <!-- Plus -->
+            <div class="rounded-2xl bg-slate-900/40 border border-amber-500/35 p-6 flex flex-col" data-plan="plus" data-monthly="19" data-yearly="11.4" data-tax-tools="15" data-transcripts="5">
+              <div class="flex items-center justify-between mb-4">
+                <h2 class="text-xl font-semibold">Plus</h2>
+                <span class="px-3 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-xs text-amber-200">Most popular</span>
+              </div>
+
+              <div class="flex items-center justify-between gap-4 mb-4">
+                <div class="price-fade" data-price-wrap>
+                  <div class="text-3xl font-bold">$<span data-price>19</span><span class="text-base text-slate-400 font-medium"> / month</span></div>
+                  <div class="text-sm text-slate-400 mt-1" data-billing-note>Billed monthly</div>
+                </div>
+                <label class="inline-flex items-center gap-2 text-sm text-slate-200 cursor-pointer">
+                  <input type="checkbox" class="billing-toggle sr-only" data-billing-toggle>
+                  <span class="billing-switch"></span>
+                  <span>Yearly</span>
+                  <span class="billing-badge">Save 40%</span>
+                </label>
+              </div>
+
+              <ul class="space-y-3 text-slate-300 text-sm mb-6 min-h-[190px]">
+                <li class="flex gap-2"><span class="text-amber-500">•</span><span>App dashboard access</span></li>
+                <li class="flex gap-2"><span class="text-amber-500">•</span><span>Professional matching</span></li>
+                <li class="flex gap-2"><span class="text-amber-500">•</span><span>Saved results and activity history</span></li>
+                <li class="flex gap-2"><span class="text-amber-500">•</span><span><strong>5 transcript tokens / month</strong></span></li>
+                <li class="flex gap-2"><span class="text-amber-500">•</span><span><strong><span data-tax-tool-tokens>15</span> tax tool tokens / month</strong></span></li>
+              </ul>
+
+              <div class="mt-auto">
+                <a data-plan-cta href="/app/intake.html?plan=plus&billing=monthly" class="w-full inline-flex items-center justify-center px-4 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-semibold">Start membership →</a>
+                <p class="mt-3 text-xs text-slate-500">Best for taxpayers actively reviewing their tax situation.</p>
+              </div>
+            </div>
+
+            <!-- Premier -->
+            <div class="rounded-2xl bg-slate-900/40 border border-slate-800/80 p-6 flex flex-col" data-plan="premier" data-monthly="39" data-yearly="23.4" data-tax-tools="40" data-transcripts="10">
+              <div class="flex items-center justify-between mb-4">
+                <h2 class="text-xl font-semibold">Premier</h2>
+                <span class="px-3 py-1 rounded-full bg-slate-800/70 border border-slate-700 text-xs text-slate-300">Advanced</span>
+              </div>
+
+              <div class="flex items-center justify-between gap-4 mb-4">
+                <div class="price-fade" data-price-wrap>
+                  <div class="text-3xl font-bold">$<span data-price>39</span><span class="text-base text-slate-400 font-medium"> / month</span></div>
+                  <div class="text-sm text-slate-400 mt-1" data-billing-note>Billed monthly</div>
+                </div>
+                <label class="inline-flex items-center gap-2 text-sm text-slate-200 cursor-pointer">
+                  <input type="checkbox" class="billing-toggle sr-only" data-billing-toggle>
+                  <span class="billing-switch"></span>
+                  <span>Yearly</span>
+                  <span class="billing-badge">Save 40%</span>
+                </label>
+              </div>
+
+              <ul class="space-y-3 text-slate-300 text-sm mb-6 min-h-[190px]">
+                <li class="flex gap-2"><span class="text-amber-500">•</span><span>App dashboard access</span></li>
+                <li class="flex gap-2"><span class="text-amber-500">•</span><span>Monitoring records in dashboard</span></li>
+                <li class="flex gap-2"><span class="text-amber-500">•</span><span>Priority professional matching</span></li>
+                <li class="flex gap-2"><span class="text-amber-500">•</span><span><strong><span data-transcript-tokens>10</span> transcript tokens / month</strong></span></li>
+                <li class="flex gap-2"><span class="text-amber-500">•</span><span><strong><span data-tax-tool-tokens>40</span> tax tool tokens / month</strong></span></li>
+              </ul>
+
+              <div class="mt-auto">
+                <a data-plan-cta href="/app/intake.html?plan=premier&billing=monthly" class="w-full inline-flex items-center justify-center px-4 py-3 rounded-xl bg-slate-800/70 hover:bg-slate-800 text-slate-100 font-semibold border border-slate-700">Start membership →</a>
+                <p class="mt-3 text-xs text-slate-500">Best for taxpayers with more complex tax situations.</p>
+              </div>
+            </div>
+
           </div>
 
-          <!-- One-time + MFJ -->
-          <div class="grid lg:grid-cols-2 gap-6 mt-8">
-            <!-- One-time -->
-            <div class="rounded-2xl bg-slate-900/40 border border-slate-800/80 p-6">
-              <div class="flex items-start justify-between gap-4">
-                <div>
-                  <h3 class="text-xl font-semibold mb-1">One-Time Snapshot</h3>
-                  <p class="text-sm text-slate-400">Point-in-time transcript pull + summary (no monitoring term).</p>
-                </div>
-                <span class="text-2xl font-bold">$299</span>
-              </div>
-
-              <div class="mt-5 grid sm:grid-cols-2 gap-3 text-sm text-slate-300">
-                <div class="rounded-xl bg-slate-950/40 border border-slate-800 p-4">
-                  <div class="font-semibold mb-1">Includes</div>
-                  <ul class="space-y-2 text-slate-400">
-                    <li>• Initial transcript pull</li>
-                    <li>• Plain-English summary</li>
-                    <li>• Portal delivery</li>
-                  </ul>
-                </div>
-
-                <div class="rounded-xl bg-slate-950/40 border border-slate-800 p-4">
-                  <div class="font-semibold mb-1">Not included</div>
-                  <ul class="space-y-2 text-slate-400">
-                    <li>• IRS correspondence handling</li>
-                    <li>• IRS representation</li>
-                    <li>• Ongoing monitoring</li>
-                  </ul>
-                </div>
-              </div>
-
-              <div class="mt-6">
-                <a
-                  href="/app/intake.html?item=one_time"
-                  class="inline-flex items-center justify-center px-5 py-3 rounded-xl bg-slate-800/70 hover:bg-slate-800 text-slate-100 font-semibold transition border border-slate-700"
-                >Start intake →</a>
-              </div>
-            </div>
-
-            <!-- MFJ -->
-            <div class="rounded-2xl bg-slate-900/40 border border-slate-800/80 p-6">
-              <div class="flex items-start justify-between gap-4">
-                <div>
-                  <h3 class="text-xl font-semibold mb-1">MFJ Add-On</h3>
-                  <p class="text-sm text-slate-400">Required when monitoring jointly filed years.</p>
-                </div>
-                <span class="text-2xl font-bold">+$79</span>
-              </div>
-
-              <div class="mt-5 rounded-xl bg-slate-950/40 border border-slate-800 p-4 text-sm text-slate-300">
-                <div class="font-semibold mb-2">Applies to</div>
-                <ul class="space-y-2 text-slate-400">
-                  <li>• Any term plan (Bronze, Silver, Gold)</li>
-                  <li>• Each spouse must enroll independently</li>
-                  <li>• Enables MFJ-year monitoring visibility</li>
-                </ul>
-              </div>
-
-              <div class="mt-6">
-                <a
-                  href="/app/intake.html?item=mfj"
-                  class="inline-flex items-center justify-center px-5 py-3 rounded-xl bg-slate-800/70 hover:bg-slate-800 text-slate-100 font-semibold transition border border-slate-700"
-                >Start intake →</a>
-              </div>
-            </div>
+          <div class="text-center mt-10 text-sm text-slate-400 space-y-2">
+            <div>Cancel anytime. Free starts at $0. Unused paid-plan tokens roll over for 60 days.</div>
+            <div class="text-xs text-slate-500">Turn on Yearly to view the discounted monthly equivalent billed annually. Free stays free, because even Stripe can handle a zero.</div>
           </div>
 
         </div>
@@ -250,41 +290,50 @@
           <div class="space-y-4">
             <details class="group rounded-2xl bg-slate-800/30 border border-slate-700/50 p-6">
               <summary class="cursor-pointer list-none flex items-center justify-between gap-4">
-                <span class="font-semibold">Do I pay before intake?</span>
+                <span class="font-semibold">Does Free require a payment method?</span>
                 <span class="text-slate-400 group-open:rotate-180 transition">⌄</span>
               </summary>
               <div class="mt-4 text-sm text-slate-400 leading-relaxed">
-                Intake starts the process. If payment is required for your situation, your next-step page will include the payment link.
+                No. Free is a real $0 membership tier intended for dashboard access, directory browsing, and saved matches without paid tokens.
+              </div>
+            </details>
+            <details class="group rounded-2xl bg-slate-800/30 border border-slate-700/50 p-6">
+              <summary class="cursor-pointer list-none flex items-center justify-between gap-4">
+                <span class="font-semibold">What is included with membership?</span>
+                <span class="text-slate-400 group-open:rotate-180 transition">⌄</span>
+              </summary>
+              <div class="mt-4 text-sm text-slate-400 leading-relaxed">
+                Membership includes dashboard access and plan-based features. Free includes browsing and saved matches, while paid tiers add inquiry access, tokens, and deeper visibility into your tax activity.
               </div>
             </details>
 
             <details class="group rounded-2xl bg-slate-800/30 border border-slate-700/50 p-6">
               <summary class="cursor-pointer list-none flex items-center justify-between gap-4">
-                <span class="font-semibold">Is this IRS representation?</span>
+                <span class="font-semibold">Are these tax resolution packages?</span>
                 <span class="text-slate-400 group-open:rotate-180 transition">⌄</span>
               </summary>
               <div class="mt-4 text-sm text-slate-400 leading-relaxed">
-                No. Monitoring does not create IRS representation. If you need representation, filing, or resolution work, that is a separate engagement.
+                No. These memberships are for software access, discovery, and monthly usage credits. Tax resolution, filing, or representation services are separate engagements with a tax professional.
               </div>
             </details>
 
             <details class="group rounded-2xl bg-slate-800/30 border border-slate-700/50 p-6">
               <summary class="cursor-pointer list-none flex items-center justify-between gap-4">
-                <span class="font-semibold">Can I upgrade or downgrade?</span>
+                <span class="font-semibold">Can I cancel or change plans?</span>
                 <span class="text-slate-400 group-open:rotate-180 transition">⌄</span>
               </summary>
               <div class="mt-4 text-sm text-slate-400 leading-relaxed">
-                Yes. Plans are flexible. Monitoring frequency and alerting depth change with your plan.
+                Yes. You can start on Free, cancel anytime, and move to a paid membership when you need tokens, inquiry submission, or priority matching.
               </div>
             </details>
 
             <details class="group rounded-2xl bg-slate-800/30 border border-slate-700/50 p-6">
               <summary class="cursor-pointer list-none flex items-center justify-between gap-4">
-                <span class="font-semibold">What’s the turnaround time?</span>
+                <span class="font-semibold">Do unused tokens expire?</span>
                 <span class="text-slate-400 group-open:rotate-180 transition">⌄</span>
               </summary>
               <div class="mt-4 text-sm text-slate-400 leading-relaxed">
-                After intake is complete and approved, expect initial status within 5 business days, depending on access and transcript availability.
+                Unused tokens roll over for 60 days, giving you more flexibility before they expire.
               </div>
             </details>
           </div>
@@ -295,7 +344,7 @@
       <section class="px-6 py-24">
         <div class="max-w-3xl mx-auto text-center">
           <h2 class="text-3xl md:text-5xl font-bold mb-6">Ready to <span class="gradient-text">Start?</span></h2>
-          <p class="text-xl text-slate-400 mb-10 max-w-xl mx-auto">Complete intake and we’ll map your next step.</p>
+          <p class="text-xl text-slate-400 mb-10 max-w-xl mx-auto">Choose Free to get started, or move straight into a paid membership for tokens, inquiries, and more active support tools.</p>
 
           <a
             id="pricing-cta"
@@ -303,7 +352,7 @@
             class="inline-block px-10 py-5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-semibold text-xl rounded-lg transition-all duration-200 transform hover:scale-105 shadow-xl shadow-amber-500/30"
           >Start intake →</a>
 
-          <p class="mt-6 text-sm text-slate-500">No IRS representation created by intake. No obligation until you sign.</p>
+          <p class="mt-6 text-sm text-slate-500">Membership does not include IRS representation or tax resolution services.</p>
         </div>
       </section>
 
@@ -322,9 +371,9 @@
 
   <script>
     const defaultConfig = {
-      pricing_headline: 'Simple Plans. Serious Monitoring.',
-      pricing_subheadline: 'Start with intake. We confirm fit, pull your initial transcripts, and monitor for changes.',
-      pricing_trust: 'Choose your monitoring level — upgrades anytime.',
+      pricing_headline: 'Simple Plans. Serious Memberships.',
+      pricing_subheadline: 'Start with the membership that fits your needs. Get dashboard access, matching, and monthly tokens for transcripts and tax tools.',
+      pricing_trust: 'Choose your membership level — upgrade anytime.',
       footer_text: 'Professional tax account monitoring services provided by licensed tax professional.',
       background_color: '#020617',
       text_color: '#f1f5f9',
@@ -346,7 +395,7 @@
 
       if (pricingHeadline) {
         const text = config.pricing_headline || defaultConfig.pricing_headline;
-        pricingHeadline.innerHTML = String(text).replace('Serious Monitoring.', '<span class="gradient-text">Serious Monitoring.</span>');
+        pricingHeadline.innerHTML = String(text).replace('Serious Memberships.', '<span class="gradient-text">Serious Memberships.</span>');
         pricingHeadline.style.fontFamily = `${customFont}, ${baseFontStack}`;
       }
 
@@ -384,6 +433,124 @@
       ]);
     }
 
+    const defaultPricing = {
+      free: { monthly: 0, yearly: 0, taxToolTokens: 0, transcriptTokens: 0 },
+      essential: { monthly: 9, yearly: 5.4, taxToolTokens: 5, transcriptTokens: 2 },
+      plus: { monthly: 19, yearly: 11.4, taxToolTokens: 15, transcriptTokens: 5 },
+      premier: { monthly: 39, yearly: 23.4, taxToolTokens: 40, transcriptTokens: 10 }
+    };
+
+    let pricingState = JSON.parse(JSON.stringify(defaultPricing));
+    let isYearlySelected = false;
+
+    function formatPrice(value) {
+      const num = Number(value);
+      if (!Number.isFinite(num)) return '';
+      return num % 1 === 0 ? String(num) : num.toFixed(2).replace(/\.00$/, '').replace(/0$/, '');
+    }
+
+    function planHref(plan, yearly) {
+      const billing = yearly && plan !== 'free' ? 'yearly' : 'monthly';
+      return `/app/intake.html?plan=${encodeURIComponent(plan)}&billing=${encodeURIComponent(billing)}`;
+    }
+
+    function applyPricingToCard(card) {
+      if (!card) return;
+      const plan = card.dataset.plan;
+      const planPricing = pricingState[plan];
+      if (!planPricing) return;
+      card.dataset.monthly = String(planPricing.monthly);
+      card.dataset.yearly = String(planPricing.yearly);
+      card.dataset.taxTools = String(planPricing.taxToolTokens);
+      card.dataset.transcripts = String(planPricing.transcriptTokens);
+
+      const transcriptNode = card.querySelector('[data-transcript-tokens]');
+      const taxToolNode = card.querySelector('[data-tax-tool-tokens]');
+      const cta = card.querySelector('[data-plan-cta]');
+
+      if (transcriptNode) transcriptNode.textContent = String(planPricing.transcriptTokens);
+      if (taxToolNode) taxToolNode.textContent = String(planPricing.taxToolTokens);
+      if (cta) cta.href = planHref(plan, isYearlySelected);
+    }
+
+    function syncPlanCard(card, yearly) {
+      if (!card) return;
+      const priceNode = card.querySelector('[data-price]');
+      const noteNode = card.querySelector('[data-billing-note]');
+      const wrapNode = card.querySelector('[data-price-wrap]');
+      const toggle = card.querySelector('[data-billing-toggle]');
+      const cta = card.querySelector('[data-plan-cta]');
+      const monthly = Number(card.dataset.monthly || 0);
+      const yearlyPrice = Number(card.dataset.yearly || monthly);
+      const isFree = monthly === 0 && yearlyPrice === 0;
+      const active = yearly && !isFree ? yearlyPrice : monthly;
+
+      if (toggle) {
+        toggle.checked = yearly && !isFree;
+        toggle.disabled = isFree;
+      }
+      if (cta) cta.href = planHref(card.dataset.plan, yearly);
+      if (wrapNode) wrapNode.classList.add('is-updating');
+
+      window.setTimeout(function () {
+        if (priceNode) priceNode.textContent = formatPrice(active);
+        if (noteNode) {
+          if (isFree) {
+            noteNode.textContent = 'No payment method required';
+          } else {
+            noteNode.textContent = yearly
+              ? `Billed annually at $${formatPrice(active * 12)}/year`
+              : 'Billed monthly';
+          }
+        }
+        if (wrapNode) wrapNode.classList.remove('is-updating');
+      }, 90);
+    }
+
+    function syncAllPlanCards(yearly) {
+      isYearlySelected = !!yearly;
+      const planCards = Array.from(document.querySelectorAll('[data-plan]'));
+      planCards.forEach(function (card) {
+        applyPricingToCard(card);
+        syncPlanCard(card, isYearlySelected);
+      });
+    }
+
+    async function loadPricingFromApi() {
+      try {
+        const response = await fetch('/api/pricing', { headers: { 'Accept': 'application/json' } });
+        if (!response.ok) return;
+        const data = await response.json();
+        if (!data || typeof data !== 'object') return;
+
+        ['essential', 'free', 'plus', 'premier'].forEach(function (plan) {
+          const incoming = data[plan];
+          if (!incoming || typeof incoming !== 'object') return;
+          pricingState[plan] = {
+            monthly: Number(incoming.monthly ?? pricingState[plan].monthly),
+            yearly: Number(incoming.yearly ?? pricingState[plan].yearly),
+            taxToolTokens: Number(incoming.taxToolTokens ?? pricingState[plan].taxToolTokens),
+            transcriptTokens: Number(incoming.transcriptTokens ?? pricingState[plan].transcriptTokens)
+          };
+        });
+      } catch (error) {
+        console.warn('Pricing API fallback in use.', error);
+      }
+    }
+
+    function initBillingToggles() {
+      const planCards = Array.from(document.querySelectorAll('[data-plan]'));
+      if (!planCards.length) return;
+
+      planCards.forEach(function (card) {
+        const toggle = card.querySelector('[data-billing-toggle]');
+        if (!toggle) return;
+        toggle.addEventListener('change', function () {
+          syncAllPlanCards(toggle.checked);
+        });
+      });
+    }
+
     if (window.elementSdk) {
       window.elementSdk.init({
         defaultConfig,
@@ -392,6 +559,11 @@
         mapToEditPanelValues
       });
     }
+
+    initBillingToggles();
+    loadPricingFromApi().finally(function () {
+      syncAllPlanCards(false);
+    });
   </script>
 </body>
 </html>
