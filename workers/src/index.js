@@ -143,7 +143,6 @@ async function handleGetTmpPricing(request, env) {
   });
 }
 
-}
 
 /* ------------------------------------------
  * Worker Entry
