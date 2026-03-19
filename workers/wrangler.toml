@@ -25,6 +25,12 @@ enabled = true
 binding = "R2_BUCKET"
 bucket_name = "taxmonitor-pro"
 
+[[d1_databases]]
+binding = "DB"
+database_name = "taxmonitor-pro-d1"
+database_id = ""
+migrations_dir = "migrations"
+
 # ---------------------------------------
 # Vars (non-secret)
 # ---------------------------------------
@@ -137,6 +143,10 @@ MY_ORGANIZATION_CITY = "El Cajon"
 MY_ORGANIZATION_NAME = "Tax Monitor Pro"
 MY_ORGANIZATION_STATE_PROVINCE = "CA"
 MY_ORGANIZATION_ZIP = "92020"
+
+SESSION_COOKIE_NAME   = "tmp_session"
+VLP_API_BASE_URL      = "https://api.virtuallaunch.pro"
+TMP_DIRECTORY_JSON    = ""
 
 # ---------------------------------------
 # Secrets (set via wrangler secret put)
