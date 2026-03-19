@@ -1,24 +1,78 @@
 {
-  "contract_version": "v1",
-  "domain": "tmp",
-  "notes": [
-    "R2 is authoritative.",
-    "Projection happens after canonical write."
-  ],
-  "request": {
-    "auth": "",
-    "content_type": "application/json",
-    "params": {},
-    "query": {},
-    "body": {}
+  "auth": {
+    "required": false,
+    "trustClientIdentityFields": false,
+    "type": "none"
+  },
+  "contract": {
+    "authority": [
+      "R2_TMP_CANONICAL"
+    ],
+    "governs": "Generates a single-use magic link token, stores the SHA-256 hash in D1 tmp_magic_link_tokens, and sends the link via Gmail API using the service account.",
+    "path": "/contracts/tmp.auth.magic-link.request.v1.json",
+    "source": "Tax Monitor Pro",
+    "title": "Tax Monitor Pro — Auth Contract — Magic Link Request",
+    "usedOnPages": [
+      "/app/login.html"
+    ],
+    "validation": {
+      "enumStrict": false,
+      "rejectUnknownValues": false,
+      "requireJsonContentType": true
+    },
+    "version": 1
+  },
+  "delivery": {
+    "endpoint": "/v1/auth/magic-link/request",
+    "method": "POST",
+    "receiptKeyPattern": "receipts/tmp/auth/magic-link-request/{eventId}.json",
+    "receiptSource": "tmp_auth_magic_link_request",
+    "signature": {
+      "header": null,
+      "required": false,
+      "secretEnvVar": null
+    }
+  },
+  "effects": {
+    "dedupeKey": "system.requestId",
+    "eventIdFrom": "system.requestId",
+    "receiptAppend": {
+      "to": "receipts/tmp/auth/magic-link-request/{eventId}.json"
+    },
+    "writeOrder": [
+      "receiptAppend"
+    ],
+    "writes": []
+  },
+  "payload": {
+    "additionalProperties": false,
+    "properties": {
+      "email": {
+        "format": "email",
+        "type": "string"
+      }
+    },
+    "required": [
+      "email"
+    ],
+    "type": "object"
   },
   "response": {
-    "content_type": "application/json",
-    "shape": {}
+    "deduped": {
+      "ok": true,
+      "sent": true
+    },
+    "error": {
+      "error": "magic_link_request_failed",
+      "ok": false
+    },
+    "success": {
+      "ok": true,
+      "sent": true
+    }
   },
-  "storage": {
-    "canonical_r2": [],
-    "receipt_r2": "",
-    "d1_projection": []
+  "schema": {
+    "name": "tmp_auth_magic_link_request",
+    "version": 1
   }
 }

@@ -1,24 +1,72 @@
 {
-  "contract_version": "v1",
-  "domain": "tmp",
-  "notes": [
-    "R2 is authoritative.",
-    "Projection happens after canonical write."
-  ],
-  "request": {
-    "auth": "",
-    "content_type": "application/json",
-    "params": {},
-    "query": {},
-    "body": {}
+  "auth": {
+    "required": false,
+    "trustClientIdentityFields": false,
+    "type": "none"
+  },
+  "contract": {
+    "authority": [
+      "TMP_SESSION",
+      "R2_TMP_CANONICAL"
+    ],
+    "governs": "SAML Assertion Consumer Service. Accepts SAMLResponse form POST, verifies RelayState nonce, verifies assertion signature using SSO_SAML_IDP_CERT, extracts email, upserts taxpro account, sets session cookie, redirects to dashboard.",
+    "path": "/contracts/tmp.auth.sso.saml.acs.v1.json",
+    "source": "Tax Monitor Pro",
+    "title": "Tax Monitor Pro — Auth Contract — SSO SAML ACS",
+    "usedOnPages": [],
+    "validation": {
+      "enumStrict": false,
+      "rejectUnknownValues": false,
+      "requireJsonContentType": false
+    },
+    "version": 1
+  },
+  "delivery": {
+    "endpoint": "/v1/auth/sso/saml/acs",
+    "method": "POST",
+    "receiptKeyPattern": "receipts/tmp/auth/saml-acs/{eventId}.json",
+    "receiptSource": "tmp_auth_sso_saml_acs",
+    "signature": {
+      "header": null,
+      "required": false,
+      "secretEnvVar": null
+    }
+  },
+  "effects": {
+    "dedupeKey": "system.requestId",
+    "eventIdFrom": "system.requestId",
+    "receiptAppend": {
+      "to": "receipts/tmp/auth/saml-acs/{eventId}.json"
+    },
+    "writeOrder": [
+      "receiptAppend",
+      "canonicalUpsert",
+      "projection"
+    ],
+    "writes": []
+  },
+  "payload": {
+    "additionalProperties": true,
+    "properties": {},
+    "required": [],
+    "type": "object"
   },
   "response": {
-    "content_type": "application/json",
-    "shape": {}
+    "deduped": {
+      "ok": true,
+      "redirect": true
+    },
+    "error": {
+      "error": "saml_acs_failed",
+      "ok": false
+    },
+    "success": {
+      "ok": true,
+      "redirect": true
+    }
   },
-  "storage": {
-    "canonical_r2": [],
-    "receipt_r2": "",
-    "d1_projection": []
+  "schema": {
+    "name": "tmp_auth_sso_saml_acs",
+    "version": 1
   }
 }

@@ -1,24 +1,85 @@
 {
-  "contract_version": "v1",
-  "domain": "tmp",
-  "notes": [
-    "R2 is authoritative.",
-    "Projection happens after canonical write."
-  ],
-  "request": {
-    "auth": "",
-    "content_type": "application/json",
-    "params": {},
-    "query": {},
-    "body": {}
+  "auth": {
+    "required": true,
+    "trustClientIdentityFields": false,
+    "type": "session"
+  },
+  "contract": {
+    "authority": [
+      "R2_TMP_CANONICAL"
+    ],
+    "governs": "Completes 2FA enrollment by verifying the enrollmentId and verificationCode match the pending state, then activates TOTP in the account R2 record.",
+    "path": "/contracts/tmp.auth.2fa.enroll-verify.v1.json",
+    "source": "Tax Monitor Pro",
+    "title": "Tax Monitor Pro — Auth Contract — 2FA Enroll Verify",
+    "usedOnPages": [
+      "/app/settings.html"
+    ],
+    "validation": {
+      "enumStrict": false,
+      "rejectUnknownValues": false,
+      "requireJsonContentType": true
+    },
+    "version": 1
+  },
+  "delivery": {
+    "endpoint": "/v1/auth/2fa/enroll/verify",
+    "method": "POST",
+    "receiptKeyPattern": "receipts/tmp/auth/2fa-enroll-verify/{eventId}.json",
+    "receiptSource": "tmp_auth_2fa_enroll_verify",
+    "signature": {
+      "header": null,
+      "required": false,
+      "secretEnvVar": null
+    }
+  },
+  "effects": {
+    "dedupeKey": "system.requestId",
+    "eventIdFrom": "system.requestId",
+    "receiptAppend": {
+      "to": "receipts/tmp/auth/2fa-enroll-verify/{eventId}.json"
+    },
+    "writeOrder": [
+      "receiptAppend"
+    ],
+    "writes": []
+  },
+  "payload": {
+    "additionalProperties": false,
+    "properties": {
+      "accountId": {
+        "type": "string"
+      },
+      "enrollmentId": {
+        "type": "string"
+      },
+      "verificationCode": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "accountId",
+      "enrollmentId",
+      "verificationCode"
+    ],
+    "type": "object"
   },
   "response": {
-    "content_type": "application/json",
-    "shape": {}
+    "deduped": {
+      "enabled": true,
+      "ok": true
+    },
+    "error": {
+      "error": "verification_failed",
+      "ok": false
+    },
+    "success": {
+      "enabled": true,
+      "ok": true
+    }
   },
-  "storage": {
-    "canonical_r2": [],
-    "receipt_r2": "",
-    "d1_projection": []
+  "schema": {
+    "name": "tmp_auth_2fa_enroll_verify",
+    "version": 1
   }
 }

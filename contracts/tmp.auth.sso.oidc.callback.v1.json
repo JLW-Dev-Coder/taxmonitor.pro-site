@@ -1,24 +1,76 @@
 {
-  "contract_version": "v1",
-  "domain": "tmp",
-  "notes": [
-    "R2 is authoritative.",
-    "Projection happens after canonical write."
-  ],
-  "request": {
-    "auth": "",
-    "content_type": "application/json",
-    "params": {},
-    "query": {},
-    "body": {}
+  "auth": {
+    "required": false,
+    "trustClientIdentityFields": false,
+    "type": "none"
+  },
+  "contract": {
+    "authority": [
+      "TMP_SESSION",
+      "R2_TMP_CANONICAL"
+    ],
+    "governs": "OIDC callback. Verifies state nonce, exchanges code with PKCE, verifies ID token signature via JWKS discovery, upserts taxpro account, sets session cookie, redirects to dashboard.",
+    "path": "/contracts/tmp.auth.sso.oidc.callback.v1.json",
+    "source": "Tax Monitor Pro",
+    "title": "Tax Monitor Pro — Auth Contract — SSO OIDC Callback",
+    "usedOnPages": [],
+    "validation": {
+      "enumStrict": false,
+      "rejectUnknownValues": false,
+      "requireJsonContentType": false,
+      "requiredQuery": [
+        "code",
+        "state"
+      ]
+    },
+    "version": 1
+  },
+  "delivery": {
+    "endpoint": "/v1/auth/sso/oidc/callback",
+    "method": "GET",
+    "receiptKeyPattern": "receipts/tmp/auth/oidc-callback/{eventId}.json",
+    "receiptSource": "tmp_auth_sso_oidc_callback",
+    "signature": {
+      "header": null,
+      "required": false,
+      "secretEnvVar": null
+    }
+  },
+  "effects": {
+    "dedupeKey": "system.requestId",
+    "eventIdFrom": "system.requestId",
+    "receiptAppend": {
+      "to": "receipts/tmp/auth/oidc-callback/{eventId}.json"
+    },
+    "writeOrder": [
+      "receiptAppend",
+      "canonicalUpsert",
+      "projection"
+    ],
+    "writes": []
+  },
+  "payload": {
+    "additionalProperties": true,
+    "properties": {},
+    "required": [],
+    "type": "object"
   },
   "response": {
-    "content_type": "application/json",
-    "shape": {}
+    "deduped": {
+      "ok": true,
+      "redirect": true
+    },
+    "error": {
+      "error": "oidc_callback_failed",
+      "ok": false
+    },
+    "success": {
+      "ok": true,
+      "redirect": true
+    }
   },
-  "storage": {
-    "canonical_r2": [],
-    "receipt_r2": "",
-    "d1_projection": []
+  "schema": {
+    "name": "tmp_auth_sso_oidc_callback",
+    "version": 1
   }
 }

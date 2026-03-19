@@ -1,24 +1,76 @@
 {
-  "contract_version": "v1",
-  "domain": "tmp",
-  "notes": [
-    "R2 is authoritative.",
-    "Projection happens after canonical write."
-  ],
-  "request": {
-    "auth": "",
-    "content_type": "application/json",
-    "params": {},
-    "query": {},
-    "body": {}
+  "auth": {
+    "required": false,
+    "trustClientIdentityFields": false,
+    "type": "none"
+  },
+  "contract": {
+    "authority": [
+      "TMP_SESSION",
+      "R2_TMP_CANONICAL"
+    ],
+    "governs": "Google OAuth callback. Verifies CSRF state, exchanges code for tokens, fetches user info, upserts account, sets session cookie, redirects to dashboard.",
+    "path": "/contracts/tmp.auth.google.callback.v1.json",
+    "source": "Tax Monitor Pro",
+    "title": "Tax Monitor Pro — Auth Contract — Google OAuth Callback",
+    "usedOnPages": [],
+    "validation": {
+      "enumStrict": false,
+      "rejectUnknownValues": false,
+      "requireJsonContentType": false,
+      "requiredQuery": [
+        "code",
+        "state"
+      ]
+    },
+    "version": 1
+  },
+  "delivery": {
+    "endpoint": "/v1/auth/google/callback",
+    "method": "GET",
+    "receiptKeyPattern": "receipts/tmp/auth/google-callback/{eventId}.json",
+    "receiptSource": "tmp_auth_google_callback",
+    "signature": {
+      "header": null,
+      "required": false,
+      "secretEnvVar": null
+    }
+  },
+  "effects": {
+    "dedupeKey": "system.requestId",
+    "eventIdFrom": "system.requestId",
+    "receiptAppend": {
+      "to": "receipts/tmp/auth/google-callback/{eventId}.json"
+    },
+    "writeOrder": [
+      "receiptAppend",
+      "canonicalUpsert",
+      "projection"
+    ],
+    "writes": []
+  },
+  "payload": {
+    "additionalProperties": true,
+    "properties": {},
+    "required": [],
+    "type": "object"
   },
   "response": {
-    "content_type": "application/json",
-    "shape": {}
+    "deduped": {
+      "ok": true,
+      "redirect": true
+    },
+    "error": {
+      "error": "oauth_callback_failed",
+      "ok": false
+    },
+    "success": {
+      "ok": true,
+      "redirect": true
+    }
   },
-  "storage": {
-    "canonical_r2": [],
-    "receipt_r2": "",
-    "d1_projection": []
+  "schema": {
+    "name": "tmp_auth_google_callback",
+    "version": 1
   }
 }

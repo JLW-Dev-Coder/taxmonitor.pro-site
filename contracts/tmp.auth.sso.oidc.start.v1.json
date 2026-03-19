@@ -1,24 +1,72 @@
 {
-  "contract_version": "v1",
-  "domain": "tmp",
-  "notes": [
-    "R2 is authoritative.",
-    "Projection happens after canonical write."
-  ],
-  "request": {
-    "auth": "",
-    "content_type": "application/json",
-    "params": {},
-    "query": {},
-    "body": {}
+  "auth": {
+    "required": false,
+    "trustClientIdentityFields": false,
+    "type": "none"
+  },
+  "contract": {
+    "authority": [
+      "TMP_SESSION",
+      "R2_TMP_CANONICAL"
+    ],
+    "governs": "Initiates OIDC authorization code flow with PKCE. Generates state nonce and code_verifier, stores them in R2, redirects to IdP authorization endpoint.",
+    "path": "/contracts/tmp.auth.sso.oidc.start.v1.json",
+    "source": "Tax Monitor Pro",
+    "title": "Tax Monitor Pro — Auth Contract — SSO OIDC Start",
+    "usedOnPages": [
+      "/app/login.html"
+    ],
+    "validation": {
+      "enumStrict": false,
+      "rejectUnknownValues": false,
+      "requireJsonContentType": false
+    },
+    "version": 1
+  },
+  "delivery": {
+    "endpoint": "/v1/auth/sso/oidc/start",
+    "method": "GET",
+    "receiptKeyPattern": "receipts/tmp/auth/oidc-start/{eventId}.json",
+    "receiptSource": "tmp_auth_sso_oidc_start",
+    "signature": {
+      "header": null,
+      "required": false,
+      "secretEnvVar": null
+    }
+  },
+  "effects": {
+    "dedupeKey": "system.requestId",
+    "eventIdFrom": "system.requestId",
+    "receiptAppend": {
+      "to": "receipts/tmp/auth/oidc-start/{eventId}.json"
+    },
+    "writeOrder": [
+      "receiptAppend"
+    ],
+    "writes": []
+  },
+  "payload": {
+    "additionalProperties": false,
+    "properties": {},
+    "required": [],
+    "type": "object"
   },
   "response": {
-    "content_type": "application/json",
-    "shape": {}
+    "deduped": {
+      "ok": true,
+      "redirect": true
+    },
+    "error": {
+      "error": "oidc_start_failed",
+      "ok": false
+    },
+    "success": {
+      "ok": true,
+      "redirect": true
+    }
   },
-  "storage": {
-    "canonical_r2": [],
-    "receipt_r2": "",
-    "d1_projection": []
+  "schema": {
+    "name": "tmp_auth_sso_oidc_start",
+    "version": 1
   }
 }
