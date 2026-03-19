@@ -1,0 +1,82 @@
+{
+  "auth": {
+    "required": true,
+    "cookie": "tmp_session",
+    "note": "Session cookie must be present and valid. Caller must be the account owner or an authorized system caller (e.g., Stripe webhook handler). PATCH is system-initiated for billing cycle grants and tool-use decrements."
+  },
+  "contract": {
+    "path": "/v1/entitlements/{account_id}",
+    "title": "Update Account Entitlements",
+    "governs": "Mutation of a taxpayer account's entitlements record. Updates token balances (decrement on tool use, grant on billing cycle renewal). Follows write pipeline: receipt R2 → canonical R2 (tmp_entitlements/{account_id}.json) → D1 projection (tmp_entitlements table).",
+    "usedOnPages": []
+  },
+  "delivery": {
+    "endpoint": "/v1/entitlements/{account_id}",
+    "method": "PATCH",
+    "receiptKeyPattern": "receipts/tmp/entitlements/{eventId}.json"
+  },
+  "effects": {
+    "writeOrder": ["receipt", "canonicalUpsert", "d1Projection"],
+    "canonicalUpsert": "tmp_entitlements/{account_id}.json",
+    "canonicalPatch": null,
+    "receiptAppend": "receipts/tmp/entitlements/{eventId}.json"
+  },
+  "payload": {
+    "type": "object",
+    "properties": {
+      "taxToolTokens": {
+        "type": "integer",
+        "optional": true,
+        "description": "New tax tool token balance (replaces existing balance)"
+      },
+      "transcriptTokens": {
+        "type": "integer",
+        "optional": true,
+        "description": "New transcript token balance (replaces existing balance)"
+      },
+      "plan": {
+        "type": "string",
+        "enum": ["free", "essential", "plus", "premier"],
+        "optional": true,
+        "description": "Updated plan tier"
+      },
+      "tokensGrantedAt": {
+        "type": "string",
+        "format": "ISO timestamp",
+        "optional": true,
+        "description": "Timestamp of this token grant"
+      },
+      "billingPeriodEnd": {
+        "type": "string",
+        "format": "ISO timestamp",
+        "optional": true,
+        "description": "End of current billing period"
+      }
+    },
+    "required": []
+  },
+  "response": {
+    "success": {
+      "status": 200,
+      "shape": {
+        "accountId": "string — ACCT_{UUID}",
+        "plan": "string — free | essential | plus | premier",
+        "taxToolTokens": "integer — updated tax tool token balance",
+        "transcriptTokens": "integer — updated transcript token balance",
+        "tokensGrantedAt": "string | null — ISO timestamp of last token grant",
+        "billingPeriodEnd": "string | null — ISO timestamp of billing period end",
+        "updatedAt": "string — ISO timestamp of this update"
+      }
+    },
+    "error": {
+      "400": "Bad request — invalid payload or plan value",
+      "401": "Unauthorized — no valid tmp_session cookie",
+      "403": "Forbidden — caller not authorized to update this account's entitlements"
+    },
+    "deduped": null
+  },
+  "schema": {
+    "name": "tmp.entitlements.patch",
+    "version": "v1"
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "auth": {
+    "required": true,
+    "cookie": "tmp_session",
+    "note": "Session cookie must be present and valid. Account in session must match account_id param or be an authorized system caller."
+  },
+  "contract": {
+    "path": "/v1/entitlements/{account_id}",
+    "title": "Get Account Entitlements",
+    "governs": "Read-only access to a taxpayer account's entitlements record from R2 canonical path tmp_entitlements/{account_id}.json. Falls back to plan defaults from wrangler.toml vars (TMP_PLAN_*) when no R2 record exists.",
+    "usedOnPages": ["app/index.html"]
+  },
+  "delivery": {
+    "endpoint": "/v1/entitlements/{account_id}",
+    "method": "GET",
+    "receiptKeyPattern": null
+  },
+  "effects": {
+    "writeOrder": [],
+    "canonicalUpsert": null,
+    "canonicalPatch": null,
+    "receiptAppend": null
+  },
+  "payload": {
+    "type": "none",
+    "properties": {}
+  },
+  "response": {
+    "success": {
+      "status": 200,
+      "shape": {
+        "accountId": "string — ACCT_{UUID}",
+        "plan": "string — free | essential | plus | premier",
+        "taxToolTokens": "integer — current tax tool token balance",
+        "transcriptTokens": "integer — current transcript token balance",
+        "tokensGrantedAt": "string | null — ISO timestamp of last token grant",
+        "billingPeriodEnd": "string | null — ISO timestamp of billing period end",
+        "updatedAt": "string — ISO timestamp of last update"
+      }
+    },
+    "error": {
+      "401": "Unauthorized — no valid tmp_session cookie",
+      "403": "Forbidden — session account_id does not match path param",
+      "404": "Not found — account does not exist"
+    },
+    "deduped": null
+  },
+  "schema": {
+    "name": "tmp.entitlements.get",
+    "version": "v1"
+  }
+}

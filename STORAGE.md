@@ -132,6 +132,38 @@ R2 is always authoritative. D1 tables are projections of this data.
   — D1 projection: tmp_compliance_reports
 ```
 
+### Entitlements [Phase 9]
+```
+/r2/tmp_entitlements/{account_id}.json
+  — canonical entitlements record
+  — fields: accountId, plan, taxToolTokens, transcriptTokens,
+             tokensGrantedAt, billingPeriodEnd, updatedAt
+  — written by: PATCH /v1/entitlements/{account_id},
+                POST /v1/webhooks/stripe (on membership activation, plan change, cancellation)
+  — D1 projection: tmp_entitlements
+```
+
+### Monitoring Engagements
+```
+/r2/tmp_monitoring_engagements/{engagement_id}.json
+  — canonical monitoring engagement record
+  — fields: engagementId, accountId, professionalId, planType,
+             termWeeks, mfjAddon, status, stripeSubscriptionId,
+             planStart, planEnd, createdAt, updatedAt
+  — written by: POST /v1/webhooks/stripe (on monitoring plan checkout),
+                POST /v1/engagements/{id}/claim (Phase 15),
+                Cron Trigger (on plan_end completion, Phase 9)
+  — D1 projection: tmp_monitoring_engagements
+  — R2 receipt: /r2/receipts/tmp/monitoring-engagements/{event_id}.json
+
+/r2/tmp_transcripts/{account_id}/{document_id}.enc
+  — encrypted transcript file uploaded by tax pro (Phase 13)
+  — same document storage controls as Phase 11
+  — encrypted AES-256-GCM with ENCRYPTION_KEY
+  — account-scoped, audit logged to tmp_activity
+  — NEVER returned as raw bytes in API responses
+```
+
 ### Write Receipts
 ```
 /r2/receipts/tmp/{domain}/{event_id}.json
@@ -194,6 +226,8 @@ tmp_notifications           0013_create_tmp_notifications.sql           2
 tmp_email_messages          0014_create_tmp_email_messages.sql          2
 tmp_magic_link_tokens       0015_create_tmp_magic_link_tokens.sql       2/3
 tmp_exit_surveys            0016_create_tmp_exit_surveys.sql            9 [Q4]
+tmp_monitoring_engagements  0017_create_tmp_monitoring_engagements.sql  9 [Q8] [Q9]
+tmp_entitlements            0018_create_tmp_entitlements.sql            9
 ```
 
 ### Table Descriptions
@@ -291,6 +325,31 @@ tmp_exit_surveys            0016_create_tmp_exit_surveys.sql            9 [Q4]
   Columns: survey_id (PK), account_id, reason, feedback, rating (INT), submitted_at
   Indexes: account_id, reason, submitted_at
   Migration: 0016_create_tmp_exit_surveys.sql
+
+**tmp_monitoring_engagements** [Q8] [Q9]
+  Monitoring engagement index (Bronze/Silver/Gold/Snapshot/MFJ)
+  Columns: engagement_id (PK), account_id, professional_id, plan_type, term_weeks,
+           mfj_addon (INT/BOOL), status, stripe_subscription_id, plan_start, plan_end,
+           created_at, updated_at
+  Indexes: account_id, professional_id, status, plan_type
+  NOTE: professional_id is null until a tax pro claims the engagement (Phase 15 [Q8])
+        stripe_subscription_id is null for Snapshot (one-time payment)
+        plan_end is null for Snapshot until second compliance report delivered [Q9]
+  R2 canonical: tmp_monitoring_engagements/{engagement_id}.json
+  Written by: POST /v1/webhooks/stripe (on monitoring plan checkout),
+              POST /v1/engagements/{id}/claim (Phase 15),
+              Cron Trigger (on plan_end completion, Phase 9)
+  Migration: 0017_create_tmp_monitoring_engagements.sql
+
+**tmp_entitlements** [Phase 9]
+  Token balance and plan entitlements per taxpayer account
+  Columns: account_id (PK), plan, tax_tool_tokens (INT), transcript_tokens (INT),
+           tokens_granted_at (TEXT), billing_period_end (TEXT), updated_at (TEXT)
+  NOTE: No additional indexes beyond the primary key.
+  R2 canonical: tmp_entitlements/{account_id}.json
+  Written by: PATCH /v1/entitlements/{account_id},
+              POST /v1/webhooks/stripe (membership activation, plan change, cancellation)
+  Migration: 0018_create_tmp_entitlements.sql
 
 ---
 

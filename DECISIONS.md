@@ -6,7 +6,7 @@
 # If you believe a decision needs revision, surface it explicitly to the user
 # with the decision ID and the specific change requested.
 #
-# Total closed decisions: 11 (Q1–Q11)
+# Total closed decisions: 12 (Q1–Q12)
 
 ---
 
@@ -473,6 +473,31 @@ directly to R2. Worker never touches the file bytes.
        - Returns { ok: true, document_id }
   5. wrangler.toml: No new vars required. R2 presigned URL uses R2_BUCKET binding
      already present. Presigned URL generation does not require additional secrets.
+
+---
+
+## Q12 — Next.js Version
+
+**Question:** Which version of Next.js should be used for the TMP frontend scaffold?
+
+**Decision: UPGRADE TO NEXT.JS 16.2.0+. CLOSED.**
+
+  web/package.json next version set to ^16.2.0.
+  eslint-config-next updated to match: ^16.2.0.
+
+**Rationale:**
+  Three moderate CVEs (GHSA-9g9p-9gw9-jx7f, GHSA-3x4c-7xq6-9pq8,
+  GHSA-ggv3-7p47-pfv8) affect Next.js 9.5.0–16.1.6. Upgrading before
+  Phase 3 component work begins avoids patching a codebase with existing
+  React components.
+
+**Implementation requirements:**
+  1. web/package.json next version: ^16.2.0
+  2. eslint-config-next: ^16.2.0 (added to devDependencies)
+  3. react and react-dom remain at ^19.0.0 (compatible with Next.js 16)
+  4. Owner runs: cd web && npm install && npm audit to confirm vulnerabilities resolved.
+
+Phase: Phase 2 (applied during scaffold cleanup).
 
 ---
 

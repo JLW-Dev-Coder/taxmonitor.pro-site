@@ -227,6 +227,12 @@ Replaced by upload-init and upload-complete. Tax pro uploads directly to TMP via
 | GET    | /v1/engagements/open                         | PLANNED  | tmp.engagement.list-open.v1.json             |
 | POST   | /v1/engagements/{engagement_id}/claim        | PLANNED  | tmp.engagement.claim.v1.json                 |
 
+### Entitlements Routes — Phase 2/9
+| Method | Path                              | Status  | Contract File                          |
+|--------|-----------------------------------|---------|----------------------------------------|
+| GET    | /v1/entitlements/{account_id}     | PLANNED | tmp.entitlements.get.v1.json           |
+| PATCH  | /v1/entitlements/{account_id}     | PLANNED | tmp.entitlements.patch.v1.json         |
+
 ---
 
 ## Route Count Summary
@@ -239,8 +245,8 @@ Replaced by upload-init and upload-complete. Tax pro uploads directly to TMP via
 | MISSING contract files                | 1     |
 | STUB handlers (501)                   | 11    |
 | Live handlers                         | 33    |
-| Planned (not in manifest)             | 26    |
-| **Total surface (current + planned)** | **71**|
+| Planned (not in manifest)             | 28    |
+| **Total surface (current + planned)** | **73**|
 
 NOTE: Planned count increased from 22 (original) due to:
   +2  Monitoring engagement checkout routes (Phase 9 correction)

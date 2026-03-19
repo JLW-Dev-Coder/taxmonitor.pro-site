@@ -2,10 +2,10 @@
 # Platform: Tax Monitor Pro (TMP)
 # All canonical Worker contracts live in /contracts/ as tmp.*.v1.json
 # Last updated: 2026-03-18 (corrections applied — monitoring engagement model)
-# Total contracts: 71
+# Total contracts: 75
 #   On disk (tmp.*.v1.json):  43
 #   Missing from disk:         1 (referenced in manifest, file absent)
-#   Planned (not yet created): 27
+#   Planned (not yet created): 31
 #
 # CORRECTION APPLIED: tmp.transcript.request.v1.json (TTMP handoff model) is REMOVED.
 # Four new contracts replace it. See Phase 9 and Phase 13 sections below.
@@ -292,6 +292,19 @@ Both contracts depend on Phase 9 (tmp_monitoring_engagements D1 table must exist
 
 ---
 
+## SECTION 19 — ENTITLEMENTS CONTRACTS — Phase 2/9
+
+| # | File | Route | Method | Manifest | D1 table | HTML source | Phase | Format |
+|---|------|-------|--------|----------|----------|-------------|-------|--------|
+| 75 | tmp.entitlements.get.v1.json | /v1/entitlements/{account_id} | GET | PLANNED | tmp_entitlements | app/index.html | 2 | CANONICAL |
+| 76 | tmp.entitlements.patch.v1.json | /v1/entitlements/{account_id} | PATCH | PLANNED | tmp_entitlements | NONE (system-initiated) | 9 | CANONICAL |
+
+GET /v1/entitlements/{account_id} — Phase 2 (returns plan defaults from wrangler.toml when no R2 record exists).
+PATCH /v1/entitlements/{account_id} — Phase 9 (wired to billing cycle: grant on activation, decrement on use, reset on renewal).
+Stripe webhook entitlement grants — Phase 9 (checkout.session.completed, customer.subscription.updated, customer.subscription.deleted).
+
+---
+
 ## CONTRACT COUNT SUMMARY
 
 | Category                                     | Count |
@@ -307,7 +320,8 @@ Both contracts depend on Phase 9 (tmp_monitoring_engagements D1 table must exist
 | Planned — Compliance reports (Phase 12)       | 4     |
 | Planned — POA + Transcript (Phase 13)         | 5     |
 | Planned — Engagement management (Phase 15)    | 2     |
-| **TOTAL**                                     | **73**|
+| Planned — Entitlements (Phase 2/9)            | 2     |
+| **TOTAL**                                     | **75**|
 
 *The SMS send contract (#34) is counted in "Missing from disk" — it was referenced but never created.
 

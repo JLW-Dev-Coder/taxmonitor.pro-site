@@ -142,7 +142,19 @@ Phase 0 (Baseline)
        - tmp_notifications, tmp_preferences, tmp_support_tickets (existing routes)
   4. Validate projection repair: re-running projections from R2 receipts rebuilds D1
 
+**Additional Phase 2 deliverable — Entitlements read stub:**
+  5. GET /v1/entitlements/{account_id} route + contract + handler stub
+       - Add route to manifest.js
+       - Contract: tmp.entitlements.get.v1.json (CANONICAL — already created)
+       - Handler reads R2 tmp_entitlements/{account_id}.json
+       - Falls back to plan defaults from wrangler.toml vars
+         (TMP_PLAN_{PLAN}_TAX_TOOL_TOKENS, TMP_PLAN_{PLAN}_TRANSCRIPT_TOKENS)
+         when no R2 record exists (i.e., account has not yet activated a paid plan)
+       - Requires authenticated session (tmp_session cookie)
+       - No D1 read in Phase 2 (D1 projection table added in Phase 9 migration 0018)
+
 **Contracts changed:** None (upgrading write pipeline implementation, not contracts)
+**Contracts added:** tmp.entitlements.get.v1.json (Phase 2 entitlements read stub)
 **Migrations:** 0001–0015
 **wrangler.toml changes:** None (D1 block already added in Phase 1)
 
@@ -405,11 +417,33 @@ Two separate D1 projections. Stripe webhook routes by price metadata product_typ
     POST /v1/engagements/{engagement_id}/claim       (tmp.engagement.claim.v1.json)
   See Phase 15 for full implementation detail.
 
+**Entitlements deliverables (Phase 9):**
+  10. PATCH /v1/entitlements/{account_id} — wire token mutations to billing cycle
+       - Contract: tmp.entitlements.patch.v1.json (CANONICAL — already created)
+       - Add route to manifest.js
+       - Handler follows write pipeline: receipt R2 → canonical R2 → D1 projection
+       - Requires authenticated session (tmp_session cookie)
+  11. Stripe webhook entitlement grant logic — add to POST /v1/webhooks/stripe handler:
+       On checkout.session.completed where product_type = "membership":
+         a. Determine plan from Stripe price metadata
+         b. Look up token grants from wrangler.toml vars
+              (TMP_PLAN_{PLAN}_TAX_TOOL_TOKENS, TMP_PLAN_{PLAN}_TRANSCRIPT_TOKENS)
+         c. Write /r2/tmp_entitlements/{account_id}.json
+         d. Project to D1 tmp_entitlements (migration 0018)
+       On customer.subscription.updated:
+         a. Detect plan change from previous to new plan
+         b. Recalculate token grants for new plan
+         c. Update R2 entitlements record and D1 projection
+       On customer.subscription.deleted:
+         a. Set plan → 'free', taxToolTokens → 0, transcriptTokens → 0
+         b. Update R2 entitlements record and D1 projection
+
 **Contracts created:**
   tmp.exit-survey.submit.v1.json
   tmp.taxpayer-account.filing-status.update.v1.json
   tmp.monitoring-plan.checkout-session.create.v1.json
   tmp.monitoring-plan.checkout-status.get.v1.json
+  tmp.entitlements.patch.v1.json
 
 **Contracts upgraded:**
   tmp.webhooks.stripe.v1.json (add monitoring engagement routing)
@@ -423,7 +457,7 @@ Two separate D1 projections. Stripe webhook routes by price metadata product_typ
     [triggers]
     crons = ["0 9 * * *"]
 
-**Migrations:** 0016_create_tmp_exit_surveys.sql, 0017_create_tmp_monitoring_engagements.sql
+**Migrations:** 0016_create_tmp_exit_surveys.sql, 0017_create_tmp_monitoring_engagements.sql, 0018_create_tmp_entitlements.sql
 
 ---
 
@@ -677,8 +711,9 @@ Migration File                                    Table                        P
 0015_create_tmp_magic_link_tokens.sql             tmp_magic_link_tokens        2/3
 0016_create_tmp_exit_surveys.sql                  tmp_exit_surveys             9 [Q4]
 0017_create_tmp_monitoring_engagements.sql        tmp_monitoring_engagements   9 (NEW)
+0018_create_tmp_entitlements.sql                  tmp_entitlements             9
 ```
 
 Migrations 0001–0015 are applied in Phase 2 (batch schema creation).
-Migrations 0016–0017 are applied in Phase 9 (post-payment features).
+Migrations 0016–0018 are applied in Phase 9 (post-payment features).
 All migrations are sequential and non-destructive.

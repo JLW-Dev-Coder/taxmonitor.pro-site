@@ -1,4 +1,4 @@
-# CHATGPT_CONTEXT.md
+﻿# CHATGPT_CONTEXT.md
 # Tax Monitor Pro (TMP) — Master Context Document
 # This file is the complete source of truth for the TMP ecosystem.
 # Read this file at the start of every TMP development session.
@@ -54,7 +54,7 @@ ecosystem.
     - Transcript parsing engine
     - TMP sends users to TTMP via a signed JWT handoff token
     - TMP never absorbs TTMP functionality
-    - Handoff: POST /v1/transcripts/request generates a 15-minute single-use JWT
+    - Handoff: Tax pro uploads transcripts directly into TMP via presigned R2 URL (POST /v1/transcripts/upload/init). No JWT token. No TTMP redirect.
 
   TTTMP (Tax Tool / Game Platform):
     - Game execution platform
@@ -71,7 +71,7 @@ through VLP API routes. TMP owns its own R2 paths and D1 tables only.
 
 ## PART 2 — STACK AND TARGET STRUCTURE
 
-**Frontend:** Next.js 15 + Tailwind CSS 4 + @cloudflare/next-on-pages
+**Frontend:** Next.js 16 + Tailwind CSS 4 + @opennextjs/cloudflare
 **Backend:** Cloudflare Worker (workers/src/index.js)
 **Database:** Cloudflare D1 (binding: DB, database: taxmonitor-pro-d1)
 **Storage:** Cloudflare R2 (binding: R2_BUCKET, bucket: taxmonitor-pro)
@@ -83,6 +83,8 @@ through VLP API routes. TMP owns its own R2 paths and D1 tables only.
   CAL_APP: taxpayer booking flow
   CAL_PRO: tax professional calendar management
 **Deploy:** Cloudflare Pages (frontend) + wrangler deploy (Worker)
+**Cloudflare adapter:** @opennextjs/cloudflare (TMP uses OpenNext — diverges from VLP which uses deprecated @cloudflare/next-on-pages)
+**Build command for CF Pages:** npx opennextjs-cloudflare build
 
 **Target repo layout:**
 
@@ -526,8 +528,11 @@ Do not invent var names not on this list. New vars are added in the phase noted.
   - All document routes (Phase 11)
   - All compliance-report routes (Phase 12)
   - All POA routes (Phase 13)
-  - POST /v1/transcripts/request (Phase 13)
+  - POST /v1/transcripts/upload/init (Phase 13)
+  - POST /v1/transcripts/upload/complete (Phase 13)
   - PATCH /v1/taxpayer-accounts/{id}/filing-status (Phase 9)
+  - GET /v1/entitlements/{account_id} (Phase 2)
+  - PATCH /v1/entitlements/{account_id} (Phase 9)
 
 **D1 binding:** NOT YET PRESENT in wrangler.toml. Phase 1 adds [[d1_databases]] block.
 All executeWritePipeline D1 projection steps currently return { ok: true, skipped: true }.

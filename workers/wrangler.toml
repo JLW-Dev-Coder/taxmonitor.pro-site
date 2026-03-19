@@ -28,7 +28,7 @@ bucket_name = "taxmonitor-pro"
 [[d1_databases]]
 binding = "DB"
 database_name = "taxmonitor-pro-d1"
-database_id = ""
+database_id = "f28fc238-e0c2-4454-907e-89f86ae2cf63"
 migrations_dir = "migrations"
 
 # ---------------------------------------
