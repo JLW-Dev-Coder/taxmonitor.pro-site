@@ -60,7 +60,9 @@ SSO_OIDC_REDIRECT_URI = "https://api.taxmonitor.pro/v1/auth/sso/oidc/callback"
 
 SSO_SAML_ACS_URL = "https://api.taxmonitor.pro/v1/auth/sso/saml/acs"
 SSO_SAML_ENTITY_ID = ""
+SSO_SAML_IDP_ENTITY_ID = ""
 SSO_SAML_IDP_METADATA_URL = ""
+SSO_SAML_IDP_SSO_URL = ""
 
 TWOFA_TOKEN_EXPIRY_SECONDS = "300"
 TWOFA_TOTP_ISSUER = "TaxMonitorPro"
@@ -161,6 +163,7 @@ TMP_DIRECTORY_JSON    = ""
 # JWT_SECRET
 # SESSION_SECRET
 # SSO_OIDC_CLIENT_SECRET
+# SSO_SAML_IDP_CERT
 # TWOFA_ENCRYPTION_KEY
 
 # =================================================
