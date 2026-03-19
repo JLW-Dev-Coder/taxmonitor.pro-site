@@ -26,18 +26,6 @@ binding = "R2_BUCKET"
 bucket_name = "taxmonitor-pro"
 
 # ---------------------------------------
-# Durable Object migrations
-# ---------------------------------------
-
-[[migrations]]
-tag = "v1"
-new_sqlite_classes = ["TokenLedger"]
-
-[[migrations]]
-tag = "v2"
-deleted_classes = ["TokenLedger"]
-
-# ---------------------------------------
 # Vars (non-secret)
 # ---------------------------------------
 
