@@ -105,10 +105,12 @@ export default {
       const result = await dispatchHandler({
         contract,
         env,
+        request,
         route,
         validated: validation.value
       });
 
+      if (result instanceof Response) return result;
       return json(result.data || { ok: true }, result.status || 200);
     } catch (error) {
       return json(

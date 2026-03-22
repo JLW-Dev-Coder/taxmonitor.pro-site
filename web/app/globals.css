@@ -1,0 +1,36 @@
+﻿@import "tailwindcss";
+
+/*
+ * globals.css — Tax Monitor Pro Web App
+ * Imports Tailwind CSS v4 and declares global base styles.
+ *
+ * Design token source: site/index.html, site/partials/header.html
+ * Font loading: DM Sans (app UI primary), Sora (display headings)
+ * Full token reference: web/tailwind.config.ts
+ */
+
+/* Google Fonts */
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  box-sizing: border-box;
+  overflow-x: hidden;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #020617; /* surface.base / slate-950 */
+  color: #cbd5e1;            /* content.body / slate-300 */
+  font-family: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Gradient text utility — matches .gradient-text in site/ HTML */
+.gradient-text {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}

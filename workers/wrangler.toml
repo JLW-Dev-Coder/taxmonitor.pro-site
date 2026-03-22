@@ -25,17 +25,11 @@ enabled = true
 binding = "R2_BUCKET"
 bucket_name = "taxmonitor-pro"
 
-# ---------------------------------------
-# Durable Object migrations
-# ---------------------------------------
-
-[[migrations]]
-tag = "v1"
-new_sqlite_classes = ["TokenLedger"]
-
-[[migrations]]
-tag = "v2"
-deleted_classes = ["TokenLedger"]
+[[d1_databases]]
+binding = "DB"
+database_name = "taxmonitor-pro-d1"
+database_id = "f28fc238-e0c2-4454-907e-89f86ae2cf63"
+migrations_dir = "migrations"
 
 # ---------------------------------------
 # Vars (non-secret)
@@ -66,7 +60,9 @@ SSO_OIDC_REDIRECT_URI = "https://api.taxmonitor.pro/v1/auth/sso/oidc/callback"
 
 SSO_SAML_ACS_URL = "https://api.taxmonitor.pro/v1/auth/sso/saml/acs"
 SSO_SAML_ENTITY_ID = ""
+SSO_SAML_IDP_ENTITY_ID = ""
 SSO_SAML_IDP_METADATA_URL = ""
+SSO_SAML_IDP_SSO_URL = ""
 
 TWOFA_TOKEN_EXPIRY_SECONDS = "300"
 TWOFA_TOTP_ISSUER = "TaxMonitorPro"
@@ -150,6 +146,10 @@ MY_ORGANIZATION_NAME = "Tax Monitor Pro"
 MY_ORGANIZATION_STATE_PROVINCE = "CA"
 MY_ORGANIZATION_ZIP = "92020"
 
+SESSION_COOKIE_NAME   = "tmp_session"
+VLP_API_BASE_URL      = "https://api.virtuallaunch.pro"
+TMP_DIRECTORY_JSON    = ""
+
 # ---------------------------------------
 # Secrets (set via wrangler secret put)
 # ---------------------------------------
@@ -163,6 +163,7 @@ MY_ORGANIZATION_ZIP = "92020"
 # JWT_SECRET
 # SESSION_SECRET
 # SSO_OIDC_CLIENT_SECRET
+# SSO_SAML_IDP_CERT
 # TWOFA_ENCRYPTION_KEY
 
 # =================================================

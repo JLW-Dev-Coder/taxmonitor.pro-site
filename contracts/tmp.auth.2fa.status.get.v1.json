@@ -1,24 +1,74 @@
 {
-  "contract_version": "v1",
-  "domain": "tmp",
-  "notes": [
-    "R2 is authoritative.",
-    "Projection happens after canonical write."
-  ],
-  "request": {
-    "auth": "",
-    "content_type": "application/json",
-    "params": {},
-    "query": {},
-    "body": {}
+  "auth": {
+    "required": true,
+    "trustClientIdentityFields": false,
+    "type": "session"
+  },
+  "contract": {
+    "authority": [
+      "R2_TMP_CANONICAL"
+    ],
+    "governs": "Returns the current 2FA enrollment status for the specified account by reading the account R2 record.",
+    "path": "/contracts/tmp.auth.2fa.status.get.v1.json",
+    "source": "Tax Monitor Pro",
+    "title": "Tax Monitor Pro — Auth Contract — 2FA Status Get",
+    "usedOnPages": [
+      "/app/settings.html",
+      "/app/dashboard.html"
+    ],
+    "validation": {
+      "enumStrict": false,
+      "rejectUnknownValues": false,
+      "requireJsonContentType": false
+    },
+    "version": 1
+  },
+  "delivery": {
+    "endpoint": "/v1/auth/2fa/status/{account_id}",
+    "method": "GET",
+    "receiptKeyPattern": "receipts/tmp/auth/2fa-status/{eventId}.json",
+    "receiptSource": "tmp_auth_2fa_status_get",
+    "signature": {
+      "header": null,
+      "required": false,
+      "secretEnvVar": null
+    }
+  },
+  "effects": {
+    "dedupeKey": "system.requestId",
+    "eventIdFrom": "system.requestId",
+    "receiptAppend": {
+      "to": "receipts/tmp/auth/2fa-status/{eventId}.json"
+    },
+    "writeOrder": [
+      "receiptAppend"
+    ],
+    "writes": []
+  },
+  "payload": {
+    "additionalProperties": false,
+    "properties": {},
+    "required": [],
+    "type": "object"
   },
   "response": {
-    "content_type": "application/json",
-    "shape": {}
+    "deduped": {
+      "enabled": false,
+      "ok": true
+    },
+    "error": {
+      "error": "status_read_failed",
+      "ok": false
+    },
+    "success": {
+      "accountId": "{params.account_id}",
+      "enabled": false,
+      "ok": true,
+      "twoFactor": {}
+    }
   },
-  "storage": {
-    "canonical_r2": [],
-    "receipt_r2": "",
-    "d1_projection": []
+  "schema": {
+    "name": "tmp_auth_2fa_status_get",
+    "version": 1
   }
 }

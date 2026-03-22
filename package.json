@@ -1,0 +1,19 @@
+{
+  "name": "taxmonitor-pro",
+  "private": true,
+  "workspaces": [
+    "web",
+    "workers"
+  ],
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "build:web": "npm run build --workspace=web",
+    "build:web:cf": "cd web && npx opennextjs-cloudflare build",
+    "build:worker": "cd workers && npx wrangler deploy --dry-run --outdir=dist/worker",
+    "dev:web": "npm run dev --workspace=web",
+    "dev:worker": "cd workers && npx wrangler dev",
+    "deploy:worker": "cd workers && npx wrangler deploy"
+  }
+}

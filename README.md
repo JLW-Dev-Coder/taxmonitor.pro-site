@@ -1,417 +1,267 @@
 # Tax Monitor Pro (TMP)
 
-## Table of Contents
+## Overview
 
-* [Architecture Overview](#architecture-overview)
-* [Canonical Storage](#canonical-storage)
-* [Contracts or Data Model](#contracts-or-data-model)
-* [Contribution Guidelines](#contribution-guidelines)
-* [Deployment](#deployment)
-* [Development Standards](#development-standards)
-* [Environment Setup](#environment-setup)
-* [Integrations](#integrations)
-* [Key Features](#key-features)
-* [License](#license)
-* [Overview](#overview)
-* [Repository Structure](#repository-structure)
-* [Security and Secrets](#security-and-secrets)
-* [Worker API Surface](#worker-api-surface)
+Tax Monitor Pro (TMP) is the taxpayer discovery and membership platform within the Virtual Launch Pro (VLP) ecosystem. It connects taxpayers seeking tax help with licensed tax professionals, and provides structured entry into VLP tax services. TMP serves two user types: **taxpayers** (individuals seeking tax assistance) and **taxpros** (tax professionals listed in the TMP directory). TMP owns its own R2 and D1 data, reads VLP-owned records via a read-only client, and never writes to VLP-governed paths.
 
 ---
 
-# Overview
+## Current Build State
 
-Tax Monitor Pro (TMP) is the **taxpayer discovery and membership platform** within the Virtual Launch Pro ecosystem.
+### Phase Status
 
-TMP connects taxpayers to tax professionals while providing a structured system for:
+| Phase | Name | Status | Key Deliverable |
+|-------|------|--------|-----------------|
+| 0 | Baseline | COMPLETE | R2 read/write, Worker routing, core handlers live |
+| 1 | Foundation | COMPLETE | D1 binding, contract validation, local dev vars |
+| 2 | D1 Schema | IN PROGRESS | Apply migrations 0001–0015, enable D1 projections, entitlements read stub |
+| 3 | Authentication | NOT STARTED | Real session (tmp_session cookie), Google OAuth, Magic Link, SSO OIDC+SAML |
+| 4 | VLP Directory Sync | NOT STARTED | VLP webhook → vlp_professionals_cache D1 |
+| 5 | Cal.com Integration | NOT STARTED | Cal.com OAuth (2 apps), booking create/list |
+| 6 | Intake Sessions | NOT STARTED | Multi-step intake session state persistence |
+| 7 | Messaging | NOT STARTED | Gmail API (email send), Twilio SMS, fix missing SMS contract |
+| 8 | Search + Filtering | NOT STARTED | Extended directory search, filter params |
+| 9 | Billing + Monitoring Checkout | NOT STARTED | Monitoring engagement checkout, entitlements grants, cron trigger |
+| 10 | Token Redemption | NOT STARTED | TTTMP tax tool token redemption integration |
+| 11 | Document Storage | NOT STARTED | Encrypted document upload/retrieval (must precede Phase 12) |
+| 12 | Compliance Reports | NOT STARTED | Tax pro report delivery to taxpayer accounts |
+| 13 | POA + Transcript Upload | NOT STARTED | Form 2848 POA, presigned R2 transcript upload |
+| 14 | 2FA Challenge Verify | NOT STARTED | Real TOTP verification |
+| 15 | Tax Pro Routes | NOT STARTED | Tax pro account routes, engagement claim pool |
+| 16 | Tax Pro Dashboard + VLP Deep Sync | NOT STARTED | Full tax pro operational experience |
 
-* taxpayer discovery
-* professional directory browsing
-* service inquiry routing
-* taxpayer memberships
-* taxpayer dashboards
+### Live Worker Routes
 
-Tax Monitor Pro is intentionally limited in scope.
+| Category | Count |
+|---|---|
+| In manifest (live handlers) | 33 |
+| In manifest (stub handlers — 501) | 11 |
+| In manifest (missing contract file) | 1 |
+| **Total in manifest** | **45** |
+| Planned (not yet in manifest) | 28 |
+| **Total surface (current + planned)** | **73** |
 
-It **does not manage professional infrastructure or transcript diagnostics**. Those responsibilities belong to other platforms in the ecosystem. 
+### Stack
 
----
+| Layer | Technology |
+|---|---|
+| Frontend | Next.js 16 + Tailwind CSS 4 |
+| Cloudflare adapter | @opennextjs/cloudflare (OpenNext — diverges from VLP which uses deprecated @cloudflare/next-on-pages) |
+| Backend | Cloudflare Worker (workers/src/index.js) |
+| Database | Cloudflare D1 (binding: DB, database: taxmonitor-pro-d1) |
+| Storage | Cloudflare R2 (binding: R2_BUCKET, bucket: taxmonitor-pro) |
+| Auth | HttpOnly cookie (tmp_session), Google OAuth, Magic Link, SSO (OIDC + SAML) |
+| Billing | Stripe (checkout sessions + webhook); subscription writes via VLP |
+| Booking | Cal.com — two separate registered OAuth apps (CAL_APP / CAL_PRO) |
 
-# Key Features
+### Live URLs
 
-Core TMP capabilities include:
-
-* professional directory search
-* taxpayer discovery intake flows
-* inquiry routing to tax professionals
-* taxpayer account management
-* taxpayer memberships (Free, Essential, Plus, Premier)
-* taxpayer dashboards
-* Stripe membership billing
-* notification preferences
-* support ticket handling
-
-TMP provides the **entry point for taxpayers** entering the broader tax service ecosystem.
-
----
-
-# Architecture Overview
-
-TMP operates on **Cloudflare edge infrastructure** using a contract-driven architecture.
-
-Core architectural principles:
-
-* canonical storage in **R2**
-* contract-first API validation
-* stateless Cloudflare Workers
-* deny-by-default routing
-* write-first canonical storage
-
-Canonical write pipeline:
-
-```
-1 request received
-2 contract validation
-3 receipt stored in R2
-4 canonical record updated
-5 D1 index projection
-6 response returned
-```
-
-This design ensures that **R2 remains the authoritative data source**.
+| Environment | URL |
+|---|---|
+| Frontend | https://taxmonitor.pro |
+| App | https://app.taxmonitor.pro |
+| Worker API | https://api.taxmonitor.pro |
 
 ---
 
-# Canonical Storage
+## Product Lines
 
-TMP owns a limited set of canonical records.
+### 1. Platform Memberships (recurring)
 
-```
-/r2/inquiries/{inquiry_id}.json
-/r2/taxpayer_accounts/{account_id}.json
-/r2/taxpayer_memberships/{membership_id}.json
-```
+Monthly or annual subscription granting access to the TMP platform and token grants.
 
-These records represent the core TMP entities:
+| Plan | Monthly | Yearly | Tax Tool Tokens | Transcript Tokens |
+|---|---|---|---|---|
+| Free | $0 | N/A | 0 | 0 |
+| Essential | $9 | $5.40/mo | 5 | 2 |
+| Plus | $19 | $11.40/mo | 15 | 5 |
+| Premier | $39 | $23.40/mo | 40 | 10 |
 
-| Entity               | Description                     |
-| -------------------- | ------------------------------- |
-| inquiries            | taxpayer service requests       |
-| taxpayer_accounts    | authenticated taxpayer profiles |
-| taxpayer_memberships | membership subscriptions        |
+- Tax tool tokens are redeemed at TTTMP (separate game/tool platform — TMP does not host it)
+- Transcript tokens are for TTMP use (separate transcript tool — not the same as monitoring engagement uploads)
+- Billing subscription writes go through VLP API routes — TMP does not call Stripe Subscriptions API directly
 
-All write operations update these canonical objects before any projections occur.
+### 2. Tax Monitoring Engagements (separate purchase)
 
----
+One-time or term-based purchase for active tax monitoring by an assigned tax professional.
 
-# Worker API Surface
+| Plan | Price | Term | Type |
+|---|---|---|---|
+| Bronze | $275 | 6 weeks | Recurring Stripe subscription |
+| Silver | $325 | 8 weeks | Recurring Stripe subscription (most popular) |
+| Gold | $425 | 12 weeks | Recurring Stripe subscription |
+| Snapshot | $299 | One-time | Single payment (initial pull + one update) |
+| MFJ Add-On | +$79 | Per spouse | Applies to any term plan |
 
-TMP exposes taxpayer-facing APIs through a Cloudflare Worker.
-
-## Health
-
-```
-GET /health
-```
-
----
-
-## Membership and Billing
-
-```
-GET  /v1/pricing
-GET  /v1/checkout/status
-POST /v1/checkout/sessions
-POST /v1/webhooks/stripe
-```
-
-These routes support TMP membership creation and Stripe billing.
+- Engagement records created in D1 `tmp_monitoring_engagements` and R2 on checkout completion
+- Tax pro self-claims engagements from an open pool (Phase 15, [Q8])
+- Engagement completion handled by daily Cron Trigger at 09:00 UTC (Phase 9, [Q9])
 
 ---
 
-## Authentication
+## Architecture
+
+### Write Pipeline
+
+Every mutation follows this exact order. Deviating is a critical bug.
 
 ```
-GET  /v1/auth/google/callback
-GET  /v1/auth/google/start
-GET  /v1/auth/magic-link/verify
-GET  /v1/auth/session
-GET  /v1/auth/sso/oidc/callback
-GET  /v1/auth/sso/oidc/start
-GET  /v1/auth/sso/saml/start
-POST /v1/auth/logout
-POST /v1/auth/magic-link/request
-POST /v1/auth/sso/saml/acs
+Step 1: Request received at Worker
+Step 2: Contract validation
+        — load contract from R2 or bundled JSON
+        — validate method, path, auth, payload against contract schema
+        — if invalid: return 400/401/403 immediately (deny by default)
+Step 3: Receipt written to R2
+        — path: receipts/tmp/{domain}/{eventId}.json
+        — permanent append-only audit trail; never deleted
+Step 4: Canonical R2 object updated
+        — upsert to canonical path (e.g., tmp_entitlements/{accountId}.json)
+        — R2 is now authoritative for this record
+Step 5: D1 index updated via runProjections()
+        — D1 table rows are projections of R2 canonical data
+        — D1 failure does NOT roll back R2 write
+Step 6: Response returned to client
 ```
 
-Authentication supports:
+### Ownership Rules
 
-* Google OAuth
-* magic links
-* SSO
-* session retrieval
+**TMP owns (writes to):**
+- `taxpayer_accounts/{account_id}.json`
+- `taxpayer_memberships/{membership_id}.json`
+- `inquiries/{inquiry_id}.json`
+- `tmp_entitlements/{account_id}.json`
+- `tmp_exit_surveys/{survey_id}.json`
+- `tmp_monitoring_engagements/{engagement_id}.json`
+- `tmp_documents/{account_id}/{document_id}.*`
+- `tmp_transcripts/{account_id}/{document_id}.enc`
+- `tmp_poa_records/{account_id}/{poa_id}.json`
+- `tmp_compliance_reports/{account_id}/{report_id}.json`
+- `receipts/tmp/{domain}/{event_id}.json` (write receipts — all mutations)
+
+**VLP owns (TMP reads via vlp-client.ts — NEVER writes):**
+- `/r2/professionals/{professional_id}.json`
+- `/r2/billing_customers/{account_id}.json`
+- `/r2/billing_subscriptions/{membership_id}.json`
+- `/r2/memberships/{membership_id}.json`
+- `/r2/tokens/{account_id}.json`
+
+**The rule that overrides everything:** TMP does not write to VLP-owned canonical records.
+
+### D1 Tables
+
+All 18 D1 tables are projections of R2 canonical data. R2 is always authoritative.
+
+| Table | Description |
+|---|---|
+| tmp_taxpayer_accounts | Taxpayer and taxpro account index |
+| tmp_memberships | Platform membership subscriptions |
+| tmp_inquiries | Taxpayer service request records |
+| tmp_intake_sessions | Multi-step intake session state |
+| tmp_activity | Append-only audit trail for all PII-touching events |
+| tmp_preferences | Notification preference settings per account |
+| vlp_professionals_cache | Read-only VLP professional directory cache (synced via webhook) |
+| tmp_cal_tokens | Cal.com OAuth tokens — AES-256-GCM encrypted at rest |
+| tmp_documents | Document metadata only (no content in D1) |
+| tmp_poa_records | Form 2848 POA records (CAF number in R2 only, never D1) |
+| tmp_compliance_reports | Compliance report metadata (encrypted content in R2 only) |
+| tmp_support_tickets | TMP support ticket index |
+| tmp_notifications | In-app notification index |
+| tmp_email_messages | Outbound email message index |
+| tmp_magic_link_tokens | Pending magic link tokens (SHA-256 hashed, TTL 15 min) |
+| tmp_exit_surveys | Membership cancellation exit survey responses |
+| tmp_monitoring_engagements | Tax monitoring engagement records (bronze/silver/gold/snapshot) |
+| tmp_entitlements | Token balance and plan entitlements per account |
 
 ---
 
-## Two-Factor Authentication
+## Reference Files
 
-```
-GET  /v1/auth/2fa/status/{account_id}
-POST /v1/auth/2fa/challenge/verify
-POST /v1/auth/2fa/disable
-POST /v1/auth/2fa/enroll/init
-POST /v1/auth/2fa/enroll/verify
-```
-
----
-
-## Directory
-
-```
-GET /v1/directory/professionals
-GET /v1/directory/professionals/{professional_id}
-```
-
-Directory data originates from **Virtual Launch Pro professional records**.
+| File | Purpose |
+|---|---|
+| CHATGPT_CONTEXT.md | Master context — read at the start of every TMP development session |
+| ROUTES.md | Flat Worker route list with manifest status, handler status, and contract file |
+| STORAGE.md | R2 path map and D1 table reference; canonical vs. projection distinction |
+| CONTRACTS.md | Contract coverage table — all 75 contracts (on disk, missing, and planned) |
+| DECISIONS.md | 11 closed architectural decisions (Q1–Q11) — do not reopen without explicit instruction |
+| PHASES.md | Locked migration phase plan (Phases 0–16) with deliverables and migration reference |
+| INTEGRATIONS.md | Third-party integration specs (Stripe, Cal.com, Twilio, Gmail, TTMP, TTTMP) |
 
 ---
 
-## Inquiries
+## Closed Architectural Decisions
 
-```
-GET  /v1/inquiries/{inquiry_id}
-GET  /v1/inquiries/by-account/{account_id}
-POST /v1/inquiries
-```
+All 11 decisions are closed. Do not reopen without explicit instruction. See DECISIONS.md for full detail.
 
-These routes support taxpayer service requests routed to professionals.
-
----
-
-## Taxpayer Accounts
-
-```
-GET   /v1/taxpayer-accounts/{account_id}
-PATCH /v1/taxpayer-accounts/{account_id}
-```
-
-These APIs manage the taxpayer profile used by TMP dashboards.
+| ID | Decision |
+|---|---|
+| Q1 | Cal.com uses two separate registered OAuth apps (CAL_APP / CAL_PRO) — distinct client IDs, secrets, redirect URIs |
+| Q2 | Cal.com booking scope is bidirectional: list and create bookings (not read-only) |
+| Q3 | Tax professionals authenticate with independent TMP credentials — not federated from VLP |
+| Q4 | Exit survey triggers on membership cancellation only; submission is optional and never blocks cancellation |
+| Q5 | VLP pushes professional directory updates to TMP via signed webhook; TMP caches in D1 vlp_professionals_cache |
+| Q6 | Document content encrypted at rest (AES-256-GCM) in R2; D1 stores metadata only; access is audit-logged |
+| Q7 | SSO (OIDC + SAML) is required for launch — all four SSO routes must be live in Phase 3 |
+| Q8 | Tax pros self-claim open engagements from a shared pool; first valid claim wins; no specialty/location matching |
+| Q9 | Engagement completion triggered by daily Cloudflare Cron at 09:00 UTC; single unified scheduled handler |
+| Q10 | Monitoring engagement transcript uploads are unlimited within the plan term; TMP_PLAN_*_TRANSCRIPT_TOKENS are for TTMP only |
+| Q11 | Transcript upload uses presigned R2 PUT URL; tax pro client encrypts before upload; Worker never touches file bytes |
 
 ---
 
-## Taxpayer Memberships
+## Development
 
-```
-GET   /v1/taxpayer-memberships/{membership_id}
-GET   /v1/taxpayer-memberships/by-account/{account_id}
-POST  /v1/taxpayer-memberships/free
-PATCH /v1/taxpayer-memberships/{membership_id}
+### Prerequisites
+
+- Node.js 20+ (see `.nvmrc`)
+- Wrangler CLI authenticated to Cloudflare (`wrangler login`)
+- npm workspaces (root `package.json` manages `web` and `workers`)
+
+### Setup
+
+```bash
+npm install
 ```
 
-Membership records are stored in canonical R2 storage.
+### Run Worker locally
+
+```bash
+npm run dev:worker
+```
+
+### Run Next.js locally
+
+```bash
+npm run dev:web
+```
+
+### Deploy Worker
+
+```bash
+npm run deploy:worker
+```
+
+### Build for Cloudflare Pages
+
+```bash
+npm run build:web:cf
+```
+
+This runs `npx opennextjs-cloudflare build` in the `web` workspace. The standard `npm run build:web` runs `next build` only (without Cloudflare adapter output).
 
 ---
 
-## Notifications
+## Security Notes
 
-```
-GET   /v1/notifications/in-app
-GET   /v1/notifications/preferences/{account_id}
-PATCH /v1/notifications/preferences/{account_id}
-POST  /v1/notifications/in-app
-POST  /v1/notifications/sms/send
-POST  /v1/webhooks/twilio
-```
-
-These routes support taxpayer communication preferences and alerts.
+- **Document encryption:** All document content (taxpayer uploads, transcripts, compliance reports, profile photos) is encrypted at rest with AES-256-GCM using `ENCRYPTION_KEY` before write to R2. IV is generated per-object and stored alongside ciphertext.
+- **CAF numbers:** CAF numbers (Form 2848) are encrypted in R2 and never stored in D1. They are never returned in any API response, even if stored encrypted.
+- **Session security:** Authentication uses HttpOnly `tmp_session` cookie only. No Bearer tokens. No localStorage session storage. Cookie: `Secure; SameSite=Lax; Domain=.taxmonitor.pro; Path=/`.
+- **Phase ordering:** Phase 11 (document storage) must be deployed before Phase 12 (compliance reports). No live document delivery before storage controls exist. This is Rule #10 and is non-negotiable.
+- **SSO required for launch:** SSO (OIDC + SAML) is a launch requirement, not a post-launch feature (Q7). All four SSO routes must be fully implemented in Phase 3.
+- **No VLP writes:** TMP must never write to VLP-owned R2 paths or VLP D1 tables. All billing subscription writes go through VLP API routes.
 
 ---
 
-## Support
+## License
 
-```
-GET   /v1/support/tickets/{ticket_id}
-GET   /v1/support/tickets/by-account/{account_id}
-PATCH /v1/support/tickets/{ticket_id}
-POST  /v1/support/tickets
-```
-
-Support tickets allow taxpayers to contact the platform support team.
-
----
-
-# Contracts or Data Model
-
-TMP uses **contract-driven API validation**.
-
-Each API route is backed by a JSON contract describing:
-
-* request structure
-* validation rules
-* response structure
-* canonical storage mapping
-
-Example contract inventory:
-
-```
-tmp.directory.search.v1.json
-tmp.inquiry.create.v1.json
-tmp.inquiry.get.v1.json
-tmp.inquiry.list-by-account.v1.json
-tmp.membership.checkout-session.create.v1.json
-tmp.membership.checkout-status.get.v1.json
-tmp.membership.free.create.v1.json
-tmp.membership.get.v1.json
-tmp.membership.list-by-account.v1.json
-tmp.taxpayer-account.get.v1.json
-tmp.taxpayer-account.update.v1.json
-tmp.auth.session.get.v1.json
-tmp.auth.magic-link.request.v1.json
-tmp.auth.magic-link.verify.v1.json
-tmp.auth.google.start.v1.json
-tmp.auth.google.callback.v1.json
-tmp.auth.logout.v1.json
-tmp.notifications.preferences.get.v1.json
-tmp.notifications.preferences.patch.v1.json
-tmp.notifications.in-app.list.v1.json
-tmp.notifications.in-app.create.v1.json
-tmp.support.ticket.create.v1.json
-tmp.support.ticket.get.v1.json
-tmp.support.ticket.list-by-account.v1.json
-tmp.support.ticket.patch.v1.json
-```
-
-Contracts enforce **data integrity before canonical records are modified**.
-
----
-
-# Repository Structure
-
-Typical TMP repository layout:
-
-```
-/app
-/assets
-/contracts
-/pages
-/partials
-/site
-/workers
-```
-
-Directory purposes:
-
-| Directory    | Purpose                    |
-| ------------ | -------------------------- |
-| `/app`       | taxpayer dashboard UI      |
-| `/assets`    | shared static assets       |
-| `/contracts` | API contract schemas       |
-| `/pages`     | intake and discovery flows |
-| `/partials`  | shared UI components       |
-| `/site`      | public marketing pages     |
-| `/workers`   | TMP Cloudflare Worker APIs |
-
----
-
-# Environment Setup
-
-Required tools:
-
-* Git
-* Node.js
-* Wrangler CLI
-
-Setup process:
-
-```
-1 clone repository
-2 configure environment variables
-3 install dependencies
-4 start local worker environment
-```
-
----
-
-# Deployment
-
-TMP APIs deploy through **Cloudflare Workers**.
-
-Deployment command:
-
-```
-wrangler deploy
-```
-
-Deployment configuration is defined in `wrangler.toml`.
-
----
-
-# Integrations
-
-TMP integrates with several external services:
-
-* Cloudflare Workers
-* Cloudflare R2 storage
-* Cloudflare D1 database
-* Google OAuth
-* magic-link authentication
-* Stripe subscriptions
-* Twilio notifications
-
----
-
-# Development Standards
-
-Development rules include:
-
-* contract-first API development
-* alphabetical route documentation
-* canonical worker headers
-* minimal changes to core contract surfaces
-* deny-by-default routing
-
-Workers should remain **stateless and contract-safe**.
-
----
-
-# Security and Secrets
-
-Sensitive values are managed through **Wrangler secret management**.
-
-Examples include:
-
-* Stripe webhook secrets
-* OAuth client secrets
-* email API tokens
-* session signing keys
-
-Secrets must never be committed to the repository.
-
----
-
-# Contribution Guidelines
-
-Recommended workflow:
-
-```
-1 create branch
-2 implement changes
-3 test locally
-4 submit pull request
-```
-
-All changes affecting APIs should update:
-
-* route documentation
-* relevant contracts
-* README sections if necessary
-
----
-
-# License
-
-This repository is proprietary software owned and maintained by **Virtual Launch Pro**.
-
+Proprietary — Virtual Launch Pro / Tax Monitor Pro.
 Unauthorized redistribution or modification is prohibited.
-
----
