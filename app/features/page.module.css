@@ -1,0 +1,579 @@
+/* ── Hero ─────────────────────────────────────────── */
+.hero {
+  width: 100%;
+  padding: 64px 16px 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+.heroInner {
+  max-width: 960px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.trustBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 9999px;
+  background: rgba(15, 23, 42, 0.5);
+  border: 1px solid var(--surface-border-solid);
+  margin-bottom: 32px;
+  font-size: 0.875rem;
+  color: var(--text);
+}
+
+.trustIcon {
+  width: 16px;
+  height: 16px;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.headline {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  margin-bottom: 24px;
+}
+
+.subheadline {
+  font-size: 1.25rem;
+  color: var(--text-muted);
+  margin-bottom: 48px;
+  max-width: 768px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.7;
+}
+
+.heroCtas {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  justify-content: center;
+}
+
+.btnPrimary {
+  display: inline-block;
+  padding: 16px 32px;
+  border-radius: var(--radius-sm);
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--bg);
+  background: linear-gradient(to right, var(--accent), var(--accent-hover));
+  box-shadow: 0 8px 24px rgba(245, 158, 11, 0.25);
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.btnPrimary:hover {
+  transform: scale(1.05);
+}
+
+.btnSecondary {
+  display: inline-block;
+  padding: 16px 32px;
+  border-radius: var(--radius-sm);
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text);
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid var(--surface-border-solid);
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.btnSecondary:hover {
+  background: rgba(30, 41, 59, 0.8);
+}
+
+/* ── Section shared ───────────────────────────────── */
+.sectionInner {
+  max-width: var(--max-content);
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.sectionHeader {
+  text-align: center;
+  margin-bottom: 64px;
+}
+
+.sectionHeading {
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+
+.sectionSub {
+  color: var(--text-muted);
+  font-size: 1.25rem;
+  max-width: 768px;
+  margin: 0 auto;
+}
+
+/* ── Core Features ────────────────────────────────── */
+.coreSection {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 64px 0 80px;
+}
+
+.coreGrid {
+  display: grid;
+  gap: 24px;
+}
+
+.coreCard {
+  display: block;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  padding: 32px;
+  box-shadow: 0 20px 45px rgba(2, 6, 23, 0.28);
+  transition: all 0.25s ease;
+}
+
+.coreCard:hover {
+  border-color: rgba(245, 158, 11, 0.42);
+  transform: translateY(-4px);
+}
+
+.coreCardTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.coreCardDesc {
+  color: var(--text-muted);
+}
+
+.coreCardLink {
+  display: block;
+  margin-top: 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #fbbf24;
+}
+
+/* ── Feature Details ──────────────────────────────── */
+.detailSection {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  padding: 64px 0 80px;
+}
+
+.detailStack {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.detailShell {
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.92) 0%, rgba(26, 31, 53, 0.92) 50%, rgba(13, 23, 39, 0.92) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 24px;
+  overflow: hidden;
+  padding: 4px;
+  scroll-margin-top: 96px;
+}
+
+.detailGrid {
+  display: grid;
+  gap: 24px;
+}
+
+.detailSidebar {
+  backdrop-filter: blur(12px);
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  padding: 24px;
+}
+
+.detailTitle {
+  margin-top: 16px;
+  font-size: 1.875rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.detailDesc {
+  margin-top: 12px;
+  font-size: 0.875rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+
+.badgeAmber {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  color: #fbbf24;
+}
+
+.tierList {
+  margin-top: 24px;
+  display: grid;
+  gap: 12px;
+}
+
+.tierItem {
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(2, 6, 23, 0.4);
+  padding: 12px 16px;
+}
+
+.tierLabel {
+  font-size: 0.688rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-subtle);
+}
+
+.tierValue {
+  margin-top: 4px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* ── Glass cards ──────────────────────────────────── */
+.glassCard {
+  backdrop-filter: blur(12px);
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  padding: 24px;
+}
+
+.glassCardTitle {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.glassCardList {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.glassCardItem {
+  border-radius: var(--radius);
+  background: rgba(2, 6, 23, 0.4);
+  padding: 12px 16px;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+.detailMain {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.detailColumns {
+  display: grid;
+  gap: 24px;
+}
+
+.statRow {
+  display: grid;
+  gap: 16px;
+}
+
+.statCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+
+.statValue {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.statLabel {
+  font-size: 0.813rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/* ── Plan Cards ───────────────────────────────────── */
+.planSection {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 64px 0 80px;
+}
+
+.planGrid {
+  display: grid;
+  gap: 24px;
+}
+
+.planCard {
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  padding: 32px;
+  box-shadow: 0 20px 45px rgba(2, 6, 23, 0.28);
+  position: relative;
+  transition: all 0.25s ease;
+}
+
+.planCard:hover {
+  border-color: rgba(245, 158, 11, 0.42);
+  transform: translateY(-4px);
+}
+
+.planPopular {
+  border-width: 2px;
+  border-color: rgba(245, 158, 11, 0.5);
+  background: linear-gradient(to bottom, rgba(245, 158, 11, 0.15), rgba(255, 255, 255, 0.05));
+}
+
+.popularTag {
+  position: absolute;
+  right: 24px;
+  top: 24px;
+  border-radius: 9999px;
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  background: rgba(251, 191, 36, 0.15);
+  padding: 4px 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: #fbbf24;
+}
+
+.planHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.planBestFor {
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.planName {
+  font-size: 1.875rem;
+  font-weight: 700;
+}
+
+.planBadge {
+  border-radius: 9999px;
+  border: 1px solid var(--surface-border-solid);
+  background: rgba(15, 23, 42, 0.7);
+  padding: 4px 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.planPrice {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.planAmount {
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.planInterval {
+  padding-bottom: 8px;
+  color: var(--text-muted);
+}
+
+.planDesc {
+  color: var(--text-muted);
+  margin-bottom: 32px;
+}
+
+.planFeatures {
+  list-style: none;
+  margin-bottom: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.planFeatureItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 0.875rem;
+  color: var(--text);
+}
+
+.featureDot {
+  margin-top: 6px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #fbbf24;
+  flex-shrink: 0;
+}
+
+.planCta {
+  display: block;
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  text-align: center;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--bg);
+  background: linear-gradient(to right, var(--accent), var(--accent-hover));
+  transition: all 0.2s ease;
+}
+
+.planCta:hover {
+  background: linear-gradient(to right, #fbbf24, var(--accent));
+}
+
+/* ── Comparison Table ─────────────────────────────── */
+.comparisonSection {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  padding: 64px 0 80px;
+}
+
+.tableWrap {
+  overflow: hidden;
+  border-radius: 24px;
+  border: 1px solid rgba(100, 116, 139, 0.6);
+  background: rgba(15, 23, 42, 0.5);
+  box-shadow: 0 20px 45px rgba(2, 6, 23, 0.28);
+}
+
+.tableScroll {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  min-width: 600px;
+  text-align: left;
+  border-collapse: collapse;
+}
+
+.th {
+  padding: 20px 24px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--text-muted);
+  background: rgba(15, 23, 42, 0.8);
+}
+
+.tr {
+  border-top: 1px solid rgba(30, 41, 59, 1);
+}
+
+.tdFeature {
+  padding: 20px 24px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.td {
+  padding: 20px 24px;
+  font-size: 0.875rem;
+  color: var(--text);
+}
+
+/* ── Responsive ───────────────────────────────────── */
+@media (min-width: 640px) {
+  .heroCtas {
+    flex-direction: row;
+  }
+
+  .statRow {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 768px) {
+  .hero {
+    padding: 96px 16px 56px;
+  }
+
+  .headline {
+    font-size: 3.75rem;
+  }
+
+  .sectionHeading {
+    font-size: 3rem;
+  }
+
+  .coreGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .detailColumns {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .planGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .headline {
+    font-size: 4.5rem;
+  }
+
+  .coreGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .detailGrid {
+    grid-template-columns: 260px minmax(0, 1fr);
+    padding: 24px;
+  }
+
+  .planGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .statRow {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}

@@ -1,0 +1,220 @@
+/* Legal pages shared layout styles */
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 80px 80px;
+}
+
+.amberGlow {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: radial-gradient(
+    ellipse 700px 420px at 50% -140px,
+    rgba(245, 158, 11, 0.12),
+    transparent 60%
+  );
+}
+
+.main {
+  flex: 1;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+}
+
+/* Brand badge area */
+.brandBlock {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.brandLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.badge {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+}
+
+.badgeText {
+  color: var(--bg);
+  font-weight: 700;
+  font-size: 0.875rem;
+  letter-spacing: -0.025em;
+}
+
+.brandTextWrap {
+  text-align: left;
+}
+
+.brandTitle {
+  display: block;
+  color: #fff;
+  font-weight: 600;
+  font-size: 1.125rem;
+  line-height: 1.25;
+}
+
+.brandSub {
+  display: block;
+  color: var(--text-subtle);
+  font-size: 0.75rem;
+}
+
+/* Page heading area */
+.headingBlock {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.pageTitle {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.5rem;
+}
+
+.pageSubtitle {
+  color: var(--text-muted);
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.lastUpdated {
+  color: var(--text-subtle);
+  font-size: 0.875rem;
+}
+
+/* Glass card container */
+.card {
+  background: rgba(30, 35, 45, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow:
+    0 0 60px rgba(245, 158, 11, 0.03),
+    0 25px 50px -12px rgba(0, 0, 0, 0.4);
+}
+
+@media (min-width: 768px) {
+  .card {
+    padding: 2.5rem;
+  }
+}
+
+/* Sections */
+.section {
+  margin-bottom: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.sectionLast {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+/* Section headings */
+.sectionHeading {
+  color: #fff;
+  font-weight: 600;
+  font-size: 1.125rem;
+  margin-bottom: 0.75rem;
+}
+
+/* Body text */
+.body {
+  color: var(--text-muted);
+  line-height: 1.75;
+}
+
+.bodySpaced {
+  composes: body;
+  margin-top: 0.75rem;
+}
+
+.bodyBeforeList {
+  composes: body;
+  margin-bottom: 0.75rem;
+}
+
+.bodyBeforeListSpaced {
+  composes: body;
+  margin-bottom: 1rem;
+}
+
+/* Lists */
+.discList {
+  list-style-type: disc;
+  list-style-position: inside;
+  color: var(--text-muted);
+  line-height: 1.75;
+}
+
+.discList li {
+  margin-bottom: 0.5rem;
+}
+
+.discList li:last-child {
+  margin-bottom: 0;
+}
+
+.orderedList {
+  list-style-type: decimal;
+  list-style-position: inside;
+  color: var(--text-muted);
+  line-height: 1.75;
+}
+
+.orderedList li {
+  margin-bottom: 0.5rem;
+}
+
+.orderedList li:last-child {
+  margin-bottom: 0;
+}
+
+.spacedList {
+  margin-top: 0.75rem;
+}
+
+/* Bold spans inside list items */
+.bold {
+  font-weight: 600;
+}
+
+/* Links inside legal text */
+.link {
+  color: #f59e0b;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+/* Small note text */
+.note {
+  color: var(--text-subtle);
+  font-size: 0.875rem;
+  margin-top: 1rem;
+}

@@ -1,0 +1,525 @@
+/* Status Page — CSS Module */
+
+/* ── Hero ── */
+.hero {
+  text-align: center;
+  padding: 2.5rem 1.5rem 1.5rem;
+  max-width: var(--max-content);
+  margin: 0 auto;
+}
+
+.heroCard {
+  background: var(--surface-mid);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius);
+  padding: 2.5rem 2rem;
+  backdrop-filter: blur(12px);
+}
+
+.heroTitle {
+  font-family: var(--font-display);
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+  background: linear-gradient(135deg, var(--accent), #fbbf24);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.heroSub {
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  margin: 0;
+}
+
+/* ── Phase Indicator Bar ── */
+.phaseBar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--bg);
+  border-bottom: 1px solid var(--surface-border);
+  padding: 1rem 1.5rem;
+}
+
+.phaseBarInner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  max-width: var(--max-content);
+  margin: 0 auto;
+}
+
+.phaseNode {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-sm);
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+
+.phaseNode:hover {
+  background: var(--surface-mid);
+}
+
+.phaseCircle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  border: 2px solid var(--surface-border);
+  color: var(--text-subtle);
+  background: transparent;
+  transition: all 0.3s;
+}
+
+.phaseCircleComplete {
+  background: rgba(34, 197, 94, 0.2);
+  border-color: var(--success);
+  color: var(--success);
+}
+
+.phaseCircleCurrent {
+  background: rgba(245, 158, 11, 0.2);
+  border-color: var(--accent);
+  color: var(--accent);
+  animation: phaseGlow 2s ease-in-out infinite;
+}
+
+.phaseCircleLocked {
+  opacity: 0.5;
+}
+
+@keyframes phaseGlow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.3); }
+  50% { box-shadow: 0 0 0 6px rgba(245, 158, 11, 0); }
+}
+
+.phaseLabel {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.phaseLabelActive {
+  color: var(--text);
+}
+
+.phaseConnector {
+  width: 40px;
+  height: 2px;
+  background: var(--surface-border);
+  flex-shrink: 0;
+}
+
+.phaseConnectorComplete {
+  background: var(--success);
+}
+
+/* ── Phase Cards ── */
+.phaseCards {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: var(--max-content);
+  margin: 1.5rem auto 3rem;
+  padding: 0 1.5rem;
+}
+
+.phaseCard {
+  background: var(--surface-mid);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius);
+  padding: 1.75rem;
+  backdrop-filter: blur(12px);
+}
+
+.phaseCardHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.phaseNumber {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  background: rgba(245, 158, 11, 0.15);
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.phaseCardTitle {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0;
+}
+
+.stepsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 0.75rem;
+}
+
+.stepNode {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-radius: var(--radius-sm);
+  background: rgba(2, 6, 23, 0.5);
+  border: 1px solid var(--surface-border);
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.stepNode:hover {
+  border-color: var(--accent);
+  background: rgba(15, 23, 42, 0.6);
+}
+
+.stepBadge {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 0.7rem;
+}
+
+.badgeComplete {
+  background: rgba(34, 197, 94, 0.15);
+  color: var(--success);
+}
+
+.badgeCurrent {
+  background: rgba(245, 158, 11, 0.15);
+  color: var(--accent);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.badgeReady {
+  background: rgba(59, 130, 246, 0.15);
+  color: #3b82f6;
+}
+
+.badgeLocked {
+  background: rgba(100, 116, 139, 0.15);
+  color: var(--text-subtle);
+}
+
+.badgeBlocked {
+  background: rgba(239, 68, 68, 0.15);
+  color: var(--error);
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.stepInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.stepName {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 0.25rem;
+}
+
+.stepDesc {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.statusLabel {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-top: 0.35rem;
+}
+
+/* ── Slide-over ── */
+.slideOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 100;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.slidePanel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 420px;
+  max-width: 100%;
+  background: var(--surface);
+  border-left: 1px solid var(--surface-border);
+  z-index: 101;
+  display: flex;
+  flex-direction: column;
+  animation: slideIn 0.25s ease;
+  overflow-y: auto;
+}
+
+@keyframes slideIn {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+.slidePanelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--surface-border);
+}
+
+.slidePanelTitle {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0;
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: color 0.2s, background 0.2s;
+}
+
+.closeBtn:hover {
+  color: var(--text);
+  background: var(--surface-mid);
+}
+
+.slidePanelBody {
+  padding: 1.5rem;
+  flex: 1;
+}
+
+.detailMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.detailPhaseLabel {
+  font-size: 0.8rem;
+  color: var(--text-subtle);
+}
+
+.detailStatusBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.detailSection {
+  margin-bottom: 1.5rem;
+}
+
+.detailSectionTitle {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-subtle);
+  margin: 0 0 0.75rem;
+}
+
+.detailList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.detailListItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.detailListBullet {
+  color: var(--accent);
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+}
+
+.relatedLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.relatedLink {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 0.85rem;
+  border-radius: var(--radius-sm);
+  background: var(--surface-mid);
+  border: 1px solid var(--surface-border);
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.relatedLink:hover {
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+/* ── Loading / Error ── */
+.loadingWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 1.5rem;
+  gap: 1rem;
+}
+
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid var(--surface-border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loadingText {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.errorWrap {
+  text-align: center;
+  padding: 4rem 1.5rem;
+}
+
+.errorText {
+  color: var(--error);
+  font-size: 1rem;
+  margin: 0 0 1rem;
+}
+
+.retryBtn {
+  background: var(--accent);
+  color: #000;
+  border: none;
+  padding: 0.6rem 1.5rem;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.retryBtn:hover {
+  background: var(--accent-hover);
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .heroTitle {
+    font-size: 1.75rem;
+  }
+
+  .heroCard {
+    padding: 1.75rem 1.25rem;
+  }
+
+  .phaseBarInner {
+    gap: 0;
+    overflow-x: auto;
+    justify-content: flex-start;
+    padding-bottom: 0.25rem;
+  }
+
+  .phaseLabel {
+    display: none;
+  }
+
+  .phaseConnector {
+    width: 24px;
+  }
+
+  .stepsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .phaseCards {
+    padding: 0 1rem;
+  }
+
+  .phaseCard {
+    padding: 1.25rem;
+  }
+
+  .slidePanel {
+    width: 100%;
+    border-left: none;
+  }
+}

@@ -1,0 +1,361 @@
+.main {
+  min-height: 100vh;
+  padding-top: calc(var(--header-height) + 24px);
+  padding-bottom: 80px;
+}
+
+.stepWrap {
+  max-width: var(--max-content);
+  margin: 0 auto 32px;
+  padding: 0 24px;
+}
+
+/* Hero */
+.hero {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 48px;
+  padding: 0 24px;
+}
+
+.heading {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1.15;
+  margin-bottom: 12px;
+}
+
+.accent {
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.subtitle {
+  color: var(--text-muted);
+  font-size: 1.125rem;
+  line-height: 1.6;
+}
+
+/* Plan grid (3-col for monitoring plans) */
+.planGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  max-width: var(--max-content);
+  margin: 0 auto 32px;
+  padding: 0 24px;
+}
+
+.planCard {
+  position: relative;
+  background: var(--surface-mid);
+  border: 2px solid var(--surface-border);
+  border-radius: var(--radius);
+  backdrop-filter: blur(12px);
+  padding: 32px 24px;
+  cursor: pointer;
+  transition: border-color 0.2s, transform 0.15s;
+  text-align: left;
+  font-family: var(--font-body);
+  color: var(--text);
+}
+
+.planCard:hover {
+  border-color: rgba(245, 158, 11, 0.4);
+  transform: translateY(-2px);
+}
+
+.planCardSelected {
+  border-color: var(--accent);
+  background: rgba(245, 158, 11, 0.04);
+}
+
+.popularBadge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--accent);
+  color: var(--bg);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 4px 16px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.planName {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.planPrice {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.priceDollar {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.priceTerm {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+.planTerm {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+}
+
+/* Feature list */
+.featureList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.featureItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.checkIcon {
+  flex-shrink: 0;
+  color: var(--accent);
+  margin-top: 2px;
+}
+
+/* Extras grid (snapshot + MFJ) */
+.extrasGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  max-width: 800px;
+  margin: 0 auto 40px;
+  padding: 0 24px;
+}
+
+.extraCard {
+  background: var(--surface-mid);
+  border: 2px solid var(--surface-border);
+  border-radius: var(--radius);
+  backdrop-filter: blur(12px);
+  padding: 28px 24px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  text-align: left;
+  font-family: var(--font-body);
+  color: var(--text);
+}
+
+.extraCard:hover {
+  border-color: rgba(245, 158, 11, 0.4);
+}
+
+.extraCardSelected {
+  border-color: var(--accent);
+  background: rgba(245, 158, 11, 0.04);
+}
+
+.extraName {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.extraDesc {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+/* Summary card */
+.summaryCard {
+  max-width: 480px;
+  margin: 0 auto 32px;
+  padding: 28px;
+  background: var(--surface-mid);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius);
+  backdrop-filter: blur(12px);
+}
+
+.summaryTitle {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: var(--accent);
+}
+
+.summaryRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+}
+
+.summaryLabel {
+  font-size: 0.9375rem;
+  color: var(--text-muted);
+}
+
+.summaryValue {
+  font-size: 0.9375rem;
+  color: var(--text);
+  font-weight: 500;
+}
+
+.summaryDivider {
+  height: 1px;
+  background: var(--surface-border);
+  margin: 12px 0;
+}
+
+.summaryLabelTotal {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.summaryValueTotal {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+/* Notice */
+.notice {
+  max-width: 640px;
+  margin: 0 auto 32px;
+  padding: 24px;
+  background: rgba(245, 158, 11, 0.06);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  border-radius: var(--radius);
+}
+
+.noticeTitle {
+  font-family: var(--font-display);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+.noticeText {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+/* Action row */
+.actionRow {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  padding: 0 24px;
+  margin-bottom: 40px;
+}
+
+.approveBtn,
+.continueBtn {
+  padding: 14px 32px;
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: var(--font-body);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  border: none;
+}
+
+.approveBtn {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+.approveBtn:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+}
+
+.continueBtn {
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+}
+
+.continueBtn:hover {
+  background: rgba(245, 158, 11, 0.08);
+}
+
+/* Disclaimer */
+.disclaimer {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0 24px;
+  text-align: center;
+}
+
+.disclaimer p {
+  font-size: 0.8125rem;
+  color: var(--text-subtle);
+  line-height: 1.7;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .planGrid {
+    grid-template-columns: 1fr;
+    max-width: 480px;
+  }
+}
+
+@media (max-width: 640px) {
+  .heading {
+    font-size: 1.75rem;
+  }
+
+  .planCard {
+    padding: 24px 20px;
+  }
+
+  .extrasGrid {
+    grid-template-columns: 1fr;
+    max-width: 480px;
+  }
+
+  .actionRow {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .approveBtn,
+  .continueBtn {
+    width: 100%;
+    max-width: 320px;
+  }
+}
