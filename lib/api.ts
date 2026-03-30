@@ -261,6 +261,18 @@ export const api = {
   getCalStatus: () =>
     apiFetch('/v1/cal/status'),
 
+  // Tokens
+  getTokenBalance: (account_id: string) =>
+    apiFetch<{ transcript_tokens: number; tax_game_tokens: number }>(
+      `/v1/tokens/balance/${account_id}`
+    ),
+
+  // Inquiries
+  getInquiries: (account_id?: string) => {
+    const qs = account_id ? `?account_id=${account_id}` : ''
+    return apiFetch<unknown[]>(`/v1/tmp/inquiries${qs}`)
+  },
+
   // Notifications
   getNotifications: () =>
     apiFetch('/v1/notifications/in-app'),

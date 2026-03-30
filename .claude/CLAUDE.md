@@ -28,7 +28,7 @@ Plan II: Bronze ($275-6wk) / Silver ($325-8wk) /
 Phase 1: ✅ .claude setup + accent color proposal
 Phase 2: ✅ Next.js scaffold complete (2026-03-29)
 Phase 3: ✅ Site pages + intake pipeline complete (2026-03-29)
-Phase 4: 🔄 App pages (authenticated dashboard)
+Phase 4: ✅ App pages (authenticated dashboard) (2026-03-30)
 Phase 5: ❌ Delete legacy Worker
 Phase 6: ❌ Delete D1 database
 

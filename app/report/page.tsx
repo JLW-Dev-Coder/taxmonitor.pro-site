@@ -52,7 +52,7 @@ function val(v: unknown, fallback = 'N/A'): string {
 
 /* ─── main content ─── */
 
-function ReportContent({ account }: { account: SessionUser }) {
+export function ReportContent({ account }: { account: SessionUser }) {
   const [activeTab, setActiveTab] = useState<TabName>('Overview')
   const [taxYear, setTaxYear] = useState(currentYear)
   const [mfjView, setMfjView] = useState<MfjView>('primary')
