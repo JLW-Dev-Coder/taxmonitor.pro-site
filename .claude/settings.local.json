@@ -1,0 +1,32 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(/tmp/**)"
+    ]
+  },
+  "autoApprove": [
+    "Write",
+    "Edit",
+    "Create"
+  ],
+  "autoApprovePatterns": [
+    "**/*.html",
+    "**/*.tsx",
+    "**/*.ts",
+    "**/*.css",
+    "**/*.json",
+    ".claude/**",
+    "app/**",
+    "components/**",
+    "lib/**",
+    "public/**"
+  ],
+  "deny": [
+    "Bash(rm -rf *)",
+    "Bash(curl *)",
+    "Bash(wget *)",
+    "Write(workers/**)",
+    "Write(web/**)"
+  ],
+  "maxTurns": 30
+}

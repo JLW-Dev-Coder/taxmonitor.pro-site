@@ -1,0 +1,81 @@
+:root {
+  /* TMP Brand — Amber */
+  --accent: #F59E0B;
+  --accent-hover: #D97706;
+
+  /* Dark theme — matches existing site exactly */
+  --bg: #020617;
+  --surface: #0F172A;
+  --surface-mid: rgba(15, 23, 42, 0.4);
+  --surface-border: rgba(100, 116, 139, 0.3);
+  --surface-border-solid: #1E293B;
+
+  /* Text */
+  --text: #E2E8F0;
+  --text-muted: #94A3B8;
+  --text-subtle: #64748B;
+
+  /* Semantic */
+  --error: #EF4444;
+  --success: #22C55E;
+  --warning: #F59E0B;
+
+  /* Layout */
+  --header-height: 64px;
+  --max-content: 1200px;
+  --radius: 12px;
+  --radius-sm: 8px;
+
+  /* Typography */
+  --font-body: 'DM Sans', system-ui, sans-serif;
+  --font-display: 'Sora', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  min-height: 100vh;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* Gradient text utility — used across marketing pages */
+.gradient-text {
+  background: linear-gradient(
+    135deg,
+    var(--accent) 0%,
+    #D97706 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Glass card utility — used everywhere */
+.glass-card {
+  background: var(--surface-mid);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius);
+  backdrop-filter: blur(12px);
+}

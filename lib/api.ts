@@ -1,0 +1,279 @@
+const API_BASE = 'https://api.virtuallaunch.pro'
+
+interface ApiOptions extends RequestInit {
+  auth?: boolean
+}
+
+async function apiFetch<T>(
+  path: string,
+  options: ApiOptions = {}
+): Promise<T> {
+  const { auth = true, ...fetchOptions } = options
+
+  const res = await fetch(`${API_BASE}${path}`, {
+    ...fetchOptions,
+    credentials: auth ? 'include' : 'omit',
+    headers: {
+      'Content-Type': 'application/json',
+      ...fetchOptions.headers,
+    },
+  })
+
+  if (!res.ok) {
+    const error = await res.json().catch(() => ({}))
+    throw new Error(
+      (error as { error?: string }).error ||
+        `API error ${res.status}`
+    )
+  }
+
+  return res.json()
+}
+
+export const api = {
+  // Auth
+  requestMagicLink: (email: string, redirect?: string) =>
+    apiFetch('/v1/auth/magic-link/request', {
+      method: 'POST',
+      auth: false,
+      body: JSON.stringify({ email, redirect }),
+    }),
+
+  getSession: () =>
+    apiFetch<{
+      ok: boolean
+      user: {
+        account_id: string
+        email: string
+        plan: string
+      }
+    }>('/v1/auth/session'),
+
+  logout: () =>
+    apiFetch('/v1/auth/logout', { method: 'POST' }),
+
+  // Pricing
+  getPricing: () =>
+    apiFetch<{
+      ok: boolean
+      plans: Array<{
+        plan_id: string
+        name: string
+        price: number
+        interval: string
+        features: string[]
+        recommended: boolean
+      }>
+    }>('/v1/tmp/pricing', { auth: false }),
+
+  // Checkout
+  createCheckoutSession: (
+    price_id: string,
+    success_url?: string
+  ) =>
+    apiFetch<{
+      ok: boolean
+      checkout_url: string
+      session_id: string
+    }>('/v1/checkout/sessions', {
+      method: 'POST',
+      body: JSON.stringify({ price_id, success_url }),
+    }),
+
+  getCheckoutStatus: (session_id: string) =>
+    apiFetch<{
+      ok: boolean
+      status: string
+      plan: string
+    }>(`/v1/checkout/status?session_id=${session_id}`),
+
+  // Directory
+  getDirectory: (params?: {
+    specialty?: string
+    city?: string
+    state?: string
+    zip?: string
+    page?: number
+  }) => {
+    const search = new URLSearchParams()
+    if (params?.specialty) search.set('specialty', params.specialty)
+    if (params?.city) search.set('city', params.city)
+    if (params?.state) search.set('state', params.state)
+    if (params?.zip) search.set('zip', params.zip)
+    if (params?.page) search.set('page', String(params.page))
+    const qs = search.toString()
+    return apiFetch<{
+      ok: boolean
+      professionals: Array<{
+        professional_id: string
+        name: string
+        title: string
+        specialty: string[]
+        location: string
+        avatar_url: string
+        verified: boolean
+      }>
+    }>(`/v1/tmp/directory${qs ? '?' + qs : ''}`, {
+      auth: false,
+    })
+  },
+
+  getProfile: (professional_id: string) =>
+    apiFetch<{
+      ok: boolean
+      professional: {
+        professional_id: string
+        name: string
+        title: string
+        bio: string
+        specialty: string[]
+        location: string
+        avatar_url: string
+        verified: boolean
+      }
+    }>(`/v1/profiles/public/${professional_id}`, {
+      auth: false,
+    }),
+
+  // Inquiries
+  createInquiry: (data: {
+    professional_id?: string
+    subject: string
+    message: string
+    tax_situation?: string
+  }) =>
+    apiFetch('/v1/tmp/inquiries', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
+
+  // Account
+  getAccount: (account_id: string) =>
+    apiFetch(`/v1/accounts/${account_id}`),
+
+  updateAccount: (
+    account_id: string,
+    data: Record<string, unknown>
+  ) =>
+    apiFetch(`/v1/accounts/${account_id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+    }),
+
+  // Support
+  createTicket: (data: {
+    subject: string
+    message: string
+    priority?: string
+  }) =>
+    apiFetch('/v1/support/tickets', {
+      method: 'POST',
+      body: JSON.stringify({
+        ...data,
+        platform: 'tmp',
+      }),
+    }),
+
+  getTicket: (ticket_id: string) =>
+    apiFetch(`/v1/support/tickets/${ticket_id}`),
+
+  getTicketsByAccount: (account_id: string) =>
+    apiFetch(
+      `/v1/support/tickets/by-account/${account_id}`
+    ),
+
+  // Account (extended)
+  deleteAccount: (account_id: string) =>
+    apiFetch(`/v1/accounts/${account_id}`, { method: 'DELETE' }),
+
+  getPreferences: (account_id: string) =>
+    apiFetch(`/v1/accounts/preferences/${account_id}`),
+
+  updatePreferences: (account_id: string, data: Record<string, unknown>) =>
+    apiFetch(`/v1/accounts/preferences/${account_id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+    }),
+
+  photoUploadInit: (account_id: string, file_type: string) =>
+    apiFetch<{ ok: boolean; upload_url: string; key: string }>(
+      '/v1/accounts/photo-upload-init',
+      {
+        method: 'POST',
+        body: JSON.stringify({ account_id, file_type }),
+      }
+    ),
+
+  photoUploadComplete: (account_id: string, key: string) =>
+    apiFetch('/v1/accounts/photo-upload-complete', {
+      method: 'POST',
+      body: JSON.stringify({ account_id, key }),
+    }),
+
+  getComplianceStatus: (account_id: string) =>
+    apiFetch(`/v1/accounts/${account_id}/status`),
+
+  // 2FA
+  get2faStatus: (account_id: string) =>
+    apiFetch(`/v1/auth/2fa/status/${account_id}`),
+
+  enroll2faInit: () =>
+    apiFetch('/v1/auth/2fa/enroll/init', { method: 'POST' }),
+
+  enroll2faVerify: (code: string) =>
+    apiFetch('/v1/auth/2fa/enroll/verify', {
+      method: 'POST',
+      body: JSON.stringify({ code }),
+    }),
+
+  disable2fa: (code: string) =>
+    apiFetch('/v1/auth/2fa/disable', {
+      method: 'POST',
+      body: JSON.stringify({ code }),
+    }),
+
+  // Billing
+  getReceipts: (account_id: string) =>
+    apiFetch(`/v1/billing/receipts/${account_id}`),
+
+  // Messaging
+  sendMessage: (payload: Record<string, unknown>) =>
+    apiFetch('/v1/support/messages', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    }),
+
+  // Support (extended)
+  updateTicket: (ticket_id: string, data: Record<string, unknown>) =>
+    apiFetch(`/v1/support/tickets/${ticket_id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+    }),
+
+  // Compliance Report
+  generateReport: (account_id: string, tax_year: number) =>
+    apiFetch('/v1/compliance/report-generate', {
+      method: 'POST',
+      body: JSON.stringify({ account_id, tax_year }),
+    }),
+
+  // Calendar
+  getCalStatus: () =>
+    apiFetch('/v1/cal/status'),
+
+  // Notifications
+  getNotifications: () =>
+    apiFetch('/v1/notifications/in-app'),
+
+  updateNotificationPreferences: (
+    account_id: string,
+    prefs: Record<string, boolean>
+  ) =>
+    apiFetch(
+      `/v1/notifications/preferences/${account_id}`,
+      {
+        method: 'PATCH',
+        body: JSON.stringify(prefs),
+      }
+    ),
+}

@@ -1,0 +1,226 @@
+.wrapper {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Blobs */
+.blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(90px);
+  will-change: transform;
+}
+
+.blob1 {
+  width: 36rem;
+  height: 36rem;
+  top: -10rem;
+  left: -12rem;
+  opacity: 0.18;
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.24) 0%, rgba(245, 158, 11, 0) 70%);
+  animation: blobEdgeOne 32s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite alternate;
+}
+
+.blob2 {
+  width: 42rem;
+  height: 42rem;
+  top: 24rem;
+  right: -14rem;
+  opacity: 0.14;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.16) 0%, rgba(59, 130, 246, 0) 72%);
+  animation: blobEdgeTwo 36s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite alternate;
+}
+
+.blob3 {
+  width: 30rem;
+  height: 30rem;
+  bottom: -8rem;
+  left: 24%;
+  opacity: 0.12;
+  background: radial-gradient(circle, rgba(148, 163, 184, 0.14) 0%, rgba(148, 163, 184, 0) 72%);
+  animation: blobEdgeThree 34s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite alternate;
+}
+
+/* Grid */
+.grid {
+  position: absolute;
+  inset: 0;
+  opacity: 0.10;
+  background-image:
+    linear-gradient(rgba(148, 163, 184, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 163, 184, 0.08) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: radial-gradient(circle at center, black 18%, transparent 85%);
+  -webkit-mask-image: radial-gradient(circle at center, black 18%, transparent 85%);
+}
+
+/* Network */
+.network {
+  position: absolute;
+  inset: 0;
+  opacity: 0.22;
+  background-repeat: no-repeat;
+  background-position:
+    8% 18%, 18% 26%, 28% 21%, 78% 17%, 86% 25%, 72% 31%, 50% 12%,
+    13% 22%, 23% 23%, 82% 21%, 76% 27%, 50% 17%;
+  background-size:
+    8px 8px, 6px 6px, 7px 7px, 8px 8px, 6px 6px, 7px 7px, 8px 8px,
+    180px 2px, 140px 2px, 120px 2px, 160px 2px, 220px 2px;
+  background-image:
+    radial-gradient(circle, rgba(125, 211, 252, 0.85) 0%, rgba(125, 211, 252, 0) 70%),
+    radial-gradient(circle, rgba(245, 158, 11, 0.80) 0%, rgba(245, 158, 11, 0) 70%),
+    radial-gradient(circle, rgba(255, 255, 255, 0.70) 0%, rgba(255, 255, 255, 0) 70%),
+    radial-gradient(circle, rgba(125, 211, 252, 0.75) 0%, rgba(125, 211, 252, 0) 70%),
+    radial-gradient(circle, rgba(245, 158, 11, 0.75) 0%, rgba(245, 158, 11, 0) 70%),
+    radial-gradient(circle, rgba(255, 255, 255, 0.58) 0%, rgba(255, 255, 255, 0) 70%),
+    radial-gradient(circle, rgba(125, 211, 252, 0.70) 0%, rgba(125, 211, 252, 0) 70%),
+    linear-gradient(90deg, rgba(125, 211, 252, 0.0), rgba(125, 211, 252, 0.34), rgba(255, 255, 255, 0.0)),
+    linear-gradient(90deg, rgba(245, 158, 11, 0.0), rgba(245, 158, 11, 0.30), rgba(255, 255, 255, 0.0)),
+    linear-gradient(90deg, rgba(125, 211, 252, 0.0), rgba(125, 211, 252, 0.26), rgba(255, 255, 255, 0.0)),
+    linear-gradient(90deg, rgba(245, 158, 11, 0.0), rgba(245, 158, 11, 0.22), rgba(255, 255, 255, 0.0)),
+    linear-gradient(90deg, rgba(125, 211, 252, 0.0), rgba(125, 211, 252, 0.20), rgba(255, 255, 255, 0.0));
+  animation: networkFloat 24s ease-in-out infinite alternate;
+}
+
+/* Beacon */
+.beacon {
+  position: absolute;
+  left: 50%;
+  top: 7rem;
+  width: 32rem;
+  height: 32rem;
+  transform: translateX(-50%);
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.18) 0%, rgba(14, 165, 233, 0.10) 30%, rgba(2, 6, 23, 0) 68%);
+  filter: blur(18px);
+  opacity: 0.72;
+  animation: beaconPulse 8s ease-in-out infinite;
+}
+
+/* Ring */
+.ring {
+  position: absolute;
+  left: 50%;
+  top: 14rem;
+  width: 38rem;
+  height: 38rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(125, 211, 252, 0.14);
+  transform: translateX(-50%);
+  animation: ringRotate 34s linear infinite;
+}
+
+.ring::before,
+.ring::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 14rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(125, 211, 252, 0.14);
+  transform: translateX(-50%);
+}
+
+.ring::before {
+  inset: 3.25rem;
+  border-color: rgba(245, 158, 11, 0.12);
+  animation: ringRotateReverse 26s linear infinite;
+}
+
+.ring::after {
+  inset: 6.5rem;
+  border-color: rgba(255, 255, 255, 0.08);
+  animation: ringRotate 18s linear infinite;
+}
+
+/* Scan */
+.scan {
+  position: absolute;
+  inset: -20% 0 auto 0;
+  height: 32rem;
+  background: linear-gradient(180deg, rgba(125, 211, 252, 0.0), rgba(125, 211, 252, 0.08), rgba(245, 158, 11, 0.04), rgba(125, 211, 252, 0.0));
+  opacity: 0.34;
+  transform: translateY(-100%);
+  animation: scanSweep 12s linear infinite;
+  filter: blur(16px);
+}
+
+/* Noise */
+.noise {
+  position: absolute;
+  inset: 0;
+  opacity: 0.045;
+  mix-blend-mode: soft-light;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.18) 0.6px, transparent 0.6px);
+  background-size: 8px 8px;
+}
+
+/* Vignette */
+.vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, transparent 35%, rgba(2, 6, 23, 0.34) 100%);
+}
+
+/* Animations */
+@keyframes blobEdgeOne {
+  0% { transform: translate3d(0, 0, 0) scale(1); opacity: 0.14; }
+  25% { transform: translate3d(3rem, 2rem, 0) scale(1.04); opacity: 0.18; }
+  50% { transform: translate3d(7rem, 4rem, 0) scale(1.08); opacity: 0.22; }
+  75% { transform: translate3d(4rem, 7rem, 0) scale(1.03); opacity: 0.17; }
+  100% { transform: translate3d(9rem, 5rem, 0) scale(1.1); opacity: 0.2; }
+}
+
+@keyframes blobEdgeTwo {
+  0% { transform: translate3d(0, 0, 0) scale(1); opacity: 0.11; }
+  25% { transform: translate3d(-3rem, -2rem, 0) scale(1.03); opacity: 0.14; }
+  50% { transform: translate3d(-7rem, -4rem, 0) scale(1.07); opacity: 0.18; }
+  75% { transform: translate3d(-5rem, 1rem, 0) scale(1.04); opacity: 0.13; }
+  100% { transform: translate3d(-9rem, -3rem, 0) scale(1.09); opacity: 0.16; }
+}
+
+@keyframes blobEdgeThree {
+  0% { transform: translate3d(0, 0, 0) scale(1); opacity: 0.1; }
+  25% { transform: translate3d(2rem, -2rem, 0) scale(1.03); opacity: 0.13; }
+  50% { transform: translate3d(5rem, -5rem, 0) scale(1.06); opacity: 0.16; }
+  75% { transform: translate3d(1rem, -3rem, 0) scale(1.02); opacity: 0.12; }
+  100% { transform: translate3d(6rem, -6rem, 0) scale(1.08); opacity: 0.15; }
+}
+
+@keyframes networkFloat {
+  0% { transform: translate3d(0, 0, 0) scale(1); opacity: 0.18; }
+  100% { transform: translate3d(0, -1.25rem, 0) scale(1.02); opacity: 0.26; }
+}
+
+@keyframes beaconPulse {
+  0%, 100% { transform: translateX(-50%) scale(0.96); opacity: 0.48; }
+  50% { transform: translateX(-50%) scale(1.06); opacity: 0.78; }
+}
+
+@keyframes ringRotate {
+  from { transform: translateX(-50%) rotate(0deg); }
+  to { transform: translateX(-50%) rotate(360deg); }
+}
+
+@keyframes ringRotateReverse {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+@keyframes scanSweep {
+  0% { transform: translateY(-115%); opacity: 0; }
+  10% { opacity: 0.34; }
+  70% { opacity: 0.20; }
+  100% { transform: translateY(170%); opacity: 0; }
+}
+
+@media (max-width: 640px) {
+  .blob1, .blob2, .blob3 { filter: blur(70px); }
+  .beacon { width: 24rem; height: 24rem; top: 9rem; }
+  .ring { width: 28rem; height: 28rem; top: 15rem; }
+  .network { opacity: 0.16; }
+  .grid { opacity: 0.06; background-size: 52px 52px; }
+}
