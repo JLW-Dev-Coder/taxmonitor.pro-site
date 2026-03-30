@@ -270,7 +270,7 @@ export const api = {
   // Inquiries
   getInquiries: (account_id?: string) => {
     const qs = account_id ? `?account_id=${account_id}` : ''
-    return apiFetch<unknown[]>(`/v1/tmp/inquiries${qs}`)
+    return apiFetch<unknown[]>(`/v1/inquiries${qs}`)
   },
 
   // Notifications

@@ -29,8 +29,8 @@ Phase 1: ✅ .claude setup + accent color proposal
 Phase 2: ✅ Next.js scaffold complete (2026-03-29)
 Phase 3: ✅ Site pages + intake pipeline complete (2026-03-29)
 Phase 4: ✅ App pages (authenticated dashboard) (2026-03-30)
-Phase 5: ❌ Delete legacy Worker
-Phase 6: ❌ Delete D1 database
+Phase 5: ✅ Delete legacy Worker (taxmonitor-pro-api deleted 2026-03-30)
+Phase 6: ✅ Delete D1 database (taxmonitor-pro-d1 deleted 2026-03-30)
 
 ## Hard Rules
 - Never create a new Worker in this repo
@@ -38,7 +38,7 @@ Phase 6: ❌ Delete D1 database
 - Delete web/ directory (Tailwind — wrong standard)
 - All fetch() calls via lib/api.ts only
 - CSS Modules only — no Tailwind, no inline styles
-- workers/ directory scheduled for deletion
+- workers/ directory deleted (empty shell may remain due to OS file lock)
 
 ## VLP API Base URL
 https://api.virtuallaunch.pro
