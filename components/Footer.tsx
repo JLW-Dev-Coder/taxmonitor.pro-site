@@ -2,43 +2,55 @@ import Link from "next/link";
 import styles from "./Footer.module.css";
 
 const PLATFORM_LINKS = [
-  { label: "About", href: "#about" },
-  { label: "Features", href: "#features" },
+  { label: "About", href: "/about" },
+  { label: "Contact", href: "/contact" },
+  { label: "Directory", href: "/directory" },
+  { label: "Features", href: "/features" },
   { label: "How It Works", href: "#how-it-works" },
   { label: "Pricing", href: "/pricing" },
-  { label: "Directory", href: "/directory" },
-  { label: "Contact", href: "/contact" },
 ];
 
 const RESOURCE_LINKS = [
-  { label: "Support", href: "/support" },
-  { label: "Affiliates", href: "/affiliates" },
   {
-    label: "Transcript Monitor",
-    href: "https://transcript.taxmonitor.pro",
+    label: "How to Read IRS Transcripts",
+    href: "https://transcript.taxmonitor.pro/resources/how-to-read-irs-transcripts",
     external: true,
   },
   {
-    label: "Tax Tools Arcade",
-    href: "https://taxtools.taxmonitor.pro",
+    label: "Order Walkthrough",
+    href: "https://transcript.taxmonitor.pro/resources/transcript-orders",
     external: true,
   },
   {
-    label: "Virtual Launch Pro",
-    href: "https://virtuallaunch.pro",
+    label: "TaxTools Arcade",
+    href: "https://taxtools.taxmonitor.pro/",
     external: true,
   },
   {
-    label: "Developers VLP",
-    href: "https://developers.virtuallaunch.pro",
+    label: "Transcript Automation",
+    href: "https://transcript.taxmonitor.pro/",
+    external: true,
+  },
+  {
+    label: "Transcript Central",
+    href: "https://taxmonitor.pro/resources/transcript-central",
+  },
+  {
+    label: "Transcript Codes Database",
+    href: "https://transcript.taxmonitor.pro/resources/transcript-codes",
+    external: true,
+  },
+  {
+    label: "Transcript Types",
+    href: "https://transcript.taxmonitor.pro/resources/transcript-types",
     external: true,
   },
 ];
 
 const LEGAL_LINKS = [
   { label: "Privacy Policy", href: "/privacy" },
-  { label: "Terms of Service", href: "/terms" },
   { label: "Refund Policy", href: "/refunds" },
+  { label: "Terms of Service", href: "/terms" },
 ];
 
 export default function Footer() {
