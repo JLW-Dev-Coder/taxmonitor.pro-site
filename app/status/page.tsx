@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState, useCallback } from 'react'
+import Link from 'next/link'
 import AuthGuard from '@/components/AuthGuard'
 import AppShell from '@/components/AppShell'
 import { api } from '@/lib/api'
@@ -79,11 +80,22 @@ function StatusContent({ account }: { account: SessionUser }) {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [selectedPhase, setSelectedPhase] = useState<PhaseInfo | null>(null)
+  const [planTier, setPlanTier] = useState<'I' | 'II' | null>(null)
 
   const fetchStatus = useCallback(async () => {
     setLoading(true)
     setError(null)
     try {
+      // Check membership tier first
+      const memRes = await api.getTmpMembership(account.account_id)
+      const tier = memRes?.membership?.plan_tier ?? 'I'
+      setPlanTier(tier)
+
+      if (tier !== 'II') {
+        setData({})
+        return
+      }
+
       const res = await api.getComplianceStatus(account.account_id) as ComplianceData
       setData(res ?? {})
     } catch (err) {
@@ -134,6 +146,26 @@ function StatusContent({ account }: { account: SessionUser }) {
         <button className={styles.retryBtn} onClick={fetchStatus}>
           Retry
         </button>
+      </div>
+    )
+  }
+
+  /* ── Plan I upgrade gate ── */
+  if (!loading && planTier !== 'II') {
+    return (
+      <div className={styles.upgradeWrap}>
+        <div className={styles.upgradeCard}>
+          <svg width="40" height="40" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24" style={{ color: 'var(--accent)', marginBottom: '1rem' }}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+          </svg>
+          <h2 className={styles.upgradeTitle}>Monitoring Plan Required</h2>
+          <p className={styles.upgradeText}>
+            Upgrade to a monitoring plan to track your compliance status and IRS transcript progress.
+          </p>
+          <Link href="/pricing" className={styles.upgradeBtn}>
+            View monitoring plans &rarr;
+          </Link>
+        </div>
       </div>
     )
   }

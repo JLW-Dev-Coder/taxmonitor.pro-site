@@ -1,7 +1,9 @@
 'use client'
 
 import { useEffect, useState, useCallback } from 'react'
-import { api } from '@/lib/api'
+import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+import { api, ApiError } from '@/lib/api'
 import type { SessionUser } from '@/components/AuthGuard'
 import styles from './components.module.css'
 
@@ -23,6 +25,31 @@ interface Receipt {
   [key: string]: unknown
 }
 
+interface TmpDashboard {
+  plan_key: string
+  plan_name: string
+  plan_tier: 'I' | 'II'
+  status: string
+}
+
+interface MonitoringStatus {
+  phase: string
+  phase_label: string
+  intake_complete: number
+  esign_2848_complete: number
+  processing_complete: number
+  tax_record_complete: number
+  current_step?: string
+  step_status?: string
+}
+
+const MONITOR_PHASES = [
+  { key: 'intake_complete' as const, label: 'Intake' },
+  { key: 'esign_2848_complete' as const, label: 'ESign 2848' },
+  { key: 'processing_complete' as const, label: 'Processing' },
+  { key: 'tax_record_complete' as const, label: 'Tax Record' },
+]
+
 function formatAmount(cents: number): string {
   const dollars = typeof cents === 'number' ? cents / 100 : 0
   return `$${dollars.toFixed(2)}`
@@ -38,6 +65,11 @@ function formatDate(raw?: string): string {
 }
 
 export default function DashboardHome({ account }: { account: SessionUser }) {
+  const router = useRouter()
+
+  const [tmpDashboard, setTmpDashboard] = useState<TmpDashboard | null>(null)
+  const [monitoring, setMonitoring] = useState<MonitoringStatus | null>(null)
+
   const [notifications, setNotifications] = useState<Notification[]>([])
   const [receipts, setReceipts] = useState<Receipt[]>([])
   const [loadingNotif, setLoadingNotif] = useState(true)
@@ -46,6 +78,30 @@ export default function DashboardHome({ account }: { account: SessionUser }) {
   const [loadingTokens, setLoadingTokens] = useState(true)
 
   const fetchData = useCallback(async () => {
+    // TMP dashboard gate
+    try {
+      const res = await api.getTmpDashboard()
+      setTmpDashboard(res)
+
+      if (res.plan_tier === 'II') {
+        try {
+          const mon = await api.getTmpMonitoringStatus()
+          setMonitoring(mon)
+        } catch {
+          // monitoring status unavailable — non-fatal
+        }
+      }
+    } catch (err) {
+      if (err instanceof ApiError && err.status === 402) {
+        router.replace(
+          '/pricing?message=' +
+            encodeURIComponent('A subscription is required to access your dashboard.')
+        )
+        return
+      }
+      // Non-402 errors: fall through, dashboard still loads
+    }
+
     // Notifications
     try {
       const res = await api.getNotifications() as { notifications?: Notification[] } | Notification[]
@@ -77,7 +133,7 @@ export default function DashboardHome({ account }: { account: SessionUser }) {
     } finally {
       setLoadingTokens(false)
     }
-  }, [account.account_id])
+  }, [account.account_id, router])
 
   useEffect(() => {
     fetchData()
@@ -89,6 +145,73 @@ export default function DashboardHome({ account }: { account: SessionUser }) {
   return (
     <div className={styles.page}>
       <h1 className={styles.pageTitle}>Dashboard</h1>
+
+      {/* Plan header banner */}
+      {tmpDashboard && (
+        <div className={styles.planBanner}>
+          <div>
+            <div className={styles.planBannerLabel}>Current Plan</div>
+            <div className={styles.planBannerName}>{tmpDashboard.plan_name}</div>
+          </div>
+          <span
+            className={`${styles.planBannerStatus} ${
+              tmpDashboard.status === 'active'
+                ? styles.planBannerStatusActive
+                : styles.planBannerStatusInactive
+            }`}
+          >
+            {tmpDashboard.status === 'active' ? '● Active' : tmpDashboard.status}
+          </span>
+          {tmpDashboard.status !== 'active' && (
+            <Link href="/pricing" className={styles.planUpgradeLink}>
+              Upgrade &rarr;
+            </Link>
+          )}
+        </div>
+      )}
+
+      {/* Plan II monitoring phase cards */}
+      {monitoring && (
+        <div className={styles.glassCard}>
+          <h2 className={styles.cardTitle}>Monitoring Progress</h2>
+          <div className={styles.monitoringGrid}>
+            {MONITOR_PHASES.map((phase, idx) => {
+              const value = Number((monitoring as unknown as Record<string, unknown>)[phase.key] ?? 0)
+              const allPrev = MONITOR_PHASES.slice(0, idx).every(
+                (p) => Number((monitoring as unknown as Record<string, unknown>)[p.key] ?? 0) === 1
+              )
+              const state: 'complete' | 'current' | 'locked' =
+                value === 1 ? 'complete' : allPrev ? 'current' : 'locked'
+
+              return (
+                <div key={phase.key} className={styles.monitoringPhaseCard}>
+                  <div className={styles.monitoringPhaseNum}>Phase {idx + 1}</div>
+                  <div className={styles.monitoringPhaseName}>{phase.label}</div>
+                  <span
+                    className={`${styles.monitoringPhaseBadge} ${
+                      state === 'complete'
+                        ? styles.monitoringBadgeComplete
+                        : state === 'current'
+                          ? styles.monitoringBadgeCurrent
+                          : styles.monitoringBadgeLocked
+                    }`}
+                  >
+                    {state === 'complete' ? 'Complete' : state === 'current' ? 'In Progress' : 'Locked'}
+                  </span>
+                </div>
+              )
+            })}
+          </div>
+          {monitoring.current_step && (
+            <p style={{ fontSize: '0.813rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>
+              Current step: <strong style={{ color: 'var(--text)' }}>{monitoring.current_step}</strong>
+              {monitoring.step_status && (
+                <> &mdash; <span style={{ color: 'var(--accent)' }}>{monitoring.step_status}</span></>
+              )}
+            </p>
+          )}
+        </div>
+      )}
 
       <div className={styles.summaryRow}>
         <div className={styles.summaryCard}>

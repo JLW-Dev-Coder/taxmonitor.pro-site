@@ -1,5 +1,17 @@
 const API_BASE = 'https://api.virtuallaunch.pro'
 
+export class ApiError extends Error {
+  status: number
+  upgrade_url?: string
+
+  constructor(message: string, status: number, upgrade_url?: string) {
+    super(message)
+    this.name = 'ApiError'
+    this.status = status
+    this.upgrade_url = upgrade_url
+  }
+}
+
 interface ApiOptions extends RequestInit {
   auth?: boolean
 }
@@ -20,11 +32,11 @@ async function apiFetch<T>(
   })
 
   if (!res.ok) {
-    const error = await res.json().catch(() => ({}))
-    throw new Error(
-      (error as { error?: string }).error ||
-        `API error ${res.status}`
-    )
+    const body = await res.json().catch(() => ({}))
+    const msg =
+      (body as { error?: string }).error || `API error ${res.status}`
+    const upgrade_url = (body as { upgrade_url?: string }).upgrade_url
+    throw new ApiError(msg, res.status, upgrade_url)
   }
 
   return res.json()
@@ -288,4 +300,79 @@ export const api = {
         body: JSON.stringify(prefs),
       }
     ),
+
+  // TMP Membership & Monitoring
+  getTmpPricing: () =>
+    apiFetch<{
+      ok: boolean
+      plans_i: Array<{
+        plan_key: string
+        name: string
+        price: number
+        interval: string
+        features: string[]
+        recommended: boolean
+      }>
+      plans_ii: Array<{
+        plan_key: string
+        name: string
+        price: number
+        interval: string
+        weeks: number | null
+        description: string
+      }>
+      mfj_addon: {
+        plan_key: string
+        name: string
+        price: number
+      }
+    }>('/v1/tmp/pricing', { auth: false }),
+
+  createTmpCheckout: (plan_key: string, addon_mfj?: boolean) =>
+    apiFetch<{
+      ok: boolean
+      session_url: string
+      session_id: string
+    }>('/v1/tmp/memberships/checkout', {
+      method: 'POST',
+      body: JSON.stringify({ plan_key, addon_mfj: addon_mfj ?? false }),
+    }),
+
+  getTmpMembership: (account_id: string) =>
+    apiFetch<{
+      ok: boolean
+      membership: {
+        plan_key: string
+        plan_name: string
+        plan_tier: 'I' | 'II'
+        status: string
+        started_at: string
+        expires_at?: string
+      } | null
+    }>(`/v1/tmp/memberships/${account_id}`),
+
+  getTmpDashboard: () =>
+    apiFetch<{
+      ok: boolean
+      plan_key: string
+      plan_name: string
+      plan_tier: 'I' | 'II'
+      status: string
+    }>('/v1/tmp/dashboard'),
+
+  getTmpMonitoringStatus: () =>
+    apiFetch<{
+      ok: boolean
+      phase: string
+      phase_label: string
+      started_at: string
+      expected_end: string
+      intake_complete: number
+      esign_2848_complete: number
+      processing_complete: number
+      tax_record_complete: number
+      current_step?: string
+      step_status?: string
+      notes?: string
+    }>('/v1/tmp/monitoring/status'),
 }
