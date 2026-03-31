@@ -1,6 +1,6 @@
 'use client'
 
-import { ReportContent } from '@/app/report/page'
+import ReportContent from '@/app/dashboard/components/ReportContent'
 import type { SessionUser } from '@/components/AuthGuard'
 import styles from './components.module.css'
 

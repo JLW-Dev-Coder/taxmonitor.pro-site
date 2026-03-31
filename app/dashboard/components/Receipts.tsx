@@ -1,6 +1,6 @@
 'use client'
 
-import { OfficeContent } from '@/app/office/page'
+import OfficeContent from '@/app/dashboard/components/OfficeContent'
 import type { SessionUser } from '@/components/AuthGuard'
 import styles from './components.module.css'
 

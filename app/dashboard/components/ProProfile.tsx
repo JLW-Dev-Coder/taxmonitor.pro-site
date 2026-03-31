@@ -1,6 +1,6 @@
 'use client'
 
-import { ProfileContent } from '@/app/dashboard/profile/page'
+import ProfileContent from '@/app/dashboard/components/ProfileContent'
 import type { SessionUser } from '@/components/AuthGuard'
 import styles from './components.module.css'
 

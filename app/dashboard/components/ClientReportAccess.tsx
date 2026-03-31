@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback } from 'react'
 import { api } from '@/lib/api'
 import type { SessionUser } from '@/components/AuthGuard'
-import { ReportContent } from '@/app/report/page'
+import ReportContent from '@/app/dashboard/components/ReportContent'
 import styles from './components.module.css'
 
 interface Client {
