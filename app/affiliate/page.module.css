@@ -1,0 +1,410 @@
+/* Affiliate Page — CSS Module */
+
+/* ── Page layout ── */
+.page {
+  max-width: var(--max-content, 860px);
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.pageHeader {
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--surface-border);
+}
+
+.pageTitle {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 0.35rem;
+  background: linear-gradient(135deg, var(--accent), #fbbf24);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.pageSub {
+  margin: 0;
+  font-size: 0.925rem;
+  color: var(--text-muted);
+}
+
+/* ── Section ── */
+.section {
+  background: var(--surface-mid);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+}
+
+.sectionTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 1.25rem;
+  color: var(--text);
+}
+
+/* ── Section 1: Referral Link ── */
+.referralRow {
+  display: flex;
+  gap: 0.625rem;
+  align-items: center;
+}
+
+.referralInput {
+  flex: 1;
+  background: var(--surface-low, #0f172a);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-sm, 6px);
+  padding: 0.625rem 0.875rem;
+  font-size: 0.875rem;
+  color: var(--text);
+  font-family: var(--font-mono, monospace);
+  outline: none;
+  min-width: 0;
+}
+
+.referralInput:focus {
+  border-color: var(--accent);
+}
+
+.copyBtn {
+  flex-shrink: 0;
+  padding: 0.625rem 1.25rem;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm, 6px);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s, background 0.15s;
+  white-space: nowrap;
+}
+
+.copyBtn:hover {
+  opacity: 0.88;
+}
+
+.copyBtnCopied {
+  background: var(--success, #22c55e);
+}
+
+.referralNote {
+  margin: 0.875rem 0 0;
+  font-size: 0.8rem;
+  color: var(--text-subtle, var(--text-muted));
+  line-height: 1.5;
+}
+
+/* ── Section 2: Earnings Summary ── */
+.statsRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.statCard {
+  background: var(--surface-low, #0f172a);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-sm, 6px);
+  padding: 1.25rem;
+}
+
+.statAmount {
+  font-size: 1.75rem;
+  font-weight: 700;
+  font-family: var(--font-display);
+  color: var(--accent);
+  margin-bottom: 0.25rem;
+}
+
+.statAmountPaid {
+  color: var(--success, #22c55e);
+}
+
+.statLabel {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text);
+  margin-bottom: 0.2rem;
+}
+
+.statSub {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.payoutRow {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.payoutBtnWrap {
+  display: inline-block;
+}
+
+.payoutBtn {
+  padding: 0.7rem 1.5rem;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm, 6px);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.payoutBtn:hover:not(:disabled) {
+  opacity: 0.88;
+}
+
+.payoutBtn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.payoutHint {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.payoutSuccess {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--success, #22c55e);
+}
+
+.payoutError {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--error, #ef4444);
+}
+
+/* ── Section 3: Stripe Connect ── */
+.connectedBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(34, 197, 94, 0.12);
+  color: var(--success, #22c55e);
+  border: 1px solid rgba(34, 197, 94, 0.25);
+  border-radius: 999px;
+  padding: 0.4rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.onboardCard {
+  background: var(--surface-low, #0f172a);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-sm, 6px);
+  padding: 1.25rem;
+}
+
+.onboardTitle {
+  font-size: 0.975rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem;
+  color: var(--text);
+}
+
+.onboardBody {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  margin: 0 0 1.1rem;
+  line-height: 1.5;
+}
+
+.onboardBtn {
+  padding: 0.65rem 1.4rem;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm, 6px);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.onboardBtn:hover:not(:disabled) {
+  opacity: 0.88;
+}
+
+.onboardBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ── Section 4: Commission History ── */
+.tableWrap {
+  overflow-x: auto;
+  border-radius: var(--radius-sm, 6px);
+  border: 1px solid var(--surface-border);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.th {
+  text-align: left;
+  padding: 0.75rem 1rem;
+  background: var(--surface-low, #0f172a);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--surface-border);
+  white-space: nowrap;
+}
+
+.tr:not(:last-child) .td {
+  border-bottom: 1px solid var(--surface-border);
+}
+
+.tr:hover {
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.td {
+  padding: 0.75rem 1rem;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.statusBadge {
+  display: inline-block;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.statusPaid {
+  background: rgba(34, 197, 94, 0.12);
+  color: var(--success, #22c55e);
+  border: 1px solid rgba(34, 197, 94, 0.25);
+}
+
+.statusPending {
+  background: rgba(245, 158, 11, 0.12);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.25);
+}
+
+/* ── Skeleton ── */
+.tableSkeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.skeletonRow {
+  height: 44px;
+  background: var(--surface-low, #0f172a);
+  border-radius: var(--radius-sm, 6px);
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* ── Empty state ── */
+.emptyState {
+  padding: 2.5rem 1rem;
+  text-align: center;
+}
+
+.emptyText {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+/* ── Loading / Error ── */
+.loadingWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 1.5rem;
+  gap: 1rem;
+}
+
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid var(--surface-border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loadingText {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.errorWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 4rem 1.5rem;
+  text-align: center;
+}
+
+.errorText {
+  font-size: 0.9rem;
+  color: var(--error, #ef4444);
+  margin: 0;
+}
+
+.retryBtn {
+  padding: 0.55rem 1.25rem;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm, 6px);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .statsRow {
+    grid-template-columns: 1fr;
+  }
+
+  .referralRow {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .copyBtn {
+    width: 100%;
+  }
+}

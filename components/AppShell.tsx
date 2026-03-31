@@ -16,6 +16,7 @@ const NAV_ITEMS = [
   { href: '/report', label: 'Report', icon: 'file-text' },
   { href: '/status', label: 'Status', icon: 'activity' },
   { href: '/support', label: 'Support', icon: 'life-buoy' },
+  { href: '/affiliate', label: 'Affiliate', icon: 'share' },
 ] as const
 
 function NavIcon({ icon }: { icon: string }) {
@@ -75,6 +76,15 @@ function NavIcon({ icon }: { icon: string }) {
           <circle cx="12" cy="12" r="10" />
           <circle cx="12" cy="12" r="4" />
           <path d="M4.93 4.93l4.24 4.24M14.83 14.83l4.24 4.24M14.83 9.17l4.24-4.24M4.93 19.07l4.24-4.24" />
+        </svg>
+      )
+    case 'share':
+      return (
+        <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+          <circle cx="18" cy="5" r="3" />
+          <circle cx="6" cy="12" r="3" />
+          <circle cx="18" cy="19" r="3" />
+          <path strokeLinecap="round" d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98" />
         </svg>
       )
     default:
