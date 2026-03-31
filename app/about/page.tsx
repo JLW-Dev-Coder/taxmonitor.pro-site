@@ -3,7 +3,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import Header from '@/components/Header'
-import Footer from '@/components/Footer'
 import styles from './page.module.css'
 
 const redditCards = [
@@ -234,7 +233,6 @@ export default function AboutPage() {
         </section>
       </main>
 
-      <Footer />
     </>
   )
 }

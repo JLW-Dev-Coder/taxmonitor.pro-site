@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Header from '@/components/Header'
-import Footer from '@/components/Footer'
 import StepProgress from '@/components/StepProgress'
 import styles from './page.module.css'
 
@@ -179,7 +178,6 @@ export default function AgreementPage() {
           </div>
         </div>
       </main>
-      <Footer />
     </>
   )
 }

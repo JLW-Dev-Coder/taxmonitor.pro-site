@@ -2,7 +2,6 @@
 
 import Link from 'next/link'
 import Header from '@/components/Header'
-import Footer from '@/components/Footer'
 import styles from './page.module.css'
 
 const contactOptions = [
@@ -260,7 +259,6 @@ export default function ContactPage() {
         </section>
       </main>
 
-      <Footer />
     </>
   )
 }

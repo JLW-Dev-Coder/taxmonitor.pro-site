@@ -2,7 +2,6 @@
 
 import Link from 'next/link'
 import Header from '@/components/Header'
-import Footer from '@/components/Footer'
 import { PLANS_I } from '@/lib/plans'
 import styles from './page.module.css'
 
@@ -405,7 +404,6 @@ export default function FeaturesPage() {
         </section>
       </main>
 
-      <Footer />
     </>
   )
 }

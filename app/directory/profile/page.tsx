@@ -16,7 +16,6 @@ import { useEffect, useState, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import Header from '@/components/Header'
-import Footer from '@/components/Footer'
 import { api } from '@/lib/api'
 import styles from './page.module.css'
 
@@ -228,7 +227,6 @@ export default function ProfilePage() {
       <Suspense fallback={<div style={{ minHeight: '60vh' }} />}>
         <ProfileContent />
       </Suspense>
-      <Footer />
     </>
   )
 }

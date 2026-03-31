@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { api } from '@/lib/api'
 import Header from '@/components/Header'
-import Footer from '@/components/Footer'
 import PlanCard from '@/components/PlanCard'
 import styles from './page.module.css'
 
@@ -355,7 +354,6 @@ export default function PricingPage() {
           representation. Representation, filing, and resolution are separate engagements.
         </p>
       </main>
-      <Footer />
     </>
   )
 }

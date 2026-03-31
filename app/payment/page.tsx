@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Header from '@/components/Header'
-import Footer from '@/components/Footer'
 import StepProgress from '@/components/StepProgress'
 import { api } from '@/lib/api'
 import styles from './page.module.css'
@@ -228,7 +227,6 @@ export default function PaymentPage() {
           Monitoring does not create IRS representation. Representation, filing, and resolution are separate engagements.
         </p>
       </main>
-      <Footer />
     </>
   )
 }
