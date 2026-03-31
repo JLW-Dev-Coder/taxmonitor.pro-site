@@ -1,4 +1,5 @@
 import Link from "next/link";
+import styles from "./Footer.module.css";
 
 const PLATFORM_LINKS = [
   { label: "About", href: "#about" },
@@ -42,39 +43,39 @@ const LEGAL_LINKS = [
 
 export default function Footer() {
   return (
-    <footer className="bg-slate-950 border-t border-slate-800/60">
-      <div className="mx-auto max-w-7xl px-6 py-12">
-        <div className="grid gap-10 md:grid-cols-[1.35fr_1fr_1fr_1fr] md:items-start md:gap-x-16">
+    <footer className={styles.footer}>
+      <div className={styles.container}>
+        <div className={styles.grid}>
           {/* Column 1 — Brand */}
-          <div className="space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500 font-bold text-slate-950 text-sm">
+          <div className={styles.brand}>
+            <div className={styles.brandHeader}>
+              <div className={styles.brandIcon}>
                 TM
               </div>
               <div>
-                <p className="font-semibold tracking-tight text-white">
+                <p className={styles.brandName}>
                   Tax Monitor Pro
                 </p>
-                <p className="text-xs text-slate-400">
+                <p className={styles.brandTagline}>
                   Proactive tax monitoring
                 </p>
               </div>
             </div>
-            <p className="text-sm leading-relaxed text-slate-400">
+            <p className={styles.brandDescription}>
               Find the right tax pro for your situation — then stay ahead of IRS
               activity with automatic monitoring, plain-English alerts, and tools
               that give you clarity before problems grow.
             </p>
-            <div className="flex flex-wrap gap-3">
+            <div className={styles.brandButtons}>
               <Link
                 href="/signup"
-                className="inline-flex items-center justify-center rounded-lg bg-amber-500 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-amber-400"
+                className={styles.btnPrimary}
               >
                 Start Here &rarr;
               </Link>
               <Link
                 href="/pricing"
-                className="inline-flex items-center justify-center rounded-lg border border-slate-800/70 bg-slate-950/40 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:bg-slate-900"
+                className={styles.btnSecondary}
               >
                 View Pricing
               </Link>
@@ -82,14 +83,14 @@ export default function Footer() {
           </div>
 
           {/* Column 2 — Platform */}
-          <div className="space-y-3">
-            <h4 className="text-sm font-semibold text-white">Platform</h4>
-            <ul className="space-y-2">
+          <div className={styles.column}>
+            <h4 className={styles.columnTitle}>Platform</h4>
+            <ul className={styles.columnList}>
               {PLATFORM_LINKS.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-slate-300 transition hover:text-white"
+                    className={styles.columnLink}
                   >
                     {link.label}
                   </Link>
@@ -99,9 +100,9 @@ export default function Footer() {
           </div>
 
           {/* Column 3 — Resources */}
-          <div className="space-y-3">
-            <h4 className="text-sm font-semibold text-white">Resources</h4>
-            <ul className="space-y-2">
+          <div className={styles.column}>
+            <h4 className={styles.columnTitle}>Resources</h4>
+            <ul className={styles.columnList}>
               {RESOURCE_LINKS.map((link) => (
                 <li key={link.href}>
                   {"external" in link ? (
@@ -109,14 +110,14 @@ export default function Footer() {
                       href={link.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-sm text-slate-300 transition hover:text-white"
+                      className={styles.columnLink}
                     >
                       {link.label}
                     </a>
                   ) : (
                     <Link
                       href={link.href}
-                      className="text-sm text-slate-300 transition hover:text-white"
+                      className={styles.columnLink}
                     >
                       {link.label}
                     </Link>
@@ -127,37 +128,37 @@ export default function Footer() {
           </div>
 
           {/* Column 4 — Legal */}
-          <div className="space-y-3">
-            <h4 className="text-sm font-semibold text-white">Legal</h4>
-            <ul className="space-y-2">
+          <div className={styles.column}>
+            <h4 className={styles.columnTitle}>Legal</h4>
+            <ul className={styles.columnList}>
               {LEGAL_LINKS.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-slate-300 transition hover:text-white"
+                    className={styles.columnLink}
                   >
                     {link.label}
                   </Link>
                 </li>
               ))}
             </ul>
-            <p className="text-xs text-slate-500 mt-4">
+            <p className={styles.copyright}>
               &copy; 2026 Lenore, Inc. All rights reserved.
             </p>
           </div>
         </div>
 
         {/* Bottom bar */}
-        <div className="border-t border-slate-800/60 mt-10 pt-6">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <p className="text-sm text-slate-500">
+        <div className={styles.bottomBar}>
+          <div className={styles.bottomBarInner}>
+            <p className={styles.bottomText}>
               &copy; 2026 Lenore, Inc.
             </p>
-            <p className="text-sm text-slate-500">
+            <p className={styles.bottomText}>
               Earn 20% on every referral —{" "}
               <Link
                 href="/affiliates"
-                className="text-sm text-amber-500 hover:text-amber-400"
+                className={styles.affiliateLink}
               >
                 Join the Affiliate Program
               </Link>
