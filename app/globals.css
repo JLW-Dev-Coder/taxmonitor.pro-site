@@ -1,6 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Serif+Display&display=swap');
+
 :root {
+  --font-display: 'DM Serif Display', Georgia, serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+  --accent:        #f59e0b;
+  --accent-light:  #fffbeb;
+  --accent-dark:   #b45309;
+  --accent-text:   #92400e;
+  --accent-border: #fde68a;
+  --max-width:     1280px;
+  --page-gutter:   clamp(1.25rem, 5vw, 3rem);
+  --header-height: 68px;
+
   /* TMP Brand — Amber */
-  --accent: #F59E0B;
   --accent-hover: #D97706;
 
   /* Dark theme — matches existing site exactly */
@@ -21,14 +33,9 @@
   --warning: #F59E0B;
 
   /* Layout */
-  --header-height: 64px;
   --max-content: 1200px;
   --radius: 12px;
   --radius-sm: 8px;
-
-  /* Typography */
-  --font-body: 'DM Sans', system-ui, sans-serif;
-  --font-display: 'Sora', sans-serif;
 }
 
 * {
