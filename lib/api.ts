@@ -348,27 +348,29 @@ export const api = {
   getTmpPricing: () =>
     apiFetch<{
       ok: boolean
-      plans_i: Array<{
-        plan_key: string
+      plan_i: Array<{
+        key: string
         name: string
         price: number
-        interval: string
+        interval: 'month' | 'year'
+        price_id: string
         features: string[]
-        recommended: boolean
       }>
-      plans_ii: Array<{
-        plan_key: string
+      plan_ii: Array<{
+        key: string
         name: string
         price: number
-        interval: string
-        weeks: number | null
-        description: string
+        duration: string
+        price_id: string
+        features: string[]
       }>
-      mfj_addon: {
-        plan_key: string
+      addons: Array<{
+        key: string
         name: string
         price: number
-      }
+        price_id: string
+        features: string[]
+      }>
     }>('/v1/tmp/pricing', { auth: false }),
 
   createTmpCheckout: (plan_key: string, addon_mfj?: boolean) =>

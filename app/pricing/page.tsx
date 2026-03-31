@@ -11,25 +11,25 @@ import styles from './page.module.css'
 
 /* ── Types ── */
 interface PlanI {
-  plan_key: string
+  key: string
   name: string
   price: number
-  interval: string
+  interval: 'month' | 'year'
+  price_id: string
   features: string[]
-  recommended: boolean
 }
 
 interface PlanII {
-  plan_key: string
+  key: string
   name: string
   price: number
-  interval: string
-  weeks: number | null
-  description: string
+  duration: string
+  price_id: string
+  features: string[]
 }
 
 interface MfjAddon {
-  plan_key: string
+  key: string
   name: string
   price: number
 }
@@ -86,6 +86,7 @@ export default function PricingPage() {
   const [plansII, setPlansII] = useState<PlanII[]>([])
   const [mfjAddon, setMfjAddon] = useState<MfjAddon | null>(null)
   const [loadingPricing, setLoadingPricing] = useState(true)
+  const [billingInterval, setBillingInterval] = useState<'month' | 'year'>('month')
 
   const [loadingPlan, setLoadingPlan] = useState<string | null>(null)
   // Per Plan II card MFJ checkbox state
@@ -97,9 +98,9 @@ export default function PricingPage() {
     api
       .getTmpPricing()
       .then((res) => {
-        setPlansI(res.plans_i ?? [])
-        setPlansII(res.plans_ii ?? [])
-        setMfjAddon(res.mfj_addon ?? null)
+        setPlansI(res.plan_i ?? [])
+        setPlansII(res.plan_ii ?? [])
+        setMfjAddon(res.addons?.[0] ?? null)
       })
       .catch(() => {})
       .finally(() => setLoadingPricing(false))
@@ -159,6 +160,13 @@ export default function PricingPage() {
   const isActivePlan = (key: string) =>
     membership?.status === 'active' && membership.plan_key === key
 
+  const visiblePlansI = plansI.filter((p) => p.interval === billingInterval)
+
+  const isRecommended = (plan: PlanI) =>
+    billingInterval === 'month'
+      ? plan.key === 'tmp_plus'
+      : plan.key === 'tmp_plus_yearly'
+
   return (
     <>
       <Header variant="site" />
@@ -185,6 +193,22 @@ export default function PricingPage() {
             Access the TMP platform month-to-month. Upgrade or cancel anytime.
           </p>
 
+          {/* Billing interval toggle */}
+          <div className={styles.toggleRow}>
+            <button
+              className={billingInterval === 'month' ? styles.toggleActive : styles.toggleBtn}
+              onClick={() => setBillingInterval('month')}
+            >
+              Monthly
+            </button>
+            <button
+              className={billingInterval === 'year' ? styles.toggleActive : styles.toggleBtn}
+              onClick={() => setBillingInterval('year')}
+            >
+              Yearly
+            </button>
+          </div>
+
           {loadingPricing ? (
             <div className={styles.loadingGrid}>
               {[0, 1, 2, 3].map((i) => (
@@ -193,9 +217,9 @@ export default function PricingPage() {
             </div>
           ) : (
             <div className={styles.planGrid}>
-              {plansI.map((plan) => (
-                <div key={plan.plan_key} style={{ position: 'relative' }}>
-                  {isActivePlan(plan.plan_key) && (
+              {visiblePlansI.map((plan) => (
+                <div key={plan.key} style={{ position: 'relative' }}>
+                  {isActivePlan(plan.key) && (
                     <div className={styles.currentPlanBadge}>&#10003; Current Plan</div>
                   )}
                   <PlanCard
@@ -203,14 +227,14 @@ export default function PricingPage() {
                     price={plan.price}
                     interval={plan.interval}
                     features={plan.features}
-                    recommended={plan.recommended}
+                    recommended={isRecommended(plan)}
                     badge={BADGES[plan.name]}
                     onSelect={
-                      isActivePlan(plan.plan_key)
+                      isActivePlan(plan.key)
                         ? () => router.push('/dashboard')
-                        : () => handleSelectI(plan.plan_key, plan.price)
+                        : () => handleSelectI(plan.key, plan.price)
                     }
-                    loading={loadingPlan === plan.plan_key}
+                    loading={loadingPlan === plan.key}
                   />
                 </div>
               ))}
@@ -238,12 +262,12 @@ export default function PricingPage() {
           ) : (
             <div className={styles.planIIGrid}>
               {plansII.map((plan) => {
-                const active = isActivePlan(plan.plan_key)
-                const mfj = mfjChecked.current[plan.plan_key] ?? false
+                const active = isActivePlan(plan.key)
+                const mfj = mfjChecked.current[plan.key] ?? false
                 const displayPrice = mfj ? plan.price + (mfjAddon?.price ?? 79) : plan.price
 
                 return (
-                  <div key={plan.plan_key} className={styles.monitorCard}>
+                  <div key={plan.key} className={styles.monitorCard}>
                     {active && (
                       <div className={styles.currentPlanBadge}>&#10003; Current Plan</div>
                     )}
@@ -255,10 +279,7 @@ export default function PricingPage() {
                       <span className={styles.monitorCardInterval}> / one-time</span>
                     </div>
 
-                    <p className={styles.monitorCardDesc}>
-                      {plan.description}
-                      {plan.weeks != null && ` (${plan.weeks} weeks)`}
-                    </p>
+                    <p className={styles.monitorCardDesc}>{plan.duration}</p>
 
                     {/* MFJ checkbox */}
                     {mfjAddon && (
@@ -268,7 +289,7 @@ export default function PricingPage() {
                           className={styles.mfjCheckbox}
                           checked={mfj}
                           onChange={(e) => {
-                            mfjChecked.current[plan.plan_key] = e.target.checked
+                            mfjChecked.current[plan.key] = e.target.checked
                             setMfjTick((t) => t + 1)
                           }}
                         />
@@ -287,10 +308,10 @@ export default function PricingPage() {
                     ) : (
                       <button
                         className={styles.monitorBtn}
-                        onClick={() => handleSelectII(plan.plan_key)}
-                        disabled={loadingPlan === plan.plan_key}
+                        onClick={() => handleSelectII(plan.key)}
+                        disabled={loadingPlan === plan.key}
                       >
-                        {loadingPlan === plan.plan_key ? 'Loading\u2026' : 'Start monitoring \u2192'}
+                        {loadingPlan === plan.key ? 'Loading\u2026' : 'Start monitoring \u2192'}
                       </button>
                     )}
                   </div>
