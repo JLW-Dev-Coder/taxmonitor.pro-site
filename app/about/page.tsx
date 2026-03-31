@@ -105,7 +105,7 @@ export default function AboutPage() {
                 <div className={styles.founderContent}>
                   <div className={styles.founderAvatar}>
                     <Image
-                      src="https://20896460.fs1.hubspotusercontent-na1.net/hubfs/20896460/Development%20Materials/Miscellaneous/Pic_JLW_Left-removebg-preview.png"
+                      src="/images/jamie-williams.png"
                       alt="Jamie L. Williams"
                       width={112}
                       height={112}
