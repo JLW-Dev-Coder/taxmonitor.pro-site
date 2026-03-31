@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { Raleway } from 'next/font/google'
 import './globals.css'
-import SiteFooter from '@/components/SiteFooter'
+import Footer from '@/components/Footer'
 
 const raleway = Raleway({
   subsets: ['latin'],
@@ -31,7 +31,7 @@ export default function RootLayout({
       </head>
       <body>
         {children}
-        <SiteFooter />
+        <Footer />
       </body>
     </html>
   )
