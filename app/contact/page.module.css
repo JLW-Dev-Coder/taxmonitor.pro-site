@@ -366,16 +366,56 @@
 }
 
 /* ── CTA ──────────────────────────────────────────── */
+.ctaSection {
+  padding: 6rem 1.5rem;
+}
+
 .ctaInner {
-  max-width: 640px;
+  max-width: 48rem;
   margin: 0 auto;
   text-align: center;
 }
 
-.disclaimer {
+.ctaHeadline {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1.02;
+  font-size: 1.875rem;
+  margin-bottom: 1.5rem;
+}
+
+.ctaDesc {
+  font-size: 1.25rem;
+  color: var(--text-muted);
+  margin-bottom: 2.5rem;
+  max-width: 36rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ctaButton {
+  display: inline-block;
+  padding: 1.25rem 2.5rem;
+  background: linear-gradient(to right, var(--accent), var(--accent-hover));
+  color: var(--bg);
+  font-weight: 600;
+  font-size: 1.25rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s;
+  box-shadow: 0 8px 24px rgba(245, 158, 11, 0.3);
+  border: none;
+  cursor: pointer;
+}
+
+.ctaButton:hover {
+  transform: scale(1.05);
+}
+
+.ctaDisclaimer {
+  margin-top: 1.5rem;
   font-size: 0.875rem;
   color: var(--text-subtle);
-  margin-top: 32px;
 }
 
 /* ── Responsive ───────────────────────────────────── */
@@ -404,6 +444,10 @@
 
   .sectionHeading {
     font-size: 2.25rem;
+  }
+
+  .ctaHeadline {
+    font-size: 3rem;
   }
 
   .optionsGrid {

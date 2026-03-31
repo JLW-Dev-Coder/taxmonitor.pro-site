@@ -261,27 +261,19 @@ export default function ContactPage() {
         <div className={styles.divider} />
 
         {/* Final CTA */}
-        <section className={styles.section}>
+        <section className={styles.ctaSection}>
           <div className={styles.ctaInner}>
-            <h2 className={styles.sectionHeading}>Ready to find the right next step?</h2>
-            <p className={styles.sectionSub}>
+            <h2 className={styles.ctaHeadline}>Ready to find the <span className="gradient-text">right next step</span>?</h2>
+            <p className={styles.ctaDesc}>
               Choose the path that fits and we will help route you toward the right tax pro, membership conversation, demo, or support flow.
             </p>
-            <div className={styles.heroCtas}>
-              <button
-                className={styles.btnPrimary}
-                data-cal-link="tax-monitor-pro/tax-monitor-service-intro"
-                data-cal-namespace="tax-monitor-service-intro"
-                data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'
-              >Find Your Path</button>
-              <button
-                className={styles.btnSecondary}
-                data-cal-link="tax-monitor-pro/tax-monitor-service-intro"
-                data-cal-namespace="tax-monitor-service-intro"
-                data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'
-              >Book a Demo</button>
-            </div>
-            <p className={styles.disclaimer}>
+            <button
+              className={styles.ctaButton}
+              data-cal-link="tax-monitor-pro/tax-monitor-service-intro"
+              data-cal-namespace="tax-monitor-service-intro"
+              data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'
+            >Find Your Path &rarr;</button>
+            <p className={styles.ctaDisclaimer}>
               Your inquiry stays private. Reaching out helps us guide you, but it does not create IRS representation or obligation.
             </p>
           </div>

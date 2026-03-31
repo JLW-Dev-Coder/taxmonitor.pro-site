@@ -452,42 +452,19 @@ export default function DirectoryPage() {
         </section>
 
         {/* List Your Practice CTA */}
-        <section className={styles.ctaSection}>
-          <div className={styles.ctaCard}>
-            <div className={styles.ctaGlow} />
-            <div className={styles.ctaContent}>
-              <h2 className={styles.ctaTitle}>
-                Are You a Tax Professional?
-              </h2>
-              <p className={styles.ctaDesc}>
-                Join the Tax Monitor Pro directory and connect with taxpayers
-                looking for licensed professionals like you. Get featured
-                placement, verified badges, and client inquiries delivered
-                directly to your inbox.
-              </p>
-              <div className={styles.ctaActions}>
-                <Link href="/inquiry" className={styles.ctaPrimary}>
-                  List Your Practice
-                  <svg
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                    viewBox="0 0 24 24"
-                    width="18"
-                    height="18"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M17 8l4 4m0 0l-4 4m4-4H3"
-                    />
-                  </svg>
-                </Link>
-                <Link href="/contact" className={styles.ctaSecondary}>
-                  Learn More
-                </Link>
-              </div>
-            </div>
+        <section className={styles.ctaSectionStd}>
+          <div className={styles.ctaInnerStd}>
+            <h2 className={styles.ctaHeadlineStd}>Are You a <span className="gradient-text">Tax Professional</span>?</h2>
+            <p className={styles.ctaDescStd}>
+              Join the Tax Monitor Pro directory and connect with taxpayers
+              looking for licensed professionals like you. Get featured
+              placement, verified badges, and client inquiries delivered
+              directly to your inbox.
+            </p>
+            <a href="https://virtuallaunch.pro" target="_blank" rel="noopener noreferrer" className={styles.ctaButtonStd}>
+              List Your Practice &rarr;
+            </a>
+            <p className={styles.ctaDisclaimerStd}>No obligation. <a href="https://virtuallaunch.pro/about" target="_blank" rel="noopener noreferrer">Learn more</a> about directory listings.</p>
           </div>
         </section>
       </main>

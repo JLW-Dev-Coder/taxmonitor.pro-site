@@ -338,21 +338,21 @@ export default function PricingPage() {
         </section>
 
         {/* Final CTA */}
-        <section className={styles.cta}>
-          <h2 className={styles.ctaTitle}>Ready to Start?</h2>
-          <p className={styles.ctaText}>
-            Create your free account and explore the platform. Upgrade when you need tokens.
-          </p>
-          <Link href="/inquiry" className={styles.ctaButton}>
-            Start intake &rarr;
-          </Link>
+        <section className={styles.ctaSection}>
+          <div className={styles.ctaInner}>
+            <h2 className={styles.ctaHeadline}>Ready to <span className="gradient-text">Start</span>?</h2>
+            <p className={styles.ctaDesc}>
+              Create your free account and explore the platform. Upgrade when you need tokens.
+            </p>
+            <Link href="/inquiry" className={styles.ctaButton}>
+              Start intake &rarr;
+            </Link>
+            <p className={styles.ctaDisclaimer}>
+              Tax Monitor Pro provides monitoring and reporting services. It does not create IRS
+              representation. Representation, filing, and resolution are separate engagements.
+            </p>
+          </div>
         </section>
-
-        {/* Disclaimer */}
-        <p className={styles.disclaimer}>
-          Tax Monitor Pro provides monitoring and reporting services. It does not create IRS
-          representation. Representation, filing, and resolution are separate engagements.
-        </p>
       </main>
     </>
   )
