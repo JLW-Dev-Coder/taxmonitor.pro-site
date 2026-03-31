@@ -414,7 +414,7 @@ function PasswordModal({
 }
 
 /* ── Main Content ── */
-export function ProfileContent({ account }: { account: SessionUser }) {
+function ProfileContent({ account }: { account: SessionUser }) {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
