@@ -5,17 +5,11 @@ import Link from 'next/link'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { api } from '@/lib/api'
+import { filterSampleProfiles } from '@/lib/sample-profiles'
+import type { DirectoryProfessional } from '@/lib/sample-profiles'
 import styles from './page.module.css'
 
-interface Professional {
-  professional_id: string
-  name: string
-  title: string
-  specialty: string[]
-  location: string
-  avatar_url: string
-  verified: boolean
-}
+type Professional = DirectoryProfessional
 
 const SPECIALTY_OPTIONS = [
   { value: '', label: 'All Specialties' },
@@ -66,10 +60,34 @@ export default function DirectoryPage() {
         if (params.state) clean.state = params.state
         if (params.zip) clean.zip = params.zip
 
-        const res = await api.getDirectory(
+        let apiResults: Professional[] = []
+        try {
+          const res = await api.getDirectory(
+            Object.keys(clean).length > 0 ? clean : undefined
+          )
+          apiResults = (res.professionals || []).map((p) => ({
+            ...p,
+            city: '',
+            state: '',
+            zip: '',
+            profession: p.specialty,
+          }))
+        } catch {
+          /* API unavailable — fall through to samples */
+        }
+
+        const sampleResults = filterSampleProfiles(
           Object.keys(clean).length > 0 ? clean : undefined
         )
-        setProfessionals(res.professionals)
+
+        /* Merge: API results first, then samples not already present */
+        const apiIds = new Set(apiResults.map((p) => p.professional_id))
+        const merged = [
+          ...apiResults,
+          ...sampleResults.filter((s) => !apiIds.has(s.professional_id)),
+        ]
+
+        setProfessionals(merged)
       } catch {
         setError('Failed to load directory. Please try again.')
       } finally {

@@ -1,94 +1,257 @@
 # taxmonitor.pro — Claude Context
 
-## Role of This Repo
-FRONTEND ONLY after migration. No backend logic.
-All API calls go to https://api.virtuallaunch.pro
+## 1. Header
 
-## Critical Rule — Preserve Page Layouts
-When converting HTML → TSX:
-PRESERVE: Layout structure, sections, content flow,
-          visual hierarchy, spacing intent
-REPLACE:  Inline styles → CSS Module classes
-          Hardcoded colors → var() tokens
-          <script> API calls → lib/api.ts
-          Static partials → shared components
-ADD:      TypeScript types, loading/error states,
-          mobile responsiveness if missing
-NEVER:    Redesign pages, reorder sections,
-          remove content, change visual feel
+- **Repo:** taxmonitor.pro
+- **Product:** Tax Monitor Pro (TMP)
+- **Domain:** taxmonitor.pro
+- **Last updated:** 2026-04-04
+- **Purpose:** Taxpayer-facing directory and membership platform — frontend only
 
-## Platform Overview
-Tax Monitor Pro — taxpayer-facing monitoring platform.
-Two plan structures:
-Plan I: Free / Essential ($9) / Plus ($19) / Premier ($39)
-Plan II: Bronze ($275-6wk) / Silver ($325-8wk) /
-         Gold ($425-12wk) / Snapshot ($425) / MFJ (+$79)
+---
 
-## Migration Status
-Phase 1: ✅ .claude setup + accent color proposal
-Phase 2: ✅ Next.js scaffold complete (2026-03-29)
-Phase 3: ✅ Site pages + intake pipeline complete (2026-03-29)
-Phase 4: 🔄 App pages (authenticated dashboard)
-Phase 5: ❌ Delete legacy Worker
-Phase 6: ❌ Delete D1 database
+## 2. System Definition
 
-## Hard Rules
-- Never create a new Worker in this repo
-- Never add backend logic
-- Delete web/ directory (Tailwind — wrong standard)
-- All fetch() calls via lib/api.ts only
+**What it is:**
+Taxpayer-facing directory and membership platform. Taxpayers find tax professionals, professionals get listed and serve clients through the intake-to-completion workflow.
+
+**What it is NOT:**
+Not a backend. Not a CMS. Not a batch generation system. No Worker routes live here.
+
+**Audience:**
+Individual taxpayers seeking tax professional representation, and tax professionals seeking client leads.
+
+**Stack:**
+Next.js 15.1.7, CSS Modules, static export, Cloudflare Pages
+
+**Backend:**
+api.virtuallaunch.pro (VLP Worker) — all API calls via `lib/api.ts`
+
+---
+
+## 3. Hard Constraints
+
+- No backend routes in this repo — all backend logic lives in VLP Worker
+- No contracts defined in this repo — contracts belong in VLP repo under `contracts/registries/tmp-registry.json`
+- Auth uses `vlp_session` HttpOnly cookie managed by VLP Worker
+- Do not delete legacy HTML until corresponding .tsx achieves full feature parity
+- All API calls must target `api.virtuallaunch.pro` — never `api.taxmonitor.pro`
 - CSS Modules only — no Tailwind, no inline styles
-- workers/ directory scheduled for deletion
+- All fetch() calls via `lib/api.ts` only
 
-## VLP API Base URL
-https://api.virtuallaunch.pro
+---
 
-## Route Mapping (Legacy → VLP)
-/v1/auth/magic-link/request → /v1/auth/magic-link/request
-/v1/auth/magic-link/verify  → /v1/auth/magic-link/verify
-/v1/auth/session            → /v1/auth/session
-/v1/auth/logout             → /v1/auth/logout
-/v1/auth/google/start       → /v1/auth/google/start
-/v1/auth/google/callback    → /v1/auth/google/callback
-/v1/checkout/sessions       → /v1/checkout/sessions
-/v1/checkout/status         → /v1/checkout/status
-/v1/directory/professionals → /v1/tmp/directory
-/v1/inquiries               → /v1/tmp/inquiries
-/v1/taxpayer-memberships/*  → /v1/tmp/memberships/*
-/v1/taxpayer-accounts/*     → /v1/accounts/*
-/v1/support/tickets/*       → /v1/support/tickets/*
-/v1/pricing                 → /v1/tmp/pricing
-/v1/directory/profile/:id   → /v1/profiles/public/:id
-/v1/tmp/directory           → /v1/tmp/directory (city/state/zip filtering supported)
-/v1/notifications/*         → /v1/notifications/*
+## 4. Terminology (Canonical Language Layer)
 
-## Frontend Architecture
-lib/api.ts       — central API client, all fetch() calls
-lib/plans.ts     — Plan I + Plan II pricing data
-components/      — Header, Footer, shared UI
-app/             — Next.js App Router pages
-public/          — static assets
+| Do NOT use | Use instead |
+|------------|-------------|
+| api.taxmonitor.pro | api.virtuallaunch.pro |
+| tmp_session | vlp_session |
+| TMP Worker | VLP Worker |
 
-## Converted Pages (Phase 3)
-Site: / (home), /about, /contact, /features, /pricing
-Auth: /sign-in (magic link + Google OAuth)
-Directory: /directory, /directory/profile?id=<slug>
-Intake flow: /inquiry → /intake → /offer →
-  /agreement → /payment → /payment-success
-Legal: /legal/privacy, /legal/refund, /legal/terms
+---
 
-## sessionStorage Data Flow (Intake Pipeline)
-inquiry_data → intake_data → offer_data →
-  agreement_data → cleared on payment-success
+## 5. Repo Structure
 
-## Directory Profile Routing
-Uses /directory/profile?id=<slug> (static export
-  constraint). Cloudflare Pages _redirects can map
-  /directory/<slug> to clean URLs.
+```
+taxmonitor.pro/
+├── .claude/               [config]   Claude context + canonicals
+│   └── canonicals/        [config]   Structural templates for docs
+├── app/                   [source]   Next.js App Router pages (.tsx)
+│   ├── about/
+│   ├── agreement/
+│   ├── calendar/
+│   ├── contact/
+│   ├── contracts/         [legacy]   Legacy contract JSON files
+│   ├── dashboard/
+│   │   └── profile/
+│   ├── directory/
+│   │   └── profile/
+│   ├── features/
+│   ├── inquiry/
+│   ├── intake/
+│   ├── legal/
+│   │   ├── privacy/
+│   │   ├── refund/
+│   │   └── terms/
+│   ├── messages/
+│   ├── offer/
+│   ├── office/
+│   ├── pages/             [legacy]   Legacy HTML app pages
+│   │   ├── account/
+│   │   ├── flows/
+│   │   ├── staff/
+│   │   └── tax-pro/
+│   ├── partials/          [legacy]   Legacy HTML partials
+│   ├── payment/
+│   ├── payment-success/
+│   ├── pricing/
+│   ├── report/
+│   ├── sign-in/
+│   ├── status/
+│   └── support/
+├── assets/                [legacy]   Legacy static assets
+│   ├── directory/         [legacy]   Sample profile images
+│   └── images/            [legacy]   Legacy images
+├── components/            [source]   Shared React components
+├── contracts/             [legacy]   47 contract JSON files (pending VLP migration)
+├── directory/             [legacy]   Legacy directory HTML + sample profiles
+├── legal/                 [legacy]   Legacy legal HTML pages
+├── lib/                   [source]   API client + shared utilities
+├── public/                [source]   Static assets for Next.js
+├── site/                  [legacy]   Legacy site HTML pages
+│   ├── partials/
+│   └── resources/
+├── styles/                [legacy]   Legacy CSS files
+├── tools/                 [legacy]   Legacy HTML tool pages
+├── out/                   [generated] Next.js static export output
+├── node_modules/          [generated] npm dependencies
+├── next.config.ts         [config]   Next.js configuration
+├── package.json           [config]   Project manifest
+└── tsconfig.json          [config]   TypeScript configuration
+```
 
-## Pages Still To Convert (Phase 4)
-App pages: app/pages/account/profile.html,
-  app/pages/calendar.html, app/pages/messaging.html,
-  app/pages/office.html, app/pages/report.html,
-  app/pages/status.html, app/pages/support.html,
-  app/pages/tax-pro/dashboard.html
+---
+
+## 6. Data Contracts
+
+- **Source of truth:** VLP Worker R2 storage
+- **Contract definitions:** VLP repo `contracts/registries/tmp-registry.json`
+- **Note:** 47 contract files exist locally in `contracts/` — these are pending migration to VLP repo and should not be treated as authoritative
+
+---
+
+## 7. Execution Logic
+
+<!-- Phase 1+ -->
+
+---
+
+## 8. External Interfaces
+
+- **API:** `api.virtuallaunch.pro` (all routes)
+- **Storage:** R2 via VLP Worker (authoritative), D1 via VLP Worker (projection)
+- **Auth:** `vlp_session` cookie
+- **Billing:** Stripe via VLP Worker
+- **Booking:** Cal.com via VLP Worker
+
+---
+
+## 9. Personalization / Business Logic
+
+<!-- Phase 4 — VLP SCALE -->
+
+---
+
+## 10. Routing / URL Rules
+
+- `/directory` — public tax professional directory
+- `/directory/profile?id={professional_id}` — individual profile page
+- `/app/*` — authenticated dashboard pages
+- `/legal/*` — legal pages (privacy, terms, refund)
+- `/sign-in` — magic link + Google OAuth authentication
+- Intake flow: `/inquiry` → `/intake` → `/offer` → `/agreement` → `/payment` → `/payment-success`
+
+---
+
+## 11. Lifecycle / Scheduling
+
+<!-- Phase 4 — VLP SCALE -->
+
+---
+
+## 12. Operational Loop
+
+<!-- Phase 4 — VLP SCALE -->
+
+---
+
+## 13. Metrics / Business Context
+
+### VLP Membership Tiers (tax professional, B2B)
+
+| Tier | Price | Transcript tokens/mo | Game tokens/mo |
+|------|-------|----------------------|----------------|
+| Listed | $0 | 0 | 0 |
+| Active | $79/mo | 2 | 5 |
+| Featured | $199/mo | 5 | 15 |
+| Premier | $399/mo | 10 | 40 |
+
+### TMP Membership Tiers (taxpayer, B2C)
+
+| Tier | Price | Tokens/mo |
+|------|-------|-----------|
+| Free | $0 | 0 |
+| Essential | $9/mo or $99/yr | 5 tool + 2 transcript |
+| Plus | $19/mo or $199/yr | 15 tool + 5 transcript |
+| Premier | $39/mo or $399/yr | 40 tool + 10 transcript |
+
+---
+
+## 14. Reference Docs Priority
+
+1. `.claude/CLAUDE.md` (this file) — authoritative for TMP repo
+2. VLP `.claude/CLAUDE.md` — authoritative for backend, contracts, write pipeline
+3. `MARKET.md` — product positioning
+4. `SCALE.md` — campaign logic (when created)
+5. `.claude/canonicals/*` — structural templates for all docs
+
+---
+
+## 15. Hard Constraints (Repeat)
+
+- No backend routes in this repo — all backend logic lives in VLP Worker
+- No contracts defined in this repo — contracts belong in VLP repo under `contracts/registries/tmp-registry.json`
+- Auth uses `vlp_session` HttpOnly cookie managed by VLP Worker
+- Do not delete legacy HTML until corresponding .tsx achieves full feature parity
+- All API calls must target `api.virtuallaunch.pro` — never `api.taxmonitor.pro`
+- CSS Modules only — no Tailwind, no inline styles
+- All fetch() calls via `lib/api.ts` only
+
+---
+
+## 16. Related Systems / Repos
+
+| Repo | Local Path | Role |
+|------|-----------|------|
+| VLP | `C:\Users\eimaj\virtuallaunch.pro` | Worker + contracts + shared infra |
+| TTMP | `C:\Users\eimaj\transcript.taxmonitor.pro` | IRS transcript parsing |
+| TTTMP | `C:\Users\eimaj\taxtools.taxmonitor.pro` | Tax education + form tools |
+
+---
+
+## 17. Phase Tracker
+
+| Phase | Name | Status | Completed |
+|-------|------|--------|-----------|
+| 0 | TMP repo cleanup | complete | 2026-04-04 |
+| 1 | TMP directory filters + sample profiles | complete | 2026-04-04 |
+| 2 | VLP membership tiers in Stripe | not started | — |
+| 3 | VLP pricing + signup pages | not started | — |
+| 4 | VLP SCALE asset pages + email copy | not started | — |
+| 5 | Test full workflow end to end | not started | — |
+| 6 | Intake + service pool | not started | — |
+
+Update this table as each phase completes.
+
+---
+
+## 18. Legacy HTML Policy
+
+Legacy `.html` files are retained as working reference throughout the repo.
+Do not delete any legacy HTML file until the corresponding `.tsx` page has been
+verified to match all functionality, including:
+- Layout and styling
+- Data loading (API calls or static data)
+- Filter/search capabilities
+- Navigation and linking
+- Mobile responsiveness
+
+Legacy files include but are not limited to:
+- app/*.html (agreement, inquiry, intake, offer, payment, login, payment-success)
+- directory/sample-*/index.html + data.json
+- directory/index.html, profile-builder.html, profile-template.html
+- site/, tools/, styles/, assets/, legal/
+
+When a .tsx replacement achieves full parity, delete the .html version and
+remove it from this list.

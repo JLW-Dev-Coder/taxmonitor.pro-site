@@ -1,4 +1,6 @@
 {
+  "_description": "Canonical settings.local.json template for all VLP ecosystem repos. Copy to .claude/settings.local.json and customize per repo.",
+  "_usage": "Remove _description and _usage keys when copying to settings.local.json",
   "permissions": {
     "allow": [
       "Bash(npm install:*)",
