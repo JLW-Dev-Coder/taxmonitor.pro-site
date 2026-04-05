@@ -255,3 +255,14 @@ Legacy files include but are not limited to:
 
 When a .tsx replacement achieves full parity, delete the .html version and
 remove it from this list.
+
+---
+
+## Post-Task Requirements
+
+After completing any task:
+1. Stage all changes: git add -A
+2. Commit with a descriptive message: git commit -m "[Phase X] description of changes"
+3. Report the commit hash in the task report
+
+Never leave uncommitted changes. Every task ends with a clean working tree.
