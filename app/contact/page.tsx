@@ -1,8 +1,8 @@
 'use client'
 
 import Link from 'next/link'
+import Script from 'next/script'
 import Header from '@/components/Header'
-import Footer from '@/components/Footer'
 import styles from './page.module.css'
 
 const contactOptions = [
@@ -99,8 +99,18 @@ export default function ContactPage() {
             </div>
 
             <div className={styles.heroCtas}>
-              <a href="#contact-options" className={styles.btnPrimary}>Find Your Path</a>
-              <a href="#contact-options" className={styles.btnSecondary}>Book a Demo</a>
+              <button
+                className={styles.btnPrimary}
+                data-cal-link="tax-monitor-pro/tax-monitor-service-intro"
+                data-cal-namespace="tax-monitor-service-intro"
+                data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'
+              >Find Your Path</button>
+              <button
+                className={styles.btnSecondary}
+                data-cal-link="tax-monitor-pro/tax-monitor-service-intro"
+                data-cal-namespace="tax-monitor-service-intro"
+                data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'
+              >Book a Demo</button>
             </div>
 
             <div className={styles.pillRow}>
@@ -160,8 +170,12 @@ export default function ContactPage() {
                 <p className={styles.pathDesc}>
                   Explore the directory, memberships, monitoring features, and whether Tax Monitor Pro fits what you need right now.
                 </p>
-                {/* TODO: Integrate Cal.com — namespace: demo */}
-                <a href="mailto:support@taxmonitor.pro?subject=Demo%20Request" className={styles.btnPrimary}>Book a demo</a>
+                <button
+                  className={styles.btnPrimary}
+                  data-cal-link="tax-monitor-pro/tax-monitor-service-intro"
+                  data-cal-namespace="tax-monitor-service-intro"
+                  data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'
+                >Book a demo</button>
               </div>
 
               <div className={styles.pathCard}>
@@ -174,8 +188,12 @@ export default function ContactPage() {
                 <p className={styles.pathDesc}>
                   Use this path for membership questions, account changes, service updates, or support tied to your current relationship with TMP.
                 </p>
-                {/* TODO: Integrate Cal.com — namespace: tax-monitor-service-exit-offboarding */}
-                <a href="mailto:support@taxmonitor.pro?subject=Support%20Request" className={styles.btnSecondaryFull}>Contact support</a>
+                <button
+                  className={styles.btnSecondaryFull}
+                  data-cal-link="tax-monitor-pro/tax-monitor-service-support"
+                  data-cal-namespace="tax-monitor-service-support"
+                  data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'
+                >Contact support</button>
               </div>
             </div>
           </div>
@@ -243,24 +261,34 @@ export default function ContactPage() {
         <div className={styles.divider} />
 
         {/* Final CTA */}
-        <section className={styles.section}>
+        <section className={styles.ctaSection}>
           <div className={styles.ctaInner}>
-            <h2 className={styles.sectionHeading}>Ready to find the right next step?</h2>
-            <p className={styles.sectionSub}>
+            <h2 className={styles.ctaHeadline}>Ready to find the <span className="gradient-text">right next step</span>?</h2>
+            <p className={styles.ctaDesc}>
               Choose the path that fits and we will help route you toward the right tax pro, membership conversation, demo, or support flow.
             </p>
-            <div className={styles.heroCtas}>
-              <a href="#contact-options" className={styles.btnPrimary}>Find Your Path</a>
-              <a href="#contact-options" className={styles.btnSecondary}>Book a Demo</a>
-            </div>
-            <p className={styles.disclaimer}>
+            <button
+              className={styles.ctaButton}
+              data-cal-link="tax-monitor-pro/tax-monitor-service-intro"
+              data-cal-namespace="tax-monitor-service-intro"
+              data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'
+            >Find Your Path &rarr;</button>
+            <p className={styles.ctaDisclaimer}>
               Your inquiry stays private. Reaching out helps us guide you, but it does not create IRS representation or obligation.
             </p>
           </div>
         </section>
       </main>
 
-      <Footer />
+      <Script id="cal-embed" strategy="afterInteractive">{`
+  (function (C, A, L) { let p = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if(typeof namespace === "string"){cal.ns[namespace] = cal.ns[namespace] || api;p(cal.ns[namespace], ar);p(cal, ["initNamespace", namespace]);} else p(cal, ar); return;} p(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");
+
+  Cal("init", "tax-monitor-service-intro", {origin:"https://app.cal.com"});
+  Cal.ns["tax-monitor-service-intro"]("ui", {"cssVarsPerTheme":{"light":{"cal-brand":"#f59e0b"},"dark":{"cal-brand":"#f59e0b"}},"hideEventTypeDetails":false,"layout":"month_view"});
+
+  Cal("init", "tax-monitor-service-support", {origin:"https://app.cal.com"});
+  Cal.ns["tax-monitor-service-support"]("ui", {"cssVarsPerTheme":{"light":{"cal-brand":"#f59e0b"},"dark":{"cal-brand":"#f59e0b"}},"hideEventTypeDetails":false,"layout":"month_view"});
+`}</Script>
     </>
   )
 }

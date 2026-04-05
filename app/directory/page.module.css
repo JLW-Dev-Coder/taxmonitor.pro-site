@@ -584,119 +584,60 @@
 }
 
 /* ── CTA Section ── */
-.ctaSection {
-  max-width: var(--max-content);
+.ctaSectionStd {
+  padding: 6rem 1.5rem;
+}
+
+.ctaInnerStd {
+  max-width: 48rem;
   margin: 0 auto;
-  padding: 0 16px 80px;
-}
-
-@media (min-width: 640px) {
-  .ctaSection {
-    padding: 0 24px 96px;
-  }
-}
-
-@media (min-width: 1024px) {
-  .ctaSection {
-    padding: 0 32px 96px;
-  }
-}
-
-.ctaCard {
-  position: relative;
-  overflow: hidden;
-  background: linear-gradient(135deg, rgba(245, 158, 11, 0.08) 0%, var(--surface) 100%);
-  border: 1px solid rgba(245, 158, 11, 0.2);
-  border-radius: 24px;
-  padding: 48px 32px;
   text-align: center;
 }
 
-@media (min-width: 640px) {
-  .ctaCard {
-    padding: 64px 48px;
-  }
-}
-
-.ctaGlow {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at center, rgba(245, 158, 11, 0.06), transparent 60%);
-  pointer-events: none;
-}
-
-.ctaContent {
-  position: relative;
-  max-width: 640px;
-  margin: 0 auto;
-}
-
-.ctaTitle {
+.ctaHeadlineStd {
   font-family: var(--font-display);
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: var(--text);
-  margin-bottom: 16px;
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1.02;
+  font-size: 1.875rem;
+  margin-bottom: 1.5rem;
 }
 
-@media (min-width: 640px) {
-  .ctaTitle {
-    font-size: 2rem;
+@media (min-width: 768px) {
+  .ctaHeadlineStd {
+    font-size: 3rem;
   }
 }
 
-.ctaDesc {
-  font-size: 1rem;
+.ctaDescStd {
+  font-size: 1.25rem;
   color: var(--text-muted);
-  line-height: 1.7;
-  margin-bottom: 32px;
+  margin-bottom: 2.5rem;
+  max-width: 36rem;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.ctaActions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  justify-content: center;
-}
-
-.ctaPrimary {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 14px 28px;
-  background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+.ctaButtonStd {
+  display: inline-block;
+  padding: 1.25rem 2.5rem;
+  background: linear-gradient(to right, var(--accent), var(--accent-hover));
   color: var(--bg);
-  border-radius: var(--radius);
   font-weight: 600;
-  font-size: 1rem;
-  text-decoration: none;
-  transition: opacity 0.2s, box-shadow 0.2s;
-  box-shadow: 0 8px 24px rgba(245, 158, 11, 0.2);
+  font-size: 1.25rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s;
+  box-shadow: 0 8px 24px rgba(245, 158, 11, 0.3);
 }
 
-.ctaPrimary:hover {
-  opacity: 0.92;
-  box-shadow: 0 12px 32px rgba(245, 158, 11, 0.3);
+.ctaButtonStd:hover {
+  transform: scale(1.05);
 }
 
-.ctaSecondary {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 14px 28px;
-  background: none;
-  border: 1px solid var(--surface-border);
-  color: var(--text);
-  border-radius: var(--radius);
-  font-weight: 600;
-  font-size: 1rem;
-  text-decoration: none;
-  transition: border-color 0.2s, color 0.2s;
-}
-
-.ctaSecondary:hover {
-  border-color: var(--accent);
-  color: var(--accent);
+.ctaDisclaimerStd {
+  margin-top: 1.5rem;
+  font-size: 0.875rem;
+  color: var(--text-subtle);
 }
 
 /* ── Animation ── */
@@ -714,10 +655,10 @@
 .hero,
 .filterSection,
 .resultsSection,
-.ctaSection {
+.ctaSectionStd {
   animation: fadeInUp 0.8s ease-out both;
 }
 
 .filterSection { animation-delay: 0.08s; }
 .resultsSection { animation-delay: 0.14s; }
-.ctaSection { animation-delay: 0.2s; }
+.ctaSectionStd { animation-delay: 0.2s; }

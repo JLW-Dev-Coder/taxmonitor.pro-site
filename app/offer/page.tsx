@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Header from '@/components/Header'
-import Footer from '@/components/Footer'
 import StepProgress from '@/components/StepProgress'
 import { PLANS_II } from '@/lib/plans'
 import type { PlanII } from '@/lib/plans'
@@ -247,7 +246,6 @@ export default function OfferPage() {
           </p>
         </div>
       </main>
-      <Footer />
     </>
   )
 }

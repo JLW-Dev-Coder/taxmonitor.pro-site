@@ -5,7 +5,6 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { api } from '@/lib/api'
 import Header from '@/components/Header'
-import Footer from '@/components/Footer'
 import styles from './page.module.css'
 
 type View = 'default' | 'magic-link' | 'check-email'
@@ -288,7 +287,6 @@ function SignInContent() {
           </nav>
         </div>
       </main>
-      <Footer />
     </>
   )
 }

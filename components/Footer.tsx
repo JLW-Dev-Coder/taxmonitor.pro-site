@@ -1,94 +1,183 @@
-import Link from 'next/link'
-import styles from './Footer.module.css'
+import Link from "next/link";
+import styles from "./Footer.module.css";
+
+const PLATFORM_LINKS = [
+  { label: "About", href: "/about" },
+  { label: "Contact", href: "/contact" },
+  { label: "Directory", href: "/directory" },
+  { label: "Features", href: "/features" },
+  { label: "How It Works", href: "#how-it-works" },
+  { label: "Pricing", href: "/pricing" },
+];
+
+const RESOURCE_LINKS = [
+  {
+    label: "How to Read IRS Transcripts",
+    href: "https://transcript.taxmonitor.pro/resources/how-to-read-irs-transcripts",
+    external: true,
+  },
+  {
+    label: "Order Walkthrough",
+    href: "https://transcript.taxmonitor.pro/resources/transcript-orders",
+    external: true,
+  },
+  {
+    label: "TaxTools Arcade",
+    href: "https://taxtools.taxmonitor.pro/",
+    external: true,
+  },
+  {
+    label: "Transcript Automation",
+    href: "https://transcript.taxmonitor.pro/",
+    external: true,
+  },
+  {
+    label: "Transcript Central",
+    href: "https://taxmonitor.pro/resources/transcript-central",
+  },
+  {
+    label: "Transcript Codes Database",
+    href: "https://transcript.taxmonitor.pro/resources/transcript-codes",
+    external: true,
+  },
+  {
+    label: "Transcript Types",
+    href: "https://transcript.taxmonitor.pro/resources/transcript-types",
+    external: true,
+  },
+];
+
+const LEGAL_LINKS = [
+  { label: "Privacy Policy", href: "/privacy" },
+  { label: "Refund Policy", href: "/refunds" },
+  { label: "Terms of Service", href: "/terms" },
+];
 
 export default function Footer() {
   return (
     <footer className={styles.footer}>
-      <div className={styles.inner}>
+      <div className={styles.container}>
         <div className={styles.grid}>
-          {/* Brand */}
+          {/* Column 1 — Brand */}
           <div className={styles.brand}>
-            <Link href="/" className={styles.logoLink}>
-              <span className={styles.logoChip}>TM</span>
-              <div className={styles.logoText}>
-                <span className={styles.logoTitle}>Tax Monitor Pro</span>
-                <span className={styles.logoSub}>Proactive tax monitoring</span>
+            <div className={styles.brandHeader}>
+              <div className={styles.brandIcon}>
+                TM
               </div>
-            </Link>
-
-            <p className={styles.brandDesc}>
-              Professional tax account monitoring services provided by a licensed tax professional.
+              <div>
+                <p className={styles.brandName}>
+                  Tax Monitor Pro
+                </p>
+                <p className={styles.brandTagline}>
+                  Proactive tax monitoring
+                </p>
+              </div>
+            </div>
+            <p className={styles.brandDescription}>
+              Find the right tax pro for your situation — then stay ahead of IRS
+              activity with automatic monitoring, plain-English alerts, and tools
+              that give you clarity before problems grow.
             </p>
-
-            <p className={styles.brandDisclaimer}>
-              Monitoring does not create IRS representation. Representation, filing, and resolution are separate engagements.
-            </p>
-
-            <div className={styles.brandActions}>
-              <Link href="/inquiry" className={styles.ctaPrimary}>
-                Start Intake &rarr;
+            <div className={styles.brandButtons}>
+              <Link
+                href="/signup"
+                className={styles.btnPrimary}
+              >
+                Start Here &rarr;
               </Link>
-              <Link href="/pricing" className={styles.ctaSecondary}>
-                View pricing
+              <Link
+                href="/pricing"
+                className={styles.btnSecondary}
+              >
+                View Pricing
               </Link>
             </div>
           </div>
 
-          {/* Links */}
-          <div>
-            <h3 className={styles.columnTitle}>Links</h3>
-            <nav className={styles.linkList}>
-              <Link href="/about" className={styles.link}>About</Link>
-              <Link href="/contact" className={styles.link}>Contact</Link>
-              <Link href="/directory" className={styles.link}>Directory</Link>
-              <Link href="/#features" className={styles.link}>Features</Link>
-              <Link href="/#how-it-works" className={styles.link}>How It Works</Link>
-              <Link href="/sign-in" className={styles.link}>Log In</Link>
-              <Link href="/pricing" className={styles.link}>Pricing</Link>
-            </nav>
+          {/* Column 2 — Platform */}
+          <div className={styles.column}>
+            <h4 className={styles.columnTitle}>Platform</h4>
+            <ul className={styles.columnList}>
+              {PLATFORM_LINKS.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className={styles.columnLink}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
 
-          {/* Resources */}
-          <div className={styles.resourcesCol}>
-            <h3 className={styles.columnTitle}>Resources</h3>
-            <nav className={styles.linkList}>
-              <a href="https://transcript.taxmonitor.pro/resources/how-to-read-irs-transcripts" target="_blank" rel="noopener" className={styles.link}>How to Read IRS Transcripts</a>
-              <Link href="/resources/transcript-central" className={styles.link}>Transcript Central</Link>
-              <a href="https://transcript.taxmonitor.pro/resources/transcript-types" target="_blank" rel="noopener" className={styles.link}>Transcript Types</a>
-            </nav>
-
-            <div className={styles.separator} />
-
-            <nav className={styles.linkList}>
-              <a href="https://transcript.taxmonitor.pro/resources/transcript-codes" target="_blank" rel="noopener" className={styles.link}>Transcript Codes Database</a>
-              <a href="https://transcript.taxmonitor.pro/resources/transcript-orders" target="_blank" rel="noopener" className={styles.link}>Order Walkthrough</a>
-              <a href="https://taxtools.taxmonitor.pro" target="_blank" rel="noopener" className={styles.link}>TaxTools Arcade</a>
-              <a href="https://transcript.taxmonitor.pro" target="_blank" rel="noopener" className={styles.link}>Transcript Automation</a>
-            </nav>
-
-            <div className={styles.separator} />
-
-            <nav className={styles.linkList}>
-              <Link href="/#report-sample" className={styles.link}>Report Sample</Link>
-              <Link href="/#transcript-sample" className={styles.link}>Transcript Sample</Link>
-            </nav>
+          {/* Column 3 — Resources */}
+          <div className={styles.column}>
+            <h4 className={styles.columnTitle}>Resources</h4>
+            <ul className={styles.columnList}>
+              {RESOURCE_LINKS.map((link) => (
+                <li key={link.href}>
+                  {"external" in link ? (
+                    <a
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={styles.columnLink}
+                    >
+                      {link.label}
+                    </a>
+                  ) : (
+                    <Link
+                      href={link.href}
+                      className={styles.columnLink}
+                    >
+                      {link.label}
+                    </Link>
+                  )}
+                </li>
+              ))}
+            </ul>
           </div>
 
-          {/* Legal */}
-          <div>
-            <h3 className={styles.columnTitle}>Legal</h3>
-            <div className={styles.linkList}>
-              <Link href="/legal/privacy" className={styles.link}>Privacy</Link>
-              <Link href="/legal/refund" className={styles.link}>Refund Policy</Link>
-              <Link href="/legal/terms" className={styles.link}>Terms</Link>
-            </div>
-
+          {/* Column 4 — Legal */}
+          <div className={styles.column}>
+            <h4 className={styles.columnTitle}>Legal</h4>
+            <ul className={styles.columnList}>
+              {LEGAL_LINKS.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className={styles.columnLink}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
             <p className={styles.copyright}>
-              &copy; {new Date().getFullYear()} Tax Monitor Pro
+              &copy; 2026 Lenore, Inc. All rights reserved.
+            </p>
+          </div>
+        </div>
+
+        {/* Bottom bar */}
+        <div className={styles.bottomBar}>
+          <div className={styles.bottomBarInner}>
+            <p className={styles.bottomText}>
+              &copy; 2026 Lenore, Inc.
+            </p>
+            <p className={styles.bottomText}>
+              Earn 20% on every referral —{" "}
+              <Link
+                href="/affiliates"
+                className={styles.affiliateLink}
+              >
+                Join the Affiliate Program
+              </Link>
             </p>
           </div>
         </div>
       </div>
     </footer>
-  )
+  );
 }

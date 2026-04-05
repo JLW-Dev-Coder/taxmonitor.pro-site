@@ -1,0 +1,71 @@
+.page {
+  min-height: 100vh;
+  padding: calc(var(--header-height, 68px) + var(--space-12, 3rem))
+           var(--page-gutter, clamp(1.25rem, 5vw, 3rem))
+           var(--space-16, 4rem);
+}
+
+.container {
+  max-width: 740px;
+  margin: 0 auto;
+}
+
+.title {
+  font-family: var(--font-display, Georgia, serif);
+  font-size: var(--text-4xl, 2.25rem);
+  color: var(--text, #e2e8f0);
+  margin-bottom: var(--space-2, 0.5rem);
+  line-height: var(--leading-tight, 1.25);
+}
+
+.effective {
+  font-size: var(--text-sm, 0.875rem);
+  color: var(--text-subtle, #64748b);
+  margin-bottom: var(--space-10, 2.5rem);
+}
+
+.section {
+  margin-bottom: var(--space-8, 2rem);
+}
+
+.section h2 {
+  font-family: var(--font-body, system-ui, sans-serif);
+  font-size: var(--text-lg, 1.125rem);
+  font-weight: 600;
+  color: var(--text, #e2e8f0);
+  margin-bottom: var(--space-3, 0.75rem);
+}
+
+.section p {
+  font-size: var(--text-base, 1rem);
+  color: var(--text-muted, #94a3b8);
+  line-height: var(--leading-relaxed, 1.7);
+  margin-bottom: var(--space-3, 0.75rem);
+}
+
+.section ul {
+  padding-left: var(--space-6, 1.5rem);
+  margin-bottom: var(--space-3, 0.75rem);
+}
+
+.section li {
+  font-size: var(--text-base, 1rem);
+  color: var(--text-muted, #94a3b8);
+  line-height: var(--leading-relaxed, 1.7);
+  margin-bottom: var(--space-2, 0.5rem);
+}
+
+.section li strong {
+  color: var(--text, #e2e8f0);
+}
+
+.link {
+  color: var(--accent, #f59e0b);
+  text-decoration: none;
+  transition: color var(--duration-fast, 150ms) var(--ease-default);
+}
+
+.link:hover {
+  color: var(--accent-hover, #d97706);
+  text-decoration: underline;
+}

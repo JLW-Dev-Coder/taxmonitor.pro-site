@@ -3,7 +3,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import Header from '@/components/Header'
-import Footer from '@/components/Footer'
 import styles from './page.module.css'
 
 const redditCards = [
@@ -105,7 +104,7 @@ export default function AboutPage() {
                 <div className={styles.founderContent}>
                   <div className={styles.founderAvatar}>
                     <Image
-                      src="https://20896460.fs1.hubspotusercontent-na1.net/hubfs/20896460/Development%20Materials/Miscellaneous/Pic_JLW_Left-removebg-preview.png"
+                      src="/images/jamie-williams.png"
                       alt="Jamie L. Williams"
                       width={112}
                       height={112}
@@ -211,22 +210,15 @@ export default function AboutPage() {
         <div className={styles.divider} />
 
         {/* Final CTA */}
-        <section className={styles.cta}>
+        <section className={styles.ctaSection}>
           <div className={styles.ctaInner}>
-            <div className={styles.trustBadge}>
-              <svg className={styles.trustIcon} fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-              </svg>
-              Tax Monitor Pro • Directory + taxpayer memberships
-            </div>
-            <h2 className={styles.ctaHeading}>Find the right tax pro and explore memberships with ongoing perks</h2>
-            <p className={styles.ctaText}>
+            <h2 className={styles.ctaHeadline}>Find the right tax pro and explore memberships with <span className="gradient-text">ongoing perks</span></h2>
+            <p className={styles.ctaDesc}>
               Start intake or book a demo to see how the directory, memberships, monitoring access, and member benefits fit together.
             </p>
-            <div className={styles.heroCtas}>
-              <Link href="/inquiry" className={styles.btnPrimary}>Start Intake</Link>
-              <Link href="/contact" className={styles.btnSecondary}>Book a Demo</Link>
-            </div>
+            <Link href="/inquiry" className={styles.ctaButton}>
+              Start Intake &rarr;
+            </Link>
             <p className={styles.ctaDisclaimer}>
               Tax pro directory • Taxpayer memberships with perks • Monitoring-first access • Contact does not create IRS representation
             </p>
@@ -234,7 +226,6 @@ export default function AboutPage() {
         </section>
       </main>
 
-      <Footer />
     </>
   )
 }

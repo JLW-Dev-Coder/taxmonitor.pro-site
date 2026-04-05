@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import Header from '@/components/Header'
-import Footer from '@/components/Footer'
 import styles from '../layout.module.css'
 
 export const metadata = {
@@ -148,7 +147,6 @@ export default function RefundPolicyPage() {
           </div>
         </main>
 
-        <Footer />
       </div>
     </div>
   )

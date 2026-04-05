@@ -237,46 +237,65 @@
 
       <div class="divider-line"></div>
 
-      <!-- Choose Your Path -->
+      <!-- Cal.com Scripts -->
+      <script type="text/javascript">
+        (function (C, A, L) { let p = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if(typeof namespace === "string"){cal.ns[namespace] = cal.ns[namespace] || api;p(cal.ns[namespace], ar);p(cal, ["initNamespace", namespace]);} else p(cal, ar); return;} p(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");
+        Cal("init", "virtual-launch-pro-demo-intro", {origin:"https://app.cal.com"});
+        Cal.ns["virtual-launch-pro-demo-intro"]("ui", {"cssVarsPerTheme":{"light":{"cal-brand":"#292929"},"dark":{"cal-brand":"#f97316"}},"hideEventTypeDetails":false,"layout":"month_view"});
+
+        Cal("init", "virtual-launch-pro-support", {origin:"https://app.cal.com"});
+        Cal.ns["virtual-launch-pro-support"]("ui", {"cssVarsPerTheme":{"light":{"cal-brand":"#292929"},"dark":{"cal-brand":"#f97316"}},"hideEventTypeDetails":false,"layout":"month_view"});
+      </script>
+
+      <!-- Call Us / Contact Link -->
+      <div class="text-center mb-6">
+        <a href="#" data-cal-link="tax-monitor-pro/virtual-launch-pro-support" data-cal-namespace="virtual-launch-pro-support" data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}' class="inline-block px-6 py-3 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/40 text-emerald-400 hover:text-emerald-100 font-medium text-sm transition-all duration-200">
+          Call Us for Info or Help
+        </a>
+      </div>
+
+      <!-- Choose Your Path Cards -->
       <section class="w-full px-6 py-20 md:py-28">
         <div class="max-w-4xl mx-auto">
           <div class="text-center mb-16">
             <h2 id="path-headline" class="text-3xl md:text-4xl font-bold mb-4">Start with the path that fits</h2>
-            <p class="text-slate-400 text-lg">Some people want a demo. Others need support, membership help, or the right tax pro. Start where it makes the most sense.</p>
+            <p class="text-slate-400 text-lg">Some people want a demo. Others need support, membership help, or guidance. Start where it makes the most sense.</p>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Demo Card -->
             <div class="tm-card-hover p-8 rounded-3xl bg-slate-900/40 border border-white/5 text-center">
-              <div class="w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-amber-500/20 to-orange-500/10 flex items-center justify-center border border-white/5">
+              <div class="w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-emerald-500/10 flex items-center justify-center border border-white/5">
                 <svg class="w-8 h-8 tm-icon-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                     d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                 </svg>
               </div>
               <h3 id="info-card-title" class="text-2xl font-bold mb-3">Info, demos, and fit</h3>
-              <p class="text-slate-400 mb-8">Explore the directory, memberships, monitoring features, and whether Tax Monitor Pro fits what you need right now.</p>
+              <p class="text-slate-400 mb-8">Explore the directory, memberships, monitoring features, and whether Virtual Launch Pro fits your needs right now.</p>
               <button
                 class="tm-btn-primary w-full px-6 py-4 rounded-full text-base font-semibold text-slate-950"
-                data-cal-link="tax-monitor-pro/demo"
-                data-cal-namespace="demo"
+                data-cal-link="tax-monitor-pro/virtual-launch-pro-demo-intro"
+                data-cal-namespace="virtual-launch-pro-demo-intro"
                 data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'
                 type="button"
               >Book a demo</button>
             </div>
 
+            <!-- Support Card -->
             <div class="tm-card-hover p-8 rounded-3xl bg-slate-900/40 border border-white/5 text-center">
-              <div class="w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-amber-500/20 to-orange-500/10 flex items-center justify-center border border-white/5">
+              <div class="w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-emerald-500/10 flex items-center justify-center border border-white/5">
                 <svg class="w-8 h-8 tm-icon-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                     d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
                 </svg>
               </div>
               <h3 id="support-card-title" class="text-2xl font-bold mb-3">Support and account help</h3>
-              <p class="text-slate-400 mb-8">Use this path for membership questions, account changes, service updates, or support tied to your current relationship with TMP.</p>
+              <p class="text-slate-400 mb-8">Use this path for membership questions, account changes, service updates, or support tied to your current projects.</p>
               <button
                 class="tm-btn-secondary w-full px-6 py-4 rounded-full text-base font-semibold text-white bg-transparent"
-                data-cal-link="tax-monitor-pro/tax-monitor-service-exit-offboarding"
-                data-cal-namespace="tax-monitor-service-exit-offboarding"
+                data-cal-link="tax-monitor-pro/virtual-launch-pro-support"
+                data-cal-namespace="virtual-launch-pro-support"
                 data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'
                 type="button"
               >Contact support</button>

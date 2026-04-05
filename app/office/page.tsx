@@ -1,16 +1,17 @@
-import Header from '@/components/Header'
-import Footer from '@/components/Footer'
+'use client'
 
-export const metadata = { title: 'Office' }
+import AuthGuard from '@/components/AuthGuard'
+import AppShell from '@/components/AppShell'
+import OfficeContent from '@/app/dashboard/components/OfficeContent'
 
 export default function OfficePage() {
   return (
-    <>
-      <Header variant="site" />
-      <main style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', fontWeight: 600 }}>Office</h1>
-      </main>
-      <Footer />
-    </>
+    <AuthGuard>
+      {({ account }) => (
+        <AppShell account={account}>
+          <OfficeContent account={account} />
+        </AppShell>
+      )}
+    </AuthGuard>
   )
 }
