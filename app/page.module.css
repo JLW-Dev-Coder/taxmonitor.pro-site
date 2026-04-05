@@ -721,6 +721,114 @@
   color: var(--text-muted);
 }
 
+/* Membership section */
+.membershipSection {
+  padding: 5rem 1.5rem;
+}
+
+.tierCard {
+  position: relative;
+  padding: 2rem;
+  border-radius: 1rem;
+  background: rgba(30, 41, 59, 0.3);
+  border: 1px solid rgba(51, 65, 85, 0.5);
+  display: flex;
+  flex-direction: column;
+}
+
+.tierCardPopular {
+  border-color: rgba(245, 158, 11, 0.4);
+  background: rgba(30, 41, 59, 0.45);
+}
+
+.tierBadge {
+  position: absolute;
+  top: -0.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.25rem 1rem;
+  border-radius: 9999px;
+  background: linear-gradient(to right, var(--accent), var(--accent-hover));
+  color: var(--bg);
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.tierHeader {
+  margin-bottom: 1.5rem;
+}
+
+.tierName {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.tierPrice {
+  display: flex;
+  align-items: baseline;
+  gap: 0.125rem;
+}
+
+.tierAmount {
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.tierInterval {
+  font-size: 1rem;
+  color: var(--text-muted);
+}
+
+.tierFeatures {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.tierFeature {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+.tierDot {
+  color: var(--accent);
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.tierCta {
+  display: block;
+  text-align: center;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  background: linear-gradient(to right, var(--accent), var(--accent-hover));
+  color: var(--bg);
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: opacity 0.2s;
+}
+
+.tierCta:hover {
+  opacity: 0.9;
+}
+
+.tierFootnote {
+  text-align: center;
+  margin-top: 2.5rem;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
 /* Report sample section */
 .reportSection {
   padding: 5rem 1.5rem;

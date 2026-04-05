@@ -415,6 +415,84 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* Membership CTA */}
+        <section className={styles.membershipSection} id="membership">
+          <div className={styles.sectionInner}>
+            <div className={styles.sectionCenter}>
+              <h2 className={styles.sectionTitle}>Stay ahead of <span className="gradient-text">IRS activity</span></h2>
+              <p className={styles.sectionSubtitle}>Tax Monitor Pro memberships give you tools, transcript access, and peace of mind — starting at $9/month.</p>
+            </div>
+
+            <div className={styles.grid3}>
+              <div className={styles.tierCard}>
+                <div className={styles.tierHeader}>
+                  <h3 className={styles.tierName}>Essential</h3>
+                  <div className={styles.tierPrice}>
+                    <span className={styles.tierAmount}>$9</span>
+                    <span className={styles.tierInterval}>/mo</span>
+                  </div>
+                </div>
+                <ul className={styles.tierFeatures}>
+                  <li className={styles.tierFeature}>
+                    <span className={styles.tierDot}>&bull;</span>
+                    5 tool tokens + 2 transcript tokens per month
+                  </li>
+                  <li className={styles.tierFeature}>
+                    <span className={styles.tierDot}>&bull;</span>
+                    Email support
+                  </li>
+                </ul>
+                <Link href="/pricing" className={styles.tierCta}>Get started &rarr;</Link>
+              </div>
+
+              <div className={`${styles.tierCard} ${styles.tierCardPopular}`}>
+                <div className={styles.tierBadge}>Most Popular</div>
+                <div className={styles.tierHeader}>
+                  <h3 className={styles.tierName}>Plus</h3>
+                  <div className={styles.tierPrice}>
+                    <span className={styles.tierAmount}>$19</span>
+                    <span className={styles.tierInterval}>/mo</span>
+                  </div>
+                </div>
+                <ul className={styles.tierFeatures}>
+                  <li className={styles.tierFeature}>
+                    <span className={styles.tierDot}>&bull;</span>
+                    15 tool tokens + 5 transcript tokens per month
+                  </li>
+                  <li className={styles.tierFeature}>
+                    <span className={styles.tierDot}>&bull;</span>
+                    Priority support
+                  </li>
+                </ul>
+                <Link href="/pricing" className={styles.tierCta}>Get started &rarr;</Link>
+              </div>
+
+              <div className={styles.tierCard}>
+                <div className={styles.tierHeader}>
+                  <h3 className={styles.tierName}>Premier</h3>
+                  <div className={styles.tierPrice}>
+                    <span className={styles.tierAmount}>$39</span>
+                    <span className={styles.tierInterval}>/mo</span>
+                  </div>
+                </div>
+                <ul className={styles.tierFeatures}>
+                  <li className={styles.tierFeature}>
+                    <span className={styles.tierDot}>&bull;</span>
+                    40 tool tokens + 10 transcript tokens per month
+                  </li>
+                  <li className={styles.tierFeature}>
+                    <span className={styles.tierDot}>&bull;</span>
+                    Dedicated support
+                  </li>
+                </ul>
+                <Link href="/pricing" className={styles.tierCta}>Get started &rarr;</Link>
+              </div>
+            </div>
+
+            <p className={styles.tierFootnote}>All plans include directory access, calendar scheduling, and messaging with your tax professional.</p>
+          </div>
+        </section>
+
         {/* Report sample */}
         <section className={styles.reportSection} id="report-sample">
           <div className={styles.sectionInnerWide}>
