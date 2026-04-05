@@ -1,87 +1,32 @@
-# WORKFLOW.md — taxmonitor.pro
+# WORKFLOW.md — TMP
 
-**Owner:** Jamie L Williams
-**Last updated:** 2026-04-04
-
----
-
-## 1. Daily Operations
-
-### Morning checklist
-1. Check Cloudflare Analytics for directory traffic (taxmonitor.pro dashboard)
-2. Check Stripe dashboard for new TMP membership signups
-3. Review any new taxpayer inquiries submitted via /inquiry flow
-4. Check email for contact form submissions or support requests
-
-### Expected state
-- Directory loads with all active VLP member profiles
-- Pricing page displays current TMP tiers ($9/$19/$39)
-- Inquiry → Intake → Offer → Agreement → Payment flow completes without errors
-
-### Alert state
-- Directory returns empty or errors (VLP API down)
-- Stripe checkout fails or returns errors
-- Inquiry flow drops users mid-funnel
+Repo: taxmonitor.pro
+Owner: Jamie L Williams
+Last updated: 2026-04-05
 
 ---
 
-## 2. Weekly Operations
+## Status
 
-### Monday — Traffic review
-- Review Cloudflare Analytics: page views, unique visitors, top pages
-- Check directory search/filter usage patterns
-- Note any traffic spikes from referral sources
+TMP acquires users through SEO and tax professional referrals, not email campaigns.
+No dedicated operational workflow needed until TMP has its own campaign.
 
-### Wednesday — Membership review
-- Check Stripe for new TMP subscriptions (Essential/Plus/Premier)
-- Review token usage across active members
-- Check for failed payments or cancellations
+Traffic sources:
+- 460+ TTMP resource pages with taxpayer CTAs linking to taxmonitor.pro/directory
+- Tax professional referrals (pros share their directory profile with clients)
+- Organic search for "find a tax professional" queries
 
-### Friday — Content and funnel check
-- Walk through inquiry → payment flow end-to-end
-- Verify directory profiles are current (new VLP members appearing)
-- Review and respond to any pending support requests
+Monitoring:
+- Check Cloudflare analytics for directory traffic
+- Check Stripe for TMP membership signups ($9/$19/$39)
 
 ---
 
-## 3. Monitoring Channels
+## Quick Reference
 
-| What | Where |
+| Item | Value |
 |------|-------|
-| Site traffic | Cloudflare Analytics (taxmonitor.pro) |
-| Membership signups | Stripe Dashboard |
-| Taxpayer inquiries | VLP Worker API / email notifications |
-| Directory profiles | VLP API → /directory page |
-| Support requests | Contact form → email |
-
----
-
-## 4. Escalation Triggers
-
-- Directory returns 0 profiles for more than 1 hour
-- Stripe checkout flow broken (test with $0 coupon)
-- Inquiry submissions not reaching VLP Worker
-- Auth flow (magic link / Google OAuth) failing
-- SSL certificate expiry warning from Cloudflare
-
----
-
-## 5. Key URLs
-
-| Service | URL |
-|---------|-----|
-| TMP site | taxmonitor.pro |
-| Stripe Dashboard | dashboard.stripe.com |
-| Cloudflare Dashboard | dash.cloudflare.com |
-| Cal.com Dashboard | app.cal.com |
-| VLP API | api.virtuallaunch.pro |
-
----
-
-## 6. Troubleshooting
-
-- **Directory empty** → Check VLP API status, verify api.virtuallaunch.pro responds
-- **Checkout fails** → Check Stripe API keys, verify createCheckoutSession in lib/api.ts
-- **Auth broken** → Check vlp_session cookie, verify magic link endpoint
-- **Profile not loading** → Check query param ?id=, verify getProfile API call
-- **Build fails** → Run `npm run build`, check for TypeScript errors
+| Platform | Tax Monitor Pro |
+| Domain | taxmonitor.pro |
+| Campaign type | SEO / Referral |
+| Deploy command | npm run deploy (or auto-deploys via Cloudflare Pages git integration) |
