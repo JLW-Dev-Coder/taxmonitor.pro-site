@@ -35,9 +35,9 @@ function SignInContent() {
   const handleGoogle = () => {
     setGoogleLoading(true)
     setError('')
+    const returnTo = encodeURIComponent(`https://taxmonitor.pro${redirect}`)
     window.location.href =
-      'https://api.virtuallaunch.pro/v1/auth/google/start?redirect=' +
-      encodeURIComponent(redirect)
+      `https://api.virtuallaunch.pro/v1/auth/google/start?return_to=${returnTo}`
   }
 
   const handleMagicLink = async (e: React.FormEvent) => {
