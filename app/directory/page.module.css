@@ -239,6 +239,7 @@
   max-width: var(--max-content);
   margin: 0 auto;
   padding: 0 16px 48px;
+  overflow: hidden;
 }
 
 @media (min-width: 640px) {
@@ -283,25 +284,26 @@
 /* ── Grid ── */
 .grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
   gap: 24px;
 }
 
 @media (min-width: 768px) {
   .grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 @media (min-width: 1024px) {
   .grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
 /* ── Professional Card ── */
 .card {
   display: block;
+  min-width: 0;
   background: var(--surface-mid);
   backdrop-filter: blur(14px);
   border: 1px solid var(--surface-border);
