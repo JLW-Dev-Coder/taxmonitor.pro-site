@@ -111,6 +111,8 @@ export default function AppShell({ account, children }: AppShellProps) {
     } catch {
       /* ignore */
     }
+    sessionStorage.removeItem('tmp_session_id')
+    sessionStorage.removeItem('tmp_email')
     window.location.href = '/sign-in'
   }, [])
 
