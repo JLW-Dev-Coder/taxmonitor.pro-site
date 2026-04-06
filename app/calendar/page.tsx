@@ -116,7 +116,7 @@ function ConnectCalendarPrompt() {
         Link your calendar to sync appointments, deadlines, and reminders automatically with Tax Monitor Pro.
       </p>
       <a
-        href="https://api.virtuallaunch.pro/v1/cal/oauth/start"
+        href="https://api.taxmonitor.pro/v1/cal/oauth/start"
         target="_blank"
         rel="noopener noreferrer"
         className={styles.connectBtn}

@@ -35,14 +35,10 @@ export default function AuthGuard({ children }: AuthGuardProps) {
             plan: res.session.membership || 'free',
           } as SessionUser)
         } else {
-          sessionStorage.removeItem('tmp_session_id')
-          sessionStorage.removeItem('tmp_email')
           window.location.href = `/sign-in?redirect=${encodeURIComponent(pathname)}`
         }
       })
       .catch(() => {
-        sessionStorage.removeItem('tmp_session_id')
-        sessionStorage.removeItem('tmp_email')
         window.location.href = `/sign-in?redirect=${encodeURIComponent(pathname)}`
       })
       .finally(() => setLoading(false))

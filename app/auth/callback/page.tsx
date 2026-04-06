@@ -19,15 +19,7 @@ function CallbackInner() {
 
     async function exchange() {
       try {
-        const data = await api.exchangeHandoffToken(token!)
-        // Store session in sessionStorage so api.ts can send it as Bearer token
-        // (vlp_session cookie is SameSite=Lax on .virtuallaunch.pro — not sent cross-site)
-        if (data.sessionId) {
-          sessionStorage.setItem('tmp_session_id', data.sessionId)
-        }
-        if (data.email) {
-          sessionStorage.setItem('tmp_email', data.email)
-        }
+        await api.exchangeHandoffToken(token!)
         window.location.href = '/dashboard'
       } catch (err: unknown) {
         setError(

@@ -20,6 +20,9 @@
       "Bash(tail:*)",
       "Bash(wc:*)",
       "Read(**)"
+    ],
+    "additionalDirectories": [
+      "c:\\Users\\eimaj\\virtuallaunch.pro\\workers\\src"
     ]
   },
   "autoApprove": [

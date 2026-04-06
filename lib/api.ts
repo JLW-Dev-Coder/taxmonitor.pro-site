@@ -1,4 +1,4 @@
-const API_BASE = 'https://api.virtuallaunch.pro'
+const API_BASE = 'https://api.taxmonitor.pro'
 
 export class ApiError extends Error {
   status: number
@@ -22,17 +22,9 @@ async function apiFetch<T>(
 ): Promise<T> {
   const { auth = true, ...fetchOptions } = options
 
-  // Build auth headers: send Bearer token from sessionStorage
-  // (vlp_session cookie is SameSite=Lax on .virtuallaunch.pro — not sent cross-site from taxmonitor.pro)
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
     ...fetchOptions.headers as Record<string, string>,
-  }
-  if (auth && typeof sessionStorage !== 'undefined') {
-    const sessionId = sessionStorage.getItem('tmp_session_id')
-    if (sessionId) {
-      headers['Authorization'] = `Bearer ${sessionId}`
-    }
   }
 
   const res = await fetch(`${API_BASE}${path}`, {

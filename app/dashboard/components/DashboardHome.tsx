@@ -1,9 +1,8 @@
 'use client'
 
 import { useEffect, useState, useCallback } from 'react'
-import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { api, ApiError } from '@/lib/api'
+import { api } from '@/lib/api'
 import type { SessionUser } from '@/components/AuthGuard'
 import styles from './components.module.css'
 
@@ -65,8 +64,6 @@ function formatDate(raw?: string): string {
 }
 
 export default function DashboardHome({ account }: { account: SessionUser }) {
-  const router = useRouter()
-
   const [tmpDashboard, setTmpDashboard] = useState<TmpDashboard | null>(null)
   const [monitoring, setMonitoring] = useState<MonitoringStatus | null>(null)
 
@@ -91,15 +88,8 @@ export default function DashboardHome({ account }: { account: SessionUser }) {
           // monitoring status unavailable — non-fatal
         }
       }
-    } catch (err) {
-      if (err instanceof ApiError && err.status === 402) {
-        router.replace(
-          '/pricing?message=' +
-            encodeURIComponent('A subscription is required to access your dashboard.')
-        )
-        return
-      }
-      // Non-402 errors: fall through, dashboard still loads
+    } catch {
+      // TMP dashboard info unavailable — non-fatal, dashboard still loads
     }
 
     // Notifications
@@ -133,7 +123,7 @@ export default function DashboardHome({ account }: { account: SessionUser }) {
     } finally {
       setLoadingTokens(false)
     }
-  }, [account.account_id, router])
+  }, [account.account_id])
 
   useEffect(() => {
     fetchData()

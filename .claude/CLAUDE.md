@@ -25,7 +25,7 @@ Individual taxpayers seeking tax professional representation, and tax profession
 Next.js 15.1.7, CSS Modules, static export, Cloudflare Pages
 
 **Backend:**
-api.virtuallaunch.pro (VLP Worker) — all API calls via `lib/api.ts`
+api.taxmonitor.pro (VLP Worker) — all API calls via `lib/api.ts`
 
 ---
 
@@ -35,7 +35,7 @@ api.virtuallaunch.pro (VLP Worker) — all API calls via `lib/api.ts`
 - No contracts defined in this repo — contracts belong in VLP repo under `contracts/registries/tmp-registry.json`
 - Auth uses `vlp_session` HttpOnly cookie managed by VLP Worker
 - Do not delete legacy HTML until corresponding .tsx achieves full feature parity
-- All API calls must target `api.virtuallaunch.pro` — never `api.taxmonitor.pro`
+- All API calls must target `api.taxmonitor.pro`
 - CSS Modules only — no Tailwind, no inline styles
 - All fetch() calls via `lib/api.ts` only
 
@@ -45,7 +45,7 @@ api.virtuallaunch.pro (VLP Worker) — all API calls via `lib/api.ts`
 
 | Do NOT use | Use instead |
 |------------|-------------|
-| api.taxmonitor.pro | api.virtuallaunch.pro |
+| api.virtuallaunch.pro | api.taxmonitor.pro |
 | tmp_session | vlp_session |
 | TMP Worker | VLP Worker |
 
@@ -129,7 +129,7 @@ taxmonitor.pro/
 
 ## 8. External Interfaces
 
-- **API:** `api.virtuallaunch.pro` (all routes)
+- **API:** `api.taxmonitor.pro` (all routes)
 - **Storage:** R2 via VLP Worker (authoritative), D1 via VLP Worker (projection)
 - **Auth:** `vlp_session` cookie
 - **Billing:** Stripe via VLP Worker
@@ -204,7 +204,7 @@ taxmonitor.pro/
 - No contracts defined in this repo — contracts belong in VLP repo under `contracts/registries/tmp-registry.json`
 - Auth uses `vlp_session` HttpOnly cookie managed by VLP Worker
 - Do not delete legacy HTML until corresponding .tsx achieves full feature parity
-- All API calls must target `api.virtuallaunch.pro` — never `api.taxmonitor.pro`
+- All API calls must target `api.taxmonitor.pro`
 - CSS Modules only — no Tailwind, no inline styles
 - All fetch() calls via `lib/api.ts` only
 
