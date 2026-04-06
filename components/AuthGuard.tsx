@@ -28,13 +28,21 @@ export default function AuthGuard({ children }: AuthGuardProps) {
     api
       .getSession()
       .then((res) => {
-        if (res.ok && res.user) {
-          setAccount(res.user as SessionUser)
+        if (res.ok && res.session) {
+          setAccount({
+            account_id: res.session.account_id,
+            email: res.session.email,
+            plan: res.session.membership || 'free',
+          } as SessionUser)
         } else {
+          sessionStorage.removeItem('tmp_session_id')
+          sessionStorage.removeItem('tmp_email')
           window.location.href = `/sign-in?redirect=${encodeURIComponent(pathname)}`
         }
       })
       .catch(() => {
+        sessionStorage.removeItem('tmp_session_id')
+        sessionStorage.removeItem('tmp_email')
         window.location.href = `/sign-in?redirect=${encodeURIComponent(pathname)}`
       })
       .finally(() => setLoading(false))

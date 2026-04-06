@@ -27,7 +27,7 @@ function SignInContent() {
     api
       .getSession()
       .then((res) => {
-        if (res.ok) router.replace(redirect)
+        if (res.ok && res.session) router.replace(redirect)
       })
       .catch(() => {})
   }, [router, redirect])
@@ -46,7 +46,8 @@ function SignInContent() {
     setMagicLoading(true)
     setError('')
     try {
-      await api.requestMagicLink(email.trim(), redirect)
+      const fullRedirect = `https://taxmonitor.pro${redirect}`
+      await api.requestMagicLink(email.trim(), fullRedirect)
       setView('check-email')
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to send magic link')
@@ -59,7 +60,8 @@ function SignInContent() {
     setResendLoading(true)
     setResendSuccess(false)
     try {
-      await api.requestMagicLink(email.trim(), redirect)
+      const fullRedirect = `https://taxmonitor.pro${redirect}`
+      await api.requestMagicLink(email.trim(), fullRedirect)
       setResendSuccess(true)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to resend')

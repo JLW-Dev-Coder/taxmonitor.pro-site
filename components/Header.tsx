@@ -8,7 +8,7 @@ import styles from './Header.module.css'
 interface Session {
   account_id: string
   email: string
-  plan: string
+  membership: string
 }
 
 export default function Header({
@@ -25,7 +25,7 @@ export default function Header({
     api
       .getSession()
       .then((res) => {
-        if (res.ok) setSession(res.user)
+        if (res.ok && res.session) setSession(res.session)
       })
       .catch(() => {})
   }, [])
@@ -177,7 +177,7 @@ export default function Header({
 
               <div className={styles.actions}>
                 {session && (
-                  <span className={styles.userBadge}>{session.plan}</span>
+                  <span className={styles.userBadge}>{session.membership}</span>
                 )}
                 <button type="button" className={styles.bellButton} aria-label="Notifications">
                   <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">

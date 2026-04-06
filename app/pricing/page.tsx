@@ -107,9 +107,9 @@ export default function PricingPage() {
     api
       .getSession()
       .then((res) => {
-        if (res.ok) {
-          setAccountId(res.user.account_id)
-          return api.getTmpMembership(res.user.account_id)
+        if (res.ok && res.session) {
+          setAccountId(res.session.account_id)
+          return api.getTmpMembership(res.session.account_id)
         }
         return null
       })

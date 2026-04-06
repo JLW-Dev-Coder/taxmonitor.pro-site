@@ -54,20 +54,24 @@ async function apiFetch<T>(
 
 export const api = {
   // Auth
-  requestMagicLink: (email: string, redirect?: string) =>
+  requestMagicLink: (email: string, redirectUri?: string) =>
     apiFetch('/v1/auth/magic-link/request', {
       method: 'POST',
       auth: false,
-      body: JSON.stringify({ email, redirect }),
+      body: JSON.stringify({ email, redirectUri }),
     }),
 
   getSession: () =>
     apiFetch<{
       ok: boolean
-      user: {
+      session: {
         account_id: string
         email: string
-        plan: string
+        membership: string
+        platform?: string
+        expires_at?: string
+        referral_code?: string | null
+        transcript_tokens?: number
       }
     }>('/v1/auth/session'),
 
