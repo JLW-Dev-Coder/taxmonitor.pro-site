@@ -16,6 +16,7 @@ export interface DirectoryProfessional {
   state: string
   zip: string
   profession: string[]
+  sample: boolean
 }
 
 export interface ProfileReview {
@@ -81,6 +82,7 @@ const profiles: FullProfile[] = [
     state: 'CA',
     zip: '90012',
     profession: ['Attorney', 'CPA'],
+    sample: true,
     bio_short: 'Tax litigation and IRS audit defense specialist with deep controversy experience.',
     bio_full: [
       'Sarah Mitchell is a seasoned tax professional with more than 20 years of experience helping clients navigate compliance, planning, and higher-stakes tax matters.',
@@ -149,6 +151,7 @@ const profiles: FullProfile[] = [
     state: 'FL',
     zip: '33101',
     profession: ['CPA'],
+    sample: true,
     bio_short: 'Remote-first CPA practice serving U.S. expats and internationally mobile taxpayers.',
     bio_full: [
       'Amanda Garcia is a seasoned tax professional with more than 12 years of experience helping clients navigate compliance, planning, and higher-stakes tax matters.',
@@ -212,6 +215,7 @@ const profiles: FullProfile[] = [
     state: 'CA',
     zip: '92101',
     profession: ['Attorney'],
+    sample: true,
     bio_short: 'Tax attorney focused on controversy, estate planning, and wealth transfer strategy.',
     bio_full: [
       'David Chen is a seasoned tax professional with more than 18 years of experience helping clients navigate compliance, planning, and higher-stakes tax matters.',
@@ -275,6 +279,7 @@ const profiles: FullProfile[] = [
     state: 'CA',
     zip: '94105',
     profession: ['CPA'],
+    sample: true,
     bio_short: 'Small business CPA specializing in startup tax strategy, compliance, and R&D credit planning.',
     bio_full: [
       'Emily Wong is a seasoned tax professional with more than 14 years of experience helping clients navigate compliance, planning, and higher-stakes tax matters.',
@@ -341,6 +346,7 @@ const profiles: FullProfile[] = [
     state: 'TX',
     zip: '78701',
     profession: ['Enrolled Agent'],
+    sample: true,
     bio_short: 'Enrolled Agent specializing in expat matters, notices, collections, and IRS resolution work.',
     bio_full: [
       'James Rodriguez is a seasoned tax professional with more than 16 years of experience helping clients navigate compliance, planning, and higher-stakes tax matters.',
@@ -407,6 +413,7 @@ const profiles: FullProfile[] = [
     state: 'WA',
     zip: '98101',
     profession: ['Attorney', 'CPA'],
+    sample: true,
     bio_short: 'Attorney-CPA serving families, nonprofits, and closely held businesses with advanced planning needs.',
     bio_full: [
       'Jennifer Lee is a seasoned tax professional with more than 21 years of experience helping clients navigate compliance, planning, and higher-stakes tax matters.',
@@ -473,6 +480,7 @@ const profiles: FullProfile[] = [
     state: 'HI',
     zip: '96813',
     profession: ['Enrolled Actuary'],
+    sample: true,
     bio_short: 'Enrolled Actuary focused on pension funding, plan compliance, and retirement program design.',
     bio_full: [
       'Kevin Nakamura is a seasoned tax professional with more than 19 years of experience helping clients navigate compliance, planning, and higher-stakes tax matters.',
@@ -536,6 +544,7 @@ const profiles: FullProfile[] = [
     state: 'CO',
     zip: '80202',
     profession: ['Enrolled Agent'],
+    sample: true,
     bio_short: 'Former IRS examiner offering audit defense, notice response, and tax prep support.',
     bio_full: [
       'Lisa Park is a seasoned tax professional with more than 11 years of experience helping clients navigate compliance, planning, and higher-stakes tax matters.',
@@ -599,6 +608,7 @@ const profiles: FullProfile[] = [
     state: 'IL',
     zip: '60601',
     profession: ['CPA'],
+    sample: true,
     bio_short: 'CPA offering tax preparation, planning, and bookkeeping for small businesses and individuals.',
     bio_full: [
       'Michael Johnson is a seasoned tax professional with more than 15 years of experience helping clients navigate compliance, planning, and higher-stakes tax matters.',
@@ -662,6 +672,7 @@ const profiles: FullProfile[] = [
     state: 'GA',
     zip: '30303',
     profession: ['ERPA'],
+    sample: true,
     bio_short: 'ERPA specializing in retirement plan compliance, reporting, and sponsor support.',
     bio_full: [
       'Rachel Brooks is a seasoned tax professional with more than 13 years of experience helping clients navigate compliance, planning, and higher-stakes tax matters.',
@@ -725,6 +736,7 @@ const profiles: FullProfile[] = [
     state: 'AZ',
     zip: '85004',
     profession: ['Enrolled Agent'],
+    sample: true,
     bio_short: 'EA focused on individual returns involving rentals, stock options, and crypto tax issues.',
     bio_full: [
       'Steven Roberts is a seasoned tax professional with more than 10 years of experience helping clients navigate compliance, planning, and higher-stakes tax matters.',
@@ -788,6 +800,7 @@ const profiles: FullProfile[] = [
     state: 'TN',
     zip: '37203',
     profession: ['Enrolled Agent'],
+    sample: true,
     bio_short: 'Enrolled Agent delivering bookkeeping, payroll, and tax support for small businesses.',
     bio_full: [
       'Thomas Wilson is a seasoned tax professional with more than 17 years of experience helping clients navigate compliance, planning, and higher-stakes tax matters.',

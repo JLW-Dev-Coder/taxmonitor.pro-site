@@ -46,6 +46,7 @@ export default function DirectoryPage() {
   const [city, setCity] = useState('')
   const [state, setState] = useState('')
   const [zip, setZip] = useState('')
+  const [showSamples, setShowSamples] = useState(true)
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const fetchDirectory = useCallback(
@@ -70,6 +71,7 @@ export default function DirectoryPage() {
             state: '',
             zip: '',
             profession: p.specialty,
+            sample: false,
           }))
         } catch {
           /* API unavailable — fall through to samples */
@@ -111,6 +113,10 @@ export default function DirectoryPage() {
       if (debounceRef.current) clearTimeout(debounceRef.current)
     }
   }, [specialty, city, state, zip, fetchDirectory])
+
+  const visibleProfessionals = showSamples
+    ? professionals
+    : professionals.filter((p) => !p.sample)
 
   return (
     <>
@@ -256,6 +262,17 @@ export default function DirectoryPage() {
                   Clear All
                 </button>
               )}
+
+              <label className={styles.toggleLabel}>
+                <input
+                  type="checkbox"
+                  className={styles.toggleInput}
+                  checked={showSamples}
+                  onChange={(e) => setShowSamples(e.target.checked)}
+                />
+                <span className={styles.toggleSwitch} />
+                Show sample profiles
+              </label>
             </div>
           </div>
         </section>
@@ -267,8 +284,8 @@ export default function DirectoryPage() {
             <h2 className={styles.sectionTitle}>All Professionals</h2>
             {!loading && !error && (
               <span className={styles.resultsCount}>
-                Showing {professionals.length} professional
-                {professionals.length !== 1 ? 's' : ''}
+                Showing {visibleProfessionals.length} professional
+                {visibleProfessionals.length !== 1 ? 's' : ''}
               </span>
             )}
           </div>
@@ -323,7 +340,7 @@ export default function DirectoryPage() {
           )}
 
           {/* Empty state */}
-          {!loading && !error && professionals.length === 0 && (
+          {!loading && !error && visibleProfessionals.length === 0 && (
             <div className={styles.emptyState}>
               <div className={styles.emptyIcon}>
                 <svg
@@ -363,9 +380,9 @@ export default function DirectoryPage() {
           )}
 
           {/* Professional cards */}
-          {!loading && !error && professionals.length > 0 && (
+          {!loading && !error && visibleProfessionals.length > 0 && (
             <div className={styles.grid}>
-              {professionals.map((pro) => (
+              {visibleProfessionals.map((pro) => (
                 <Link
                   key={pro.professional_id}
                   href={`/directory/profile?id=${pro.professional_id}`}
@@ -420,6 +437,11 @@ export default function DirectoryPage() {
                         {s}
                       </span>
                     ))}
+                    {pro.sample && (
+                      <span className={`${styles.badge} ${styles.badgeSample}`}>
+                        Sample
+                      </span>
+                    )}
                   </div>
 
                   <div className={styles.cardFooter}>

@@ -130,6 +130,7 @@ function ProfileContent() {
             years_experience_label: '',
             rating_label: '',
             booking_url: '',
+            sample: false,
           })
         }
       })
