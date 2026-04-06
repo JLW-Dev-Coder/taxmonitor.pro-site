@@ -64,6 +64,15 @@ export const api = {
   logout: () =>
     apiFetch('/v1/auth/logout', { method: 'POST' }),
 
+  exchangeHandoffToken: (token: string) =>
+    apiFetch<{
+      ok: boolean
+      sessionId: string
+      email: string
+    }>(`/v1/auth/handoff/exchange?token=${encodeURIComponent(token)}`, {
+      method: 'GET',
+    }),
+
   // Pricing
   getPricing: () =>
     apiFetch<{
