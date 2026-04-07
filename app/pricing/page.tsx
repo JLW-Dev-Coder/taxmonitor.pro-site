@@ -123,12 +123,8 @@ export default function PricingPage() {
 
   /* Plan I checkout */
   const handleSelectI = async (planKey: string, price: number) => {
-    if (!accountId) {
-      router.push('/sign-in?redirect=/pricing')
-      return
-    }
     if (price === 0) {
-      router.push('/dashboard')
+      router.push(accountId ? '/dashboard' : '/sign-in?redirect=/dashboard')
       return
     }
     setLoadingPlan(planKey)
@@ -149,10 +145,6 @@ export default function PricingPage() {
 
   /* Plan II checkout */
   const handleSelectII = async (planKey: string) => {
-    if (!accountId) {
-      router.push('/sign-in?redirect=/pricing')
-      return
-    }
     const addon = mfjChecked.current[planKey] ?? false
     setLoadingPlan(planKey)
     try {
