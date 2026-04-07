@@ -68,9 +68,14 @@ export default function PaymentPage() {
 
     try {
       const priceId = offer?.price_id || ''
+      if (!priceId) {
+        setError('No plan selected. Please return to the offer page and choose a plan.')
+        setLoading(false)
+        return
+      }
       const result = await api.createCheckoutSession(
         priceId,
-        `${window.location.origin}/payment-success`
+        `${window.location.origin}/payment-success?session_id={CHECKOUT_SESSION_ID}`
       )
       if (result.checkout_url) {
         window.location.href = result.checkout_url

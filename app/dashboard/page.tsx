@@ -6,16 +6,11 @@ import AppShell from '@/components/AppShell'
 import type { SessionUser } from '@/components/AuthGuard'
 
 import DashboardHome from './components/DashboardHome'
-import Clients from './components/Clients'
-import Payouts from './components/Payouts'
-import ClientPool from './components/ClientPool'
 import Tokens from './components/Tokens'
 import ActiveAlerts from './components/ActiveAlerts'
 import ESign2848 from './components/ESign2848'
 import ComplianceReport from './components/ComplianceReport'
-import MonitoredClients from './components/MonitoredClients'
 import TranscriptChanges from './components/TranscriptChanges'
-import ClientReportAccess from './components/ClientReportAccess'
 import Receipts from './components/Receipts'
 import ProProfile from './components/ProProfile'
 import HelpCenter from './components/HelpCenter'
@@ -25,18 +20,13 @@ import styles from './page.module.css'
 /* ── Nav definition ── */
 type ViewKey =
   | 'home'
-  | 'clients'
-  | 'payouts'
-  | 'clientPool'
   | 'tokens'
   | 'activeAlerts'
   | 'eSign2848'
   | 'complianceReport'
-  | 'monitoredClients'
   | 'transcriptChanges'
-  | 'clientReportAccess'
   | 'receipts'
-  | 'proProfile'
+  | 'myProfile'
   | 'helpCenter'
 
 interface NavItem {
@@ -57,48 +47,6 @@ const NAV_ITEMS: NavItem[] = [
         <rect x="14" y="3" width="7" height="7" rx="1" />
         <rect x="3" y="14" width="7" height="7" rx="1" />
         <rect x="14" y="14" width="7" height="7" rx="1" />
-      </svg>
-    ),
-  },
-  {
-    key: 'clients',
-    label: 'Clients',
-    section: 'Clients',
-    icon: (
-      <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
-      </svg>
-    ),
-  },
-  {
-    key: 'monitoredClients',
-    label: 'Monitored Clients',
-    section: 'Clients',
-    icon: (
-      <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-      </svg>
-    ),
-  },
-  {
-    key: 'clientPool',
-    label: 'Client Pool',
-    section: 'Clients',
-    icon: (
-      <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-      </svg>
-    ),
-  },
-  {
-    key: 'clientReportAccess',
-    label: 'Client Reports',
-    section: 'Clients',
-    icon: (
-      <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
-        <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" />
       </svg>
     ),
   },
@@ -154,17 +102,6 @@ const NAV_ITEMS: NavItem[] = [
     ),
   },
   {
-    key: 'payouts',
-    label: 'Payouts',
-    section: 'Finance',
-    icon: (
-      <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-        <rect x="1" y="4" width="22" height="16" rx="2" />
-        <path d="M1 10h22" />
-      </svg>
-    ),
-  },
-  {
     key: 'receipts',
     label: 'Receipts',
     section: 'Finance',
@@ -175,7 +112,7 @@ const NAV_ITEMS: NavItem[] = [
     ),
   },
   {
-    key: 'proProfile',
+    key: 'myProfile',
     label: 'My Profile',
     section: 'Account',
     icon: (
@@ -249,18 +186,13 @@ function DashboardSPA({ account }: { account: SessionUser }) {
       {/* Main content */}
       <div className={styles.innerContent}>
         {activeView === 'home' && <DashboardHome account={account} />}
-        {activeView === 'clients' && <Clients account={account} />}
-        {activeView === 'payouts' && <Payouts account={account} />}
-        {activeView === 'clientPool' && <ClientPool account={account} />}
         {activeView === 'tokens' && <Tokens account={account} />}
         {activeView === 'activeAlerts' && <ActiveAlerts account={account} />}
         {activeView === 'eSign2848' && <ESign2848 account={account} />}
         {activeView === 'complianceReport' && <ComplianceReport account={account} />}
-        {activeView === 'monitoredClients' && <MonitoredClients account={account} />}
         {activeView === 'transcriptChanges' && <TranscriptChanges account={account} />}
-        {activeView === 'clientReportAccess' && <ClientReportAccess account={account} />}
         {activeView === 'receipts' && <Receipts account={account} />}
-        {activeView === 'proProfile' && <ProProfile account={account} />}
+        {activeView === 'myProfile' && <ProProfile account={account} />}
         {activeView === 'helpCenter' && <HelpCenter account={account} />}
       </div>
     </div>

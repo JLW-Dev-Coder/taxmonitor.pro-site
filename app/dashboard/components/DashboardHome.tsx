@@ -206,9 +206,13 @@ export default function DashboardHome({ account }: { account: SessionUser }) {
 
       <div className={styles.summaryRow}>
         <div className={styles.summaryCard}>
-          <div className={styles.summaryLabel}>Active Clients</div>
-          <div className={styles.summaryValue}>0</div>
-          <div className={styles.summaryNote}>No clients enrolled</div>
+          <div className={styles.summaryLabel}>Monitoring Status</div>
+          <div className={styles.summaryValue}>
+            {monitoring ? monitoring.phase_label || 'Active' : tmpDashboard?.status === 'active' ? 'Active' : '—'}
+          </div>
+          <div className={styles.summaryNote}>
+            {tmpDashboard?.plan_name ?? 'No active plan'}
+          </div>
         </div>
 
         <div className={styles.summaryCard}>

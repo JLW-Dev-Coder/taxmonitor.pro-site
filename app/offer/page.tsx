@@ -1,11 +1,11 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Header from '@/components/Header'
 import StepProgress from '@/components/StepProgress'
 import { PLANS_II } from '@/lib/plans'
-import type { PlanII } from '@/lib/plans'
+import { api } from '@/lib/api'
 import styles from './page.module.css'
 
 const STEPS = ['Inquiry', 'Intake', 'Offer', 'Agreement', 'Payment']
@@ -53,6 +53,25 @@ export default function OfferPage() {
   const router = useRouter()
   const [selectedId, setSelectedId] = useState<string>('tmp-silver')
   const [mfjSelected, setMfjSelected] = useState(false)
+  const [priceIdMap, setPriceIdMap] = useState<Record<string, string>>({})
+
+  useEffect(() => {
+    api
+      .getTmpPricing()
+      .then((res) => {
+        const map: Record<string, string> = {}
+        for (const p of res.plan_ii ?? []) {
+          if (p.key && p.price_id) map[p.key] = p.price_id
+        }
+        for (const a of res.addons ?? []) {
+          if (a.key && a.price_id) map[a.key] = a.price_id
+        }
+        setPriceIdMap(map)
+      })
+      .catch(() => {
+        /* ignore — payment will fail gracefully if price_id missing */
+      })
+  }, [])
 
   const monitoringPlans = PLANS_II.filter(
     (p) => !p.mfjAddon && p.id !== 'tmp-snapshot'
@@ -70,11 +89,13 @@ export default function OfferPage() {
 
   function handleApprove() {
     const offerData = {
-      selected_plan: selectedId,
-      plan_name: selectedPlan?.name,
-      plan_price: selectedPlan?.price,
+      plan_id: selectedId,
+      plan_name: selectedPlan?.name ?? '',
+      price: totalPrice(),
+      price_id: priceIdMap[selectedId] ?? '',
       mfj_addon: mfjSelected,
       mfj_price: mfjSelected ? mfjPlan.price : 0,
+      mfj_price_id: mfjSelected ? (priceIdMap[mfjPlan.id] ?? '') : '',
       total: totalPrice(),
       approved_at: new Date().toISOString(),
     }
