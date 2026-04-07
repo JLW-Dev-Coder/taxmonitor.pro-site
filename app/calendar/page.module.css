@@ -128,7 +128,7 @@
 
 .dayHeaders {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 2px;
   margin-bottom: 0.5rem;
 }
@@ -144,12 +144,15 @@
 
 .daysGrid {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 2px;
 }
 
 .dayCell {
   min-height: 80px;
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
   padding: 0.4rem;
   border-radius: var(--radius-sm);
   background: var(--surface);
@@ -157,6 +160,7 @@
   cursor: pointer;
   transition: border-color 0.15s, background 0.15s;
   position: relative;
+  overflow: hidden;
 }
 
 .dayCell:hover {

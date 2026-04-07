@@ -388,7 +388,19 @@
   text-align: center;
 }
 
-/* Success overlay */
+/* Inline success message */
+.inlineSuccess {
+  margin: 0 auto 2rem;
+  max-width: 40rem;
+  border-radius: var(--radius);
+  background: var(--surface-mid);
+  border: 1px solid var(--surface-border);
+  backdrop-filter: blur(12px);
+  padding: 2rem;
+  text-align: center;
+}
+
+/* Success overlay (legacy) */
 .successOverlay {
   position: fixed;
   inset: 0;

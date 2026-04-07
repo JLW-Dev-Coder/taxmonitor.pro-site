@@ -347,7 +347,38 @@
   background: rgba(239, 68, 68, 0.08);
 }
 
-/* ── Compose modal ── */
+/* ── Inline compose form (replaces modal) ── */
+.composeInline {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  height: 100%;
+  overflow: hidden;
+}
+
+.composeInlineHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--surface-border);
+}
+
+.composeInlineBody {
+  padding: 20px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.composeInlineFooter {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 16px 20px;
+  border-top: 1px solid var(--surface-border);
+}
+
+/* ── Compose modal (legacy — kept for class references) ── */
 .modalOverlay {
   position: fixed;
   inset: 0;

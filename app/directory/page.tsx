@@ -19,6 +19,22 @@ const SPECIALTY_OPTIONS = [
   { value: 'actuary', label: 'Enrolled Actuary' },
 ]
 
+const US_STATES = [
+  ['AL', 'Alabama'], ['AK', 'Alaska'], ['AZ', 'Arizona'], ['AR', 'Arkansas'],
+  ['CA', 'California'], ['CO', 'Colorado'], ['CT', 'Connecticut'], ['DE', 'Delaware'],
+  ['DC', 'District of Columbia'], ['FL', 'Florida'], ['GA', 'Georgia'], ['HI', 'Hawaii'],
+  ['ID', 'Idaho'], ['IL', 'Illinois'], ['IN', 'Indiana'], ['IA', 'Iowa'],
+  ['KS', 'Kansas'], ['KY', 'Kentucky'], ['LA', 'Louisiana'], ['ME', 'Maine'],
+  ['MD', 'Maryland'], ['MA', 'Massachusetts'], ['MI', 'Michigan'], ['MN', 'Minnesota'],
+  ['MS', 'Mississippi'], ['MO', 'Missouri'], ['MT', 'Montana'], ['NE', 'Nebraska'],
+  ['NV', 'Nevada'], ['NH', 'New Hampshire'], ['NJ', 'New Jersey'], ['NM', 'New Mexico'],
+  ['NY', 'New York'], ['NC', 'North Carolina'], ['ND', 'North Dakota'], ['OH', 'Ohio'],
+  ['OK', 'Oklahoma'], ['OR', 'Oregon'], ['PA', 'Pennsylvania'], ['RI', 'Rhode Island'],
+  ['SC', 'South Carolina'], ['SD', 'South Dakota'], ['TN', 'Tennessee'], ['TX', 'Texas'],
+  ['UT', 'Utah'], ['VT', 'Vermont'], ['VA', 'Virginia'], ['WA', 'Washington'],
+  ['WV', 'West Virginia'], ['WI', 'Wisconsin'], ['WY', 'Wyoming'],
+] as const
+
 function getInitials(name: string): string {
   return name
     .split(' ')
@@ -181,17 +197,31 @@ export default function DirectoryPage() {
                 type="text"
                 className={styles.locationInput}
                 placeholder="City"
+                list="directory-cities"
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
               />
-              <input
-                type="text"
+              <datalist id="directory-cities">
+                {Array.from(
+                  new Set(
+                    professionals
+                      .map((p) => p.city)
+                      .filter((c): c is string => Boolean(c))
+                  )
+                ).sort().map((c) => (
+                  <option key={c} value={c} />
+                ))}
+              </datalist>
+              <select
                 className={styles.locationInput}
-                placeholder="State"
-                maxLength={2}
                 value={state}
                 onChange={(e) => setState(e.target.value)}
-              />
+              >
+                <option value="">All States</option>
+                {US_STATES.map(([code, name]) => (
+                  <option key={code} value={code}>{name}</option>
+                ))}
+              </select>
               <input
                 type="text"
                 className={styles.locationInput}

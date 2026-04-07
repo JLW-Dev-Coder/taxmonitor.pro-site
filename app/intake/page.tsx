@@ -72,6 +72,14 @@ export default function IntakePage() {
   const totalSteps = 3
   const progress = ((step + 1) / totalSteps) * 100
 
+  function normalizePhone(raw: string): string {
+    const digits = raw.replace(/\D/g, '').slice(0, 10)
+    if (digits.length === 0) return ''
+    if (digits.length < 4) return `(${digits}`
+    if (digits.length < 7) return `(${digits.slice(0, 3)}) ${digits.slice(3)}`
+    return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`
+  }
+
   function toggleTaxYear(year: string) {
     setTaxDetails((prev) => ({
       ...prev,
@@ -206,6 +214,7 @@ export default function IntakePage() {
                     className={styles.input}
                     value={personal.phone}
                     onChange={(e) => setPersonal({ ...personal, phone: e.target.value })}
+                    onBlur={(e) => setPersonal({ ...personal, phone: normalizePhone(e.target.value) })}
                     placeholder="(555) 555-5555"
                   />
                 </div>

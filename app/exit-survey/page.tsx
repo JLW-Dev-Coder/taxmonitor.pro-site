@@ -78,6 +78,9 @@ export default function ExitSurveyPage() {
     setTimeout(() => {
       setSubmitting(false)
       setSubmitted(true)
+      if (typeof window !== 'undefined') {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+      }
     }, 600)
   }
 
@@ -86,6 +89,23 @@ export default function ExitSurveyPage() {
       <Header variant="site" />
       <main className={styles.page}>
         <div className={styles.inner}>
+          {submitted && (
+            <div className={styles.inlineSuccess}>
+              <div className={styles.successIcon}>
+                <svg className={styles.successIconSvg} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <h2 className={styles.successTitle}>Thank you for your feedback</h2>
+              <p className={styles.successDesc}>
+                We certainly appreciate the opportunity to serve you and to continue to serve you with the best quality experience.
+              </p>
+              <div className={styles.successActions}>
+                <Link href="/" className={styles.successBtnSecondary}>Return to site</Link>
+                <Link href="/dashboard" className={styles.successBtnPrimary}>Return to dashboard</Link>
+              </div>
+            </div>
+          )}
           {/* Hero */}
           <div className={styles.hero}>
             <div className={styles.heroBadge}>
@@ -360,27 +380,6 @@ export default function ExitSurveyPage() {
           </div>
         </div>
       </main>
-
-      {/* Success overlay */}
-      {submitted && (
-        <div className={styles.successOverlay}>
-          <div className={styles.successCard}>
-            <div className={styles.successIcon}>
-              <svg className={styles.successIconSvg} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
-            </div>
-            <h2 className={styles.successTitle}>Thank you for your feedback</h2>
-            <p className={styles.successDesc}>
-              We certainly appreciate the opportunity to serve you and to continue to serve you with the best quality experience.
-            </p>
-            <div className={styles.successActions}>
-              <Link href="/" className={styles.successBtnSecondary}>Return to site</Link>
-              <Link href="/dashboard" className={styles.successBtnPrimary}>Return to dashboard</Link>
-            </div>
-          </div>
-        </div>
-      )}
 
       <Footer />
     </>

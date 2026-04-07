@@ -363,6 +363,81 @@ function MessagesContent({ account }: { account: SessionUser }) {
     draftIdRef.current = null
   }
 
+  /* ── Render: Inline compose form (replaces detail panel when composing) ── */
+  function renderComposeForm() {
+    return (
+      <div className={styles.composeInline}>
+        <div className={styles.composeInlineHeader}>
+          <h2 className={styles.detailSubject}>New Message</h2>
+          <button type="button" className={styles.modalClose} onClick={closeCompose} aria-label="Close compose">
+            <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              <path strokeLinecap="round" d="M18 6L6 18M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <div className={styles.composeInlineBody}>
+          <div className={styles.formGroup}>
+            <label className={styles.formLabel}>Category</label>
+            <select
+              className={styles.formSelect}
+              value={composeCategory}
+              onChange={(e) => handleComposeChange('category', e.target.value)}
+            >
+              {CATEGORIES.map((c) => (
+                <option key={c} value={c}>{c}</option>
+              ))}
+            </select>
+          </div>
+
+          <div className={styles.formGroup}>
+            <label className={styles.formLabel}>Subject</label>
+            <input
+              type="text"
+              className={styles.formInput}
+              placeholder="Enter subject"
+              value={composeSubject}
+              onChange={(e) => handleComposeChange('subject', e.target.value)}
+            />
+          </div>
+
+          <div className={styles.formGroup}>
+            <label className={styles.formLabel}>Message</label>
+            <textarea
+              className={styles.formTextarea}
+              placeholder="Write your message..."
+              value={composeBody}
+              onChange={(e) => handleComposeChange('body', e.target.value)}
+            />
+          </div>
+        </div>
+
+        {draftSaving && (
+          <div className={styles.savingIndicator}>Saving draft...</div>
+        )}
+
+        <div className={styles.composeInlineFooter}>
+          <button
+            type="button"
+            className={styles.btnSecondary}
+            onClick={handleSaveDraft}
+            disabled={composeSending}
+          >
+            Save Draft
+          </button>
+          <button
+            type="button"
+            className={styles.btnPrimary}
+            onClick={handleSend}
+            disabled={composeSending || !composeSubject.trim() || !composeBody.trim()}
+          >
+            {composeSending ? 'Sending...' : 'Send'}
+          </button>
+        </div>
+      </div>
+    )
+  }
+
   /* ── Render: Detail panel (shared between desktop & mobile) ── */
   function renderDetail() {
     if (!selectedMessage) {
@@ -529,7 +604,9 @@ function MessagesContent({ account }: { account: SessionUser }) {
         </div>
 
         {/* ── Detail panel (desktop) ── */}
-        <div className={styles.detailPanel}>{renderDetail()}</div>
+        <div className={styles.detailPanel}>
+          {composeOpen ? renderComposeForm() : renderDetail()}
+        </div>
       </div>
 
       {/* ── Detail overlay (mobile) ── */}
@@ -552,78 +629,10 @@ function MessagesContent({ account }: { account: SessionUser }) {
         </div>
       )}
 
-      {/* ── Compose modal ── */}
+      {/* ── Compose overlay (mobile) ── */}
       {composeOpen && (
-        <div className={styles.modalOverlay} onClick={(e) => { if (e.target === e.currentTarget) closeCompose() }}>
-          <div className={styles.modalCard}>
-            <div className={styles.modalHeader}>
-              <h3 className={styles.modalTitle}>New Message</h3>
-              <button type="button" className={styles.modalClose} onClick={closeCompose}>
-                <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                  <path strokeLinecap="round" d="M18 6L6 18M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-
-            <div className={styles.modalBody}>
-              <div className={styles.formGroup}>
-                <label className={styles.formLabel}>Category</label>
-                <select
-                  className={styles.formSelect}
-                  value={composeCategory}
-                  onChange={(e) => handleComposeChange('category', e.target.value)}
-                >
-                  {CATEGORIES.map((c) => (
-                    <option key={c} value={c}>{c}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div className={styles.formGroup}>
-                <label className={styles.formLabel}>Subject</label>
-                <input
-                  type="text"
-                  className={styles.formInput}
-                  placeholder="Enter subject"
-                  value={composeSubject}
-                  onChange={(e) => handleComposeChange('subject', e.target.value)}
-                />
-              </div>
-
-              <div className={styles.formGroup}>
-                <label className={styles.formLabel}>Message</label>
-                <textarea
-                  className={styles.formTextarea}
-                  placeholder="Write your message..."
-                  value={composeBody}
-                  onChange={(e) => handleComposeChange('body', e.target.value)}
-                />
-              </div>
-            </div>
-
-            {draftSaving && (
-              <div className={styles.savingIndicator}>Saving draft...</div>
-            )}
-
-            <div className={styles.modalFooter}>
-              <button
-                type="button"
-                className={styles.btnSecondary}
-                onClick={handleSaveDraft}
-                disabled={composeSending}
-              >
-                Save Draft
-              </button>
-              <button
-                type="button"
-                className={styles.btnPrimary}
-                onClick={handleSend}
-                disabled={composeSending || !composeSubject.trim() || !composeBody.trim()}
-              >
-                {composeSending ? 'Sending...' : 'Send'}
-              </button>
-            </div>
-          </div>
+        <div className={styles.mobileDetailOverlay}>
+          {renderComposeForm()}
         </div>
       )}
     </>
