@@ -134,8 +134,15 @@ export default function PricingPage() {
     setLoadingPlan(planKey)
     try {
       const res = await api.createTmpCheckout(planKey)
-      if (res.session_url) window.location.href = res.session_url
-    } catch {
+      if (res.session_url) {
+        window.location.href = res.session_url
+      } else {
+        alert('Checkout session could not be created. Please try again.')
+        setLoadingPlan(null)
+      }
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Checkout failed'
+      alert(`Checkout error: ${msg}`)
       setLoadingPlan(null)
     }
   }
@@ -150,8 +157,15 @@ export default function PricingPage() {
     setLoadingPlan(planKey)
     try {
       const res = await api.createTmpCheckout(planKey, addon)
-      if (res.session_url) window.location.href = res.session_url
-    } catch {
+      if (res.session_url) {
+        window.location.href = res.session_url
+      } else {
+        alert('Checkout session could not be created. Please try again.')
+        setLoadingPlan(null)
+      }
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Checkout failed'
+      alert(`Checkout error: ${msg}`)
       setLoadingPlan(null)
     }
   }

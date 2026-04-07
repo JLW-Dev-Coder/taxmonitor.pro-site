@@ -114,10 +114,11 @@ export default function DashboardHome({ account }: { account: SessionUser }) {
       setLoadingReceipts(false)
     }
 
-    // Token balance
+    // Token balance — read from session (worker exposes transcript_tokens there)
     try {
-      const res = await api.getTokenBalance(account.account_id)
-      setTokenBalance(res.transcript_tokens + res.tax_game_tokens)
+      const res = await api.getSession()
+      const tokens = res?.session?.transcript_tokens
+      setTokenBalance(typeof tokens === 'number' ? tokens : 0)
     } catch {
       setTokenBalance(null)
     } finally {

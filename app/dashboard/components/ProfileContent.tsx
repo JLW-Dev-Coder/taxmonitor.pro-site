@@ -464,13 +464,22 @@ export default function ProfileContent({ account }: { account: SessionUser }) {
     setLoading(true)
     setError('')
     try {
-      const [profileRes, prefsRes, tfaRes] = await Promise.all([
+      const [profileRes, prefsRes, tfaRes] = await Promise.allSettled([
         api.getAccount(account.account_id) as Promise<Record<string, unknown>>,
         api.getPreferences(account.account_id) as Promise<Record<string, unknown>>,
         api.get2faStatus(account.account_id) as Promise<Record<string, unknown>>,
       ])
 
-      const p = profileRes as unknown as ProfileData
+      // Account is required; everything else is optional
+      if (profileRes.status !== 'fulfilled') {
+        throw profileRes.reason instanceof Error
+          ? profileRes.reason
+          : new Error('Failed to load account')
+      }
+
+      // Worker returns { ok, account: {...} }
+      const accountWrap = profileRes.value as unknown as { account?: ProfileData } & Partial<ProfileData>
+      const p = (accountWrap.account ?? accountWrap) as ProfileData
       setFirstName(p.first_name || account.first_name || '')
       setLastName(p.last_name || account.last_name || '')
       setEmail(p.email || account.email || '')
@@ -479,14 +488,26 @@ export default function ProfileContent({ account }: { account: SessionUser }) {
       setAvatarUrl(p.avatar_url || account.avatar_url || '')
       setVerified(p.verified ?? true)
 
-      const prefs = prefsRes as unknown as PrefsData
-      setEmailNotif(prefs.notifications_email ?? false)
-      setInappNotif(prefs.notifications_inapp ?? false)
-      setSmsNotif(prefs.notifications_sms ?? false)
-      setTheme(prefs.theme || 'dark')
+      // Worker returns { ok, preferences: { appearance, in_app_enabled, sms_enabled, ... } }
+      if (prefsRes.status === 'fulfilled') {
+        const prefsWrap = prefsRes.value as {
+          preferences?: {
+            appearance?: 'dark' | 'light' | 'system'
+            in_app_enabled?: number | boolean
+            sms_enabled?: number | boolean
+          }
+        }
+        const prefs = prefsWrap.preferences ?? {}
+        setEmailNotif(false)
+        setInappNotif(Boolean(prefs.in_app_enabled))
+        setSmsNotif(Boolean(prefs.sms_enabled))
+        setTheme(prefs.appearance ?? 'dark')
+      }
 
-      const tfa = tfaRes as unknown as TwoFaStatus
-      setTfaEnabled(tfa.enabled ?? false)
+      if (tfaRes.status === 'fulfilled') {
+        const tfa = tfaRes.value as unknown as TwoFaStatus
+        setTfaEnabled(tfa.enabled ?? false)
+      }
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'Unknown error'
       setError(msg)
