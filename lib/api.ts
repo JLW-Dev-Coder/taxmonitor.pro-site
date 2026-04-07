@@ -288,6 +288,13 @@ export const api = {
   getCalStatus: () =>
     apiFetch('/v1/cal/status'),
 
+  startCalOAuth: () =>
+    apiFetch<{
+      ok: boolean
+      status?: string
+      authorizationUrl?: string
+    }>('/v1/cal/oauth/start'),
+
   // Tokens
   getTokenBalance: (account_id: string) =>
     apiFetch<{ transcript_tokens: number; tax_game_tokens: number }>(

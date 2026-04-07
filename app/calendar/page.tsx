@@ -103,6 +103,26 @@ function ErrorState({ message, onRetry }: { message: string; onRetry: () => void
 }
 
 function ConnectCalendarPrompt() {
+  const [connecting, setConnecting] = useState(false)
+  const [connectError, setConnectError] = useState<string | null>(null)
+
+  const handleConnect = async () => {
+    setConnecting(true)
+    setConnectError(null)
+    try {
+      const res = await api.startCalOAuth()
+      if (res.authorizationUrl) {
+        window.location.href = res.authorizationUrl
+      } else {
+        setConnectError('Calendar connection unavailable. Please try again later.')
+        setConnecting(false)
+      }
+    } catch (err) {
+      setConnectError(err instanceof Error ? err.message : 'Failed to start calendar connection')
+      setConnecting(false)
+    }
+  }
+
   return (
     <div className={`${styles.glassCard} ${styles.connectPrompt}`}>
       <div className={styles.connectIcon}>
@@ -115,18 +135,21 @@ function ConnectCalendarPrompt() {
       <p className={styles.connectDesc}>
         Link your calendar to sync appointments, deadlines, and reminders automatically with Tax Monitor Pro.
       </p>
-      <a
-        href="https://api.taxmonitor.pro/v1/cal/oauth/start"
-        target="_blank"
-        rel="noopener noreferrer"
+      <button
+        type="button"
+        onClick={handleConnect}
+        disabled={connecting}
         className={styles.connectBtn}
       >
         <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101" />
           <path strokeLinecap="round" strokeLinejoin="round" d="M10.172 13.828a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
         </svg>
-        Connect Calendar
-      </a>
+        {connecting ? 'Connecting...' : 'Connect Calendar'}
+      </button>
+      {connectError && (
+        <p className={styles.errorMsg} style={{ marginTop: '0.75rem' }}>{connectError}</p>
+      )}
     </div>
   )
 }
