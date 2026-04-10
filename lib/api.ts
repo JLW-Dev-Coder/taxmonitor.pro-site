@@ -16,6 +16,135 @@ interface ApiOptions extends RequestInit {
   auth?: boolean
 }
 
+/**
+ * Canonical public profile response.
+ * Mirrors /contracts/vlp/vlp.profile.public.v1.json in the VLP repo.
+ */
+export interface PublicProfileResponse {
+  ok: boolean
+  profile: {
+    profile: {
+      name: string
+      slug: string
+      status: 'featured' | 'hidden' | 'standard'
+      status_badge_label: 'Featured' | 'Hidden' | 'Standard' | 'Verified' | null
+      profile_type: 'live' | 'sample'
+      initials: string
+      avatar: {
+        upload_type: 'firm_logo' | 'initials_only' | 'profile_photo'
+        initials_fallback: boolean
+        display_dimensions: { width: number; height: number }
+        file: {
+          file_type: string
+          width: number
+          height: number
+        } | null
+      }
+    }
+    professional: {
+      profession: string[]
+      credentials: string[]
+      firm_name: string | null
+      years_experience: number
+    }
+    hero: {
+      headline: string
+      location_label: string
+      rating_label: string
+      years_experience_label: string
+      credential_badges: Array<{ label: string; style_key: string }>
+    }
+    location: {
+      city: string
+      state: string
+      country: string
+      zip: string | null
+    }
+    bio: {
+      bio_short: string
+      bio_full_paragraphs: string[]
+    }
+    contact: {
+      contact_email: string | null
+      phone: string | null
+      website: string | null
+      availability_display: string | null
+      timezone: string | null
+      languages: string[]
+      weekly_availability: Array<{
+        day: string
+        enabled: boolean
+        start_time: string | null
+        end_time: string | null
+      }>
+    }
+    services_offered: {
+      items: Array<{
+        title: string
+        description: string
+        icon: string
+      }>
+    }
+    specializations: {
+      client_types: string[]
+    }
+    credentials_experience: {
+      licenses_certifications: Array<{
+        title: string
+        subtitle: string | null
+      }>
+      background_items: Array<{
+        title: string
+        date_label: string
+        description: string
+      }>
+    }
+    quick_stats: Array<{ label: string; value: string }>
+    reviews: {
+      enabled: boolean
+      allow_submission: boolean
+      summary: {
+        average_rating: number
+        review_count: number
+      }
+      items: Array<{
+        name: string
+        rating: 1 | 2 | 3 | 4 | 5
+        text: string
+      }>
+    }
+    buttons: {
+      schedule_button: {
+        show: boolean
+        active: boolean
+        label: string
+        mode: 'cal_com' | 'custom_booking_link' | 'none'
+        url: string | null
+        provider_label: string
+        behavior_phrase: string
+        description: string | null
+        description_mode: 'custom' | 'derived'
+        event_type_label: string | null
+        event_type_duration_minutes: number | null
+      }
+      contact_button: {
+        show: boolean
+        active: boolean
+        label: string
+        mode: 'email' | 'external_link' | 'inactive'
+        url: string | null
+      }
+      review_button: {
+        show: boolean
+        active: boolean
+        label: string
+        mode: 'external_link' | 'inactive' | 'modal'
+        url: string | null
+      }
+    }
+  }
+}
+
 async function apiFetch<T>(
   path: string,
   options: ApiOptions = {}
@@ -149,37 +278,10 @@ export const api = {
   },
 
   getProfile: (professional_id: string) =>
-    apiFetch<{
-      ok: boolean
-      profile: {
-        professionalId: string
-        displayName: string
-        fullName: string
-        initials: string
-        bioShort: string
-        yearsExperience: string
-        state: string
-        city: string
-        firmName: string
-        professions: string[]
-        otherProfession: string
-        bio1: string
-        bio2: string
-        bio3: string
-        primaryService: string
-        additionalServices: string[]
-        primaryCredential: string
-        additionalCredentials: string
-        email: string
-        phone: string
-        languages: string[]
-        availabilityText: string
-        calBookingUrl: string
-        status: string
-      }
-    }>(`/v1/profiles/public/${professional_id}`, {
-      auth: false,
-    }),
+    apiFetch<PublicProfileResponse>(
+      `/v1/profiles/public/${professional_id}`,
+      { auth: false }
+    ),
 
   // Inquiries
   createInquiry: (data: {

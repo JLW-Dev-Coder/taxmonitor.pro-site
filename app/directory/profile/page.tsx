@@ -86,62 +86,88 @@ function ProfileContent() {
     api
       .getProfile(slug)
       .then((res) => {
-        const p = res.profile
         /* API returned a result — wrap into FullProfile shape */
         const sample = getSampleProfile(slug)
         if (sample) {
           setProfile(sample)
-        } else {
-          const location = [p.city, p.state].filter(Boolean).join(', ')
-          const bios = [p.bio1, p.bio2, p.bio3].filter(Boolean)
-          const allServices = p.additionalServices || []
-          /* Build minimal FullProfile from API data */
-          setProfile({
-            professional_id: p.professionalId,
-            name: p.displayName || p.fullName,
-            title: p.primaryService || p.professions[0] || '',
-            specialty: p.professions,
-            location,
-            avatar_url: '',
-            verified: p.status === 'active',
-            city: p.city || '',
-            state: p.state || '',
-            zip: '',
-            profession: p.professions,
-            bio_short: p.bioShort,
-            bio_full: bios.length > 0 ? bios : [p.bioShort],
-            firm_name: p.firmName || '',
-            years_experience: parseInt(p.yearsExperience, 10) || 0,
-            headline: p.primaryService || p.professions[0] || '',
-            credential_badges: p.professions.map((s) => ({
+          return
+        }
+
+        const p = res.profile
+        const locationLabel =
+          p.hero?.location_label ||
+          [p.location?.city, p.location?.state].filter(Boolean).join(', ')
+        const bios = p.bio?.bio_full_paragraphs || []
+        const scheduleBtn = p.buttons?.schedule_button
+        const bookingUrl =
+          scheduleBtn?.show && scheduleBtn?.active ? scheduleBtn.url || '' : ''
+        const verified =
+          p.profile?.status_badge_label === 'Verified' ||
+          p.profile?.status_badge_label === 'Featured'
+
+        setProfile({
+          professional_id: slug,
+          name: p.profile?.name || '',
+          title: p.hero?.headline || p.professional?.profession?.[0] || '',
+          specialty: p.professional?.profession || [],
+          location: locationLabel,
+          avatar_url: '',
+          verified,
+          city: p.location?.city || '',
+          state: p.location?.state || '',
+          zip: p.location?.zip || '',
+          profession: p.professional?.profession || [],
+          bio_short: p.bio?.bio_short || '',
+          bio_full: bios.length > 0 ? bios : [p.bio?.bio_short || ''],
+          firm_name: p.professional?.firm_name || '',
+          years_experience: p.professional?.years_experience || 0,
+          headline: p.hero?.headline || '',
+          credential_badges:
+            p.hero?.credential_badges ||
+            (p.professional?.profession || []).map((s) => ({
               label: s,
               style_key: s.toLowerCase(),
             })),
-            services: allServices.map((s) => ({
-              title: s,
-              description: '',
-              icon: '',
-            })),
-            reviews: [],
-            review_summary: { average_rating: 0, review_count: 0 },
-            quick_stats: [
-              ...(p.yearsExperience ? [{ label: 'Years Experience', value: p.yearsExperience }] : []),
-            ],
-            client_types: [],
-            credentials: [p.primaryCredential, ...(p.additionalCredentials ? p.additionalCredentials.split(', ') : [])].filter(Boolean),
-            experience: [],
-            licenses: [],
-            contact_email: p.email || '',
-            phone: p.phone || '',
-            website: '',
-            availability: p.availabilityText || '',
-            languages: p.languages || [],
-            years_experience_label: p.yearsExperience ? `${p.yearsExperience} years experience` : '',
-            rating_label: '',
-            booking_url: p.calBookingUrl || '',
-            sample: false,
-          })
-        }
+          services: (p.services_offered?.items || []).map((s) => ({
+            title: s.title,
+            description: s.description,
+            icon: s.icon,
+          })),
+          reviews: (p.reviews?.items || []).map((r) => ({
+            name: r.name,
+            rating: r.rating,
+            text: r.text,
+          })),
+          review_summary: {
+            average_rating: p.reviews?.summary?.average_rating || 0,
+            review_count: p.reviews?.summary?.review_count || 0,
+          },
+          quick_stats: p.quick_stats || [],
+          client_types: p.specializations?.client_types || [],
+          credentials: p.professional?.credentials || [],
+          experience: (p.credentials_experience?.background_items || []).map(
+            (b) => ({
+              title: b.title,
+              date_label: b.date_label,
+              description: b.description,
+            })
+          ),
+          licenses: (
+            p.credentials_experience?.licenses_certifications || []
+          ).map((l) => ({
+            title: l.title,
+            subtitle: l.subtitle || '',
+          })),
+          contact_email: p.contact?.contact_email || '',
+          phone: p.contact?.phone || '',
+          website: p.contact?.website || '',
+          availability: p.contact?.availability_display || '',
+          languages: p.contact?.languages || [],
+          years_experience_label: p.hero?.years_experience_label || '',
+          rating_label: p.hero?.rating_label || '',
+          booking_url: bookingUrl,
+          sample: false,
+        })
       })
       .catch(() => {
         /* API failed — try sample profiles */
@@ -335,22 +361,22 @@ function ProfileContent() {
                       </span>
                     ))}
                   </div>
-                  {profile.client_types.length > 0 && (
-                    <>
-                      <h3 className={styles.subSectionTitle}>Client Types</h3>
-                      <div className={styles.tagList}>
-                        {profile.client_types.map((ct) => (
-                          <span key={ct} className={styles.tagPill}>{ct}</span>
-                        ))}
-                      </div>
-                    </>
+                  <h3 className={styles.subSectionTitle}>Client Types</h3>
+                  {profile.client_types.length > 0 ? (
+                    <div className={styles.tagList}>
+                      {profile.client_types.map((ct) => (
+                        <span key={ct} className={styles.tagPill}>{ct}</span>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className={styles.emptyText}>No data yet</p>
                   )}
                 </div>
 
                 {/* Experience */}
-                {profile.experience.length > 0 && (
-                  <div className={styles.contentCard}>
-                    <h2 className={styles.cardSectionTitle}>Experience</h2>
+                <div className={styles.contentCard}>
+                  <h2 className={styles.cardSectionTitle}>Experience</h2>
+                  {profile.experience.length > 0 ? (
                     <div className={styles.timeline}>
                       {profile.experience.map((exp) => (
                         <div key={exp.title} className={styles.timelineItem}>
@@ -363,13 +389,15 @@ function ProfileContent() {
                         </div>
                       ))}
                     </div>
-                  </div>
-                )}
+                  ) : (
+                    <p className={styles.emptyText}>No data yet</p>
+                  )}
+                </div>
 
                 {/* Licenses & Credentials */}
-                {profile.licenses.length > 0 && (
-                  <div className={styles.contentCard}>
-                    <h2 className={styles.cardSectionTitle}>Licenses & Credentials</h2>
+                <div className={styles.contentCard}>
+                  <h2 className={styles.cardSectionTitle}>Licenses & Credentials</h2>
+                  {profile.licenses.length > 0 ? (
                     <div className={styles.credentialList}>
                       {profile.licenses.map((lic) => (
                         <div key={lic.title} className={styles.credentialItem}>
@@ -378,21 +406,23 @@ function ProfileContent() {
                         </div>
                       ))}
                     </div>
-                  </div>
-                )}
+                  ) : (
+                    <p className={styles.emptyText}>No data yet</p>
+                  )}
+                </div>
 
                 {/* Reviews */}
-                {profile.reviews.length > 0 && (
-                  <div className={styles.contentCard}>
-                    <div className={styles.reviewHeader}>
-                      <h2 className={styles.cardSectionTitle}>Client Reviews</h2>
-                      {profile.review_summary.review_count > 0 && (
-                        <span className={styles.reviewSummary}>
-                          {profile.review_summary.average_rating.toFixed(1)}/5
-                          ({profile.review_summary.review_count} reviews)
-                        </span>
-                      )}
-                    </div>
+                <div className={styles.contentCard}>
+                  <div className={styles.reviewHeader}>
+                    <h2 className={styles.cardSectionTitle}>Client Reviews</h2>
+                    {profile.review_summary.review_count > 0 && (
+                      <span className={styles.reviewSummary}>
+                        {profile.review_summary.average_rating.toFixed(1)}/5
+                        ({profile.review_summary.review_count} reviews)
+                      </span>
+                    )}
+                  </div>
+                  {profile.reviews.length > 0 ? (
                     <div className={styles.reviewList}>
                       {profile.reviews.map((rev) => (
                         <div key={rev.name} className={styles.reviewItem}>
@@ -404,8 +434,10 @@ function ProfileContent() {
                         </div>
                       ))}
                     </div>
-                  </div>
-                )}
+                  ) : (
+                    <p className={styles.emptyText}>No data yet</p>
+                  )}
+                </div>
               </div>
 
               {/* Sidebar */}
