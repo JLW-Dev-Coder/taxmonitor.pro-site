@@ -131,70 +131,70 @@
   margin-bottom: 32px;
 }
 
-.searchRow {
-  position: relative;
+/* ── Filter Grid ── */
+.filterGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
   margin-bottom: 12px;
 }
 
-.searchIcon {
-  position: absolute;
-  top: 50%;
-  left: 16px;
-  transform: translateY(-50%);
-  color: var(--text-subtle);
-  pointer-events: none;
+@media (min-width: 640px) {
+  .filterGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
-.locationInput {
+@media (min-width: 1024px) {
+  .filterGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.filterField {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.filterFieldLabel {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.filterInput {
   width: 100%;
-  padding: 14px 16px 14px 48px;
+  padding: 10px 14px;
   background: rgba(15, 23, 42, 0.7);
   border: 1px solid rgba(51, 65, 85, 0.7);
-  border-radius: 16px;
+  border-radius: 12px;
   color: var(--text);
-  font-size: 1rem;
+  font-size: 0.875rem;
   font-family: var(--font-body);
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.locationInput::placeholder {
+.filterInput::placeholder {
   color: var(--text-subtle);
 }
 
-.locationInput:focus {
+.filterInput:focus {
   border-color: var(--accent);
   box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
 }
 
-.filterRow {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 12px;
-}
-
-.filterLabel {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--text-muted);
-}
-
-.filterLabelIcon {
-  color: var(--accent);
-}
-
-.specialtySelect {
-  padding: 8px 32px 8px 16px;
+.filterSelect {
+  width: 100%;
+  padding: 10px 32px 10px 14px;
   background: rgba(15, 23, 42, 0.7);
   border: 1px solid rgba(51, 65, 85, 0.7);
-  border-radius: 9999px;
+  border-radius: 12px;
   color: var(--text);
   font-size: 0.875rem;
-  font-weight: 500;
   font-family: var(--font-body);
   cursor: pointer;
   outline: none;
@@ -206,16 +206,23 @@
   transition: border-color 0.2s;
 }
 
-.specialtySelect:hover {
+.filterSelect:hover {
   background-color: rgba(30, 41, 59, 0.7);
 }
 
-.specialtySelect:focus {
+.filterSelect:focus {
   border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
+}
+
+.filterActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
 }
 
 .clearBtn {
-  margin-left: auto;
   display: flex;
   align-items: center;
   gap: 6px;

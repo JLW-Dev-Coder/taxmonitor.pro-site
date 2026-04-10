@@ -8,15 +8,26 @@ import { filterSampleProfiles } from '@/lib/sample-profiles'
 import type { DirectoryProfessional } from '@/lib/sample-profiles'
 import styles from './page.module.css'
 
-type Professional = DirectoryProfessional
+type Professional = DirectoryProfessional & {
+  has_booking?: boolean
+}
 
-const SPECIALTY_OPTIONS = [
-  { value: '', label: 'All Specialties' },
-  { value: 'attorney', label: 'Attorney' },
+const PROFESSION_OPTIONS = [
+  { value: '', label: 'All Professions' },
   { value: 'cpa', label: 'CPA' },
   { value: 'ea', label: 'Enrolled Agent' },
-  { value: 'erpa', label: 'ERPA' },
-  { value: 'actuary', label: 'Enrolled Actuary' },
+  { value: 'tax attorney', label: 'Tax Attorney' },
+  { value: 'afsp', label: 'AFSP' },
+  { value: 'rtrp', label: 'RTRP' },
+  { value: 'tax preparer', label: 'Tax Preparer' },
+  { value: 'bookkeeper', label: 'Bookkeeper' },
+  { value: 'financial advisor', label: 'Financial Advisor' },
+  { value: 'other', label: 'Other' },
+]
+
+const AVAILABILITY_OPTIONS = [
+  { value: '', label: 'Any Availability' },
+  { value: 'available', label: 'Available Now' },
 ]
 
 const US_STATES = [
@@ -58,7 +69,9 @@ export default function DirectoryPage() {
   const [professionals, setProfessionals] = useState<Professional[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [profession, setProfession] = useState('')
   const [specialty, setSpecialty] = useState('')
+  const [availability, setAvailability] = useState('')
   const [city, setCity] = useState('')
   const [state, setState] = useState('')
   const [zip, setZip] = useState('')
@@ -81,14 +94,27 @@ export default function DirectoryPage() {
           const res = await api.getDirectory(
             Object.keys(clean).length > 0 ? clean : undefined
           )
-          apiResults = (res.professionals || []).map((p) => ({
-            ...p,
-            city: '',
-            state: '',
-            zip: '',
-            profession: p.specialty,
-            sample: false,
-          }))
+          apiResults = (res.professionals || []).map((p) => {
+            const specArray = p.specialties
+              ? p.specialties.split(',').map((s) => s.trim()).filter(Boolean)
+              : []
+            const loc = [p.city, p.state].filter(Boolean).join(', ')
+            return {
+              professional_id: p.professional_id,
+              name: p.display_name,
+              title: specArray.join(' / ') || 'Tax Professional',
+              specialty: specArray,
+              location: loc,
+              avatar_url: '',
+              verified: false,
+              city: p.city || '',
+              state: p.state || '',
+              zip: p.zip || '',
+              profession: specArray,
+              sample: false,
+              has_booking: Boolean(p.cal_booking_url),
+            }
+          })
         } catch {
           /* API unavailable — fall through to samples */
         }
@@ -119,7 +145,7 @@ export default function DirectoryPage() {
     fetchDirectory({})
   }, [fetchDirectory])
 
-  /* Debounced filter changes */
+  /* Debounced filter changes — send specialty (server-side) filter */
   useEffect(() => {
     if (debounceRef.current) clearTimeout(debounceRef.current)
     debounceRef.current = setTimeout(() => {
@@ -130,9 +156,29 @@ export default function DirectoryPage() {
     }
   }, [specialty, city, state, zip, fetchDirectory])
 
-  const visibleProfessionals = showSamples
-    ? professionals
-    : professionals.filter((p) => !p.sample)
+  /* Client-side filtering for profession and availability */
+  const visibleProfessionals = professionals.filter((p) => {
+    if (!showSamples && p.sample) return false
+    if (profession) {
+      const profLower = profession.toLowerCase()
+      const match = p.specialty.some((s) => s.toLowerCase().includes(profLower)) ||
+        (Array.isArray(p.profession) && p.profession.some((pr) =>
+          typeof pr === 'string' && pr.toLowerCase().includes(profLower)
+        ))
+      if (!match) return false
+    }
+    if (availability === 'available') {
+      if (!p.has_booking && !p.sample) return false
+    }
+    return true
+  })
+
+  /* Collect distinct specialties from loaded profiles for the specialty dropdown */
+  const distinctSpecialties = Array.from(
+    new Set(
+      professionals.flatMap((p) => p.specialty).filter(Boolean)
+    )
+  ).sort()
 
   return (
     <>
@@ -177,99 +223,110 @@ export default function DirectoryPage() {
         {/* Filter Bar */}
         <section className={styles.filterSection}>
           <div className={styles.filterCard}>
-            <div className={styles.searchRow}>
-              <svg
-                className={styles.searchIcon}
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={2}
-                viewBox="0 0 24 24"
-                width="20"
-                height="20"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            <div className={styles.filterGrid}>
+              <div className={styles.filterField}>
+                <label className={styles.filterFieldLabel}>City</label>
+                <input
+                  type="text"
+                  className={styles.filterInput}
+                  placeholder="Search by city..."
+                  list="directory-cities"
+                  value={city}
+                  onChange={(e) => setCity(e.target.value)}
                 />
-              </svg>
-              <input
-                type="text"
-                className={styles.locationInput}
-                placeholder="City"
-                list="directory-cities"
-                value={city}
-                onChange={(e) => setCity(e.target.value)}
-              />
-              <datalist id="directory-cities">
-                {Array.from(
-                  new Set(
-                    professionals
-                      .map((p) => p.city)
-                      .filter((c): c is string => Boolean(c))
-                  )
-                ).sort().map((c) => (
-                  <option key={c} value={c} />
-                ))}
-              </datalist>
-              <select
-                className={styles.locationInput}
-                value={state}
-                onChange={(e) => setState(e.target.value)}
-              >
-                <option value="">All States</option>
-                {US_STATES.map(([code, name]) => (
-                  <option key={code} value={code}>{name}</option>
-                ))}
-              </select>
-              <input
-                type="text"
-                className={styles.locationInput}
-                placeholder="Zip"
-                maxLength={5}
-                value={zip}
-                onChange={(e) => setZip(e.target.value)}
-              />
+                <datalist id="directory-cities">
+                  {Array.from(
+                    new Set(
+                      professionals
+                        .map((p) => p.city)
+                        .filter((c): c is string => Boolean(c))
+                    )
+                  ).sort().map((c) => (
+                    <option key={c} value={c} />
+                  ))}
+                </datalist>
+              </div>
+
+              <div className={styles.filterField}>
+                <label className={styles.filterFieldLabel}>State</label>
+                <select
+                  className={styles.filterSelect}
+                  value={state}
+                  onChange={(e) => setState(e.target.value)}
+                >
+                  <option value="">All States</option>
+                  {US_STATES.map(([code, name]) => (
+                    <option key={code} value={code}>{name}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div className={styles.filterField}>
+                <label className={styles.filterFieldLabel}>Zip</label>
+                <input
+                  type="text"
+                  className={styles.filterInput}
+                  placeholder="Zip code"
+                  maxLength={5}
+                  value={zip}
+                  onChange={(e) => setZip(e.target.value)}
+                />
+              </div>
+
+              <div className={styles.filterField}>
+                <label className={styles.filterFieldLabel}>Profession</label>
+                <select
+                  className={styles.filterSelect}
+                  value={profession}
+                  onChange={(e) => setProfession(e.target.value)}
+                >
+                  {PROFESSION_OPTIONS.map((opt) => (
+                    <option key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className={styles.filterField}>
+                <label className={styles.filterFieldLabel}>Specialty</label>
+                <select
+                  className={styles.filterSelect}
+                  value={specialty}
+                  onChange={(e) => setSpecialty(e.target.value)}
+                >
+                  <option value="">All Specialties</option>
+                  {distinctSpecialties.map((s) => (
+                    <option key={s} value={s}>{s}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div className={styles.filterField}>
+                <label className={styles.filterFieldLabel}>Availability</label>
+                <select
+                  className={styles.filterSelect}
+                  value={availability}
+                  onChange={(e) => setAvailability(e.target.value)}
+                >
+                  {AVAILABILITY_OPTIONS.map((opt) => (
+                    <option key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
 
-            <div className={styles.filterRow}>
-              <span className={styles.filterLabel}>
-                <svg
-                  className={styles.filterLabelIcon}
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                  viewBox="0 0 24 24"
-                  width="16"
-                  height="16"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
-                  />
-                </svg>
-                Specialty:
-              </span>
-
-              <select
-                className={styles.specialtySelect}
-                value={specialty}
-                onChange={(e) => setSpecialty(e.target.value)}
-              >
-                {SPECIALTY_OPTIONS.map((opt) => (
-                  <option key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </option>
-                ))}
-              </select>
-
-              {(specialty || city || state || zip) && (
+            <div className={styles.filterActions}>
+              {(profession || specialty || availability || city || state || zip) && (
                 <button
                   type="button"
                   className={styles.clearBtn}
                   onClick={() => {
+                    setProfession('')
                     setSpecialty('')
+                    setAvailability('')
                     setCity('')
                     setState('')
                     setZip('')
@@ -398,7 +455,9 @@ export default function DirectoryPage() {
                 type="button"
                 className={styles.retryBtn}
                 onClick={() => {
+                  setProfession('')
                   setSpecialty('')
+                  setAvailability('')
                   setCity('')
                   setState('')
                   setZip('')

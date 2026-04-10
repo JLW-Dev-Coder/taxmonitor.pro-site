@@ -133,13 +133,16 @@ export const api = {
       ok: boolean
       professionals: Array<{
         professional_id: string
-        name: string
-        title: string
-        specialty: string[]
-        location: string
-        avatar_url: string
-        verified: boolean
+        display_name: string
+        bio: string | null
+        specialties: string | null
+        cal_booking_url: string | null
+        city: string | null
+        state: string | null
+        zip: string | null
       }>
+      page: number
+      total: number
     }>(`/v1/tmp/directory${qs ? '?' + qs : ''}`, {
       auth: false,
     })
