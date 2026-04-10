@@ -2,7 +2,7 @@
   "contracts": [
     {
       "dedupeKey": "payload.eventId",
-      "endpoint": "https://api.taxmonitor.pro/forms/intake/agreement",
+      "endpoint": "https://api.virtuallaunch.pro/forms/intake/agreement",
       "id": "form_intake_agreement",
       "method": "POST",
       "path": "app/contracts/forms/intake/agreement.contract.json",
@@ -14,7 +14,7 @@
     },
     {
       "dedupeKey": "payload.eventId",
-      "endpoint": "https://api.taxmonitor.pro/forms/intake/intake",
+      "endpoint": "https://api.virtuallaunch.pro/forms/intake/intake",
       "id": "form_intake_intake",
       "method": "POST",
       "path": "app/contracts/forms/intake/intake.contract.json",
@@ -26,7 +26,7 @@
     },
     {
       "dedupeKey": "payload.eventId",
-      "endpoint": "https://api.taxmonitor.pro/forms/intake/offer",
+      "endpoint": "https://api.virtuallaunch.pro/forms/intake/offer",
       "id": "form_intake_offer",
       "method": "POST",
       "path": "app/contracts/forms/intake/offer.contract.json",
@@ -38,7 +38,7 @@
     },
     {
       "dedupeKey": "stripeSessionId",
-      "endpoint": "https://api.taxmonitor.pro/webhooks/stripe.checkout_session_completed",
+      "endpoint": "https://api.virtuallaunch.pro/webhooks/stripe.checkout_session_completed",
       "id": "stripe_checkout_session_completed",
       "method": "POST",
       "path": "app/contracts/webhooks/stripe.checkout_session_completed.contract.json",
@@ -50,7 +50,7 @@
     },
     {
       "dedupeKey": "stripeSessionId",
-      "endpoint": "https://api.taxmonitor.pro/webhooks/stripe.payment_intent_succeeded",
+      "endpoint": "https://api.virtuallaunch.pro/webhooks/stripe.payment_intent_succeeded",
       "id": "stripe_payment_intent_succeeded",
       "method": "POST",
       "path": "app/contracts/webhooks/stripe.payment_intent_succeeded.contract.json",
@@ -62,7 +62,7 @@
     },
     {
       "dedupeKey": "payload.eventId",
-      "endpoint": "https://api.taxmonitor.pro/forms/post-payment/address-update",
+      "endpoint": "https://api.virtuallaunch.pro/forms/post-payment/address-update",
       "id": "form_post_payment_address_update",
       "method": "POST",
       "path": "app/contracts/forms/post-payment/address-update.contract.json",
@@ -74,7 +74,7 @@
     },
     {
       "dedupeKey": "payload.eventId",
-      "endpoint": "https://api.taxmonitor.pro/forms/post-payment/compliance",
+      "endpoint": "https://api.virtuallaunch.pro/forms/post-payment/compliance",
       "id": "form_post_payment_compliance",
       "method": "POST",
       "path": "app/contracts/forms/post-payment/compliance.contract.json",
@@ -86,7 +86,7 @@
     },
     {
       "dedupeKey": "payload.eventId",
-      "endpoint": "https://api.taxmonitor.pro/forms/post-payment/esign-2848",
+      "endpoint": "https://api.virtuallaunch.pro/forms/post-payment/esign-2848",
       "id": "form_post_payment_esign_2848",
       "method": "POST",
       "path": "app/contracts/forms/post-payment/esign-2848.contract.json",
@@ -98,7 +98,7 @@
     },
     {
       "dedupeKey": "payload.eventId",
-      "endpoint": "https://api.taxmonitor.pro/forms/post-payment/exit-survey",
+      "endpoint": "https://api.virtuallaunch.pro/forms/post-payment/exit-survey",
       "id": "form_post_payment_exit_survey",
       "method": "POST",
       "path": "app/contracts/forms/post-payment/exit-survey.contract.json",
@@ -110,7 +110,7 @@
     },
     {
       "dedupeKey": "payload.eventId",
-      "endpoint": "https://api.taxmonitor.pro/forms/post-payment/filing-status",
+      "endpoint": "https://api.virtuallaunch.pro/forms/post-payment/filing-status",
       "id": "form_post_payment_filing_status",
       "method": "POST",
       "path": "app/contracts/forms/post-payment/filing-status.contract.json",
@@ -122,7 +122,7 @@
     },
     {
       "dedupeKey": "payload.eventId",
-      "endpoint": "https://api.taxmonitor.pro/forms/post-payment/welcome",
+      "endpoint": "https://api.virtuallaunch.pro/forms/post-payment/welcome",
       "id": "form_post_payment_welcome",
       "method": "POST",
       "path": "app/contracts/forms/post-payment/welcome.contract.json",

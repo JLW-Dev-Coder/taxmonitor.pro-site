@@ -22,7 +22,7 @@
   },
   "delivery": {
     "dedupeKey": "eventId",
-    "endpoint": "https://api.taxmonitor.pro/forms/post-payment/welcome",
+    "endpoint": "https://api.virtuallaunch.pro/forms/post-payment/welcome",
     "eventType": "WELCOME_SUBMITTED",
     "method": "POST",
     "receiptKeyPattern": "receipts/{source}/{eventId}.json",

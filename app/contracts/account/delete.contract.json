@@ -14,7 +14,7 @@
     "version": 1
   },
   "delivery": {
-    "endpoint": "https://api.taxmonitor.pro/forms/account/delete",
+    "endpoint": "https://api.virtuallaunch.pro/forms/account/delete",
     "method": "POST",
     "type": "forms"
   },

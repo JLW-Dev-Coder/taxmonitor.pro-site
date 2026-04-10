@@ -50,7 +50,7 @@ export default function TranscriptCentralPage() {
 
     setFormStatus('sending')
     try {
-      const res = await fetch('https://api.taxmonitor.pro/forms/lead-magnet/transcript-ebook', {
+      const res = await fetch('https://api.virtuallaunch.pro/forms/lead-magnet/transcript-ebook', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

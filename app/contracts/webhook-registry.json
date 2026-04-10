@@ -1,9 +1,9 @@
 {
-  "baseUrl": "https://api.taxmonitor.pro",
+  "baseUrl": "https://api.virtuallaunch.pro",
   "entries": [
     {
       "dedupeKey": "payload.payload.bookingId",
-      "endpoint": "https://api.taxmonitor.pro/cal/webhook",
+      "endpoint": "https://api.virtuallaunch.pro/cal/webhook",
       "eventType": "BOOKING_CANCELLED",
       "id": "cal_booking_cancelled",
       "method": "POST",
@@ -20,7 +20,7 @@
     },
     {
       "dedupeKey": "payload.payload.bookingId",
-      "endpoint": "https://api.taxmonitor.pro/cal/webhook",
+      "endpoint": "https://api.virtuallaunch.pro/cal/webhook",
       "eventType": "BOOKING_CREATED",
       "id": "cal_booking_created",
       "method": "POST",
@@ -37,7 +37,7 @@
     },
     {
       "dedupeKey": "payload.payload.bookingId",
-      "endpoint": "https://api.taxmonitor.pro/cal/webhook",
+      "endpoint": "https://api.virtuallaunch.pro/cal/webhook",
       "eventType": "BOOKING_RESCHEDULED",
       "id": "cal_booking_rescheduled",
       "method": "POST",
@@ -54,7 +54,7 @@
     },
     {
       "dedupeKey": "payload.data.object.id",
-      "endpoint": "https://api.taxmonitor.pro/stripe/webhook",
+      "endpoint": "https://api.virtuallaunch.pro/stripe/webhook",
       "eventType": "checkout.session.completed",
       "id": "stripe_checkout_session_completed",
       "method": "POST",
@@ -71,7 +71,7 @@
     },
     {
       "dedupeKey": "payload.data.object.id",
-      "endpoint": "https://api.taxmonitor.pro/stripe/webhook",
+      "endpoint": "https://api.virtuallaunch.pro/stripe/webhook",
       "eventType": "payment_intent.succeeded",
       "id": "stripe_payment_intent_succeeded",
       "method": "POST",

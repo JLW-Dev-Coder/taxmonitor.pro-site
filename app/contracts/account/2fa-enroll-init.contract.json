@@ -11,7 +11,7 @@
     "version": 1
   },
   "delivery": {
-    "endpoint": "https://api.taxmonitor.pro/forms/account/2fa/enroll-init",
+    "endpoint": "https://api.virtuallaunch.pro/forms/account/2fa/enroll-init",
     "method": "POST",
     "type": "forms"
   },

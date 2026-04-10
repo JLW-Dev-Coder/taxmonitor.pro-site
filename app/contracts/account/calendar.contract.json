@@ -6,7 +6,7 @@
     "version": 1
   },
   "delivery": {
-    "endpoint": "https://api.taxmonitor.pro/account/calendar",
+    "endpoint": "https://api.virtuallaunch.pro/account/calendar",
     "method": "GET",
     "type": "web"
   },

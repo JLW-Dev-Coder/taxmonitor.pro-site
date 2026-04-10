@@ -20,7 +20,7 @@
   },
   "delivery": {
     "dedupeKey": "eventId",
-    "endpoint": "https://api.taxmonitor.pro/forms/agreement",
+    "endpoint": "https://api.virtuallaunch.pro/forms/agreement",
     "eventType": "AGREEMENT_ACCEPTED",
     "method": "POST",
     "receiptKeyPattern": "receipts/{source}/{eventId}.json",

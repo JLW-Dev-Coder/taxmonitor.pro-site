@@ -14,7 +14,7 @@
     "version": 1
   },
   "delivery": {
-    "endpoint": "https://api.taxmonitor.pro/forms/account/security",
+    "endpoint": "https://api.virtuallaunch.pro/forms/account/security",
     "method": "POST",
     "type": "forms"
   },

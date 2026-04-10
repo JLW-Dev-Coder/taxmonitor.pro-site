@@ -30,7 +30,7 @@
     "method": "POST",
     "receiptSource": "form",
     "route": "/forms/account/profile",
-    "url": "https://api.taxmonitor.pro/forms/account/profile"
+    "url": "https://api.virtuallaunch.pro/forms/account/profile"
   },
   "effects": {
     "canonicalUpserts": [

@@ -17,7 +17,7 @@
     "version": 1
   },
   "delivery": {
-    "endpoint": "https://api.taxmonitor.pro/forms/visit",
+    "endpoint": "https://api.virtuallaunch.pro/forms/visit",
     "method": "POST",
     "receiptSource": "visit"
   },

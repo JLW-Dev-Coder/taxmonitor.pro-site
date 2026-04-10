@@ -443,12 +443,12 @@
 
   <script>
     const ENDPOINTS = {
-      delete: "https://api.taxmonitor.pro/forms/account/delete",
-      photoUploadComplete: "https://api.taxmonitor.pro/forms/account/photo-upload-complete",
-      photoUploadInit: "https://api.taxmonitor.pro/forms/account/photo-upload-init",
-      preferences: "https://api.taxmonitor.pro/forms/account/preferences",
-      profile: "https://api.taxmonitor.pro/forms/account/profile",
-      security: "https://api.taxmonitor.pro/forms/account/security"
+      delete: "https://api.virtuallaunch.pro/forms/account/delete",
+      photoUploadComplete: "https://api.virtuallaunch.pro/forms/account/photo-upload-complete",
+      photoUploadInit: "https://api.virtuallaunch.pro/forms/account/photo-upload-init",
+      preferences: "https://api.virtuallaunch.pro/forms/account/preferences",
+      profile: "https://api.virtuallaunch.pro/forms/account/profile",
+      security: "https://api.virtuallaunch.pro/forms/account/security"
     };
 
     const PREFS_DEFAULTS = {
@@ -846,7 +846,7 @@
 
       try {
         if (enabled) {
-          await postJson("https://api.taxmonitor.pro/forms/account/2fa/enroll-init", {
+          await postJson("https://api.virtuallaunch.pro/forms/account/2fa/enroll-init", {
             eventId: getEventId(),
             sessionToken
           });
@@ -854,7 +854,7 @@
           twoFactorState = "pending";
           showToast("2FA setup started. Complete verification to finish.", "info");
         } else {
-          await postJson("https://api.taxmonitor.pro/forms/account/2fa/disable", {
+          await postJson("https://api.virtuallaunch.pro/forms/account/2fa/disable", {
             eventId: getEventId(),
             sessionToken
           });

@@ -377,7 +377,7 @@
   </div>
 
   <script>
-const API_BASE = 'https://api.taxmonitor.pro';
+const API_BASE = 'https://api.virtuallaunch.pro';
 
 const isOverlay = new URLSearchParams(location.search).get('overlay') === '1';
 
@@ -464,7 +464,7 @@ async function fetchOrderState(orderId, sessionToken) {
   const f = document.getElementById('tax-form');
   console.assert(!!f, 'Form should exist');
 
-  console.assert(API_BASE === 'https://api.taxmonitor.pro', 'API_BASE should be canonical');
+  console.assert(API_BASE === 'https://api.virtuallaunch.pro', 'API_BASE should be canonical');
   console.assert(FILING_STATUS_ENDPOINT.endsWith('/forms/post-payment/filing-status'), 'FILING_STATUS_ENDPOINT should match contract route');
 
   console.assert(typeof formatSSN('123456789') === 'string', 'formatSSN should return string');
