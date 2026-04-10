@@ -1,4 +1,5 @@
 {
+  "_note": "Rendering reference only. The canonical API contract is contracts/vlp/vlp.profile.public.v1.json in the virtuallaunch.pro repo.",
   "contract": "directory-profile.v1",
   "description": "Schema contract for a public Tax Monitor Pro directory profile page rendered from directory/{slug}/data.json.",
   "fields": {
