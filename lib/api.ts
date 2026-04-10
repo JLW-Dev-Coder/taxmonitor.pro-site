@@ -151,15 +151,31 @@ export const api = {
   getProfile: (professional_id: string) =>
     apiFetch<{
       ok: boolean
-      professional: {
-        professional_id: string
-        name: string
-        title: string
-        bio: string
-        specialty: string[]
-        location: string
-        avatar_url: string
-        verified: boolean
+      profile: {
+        professionalId: string
+        displayName: string
+        fullName: string
+        initials: string
+        bioShort: string
+        yearsExperience: string
+        state: string
+        city: string
+        firmName: string
+        professions: string[]
+        otherProfession: string
+        bio1: string
+        bio2: string
+        bio3: string
+        primaryService: string
+        additionalServices: string[]
+        primaryCredential: string
+        additionalCredentials: string
+        email: string
+        phone: string
+        languages: string[]
+        availabilityText: string
+        calBookingUrl: string
+        status: string
       }
     }>(`/v1/profiles/public/${professional_id}`, {
       auth: false,

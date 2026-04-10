@@ -86,50 +86,59 @@ function ProfileContent() {
     api
       .getProfile(slug)
       .then((res) => {
-        const p = res.professional
+        const p = res.profile
         /* API returned a result — wrap into FullProfile shape */
         const sample = getSampleProfile(slug)
         if (sample) {
           setProfile(sample)
         } else {
+          const location = [p.city, p.state].filter(Boolean).join(', ')
+          const bios = [p.bio1, p.bio2, p.bio3].filter(Boolean)
+          const allServices = p.additionalServices || []
           /* Build minimal FullProfile from API data */
           setProfile({
-            professional_id: p.professional_id,
-            name: p.name,
-            title: p.title,
-            specialty: p.specialty,
-            location: p.location,
-            avatar_url: p.avatar_url,
-            verified: p.verified,
-            city: '',
-            state: '',
+            professional_id: p.professionalId,
+            name: p.displayName || p.fullName,
+            title: p.primaryService || p.professions[0] || '',
+            specialty: p.professions,
+            location,
+            avatar_url: '',
+            verified: p.status === 'active',
+            city: p.city || '',
+            state: p.state || '',
             zip: '',
-            profession: p.specialty,
-            bio_short: p.bio,
-            bio_full: [p.bio],
-            firm_name: '',
-            years_experience: 0,
-            headline: p.title,
-            credential_badges: p.specialty.map((s) => ({
+            profession: p.professions,
+            bio_short: p.bioShort,
+            bio_full: bios.length > 0 ? bios : [p.bioShort],
+            firm_name: p.firmName || '',
+            years_experience: parseInt(p.yearsExperience, 10) || 0,
+            headline: p.primaryService || p.professions[0] || '',
+            credential_badges: p.professions.map((s) => ({
               label: s,
               style_key: s.toLowerCase(),
             })),
-            services: [],
+            services: allServices.map((s) => ({
+              title: s,
+              description: '',
+              icon: '',
+            })),
             reviews: [],
             review_summary: { average_rating: 0, review_count: 0 },
-            quick_stats: [],
+            quick_stats: [
+              ...(p.yearsExperience ? [{ label: 'Years Experience', value: p.yearsExperience }] : []),
+            ],
             client_types: [],
-            credentials: [],
+            credentials: [p.primaryCredential, ...(p.additionalCredentials ? p.additionalCredentials.split(', ') : [])].filter(Boolean),
             experience: [],
             licenses: [],
-            contact_email: '',
-            phone: '',
+            contact_email: p.email || '',
+            phone: p.phone || '',
             website: '',
-            availability: '',
-            languages: [],
-            years_experience_label: '',
+            availability: p.availabilityText || '',
+            languages: p.languages || [],
+            years_experience_label: p.yearsExperience ? `${p.yearsExperience} years experience` : '',
             rating_label: '',
-            booking_url: '',
+            booking_url: p.calBookingUrl || '',
             sample: false,
           })
         }
