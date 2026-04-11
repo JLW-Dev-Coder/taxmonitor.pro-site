@@ -148,49 +148,35 @@ export interface PublicProfileResponse {
 /**
  * Client-visible compliance report shape.
  * Mirrors tmp.compliance-record.read.v1.json in the VLP contract registry.
+ * Worker returns pre-formatted currency strings (e.g. "$24,847.32").
  */
 export interface ComplianceReportResponse {
   ok: boolean
   record: {
     order_id: string
-    status: 'draft' | 'final'
+    compliance_record_status: 'Draft' | 'Final'
     client_name: string
-    report_date: string
-    prepared_at: string
-    account_overview: {
-      filing_status: string
-      tax_year: number
-      total_irs_balance: number
-      irs_account_status: 'compliant' | 'limited' | 'non_compliant'
-    }
-    return_status: {
-      processing_status: string
-      date_filed: string | null
-      tax_liability: number
-    }
+    filing_status: string
+    compliance_tax_year: number
+    total_irs_balance: string
+    irs_account_status: 'Compliant' | 'Limited' | 'Non-Compliant'
+    return_processing_status: string
+    return_date_filed: string | null
+    return_tax_liability: string
     notices: Array<{
-      notice_id: string
+      notice_id?: string
       type: string
       date: string
-      urgency: 'low' | 'medium' | 'high'
+      urgency?: 'low' | 'medium' | 'high'
       details: string
     }>
-    payment_plan: {
-      ia_status: 'none' | 'pending' | 'established' | 'defaulted'
-      monthly_payment: number | null
-      payment_schedule: string | null
-      start_date: string | null
-    }
-    summary: {
-      compliance_client_summary: string
-      report_prepared_date: string
-    }
-    professional: {
-      name: string
-      credential: string
-      contact_consent: boolean
-      contact_url: string | null
-    }
+    ia_established: 'Yes' | 'No'
+    ia_payment_amount: string | null
+    ia_payment_date: string | null
+    compliance_client_summary: string
+    compliance_prepared_date: string
+    updated_at: string
+    servicing_professional_id: string | null
   }
 }
 

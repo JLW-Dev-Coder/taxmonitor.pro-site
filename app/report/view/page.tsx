@@ -15,74 +15,27 @@ import { Suspense, useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import AuthGuard from '@/components/AuthGuard'
 import AppShell from '@/components/AppShell'
-import { api, type ComplianceReportResponse } from '@/lib/api'
+import {
+  api,
+  ApiError,
+  type ComplianceReportResponse,
+  type PublicProfileResponse,
+} from '@/lib/api'
 import styles from './page.module.css'
 
 type Record = ComplianceReportResponse['record']
-
-// TODO: Remove placeholder when Worker route is live
-const PLACEHOLDER: Record = {
-  order_id: 'ord_placeholder_0001',
-  status: 'final',
-  client_name: 'Jordan Rivera',
-  report_date: '2026-04-08',
-  prepared_at: '2026-04-08T15:30:00Z',
-  account_overview: {
-    filing_status: 'Single',
-    tax_year: 2024,
-    total_irs_balance: 12480.55,
-    irs_account_status: 'limited',
-  },
-  return_status: {
-    processing_status: 'Return processed',
-    date_filed: '2025-04-12',
-    tax_liability: 11240.00,
-  },
-  notices: [
-    {
-      notice_id: 'n1',
-      type: 'CP14 — Balance Due',
-      date: '2025-05-20',
-      urgency: 'medium',
-      details:
-        'IRS notice of balance due for tax year 2024. Response required within 21 days of notice date to avoid additional penalties and interest.',
-    },
-    {
-      notice_id: 'n2',
-      type: 'CP501 — Reminder',
-      date: '2025-06-24',
-      urgency: 'low',
-      details:
-        'First reminder notice regarding outstanding balance. Review and respond or set up a payment arrangement.',
-    },
-  ],
-  payment_plan: {
-    ia_status: 'established',
-    monthly_payment: 225.0,
-    payment_schedule: '15th of each month',
-    start_date: '2025-08-15',
-  },
-  summary: {
-    compliance_client_summary:
-      'Your 2024 return has been processed and is currently in Limited Compliance status due to an outstanding balance of $12,480.55. We have established an installment agreement of $225/month beginning August 15, 2025. Continue making on-time payments to avoid default. No immediate action is required on the CP14 notice — it is being tracked through the installment agreement.',
-    report_prepared_date: '2026-04-08',
-  },
-  professional: {
-    name: 'Maria Chen, EA',
-    credential: 'Enrolled Agent',
-    contact_consent: true,
-    contact_url: '/messages',
-  },
+type ProfessionalInfo = {
+  name: string
+  credential: string
+  contact_url: string | null
 }
 
-function formatCurrency(value: number | null): string {
-  if (value === null || value === undefined) return '—'
-  return value.toLocaleString('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 2,
-  })
-}
+type LoadState =
+  | { kind: 'loading' }
+  | { kind: 'ready'; record: Record; professional: ProfessionalInfo | null }
+  | { kind: 'not_ready' }
+  | { kind: 'auth_required' }
+  | { kind: 'error'; message: string }
 
 function formatDate(value: string | null): string {
   if (!value) return '—'
@@ -97,17 +50,9 @@ function formatDate(value: string | null): string {
   }
 }
 
-function accountStatusLabel(status: Record['account_overview']['irs_account_status']): string {
-  if (status === 'compliant') return 'Compliant'
-  if (status === 'limited') return 'Limited'
-  return 'Non-Compliant'
-}
-
-function accountStatusClass(
-  status: Record['account_overview']['irs_account_status']
-): string {
-  if (status === 'compliant') return styles.statusCompliant
-  if (status === 'limited') return styles.statusLimited
+function accountStatusClass(status: Record['irs_account_status']): string {
+  if (status === 'Compliant') return styles.statusCompliant
+  if (status === 'Limited') return styles.statusLimited
   return styles.statusNonCompliant
 }
 
@@ -119,37 +64,73 @@ function urgencyClass(
   return styles.noticeLow
 }
 
-function iaStatusLabel(status: Record['payment_plan']['ia_status']): string {
-  if (status === 'established') return 'Established'
-  if (status === 'pending') return 'Pending'
-  if (status === 'defaulted') return 'Defaulted'
-  return 'None'
+function extractProfessional(
+  res: PublicProfileResponse
+): ProfessionalInfo {
+  const p = res.profile
+  const credentials = p.professional.credentials ?? []
+  const credential =
+    credentials.length > 0
+      ? credentials.join(', ')
+      : (p.professional.profession ?? []).join(', ') || 'Tax Professional'
+  const contactBtn = p.buttons?.contact_button
+  const contactUrl =
+    contactBtn && contactBtn.show && contactBtn.active ? contactBtn.url : null
+  return {
+    name: p.profile.name,
+    credential,
+    contact_url: contactUrl,
+  }
 }
 
 function ReportView({ orderId }: { orderId: string }) {
-  const [record, setRecord] = useState<Record | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [usingPlaceholder, setUsingPlaceholder] = useState(false)
+  const [state, setState] = useState<LoadState>({ kind: 'loading' })
 
   useEffect(() => {
     let cancelled = false
-    setLoading(true)
-    api
-      .getComplianceReport(orderId)
-      .then((res) => {
+    setState({ kind: 'loading' })
+
+    const load = async () => {
+      try {
+        const res = await api.getComplianceReport(orderId)
         if (cancelled) return
-        setRecord(res.record)
-        setUsingPlaceholder(false)
-      })
-      .catch(() => {
+        const record = res.record
+
+        let professional: ProfessionalInfo | null = null
+        if (record.servicing_professional_id) {
+          try {
+            const profileRes = await api.getProfile(
+              record.servicing_professional_id
+            )
+            if (!cancelled) professional = extractProfessional(profileRes)
+          } catch {
+            // Fall back to generic label below
+          }
+        }
+
+        if (!cancelled) setState({ kind: 'ready', record, professional })
+      } catch (err) {
         if (cancelled) return
-        // TODO: Remove placeholder when Worker route is live
-        setRecord({ ...PLACEHOLDER, order_id: orderId })
-        setUsingPlaceholder(true)
-      })
-      .finally(() => {
-        if (!cancelled) setLoading(false)
-      })
+        if (err instanceof ApiError) {
+          if (err.status === 404) {
+            setState({ kind: 'not_ready' })
+            return
+          }
+          if (err.status === 401) {
+            setState({ kind: 'auth_required' })
+            return
+          }
+          setState({ kind: 'error', message: err.message })
+          return
+        }
+        setState({
+          kind: 'error',
+          message: 'Unable to load your compliance report.',
+        })
+      }
+    }
+
+    load()
     return () => {
       cancelled = true
     }
@@ -159,7 +140,7 @@ function ReportView({ orderId }: { orderId: string }) {
     if (typeof window !== 'undefined') window.print()
   }
 
-  if (loading) {
+  if (state.kind === 'loading') {
     return (
       <div className={styles.page}>
         <div className={styles.loadingBox}>Loading your report…</div>
@@ -167,30 +148,54 @@ function ReportView({ orderId }: { orderId: string }) {
     )
   }
 
-  if (!record) {
+  if (state.kind === 'not_ready') {
     return (
       <div className={styles.page}>
         <div className={styles.errorBox}>
-          <h1 className={styles.title}>Report unavailable</h1>
+          <h1 className={styles.title}>Report not ready</h1>
           <p className={styles.muted}>
-            We couldn&apos;t load this compliance report. Please try again or
-            contact your tax professional.
+            Your compliance report is being prepared. Check back soon.
           </p>
         </div>
       </div>
     )
   }
 
-  const isFinal = record.status === 'final'
+  if (state.kind === 'auth_required') {
+    return (
+      <div className={styles.page}>
+        <div className={styles.errorBox}>
+          <h1 className={styles.title}>Sign in required</h1>
+          <p className={styles.muted}>
+            Please sign in to view your compliance report.
+          </p>
+          <p>
+            <a className={styles.proContactBtn} href="/sign-in" data-noprint>
+              Sign in
+            </a>
+          </p>
+        </div>
+      </div>
+    )
+  }
+
+  if (state.kind === 'error') {
+    return (
+      <div className={styles.page}>
+        <div className={styles.errorBox}>
+          <h1 className={styles.title}>Report unavailable</h1>
+          <p className={styles.muted}>{state.message}</p>
+        </div>
+      </div>
+    )
+  }
+
+  const { record, professional } = state
+  const isFinal = record.compliance_record_status === 'Final'
+  const iaEstablished = record.ia_established === 'Yes'
 
   return (
     <div className={styles.page}>
-      {usingPlaceholder && (
-        <div className={styles.devBanner} data-noprint>
-          Preview mode — showing placeholder data until the Worker route ships.
-        </div>
-      )}
-
       {/* ── Header ── */}
       <header className={styles.header}>
         <div className={styles.headerMain}>
@@ -199,7 +204,7 @@ function ReportView({ orderId }: { orderId: string }) {
           <div className={styles.headerMeta}>
             <span className={styles.clientName}>{record.client_name}</span>
             <span className={styles.metaDivider}>•</span>
-            <span>{formatDate(record.report_date)}</span>
+            <span>{formatDate(record.compliance_prepared_date)}</span>
           </div>
         </div>
         <div className={styles.headerSide}>
@@ -227,30 +232,28 @@ function ReportView({ orderId }: { orderId: string }) {
         <div className={styles.overviewGrid}>
           <div className={styles.overviewField}>
             <span className={styles.fieldLabel}>Filing Status</span>
-            <span className={styles.fieldValue}>
-              {record.account_overview.filing_status}
-            </span>
+            <span className={styles.fieldValue}>{record.filing_status}</span>
           </div>
           <div className={styles.overviewField}>
             <span className={styles.fieldLabel}>Tax Year</span>
             <span className={styles.fieldValue}>
-              {record.account_overview.tax_year}
+              {record.compliance_tax_year}
             </span>
           </div>
           <div className={styles.balanceCard}>
             <span className={styles.fieldLabel}>Total IRS Balance</span>
             <span className={styles.balanceValue}>
-              {formatCurrency(record.account_overview.total_irs_balance)}
+              {record.total_irs_balance}
             </span>
           </div>
           <div
             className={`${styles.statusCard} ${accountStatusClass(
-              record.account_overview.irs_account_status
+              record.irs_account_status
             )}`}
           >
             <span className={styles.fieldLabel}>IRS Account Status</span>
             <span className={styles.statusValue}>
-              {accountStatusLabel(record.account_overview.irs_account_status)}
+              {record.irs_account_status}
             </span>
           </div>
         </div>
@@ -263,19 +266,19 @@ function ReportView({ orderId }: { orderId: string }) {
           <div className={styles.field}>
             <span className={styles.fieldLabel}>Processing Status</span>
             <span className={styles.fieldValue}>
-              {record.return_status.processing_status}
+              {record.return_processing_status}
             </span>
           </div>
           <div className={styles.field}>
             <span className={styles.fieldLabel}>Date Filed</span>
             <span className={styles.fieldValue}>
-              {formatDate(record.return_status.date_filed)}
+              {formatDate(record.return_date_filed)}
             </span>
           </div>
           <div className={styles.field}>
             <span className={styles.fieldLabel}>Tax Liability</span>
             <span className={styles.fieldValue}>
-              {formatCurrency(record.return_status.tax_liability)}
+              {record.return_tax_liability}
             </span>
           </div>
         </div>
@@ -286,9 +289,9 @@ function ReportView({ orderId }: { orderId: string }) {
         <section className={styles.section}>
           <h2 className={styles.sectionTitle}>Notices</h2>
           <ul className={styles.noticeList}>
-            {record.notices.map((notice) => (
+            {record.notices.map((notice, idx) => (
               <li
-                key={notice.notice_id}
+                key={notice.notice_id ?? `notice-${idx}`}
                 className={`${styles.noticeItem} ${urgencyClass(notice.urgency)}`}
               >
                 <div className={styles.noticeHead}>
@@ -311,27 +314,21 @@ function ReportView({ orderId }: { orderId: string }) {
           <div className={styles.field}>
             <span className={styles.fieldLabel}>Installment Agreement</span>
             <span className={styles.fieldValue}>
-              {iaStatusLabel(record.payment_plan.ia_status)}
+              {iaEstablished ? 'Established' : 'None'}
             </span>
           </div>
-          {record.payment_plan.ia_status === 'established' && (
+          {iaEstablished && (
             <>
               <div className={styles.field}>
                 <span className={styles.fieldLabel}>Monthly Payment</span>
                 <span className={styles.fieldValue}>
-                  {formatCurrency(record.payment_plan.monthly_payment)}
+                  {record.ia_payment_amount ?? '—'}
                 </span>
               </div>
               <div className={styles.field}>
-                <span className={styles.fieldLabel}>Schedule</span>
+                <span className={styles.fieldLabel}>Next Payment Date</span>
                 <span className={styles.fieldValue}>
-                  {record.payment_plan.payment_schedule ?? '—'}
-                </span>
-              </div>
-              <div className={styles.field}>
-                <span className={styles.fieldLabel}>Start Date</span>
-                <span className={styles.fieldValue}>
-                  {formatDate(record.payment_plan.start_date)}
+                  {formatDate(record.ia_payment_date)}
                 </span>
               </div>
             </>
@@ -343,10 +340,10 @@ function ReportView({ orderId }: { orderId: string }) {
       <section className={styles.section}>
         <h2 className={styles.sectionTitle}>Summary &amp; Next Steps</h2>
         <p className={styles.summaryBody}>
-          {record.summary.compliance_client_summary}
+          {record.compliance_client_summary}
         </p>
         <p className={styles.preparedDate}>
-          Report prepared {formatDate(record.summary.report_prepared_date)}
+          Report prepared {formatDate(record.compliance_prepared_date)}
         </p>
       </section>
 
@@ -354,22 +351,34 @@ function ReportView({ orderId }: { orderId: string }) {
       <section className={styles.section}>
         <h2 className={styles.sectionTitle}>Your Professional</h2>
         <div className={styles.professionalCard}>
-          <div>
-            <div className={styles.proName}>{record.professional.name}</div>
-            <div className={styles.proCredential}>
-              {record.professional.credential}
+          {professional ? (
+            <>
+              <div>
+                <div className={styles.proName}>{professional.name}</div>
+                <div className={styles.proCredential}>
+                  {professional.credential}
+                </div>
+              </div>
+              {professional.contact_url && (
+                <a
+                  className={styles.proContactBtn}
+                  href={professional.contact_url}
+                  data-noprint
+                >
+                  Contact your professional
+                </a>
+              )}
+            </>
+          ) : (
+            <div>
+              <div className={styles.proName}>
+                Your assigned tax professional
+              </div>
+              <div className={styles.proCredential}>
+                Contact details unavailable
+              </div>
             </div>
-          </div>
-          {record.professional.contact_consent &&
-            record.professional.contact_url && (
-              <a
-                className={styles.proContactBtn}
-                href={record.professional.contact_url}
-                data-noprint
-              >
-                Contact your professional
-              </a>
-            )}
+          )}
         </div>
       </section>
 
