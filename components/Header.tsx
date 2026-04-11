@@ -134,6 +134,7 @@ export default function Header({
                       <div className={styles.menuSection}>
                         <div className={styles.menuSectionLabel}>Tools &amp; extras</div>
                         <div className={styles.menuSectionItems}>
+                          <Link href="/tools/irs-payment-calculator" className={styles.menuSimpleLink} onClick={closeAll}>IRS Payment Strategy Calculator</Link>
                           <a href="https://transcript.taxmonitor.pro/resources/transcript-codes" target="_blank" rel="noopener" className={styles.menuSimpleLink}>Transcript Codes Database</a>
                           <a href="https://transcript.taxmonitor.pro/resources/transcript-orders" target="_blank" rel="noopener" className={styles.menuSimpleLink}>Order Walkthrough</a>
                           <a href="https://transcript.taxmonitor.pro" target="_blank" rel="noopener" className={styles.menuSimpleLink}>Transcript Automation</a>
@@ -235,6 +236,7 @@ export default function Header({
             {mobileResourcesOpen && (
               <div className={styles.mobileResourcesList}>
                 <Link href="/about" className={styles.mobileResourceLink} onClick={closeAll}>About</Link>
+                <Link href="/tools/irs-payment-calculator" className={styles.mobileResourceLink} onClick={closeAll}>IRS Payment Strategy Calculator</Link>
                 <a href="https://transcript.taxmonitor.pro/resources/how-to-read-irs-transcripts" target="_blank" rel="noopener" className={styles.mobileResourceLink}>How to Read IRS Transcripts</a>
                 <Link href="/resources/transcript-central" className={styles.mobileResourceLink} onClick={closeAll}>Transcript Central</Link>
                 <a href="https://transcript.taxmonitor.pro/resources/transcript-codes" target="_blank" rel="noopener" className={styles.mobileResourceLink}>Transcript Codes Database</a>

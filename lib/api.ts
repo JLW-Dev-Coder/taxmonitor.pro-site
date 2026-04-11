@@ -364,6 +364,11 @@ export const api = {
     message: string
     tax_situation?: string
     source_page?: string
+    description?: string
+    service_needed?: string
+    state?: string | null
+    entity_type?: string
+    source?: string
   }) =>
     apiFetch('/v1/tmp/inquiries', {
       method: 'POST',

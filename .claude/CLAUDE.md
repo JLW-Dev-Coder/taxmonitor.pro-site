@@ -5,7 +5,7 @@
 - **Repo:** taxmonitor.pro
 - **Product:** Tax Monitor Pro (TMP)
 - **Domain:** taxmonitor.pro
-- **Last updated:** 2026-04-04
+- **Last updated:** 2026-04-10
 - **Purpose:** Taxpayer-facing directory and membership platform — frontend only
 
 ---
@@ -89,7 +89,9 @@ taxmonitor.pro/
 │   ├── report/
 │   ├── sign-in/
 │   ├── status/
-│   └── support/
+│   ├── support/
+│   └── tools/
+│       └── irs-payment-calculator/
 ├── assets/                [legacy]   Legacy static assets
 │   ├── directory/         [legacy]   Sample profile images
 │   └── images/            [legacy]   Legacy images
@@ -171,6 +173,21 @@ taxmonitor.pro/
   (reads `tmp.compliance-record.read.v1` from
   `GET /v1/tmp/compliance-records/{orderId}/report`). Uses a query param
   because `output: 'export'` disallows runtime dynamic routes.
+- `/tools/irs-payment-calculator` — public IRS Payment Strategy Calculator.
+  Free magnet tool (no auth) that walks taxpayers through a 5-step funnel:
+  (0) balance input, (1) 10-year collection statute education, (2) tax year
+  selection + notice date + pending dispute, (3) monthly payment capacity,
+  (4) outcome cards + scenario (full/mixed/partial pay) + lead capture form.
+  Calculates total paid vs. remaining against the estimated CSED based on the
+  oldest selected year (assessment ≈ April 15 of year+1, +6 months if a
+  dispute is pending). Lead form submits to `POST /v1/tmp/inquiries` via
+  `api.createInquiry()` with `source: "inquiry_form"`,
+  `service_needed: "Tax Resolution"`, `entity_type: "Individuals"`, and a
+  `tax_situation` summary of the calculation inputs. Currency inputs
+  format with commas on every keystroke (raw digits stored in state for
+  calculations). Single client component with local step state; no auth,
+  no API calls until the final lead submission. Linked from the Header
+  Resources mega-menu "Tools & extras" section and mobile resources list.
 - `/forms/2848?caseId={case_id}` — client-facing Form 2848 eSign page.
   Taxpayer fills out and signs their Power of Attorney during the "eSign 2848"
   step of the compliance workflow. Submits to
