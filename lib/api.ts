@@ -145,6 +145,55 @@ export interface PublicProfileResponse {
   }
 }
 
+/**
+ * Client-visible compliance report shape.
+ * Mirrors tmp.compliance-record.read.v1.json in the VLP contract registry.
+ */
+export interface ComplianceReportResponse {
+  ok: boolean
+  record: {
+    order_id: string
+    status: 'draft' | 'final'
+    client_name: string
+    report_date: string
+    prepared_at: string
+    account_overview: {
+      filing_status: string
+      tax_year: number
+      total_irs_balance: number
+      irs_account_status: 'compliant' | 'limited' | 'non_compliant'
+    }
+    return_status: {
+      processing_status: string
+      date_filed: string | null
+      tax_liability: number
+    }
+    notices: Array<{
+      notice_id: string
+      type: string
+      date: string
+      urgency: 'low' | 'medium' | 'high'
+      details: string
+    }>
+    payment_plan: {
+      ia_status: 'none' | 'pending' | 'established' | 'defaulted'
+      monthly_payment: number | null
+      payment_schedule: string | null
+      start_date: string | null
+    }
+    summary: {
+      compliance_client_summary: string
+      report_prepared_date: string
+    }
+    professional: {
+      name: string
+      credential: string
+      contact_consent: boolean
+      contact_url: string | null
+    }
+  }
+}
+
 async function apiFetch<T>(
   path: string,
   options: ApiOptions = {}
@@ -404,6 +453,11 @@ export const api = {
       method: 'POST',
       body: JSON.stringify({ account_id, tax_year }),
     }),
+
+  getComplianceReport: (order_id: string) =>
+    apiFetch<ComplianceReportResponse>(
+      `/v1/tmp/compliance-records/${encodeURIComponent(order_id)}/report`
+    ),
 
   // Calendar
   getCalStatus: () =>

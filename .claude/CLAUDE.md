@@ -151,6 +151,11 @@ taxmonitor.pro/
 - `/legal/*` — legal pages (privacy, terms, refund)
 - `/sign-in` — magic link + Google OAuth authentication
 - Intake flow: `/inquiry` → `/intake` → `/offer` → `/agreement` → `/payment` → `/payment-success`
+- `/report` — authenticated compliance dashboard (tabbed staff/pro view)
+- `/report/view?orderId={order_id}` — client-facing read-only compliance report
+  (reads `tmp.compliance-record.read.v1` from
+  `GET /v1/tmp/compliance-records/{orderId}/report`). Uses a query param
+  because `output: 'export'` disallows runtime dynamic routes.
 
 ---
 
