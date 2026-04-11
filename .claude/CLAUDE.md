@@ -150,6 +150,21 @@ taxmonitor.pro/
 - `/app/*` — authenticated dashboard pages
 - `/legal/*` — legal pages (privacy, terms, refund)
 - `/sign-in` — magic link + Google OAuth authentication
+- `/inquiry` — multi-step guided decision tree for taxpayers. Step 0
+  presents three paths: (a) "Find a Tax Professional" (matching flow),
+  (b) "Start a Membership" (TMP Plan I/II, TTMP, TTTMP cards), and
+  (c) "Not Sure" (3-question recommendation engine). The matching flow
+  walks State → Service (18-item enum) → Entity (8-item enum) →
+  Language (13-item enum, optional) and calls
+  `GET /v1/profiles?state=X&service=Y&client_type=Z&language=W&match=true&limit=3`
+  via `api.searchProfiles()` in `lib/api.ts`. Up to 3 pro cards render
+  with credential badges, location, services, and rating; each has
+  "View Profile" linking to `/directory/profile?id={slug}` and an
+  inline "Contact" form that submits `POST /v1/tmp/inquiries` via
+  `api.createInquiry()`. If 0 matches returned or the API fails, a
+  fallback card links to `/contact`. Every step has a Back button and
+  the progress indicator shows `Step N of M`. The page is a single
+  client component with local step state.
 - Intake flow: `/inquiry` → `/intake` → `/offer` → `/agreement` → `/payment` → `/payment-success`
 - `/report` — authenticated compliance dashboard (tabbed staff/pro view)
 - `/report/view?orderId={order_id}` — client-facing read-only compliance report

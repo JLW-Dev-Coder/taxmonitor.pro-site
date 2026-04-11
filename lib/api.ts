@@ -318,15 +318,56 @@ export const api = {
       { auth: false }
     ),
 
+  searchProfiles: (params: {
+    state?: string
+    service?: string
+    client_type?: string
+    language?: string
+    match?: boolean
+    limit?: number
+  }) => {
+    const search = new URLSearchParams()
+    if (params.state) search.set('state', params.state)
+    if (params.service) search.set('service', params.service)
+    if (params.client_type) search.set('client_type', params.client_type)
+    if (params.language) search.set('language', params.language)
+    if (params.match) search.set('match', 'true')
+    if (params.limit) search.set('limit', String(params.limit))
+    const qs = search.toString()
+    return apiFetch<{
+      ok: boolean
+      profiles: Array<{
+        slug: string
+        name: string
+        initials: string
+        firm_name: string | null
+        credentials: string[]
+        credential_badges: Array<{ label: string; style_key: string }>
+        location_label: string
+        city: string | null
+        state: string | null
+        rating_label: string | null
+        services: string[]
+        languages: string[]
+        match_score?: number
+      }>
+      total: number
+    }>(`/v1/profiles${qs ? '?' + qs : ''}`, { auth: false })
+  },
+
   // Inquiries
   createInquiry: (data: {
     professional_id?: string
-    subject: string
+    name?: string
+    email?: string
+    subject?: string
     message: string
     tax_situation?: string
+    source_page?: string
   }) =>
     apiFetch('/v1/tmp/inquiries', {
       method: 'POST',
+      auth: false,
       body: JSON.stringify(data),
     }),
 
