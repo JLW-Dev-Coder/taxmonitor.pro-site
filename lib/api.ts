@@ -602,6 +602,16 @@ export const api = {
       status: string
     }>('/v1/tmp/dashboard'),
 
+  generate2848: (payload: Record<string, unknown>) =>
+    apiFetch<{
+      ok: boolean
+      pdf_base64: string
+      filename: string
+    }>('/v1/tools/2848/generate', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    }),
+
   getTmpMonitoringStatus: () =>
     apiFetch<{
       ok: boolean

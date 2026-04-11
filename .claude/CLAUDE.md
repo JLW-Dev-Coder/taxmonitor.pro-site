@@ -156,6 +156,17 @@ taxmonitor.pro/
   (reads `tmp.compliance-record.read.v1` from
   `GET /v1/tmp/compliance-records/{orderId}/report`). Uses a query param
   because `output: 'export'` disallows runtime dynamic routes.
+- `/forms/2848?caseId={case_id}` — client-facing Form 2848 eSign page.
+  Taxpayer fills out and signs their Power of Attorney during the "eSign 2848"
+  step of the compliance workflow. Submits to
+  `POST /v1/tools/2848/generate` and downloads the returned PDF
+  (`pdf_base64` + `filename`). Representative fields (name, CAF, PTIN, phone,
+  designation, address) are pre-filled from the assigned pro's profile and
+  read-only — currently a placeholder, TODO wire to `/v1/tmp/cases/{caseId}`.
+  Uses a query param (not a dynamic route) because `output: 'export'`
+  disallows runtime dynamic routes. Auth flow TBD — if the Worker returns
+  401, the page prompts the taxpayer to sign in. May need magic link or
+  case-specific token for unauthenticated taxpayers.
 
 ---
 
